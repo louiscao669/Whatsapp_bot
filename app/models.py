@@ -51,6 +51,22 @@ class ReviewStatus(str, Enum):
     REVIEWED = "reviewed"
 
 
+class ReminderStatus(str, Enum):
+    PENDING = "pending"
+    SENT = "sent"
+    FAILED = "failed"
+    CANCELLED = "cancelled"
+
+
+class SessionState(str, Enum):
+    ONBOARDING = "onboarding"
+    IDLE = "idle"
+    ASSIGNED = "assigned"
+    AWAITING_RESPONSE = "awaiting_response"
+    PAUSED = "paused"
+    OPTED_OUT = "opted_out"
+
+
 class Participant(Base):
     __tablename__ = "participants"
 
@@ -74,6 +90,12 @@ class Participant(Base):
     assignments: Mapped[List["Assignment"]] = relationship(back_populates="participant")
     responses: Mapped[List["ParticipantResponse"]] = relationship(
         back_populates="participant"
+    )
+    events: Mapped[List["ParticipantEvent"]] = relationship(back_populates="participant")
+    reminders: Mapped[List["Reminder"]] = relationship(back_populates="participant")
+    badges: Mapped[List["ParticipantBadge"]] = relationship(back_populates="participant")
+    session: Mapped[Optional["ParticipantSession"]] = relationship(
+        back_populates="participant", uselist=False
     )
 
 
@@ -137,6 +159,7 @@ class Assignment(Base):
     responses: Mapped[List["ParticipantResponse"]] = relationship(
         back_populates="assignment"
     )
+    reminders: Mapped[List["Reminder"]] = relationship(back_populates="assignment")
 
 
 class ParticipantResponse(Base):
@@ -184,3 +207,108 @@ class ParticipantResponse(Base):
     participant: Mapped["Participant"] = relationship(back_populates="responses")
     qa_item: Mapped["QAItem"] = relationship(back_populates="responses")
     assignment: Mapped[Optional["Assignment"]] = relationship(back_populates="responses")
+
+
+class ParticipantEvent(Base):
+    __tablename__ = "participant_events"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    participant_id: Mapped[str] = mapped_column(
+        ForeignKey("participants.id", ondelete="CASCADE"), nullable=False
+    )
+    event_type: Mapped[str] = mapped_column(String(64), index=True, nullable=False)
+    source: Mapped[Optional[str]] = mapped_column(String(64))
+    event_metadata: Mapped[dict] = mapped_column("metadata", JSON, default=dict, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utc_now, nullable=False
+    )
+
+    participant: Mapped["Participant"] = relationship(back_populates="events")
+
+
+class Reminder(Base):
+    __tablename__ = "reminders"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    participant_id: Mapped[str] = mapped_column(
+        ForeignKey("participants.id", ondelete="CASCADE"), nullable=False
+    )
+    assignment_id: Mapped[Optional[str]] = mapped_column(
+        ForeignKey("assignments.id", ondelete="SET NULL")
+    )
+    reminder_type: Mapped[str] = mapped_column(String(64), index=True, nullable=False)
+    message_text: Mapped[str] = mapped_column(Text, nullable=False)
+    status: Mapped[str] = mapped_column(
+        String(32), default=ReminderStatus.PENDING.value, index=True, nullable=False
+    )
+    scheduled_for: Mapped[datetime] = mapped_column(DateTime(timezone=True), index=True)
+    sent_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
+    failure_reason: Mapped[Optional[str]] = mapped_column(Text)
+    delivery_metadata: Mapped[dict] = mapped_column("metadata", JSON, default=dict, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utc_now, nullable=False
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utc_now, onupdate=utc_now, nullable=False
+    )
+
+    participant: Mapped["Participant"] = relationship(back_populates="reminders")
+    assignment: Mapped[Optional["Assignment"]] = relationship(back_populates="reminders")
+
+
+class ParticipantBadge(Base):
+    __tablename__ = "participant_badges"
+    __table_args__ = (
+        UniqueConstraint(
+            "participant_id",
+            "badge_type",
+            name="uq_participant_badges_participant_badge_type",
+        ),
+    )
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    participant_id: Mapped[str] = mapped_column(
+        ForeignKey("participants.id", ondelete="CASCADE"), nullable=False
+    )
+    badge_type: Mapped[str] = mapped_column(String(64), index=True, nullable=False)
+    title: Mapped[str] = mapped_column(String(255), nullable=False)
+    description: Mapped[Optional[str]] = mapped_column(Text)
+    badge_metadata: Mapped[dict] = mapped_column("metadata", JSON, default=dict, nullable=False)
+    awarded_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utc_now, nullable=False
+    )
+
+    participant: Mapped["Participant"] = relationship(back_populates="badges")
+
+
+class ParticipantSession(Base):
+    __tablename__ = "participant_sessions"
+    __table_args__ = (
+        UniqueConstraint("participant_id", name="uq_participant_sessions_participant"),
+    )
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    participant_id: Mapped[str] = mapped_column(
+        ForeignKey("participants.id", ondelete="CASCADE"), nullable=False
+    )
+    current_assignment_id: Mapped[Optional[str]] = mapped_column(
+        ForeignKey("assignments.id", ondelete="SET NULL")
+    )
+    current_batch_id: Mapped[Optional[str]] = mapped_column(String(36), index=True)
+    state: Mapped[str] = mapped_column(
+        String(64), default=SessionState.ONBOARDING.value, index=True, nullable=False
+    )
+    reminders_enabled: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
+    opted_out_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
+    last_prompt_sent_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
+    last_reminder_sent_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
+    session_metadata: Mapped[dict] = mapped_column("metadata", JSON, default=dict, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utc_now, nullable=False
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utc_now, onupdate=utc_now, nullable=False
+    )
+
+    participant: Mapped["Participant"] = relationship(back_populates="session")
+    current_assignment: Mapped[Optional["Assignment"]] = relationship()
