@@ -44,3 +44,16 @@ The app normalizes `postgres://` and `postgresql://` URLs for SQLAlchemy's
 
 For Supabase setup, run `supabase/schema.sql` in the Supabase SQL editor to
 create the prototype tables and indexes.
+
+## Chatbot workflow persistence
+
+When a WhatsApp text message arrives, the webhook now records the core workflow
+before sending the chat response:
+
+1. Find or create the `Participant` by WhatsApp `wa_id`.
+2. Update `Participant.last_seen_at`.
+3. Create a `ParticipantEvent` with `event_type = message_received`.
+4. Find or create the participant's `ParticipantSession`.
+5. If the session has a `current_assignment_id`, save a `ParticipantResponse`,
+   score it against the QA item's required keywords, complete the assignment,
+   and return the session to `idle`.

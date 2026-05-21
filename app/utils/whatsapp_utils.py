@@ -3,6 +3,8 @@ from flask import current_app, jsonify
 import json
 import requests
 
+from app.services.chatbot_workflow import record_whatsapp_text_message
+
 # from app.services.openai_service import generate_response
 import re
 
@@ -81,6 +83,18 @@ def process_whatsapp_message(body):
 
     message = body["entry"][0]["changes"][0]["value"]["messages"][0]
     message_body = message["text"]["body"]
+
+    workflow_result = record_whatsapp_text_message(
+        wa_id=wa_id,
+        display_name=name,
+        message_id=message.get("id"),
+        message_text=message_body,
+    )
+    logging.info(
+        "Processed WhatsApp workflow for participant %s in state %s",
+        workflow_result.participant_id,
+        workflow_result.session_state,
+    )
 
     # TODO: implement custom function here
     response = generate_response(message_body)
