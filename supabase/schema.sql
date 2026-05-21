@@ -67,6 +67,58 @@ create table if not exists participant_responses (
         check (correctness_score is null or (correctness_score >= 0 and correctness_score <= 1))
 );
 
+
+create table if not exists participant_events (
+    id text primary key default gen_random_uuid()::text,
+    participant_id text not null references participants(id) on delete cascade,
+    event_type text not null,
+    source text,
+    metadata jsonb not null default '{}'::jsonb,
+    created_at timestamptz not null default now()
+);
+
+create table if not exists reminders (
+    id text primary key default gen_random_uuid()::text,
+    participant_id text not null references participants(id) on delete cascade,
+    assignment_id text references assignments(id) on delete set null,
+    reminder_type text not null,
+    message_text text not null,
+    status text not null default 'pending',
+    scheduled_for timestamptz not null,
+    sent_at timestamptz,
+    failure_reason text,
+    metadata jsonb not null default '{}'::jsonb,
+    created_at timestamptz not null default now(),
+    updated_at timestamptz not null default now()
+);
+
+create table if not exists participant_badges (
+    id text primary key default gen_random_uuid()::text,
+    participant_id text not null references participants(id) on delete cascade,
+    badge_type text not null,
+    title text not null,
+    description text,
+    metadata jsonb not null default '{}'::jsonb,
+    awarded_at timestamptz not null default now(),
+    constraint uq_participant_badges_participant_badge_type unique (participant_id, badge_type)
+);
+
+create table if not exists participant_sessions (
+    id text primary key default gen_random_uuid()::text,
+    participant_id text not null references participants(id) on delete cascade,
+    current_assignment_id text references assignments(id) on delete set null,
+    current_batch_id text,
+    state text not null default 'onboarding',
+    reminders_enabled boolean not null default true,
+    opted_out_at timestamptz,
+    last_prompt_sent_at timestamptz,
+    last_reminder_sent_at timestamptz,
+    metadata jsonb not null default '{}'::jsonb,
+    created_at timestamptz not null default now(),
+    updated_at timestamptz not null default now(),
+    constraint uq_participant_sessions_participant unique (participant_id)
+);
+
 create index if not exists idx_participants_wa_id on participants(wa_id);
 create index if not exists idx_participants_target_language on participants(target_language);
 create index if not exists idx_qa_items_passage_id on qa_items(passage_id);
@@ -75,3 +127,15 @@ create index if not exists idx_assignments_batch_id on assignments(batch_id);
 create index if not exists idx_assignments_status on assignments(status);
 create index if not exists idx_participant_responses_is_flagged on participant_responses(is_flagged);
 create index if not exists idx_participant_responses_review_status on participant_responses(review_status);
+
+create index if not exists idx_participant_events_participant_id on participant_events(participant_id);
+create index if not exists idx_participant_events_event_type on participant_events(event_type);
+create index if not exists idx_reminders_participant_id on reminders(participant_id);
+create index if not exists idx_reminders_assignment_id on reminders(assignment_id);
+create index if not exists idx_reminders_reminder_type on reminders(reminder_type);
+create index if not exists idx_reminders_status on reminders(status);
+create index if not exists idx_reminders_scheduled_for on reminders(scheduled_for);
+create index if not exists idx_participant_badges_participant_id on participant_badges(participant_id);
+create index if not exists idx_participant_badges_badge_type on participant_badges(badge_type);
+create index if not exists idx_participant_sessions_current_batch_id on participant_sessions(current_batch_id);
+create index if not exists idx_participant_sessions_state on participant_sessions(state);
