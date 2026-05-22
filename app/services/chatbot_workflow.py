@@ -8,6 +8,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
 from app.database import get_session_factory
+from app.services.media_storage_service import store_whatsapp_audio
 from app.services.transcription_service import transcribe_whatsapp_audio
 from app.models import (
     Assignment,
@@ -416,10 +417,19 @@ def record_whatsapp_audio_message(
     sha256=None,
     voice=None,
 ):
+    stored_media = None
+    try:
+        stored_media = store_whatsapp_audio(media_id=media_id, mime_type=mime_type)
+    except Exception:
+        logging.exception("Failed to store WhatsApp audio media %s", media_id)
+
+    stored_media_url = stored_media.storage_uri if stored_media else None
+    stored_content_type = stored_media.content_type if stored_media else mime_type
     transcription = transcribe_whatsapp_audio(
         media_id=media_id,
-        mime_type=mime_type,
+        mime_type=stored_content_type,
         sha256=sha256,
+        media_url=stored_media_url,
     )
     return record_whatsapp_answer(
         wa_id=wa_id,
@@ -431,9 +441,14 @@ def record_whatsapp_audio_message(
             "mime_type": mime_type,
             "sha256": sha256,
             "voice": voice,
+            "media_url": stored_media_url,
+            "storage_bucket": stored_media.bucket if stored_media else None,
+            "storage_object_path": stored_media.object_path if stored_media else None,
+            "storage_file_size": stored_media.file_size if stored_media else None,
             "transcription_provider": transcription.provider,
             "transcription_confidence": transcription.confidence,
         },
         media_id=media_id,
+        media_url=stored_media_url,
         transcript_text=transcription.text,
     )

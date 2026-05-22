@@ -14,6 +14,9 @@ def load_configurations(app):
     app.config["PHONE_NUMBER_ID"] = os.getenv("PHONE_NUMBER_ID")
     app.config["VERIFY_TOKEN"] = os.getenv("VERIFY_TOKEN")
     app.config["DATABASE_URL"] = os.getenv("DATABASE_URL")
+    app.config["SUPABASE_URL"] = os.getenv("SUPABASE_URL")
+    app.config["SUPABASE_SERVICE_ROLE_KEY"] = os.getenv("SUPABASE_SERVICE_ROLE_KEY")
+    app.config["SUPABASE_AUDIO_BUCKET"] = os.getenv("SUPABASE_AUDIO_BUCKET")
 
 
 def configure_logging():

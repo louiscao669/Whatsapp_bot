@@ -10,12 +10,13 @@ class TranscriptionResult:
     confidence: Optional[float] = None
 
 
-def transcribe_whatsapp_audio(media_id, mime_type=None, sha256=None):
+def transcribe_whatsapp_audio(media_id, mime_type=None, sha256=None, media_url=None):
     """
     Placeholder adapter for the project speech-to-text model.
 
     Replace this function body with the team model call once it is available.
     The rest of the chatbot workflow expects a TranscriptionResult with text.
+    media_url is the Supabase Storage URI when audio storage is configured.
     """
     placeholder_text = os.getenv(
         "PLACEHOLDER_AUDIO_TRANSCRIPT",
