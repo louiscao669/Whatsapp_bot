@@ -3,7 +3,10 @@ from flask import current_app, jsonify
 import json
 import requests
 
-from app.services.chatbot_workflow import record_whatsapp_text_message
+from app.services.chatbot_workflow import (
+    record_whatsapp_audio_message,
+    record_whatsapp_text_message,
+)
 
 # from app.services.openai_service import generate_response
 import re
@@ -122,14 +125,36 @@ def process_whatsapp_message(body):
     name = body["entry"][0]["changes"][0]["value"]["contacts"][0]["profile"]["name"]
 
     message = body["entry"][0]["changes"][0]["value"]["messages"][0]
-    message_body = message["text"]["body"]
+    message_type = message.get("type")
 
-    workflow_result = record_whatsapp_text_message(
-        wa_id=wa_id,
-        display_name=name,
-        message_id=message.get("id"),
-        message_text=message_body,
-    )
+    if message_type == "text":
+        workflow_result = record_whatsapp_text_message(
+            wa_id=wa_id,
+            display_name=name,
+            message_id=message.get("id"),
+            message_text=message["text"]["body"],
+        )
+    elif message_type == "audio":
+        audio = message.get("audio", {})
+        workflow_result = record_whatsapp_audio_message(
+            wa_id=wa_id,
+            display_name=name,
+            message_id=message.get("id"),
+            media_id=audio.get("id"),
+            mime_type=audio.get("mime_type"),
+            sha256=audio.get("sha256"),
+            voice=audio.get("voice"),
+        )
+    else:
+        logging.info("Unsupported WhatsApp message type: %s", message_type)
+        send_message(
+            get_text_message_input(
+                wa_id,
+                "Please reply with a text message or voice note.",
+            )
+        )
+        return
+
     logging.info(
         "Processed WhatsApp workflow for participant %s in state %s",
         workflow_result.participant_id,

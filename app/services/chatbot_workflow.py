@@ -8,6 +8,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
 from app.database import get_session_factory
+from app.services.transcription_service import transcribe_whatsapp_audio
 from app.models import (
     Assignment,
     AssignmentStatus,
@@ -254,7 +255,11 @@ def save_response_for_current_assignment(
     db: Session,
     participant,
     participant_session,
-    response_text,
+    response_text=None,
+    response_type=ResponseType.TEXT.value,
+    media_id=None,
+    media_url=None,
+    transcript_text=None,
 ):
     if not participant_session.current_assignment_id:
         if participant_session.state == SessionState.ONBOARDING.value:
@@ -273,6 +278,7 @@ def save_response_for_current_assignment(
         return None
 
     qa_item = assignment.qa_item
+    analysis_text = transcript_text or response_text or ""
     (
         normalized_text,
         correctness_score,
@@ -280,14 +286,17 @@ def save_response_for_current_assignment(
         missing_keywords,
         is_flagged,
         flag_reason,
-    ) = score_text_response(qa_item, response_text)
+    ) = score_text_response(qa_item, analysis_text)
 
     response = ParticipantResponse(
         participant_id=participant.id,
         qa_item_id=qa_item.id,
         assignment_id=assignment.id,
-        response_type=ResponseType.TEXT.value,
+        response_type=response_type,
         response_text=response_text,
+        media_id=media_id,
+        media_url=media_url,
+        transcript_text=transcript_text,
         normalized_text=normalized_text,
         correctness_score=correctness_score,
         matched_keywords=matched_keywords,
@@ -316,7 +325,9 @@ def save_response_for_current_assignment(
         {
             "assignment_id": assignment.id,
             "qa_item_id": qa_item.id,
-            "response_type": ResponseType.TEXT.value,
+            "response_type": response_type,
+            "media_id": media_id,
+            "has_transcript": bool(transcript_text),
             "correctness_score": correctness_score,
             "is_flagged": is_flagged,
         },
@@ -326,31 +337,46 @@ def save_response_for_current_assignment(
     return response
 
 
-def record_whatsapp_text_message(wa_id, display_name, message_id, message_text):
+def record_whatsapp_answer(
+    wa_id,
+    display_name,
+    message_id,
+    message_type,
+    message_metadata,
+    response_text=None,
+    media_id=None,
+    media_url=None,
+    transcript_text=None,
+):
     session_factory = get_session_factory()
 
     with session_factory() as db:
         try:
             participant = get_or_create_participant(db, wa_id, display_name)
             participant_session = get_or_create_participant_session(db, participant)
+            event_metadata = {
+                "message_id": message_id,
+                "message_type": message_type,
+                "received_at": utc_now().isoformat(),
+                "session_state": participant_session.state,
+            }
+            event_metadata.update(message_metadata or {})
             record_participant_event(
                 db,
                 participant,
                 "message_received",
-                {
-                    "message_id": message_id,
-                    "message_type": ResponseType.TEXT.value,
-                    "message_text": message_text,
-                    "received_at": utc_now().isoformat(),
-                    "session_state": participant_session.state,
-                },
+                event_metadata,
             )
 
             response = save_response_for_current_assignment(
                 db,
                 participant,
                 participant_session,
-                message_text,
+                response_text=response_text,
+                response_type=message_type,
+                media_id=media_id,
+                media_url=media_url,
+                transcript_text=transcript_text,
             )
             prompt = create_assignment_prompt(db, participant, participant_session)
 
@@ -368,3 +394,46 @@ def record_whatsapp_text_message(wa_id, display_name, message_id, message_text):
             db.rollback()
             logging.exception("Failed to persist WhatsApp chatbot workflow")
             raise
+
+
+def record_whatsapp_text_message(wa_id, display_name, message_id, message_text):
+    return record_whatsapp_answer(
+        wa_id=wa_id,
+        display_name=display_name,
+        message_id=message_id,
+        message_type=ResponseType.TEXT.value,
+        message_metadata={"message_text": message_text},
+        response_text=message_text,
+    )
+
+
+def record_whatsapp_audio_message(
+    wa_id,
+    display_name,
+    message_id,
+    media_id,
+    mime_type=None,
+    sha256=None,
+    voice=None,
+):
+    transcription = transcribe_whatsapp_audio(
+        media_id=media_id,
+        mime_type=mime_type,
+        sha256=sha256,
+    )
+    return record_whatsapp_answer(
+        wa_id=wa_id,
+        display_name=display_name,
+        message_id=message_id,
+        message_type=ResponseType.AUDIO.value,
+        message_metadata={
+            "media_id": media_id,
+            "mime_type": mime_type,
+            "sha256": sha256,
+            "voice": voice,
+            "transcription_provider": transcription.provider,
+            "transcription_confidence": transcription.confidence,
+        },
+        media_id=media_id,
+        transcript_text=transcription.text,
+    )

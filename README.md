@@ -54,10 +54,14 @@ before sending the chat response:
 2. Update `Participant.last_seen_at`.
 3. Create a `ParticipantEvent` with `event_type = message_received`.
 4. Find or create the participant's `ParticipantSession`.
-5. If the session has a `current_assignment_id`, save a `ParticipantResponse`,
-   score it against the QA item's required keywords, complete the assignment,
-   and return the session to `idle`.
-6. When the session is idle, select the next eligible active `QAItem`, create an
+5. If the incoming WhatsApp message is an audio/voice note, pass its media ID
+   through the placeholder transcription adapter in
+   `app/services/transcription_service.py`. Replace that adapter with the team
+   speech-to-text model when it is ready.
+6. If the session has a `current_assignment_id`, save a `ParticipantResponse`,
+   score the text answer or audio transcript against the QA item's required
+   keywords, complete the assignment, and return the session to `idle`.
+7. When the session is idle, select the next eligible active `QAItem`, create an
    `Assignment`, update the session to `awaiting_response`, and send the audio
    passage plus question text over WhatsApp. Selection skips QA items already
    assigned to the participant and prioritizes: response gap
