@@ -132,8 +132,48 @@ def score_text_response(qa_item, response_text):
     )
 
 
-def count_responses_for_qa_item(qa_item):
-    return len(qa_item.responses or [])
+def get_qa_item_distribution_metrics(qa_item):
+    responses = qa_item.responses or []
+    actual_response_count = len(responses)
+    response_gap = max(qa_item.min_responses_required - actual_response_count, 0)
+
+    scored_responses = [
+        response.correctness_score
+        for response in responses
+        if response.correctness_score is not None
+    ]
+    average_correctness = (
+        sum(scored_responses) / len(scored_responses) if scored_responses else None
+    )
+    low_accuracy_risk = (
+        1 - average_correctness if average_correctness is not None else 0
+    )
+    flag_rate = (
+        sum(1 for response in responses if response.is_flagged)
+        / actual_response_count
+        if actual_response_count
+        else 0
+    )
+    accuracy_risk = max(low_accuracy_risk, flag_rate)
+
+    return {
+        "actual_response_count": actual_response_count,
+        "response_gap": response_gap,
+        "average_correctness": average_correctness,
+        "flag_rate": flag_rate,
+        "accuracy_risk": accuracy_risk,
+    }
+
+
+def get_qa_item_priority(qa_item):
+    metrics = get_qa_item_distribution_metrics(qa_item)
+    return (
+        -metrics["response_gap"],
+        -metrics["accuracy_risk"],
+        -qa_item.review_priority,
+        metrics["actual_response_count"],
+        qa_item.created_at,
+    )
 
 
 def select_next_qa_item(db: Session, participant):
@@ -157,14 +197,7 @@ def select_next_qa_item(db: Session, participant):
     if not candidates:
         return None
 
-    return sorted(
-        candidates,
-        key=lambda qa_item: (
-            count_responses_for_qa_item(qa_item),
-            -qa_item.review_priority,
-            qa_item.created_at,
-        ),
-    )[0]
+    return sorted(candidates, key=get_qa_item_priority)[0]
 
 
 def create_assignment_prompt(db: Session, participant, participant_session):
@@ -204,6 +237,7 @@ def create_assignment_prompt(db: Session, participant, participant_session):
             "qa_item_id": qa_item.id,
             "batch_id": batch_id,
             "passage_id": qa_item.passage_id,
+            "distribution_metrics": get_qa_item_distribution_metrics(qa_item),
         },
     )
 
