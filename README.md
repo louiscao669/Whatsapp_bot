@@ -59,4 +59,7 @@ before sending the chat response:
    and return the session to `idle`.
 6. When the session is idle, select the next eligible active `QAItem`, create an
    `Assignment`, update the session to `awaiting_response`, and send the audio
-   passage plus question text over WhatsApp.
+   passage plus question text over WhatsApp. Selection skips QA items already
+   assigned to the participant and prioritizes: response gap
+   (`min_responses_required - actual_response_count`), accuracy risk from low
+   correctness/high flag rate, `review_priority`, and then lower coverage.
