@@ -57,3 +57,6 @@ before sending the chat response:
 5. If the session has a `current_assignment_id`, save a `ParticipantResponse`,
    score it against the QA item's required keywords, complete the assignment,
    and return the session to `idle`.
+6. When the session is idle, select the next eligible active `QAItem`, create an
+   `Assignment`, update the session to `awaiting_response`, and send the audio
+   passage plus question text over WhatsApp.
