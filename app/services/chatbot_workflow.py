@@ -15,11 +15,22 @@ from app.models import (
     ParticipantEvent,
     ParticipantResponse,
     ParticipantSession,
+    QAItem,
     ResponseType,
     ReviewStatus,
     SessionState,
+    new_id,
     utc_now,
 )
+
+
+@dataclass
+class AssignmentPrompt:
+    assignment_id: str
+    qa_item_id: str
+    audio_url: Optional[str]
+    question_text: str
+    passage_reference: Optional[str] = None
 
 
 @dataclass
@@ -29,6 +40,7 @@ class WorkflowResult:
     session_state: str
     response_id: Optional[str] = None
     assignment_id: Optional[str] = None
+    prompt: Optional[AssignmentPrompt] = None
 
 
 def normalize_response_text(text):
@@ -117,6 +129,90 @@ def score_text_response(qa_item, response_text):
         missing_keywords,
         is_flagged,
         flag_reason,
+    )
+
+
+def count_responses_for_qa_item(qa_item):
+    return len(qa_item.responses or [])
+
+
+def select_next_qa_item(db: Session, participant):
+    assigned_qa_item_ids = set(
+        db.scalars(
+            select(Assignment.qa_item_id).where(
+                Assignment.participant_id == participant.id
+            )
+        ).all()
+    )
+
+    statement = select(QAItem).where(QAItem.active.is_(True))
+    if participant.target_language:
+        statement = statement.where(QAItem.language == participant.target_language)
+
+    candidates = [
+        qa_item
+        for qa_item in db.scalars(statement).all()
+        if qa_item.id not in assigned_qa_item_ids
+    ]
+    if not candidates:
+        return None
+
+    return sorted(
+        candidates,
+        key=lambda qa_item: (
+            count_responses_for_qa_item(qa_item),
+            -qa_item.review_priority,
+            qa_item.created_at,
+        ),
+    )[0]
+
+
+def create_assignment_prompt(db: Session, participant, participant_session):
+    if participant_session.state not in (
+        SessionState.IDLE.value,
+        SessionState.ONBOARDING.value,
+    ):
+        return None
+
+    qa_item = select_next_qa_item(db, participant)
+    if qa_item is None:
+        participant_session.state = SessionState.IDLE.value
+        return None
+
+    batch_id = participant_session.current_batch_id or new_id()
+    assignment = Assignment(
+        participant_id=participant.id,
+        qa_item_id=qa_item.id,
+        batch_id=batch_id,
+        status=AssignmentStatus.ASSIGNED.value,
+        assigned_at=utc_now(),
+    )
+    db.add(assignment)
+    db.flush()
+
+    participant_session.current_assignment_id = assignment.id
+    participant_session.current_batch_id = batch_id
+    participant_session.state = SessionState.AWAITING_RESPONSE.value
+    participant_session.last_prompt_sent_at = utc_now()
+
+    record_participant_event(
+        db,
+        participant,
+        "assignment_created",
+        {
+            "assignment_id": assignment.id,
+            "qa_item_id": qa_item.id,
+            "batch_id": batch_id,
+            "passage_id": qa_item.passage_id,
+        },
+    )
+
+    return AssignmentPrompt(
+        assignment_id=assignment.id,
+        qa_item_id=qa_item.id,
+        audio_url=qa_item.audio_url,
+        question_text=qa_item.question_text,
+        passage_reference=qa_item.passage_reference,
     )
 
 
@@ -222,6 +318,7 @@ def record_whatsapp_text_message(wa_id, display_name, message_id, message_text):
                 participant_session,
                 message_text,
             )
+            prompt = create_assignment_prompt(db, participant, participant_session)
 
             db.commit()
 
@@ -231,6 +328,7 @@ def record_whatsapp_text_message(wa_id, display_name, message_id, message_text):
                 session_state=participant_session.state,
                 response_id=response.id if response else None,
                 assignment_id=response.assignment_id if response else None,
+                prompt=prompt,
             )
         except SQLAlchemyError:
             db.rollback()

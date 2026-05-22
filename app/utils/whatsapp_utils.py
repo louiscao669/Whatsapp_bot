@@ -27,6 +27,46 @@ def get_text_message_input(recipient, text):
     )
 
 
+def get_audio_message_input(recipient, audio_url):
+    return json.dumps(
+        {
+            "messaging_product": "whatsapp",
+            "recipient_type": "individual",
+            "to": recipient,
+            "type": "audio",
+            "audio": {"link": audio_url},
+        }
+    )
+
+
+def get_assignment_prompt_text(prompt):
+    parts = []
+    if prompt.passage_reference:
+        parts.append(f"Passage: {prompt.passage_reference}")
+
+    if prompt.audio_url:
+        parts.append("Listen to the audio, then reply with your answer:")
+    else:
+        parts.append("Reply with your answer:")
+
+    parts.append(prompt.question_text)
+    return "\n\n".join(parts)
+
+
+def send_assignment_prompt(recipient, prompt):
+    if prompt.audio_url:
+        send_message(get_audio_message_input(recipient, prompt.audio_url))
+
+    send_message(get_text_message_input(recipient, get_assignment_prompt_text(prompt)))
+
+
+def get_no_assignment_message(response_recorded):
+    if response_recorded:
+        return "Thanks, your answer was recorded. No more questions are available right now."
+
+    return "Thanks for checking in. No questions are available right now."
+
+
 def generate_response(response):
     # Return text in uppercase
     return response.upper()
@@ -96,13 +136,11 @@ def process_whatsapp_message(body):
         workflow_result.session_state,
     )
 
-    # TODO: implement custom function here
-    response = generate_response(message_body)
+    if workflow_result.prompt:
+        send_assignment_prompt(wa_id, workflow_result.prompt)
+        return
 
-    # OpenAI Integration
-    # response = generate_response(message_body, wa_id, name)
-    # response = process_text_for_whatsapp(response)
-
+    response = get_no_assignment_message(response_recorded=bool(workflow_result.response_id))
     data = get_text_message_input(wa_id, response)
     send_message(data)
 
