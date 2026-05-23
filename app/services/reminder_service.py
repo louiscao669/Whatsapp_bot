@@ -34,6 +34,28 @@ def get_reminder_poll_interval_seconds():
     return int(os.getenv("REMINDER_POLL_INTERVAL_SECONDS", "300"))
 
 
+def get_reminder_max_retries():
+    return int(os.getenv("REMINDER_MAX_RETRIES", "3"))
+
+
+def get_reminder_retry_backoff_minutes():
+    configured_value = os.getenv("REMINDER_RETRY_BACKOFF_MINUTES", "5,15,30")
+    return [
+        int(value.strip())
+        for value in configured_value.split(",")
+        if value.strip()
+    ]
+
+
+def get_retry_delay(retry_count):
+    backoff_minutes = get_reminder_retry_backoff_minutes()
+    if not backoff_minutes:
+        return timedelta(minutes=5)
+
+    index = min(max(retry_count - 1, 0), len(backoff_minutes) - 1)
+    return timedelta(minutes=backoff_minutes[index])
+
+
 def reminders_enabled():
     return (
         os.getenv("REMINDER_SCHEDULER_ENABLED", "true").lower() == "true"
@@ -127,6 +149,38 @@ def mark_reminder_cancelled(reminder, reason):
     reminder.updated_at = utc_now()
 
 
+def mark_reminder_for_retry(reminder, error_message):
+    metadata = reminder.delivery_metadata or {}
+    retry_count = int(metadata.get("retry_count", 0)) + 1
+    max_retries = get_reminder_max_retries()
+
+    metadata = {
+        **metadata,
+        "retry_count": retry_count,
+        "max_retries": max_retries,
+        "last_error": error_message,
+        "last_failed_at": utc_now().isoformat(),
+    }
+
+    if retry_count > max_retries:
+        reminder.status = ReminderStatus.FAILED.value
+        reminder.failure_reason = error_message
+        reminder.delivery_metadata = metadata
+        reminder.updated_at = utc_now()
+        return
+
+    retry_delay = get_retry_delay(retry_count)
+    reminder.status = ReminderStatus.PENDING.value
+    reminder.failure_reason = error_message
+    reminder.scheduled_for = utc_now() + retry_delay
+    reminder.delivery_metadata = {
+        **metadata,
+        "next_retry_at": reminder.scheduled_for.isoformat(),
+        "retry_delay_minutes": int(retry_delay.total_seconds() // 60),
+    }
+    reminder.updated_at = utc_now()
+
+
 def process_due_reminders(limit=50):
     session_factory = get_session_factory()
     processed_count = 0
@@ -184,9 +238,7 @@ def process_due_reminders(limit=50):
                         reminder.message_text,
                     )
                 except requests.RequestException as exc:
-                    reminder.status = ReminderStatus.FAILED.value
-                    reminder.failure_reason = str(exc)
-                    reminder.updated_at = utc_now()
+                    mark_reminder_for_retry(reminder, str(exc))
                     continue
 
                 reminder.status = ReminderStatus.SENT.value

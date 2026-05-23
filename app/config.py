@@ -23,6 +23,10 @@ def load_configurations(app):
     app.config["REMINDER_POLL_INTERVAL_SECONDS"] = os.getenv(
         "REMINDER_POLL_INTERVAL_SECONDS", "300"
     )
+    app.config["REMINDER_MAX_RETRIES"] = os.getenv("REMINDER_MAX_RETRIES", "3")
+    app.config["REMINDER_RETRY_BACKOFF_MINUTES"] = os.getenv(
+        "REMINDER_RETRY_BACKOFF_MINUTES", "5,15,30"
+    )
 
 
 def configure_logging():
