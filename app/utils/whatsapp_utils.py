@@ -71,6 +71,18 @@ def get_batch_complete_message(completed_batch_size):
     )
 
 
+def get_badge_message(badge):
+    return (
+        f"Badge earned: {badge['title']}\n"
+        f"{badge['description']}"
+    )
+
+
+def send_badge_messages(recipient, badges):
+    for badge in badges:
+        send_message(get_text_message_input(recipient, get_badge_message(badge)))
+
+
 def get_no_assignment_message(response_recorded):
     if response_recorded:
         return "Thanks, your answer was recorded. No more questions are available right now."
@@ -168,6 +180,9 @@ def process_whatsapp_message(body):
         workflow_result.participant_id,
         workflow_result.session_state,
     )
+
+    if workflow_result.awarded_badges:
+        send_badge_messages(wa_id, workflow_result.awarded_badges)
 
     if workflow_result.prompt:
         send_assignment_prompt(wa_id, workflow_result.prompt)
