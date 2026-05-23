@@ -17,6 +17,12 @@ def load_configurations(app):
     app.config["SUPABASE_URL"] = os.getenv("SUPABASE_URL")
     app.config["SUPABASE_SERVICE_ROLE_KEY"] = os.getenv("SUPABASE_SERVICE_ROLE_KEY")
     app.config["SUPABASE_AUDIO_BUCKET"] = os.getenv("SUPABASE_AUDIO_BUCKET")
+    app.config["REMINDER_SCHEDULER_ENABLED"] = os.getenv(
+        "REMINDER_SCHEDULER_ENABLED", "true"
+    )
+    app.config["REMINDER_POLL_INTERVAL_SECONDS"] = os.getenv(
+        "REMINDER_POLL_INTERVAL_SECONDS", "300"
+    )
 
 
 def configure_logging():
