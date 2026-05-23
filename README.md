@@ -71,9 +71,14 @@ before sending the chat response:
 6. If the session has a `current_assignment_id`, save a `ParticipantResponse`,
    score the text answer or audio transcript against the QA item's required
    keywords, complete the assignment, and return the session to `idle`.
-7. When the session is idle, select the next eligible active `QAItem`, create an
-   `Assignment`, update the session to `awaiting_response`, and send the audio
-   passage plus question text over WhatsApp. Selection skips QA items already
-   assigned to the participant and prioritizes: response gap
+7. When the session is idle, first check the current batch. If the number of
+   completed assignments in `ParticipantSession.current_batch_id` has reached
+   `Participant.preferred_batch_size`, clear the current batch, record a
+   `batch_completed` event, and send a batch-complete message instead of another
+   question.
+8. If the batch is still open, select the next eligible active `QAItem`, create
+   an `Assignment`, update the session to `awaiting_response`, and send the
+   audio passage plus question text over WhatsApp. Selection skips QA items
+   already assigned to the participant and prioritizes: response gap
    (`min_responses_required - actual_response_count`), accuracy risk from low
    correctness/high flag rate, `review_priority`, and then lower coverage.
