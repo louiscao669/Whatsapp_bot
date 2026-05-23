@@ -8,6 +8,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
 from app.database import get_session_factory
+from app.services.badge_service import evaluate_and_award_badges
 from app.services.media_storage_service import store_whatsapp_audio
 from app.services.reminder_service import create_assignment_reminders
 from app.services.transcription_service import transcribe_whatsapp_audio
@@ -46,6 +47,7 @@ class WorkflowResult:
     prompt: Optional[AssignmentPrompt] = None
     batch_completed: bool = False
     completed_batch_size: int = 0
+    awarded_badges: tuple = ()
 
 
 def normalize_response_text(text):
@@ -444,6 +446,11 @@ def record_whatsapp_answer(
                 batch_completed,
                 completed_batch_size,
             ) = create_assignment_prompt(db, participant, participant_session)
+            awarded_badges = evaluate_and_award_badges(
+                db,
+                participant,
+                batch_completed=batch_completed,
+            )
 
             db.commit()
 
@@ -456,6 +463,14 @@ def record_whatsapp_answer(
                 prompt=prompt,
                 batch_completed=batch_completed,
                 completed_batch_size=completed_batch_size,
+                awarded_badges=tuple(
+                    {
+                        "badge_type": badge.badge_type,
+                        "title": badge.title,
+                        "description": badge.description,
+                    }
+                    for badge in awarded_badges
+                ),
             )
         except SQLAlchemyError:
             db.rollback()

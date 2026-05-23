@@ -139,3 +139,19 @@ participant opts out, or `REMINDER_TEMPLATE_MAX_COUNT` is reached. Use
 parameters if your approved template has body variables. Supported placeholders
 include `{name}`, `{wa_id}`, `{assignment_id}`, and `{reminder_type}`. For a
 template with no variables, leave it empty.
+
+## Badge awards
+
+The workflow awards lightweight participation badges after answers and batch
+completion. Awarded badges are saved in `participant_badges`, mirrored as
+`ParticipantEvent(badge_awarded)`, and announced through WhatsApp. Initial badge
+rules are:
+
+- `first_response`: awarded after the participant submits the first answer.
+- `completed_first_batch`: awarded after the first completed batch.
+- `completed_5_questions`: awarded after 5 completed answers.
+- `completed_10_questions`: awarded after 10 completed answers.
+- `completed_25_questions`: awarded after 25 completed answers.
+
+Badges are idempotent per participant because the database enforces uniqueness
+across `participant_id` and `badge_type`.
