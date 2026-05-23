@@ -155,3 +155,32 @@ rules are:
 
 Badges are idempotent per participant because the database enforces uniqueness
 across `participant_id` and `badge_type`.
+
+## Admin CSV exports
+
+The app exposes token-protected CSV exports for expert review and offline
+analysis:
+
+```text
+GET /admin/export/responses.csv
+GET /admin/export/flagged.csv
+```
+
+Configure a strong admin token in the deployed Space:
+
+```text
+ADMIN_API_TOKEN=replace-with-a-long-random-token
+```
+
+Then call the endpoints with a bearer token:
+
+```bash
+curl -H "Authorization: Bearer $ADMIN_API_TOKEN" \
+  https://YOUR-SPACE.hf.space/admin/export/flagged.csv
+```
+
+`responses.csv` exports all participant responses. `flagged.csv` exports only
+responses where `ParticipantResponse.is_flagged` is true. Both exports include
+participant identifiers, passage/question metadata, expected answer, response
+text or transcript, media URI, keyword matches/misses, correctness score, flag
+reason, and review status.
