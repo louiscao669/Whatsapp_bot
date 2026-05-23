@@ -43,6 +43,8 @@ class WorkflowResult:
     response_id: Optional[str] = None
     assignment_id: Optional[str] = None
     prompt: Optional[AssignmentPrompt] = None
+    batch_completed: bool = False
+    completed_batch_size: int = 0
 
 
 def normalize_response_text(text):
@@ -202,17 +204,67 @@ def select_next_qa_item(db: Session, participant):
     return sorted(candidates, key=get_qa_item_priority)[0]
 
 
+def get_preferred_batch_size(participant):
+    return max(participant.preferred_batch_size or 1, 1)
+
+
+def count_completed_assignments_in_batch(db: Session, participant, batch_id):
+    if not batch_id:
+        return 0
+
+    return len(
+        db.scalars(
+            select(Assignment).where(
+                Assignment.participant_id == participant.id,
+                Assignment.batch_id == batch_id,
+                Assignment.status == AssignmentStatus.COMPLETED.value,
+            )
+        ).all()
+    )
+
+
+def complete_current_batch_if_needed(db: Session, participant, participant_session):
+    batch_id = participant_session.current_batch_id
+    completed_count = count_completed_assignments_in_batch(db, participant, batch_id)
+    preferred_batch_size = get_preferred_batch_size(participant)
+
+    if not batch_id or completed_count < preferred_batch_size:
+        return False, completed_count
+
+    participant_session.current_batch_id = None
+    participant_session.current_assignment_id = None
+    participant_session.state = SessionState.IDLE.value
+    record_participant_event(
+        db,
+        participant,
+        "batch_completed",
+        {
+            "batch_id": batch_id,
+            "completed_count": completed_count,
+            "preferred_batch_size": preferred_batch_size,
+        },
+    )
+    return True, completed_count
+
+
 def create_assignment_prompt(db: Session, participant, participant_session):
     if participant_session.state not in (
         SessionState.IDLE.value,
         SessionState.ONBOARDING.value,
     ):
-        return None
+        return None, False, 0
+
+    batch_completed, completed_batch_size = complete_current_batch_if_needed(
+        db, participant, participant_session
+    )
+    if batch_completed:
+        return None, True, completed_batch_size
 
     qa_item = select_next_qa_item(db, participant)
     if qa_item is None:
+        participant_session.current_batch_id = None
         participant_session.state = SessionState.IDLE.value
-        return None
+        return None, False, completed_batch_size
 
     batch_id = participant_session.current_batch_id or new_id()
     assignment = Assignment(
@@ -239,16 +291,22 @@ def create_assignment_prompt(db: Session, participant, participant_session):
             "qa_item_id": qa_item.id,
             "batch_id": batch_id,
             "passage_id": qa_item.passage_id,
+            "completed_batch_size": completed_batch_size,
+            "preferred_batch_size": get_preferred_batch_size(participant),
             "distribution_metrics": get_qa_item_distribution_metrics(qa_item),
         },
     )
 
-    return AssignmentPrompt(
-        assignment_id=assignment.id,
-        qa_item_id=qa_item.id,
-        audio_url=qa_item.audio_url,
-        question_text=qa_item.question_text,
-        passage_reference=qa_item.passage_reference,
+    return (
+        AssignmentPrompt(
+            assignment_id=assignment.id,
+            qa_item_id=qa_item.id,
+            audio_url=qa_item.audio_url,
+            question_text=qa_item.question_text,
+            passage_reference=qa_item.passage_reference,
+        ),
+        False,
+        completed_batch_size,
     )
 
 
@@ -379,7 +437,11 @@ def record_whatsapp_answer(
                 media_url=media_url,
                 transcript_text=transcript_text,
             )
-            prompt = create_assignment_prompt(db, participant, participant_session)
+            (
+                prompt,
+                batch_completed,
+                completed_batch_size,
+            ) = create_assignment_prompt(db, participant, participant_session)
 
             db.commit()
 
@@ -390,6 +452,8 @@ def record_whatsapp_answer(
                 response_id=response.id if response else None,
                 assignment_id=response.assignment_id if response else None,
                 prompt=prompt,
+                batch_completed=batch_completed,
+                completed_batch_size=completed_batch_size,
             )
         except SQLAlchemyError:
             db.rollback()

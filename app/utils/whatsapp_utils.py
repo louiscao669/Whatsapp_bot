@@ -63,6 +63,14 @@ def send_assignment_prompt(recipient, prompt):
     send_message(get_text_message_input(recipient, get_assignment_prompt_text(prompt)))
 
 
+def get_batch_complete_message(completed_batch_size):
+    question_label = "question" if completed_batch_size == 1 else "questions"
+    return (
+        f"Thanks, your answer was recorded. Batch complete: "
+        f"you finished {completed_batch_size} {question_label}."
+    )
+
+
 def get_no_assignment_message(response_recorded):
     if response_recorded:
         return "Thanks, your answer was recorded. No more questions are available right now."
@@ -165,7 +173,10 @@ def process_whatsapp_message(body):
         send_assignment_prompt(wa_id, workflow_result.prompt)
         return
 
-    response = get_no_assignment_message(response_recorded=bool(workflow_result.response_id))
+    if workflow_result.batch_completed:
+        response = get_batch_complete_message(workflow_result.completed_batch_size)
+    else:
+        response = get_no_assignment_message(response_recorded=bool(workflow_result.response_id))
     data = get_text_message_input(wa_id, response)
     send_message(data)
 
