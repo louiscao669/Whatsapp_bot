@@ -82,3 +82,41 @@ before sending the chat response:
    already assigned to the participant and prioritizes: response gap
    (`min_responses_required - actual_response_count`), accuracy risk from low
    correctness/high flag rate, `review_priority`, and then lower coverage.
+
+## Reminder scheduler
+
+When a new assignment is created, the app schedules three pending reminders for
+that assignment:
+
+- `assignment_pending_3h`: 3 hours after assignment creation.
+- `assignment_pending_9h`: 9 hours after assignment creation, which is another
+  6 hours after the first reminder.
+- `assignment_pending_21h`: 21 hours after assignment creation, which is another
+  12 hours after the second reminder.
+
+A lightweight Flask background thread starts with the app and polls for due
+reminders every 300 seconds by default. Configure it with:
+
+```text
+REMINDER_SCHEDULER_ENABLED=true
+REMINDER_POLL_INTERVAL_SECONDS=300
+REMINDER_MAX_RETRIES=3
+REMINDER_RETRY_BACKOFF_MINUTES=5,15,30
+```
+
+The scheduler sends only pending reminders whose assignments are still
+incomplete, whose participant has reminders enabled, and whose participant has
+not opted out. It marks reminders as `sent`, `failed`, or `cancelled`, and
+records `ParticipantEvent(reminder_sent)` when a reminder is delivered. If a
+WhatsApp send fails, the reminder is returned to `pending` and retried with the
+configured backoff sequence. Retry metadata is stored in
+`Reminder.delivery_metadata`; after `REMINDER_MAX_RETRIES` is exceeded, the
+reminder is marked `failed`.
+
+WhatsApp allows free-form customer-service messages only inside a 24-hour window
+after the participant last messaged the bot. These reminders are scheduled at
+3h, 9h, and 21h so they normally fit inside that window. If a reminder becomes
+due after the 24-hour window, the prototype cancels it. To contact participants
+after 24 hours, create an approved WhatsApp message template in Meta WhatsApp
+Manager, wait for approval, and send that template through the Graph API instead
+of a normal text message.

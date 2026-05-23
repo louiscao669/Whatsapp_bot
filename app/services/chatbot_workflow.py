@@ -9,6 +9,7 @@ from sqlalchemy.orm import Session
 
 from app.database import get_session_factory
 from app.services.media_storage_service import store_whatsapp_audio
+from app.services.reminder_service import create_assignment_reminders
 from app.services.transcription_service import transcribe_whatsapp_audio
 from app.models import (
     Assignment,
@@ -276,6 +277,7 @@ def create_assignment_prompt(db: Session, participant, participant_session):
     )
     db.add(assignment)
     db.flush()
+    create_assignment_reminders(db, assignment, participant)
 
     participant_session.current_assignment_id = assignment.id
     participant_session.current_batch_id = batch_id
