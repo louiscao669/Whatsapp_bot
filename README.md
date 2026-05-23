@@ -28,7 +28,16 @@ validation workflow. Set the Supabase connection string in the deployed Space:
 
 ```text
 DATABASE_URL=postgresql://USER:PASSWORD@HOST:PORT/postgres
+SUPABASE_URL=https://YOUR-PROJECT.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=YOUR-SERVICE-ROLE-KEY
+SUPABASE_AUDIO_BUCKET=whatsapp-audio
 ```
+
+Create a private Supabase Storage bucket named `whatsapp-audio`, or set
+`SUPABASE_AUDIO_BUCKET` to another bucket name. Audio answers are uploaded to
+Supabase Storage and saved on `ParticipantResponse.media_url` as a storage URI,
+for example `storage://whatsapp-audio/whatsapp/2026/05/22/MEDIA_ID.ogg`. Use
+Supabase Storage signed URLs to access private audio objects later.
 
 The app normalizes `postgres://` and `postgresql://` URLs for SQLAlchemy's
 `psycopg` driver. The core ORM models are defined in `app/models.py`:
@@ -54,10 +63,11 @@ before sending the chat response:
 2. Update `Participant.last_seen_at`.
 3. Create a `ParticipantEvent` with `event_type = message_received`.
 4. Find or create the participant's `ParticipantSession`.
-5. If the incoming WhatsApp message is an audio/voice note, pass its media ID
-   through the placeholder transcription adapter in
-   `app/services/transcription_service.py`. Replace that adapter with the team
-   speech-to-text model when it is ready.
+5. If the incoming WhatsApp message is an audio/voice note, fetch the media
+   from Meta, upload the audio file to Supabase Storage, save its storage URI
+   on `ParticipantResponse.media_url`, and pass that URI through the placeholder
+   transcription adapter in `app/services/transcription_service.py`. Replace
+   that adapter with the team speech-to-text model when it is ready.
 6. If the session has a `current_assignment_id`, save a `ParticipantResponse`,
    score the text answer or audio transcript against the QA item's required
    keywords, complete the assignment, and return the session to `idle`.
