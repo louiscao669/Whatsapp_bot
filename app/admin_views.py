@@ -5,7 +5,7 @@ import io
 import json
 from functools import wraps
 
-from flask import Blueprint, Response, current_app, jsonify, request
+from flask import Blueprint, Response, current_app, jsonify, redirect, request, session, url_for
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 
@@ -66,6 +66,19 @@ def role_token_valid(role, token):
     return bool(expected_token) and hmac.compare_digest(token, expected_token)
 
 
+def get_role_for_token(token):
+    for role in ROLE_CONFIG:
+        if role_token_valid(role, token):
+            return role
+
+    return None
+
+
+def session_role_allowed(allowed_roles):
+    role = session.get("admin_role")
+    return role in allowed_roles
+
+
 def token_required(*allowed_roles):
     def decorator(f):
         @wraps(f)
@@ -87,11 +100,17 @@ def token_required(*allowed_roles):
                     503,
                 )
 
-            token = get_bearer_token()
-            if not any(role_token_valid(role, token) for role in configured_roles):
-                return jsonify({"status": "error", "message": "Unauthorized"}), 401
+            if session_role_allowed(configured_roles):
+                return f(*args, **kwargs)
 
-            return f(*args, **kwargs)
+            token = get_bearer_token()
+            if any(role_token_valid(role, token) for role in configured_roles):
+                return f(*args, **kwargs)
+
+            if request.method == "GET" and not request.path.endswith(".csv"):
+                return redirect(url_for("admin.admin_login", next=request.path))
+
+            return jsonify({"status": "error", "message": "Unauthorized"}), 401
 
         return decorated_function
 
@@ -108,6 +127,65 @@ def expert_token_required(f):
 
 def admin_or_expert_token_required(f):
     return token_required("admin", "expert")(f)
+
+
+def render_login_page(error_message=""):
+    error_html = (
+        f"<p style=\"color: #b00020;\">{html.escape(error_message)}</p>"
+        if error_message
+        else ""
+    )
+    return Response(
+        f"""<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Admin Login</title>
+  <style>
+    body {{ font-family: sans-serif; margin: 2rem; max-width: 32rem; }}
+    label {{ display: block; margin: 1rem 0 0.25rem; }}
+    input {{ width: 100%; padding: 0.5rem; }}
+    button {{ margin-top: 1rem; padding: 0.5rem 1rem; }}
+  </style>
+</head>
+<body>
+  <h1>Admin Login</h1>
+  {error_html}
+  <form method="post">
+    <input type="hidden" name="next" value="{html.escape(request.args.get('next', '/admin/analytics'))}">
+    <label for="token">Admin or expert token</label>
+    <input id="token" name="token" type="password" autocomplete="current-password" required>
+    <button type="submit">Log in</button>
+  </form>
+</body>
+</html>""",
+        mimetype="text/html",
+    )
+
+
+@admin_blueprint.route("/login", methods=["GET", "POST"])
+def admin_login():
+    if request.method == "GET":
+        return render_login_page()
+
+    token = request.form.get("token", "")
+    role = get_role_for_token(token)
+    if not role:
+        return render_login_page("Invalid token"), 401
+
+    session.clear()
+    session["admin_role"] = role
+    next_url = request.form.get("next") or "/admin/analytics"
+    if not next_url.startswith("/admin/"):
+        next_url = "/admin/analytics"
+
+    return redirect(next_url)
+
+
+@admin_blueprint.route("/logout", methods=["GET", "POST"])
+def admin_logout():
+    session.clear()
+    return redirect(url_for("admin.admin_login"))
 
 
 def serialize_datetime(value):
