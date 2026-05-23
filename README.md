@@ -172,10 +172,16 @@ Configure strong tokens in the deployed Space:
 ```text
 ADMIN_API_TOKEN=replace-with-a-long-random-admin-token
 EXPERT_API_TOKEN=replace-with-a-long-random-expert-token
+FLASK_SECRET_KEY=replace-with-a-long-random-session-secret
 ```
 
-Use the appropriate bearer token when opening a dashboard endpoint. The
-participants view includes WhatsApp IDs and should stay admin-only.
+For browser access, open `/admin/login`, paste either the admin or expert
+token, and the app stores your role in a signed Flask session cookie. Use
+`/admin/logout` to clear the session. Set `FLASK_SECRET_KEY` in deployment for
+stable signed sessions; if omitted, the app falls back to `APP_SECRET`.
+
+Bearer tokens still work for curl/Postman access. The participants view includes
+WhatsApp IDs and should stay admin-only.
 
 ## Admin CSV exports
 
