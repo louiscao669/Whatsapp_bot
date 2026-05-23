@@ -156,9 +156,30 @@ rules are:
 Badges are idempotent per participant because the database enforces uniqueness
 across `participant_id` and `badge_type`.
 
+## Admin and expert dashboards
+
+The app exposes token-protected HTML endpoints for the two internal user groups:
+
+```text
+/admin/qa-items      -> admin/distributor only
+/admin/review        -> expert reviewer only
+/admin/analytics     -> admin/distributor or expert reviewer
+/admin/participants  -> admin/distributor only
+```
+
+Configure strong tokens in the deployed Space:
+
+```text
+ADMIN_API_TOKEN=replace-with-a-long-random-admin-token
+EXPERT_API_TOKEN=replace-with-a-long-random-expert-token
+```
+
+Use the appropriate bearer token when opening a dashboard endpoint. The
+participants view includes WhatsApp IDs and should stay admin-only.
+
 ## Admin CSV exports
 
-The app exposes token-protected CSV exports for expert review and offline
+The app also exposes token-protected CSV exports for expert review and offline
 analysis:
 
 ```text
@@ -166,13 +187,7 @@ GET /admin/export/responses.csv
 GET /admin/export/flagged.csv
 ```
 
-Configure a strong admin token in the deployed Space:
-
-```text
-ADMIN_API_TOKEN=replace-with-a-long-random-token
-```
-
-Then call the endpoints with a bearer token:
+Call the endpoints with the admin bearer token:
 
 ```bash
 curl -H "Authorization: Bearer $ADMIN_API_TOKEN" \
