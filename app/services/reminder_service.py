@@ -24,6 +24,7 @@ REMINDER_SEQUENCE = (
     ("assignment_pending_9h", timedelta(hours=9)),
     ("assignment_pending_21h", timedelta(hours=21)),
 )
+TEMPLATE_REMINDER_TYPE = "assignment_template_reminder"
 CUSTOMER_SERVICE_WINDOW = timedelta(hours=24)
 
 _scheduler_started = False
@@ -36,6 +37,30 @@ def get_reminder_poll_interval_seconds():
 
 def get_reminder_max_retries():
     return int(os.getenv("REMINDER_MAX_RETRIES", "3"))
+
+
+def get_reminder_template_name():
+    return os.getenv("REMINDER_TEMPLATE_NAME")
+
+
+def get_reminder_template_language():
+    return os.getenv("REMINDER_TEMPLATE_LANGUAGE", "en_US")
+
+
+def get_template_reminder_first_delay():
+    return timedelta(hours=int(os.getenv("REMINDER_TEMPLATE_FIRST_DELAY_HOURS", "48")))
+
+
+def get_template_reminder_repeat_delay():
+    return timedelta(hours=int(os.getenv("REMINDER_TEMPLATE_REPEAT_HOURS", "48")))
+
+
+def get_template_reminder_max_count():
+    return int(os.getenv("REMINDER_TEMPLATE_MAX_COUNT", "0"))
+
+
+def template_reminders_enabled():
+    return bool(get_reminder_template_name())
 
 
 def get_reminder_retry_backoff_minutes():
@@ -72,7 +97,55 @@ def build_reminder_message(reminder_type):
         return "Reminder: you have a question waiting. Reply when you are ready."
     if reminder_type == "assignment_pending_9h":
         return "Reminder: your question is still waiting. Your answer helps validate this translation."
-    return "Final reminder for this question. Reply when you can, or ignore this message to skip for now."
+    if reminder_type == "assignment_pending_21h":
+        return "Final reminder for this question. Reply when you can, or ignore this message to skip for now."
+    return f"Template reminder: {get_reminder_template_name()}"
+
+
+def is_template_reminder(reminder):
+    return (reminder.delivery_metadata or {}).get("message_kind") == "template"
+
+
+def get_template_body_parameters(participant, assignment, reminder):
+    configured_value = os.getenv("REMINDER_TEMPLATE_BODY_PARAMS", "")
+    if not configured_value.strip():
+        return []
+
+    context = {
+        "name": participant.display_name or "there",
+        "wa_id": participant.wa_id,
+        "assignment_id": assignment.id if assignment else "",
+        "reminder_type": reminder.reminder_type if reminder else "",
+    }
+    return [
+        value.strip().format(**context)
+        for value in configured_value.split(",")
+        if value.strip()
+    ]
+
+
+def build_template_message_input(recipient, template_name, language_code, body_parameters=None):
+    template = {
+        "name": template_name,
+        "language": {"code": language_code},
+    }
+    if body_parameters:
+        template["components"] = [
+            {
+                "type": "body",
+                "parameters": [
+                    {"type": "text", "text": value} for value in body_parameters
+                ],
+            }
+        ]
+
+    return {
+        "messaging_product": "whatsapp",
+        "recipient_type": "individual",
+        "to": recipient,
+        "type": "template",
+        "template": template,
+    }
 
 
 def create_assignment_reminders(db, assignment, participant):
@@ -94,7 +167,30 @@ def create_assignment_reminders(db, assignment, participant):
                 message_text=build_reminder_message(reminder_type),
                 status=ReminderStatus.PENDING.value,
                 scheduled_for=assignment.assigned_at + delay,
-                delivery_metadata={"delay_hours": int(delay.total_seconds() // 3600)},
+                delivery_metadata={
+                    "delay_hours": int(delay.total_seconds() // 3600),
+                    "message_kind": "text",
+                },
+            )
+        )
+
+    if template_reminders_enabled() and TEMPLATE_REMINDER_TYPE not in existing_types:
+        first_delay = get_template_reminder_first_delay()
+        db.add(
+            Reminder(
+                participant_id=participant.id,
+                assignment_id=assignment.id,
+                reminder_type=TEMPLATE_REMINDER_TYPE,
+                message_text=build_reminder_message(TEMPLATE_REMINDER_TYPE),
+                status=ReminderStatus.PENDING.value,
+                scheduled_for=assignment.assigned_at + first_delay,
+                delivery_metadata={
+                    "delay_hours": int(first_delay.total_seconds() // 3600),
+                    "message_kind": "template",
+                    "template_name": get_reminder_template_name(),
+                    "template_language": get_reminder_template_language(),
+                    "template_count": 1,
+                },
             )
         )
 
@@ -109,7 +205,7 @@ def get_text_message_input(recipient, text):
     }
 
 
-def send_whatsapp_text(recipient, text):
+def send_whatsapp_message(payload):
     access_token = os.getenv("ACCESS_TOKEN")
     phone_number_id = os.getenv("PHONE_NUMBER_ID")
     if not access_token or not phone_number_id:
@@ -121,7 +217,7 @@ def send_whatsapp_text(recipient, text):
     )
     response = requests.post(
         url,
-        json=get_text_message_input(recipient, text),
+        json=payload,
         headers={
             "Content-Type": "application/json",
             "Authorization": f"Bearer {access_token}",
@@ -130,6 +226,29 @@ def send_whatsapp_text(recipient, text):
     )
     response.raise_for_status()
     return response
+
+
+def send_whatsapp_text(recipient, text):
+    return send_whatsapp_message(get_text_message_input(recipient, text))
+
+
+def send_whatsapp_template(recipient, participant, assignment, reminder):
+    template_name = (reminder.delivery_metadata or {}).get("template_name") or get_reminder_template_name()
+    if not template_name:
+        raise RuntimeError("REMINDER_TEMPLATE_NAME is required to send template reminders")
+
+    language_code = (
+        (reminder.delivery_metadata or {}).get("template_language")
+        or get_reminder_template_language()
+    )
+    return send_whatsapp_message(
+        build_template_message_input(
+            recipient=recipient,
+            template_name=template_name,
+            language_code=language_code,
+            body_parameters=get_template_body_parameters(participant, assignment, reminder),
+        )
+    )
 
 
 def is_within_customer_service_window(participant):
@@ -181,6 +300,35 @@ def mark_reminder_for_retry(reminder, error_message):
     reminder.updated_at = utc_now()
 
 
+def create_next_template_reminder(db, reminder, assignment, participant):
+    metadata = reminder.delivery_metadata or {}
+    template_count = int(metadata.get("template_count", 1))
+    max_count = get_template_reminder_max_count()
+    if max_count and template_count >= max_count:
+        return None
+
+    repeat_delay = get_template_reminder_repeat_delay()
+    next_count = template_count + 1
+    next_reminder = Reminder(
+        participant_id=participant.id,
+        assignment_id=assignment.id,
+        reminder_type=TEMPLATE_REMINDER_TYPE,
+        message_text=build_reminder_message(TEMPLATE_REMINDER_TYPE),
+        status=ReminderStatus.PENDING.value,
+        scheduled_for=utc_now() + repeat_delay,
+        delivery_metadata={
+            "delay_hours": int(repeat_delay.total_seconds() // 3600),
+            "message_kind": "template",
+            "template_name": get_reminder_template_name(),
+            "template_language": get_reminder_template_language(),
+            "template_count": next_count,
+            "previous_reminder_id": reminder.id,
+        },
+    )
+    db.add(next_reminder)
+    return next_reminder
+
+
 def process_due_reminders(limit=50):
     session_factory = get_session_factory()
     processed_count = 0
@@ -225,7 +373,11 @@ def process_due_reminders(limit=50):
                     mark_reminder_cancelled(reminder, "Participant opted out")
                     continue
 
-                if not is_within_customer_service_window(participant):
+                template_reminder = is_template_reminder(reminder)
+                if (
+                    not template_reminder
+                    and not is_within_customer_service_window(participant)
+                ):
                     mark_reminder_cancelled(
                         reminder,
                         "Outside WhatsApp 24-hour customer service window",
@@ -233,10 +385,18 @@ def process_due_reminders(limit=50):
                     continue
 
                 try:
-                    response = send_whatsapp_text(
-                        participant.wa_id,
-                        reminder.message_text,
-                    )
+                    if template_reminder:
+                        response = send_whatsapp_template(
+                            participant.wa_id,
+                            participant,
+                            assignment,
+                            reminder,
+                        )
+                    else:
+                        response = send_whatsapp_text(
+                            participant.wa_id,
+                            reminder.message_text,
+                        )
                 except requests.RequestException as exc:
                     mark_reminder_for_retry(reminder, str(exc))
                     continue
@@ -248,6 +408,8 @@ def process_due_reminders(limit=50):
                     **(reminder.delivery_metadata or {}),
                     "http_status": response.status_code,
                 }
+                if is_template_reminder(reminder):
+                    create_next_template_reminder(db, reminder, assignment, participant)
                 if participant_session:
                     participant_session.last_reminder_sent_at = reminder.sent_at
 
