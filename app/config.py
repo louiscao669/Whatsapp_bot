@@ -27,6 +27,22 @@ def load_configurations(app):
     app.config["REMINDER_RETRY_BACKOFF_MINUTES"] = os.getenv(
         "REMINDER_RETRY_BACKOFF_MINUTES", "5,15,30"
     )
+    app.config["REMINDER_TEMPLATE_NAME"] = os.getenv("REMINDER_TEMPLATE_NAME")
+    app.config["REMINDER_TEMPLATE_LANGUAGE"] = os.getenv(
+        "REMINDER_TEMPLATE_LANGUAGE", "en_US"
+    )
+    app.config["REMINDER_TEMPLATE_BODY_PARAMS"] = os.getenv(
+        "REMINDER_TEMPLATE_BODY_PARAMS", ""
+    )
+    app.config["REMINDER_TEMPLATE_FIRST_DELAY_HOURS"] = os.getenv(
+        "REMINDER_TEMPLATE_FIRST_DELAY_HOURS", "48"
+    )
+    app.config["REMINDER_TEMPLATE_REPEAT_HOURS"] = os.getenv(
+        "REMINDER_TEMPLATE_REPEAT_HOURS", "48"
+    )
+    app.config["REMINDER_TEMPLATE_MAX_COUNT"] = os.getenv(
+        "REMINDER_TEMPLATE_MAX_COUNT", "0"
+    )
 
 
 def configure_logging():

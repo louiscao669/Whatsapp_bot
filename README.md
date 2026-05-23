@@ -102,6 +102,12 @@ REMINDER_SCHEDULER_ENABLED=true
 REMINDER_POLL_INTERVAL_SECONDS=300
 REMINDER_MAX_RETRIES=3
 REMINDER_RETRY_BACKOFF_MINUTES=5,15,30
+REMINDER_TEMPLATE_NAME=question_pending_reminder
+REMINDER_TEMPLATE_LANGUAGE=en_US
+REMINDER_TEMPLATE_BODY_PARAMS={name}
+REMINDER_TEMPLATE_FIRST_DELAY_HOURS=48
+REMINDER_TEMPLATE_REPEAT_HOURS=48
+REMINDER_TEMPLATE_MAX_COUNT=0
 ```
 
 The scheduler sends only pending reminders whose assignments are still
@@ -114,9 +120,22 @@ configured backoff sequence. Retry metadata is stored in
 reminder is marked `failed`.
 
 WhatsApp allows free-form customer-service messages only inside a 24-hour window
-after the participant last messaged the bot. These reminders are scheduled at
-3h, 9h, and 21h so they normally fit inside that window. If a reminder becomes
-due after the 24-hour window, the prototype cancels it. To contact participants
-after 24 hours, create an approved WhatsApp message template in Meta WhatsApp
-Manager, wait for approval, and send that template through the Graph API instead
-of a normal text message.
+after the participant last messaged the bot. The free-form reminders are
+scheduled at 3h, 9h, and 21h so they normally fit inside that window. If a
+free-form reminder becomes due after the 24-hour window, the prototype cancels
+it.
+
+To contact participants after 24 hours, create an approved WhatsApp message
+template in Meta WhatsApp Manager. Set `REMINDER_TEMPLATE_NAME` to that approved
+template name and `REMINDER_TEMPLATE_LANGUAGE` to its language code. When a
+template name is configured, the app schedules a template reminder 48 hours
+after assignment creation by default: this is the first 24-hour service window
+plus another 24 hours. After each successful template send, it schedules the
+next template reminder 48 hours later until the assignment is completed, the
+participant opts out, or `REMINDER_TEMPLATE_MAX_COUNT` is reached. Use
+`REMINDER_TEMPLATE_MAX_COUNT=0` for no fixed maximum.
+
+`REMINDER_TEMPLATE_BODY_PARAMS` is optional. Use a comma-separated list of text
+parameters if your approved template has body variables. Supported placeholders
+include `{name}`, `{wa_id}`, `{assignment_id}`, and `{reminder_type}`. For a
+template with no variables, leave it empty.
