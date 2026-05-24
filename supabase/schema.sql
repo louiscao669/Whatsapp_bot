@@ -119,6 +119,17 @@ create table if not exists participant_sessions (
     constraint uq_participant_sessions_participant unique (participant_id)
 );
 
+create table if not exists admin_users (
+    id text primary key default gen_random_uuid()::text,
+    email text not null unique,
+    role text not null check (role in ('admin', 'expert')),
+    active boolean not null default true,
+    display_name text,
+    last_login_at timestamptz,
+    created_at timestamptz not null default now(),
+    updated_at timestamptz not null default now()
+);
+
 create index if not exists idx_participants_wa_id on participants(wa_id);
 create index if not exists idx_participants_target_language on participants(target_language);
 create index if not exists idx_qa_items_passage_id on qa_items(passage_id);
@@ -139,3 +150,5 @@ create index if not exists idx_participant_badges_participant_id on participant_
 create index if not exists idx_participant_badges_badge_type on participant_badges(badge_type);
 create index if not exists idx_participant_sessions_current_batch_id on participant_sessions(current_batch_id);
 create index if not exists idx_participant_sessions_state on participant_sessions(state);
+create index if not exists idx_admin_users_email on admin_users(email);
+create index if not exists idx_admin_users_role on admin_users(role);

@@ -173,15 +173,37 @@ Configure strong tokens in the deployed Space:
 ADMIN_API_TOKEN=replace-with-a-long-random-admin-token
 EXPERT_API_TOKEN=replace-with-a-long-random-expert-token
 FLASK_SECRET_KEY=replace-with-a-long-random-session-secret
+SUPABASE_ANON_KEY=your-supabase-anon-key
 ```
 
-For browser access, open `/admin/login`, paste either the admin or expert
-token, and the app stores your role in a signed Flask session cookie. Use
-`/admin/logout` to clear the session. Set `FLASK_SECRET_KEY` in deployment for
-stable signed sessions; if omitted, the app falls back to `APP_SECRET`.
+For browser access, open `/admin/login`, enter your approved email, then enter
+the one-time code sent by Supabase Auth. The app verifies the code with Supabase
+Auth, checks the email against the `admin_users` allowlist table, and stores the
+allowed role in a signed Flask session cookie. Use `/admin/logout` to clear the
+session. Set `FLASK_SECRET_KEY` in deployment for stable signed sessions; if
+omitted, the app falls back to `APP_SECRET`.
 
-Bearer tokens still work for curl/Postman access. The participants view includes
+The allowlist table is `admin_users`:
+
+```text
+email text unique
+role text -- admin or expert
+active boolean
+```
+
+Add admin/distributor emails with `role = 'admin'` and expert reviewer emails
+with `role = 'expert'`. Set `active = false` to revoke access. Bearer tokens
+still work for curl/Postman and emergency access. The participants view includes
 WhatsApp IDs and should stay admin-only.
+
+Example allowlist inserts:
+
+```sql
+insert into admin_users (email, role, active, display_name)
+values
+  ('admin@example.org', 'admin', true, 'Project Admin'),
+  ('expert@example.org', 'expert', true, 'Expert Reviewer');
+```
 
 ## Admin CSV exports
 
