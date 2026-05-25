@@ -174,14 +174,15 @@ ADMIN_API_TOKEN=replace-with-a-long-random-admin-token
 EXPERT_API_TOKEN=replace-with-a-long-random-expert-token
 FLASK_SECRET_KEY=replace-with-a-long-random-session-secret
 SUPABASE_ANON_KEY=your-supabase-anon-key
+ADMIN_AUTH_PROVIDER=supabase
 ```
 
 For browser access, open `/admin/login`, enter your approved email, then enter
-the one-time code sent by Supabase Auth. The app verifies the code with Supabase
-Auth, checks the email against the `admin_users` allowlist table, and stores the
-allowed role in a signed Flask session cookie. Use `/admin/logout` to clear the
-session. Set `FLASK_SECRET_KEY` in deployment for stable signed sessions; if
-omitted, the app falls back to `APP_SECRET`.
+the one-time code. By default, the app asks Supabase Auth to send and verify the
+code. After verification, it checks the email against the `admin_users`
+allowlist table and stores the allowed role in a signed Flask session cookie.
+Use `/admin/logout` to clear the session. Set `FLASK_SECRET_KEY` in deployment
+for stable signed sessions; if omitted, the app falls back to `APP_SECRET`.
 
 The allowlist table is `admin_users`:
 
@@ -204,6 +205,30 @@ values
   ('admin@example.org', 'admin', true, 'Project Admin'),
   ('expert@example.org', 'expert', true, 'Expert Reviewer');
 ```
+
+### SMTP login provider for development
+
+Supabase Auth can rate-limit OTP emails during development. To bypass
+`/auth/v1/otp`, switch the admin login code provider to SMTP:
+
+```text
+ADMIN_AUTH_PROVIDER=smtp
+ADMIN_OTP_SECRET=replace-with-a-long-random-otp-secret
+ADMIN_OTP_EXPIRY_MINUTES=10
+ADMIN_OTP_CODE_LENGTH=6
+ADMIN_OTP_MAX_ATTEMPTS=5
+SMTP_HOST=smtp.example.org
+SMTP_PORT=587
+SMTP_USERNAME=your-smtp-username
+SMTP_PASSWORD=your-smtp-password
+SMTP_FROM_EMAIL=no-reply@example.org
+SMTP_FROM_NAME=WhatsApp QA Bot
+SMTP_USE_TLS=true
+```
+
+With SMTP mode, the app generates a one-time code, stores only a hash in
+`admin_login_codes`, sends the code using SMTP, and verifies the entered code
+locally before checking the same `admin_users` allowlist table.
 
 ## Admin CSV exports
 

@@ -130,6 +130,16 @@ create table if not exists admin_users (
     updated_at timestamptz not null default now()
 );
 
+create table if not exists admin_login_codes (
+    id text primary key default gen_random_uuid()::text,
+    email text not null,
+    code_hash text not null,
+    expires_at timestamptz not null,
+    consumed_at timestamptz,
+    attempts integer not null default 0,
+    created_at timestamptz not null default now()
+);
+
 create index if not exists idx_participants_wa_id on participants(wa_id);
 create index if not exists idx_participants_target_language on participants(target_language);
 create index if not exists idx_qa_items_passage_id on qa_items(passage_id);
@@ -152,3 +162,5 @@ create index if not exists idx_participant_sessions_current_batch_id on particip
 create index if not exists idx_participant_sessions_state on participant_sessions(state);
 create index if not exists idx_admin_users_email on admin_users(email);
 create index if not exists idx_admin_users_role on admin_users(role);
+create index if not exists idx_admin_login_codes_email on admin_login_codes(email);
+create index if not exists idx_admin_login_codes_expires_at on admin_login_codes(expires_at);
