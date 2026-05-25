@@ -10,6 +10,13 @@ from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 
 from app.database import get_session_factory
+from app.services.admin_auth_service import (
+    AdminAuthError,
+    get_allowed_admin_user,
+    normalize_email,
+    send_admin_login_otp,
+    verify_admin_login_otp,
+)
 from app.models import Participant, ParticipantResponse, QAItem
 
 
@@ -83,12 +90,18 @@ def token_required(*allowed_roles):
     def decorator(f):
         @wraps(f)
         def decorated_function(*args, **kwargs):
+            if session_role_allowed(allowed_roles):
+                return f(*args, **kwargs)
+
             configured_roles = [
                 role
                 for role in allowed_roles
                 if current_app.config.get(ROLE_CONFIG[role])
             ]
             if not configured_roles:
+                if request.method == "GET" and not request.path.endswith(".csv"):
+                    return redirect(url_for("admin.admin_login", next=request.path))
+
                 return (
                     jsonify(
                         {
@@ -99,9 +112,6 @@ def token_required(*allowed_roles):
                     ),
                     503,
                 )
-
-            if session_role_allowed(configured_roles):
-                return f(*args, **kwargs)
 
             token = get_bearer_token()
             if any(role_token_valid(role, token) for role in configured_roles):
@@ -129,12 +139,31 @@ def admin_or_expert_token_required(f):
     return token_required("admin", "expert")(f)
 
 
-def render_login_page(error_message=""):
+def render_login_page(error_message="", info_message="", email="", code_sent=False):
     error_html = (
-        f"<p style=\"color: #b00020;\">{html.escape(error_message)}</p>"
+        f'<p style="color: #b00020;">{html.escape(error_message)}</p>'
         if error_message
         else ""
     )
+    info_html = (
+        f'<p style="color: #006400;">{html.escape(info_message)}</p>'
+        if info_message
+        else ""
+    )
+    next_url = html.escape(request.values.get("next", "/admin/analytics"))
+    email_value = html.escape(email or request.values.get("email", ""))
+    code_form = ""
+    if code_sent:
+        code_form = f"""
+  <form method="post">
+    <input type="hidden" name="next" value="{next_url}">
+    <input type="hidden" name="email" value="{email_value}">
+    <label for="otp_token">Verification code</label>
+    <input id="otp_token" name="otp_token" inputmode="numeric" autocomplete="one-time-code" required>
+    <button type="submit">Verify code</button>
+  </form>
+"""
+
     return Response(
         f"""<!doctype html>
 <html lang="en">
@@ -142,20 +171,31 @@ def render_login_page(error_message=""):
   <meta charset="utf-8">
   <title>Admin Login</title>
   <style>
-    body {{ font-family: sans-serif; margin: 2rem; max-width: 32rem; }}
+    body {{ font-family: sans-serif; margin: 2rem; max-width: 36rem; }}
     label {{ display: block; margin: 1rem 0 0.25rem; }}
     input {{ width: 100%; padding: 0.5rem; }}
     button {{ margin-top: 1rem; padding: 0.5rem 1rem; }}
+    hr {{ margin: 2rem 0; }}
   </style>
 </head>
 <body>
   <h1>Admin Login</h1>
   {error_html}
+  {info_html}
   <form method="post">
-    <input type="hidden" name="next" value="{html.escape(request.args.get('next', '/admin/analytics'))}">
+    <input type="hidden" name="next" value="{next_url}">
+    <label for="email">Email</label>
+    <input id="email" name="email" type="email" value="{email_value}" autocomplete="email" required>
+    <button type="submit" name="action" value="send_code">Send login code</button>
+  </form>
+  {code_form}
+  <hr>
+  <p>Token fallback for development or emergency access:</p>
+  <form method="post">
+    <input type="hidden" name="next" value="{next_url}">
     <label for="token">Admin or expert token</label>
-    <input id="token" name="token" type="password" autocomplete="current-password" required>
-    <button type="submit">Log in</button>
+    <input id="token" name="token" type="password" autocomplete="current-password">
+    <button type="submit" name="action" value="token_login">Log in with token</button>
   </form>
 </body>
 </html>""",
@@ -163,23 +203,71 @@ def render_login_page(error_message=""):
     )
 
 
+def create_admin_session(role, email=None, display_name=None):
+    session.clear()
+    session["admin_role"] = role
+    if email:
+        session["admin_email"] = email
+    if display_name:
+        session["admin_display_name"] = display_name
+
+
+def get_safe_next_url():
+    next_url = request.form.get("next") or request.args.get("next") or "/admin/analytics"
+    if not next_url.startswith("/admin/"):
+        return "/admin/analytics"
+
+    return next_url
+
+
 @admin_blueprint.route("/login", methods=["GET", "POST"])
 def admin_login():
     if request.method == "GET":
         return render_login_page()
 
-    token = request.form.get("token", "")
-    role = get_role_for_token(token)
-    if not role:
-        return render_login_page("Invalid token"), 401
+    if request.form.get("token"):
+        token = request.form.get("token", "")
+        role = get_role_for_token(token)
+        if not role:
+            return render_login_page("Invalid token"), 401
 
-    session.clear()
-    session["admin_role"] = role
-    next_url = request.form.get("next") or "/admin/analytics"
-    if not next_url.startswith("/admin/"):
-        next_url = "/admin/analytics"
+        create_admin_session(role)
+        return redirect(get_safe_next_url())
 
-    return redirect(next_url)
+    email = normalize_email(request.form.get("email", ""))
+    otp_token = request.form.get("otp_token", "").strip()
+    if not otp_token:
+        try:
+            send_admin_login_otp(email)
+        except AdminAuthError as exc:
+            return render_login_page(str(exc), email=email), 400
+        except Exception as exc:
+            return render_login_page(str(exc), email=email), 400
+
+        return render_login_page(
+            info_message="Check your email for a login code.",
+            email=email,
+            code_sent=True,
+        )
+
+    try:
+        verified_email, _ = verify_admin_login_otp(email, otp_token)
+    except Exception as exc:
+        return render_login_page(str(exc), email=email, code_sent=True), 401
+
+    admin_user = get_allowed_admin_user(verified_email)
+    if not admin_user:
+        return render_login_page(
+            "This email is not approved for admin access.",
+            email=verified_email,
+        ), 403
+
+    create_admin_session(
+        admin_user["role"],
+        email=admin_user["email"],
+        display_name=admin_user.get("display_name"),
+    )
+    return redirect(get_safe_next_url())
 
 
 @admin_blueprint.route("/logout", methods=["GET", "POST"])
