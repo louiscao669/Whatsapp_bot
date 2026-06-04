@@ -17,15 +17,102 @@ create table if not exists qa_items (
     id text primary key default gen_random_uuid()::text,
     passage_id text not null,
     passage_reference text,
+    passage_text text,
     audio_url text,
-    language text not null,
     question_text text not null,
+    question_type text not null default 'open',
+    mcq_choices jsonb not null default '[]'::jsonb,
+    mcq_correct_choice text,
     expected_answer text not null,
     required_keywords jsonb not null default '[]'::jsonb,
     optional_keywords jsonb not null default '[]'::jsonb,
+    required_keyword_specs jsonb not null default '[]'::jsonb,
+    optional_keyword_specs jsonb not null default '[]'::jsonb,
+    original_required_keywords jsonb not null default '[]'::jsonb,
+    original_required_keyword_specs jsonb not null default '[]'::jsonb,
+    original_question_text text,
+    original_expected_answer text,
+    original_question_type text,
+    original_mcq_choices jsonb not null default '[]'::jsonb,
+    original_mcq_correct_choice text,
+    keyword_source text not null default 'answer',
     min_responses_required integer not null default 3,
     active boolean not null default true,
+    review_removed_at timestamptz,
+    qa_reviewed_at timestamptz,
     review_priority integer not null default 0,
+    created_at timestamptz not null default now(),
+    updated_at timestamptz not null default now()
+);
+
+create table if not exists qa_item_recordings (
+    id text primary key default gen_random_uuid()::text,
+    qa_item_id text not null references qa_items(id) on delete cascade,
+    recording_type text not null,
+    language text not null,
+    version int not null default 1,
+    storage_uri text not null,
+    content_type text,
+    uploaded_by text,
+    created_at timestamptz not null default now(),
+    constraint ck_qa_item_recordings_type
+        check (recording_type in ('question', 'answer')),
+    constraint uq_qa_item_recordings_version
+        unique (qa_item_id, recording_type, language, version)
+);
+
+-- Existing databases: add version column and backfill before enforcing unique constraint.
+-- alter table qa_item_recordings add column if not exists version int not null default 1;
+-- with numbered as (
+--   select id,
+--     row_number() over (
+--       partition by qa_item_id, recording_type, language
+--       order by created_at asc, id asc
+--     ) as version
+--   from qa_item_recordings
+-- )
+-- update qa_item_recordings r
+-- set version = numbered.version
+-- from numbered
+-- where r.id = numbered.id;
+-- alter table qa_item_recordings
+--   add constraint uq_qa_item_recordings_version
+--   unique (qa_item_id, recording_type, language, version);
+
+create table if not exists qa_item_language_keywords (
+    qa_item_id text not null references qa_items(id) on delete cascade,
+    language text not null,
+    required_keywords jsonb not null default '[]'::jsonb,
+    optional_keywords jsonb not null default '[]'::jsonb,
+    required_keyword_specs jsonb not null default '[]'::jsonb,
+    optional_keyword_specs jsonb not null default '[]'::jsonb,
+    updated_by text,
+    created_at timestamptz not null default now(),
+    updated_at timestamptz not null default now(),
+    primary key (qa_item_id, language)
+);
+
+create table if not exists qa_item_keyword_recordings (
+    id text primary key default gen_random_uuid()::text,
+    qa_item_id text not null references qa_items(id) on delete cascade,
+    language text not null,
+    keyword_kind text not null,
+    keyword_text text not null,
+    version int not null default 1,
+    storage_uri text not null,
+    content_type text,
+    uploaded_by text,
+    created_at timestamptz not null default now(),
+    constraint ck_qa_item_keyword_recordings_kind
+        check (keyword_kind in ('required', 'optional')),
+    constraint uq_qa_item_keyword_recordings_version
+        unique (qa_item_id, language, keyword_kind, keyword_text, version)
+);
+
+create table if not exists system_languages (
+    code text primary key,
+    seen_in_participants boolean not null default false,
+    seen_in_recordings boolean not null default false,
     created_at timestamptz not null default now(),
     updated_at timestamptz not null default now()
 );
@@ -58,7 +145,7 @@ create table if not exists participant_responses (
     correctness_score double precision,
     matched_keywords jsonb not null default '[]'::jsonb,
     missing_keywords jsonb not null default '[]'::jsonb,
-    is_flagged boolean not null default false,
+    is_correct text not null default 'pending',
     flag_reason text,
     review_status text not null default 'pending',
     received_at timestamptz not null default now(),
@@ -119,13 +206,41 @@ create table if not exists participant_sessions (
     constraint uq_participant_sessions_participant unique (participant_id)
 );
 
+create table if not exists admin_users (
+    id text primary key default gen_random_uuid()::text,
+    email text not null unique,
+    role text not null check (role in ('admin', 'expert')),
+    active boolean not null default true,
+    display_name text,
+    last_login_at timestamptz,
+    created_at timestamptz not null default now(),
+    updated_at timestamptz not null default now()
+);
+
+create table if not exists admin_login_codes (
+    id text primary key default gen_random_uuid()::text,
+    email text not null,
+    code_hash text not null,
+    expires_at timestamptz not null,
+    consumed_at timestamptz,
+    attempts integer not null default 0,
+    created_at timestamptz not null default now()
+);
+
 create index if not exists idx_participants_wa_id on participants(wa_id);
 create index if not exists idx_participants_target_language on participants(target_language);
 create index if not exists idx_qa_items_passage_id on qa_items(passage_id);
-create index if not exists idx_qa_items_language on qa_items(language);
+create index if not exists idx_qa_item_recordings_qa_item_id on qa_item_recordings(qa_item_id);
+create index if not exists idx_qa_item_recordings_language on qa_item_recordings(language);
+create index if not exists idx_qa_item_recordings_type on qa_item_recordings(recording_type);
+create index if not exists idx_qa_item_language_keywords_language
+    on qa_item_language_keywords(language);
+create index if not exists idx_qa_item_keyword_recordings_qa_item
+    on qa_item_keyword_recordings(qa_item_id);
+create index if not exists idx_system_languages_code on system_languages(code);
 create index if not exists idx_assignments_batch_id on assignments(batch_id);
 create index if not exists idx_assignments_status on assignments(status);
-create index if not exists idx_participant_responses_is_flagged on participant_responses(is_flagged);
+create index if not exists idx_participant_responses_is_correct on participant_responses(is_correct);
 create index if not exists idx_participant_responses_review_status on participant_responses(review_status);
 
 create index if not exists idx_participant_events_participant_id on participant_events(participant_id);
@@ -139,3 +254,7 @@ create index if not exists idx_participant_badges_participant_id on participant_
 create index if not exists idx_participant_badges_badge_type on participant_badges(badge_type);
 create index if not exists idx_participant_sessions_current_batch_id on participant_sessions(current_batch_id);
 create index if not exists idx_participant_sessions_state on participant_sessions(state);
+create index if not exists idx_admin_users_email on admin_users(email);
+create index if not exists idx_admin_users_role on admin_users(role);
+create index if not exists idx_admin_login_codes_email on admin_login_codes(email);
+create index if not exists idx_admin_login_codes_expires_at on admin_login_codes(expires_at);

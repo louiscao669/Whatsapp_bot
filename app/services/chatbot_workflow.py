@@ -1,5 +1,4 @@
 import logging
-import re
 from dataclasses import dataclass
 from typing import Optional
 
@@ -11,7 +10,31 @@ from app.database import get_session_factory
 from app.services.badge_service import evaluate_and_award_badges
 from app.services.media_storage_service import store_whatsapp_audio
 from app.services.reminder_service import create_assignment_reminders
-from app.services.transcription_service import transcribe_whatsapp_audio
+from app.services.keyword_matching_service import (
+    keyword_matches_in_response,
+    normalize_response_text,
+)
+from app.services.qa_keywords_service import (
+    KeywordRubric,
+    get_language_keywords,
+    rubric_from_qa_item,
+)
+from app.services.qa_recordings_service import (
+    get_latest_question_recording,
+    has_question_recording_for_participant,
+    participant_language_code,
+    question_recording_playback_url,
+)
+from app.services.mcq_service import (
+    choice_response_is_correct,
+    choice_response_letter,
+    is_choice_scored_item,
+)
+from app.services.qa_review_service import qa_item_is_assignable
+from app.services.transcription_service import (
+    is_placeholder_transcript,
+    transcribe_whatsapp_audio,
+)
 from app.models import (
     Assignment,
     AssignmentStatus,
@@ -35,6 +58,12 @@ class AssignmentPrompt:
     audio_url: Optional[str]
     question_text: str
     passage_reference: Optional[str] = None
+    question_type: str = "open"
+    mcq_choices: tuple = ()
+
+
+class AssignmentAssignError(Exception):
+    pass
 
 
 @dataclass
@@ -48,11 +77,6 @@ class WorkflowResult:
     batch_completed: bool = False
     completed_batch_size: int = 0
     awarded_badges: tuple = ()
-
-
-def normalize_response_text(text):
-    normalized = re.sub(r"[^\w\s]", " ", text.lower())
-    return " ".join(normalized.split())
 
 
 def get_or_create_participant(db: Session, wa_id, display_name=None):
@@ -105,24 +129,45 @@ def record_participant_event(db: Session, participant, event_type, metadata=None
     return event
 
 
-def score_text_response(qa_item, response_text):
+def score_text_response_with_rubric(response_text: str, rubric: KeywordRubric):
+    if is_placeholder_transcript(response_text or ""):
+        required = rubric.required_keywords or []
+        return (
+            normalize_response_text(response_text or ""),
+            None,
+            [],
+            list(required),
+            True,
+            "Pending expert review: placeholder transcript.",
+        )
+
     normalized_text = normalize_response_text(response_text)
-    required_keywords = qa_item.required_keywords or []
+    required_keywords = rubric.required_keywords or []
     matched_keywords = []
     missing_keywords = []
 
     for keyword in required_keywords:
-        normalized_keyword = normalize_response_text(keyword)
-        if normalized_keyword and normalized_keyword in normalized_text:
+        if keyword_matches_in_response(
+            keyword,
+            response_text,
+            keyword_specs=rubric.required_keyword_specs,
+        ):
             matched_keywords.append(keyword)
         else:
             missing_keywords.append(keyword)
 
     if not required_keywords:
-        return normalized_text, None, matched_keywords, missing_keywords, False, None
+        return (
+            normalized_text,
+            None,
+            matched_keywords,
+            missing_keywords,
+            True,
+            "Pending expert review: no required keywords configured for this language.",
+        )
 
     correctness_score = len(matched_keywords) / len(required_keywords)
-    is_flagged = bool(missing_keywords)
+    needs_expert_review = bool(missing_keywords)
     flag_reason = (
         "Missing required keywords: " + ", ".join(missing_keywords)
         if missing_keywords
@@ -134,13 +179,59 @@ def score_text_response(qa_item, response_text):
         correctness_score,
         matched_keywords,
         missing_keywords,
-        is_flagged,
+        needs_expert_review,
         flag_reason,
     )
 
 
-def get_qa_item_distribution_metrics(qa_item):
-    responses = qa_item.responses or []
+def score_text_response(
+    qa_item,
+    response_text,
+    db: Optional[Session] = None,
+    language: Optional[str] = None,
+):
+    if db is not None and language:
+        rubric = get_language_keywords(db, qa_item.id, language)
+    else:
+        rubric = rubric_from_qa_item(qa_item)
+    return score_text_response_with_rubric(response_text, rubric)
+
+
+def score_text_response_for_participant(
+    db: Session,
+    qa_item,
+    participant,
+    response_text,
+):
+    language = (participant.target_language or "eng").strip() or "eng"
+    rubric = get_language_keywords(db, qa_item.id, language)
+    return score_text_response_with_rubric(response_text, rubric)
+
+
+def audio_answer_lacks_usable_transcript(transcript_text, response_type) -> bool:
+    if response_type != ResponseType.AUDIO.value:
+        return False
+    if not (transcript_text or "").strip():
+        return True
+    return is_placeholder_transcript(transcript_text)
+
+
+def has_usable_text_for_keyword_scoring(
+    transcript_text,
+    response_text,
+    response_type,
+) -> bool:
+    if response_type == ResponseType.TEXT.value:
+        return bool((response_text or "").strip())
+    if response_type == ResponseType.AUDIO.value:
+        return not audio_answer_lacks_usable_transcript(transcript_text, response_type)
+    return False
+
+
+def get_qa_item_distribution_metrics(db: Session, qa_item):
+    responses = db.scalars(
+        select(ParticipantResponse).where(ParticipantResponse.qa_item_id == qa_item.id)
+    ).all()
     actual_response_count = len(responses)
     response_gap = max(qa_item.min_responses_required - actual_response_count, 0)
 
@@ -156,7 +247,7 @@ def get_qa_item_distribution_metrics(qa_item):
         1 - average_correctness if average_correctness is not None else 0
     )
     flag_rate = (
-        sum(1 for response in responses if response.is_flagged)
+        sum(1 for response in responses if response.is_correct == "pending")
         / actual_response_count
         if actual_response_count
         else 0
@@ -172,8 +263,8 @@ def get_qa_item_distribution_metrics(qa_item):
     }
 
 
-def get_qa_item_priority(qa_item):
-    metrics = get_qa_item_distribution_metrics(qa_item)
+def get_qa_item_priority(db: Session, qa_item):
+    metrics = get_qa_item_distribution_metrics(db, qa_item)
     return (
         -metrics["response_gap"],
         -metrics["accuracy_risk"],
@@ -192,19 +283,65 @@ def select_next_qa_item(db: Session, participant):
         ).all()
     )
 
-    statement = select(QAItem).where(QAItem.active.is_(True))
-    if participant.target_language:
-        statement = statement.where(QAItem.language == participant.target_language)
+    statement = select(QAItem).where(
+        QAItem.active.is_(True),
+        QAItem.review_removed_at.is_(None),
+    )
 
     candidates = [
         qa_item
         for qa_item in db.scalars(statement).all()
         if qa_item.id not in assigned_qa_item_ids
+        and has_question_recording_for_participant(db, qa_item.id, participant)
+        and qa_item_is_assignable(qa_item)
     ]
     if not candidates:
         return None
 
-    return sorted(candidates, key=get_qa_item_priority)[0]
+    return sorted(candidates, key=lambda item: get_qa_item_priority(db, item))[0]
+
+
+def get_incomplete_assignment(db: Session, participant, batch_id=None):
+    statement = (
+        select(Assignment)
+        .where(
+            Assignment.participant_id == participant.id,
+            Assignment.status == AssignmentStatus.ASSIGNED.value,
+        )
+        .order_by(Assignment.assigned_at)
+    )
+    if batch_id:
+        in_batch = db.scalars(statement.where(Assignment.batch_id == batch_id)).first()
+        if in_batch:
+            return in_batch
+
+    return db.scalars(statement).first()
+
+
+def build_assignment_prompt(db: Session, assignment, qa_item, participant):
+    language = participant_language_code(participant)
+    recording = get_latest_question_recording(db, qa_item.id, language)
+    audio_url = question_recording_playback_url(recording) or qa_item.audio_url
+    return AssignmentPrompt(
+        assignment_id=assignment.id,
+        qa_item_id=qa_item.id,
+        audio_url=audio_url,
+        question_text=qa_item.question_text,
+        passage_reference=qa_item.passage_reference,
+        question_type=qa_item.question_type or "open",
+        mcq_choices=tuple(qa_item.mcq_choices or ()),
+    )
+
+
+def resume_incomplete_assignment(db: Session, participant, participant_session, assignment):
+    qa_item = db.get(QAItem, assignment.qa_item_id)
+    if not qa_item:
+        return None
+
+    participant_session.current_assignment_id = assignment.id
+    participant_session.current_batch_id = assignment.batch_id
+    participant_session.state = SessionState.AWAITING_RESPONSE.value
+    return build_assignment_prompt(db, assignment, qa_item, participant)
 
 
 def get_preferred_batch_size(participant):
@@ -250,25 +387,14 @@ def complete_current_batch_if_needed(db: Session, participant, participant_sessi
     return True, completed_count
 
 
-def create_assignment_prompt(db: Session, participant, participant_session):
-    if participant_session.state not in (
-        SessionState.IDLE.value,
-        SessionState.ONBOARDING.value,
-    ):
-        return None, False, 0
-
-    batch_completed, completed_batch_size = complete_current_batch_if_needed(
-        db, participant, participant_session
-    )
-    if batch_completed:
-        return None, True, completed_batch_size
-
-    qa_item = select_next_qa_item(db, participant)
-    if qa_item is None:
-        participant_session.current_batch_id = None
-        participant_session.state = SessionState.IDLE.value
-        return None, False, completed_batch_size
-
+def _create_assignment_for_qa_item(
+    db: Session,
+    participant,
+    participant_session,
+    qa_item,
+    completed_batch_size=0,
+    assignment_source="auto",
+):
     batch_id = participant_session.current_batch_id or new_id()
     assignment = Assignment(
         participant_id=participant.id,
@@ -297,21 +423,119 @@ def create_assignment_prompt(db: Session, participant, participant_session):
             "passage_id": qa_item.passage_id,
             "completed_batch_size": completed_batch_size,
             "preferred_batch_size": get_preferred_batch_size(participant),
-            "distribution_metrics": get_qa_item_distribution_metrics(qa_item),
+            "distribution_metrics": get_qa_item_distribution_metrics(db, qa_item),
+            "assignment_source": assignment_source,
         },
     )
 
-    return (
-        AssignmentPrompt(
-            assignment_id=assignment.id,
-            qa_item_id=qa_item.id,
-            audio_url=qa_item.audio_url,
-            question_text=qa_item.question_text,
-            passage_reference=qa_item.passage_reference,
-        ),
-        False,
-        completed_batch_size,
+    return build_assignment_prompt(db, assignment, qa_item, participant)
+
+
+def assign_qa_item_to_participant(db: Session, participant, participant_session, qa_item):
+    if participant_session.state not in (
+        SessionState.IDLE.value,
+        SessionState.ONBOARDING.value,
+    ):
+        raise AssignmentAssignError(
+            "Participant must be idle or onboarding before a new question can be assigned "
+            f"(current state: {participant_session.state})."
+        )
+
+    batch_completed, completed_batch_size = complete_current_batch_if_needed(
+        db, participant, participant_session
     )
+    if batch_completed:
+        raise AssignmentAssignError(
+            "Participant just completed a batch. Submit assign again to give them this question."
+        )
+
+    if not qa_item.active:
+        raise AssignmentAssignError("This question is inactive.")
+
+    if not qa_item_is_assignable(qa_item):
+        raise AssignmentAssignError(
+            "This question was removed during QA review and cannot be assigned."
+        )
+
+    if not has_question_recording_for_participant(db, qa_item.id, participant):
+        language = participant_language_code(participant)
+        raise AssignmentAssignError(
+            f"No expert question recording for language '{language}'. "
+            "Record the question at /admin/record before assigning."
+        )
+
+    existing_assignment = db.scalars(
+        select(Assignment).where(
+            Assignment.participant_id == participant.id,
+            Assignment.qa_item_id == qa_item.id,
+        )
+    ).first()
+    if existing_assignment:
+        raise AssignmentAssignError(
+            "This participant already has an assignment for this question."
+        )
+
+    if participant_session.current_assignment_id:
+        current_assignment = db.get(Assignment, participant_session.current_assignment_id)
+        if (
+            current_assignment
+            and current_assignment.status != AssignmentStatus.COMPLETED.value
+        ):
+            raise AssignmentAssignError(
+                "Participant already has an open assignment. Wait for their response first."
+            )
+
+    prompt = _create_assignment_for_qa_item(
+        db,
+        participant,
+        participant_session,
+        qa_item,
+        completed_batch_size=completed_batch_size,
+        assignment_source="admin",
+    )
+    return prompt
+
+
+def create_assignment_prompt(db: Session, participant, participant_session):
+    if participant_session.state not in (
+        SessionState.IDLE.value,
+        SessionState.ONBOARDING.value,
+    ):
+        return None, False, 0
+
+    batch_completed, completed_batch_size = complete_current_batch_if_needed(
+        db, participant, participant_session
+    )
+    if batch_completed:
+        return None, True, completed_batch_size
+
+    incomplete = get_incomplete_assignment(
+        db, participant, participant_session.current_batch_id
+    )
+    if incomplete:
+        prompt = resume_incomplete_assignment(
+            db, participant, participant_session, incomplete
+        )
+        if prompt:
+            return prompt, False, completed_batch_size
+
+    qa_item = select_next_qa_item(
+        db, participant
+    )
+    if qa_item is None:
+        participant_session.current_batch_id = None
+        participant_session.state = SessionState.IDLE.value
+        return None, False, completed_batch_size
+
+    prompt = _create_assignment_for_qa_item(
+        db,
+        participant,
+        participant_session,
+        qa_item,
+        completed_batch_size=completed_batch_size,
+        assignment_source="auto",
+    )
+    return prompt, False, completed_batch_size
 
 
 def save_response_for_current_assignment(
@@ -342,34 +566,97 @@ def save_response_for_current_assignment(
 
     qa_item = assignment.qa_item
     analysis_text = transcript_text or response_text or ""
-    (
-        normalized_text,
-        correctness_score,
-        matched_keywords,
-        missing_keywords,
-        is_flagged,
-        flag_reason,
-    ) = score_text_response(qa_item, analysis_text)
+    unusable_audio_transcript = audio_answer_lacks_usable_transcript(
+        transcript_text,
+        response_type,
+    )
+
+    keyword_scoring = None
+    mcq_scoring = None
+    choice_answer_correct = None
+    if is_choice_scored_item(qa_item):
+        normalized_text = None
+        correctness_score = None
+        matched_keywords = []
+        missing_keywords = []
+        needs_expert_review = False
+        flag_reason = None
+        choice_answer_correct = choice_response_is_correct(qa_item, analysis_text)
+    elif has_usable_text_for_keyword_scoring(transcript_text, response_text, response_type):
+        keyword_scoring = score_text_response_for_participant(
+            db, qa_item, participant, analysis_text
+        )
+
+    if not is_choice_scored_item(qa_item):
+        if unusable_audio_transcript:
+            normalized_text = normalize_response_text(analysis_text)
+            correctness_score = None
+            matched_keywords = []
+            missing_keywords = []
+            needs_expert_review = True
+            if not (transcript_text or "").strip():
+                flag_reason = "Pending expert review: no transcript for audio answer."
+            else:
+                flag_reason = "Pending expert review: placeholder transcript (not keyword-scored)."
+        elif keyword_scoring:
+            (
+                normalized_text,
+                correctness_score,
+                matched_keywords,
+                missing_keywords,
+                needs_expert_review,
+                flag_reason,
+            ) = keyword_scoring
+        else:
+            (
+                normalized_text,
+                correctness_score,
+                matched_keywords,
+                missing_keywords,
+                needs_expert_review,
+                flag_reason,
+            ) = score_text_response_for_participant(db, qa_item, participant, analysis_text)
+
+    if is_choice_scored_item(qa_item):
+        is_correct_label = "yes (auto)" if choice_answer_correct else "no (auto)"
+    elif needs_expert_review:
+        is_correct_label = "pending"
+    elif correctness_score is not None and correctness_score < 1.0:
+        is_correct_label = "no (auto)"
+    else:
+        is_correct_label = "yes (auto)"
+
+    stored_response_text = response_text
+    stored_media_id = media_id
+    stored_media_url = media_url
+    stored_transcript = transcript_text
+    if is_choice_scored_item(qa_item):
+        stored_response_text = choice_response_letter(qa_item, analysis_text)
+        stored_media_id = None
+        stored_media_url = None
+        stored_transcript = None
 
     response = ParticipantResponse(
         participant_id=participant.id,
         qa_item_id=qa_item.id,
         assignment_id=assignment.id,
         response_type=response_type,
-        response_text=response_text,
-        media_id=media_id,
-        media_url=media_url,
-        transcript_text=transcript_text,
+        response_text=stored_response_text,
+        media_id=stored_media_id,
+        media_url=stored_media_url,
+        transcript_text=stored_transcript,
         normalized_text=normalized_text,
         correctness_score=correctness_score,
         matched_keywords=matched_keywords,
         missing_keywords=missing_keywords,
-        is_flagged=is_flagged,
+        is_correct=is_correct_label,
         flag_reason=flag_reason,
-        review_status=(
-            ReviewStatus.FLAGGED.value
-            if is_flagged
-            else ReviewStatus.NOT_FLAGGED.value
+        review_status=ReviewStatus.AUTO.value
+        if is_choice_scored_item(qa_item)
+        else (
+            ReviewStatus.PENDING.value
+            if needs_expert_review
+            else ReviewStatus.AUTO.value
         ),
     )
     db.add(response)
@@ -392,7 +679,10 @@ def save_response_for_current_assignment(
             "media_id": media_id,
             "has_transcript": bool(transcript_text),
             "correctness_score": correctness_score,
-            "is_flagged": is_flagged,
+            "is_correct": response.is_correct,
+            "keyword_scored": bool(keyword_scoring),
+            "choice_scored": is_choice_scored_item(qa_item),
+            "question_type": qa_item.question_type,
         },
     )
 
@@ -506,11 +796,23 @@ def record_whatsapp_audio_message(
 
     stored_media_url = stored_media.storage_uri if stored_media else None
     stored_content_type = stored_media.content_type if stored_media else mime_type
+    language_hint = None
+    try:
+        with get_session_factory()() as db:
+            participant = db.scalars(
+                select(Participant).where(Participant.wa_id == wa_id)
+            ).first()
+            if participant:
+                language_hint = participant.target_language
+    except Exception:
+        logging.exception("Could not load participant language for transcription")
+
     transcription = transcribe_whatsapp_audio(
         media_id=media_id,
         mime_type=stored_content_type,
         sha256=sha256,
         media_url=stored_media_url,
+        language_hint=language_hint,
     )
     return record_whatsapp_answer(
         wa_id=wa_id,

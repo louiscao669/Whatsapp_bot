@@ -46,8 +46,7 @@ class ResponseType(str, Enum):
 
 class ReviewStatus(str, Enum):
     PENDING = "pending"
-    NOT_FLAGGED = "not_flagged"
-    FLAGGED = "flagged"
+    AUTO = "auto"
     REVIEWED = "reviewed"
 
 
@@ -65,6 +64,48 @@ class SessionState(str, Enum):
     AWAITING_RESPONSE = "awaiting_response"
     PAUSED = "paused"
     OPTED_OUT = "opted_out"
+
+
+class QuestionType(str, Enum):
+    OPEN = "open"
+    MCQ = "mcq"
+    TF = "tf"
+
+
+class AdminRole(str, Enum):
+    ADMIN = "admin"
+    EXPERT = "expert"
+
+
+class AdminUser(Base):
+    __tablename__ = "admin_users"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    email: Mapped[str] = mapped_column(String(255), unique=True, index=True, nullable=False)
+    role: Mapped[str] = mapped_column(String(32), index=True, nullable=False)
+    active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
+    display_name: Mapped[Optional[str]] = mapped_column(String(255))
+    last_login_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utc_now, nullable=False
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utc_now, onupdate=utc_now, nullable=False
+    )
+
+
+class AdminLoginCode(Base):
+    __tablename__ = "admin_login_codes"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    email: Mapped[str] = mapped_column(String(255), index=True, nullable=False)
+    code_hash: Mapped[str] = mapped_column(String(128), nullable=False)
+    expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    consumed_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
+    attempts: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utc_now, nullable=False
+    )
 
 
 class Participant(Base):
@@ -105,14 +146,41 @@ class QAItem(Base):
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
     passage_id: Mapped[str] = mapped_column(String(128), index=True, nullable=False)
     passage_reference: Mapped[Optional[str]] = mapped_column(String(255))
+    passage_text: Mapped[Optional[str]] = mapped_column(Text)
     audio_url: Mapped[Optional[str]] = mapped_column(Text)
-    language: Mapped[str] = mapped_column(String(64), index=True, nullable=False)
     question_text: Mapped[str] = mapped_column(Text, nullable=False)
+    question_type: Mapped[str] = mapped_column(
+        String(16), default=QuestionType.OPEN.value, nullable=False
+    )
+    mcq_choices: Mapped[List[str]] = mapped_column(JSON, default=list, nullable=False)
+    mcq_correct_choice: Mapped[Optional[str]] = mapped_column(String(1))
     expected_answer: Mapped[str] = mapped_column(Text, nullable=False)
     required_keywords: Mapped[List[str]] = mapped_column(JSON, default=list, nullable=False)
     optional_keywords: Mapped[List[str]] = mapped_column(JSON, default=list, nullable=False)
+    required_keyword_specs: Mapped[List[dict]] = mapped_column(JSON, default=list, nullable=False)
+    optional_keyword_specs: Mapped[List[dict]] = mapped_column(JSON, default=list, nullable=False)
+    original_required_keywords: Mapped[List[str]] = mapped_column(
+        JSON, default=list, nullable=False
+    )
+    original_required_keyword_specs: Mapped[List[dict]] = mapped_column(
+        JSON, default=list, nullable=False
+    )
+    original_question_text: Mapped[Optional[str]] = mapped_column(Text)
+    original_expected_answer: Mapped[Optional[str]] = mapped_column(Text)
+    original_question_type: Mapped[Optional[str]] = mapped_column(String(16))
+    original_mcq_choices: Mapped[List[str]] = mapped_column(JSON, default=list, nullable=False)
+    original_mcq_correct_choice: Mapped[Optional[str]] = mapped_column(String(1))
+    keyword_source: Mapped[str] = mapped_column(
+        String(32), default="answer", nullable=False
+    )
     min_responses_required: Mapped[int] = mapped_column(Integer, default=3, nullable=False)
     active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
+    review_removed_at: Mapped[Optional[datetime]] = mapped_column(
+        DateTime(timezone=True), index=True
+    )
+    qa_reviewed_at: Mapped[Optional[datetime]] = mapped_column(
+        DateTime(timezone=True), index=True
+    )
     review_priority: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=utc_now, nullable=False
@@ -121,8 +189,131 @@ class QAItem(Base):
         DateTime(timezone=True), default=utc_now, onupdate=utc_now, nullable=False
     )
 
-    assignments: Mapped[List["Assignment"]] = relationship(back_populates="qa_item")
-    responses: Mapped[List["ParticipantResponse"]] = relationship(back_populates="qa_item")
+    assignments: Mapped[List["Assignment"]] = relationship(
+        back_populates="qa_item",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+    )
+    responses: Mapped[List["ParticipantResponse"]] = relationship(
+        back_populates="qa_item",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+    )
+    recordings: Mapped[List["QAItemRecording"]] = relationship(
+        back_populates="qa_item",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+    )
+    language_keywords: Mapped[List["QAItemLanguageKeywords"]] = relationship(
+        back_populates="qa_item",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+    )
+    keyword_recordings: Mapped[List["QAItemKeywordRecording"]] = relationship(
+        back_populates="qa_item",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+    )
+
+
+class QAItemKeywordRecording(Base):
+    __tablename__ = "qa_item_keyword_recordings"
+    __table_args__ = (
+        UniqueConstraint(
+            "qa_item_id",
+            "language",
+            "keyword_kind",
+            "keyword_text",
+            "version",
+            name="uq_qa_item_keyword_recordings_version",
+        ),
+    )
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    qa_item_id: Mapped[str] = mapped_column(
+        ForeignKey("qa_items.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    language: Mapped[str] = mapped_column(String(64), nullable=False, index=True)
+    keyword_kind: Mapped[str] = mapped_column(String(16), nullable=False, index=True)
+    keyword_text: Mapped[str] = mapped_column(String(255), nullable=False, index=True)
+    version: Mapped[int] = mapped_column(Integer, nullable=False, default=1, server_default="1")
+    storage_uri: Mapped[str] = mapped_column(Text, nullable=False)
+    content_type: Mapped[Optional[str]] = mapped_column(String(128))
+    uploaded_by: Mapped[Optional[str]] = mapped_column(String(255))
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utc_now, nullable=False
+    )
+
+    qa_item: Mapped["QAItem"] = relationship(back_populates="keyword_recordings")
+
+
+class QAItemLanguageKeywords(Base):
+    __tablename__ = "qa_item_language_keywords"
+
+    qa_item_id: Mapped[str] = mapped_column(
+        ForeignKey("qa_items.id", ondelete="CASCADE"), primary_key=True
+    )
+    language: Mapped[str] = mapped_column(String(64), primary_key=True)
+    required_keywords: Mapped[List[str]] = mapped_column(JSON, default=list, nullable=False)
+    optional_keywords: Mapped[List[str]] = mapped_column(JSON, default=list, nullable=False)
+    required_keyword_specs: Mapped[List[dict]] = mapped_column(JSON, default=list, nullable=False)
+    optional_keyword_specs: Mapped[List[dict]] = mapped_column(JSON, default=list, nullable=False)
+    updated_by: Mapped[Optional[str]] = mapped_column(String(255))
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utc_now, nullable=False
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utc_now, onupdate=utc_now, nullable=False
+    )
+
+    qa_item: Mapped["QAItem"] = relationship(back_populates="language_keywords")
+
+
+class QAItemRecording(Base):
+    __tablename__ = "qa_item_recordings"
+    __table_args__ = (
+        UniqueConstraint(
+            "qa_item_id",
+            "recording_type",
+            "language",
+            "version",
+            name="uq_qa_item_recordings_version",
+        ),
+    )
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    qa_item_id: Mapped[str] = mapped_column(
+        ForeignKey("qa_items.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    recording_type: Mapped[str] = mapped_column(String(32), nullable=False, index=True)
+    language: Mapped[str] = mapped_column(String(64), nullable=False, index=True)
+    version: Mapped[int] = mapped_column(Integer, nullable=False, default=1, server_default="1")
+    storage_uri: Mapped[str] = mapped_column(Text, nullable=False)
+    content_type: Mapped[Optional[str]] = mapped_column(String(128))
+    uploaded_by: Mapped[Optional[str]] = mapped_column(String(255))
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utc_now, nullable=False
+    )
+
+    qa_item: Mapped["QAItem"] = relationship(back_populates="recordings")
+
+
+class SystemLanguage(Base):
+    __tablename__ = "system_languages"
+
+    code: Mapped[str] = mapped_column(String(64), primary_key=True)
+    seen_in_participants: Mapped[bool] = mapped_column(
+        Boolean, default=False, nullable=False
+    )
+    seen_in_recordings: Mapped[bool] = mapped_column(
+        Boolean, default=False, nullable=False
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utc_now, nullable=False
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utc_now, onupdate=utc_now, nullable=False
+    )
 
 
 class Assignment(Base):
@@ -159,7 +350,11 @@ class Assignment(Base):
     responses: Mapped[List["ParticipantResponse"]] = relationship(
         back_populates="assignment"
     )
-    reminders: Mapped[List["Reminder"]] = relationship(back_populates="assignment")
+    reminders: Mapped[List["Reminder"]] = relationship(
+        back_populates="assignment",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+    )
 
 
 class ParticipantResponse(Base):
@@ -192,7 +387,9 @@ class ParticipantResponse(Base):
     correctness_score: Mapped[Optional[float]] = mapped_column(Float)
     matched_keywords: Mapped[List[str]] = mapped_column(JSON, default=list, nullable=False)
     missing_keywords: Mapped[List[str]] = mapped_column(JSON, default=list, nullable=False)
-    is_flagged: Mapped[bool] = mapped_column(Boolean, default=False, index=True, nullable=False)
+    is_correct: Mapped[str] = mapped_column(
+        String(32), default="pending", index=True, nullable=False
+    )
     flag_reason: Mapped[Optional[str]] = mapped_column(Text)
     review_status: Mapped[str] = mapped_column(
         String(32), default=ReviewStatus.PENDING.value, index=True, nullable=False

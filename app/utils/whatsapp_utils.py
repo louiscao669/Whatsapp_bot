@@ -1,15 +1,19 @@
-import logging
-from flask import current_app, jsonify
 import json
+import logging
+
 import requests
+from flask import current_app, jsonify
 
 from app.services.chatbot_workflow import (
     record_whatsapp_audio_message,
     record_whatsapp_text_message,
 )
-
-# from app.services.openai_service import generate_response
-import re
+from app.services.mcq_service import (
+    QUESTION_TYPE_MCQ,
+    QUESTION_TYPE_TF,
+    choice_letters_for_type,
+    format_choices_for_display,
+)
 
 
 def log_http_response(response):
@@ -42,10 +46,70 @@ def get_audio_message_input(recipient, audio_url):
     )
 
 
+def _truncate_whatsapp_text(value, max_length):
+    text = str(value or "").strip()
+    if len(text) <= max_length:
+        return text
+    return text[: max_length - 1] + "…"
+
+
+def get_choice_list_message_input(recipient, prompt):
+    question_type = (getattr(prompt, "question_type", None) or "open").strip().lower()
+    choices = list(prompt.mcq_choices or ())
+    letters = choice_letters_for_type(question_type)
+    rows = []
+    for index, choice in enumerate(choices[: len(letters)]):
+        rows.append(
+            {
+                "id": f"mcq_{index}",
+                "title": letters[index],
+                "description": _truncate_whatsapp_text(choice, 72),
+            }
+        )
+
+    body_lines = []
+    if prompt.passage_reference:
+        body_lines.append(f"Passage: {prompt.passage_reference}")
+    body_lines.append(prompt.question_text)
+    if question_type == QUESTION_TYPE_TF:
+        body_lines.append("Tap Choose an answer and pick A or B.")
+    else:
+        body_lines.append("Tap Choose an answer and pick A–D.")
+
+    return json.dumps(
+        {
+            "messaging_product": "whatsapp",
+            "recipient_type": "individual",
+            "to": recipient,
+            "type": "interactive",
+            "interactive": {
+                "type": "list",
+                "body": {"text": _truncate_whatsapp_text("\n\n".join(body_lines), 1024)},
+                "action": {
+                    "button": "Choose answer",
+                    "sections": [{"title": "Choices", "rows": rows}],
+                },
+            },
+        }
+    )
+
+
 def get_assignment_prompt_text(prompt):
     parts = []
     if prompt.passage_reference:
         parts.append(f"Passage: {prompt.passage_reference}")
+
+    question_type = (getattr(prompt, "question_type", None) or "open").strip().lower()
+    if question_type in {QUESTION_TYPE_MCQ, QUESTION_TYPE_TF} and getattr(prompt, "mcq_choices", None):
+        if prompt.audio_url:
+            parts.append("Listen to the audio, then choose your answer:")
+        elif question_type == QUESTION_TYPE_TF:
+            parts.append("Choose your answer (reply A or B):")
+        else:
+            parts.append("Choose your answer (reply A, B, C, or D):")
+        parts.append(prompt.question_text)
+        parts.append(format_choices_for_display(list(prompt.mcq_choices), question_type))
+        return "\n\n".join(parts)
 
     if prompt.audio_url:
         parts.append("Listen to the audio, then reply with your answer:")
@@ -59,6 +123,11 @@ def get_assignment_prompt_text(prompt):
 def send_assignment_prompt(recipient, prompt):
     if prompt.audio_url:
         send_message(get_audio_message_input(recipient, prompt.audio_url))
+
+    question_type = (getattr(prompt, "question_type", None) or "open").strip().lower()
+    if question_type in {QUESTION_TYPE_MCQ, QUESTION_TYPE_TF} and getattr(prompt, "mcq_choices", None):
+        send_message(get_choice_list_message_input(recipient, prompt))
+        return
 
     send_message(get_text_message_input(recipient, get_assignment_prompt_text(prompt)))
 
@@ -90,11 +159,6 @@ def get_no_assignment_message(response_recorded):
     return "Thanks for checking in. No questions are available right now."
 
 
-def generate_response(response):
-    # Return text in uppercase
-    return response.upper()
-
-
 def send_message(data):
     headers = {
         "Content-type": "application/json",
@@ -106,38 +170,39 @@ def send_message(data):
     try:
         response = requests.post(
             url, data=data, headers=headers, timeout=10
-        )  # 10 seconds timeout as an example
-        response.raise_for_status()  # Raises an HTTPError if the HTTP request returned an unsuccessful status code
+        )
+        response.raise_for_status()
     except requests.Timeout:
         logging.error("Timeout occurred while sending message")
         return jsonify({"status": "error", "message": "Request timed out"}), 408
-    except (
-        requests.RequestException
-    ) as e:  # This will catch any general request exception
+    except requests.RequestException as e:
         logging.error(f"Request failed due to: {e}")
         return jsonify({"status": "error", "message": "Failed to send message"}), 500
     else:
-        # Process the response as normal
         log_http_response(response)
         return response
 
 
-def process_text_for_whatsapp(text):
-    # Remove brackets
-    pattern = r"\【.*?\】"
-    # Substitute the pattern with an empty string
-    text = re.sub(pattern, "", text).strip()
+def extract_inbound_message_payload(message):
+    message_type = message.get("type")
 
-    # Pattern to find double asterisks including the word(s) in between
-    pattern = r"\*\*(.*?)\*\*"
+    if message_type == "text":
+        return message["text"]["body"], message_type
 
-    # Replacement pattern with single asterisks
-    replacement = r"*\1*"
+    if message_type == "interactive":
+        interactive = message.get("interactive") or {}
+        interactive_type = interactive.get("type")
+        if interactive_type == "list_reply":
+            reply = interactive.get("list_reply") or {}
+            return reply.get("id") or reply.get("title") or "", "text"
+        if interactive_type == "button_reply":
+            reply = interactive.get("button_reply") or {}
+            return reply.get("id") or reply.get("title") or "", "text"
 
-    # Substitute occurrences of the pattern with the replacement
-    whatsapp_style_text = re.sub(pattern, replacement, text)
+    if message_type == "audio":
+        return None, message_type
 
-    return whatsapp_style_text
+    return None, message_type
 
 
 def process_whatsapp_message(body):
@@ -146,13 +211,14 @@ def process_whatsapp_message(body):
 
     message = body["entry"][0]["changes"][0]["value"]["messages"][0]
     message_type = message.get("type")
+    payload_text, normalized_type = extract_inbound_message_payload(message)
 
-    if message_type == "text":
+    if normalized_type == "text":
         workflow_result = record_whatsapp_text_message(
             wa_id=wa_id,
             display_name=name,
             message_id=message.get("id"),
-            message_text=message["text"]["body"],
+            message_text=payload_text,
         )
     elif message_type == "audio":
         audio = message.get("audio", {})
@@ -170,7 +236,7 @@ def process_whatsapp_message(body):
         send_message(
             get_text_message_input(
                 wa_id,
-                "Please reply with a text message or voice note.",
+                "Please reply with a text message, tap a list option, or send a voice note.",
             )
         )
         return
