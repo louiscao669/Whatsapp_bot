@@ -879,10 +879,13 @@ def render_admin_page(title, sections, current_path=None):
       display: block; margin: 0; font-weight: 600; white-space: nowrap;
     }}
     .review-qa-mcq-block .review-qa-choice-input {{
-      width: 100%; min-width: 3.25rem; max-width: 5.5rem; aspect-ratio: 1;
-      padding: 0.35rem 0.4rem; font: inherit; margin: 0;
+      width: 100%; min-width: 7rem; max-width: 16rem; height: 2.1rem;
+      padding: 0.3rem 0.5rem; font: inherit; margin: 0; line-height: 1.25;
       border: 1px solid #bbb; border-radius: 3px; background: #fff; box-sizing: border-box;
-      resize: none; overflow: auto;
+    }}
+    .review-qa-item.review-qa-type-tf .review-qa-mcq-block,
+    .review-qa-item.review-qa-type-tf .review-qa-open-answer-block {{
+      display: none;
     }}
     .review-qa-correct-picker {{
       display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.75rem;
@@ -2335,6 +2338,9 @@ def render_review_qa_mcq_fields(qa_item):
     open_selected = " selected" if question_type == "open" else ""
     mcq_selected = " selected" if question_type == "mcq" else ""
     tf_selected = " selected" if question_type == "tf" else ""
+    is_mcq = question_type == QUESTION_TYPE_MCQ
+    mcq_block_style = "" if is_mcq else ' style="display:none"'
+    open_answer_style = ' style="display:none"' if question_type != QUESTION_TYPE_OPEN else ""
     return f"""
     <label for="question_type_{html.escape(qa_item.id)}">Question type</label>
     <select id="question_type_{html.escape(qa_item.id)}" name="question_type" class="review-qa-question-type">
@@ -2342,7 +2348,7 @@ def render_review_qa_mcq_fields(qa_item):
       <option value="mcq"{mcq_selected}>MCQ (4 choices)</option>
       <option value="tf"{tf_selected}>True / false</option>
     </select>
-    <div class="review-qa-mcq-block" data-qa-item-id="{html.escape(qa_item.id)}">
+    <div class="review-qa-mcq-block" data-qa-item-id="{html.escape(qa_item.id)}"{mcq_block_style}>
       <span class="review-qa-answer-heading">Answer</span>
       <div class="review-qa-choice-row">
         {''.join(choice_slots_html)}
@@ -2354,7 +2360,7 @@ def render_review_qa_mcq_fields(qa_item):
         </select>
       </div>
     </div>
-    <div class="review-qa-open-answer-block">
+    <div class="review-qa-open-answer-block"{open_answer_style}>
       <label for="answer_{html.escape(qa_item.id)}">Answer</label>
       <textarea id="answer_{html.escape(qa_item.id)}" name="expected_answer">{html.escape(qa_item.expected_answer)}</textarea>
     </div>"""
@@ -2378,11 +2384,15 @@ def render_review_qa_type_toggle_script():
         const article = select.closest(".review-qa-item");
         if (!article) return;
         const type = select.value;
-        const isChoice = type === "mcq" || type === "tf";
-        const slotCount = type === "tf" ? 2 : 4;
+        const isMcq = type === "mcq";
+        const isTf = type === "tf";
+        const isChoice = isMcq || isTf;
+        const slotCount = isTf ? 2 : 4;
         const mcqBlock = article.querySelector(".review-qa-mcq-block");
         const openBlock = article.querySelector(".review-qa-open-answer-block");
-        if (mcqBlock) mcqBlock.style.display = isChoice ? "block" : "none";
+        article.classList.toggle("review-qa-type-tf", isTf);
+        article.classList.toggle("review-qa-type-mcq", isMcq);
+        if (mcqBlock) mcqBlock.style.display = isMcq ? "block" : "none";
         if (openBlock) openBlock.style.display = isChoice ? "none" : "block";
         article.querySelectorAll(".review-qa-choice-field").forEach(function (el) {
           const letter = el.getAttribute("data-choice-letter");
@@ -2429,8 +2439,14 @@ def render_review_qa_item_form(qa_item, tab):
     mark_url = html.escape(url_for("admin.review_qa_mark_reviewed", qa_item_id=qa_item.id))
     safe_tab = html.escape(tab)
     safe_detail_id = html.escape(detail_id)
+    question_type = (qa_item.question_type or QUESTION_TYPE_OPEN).strip().lower()
+    type_class = ""
+    if question_type == QUESTION_TYPE_TF:
+        type_class = " review-qa-type-tf"
+    elif question_type == QUESTION_TYPE_MCQ:
+        type_class = " review-qa-type-mcq"
     return f"""
-  <article class="review-qa-item">
+  <article class="review-qa-item{type_class}">
     <div class="review-qa-item-meta">{passage_toggle}</div>
     <div id="{safe_detail_id}" class="review-qa-passage-detail" hidden>
       {render_review_passage_detail_content(qa_item.passage_text)}

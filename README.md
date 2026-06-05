@@ -79,7 +79,13 @@ before sending the chat response:
    completed assignments in `ParticipantSession.current_batch_id` has reached
    `Participant.preferred_batch_size`, clear the current batch, record a
    `batch_completed` event, and send a batch-complete message instead of another
-   question.
+   question on that turn.
+9. After the batch-complete message, a `batch_next_assignment` reminder schedules
+   the next batch. `BATCH_NEXT_ASSIGN_DELAY_MINUTES` defaults to `0` (due on the
+   next reminder scheduler poll, typically within a few minutes). Larger values wait
+   that many minutes (max 23h 59m, within the WhatsApp 24-hour service window). If
+   the participant messages again before delivery, the scheduled handoff is cancelled
+   and the normal inbound assignment flow runs on that message instead.
 10. If the batch is still open, select the next eligible active `QAItem`, create
    an `Assignment`, update the session to `awaiting_response`, and send the
    audio passage plus question text over WhatsApp. A question is eligible only if

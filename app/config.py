@@ -57,6 +57,9 @@ def load_configurations(app):
     app.config["REMINDER_TEMPLATE_MAX_COUNT"] = os.getenv(
         "REMINDER_TEMPLATE_MAX_COUNT", "0"
     )
+    app.config["BATCH_NEXT_ASSIGN_DELAY_MINUTES"] = os.getenv(
+        "BATCH_NEXT_ASSIGN_DELAY_MINUTES", "0"
+    )
     app.config["ADMIN_ALLOW_TOKEN_LOGIN"] = os.getenv(
         "ADMIN_ALLOW_TOKEN_LOGIN", "true"
     ).lower() == "true"

@@ -250,16 +250,23 @@ def process_whatsapp_message(body):
     if workflow_result.awarded_badges:
         send_badge_messages(wa_id, workflow_result.awarded_badges)
 
+    if workflow_result.batch_completed:
+        send_message(
+            get_text_message_input(
+                wa_id,
+                get_batch_complete_message(workflow_result.completed_batch_size),
+            )
+        )
+
     if workflow_result.prompt:
         send_assignment_prompt(wa_id, workflow_result.prompt)
         return
 
     if workflow_result.batch_completed:
-        response = get_batch_complete_message(workflow_result.completed_batch_size)
-    else:
-        response = get_no_assignment_message(response_recorded=bool(workflow_result.response_id))
-    data = get_text_message_input(wa_id, response)
-    send_message(data)
+        return
+
+    response = get_no_assignment_message(response_recorded=bool(workflow_result.response_id))
+    send_message(get_text_message_input(wa_id, response))
 
 
 def is_valid_whatsapp_message(body):

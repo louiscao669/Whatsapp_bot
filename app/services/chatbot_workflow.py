@@ -432,6 +432,14 @@ def _create_assignment_for_qa_item(
 
 
 def assign_qa_item_to_participant(db: Session, participant, participant_session, qa_item):
+    from app.services.batch_continuation_service import cancel_pending_next_batch_schedules
+
+    cancel_pending_next_batch_schedules(
+        db,
+        participant.id,
+        reason="Manual assignment superseded scheduled next batch",
+    )
+
     if participant_session.state not in (
         SessionState.IDLE.value,
         SessionState.ONBOARDING.value,
@@ -501,6 +509,11 @@ def create_assignment_prompt(db: Session, participant, participant_session):
         SessionState.IDLE.value,
         SessionState.ONBOARDING.value,
     ):
+        return None, False, 0
+
+    from app.services.batch_continuation_service import has_pending_next_batch_schedule
+
+    if has_pending_next_batch_schedule(db, participant.id):
         return None, False, 0
 
     batch_completed, completed_batch_size = complete_current_batch_if_needed(
@@ -707,6 +720,16 @@ def record_whatsapp_answer(
         try:
             participant = get_or_create_participant(db, wa_id, display_name)
             participant_session = get_or_create_participant_session(db, participant)
+            from app.services.batch_continuation_service import (
+                cancel_pending_next_batch_schedules,
+                schedule_next_batch_assignment,
+            )
+
+            cancel_pending_next_batch_schedules(
+                db,
+                participant.id,
+                reason="Participant sent a new inbound message",
+            )
             event_metadata = {
                 "message_id": message_id,
                 "message_type": message_type,
@@ -736,6 +759,8 @@ def record_whatsapp_answer(
                 batch_completed,
                 completed_batch_size,
             ) = create_assignment_prompt(db, participant, participant_session)
+            if batch_completed:
+                schedule_next_batch_assignment(db, participant, participant_session)
             awarded_badges = evaluate_and_award_badges(
                 db,
                 participant,

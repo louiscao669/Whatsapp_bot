@@ -29,6 +29,7 @@ CUSTOMER_SERVICE_WINDOW = timedelta(hours=24)
 
 _scheduler_started = False
 _scheduler_lock = threading.Lock()
+_flask_app = None
 
 
 def get_reminder_poll_interval_seconds():
@@ -349,7 +350,28 @@ def process_due_reminders(limit=50):
                 .all()
             )
 
+            from app.services.batch_continuation_service import (
+                BATCH_NEXT_ASSIGNMENT_TYPE,
+                process_batch_next_assignment_reminder,
+            )
+
             for reminder in reminders:
+                if reminder.reminder_type == BATCH_NEXT_ASSIGNMENT_TYPE:
+                    prompt = process_batch_next_assignment_reminder(db, reminder)
+                    participant = reminder.participant
+                    if prompt and participant:
+                        if _flask_app is None:
+                            logging.error(
+                                "Cannot send scheduled next-batch assignment without Flask app context"
+                            )
+                        else:
+                            from app.utils.whatsapp_utils import send_assignment_prompt
+
+                            with _flask_app.app_context():
+                                send_assignment_prompt(participant.wa_id, prompt)
+                    processed_count += 1
+                    continue
+
                 participant = reminder.participant
                 assignment = reminder.assignment
                 participant_session = participant.session
@@ -449,7 +471,9 @@ def reminder_scheduler_loop():
 
 
 def start_reminder_scheduler(app=None):
-    global _scheduler_started
+    global _scheduler_started, _flask_app
+
+    _flask_app = app
 
     if not reminders_enabled():
         logging.info("Reminder scheduler disabled")
