@@ -6,19 +6,21 @@ Re-run per-language keyword scoring on stored transcript/text:
 
 ```bash
 # By response id (print only)
-python scripts/rescore_participant_responses.py YOUR_RESPONSE_ID
+python backend/scripts/rescore_participant_responses.py YOUR_RESPONSE_ID
 
 # Re-transcribe audio with Whisper, then score
-python scripts/rescore_participant_responses.py --retranscribe --commit YOUR_RESPONSE_ID
+python backend/scripts/rescore_participant_responses.py --retranscribe --commit YOUR_RESPONSE_ID
 
 # All responses for test user 2, save to DB
-python scripts/rescore_participant_responses.py --participant "test user 2" --commit
+python backend/scripts/rescore_participant_responses.py --participant "test user 2" --commit
 
 # All responses for a QA item
-python scripts/rescore_participant_responses.py --qa-item-id f4b6925b-e0a7-4154-8261-334c61676383
+python backend/scripts/rescore_participant_responses.py --qa-item-id f4b6925b-e0a7-4154-8261-334c61676383
 ```
 
-Requires `DATABASE_URL`, `OPENAI_API_KEY` (for `--retranscribe` or live audio ingest), and `pip install -r requirements.txt`.
+Requires `DATABASE_URL`, `OPENAI_API_KEY` (for `--retranscribe` or live audio ingest), and `pip install -r backend/requirements.txt`.
+
+Run commands from the **repository root**.
 
 Define keywords per language on `/admin/record` before expecting auto-scores.
 
@@ -42,19 +44,19 @@ Run `supabase/schema.sql` in Supabase SQL Editor if you have not already.
 **Python** — from repo root:
 
 ```bash
-python scripts/test_luke_1_1_assignment.py --seed-only
+python backend/scripts/test_luke_1_1_assignment.py --seed-only
 ```
 
 Use another UW row from the combo JSON:
 
 ```bash
-python scripts/test_luke_1_1_assignment.py --seed-only --content-id 174315 --json-path "/Users/louiscao/bible translation/ETEN-Bible-translation-project/v3/combo/uw-translation-questions-eng-luke.json"
+python backend/scripts/test_luke_1_1_assignment.py --seed-only --content-id 174315 --json-path "/Users/louiscao/bible translation/ETEN-Bible-translation-project/v3/combo/uw-translation-questions-eng-luke.json"
 ```
 
 ### 3. Assign to a test participant (no WhatsApp send)
 
 ```bash
-python scripts/test_luke_assignment.py
+python backend/scripts/test_luke_assignment.py
 ```
 
 Participant language is set to `eng` to match the UW JSON.
@@ -63,12 +65,12 @@ Participant language is set to `eng` to match the UW JSON.
 
 ```bash
 # By UW content_id → passage_id uw-174345
-python scripts/test_luke_assignment.py --from-db --content-id 174345 --assign \
+python backend/scripts/test_luke_assignment.py --from-db --content-id 174345 --assign \
   --wa-id 15551234567 --name "Test User 3"
 
 # By passage_id or qa_items.id (from /admin/qa-items)
-python scripts/test_luke_assignment.py --from-db --passage-id uw-174345 --assign
-python scripts/test_luke_assignment.py --from-db --qa-item-id YOUR-UUID --assign --answer "..."
+python backend/scripts/test_luke_assignment.py --from-db --passage-id uw-174345 --assign
+python backend/scripts/test_luke_assignment.py --from-db --qa-item-id YOUR-UUID --assign --answer "..."
 ```
 
 `--from-db` only loads metadata from Postgres. Add `--assign` to give that specific question to the participant (requires an expert recording for their language). Without `--assign`, the script still auto-picks the next eligible question.
@@ -76,7 +78,7 @@ python scripts/test_luke_assignment.py --from-db --qa-item-id YOUR-UUID --assign
 ### 4. Optional — record a test answer
 
 ```bash
-python scripts/test_luke_assignment.py --answer "The eyewitnesses were with the apostles from the beginning of Jesus ministry"
+python backend/scripts/test_luke_assignment.py --answer "The eyewitnesses were with the apostles from the beginning of Jesus ministry"
 ```
 
 ### 5. Verify in admin UI
@@ -102,7 +104,7 @@ Optional on each entry (UW or native): `passage_text` — the scripture text for
 |------|---------|
 | `supabase/seeds/data/uw_luke_1_2_174314.json` | Bundled UW entry |
 | `supabase/seeds/uw_luke_1_2_qa_item.sql` | SQL insert |
-| `scripts/uw_qa_content.py` | Parse UW HTML → QA item fields |
-| `scripts/test_luke_1_1_assignment.py` | Seed + assign + optional answer |
+| `backend/scripts/uw_qa_content.py` | Parse UW HTML → QA item fields |
+| `backend/scripts/test_luke_assignment.py` | Seed + assign + optional answer |
 
 Legacy Genesis-style seed: `supabase/seeds/luke_1_1_qa_item.sql` (optional delete: `passage_id = 'luke-1-1'`).

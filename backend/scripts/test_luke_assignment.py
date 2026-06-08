@@ -5,7 +5,7 @@ Seed a UW translation QA item and assign it without sending WhatsApp.
 Default entry: Luke 1:2, content_id 174314 from uw-translation-questions-eng-luke.json
 
 Usage (from repo root):
-  python scripts/test_luke_assignment.py
+  python backend/scripts/test_luke_assignment.py
   python scripts/test_luke_assignment.py --seed-only
   python scripts/test_luke_assignment.py --content-id 174314
   python scripts/test_luke_assignment.py --json-path "/path/to/uw-translation-questions-eng-luke.json"
@@ -21,9 +21,10 @@ import argparse
 import os
 import sys
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if ROOT not in sys.path:
-    sys.path.insert(0, ROOT)
+BACKEND_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+REPO_ROOT = os.path.dirname(BACKEND_ROOT)
+if BACKEND_ROOT not in sys.path:
+    sys.path.insert(0, BACKEND_ROOT)
 
 from sqlalchemy import select
 
@@ -44,7 +45,7 @@ from scripts.uw_qa_content import find_uw_entry, qa_item_payload_from_uw_entry
 DEFAULT_CONTENT_ID = "174314"
 DEFAULT_JSON_PATHS = [
     os.path.join(
-        ROOT,
+        REPO_ROOT,
         "supabase",
         "seeds",
         "data",

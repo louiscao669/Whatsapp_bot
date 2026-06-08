@@ -3,7 +3,7 @@
 Re-score existing participant_responses using per-language keyword matching.
 
 Usage (from repo root):
-  python scripts/rescore_participant_responses.py RESPONSE_ID ...
+  python backend/scripts/rescore_participant_responses.py RESPONSE_ID ...
   python scripts/rescore_participant_responses.py --qa-item-id UUID
   python scripts/rescore_participant_responses.py --participant "test user 2"
   python scripts/rescore_participant_responses.py --commit RESPONSE_ID
@@ -15,9 +15,9 @@ import argparse
 import os
 import sys
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if ROOT not in sys.path:
-    sys.path.insert(0, ROOT)
+BACKEND_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if BACKEND_ROOT not in sys.path:
+    sys.path.insert(0, BACKEND_ROOT)
 
 from sqlalchemy import or_, select
 from sqlalchemy.orm import selectinload

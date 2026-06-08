@@ -4,8 +4,11 @@ from datetime import timedelta
 from dotenv import load_dotenv
 import logging
 
+from app.repo_paths import REPO_ROOT
+
 
 def load_configurations(app):
+    load_dotenv(REPO_ROOT / ".env")
     load_dotenv()
     app.config["ACCESS_TOKEN"] = os.getenv("ACCESS_TOKEN")
     app.config["YOUR_PHONE_NUMBER"] = os.getenv("YOUR_PHONE_NUMBER")

@@ -1139,8 +1139,10 @@ def render_status_banner(message, level="success"):
 
 
 def get_uw_json_import_example():
+    from app.repo_paths import REPO_ROOT
+
     example_path = os.path.join(
-        os.path.dirname(os.path.dirname(__file__)),
+        REPO_ROOT,
         "supabase",
         "seeds",
         "data",

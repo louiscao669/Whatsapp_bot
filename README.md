@@ -9,6 +9,26 @@ pinned: false
 
 Check out the configuration reference at https://huggingface.co/docs/hub/spaces-config-reference
 
+## Repository layout
+
+Monorepo with a phased backend / frontend split:
+
+```text
+eten-whatsapp-bot/
+  backend/          # Flask: webhook, services, DB, legacy /admin SSR
+  frontend/         # React + Vite admin SPA (migration in progress)
+  supabase/         # schema, migrations, seeds
+```
+
+| Component | Run locally |
+|-----------|-------------|
+| Backend | `python backend/app.py` → http://localhost:7860 |
+| Frontend | `cd frontend && npm install && npm run dev` → http://localhost:5173 |
+
+`.env` stays at the **repository root**. See `backend/README.md` and `frontend/README.md`.
+
+The Docker image builds from `backend/` (see root `Dockerfile`). Hugging Face Space deployment is unchanged.
+
 ## WhatsApp webhook
 
 The Flask app exposes the WhatsApp webhook at:
@@ -41,7 +61,7 @@ The admin UI streams audio through authenticated `/admin/media/*` routes (not
 public or signed Supabase URLs in HTML).
 
 The app normalizes `postgres://` and `postgresql://` URLs for SQLAlchemy's
-`psycopg` driver. The core ORM models are defined in `app/models.py`:
+`psycopg` driver. The core ORM models are defined in `backend/app/models.py`:
 
 - `Participant`: target-language speaker using the WhatsApp chatbot.
 - `QAItem`: audio passage question, expected answer, and keyword metadata.
@@ -105,13 +125,13 @@ and optional per-language overrides in `qa_item_language_keywords`.
 Re-score stored responses locally:
 
 ```bash
-python scripts/rescore_participant_responses.py --commit RESPONSE_ID
-python scripts/rescore_participant_responses.py --retranscribe --commit RESPONSE_ID
+python backend/scripts/rescore_participant_responses.py --commit RESPONSE_ID
+python backend/scripts/rescore_participant_responses.py --retranscribe --commit RESPONSE_ID
 ```
 
 ## Keyword matching (fuzzy)
 
-Text/transcript scoring uses [`app/services/keyword_matching_service.py`](app/services/keyword_matching_service.py) and [`app/services/qa_keywords_service.py`](app/services/qa_keywords_service.py).
+Text/transcript scoring uses [`backend/app/services/keyword_matching_service.py`](backend/app/services/keyword_matching_service.py) and [`backend/app/services/qa_keywords_service.py`](backend/app/services/qa_keywords_service.py).
 
 **Important for lower-resource languages:** RapidFuzz compares **characters**, not meaning.
 It does not know that two words are synonyms in Hausa, Swahili, etc. It helps with:
@@ -141,7 +161,7 @@ KEYWORD_FUZZY_MATCH_THRESHOLD=85
 
 Default: stemming **off** (multilingual-safe). Lower threshold = stricter, higher = more lenient.
 
-Speech-to-text for voice answers ([`app/services/transcription_service.py`](app/services/transcription_service.py)):
+Speech-to-text for voice answers ([`backend/app/services/transcription_service.py`](backend/app/services/transcription_service.py)):
 
 ```text
 TRANSCRIPTION_ENABLED=true
