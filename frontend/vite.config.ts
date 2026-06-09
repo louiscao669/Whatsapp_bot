@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     port: 5173,
     proxy: {
-      '/webhook': 'http://localhost:7860',
+      '/webhook': 'http://localhost:7861',
       '/admin': 'http://localhost:7860',
       '/api': 'http://localhost:7860',
     },

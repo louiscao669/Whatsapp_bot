@@ -11,23 +11,38 @@ Check out the configuration reference at https://huggingface.co/docs/hub/spaces-
 
 ## Repository layout
 
-Monorepo with a phased backend / frontend split:
+Monorepo with separate deployables for the WhatsApp bot and the admin platform:
 
 ```text
 eten-whatsapp-bot/
-  backend/          # Flask: webhook, services, DB, legacy /admin SSR
-  frontend/         # React + Vite admin SPA (migration in progress)
-  supabase/         # schema, migrations, seeds
+  packages/eten-shared/   # Shared Python package (models, DB, storage, scoring)
+  whatsapp-bot/           # Flask: webhook, participant workflow, reminders
+  platform/               # Flask: JSON API, expert/admin services, SPA hosting
+  frontend/               # React + Vite admin SPA
+  supabase/               # schema, migrations, seeds
+  scripts/                # CLI utilities
 ```
 
 | Component | Run locally |
 |-----------|-------------|
-| Backend | `python backend/app.py` → http://localhost:7860 |
-| Frontend | `cd frontend && npm install && npm run dev` → http://localhost:5173 |
+| Platform + SPA (production) | `cd frontend && npm run build` then `python platform/app.py` → http://localhost:7860 |
+| WhatsApp bot | `python whatsapp-bot/app.py` → http://localhost:7861 (`/webhook`) |
+| Frontend dev (HMR) | `cd frontend && npm install && npm run dev` → http://localhost:5173 |
+| Both backends | `docker compose up --build` |
 
-`.env` stays at the **repository root**. See `backend/README.md` and `frontend/README.md`.
+Install shared package first (or use `-e ../packages/eten-shared` in each service's `requirements.txt`):
 
-The Docker image builds from `backend/` (see root `Dockerfile`). Hugging Face Space deployment is unchanged.
+```bash
+pip install -e packages/eten-shared
+pip install -r platform/requirements.txt
+pip install -r whatsapp-bot/requirements.txt
+```
+
+`.env` stays at the **repository root**. See `frontend/README.md`.
+
+JSON admin APIs live under `/api/v1` on the **platform** service (`platform/app/api/`). The platform serves the built React SPA from `frontend/dist/`. Legacy `/admin/*` URLs redirect to SPA routes; `/admin/media/*` redirects to `/api/v1/media/*`.
+
+The default Docker image builds the **platform** (see root `Dockerfile`). Use `whatsapp-bot/Dockerfile` for the webhook service. Point Meta's webhook URL at the whatsapp-bot host.
 
 ## WhatsApp webhook
 
@@ -57,11 +72,11 @@ Create a **private** Supabase Storage bucket named `participant-audio`, or set
 `SUPABASE_AUDIO_BUCKET` to another bucket name. Audio answers are uploaded to
 Supabase Storage and saved on `ParticipantResponse.media_url` as a storage URI,
 for example `storage://participant-audio/whatsapp/2026/05/22/MEDIA_ID.ogg`.
-The admin UI streams audio through authenticated `/admin/media/*` routes (not
+The admin UI streams audio through authenticated `/api/v1/media/*` routes (not
 public or signed Supabase URLs in HTML).
 
 The app normalizes `postgres://` and `postgresql://` URLs for SQLAlchemy's
-`psycopg` driver. The core ORM models are defined in `backend/app/models.py`:
+`psycopg` driver. The core ORM models are defined in `packages/eten-shared/eten_shared/models.py`:
 
 - `Participant`: target-language speaker using the WhatsApp chatbot.
 - `QAItem`: audio passage question, expected answer, and keyword metadata.
@@ -90,7 +105,7 @@ before sending the chat response:
 6. If the session has a `current_assignment_id`, save a `ParticipantResponse`.
    Text answers and audio answers (Whisper STT when configured) are scored with
    **keyword matching** against the per-language rubric on
-   [`/admin/record`](http://localhost:7860/admin/record). `correctness_score` is
+   [`/record`](http://localhost:7860/record). `correctness_score` is
    the fraction of required keywords matched; `matched_keywords` and
    `missing_keywords` are stored on each response. Placeholder or missing
    transcripts on audio answers are flagged for expert review without auto-pass.
@@ -109,13 +124,13 @@ before sending the chat response:
 10. If the batch is still open, select the next eligible active `QAItem`, create
    an `Assignment`, update the session to `awaiting_response`, and send the
    audio passage plus question text over WhatsApp. A question is eligible only if
-   experts have recorded its **question** audio at `/admin/record` for the
+   experts have recorded its **question** audio at `/record` for the
    participant's target language. Selection skips QA items already assigned to
    the participant and prioritizes: response gap
    (`min_responses_required - actual_response_count`), accuracy risk from low
    correctness/high flag rate, `review_priority`, and then lower coverage.
 
-## Expert rubric and scoring (`/admin/record`)
+## Expert rubric and scoring (`/record`)
 
 After a QA pair is marked **reviewed** on Review QA, it appears on Record. For each
 target language, experts record the **question** audio (the passage prompt
@@ -125,13 +140,13 @@ and optional per-language overrides in `qa_item_language_keywords`.
 Re-score stored responses locally:
 
 ```bash
-python backend/scripts/rescore_participant_responses.py --commit RESPONSE_ID
-python backend/scripts/rescore_participant_responses.py --retranscribe --commit RESPONSE_ID
+python scripts/rescore_participant_responses.py --commit RESPONSE_ID
+python scripts/rescore_participant_responses.py --retranscribe --commit RESPONSE_ID
 ```
 
 ## Keyword matching (fuzzy)
 
-Text/transcript scoring uses [`backend/app/services/keyword_matching_service.py`](backend/app/services/keyword_matching_service.py) and [`backend/app/services/qa_keywords_service.py`](backend/app/services/qa_keywords_service.py).
+Text/transcript scoring uses [`packages/eten-shared/eten_shared/keyword_matching.py`](packages/eten-shared/eten_shared/keyword_matching.py) and [`packages/eten-shared/eten_shared/qa_keywords.py`](packages/eten-shared/eten_shared/qa_keywords.py).
 
 **Important for lower-resource languages:** RapidFuzz compares **characters**, not meaning.
 It does not know that two words are synonyms in Hausa, Swahili, etc. It helps with:
@@ -161,7 +176,7 @@ KEYWORD_FUZZY_MATCH_THRESHOLD=85
 
 Default: stemming **off** (multilingual-safe). Lower threshold = stricter, higher = more lenient.
 
-Speech-to-text for voice answers ([`backend/app/services/transcription_service.py`](backend/app/services/transcription_service.py)):
+Speech-to-text for voice answers ([`packages/eten-shared/eten_shared/transcription.py`](packages/eten-shared/eten_shared/transcription.py)):
 
 ```text
 TRANSCRIPTION_ENABLED=true
@@ -244,15 +259,19 @@ across `participant_id` and `badge_type`.
 
 ## Admin and expert dashboards
 
-The app exposes token-protected HTML endpoints for the two internal user groups:
+The React admin SPA is served from `/` (build with `cd frontend && npm run build`).
+JSON APIs live under `/api/v1`. Main routes:
 
 ```text
-/admin/qa-items      -> admin/distributor only
-/admin/review        -> Review Response (admin or expert)
-/admin/review-qa     -> Review QA (admin or expert)
-/admin/analytics     -> admin/distributor or expert reviewer
-/admin/participants  -> admin/distributor only
+/qa-items            -> admin only
+/review-response     -> Review Response (admin or expert)
+/review-qa           -> Review QA (admin or expert)
+/analytics           -> admin or expert
+/participants        -> admin only
+/record              -> admin or expert
 ```
+
+Old `/admin/*` URLs redirect to the SPA.
 
 Configure strong tokens in the deployed Space:
 
@@ -264,11 +283,11 @@ SUPABASE_ANON_KEY=your-supabase-anon-key
 ADMIN_AUTH_PROVIDER=supabase
 ```
 
-For browser access, open `/admin/login`, enter your approved email, then enter
+For browser access, open `/login`, enter your approved email, then enter
 the one-time code. By default, the app asks Supabase Auth to send and verify the
 code. After verification, it checks the email against the `admin_users`
 allowlist table and stores the allowed role in a signed Flask session cookie.
-Use `/admin/logout` to clear the session. Set `FLASK_SECRET_KEY` in deployment
+Use the Log out button (or `POST /api/v1/auth/logout`) to clear the session. Set `FLASK_SECRET_KEY` in deployment
 for stable signed sessions; if omitted, the app falls back to `APP_SECRET`.
 
 The allowlist table is `admin_users`:
@@ -323,15 +342,15 @@ The app also exposes token-protected CSV exports for expert review and offline
 analysis:
 
 ```text
-GET /admin/export/responses.csv
-GET /admin/export/flagged.csv
+GET /api/v1/export/responses.csv
+GET /api/v1/export/flagged.csv
 ```
 
 Call the endpoints with the admin bearer token:
 
 ```bash
 curl -H "Authorization: Bearer $ADMIN_API_TOKEN" \
-  https://YOUR-SPACE.hf.space/admin/export/flagged.csv
+  https://YOUR-SPACE.hf.space/api/v1/export/flagged.csv
 ```
 
 `responses.csv` exports all participant responses. `flagged.csv` exports only
@@ -385,8 +404,8 @@ response when logged in.
 Browser playback uses session- or token-protected app routes:
 
 ```text
-GET /admin/media/participant-response/<response_id>
-GET /admin/media/qa-recording/<recording_id>
+GET /api/v1/media/participant-response/<response_id>
+GET /api/v1/media/qa-recording/<recording_id>
 ```
 
 Optional `?download=1` for attachment download. Responses use `Cache-Control:
@@ -412,9 +431,9 @@ Before go-live, confirm:
 - [ ] Storage buckets are private (see checklist above).
 - [ ] `admin_users` allowlist matches intended admins and experts; revoked users
       have `active = false`.
-- [ ] Unauthenticated `GET /admin/review` redirects to login or returns 401.
-- [ ] Expert session cannot open `/admin/participants` or `/admin/export/*`.
-- [ ] Logged-out request to `/admin/media/participant-response/<id>` returns 401.
+- [ ] Unauthenticated access to `/review-response` redirects to login or returns 401.
+- [ ] Expert session cannot open `/participants` or export routes.
+- [ ] Logged-out request to `/api/v1/media/participant-response/<id>` returns 401.
 - [ ] Expert cannot stream non-flagged participant audio (403).
 - [ ] No service role key or `.env` in the repository.
 - [ ] CSV/ZIP exports are transferred only over encrypted channels with a

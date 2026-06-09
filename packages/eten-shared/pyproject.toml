@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "eten-shared"
+version = "0.1.0"
+description = "Shared models, database, storage, and scoring for ETEN WhatsApp bot and platform"
+requires-python = ">=3.9"
+dependencies = [
+    "SQLAlchemy",
+    "psycopg[binary]",
+    "requests",
+    "rapidfuzz",
+    "openai",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["eten_shared*"]

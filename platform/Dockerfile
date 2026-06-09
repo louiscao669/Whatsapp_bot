@@ -1,0 +1,17 @@
+FROM node:20 AS frontend
+WORKDIR /build
+COPY frontend/package.json frontend/package-lock.json* ./
+RUN npm install
+COPY frontend ./
+RUN npm run build
+
+FROM python:3.11
+WORKDIR /code
+COPY packages/eten-shared /code/packages/eten-shared
+COPY platform/requirements.txt /code/platform/requirements.txt
+RUN pip install --no-cache-dir --upgrade -r /code/platform/requirements.txt
+COPY platform /code/platform
+COPY supabase /code/supabase
+COPY --from=frontend /build/dist /code/frontend/dist
+WORKDIR /code/platform
+CMD ["python", "app.py"]
