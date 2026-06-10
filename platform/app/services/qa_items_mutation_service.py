@@ -14,6 +14,7 @@ from app.services.workflow_bridge import (
 )
 from eten_shared.languages import LanguageError as QAImportError
 from app.services.uw_qa_import_service import import_qa_entries, parse_entries_from_json_text
+from app.utils.privacy import hash_wa_id_for_display
 
 
 class QaItemsMutationError(Exception):
@@ -170,7 +171,7 @@ def list_participants_for_assign(db):
         {
             "id": participant.id,
             "display_name": participant.display_name,
-            "wa_id": participant.wa_id,
+            "wa_id": hash_wa_id_for_display(participant.wa_id),
             "target_language": participant.target_language,
         }
         for participant in participants

@@ -10,6 +10,7 @@ from sqlalchemy.orm import selectinload
 from eten_shared.models import ParticipantResponse
 from app.services.system_languages_service import canonical_language_code
 from app.utils.admin_formatters import format_correctness_score, format_display_datetime
+from app.utils.privacy import hash_wa_id_for_display
 
 EXPORT_COLUMNS = [
     "response_id",
@@ -58,7 +59,7 @@ def _response_to_row(response):
         "response_id": response.id,
         "received_at": format_display_datetime(response.received_at),
         "participant_id": participant.id if participant else "",
-        "participant_wa_id": participant.wa_id if participant else "",
+        "participant_wa_id": hash_wa_id_for_display(participant.wa_id) if participant else "",
         "participant_display_name": participant.display_name if participant else "",
         "qa_item_id": qa_item.id if qa_item else "",
         "passage_id": qa_item.passage_id if qa_item else "",

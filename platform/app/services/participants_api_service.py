@@ -13,6 +13,7 @@ from app.services.qa_item_stats_service import (
     open_response_status_label,
 )
 from app.utils.admin_formatters import format_display_datetime
+from app.utils.privacy import hash_wa_id_for_display
 
 
 CORRECT_IS_CORRECT_VALUES = frozenset({"yes (auto)", "yes (expert)"})
@@ -172,7 +173,7 @@ def list_participants_dashboard(db):
         rows.append(
             {
                 "id": participant.id,
-                "wa_id": participant.wa_id,
+                "wa_id": hash_wa_id_for_display(participant.wa_id),
                 "display_name": participant.display_name or "",
                 "language": participant.target_language or "",
                 "session_state": session_state,
@@ -244,7 +245,7 @@ def get_participant_detail(db, participant_id: str):
     return {
         "participant": {
             "id": participant.id,
-            "wa_id": participant.wa_id,
+            "wa_id": hash_wa_id_for_display(participant.wa_id),
             "display_name": participant.display_name or "",
             "language": participant.target_language or "",
             "session_state": session_state,
