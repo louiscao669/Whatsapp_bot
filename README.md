@@ -11,12 +11,12 @@ Check out the configuration reference at https://huggingface.co/docs/hub/spaces-
 
 ## Repository layout
 
-Monorepo with separate deployables for the WhatsApp bot and the admin platform:
+Monorepo with separate deployables for the participant message bot and the admin platform:
 
 ```text
 eten-whatsapp-bot/
   packages/eten-shared/   # Shared Python package (models, DB, storage, scoring)
-  whatsapp-bot/           # Flask: webhook, participant workflow, reminders
+  message-bot/            # Flask: provider webhook, participant workflow, engagement
   platform/               # Flask: JSON API, expert/admin services, SPA hosting
   frontend/               # React + Vite admin SPA
   supabase/               # schema, migrations, seeds
@@ -26,7 +26,7 @@ eten-whatsapp-bot/
 | Component | Run locally |
 |-----------|-------------|
 | Platform + SPA (production) | `cd frontend && npm run build` then `python platform/app.py` → http://localhost:7860 |
-| WhatsApp bot | `python whatsapp-bot/app.py` → http://localhost:7861 (`/webhook`) |
+| Message bot | `python message-bot/app.py` → http://localhost:7861 (`/webhook`) |
 | Frontend dev (HMR) | `cd frontend && npm install && npm run dev` → http://localhost:5173 |
 | Both backends | `docker compose up --build` |
 
@@ -35,14 +35,22 @@ Install shared package first (or use `-e ../packages/eten-shared` in each servic
 ```bash
 pip install -e packages/eten-shared
 pip install -r platform/requirements.txt
-pip install -r whatsapp-bot/requirements.txt
+pip install -r message-bot/requirements.txt
 ```
 
-`.env` stays at the **repository root**. See `frontend/README.md`.
+Runtime configuration is split between **root `config.py`** and **root `.env`**:
+
+- `config.py` contains non-secret defaults such as ports, feature flags, bucket
+  names, provider versions, and scheduler timing.
+- `.env` contains local secrets and credentials such as tokens, API keys,
+  database URLs, SMTP passwords, and service role keys.
+
+Both backend services load `config.py` first and `.env` second, so environment
+variables and local secrets can override defaults. See `frontend/README.md`.
 
 JSON admin APIs live under `/api/v1` on the **platform** service (`platform/app/api/`). The platform serves the built React SPA from `frontend/dist/`. Legacy `/admin/*` URLs redirect to SPA routes; `/admin/media/*` redirects to `/api/v1/media/*`.
 
-The default Docker image builds the **platform** (see root `Dockerfile`). Use `whatsapp-bot/Dockerfile` for the webhook service. Point Meta's webhook URL at the whatsapp-bot host.
+The default Docker image builds the **platform** (see root `Dockerfile`). Use `message-bot/Dockerfile` for the webhook service. Point Meta's webhook URL at the message-bot host when using the WhatsApp provider.
 
 ## WhatsApp webhook
 
@@ -67,6 +75,9 @@ SUPABASE_URL=https://YOUR-PROJECT.supabase.co
 SUPABASE_SERVICE_ROLE_KEY=YOUR-SERVICE-ROLE-KEY
 SUPABASE_AUDIO_BUCKET=participant-audio
 ```
+
+Put `DATABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` in `.env`; keep non-secret
+defaults such as `SUPABASE_URL` and `SUPABASE_AUDIO_BUCKET` in `config.py`.
 
 Create a **private** Supabase Storage bucket named `participant-audio`, or set
 `SUPABASE_AUDIO_BUCKET` to another bucket name. Audio answers are uploaded to
@@ -116,11 +127,15 @@ before sending the chat response:
    `batch_completed` event, and send a batch-complete message instead of another
    question on that turn.
 9. After the batch-complete message, a `batch_next_assignment` reminder schedules
-   the next batch. `BATCH_NEXT_ASSIGN_DELAY_MINUTES` defaults to `0` (due on the
-   next reminder scheduler poll, typically within a few minutes). Larger values wait
-   that many minutes (max 23h 59m, within the WhatsApp 24-hour service window). If
-   the participant messages again before delivery, the scheduled handoff is cancelled
-   and the normal inbound assignment flow runs on that message instead.
+   the next batch using the active provider's schedule policy. The WhatsApp
+   policy schedules for the next day at the participant's local 8 AM, except
+   completions between local 12 AM and 8 AM schedule for local 12 AM the next
+   day to stay inside WhatsApp's 24-hour service window. Configure the normal
+   hour with `BATCH_NEXT_ASSIGN_HOUR` and the fallback timezone with
+   `BATCH_NEXT_ASSIGN_DEFAULT_TIMEZONE` when a participant timezone is missing.
+   The bot then asks whether the participant wants to start a new batch now or
+   wait until tomorrow. Choosing start-now cancels the scheduled handoff and
+   assigns immediately; choosing tomorrow keeps the scheduled handoff.
 10. If the batch is still open, select the next eligible active `QAItem`, create
    an `Assignment`, update the session to `awaiting_response`, and send the
    audio passage plus question text over WhatsApp. A question is eligible only if
@@ -186,8 +201,9 @@ WHISPER_MODEL=whisper-1
 
 ## Reminder scheduler
 
-When a new assignment is created, the app schedules three pending reminders for
-that assignment:
+The engagement scheduler polls and processes due reminder rows. Reminder cadence
+is owned by the active messaging provider. The WhatsApp provider currently
+schedules three pending free-form reminders for each new assignment:
 
 - `assignment_pending_3h`: 3 hours after assignment creation.
 - `assignment_pending_9h`: 9 hours after assignment creation, which is another

@@ -1,10 +1,19 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 
 from eten_shared.database import get_session_factory
 from app.services.admin_session_service import require_roles
-from app.services.participants_api_service import get_participant_detail, list_participants_dashboard
+from app.services.participants_api_service import (
+    ParticipantMutationError,
+    get_participant_detail,
+    list_participants_dashboard,
+    update_participant_language,
+)
 
 participants_blueprint = Blueprint("api_participants", __name__)
+
+
+def _json_body():
+    return request.get_json(silent=True) or {}
 
 
 @participants_blueprint.route("", methods=["GET"])
@@ -25,3 +34,21 @@ def get_participant(participant_id):
     if not payload:
         return jsonify({"error": "not_found", "message": "Participant not found"}), 404
     return jsonify(payload)
+
+
+@participants_blueprint.route("/<participant_id>/language", methods=["PATCH"])
+@require_roles("admin")
+def patch_participant_language(participant_id):
+    body = _json_body()
+    session_factory = get_session_factory()
+    try:
+        with session_factory() as db:
+            update_participant_language(db, participant_id, body.get("language"))
+            db.commit()
+            payload = get_participant_detail(db, participant_id)
+    except ParticipantMutationError as exc:
+        message = str(exc)
+        status = 404 if message == "Participant not found" else 400
+        return jsonify({"error": "validation_error", "message": message}), status
+
+    return jsonify({"ok": True, "message": "Participant language updated", **payload})

@@ -147,7 +147,7 @@ def fix_qa_keywords():
 
 if __name__ == "__main__":
     rewrite_tree(REPO / "packages/eten-shared/eten_shared", [])
-    rewrite_tree(REPO / "whatsapp-bot", BOT_REPLACEMENTS)
+    rewrite_tree(REPO / "message-bot", BOT_REPLACEMENTS)
     rewrite_tree(REPO / "platform", PLATFORM_REPLACEMENTS)
     rewrite_tree(REPO / "scripts", BOT_REPLACEMENTS + PLATFORM_REPLACEMENTS)
     fix_mcq()

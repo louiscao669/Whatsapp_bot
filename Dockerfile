@@ -1,4 +1,4 @@
-# Default image: platform (admin SPA + JSON API). Use whatsapp-bot/Dockerfile for the webhook service.
+# Default image: platform (admin SPA + JSON API). Use message-bot/Dockerfile for the webhook service.
 FROM node:20 AS frontend
 WORKDIR /build
 COPY frontend/package.json frontend/package-lock.json* ./

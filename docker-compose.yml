@@ -10,13 +10,13 @@ services:
     environment:
       PLATFORM_PORT: "7860"
 
-  whatsapp-bot:
+  message-bot:
     build:
       context: .
-      dockerfile: whatsapp-bot/Dockerfile
+      dockerfile: message-bot/Dockerfile
     ports:
       - "7861:7861"
     env_file:
       - .env
     environment:
-      WHATSAPP_BOT_PORT: "7861"
+      MESSAGE_BOT_PORT: "7861"

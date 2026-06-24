@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="/user_dashboard/styles.css" />
+  </head>
+  <body>
+    <main id="app" class="dashboard-app" aria-live="polite"></main>
+
+    <div id="actionModal" class="modal-backdrop" hidden>
+      <div
+        class="action-modal"
+        role="alertdialog"
+        aria-modal="true"
+        aria-labelledby="actionModalTitle"
+        aria-describedby="actionModalMessage"
+      >
+        <h2 id="actionModalTitle">Action unavailable</h2>
+        <p id="actionModalMessage"></p>
+        <button id="actionModalClose" type="button">OK</button>
+      </div>
+    </div>
+
+    <script type="module" src="/user_dashboard/frontend/app.js"></script>
+  </body>
+</html>

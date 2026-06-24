@@ -24,9 +24,9 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT / "scripts"))
-from _bootstrap import use_whatsapp_bot
+from _bootstrap import use_message_bot
 
-use_whatsapp_bot()
+use_message_bot()
 
 from sqlalchemy import select
 

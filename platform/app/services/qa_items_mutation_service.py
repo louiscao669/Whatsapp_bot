@@ -1,20 +1,14 @@
-"""Write operations for QA items (import, settings, assign, delete, bulk)."""
+"""Write operations for QA items (import, settings, delete, bulk)."""
 
 import json
 import re
 
 from sqlalchemy import select
 
-from eten_shared.models import Participant, QAItem
+from eten_shared.models import QAItem
 from eten_shared.repo_paths import REPO_ROOT
-from app.services.workflow_bridge import (
-    AssignmentAssignError,
-    assign_qa_item_to_participant,
-    get_or_create_participant_session,
-)
 from eten_shared.languages import LanguageError as QAImportError
 from app.services.uw_qa_import_service import import_qa_entries, parse_entries_from_json_text
-from app.utils.privacy import hash_wa_id_for_display
 
 
 class QaItemsMutationError(Exception):
@@ -163,21 +157,6 @@ def parse_settings_payload(payload):
     )
 
 
-def list_participants_for_assign(db):
-    participants = db.scalars(
-        select(Participant).order_by(Participant.display_name, Participant.wa_id)
-    ).all()
-    return [
-        {
-            "id": participant.id,
-            "display_name": participant.display_name,
-            "wa_id": hash_wa_id_for_display(participant.wa_id),
-            "target_language": participant.target_language,
-        }
-        for participant in participants
-    ]
-
-
 def import_qa_items_from_json(db, *, json_text, skip_existing, import_defaults):
     if not (json_text or "").strip():
         raise QaItemsMutationError("JSON text or file is required")
@@ -205,38 +184,6 @@ def bulk_delete_qa_items(db, qa_item_ids):
     for qa_item in ordered:
         db.delete(qa_item)
     return len(ordered)
-
-
-def bulk_assign_qa_items(db, qa_item_ids, participant_id):
-    if not participant_id:
-        raise QaItemsMutationError("Select a participant before assigning.")
-
-    participant = db.get(Participant, participant_id)
-    if not participant:
-        raise QaItemsMutationError("Participant not found")
-
-    ordered = _load_ordered_qa_items(db, qa_item_ids)
-    participant_session = get_or_create_participant_session(db, participant)
-    for qa_item in ordered:
-        assign_qa_item_to_participant(db, participant, participant_session, qa_item)
-    return len(ordered)
-
-
-def assign_qa_item(db, qa_item_id, participant_id):
-    if not participant_id:
-        raise QaItemsMutationError("Select a participant to assign this question.")
-
-    qa_item = db.get(QAItem, qa_item_id)
-    if not qa_item:
-        raise QaItemsMutationError("QA item not found")
-
-    participant = db.get(Participant, participant_id)
-    if not participant:
-        raise QaItemsMutationError("Participant not found")
-
-    participant_session = get_or_create_participant_session(db, participant)
-    assign_qa_item_to_participant(db, participant, participant_session, qa_item)
-    return qa_item_id
 
 
 def update_qa_item_settings(db, qa_item_id, payload):

@@ -2,7 +2,6 @@ from flask import Blueprint, jsonify, request
 
 from eten_shared.database import get_session_factory
 from app.services.admin_session_service import require_roles
-from app.services.workflow_bridge import AssignmentAssignError
 from app.services.qa_item_detail_service import get_qa_item_overview
 from app.services.qa_item_responses_service import (
     get_qa_item_assignments_payload,
@@ -13,13 +12,10 @@ from app.services.qa_items_list_service import list_qa_items_with_stats
 from app.services.qa_items_mutation_service import (
     QA_JSON_INPUT_HINT,
     QaItemsMutationError,
-    assign_qa_item,
-    bulk_assign_qa_items,
     bulk_delete_qa_items,
     delete_qa_item,
     get_uw_json_import_example,
     import_qa_items_from_json,
-    list_participants_for_assign,
     parse_import_defaults,
     parse_selected_qa_item_ids,
     update_qa_item_settings,
@@ -36,18 +32,7 @@ def _json_body():
 def _mutation_error_response(exc, *, status=400):
     if isinstance(exc, (QaItemsMutationError, QAImportError, ValueError)):
         return jsonify({"error": "validation_error", "message": str(exc)}), status
-    if isinstance(exc, AssignmentAssignError):
-        return jsonify({"error": "assignment_error", "message": str(exc)}), 400
     return jsonify({"error": "server_error", "message": str(exc)}), 500
-
-
-@qa_items_blueprint.route("/participants", methods=["GET"])
-@require_roles("admin")
-def list_assign_participants():
-    session_factory = get_session_factory()
-    with session_factory() as db:
-        participants = list_participants_for_assign(db)
-    return jsonify({"participants": participants})
 
 
 @qa_items_blueprint.route("/import-template", methods=["GET"])
@@ -132,18 +117,6 @@ def bulk_qa_items_action():
                 db.commit()
                 return jsonify({"ok": True, "action": action, "count": count, "message": f"Deleted {count} question(s)"})
 
-            if action == "assign":
-                count = bulk_assign_qa_items(db, qa_item_ids, body.get("participant_id"))
-                db.commit()
-                return jsonify(
-                    {
-                        "ok": True,
-                        "action": action,
-                        "count": count,
-                        "message": f"Assigned {count} question(s) to participant",
-                    }
-                )
-
             raise QaItemsMutationError("Unknown bulk action.")
     except Exception as exc:
         return _mutation_error_response(exc)
@@ -213,21 +186,6 @@ def patch_qa_item_settings(qa_item_id):
         return _mutation_error_response(exc)
 
     return jsonify({"ok": True, "message": "Question settings updated", "item": item})
-
-
-@qa_items_blueprint.route("/<qa_item_id>/assign", methods=["POST"])
-@require_roles("admin")
-def post_qa_item_assign(qa_item_id):
-    body = _json_body()
-    session_factory = get_session_factory()
-    try:
-        with session_factory() as db:
-            assign_qa_item(db, qa_item_id, body.get("participant_id"))
-            db.commit()
-    except Exception as exc:
-        return _mutation_error_response(exc)
-
-    return jsonify({"ok": True, "message": "Question assigned to participant"})
 
 
 @qa_items_blueprint.route("/<qa_item_id>", methods=["DELETE"])

@@ -124,6 +124,16 @@ def _run_startup_migrations(engine: Engine):
             connection.execute(text("ALTER TABLE qa_items DROP COLUMN language"))
 
         connection.execute(
+            text("ALTER TABLE participants ADD COLUMN IF NOT EXISTS profile_photo_uri text")
+        )
+        connection.execute(
+            text(
+                "ALTER TABLE participants ADD COLUMN IF NOT EXISTS "
+                "dashboard_preferences jsonb NOT NULL DEFAULT '{}'::jsonb"
+            )
+        )
+
+        connection.execute(
             text("ALTER TABLE qa_items ADD COLUMN IF NOT EXISTS passage_text text")
         )
         connection.execute(
@@ -309,6 +319,82 @@ def _run_startup_migrations(engine: Engine):
                 """
                 CREATE INDEX IF NOT EXISTS idx_qa_item_keyword_recordings_qa_item
                 ON qa_item_keyword_recordings(qa_item_id)
+                """
+            )
+        )
+        connection.execute(
+            text(
+                """
+                CREATE TABLE IF NOT EXISTS participant_wallets (
+                    id text PRIMARY KEY DEFAULT gen_random_uuid()::text,
+                    participant_id text NOT NULL REFERENCES participants(id) ON DELETE CASCADE,
+                    balance integer NOT NULL DEFAULT 0,
+                    lifetime_earned integer NOT NULL DEFAULT 0,
+                    lifetime_spent integer NOT NULL DEFAULT 0,
+                    created_at timestamptz NOT NULL DEFAULT now(),
+                    updated_at timestamptz NOT NULL DEFAULT now(),
+                    CONSTRAINT uq_participant_wallets_participant UNIQUE (participant_id)
+                )
+                """
+            )
+        )
+        connection.execute(
+            text(
+                """
+                CREATE TABLE IF NOT EXISTS participant_currency_events (
+                    id text PRIMARY KEY DEFAULT gen_random_uuid()::text,
+                    participant_id text NOT NULL REFERENCES participants(id) ON DELETE CASCADE,
+                    wallet_id text REFERENCES participant_wallets(id) ON DELETE SET NULL,
+                    assignment_id text REFERENCES assignments(id) ON DELETE SET NULL,
+                    response_id text REFERENCES participant_responses(id) ON DELETE SET NULL,
+                    amount integer NOT NULL,
+                    balance_after integer NOT NULL,
+                    reason text NOT NULL,
+                    source text,
+                    source_event_id text,
+                    metadata jsonb NOT NULL DEFAULT '{}'::jsonb,
+                    created_at timestamptz NOT NULL DEFAULT now()
+                )
+                """
+            )
+        )
+        connection.execute(
+            text(
+                """
+                CREATE INDEX IF NOT EXISTS idx_participant_wallets_participant_id
+                ON participant_wallets(participant_id)
+                """
+            )
+        )
+        connection.execute(
+            text(
+                """
+                CREATE INDEX IF NOT EXISTS idx_participant_currency_events_participant_id
+                ON participant_currency_events(participant_id)
+                """
+            )
+        )
+        connection.execute(
+            text(
+                """
+                CREATE INDEX IF NOT EXISTS idx_participant_currency_events_reason
+                ON participant_currency_events(reason)
+                """
+            )
+        )
+        connection.execute(
+            text(
+                """
+                CREATE INDEX IF NOT EXISTS idx_participant_currency_events_source_event_id
+                ON participant_currency_events(source_event_id)
+                """
+            )
+        )
+        connection.execute(
+            text(
+                """
+                CREATE INDEX IF NOT EXISTS idx_participant_currency_events_created_at
+                ON participant_currency_events(created_at)
                 """
             )
         )

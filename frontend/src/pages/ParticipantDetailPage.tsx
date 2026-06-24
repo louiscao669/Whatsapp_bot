@@ -1,25 +1,64 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type FormEvent } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { ApiError } from '../api/client'
-import { fetchParticipantDetail, type ParticipantDetail } from '../api/participants'
+import {
+  fetchParticipantDetail,
+  updateParticipantLanguage,
+  type ParticipantDetail,
+} from '../api/participants'
+import { fetchSystemLanguages } from '../api/systemLanguages'
 
 export function ParticipantDetailPage() {
   const { participantId } = useParams<{ participantId: string }>()
   const [detail, setDetail] = useState<ParticipantDetail | null>(null)
+  const [languages, setLanguages] = useState<string[]>([])
+  const [language, setLanguage] = useState('')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [message, setMessage] = useState('')
+  const [savingLanguage, setSavingLanguage] = useState(false)
 
   useEffect(() => {
     if (!participantId) {
       return
     }
-    fetchParticipantDetail(participantId)
-      .then(setDetail)
+    Promise.all([fetchParticipantDetail(participantId), fetchSystemLanguages()])
+      .then(([participantDetail, languagePayload]) => {
+        setDetail(participantDetail)
+        setLanguage(participantDetail.participant.language)
+        setLanguages(languagePayload.languages)
+      })
       .catch((err) => {
         setError(err instanceof ApiError ? err.message : 'Failed to load participant')
       })
       .finally(() => setLoading(false))
   }, [participantId])
+
+  async function handleLanguageSubmit(event: FormEvent) {
+    event.preventDefault()
+    if (!participantId) {
+      return
+    }
+
+    setSavingLanguage(true)
+    setError('')
+    setMessage('')
+    try {
+      const result = await updateParticipantLanguage(participantId, language)
+      setDetail({ participant: result.participant, history: result.history })
+      setLanguage(result.participant.language)
+      setLanguages((current) =>
+        current.includes(result.participant.language)
+          ? current
+          : [...current, result.participant.language].sort(),
+      )
+      setMessage(result.message)
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : 'Could not update language')
+    } finally {
+      setSavingLanguage(false)
+    }
+  }
 
   if (loading) {
     return <p className="loading-message">Loading participant…</p>
@@ -46,9 +85,30 @@ export function ParticipantDetailPage() {
         <Link to="/participants">← Back to Participants</Link>
       </p>
       <h2>{participant.display_name || participant.wa_id}</h2>
+      {error ? <p className="error-message">{error}</p> : null}
+      {message ? <p className="success-message">{message}</p> : null}
 
       <section className="detail-card">
         <h3>Participant</h3>
+        <form className="mutation-form" onSubmit={handleLanguageSubmit}>
+          <label htmlFor="participant-language">Language</label>
+          <input
+            id="participant-language"
+            list="participant-language-options"
+            value={language}
+            onChange={(event) => setLanguage(event.target.value)}
+            placeholder="e.g. eng"
+            required
+          />
+          <datalist id="participant-language-options">
+            {languages.map((option) => (
+              <option key={option} value={option} />
+            ))}
+          </datalist>
+          <button type="submit" disabled={savingLanguage}>
+            {savingLanguage ? 'Saving…' : 'Save language'}
+          </button>
+        </form>
         <dl className="detail-list">
           <dt>WhatsApp ID</dt>
           <dd>{participant.wa_id}</dd>

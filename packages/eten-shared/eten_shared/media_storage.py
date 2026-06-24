@@ -34,6 +34,10 @@ def get_recordings_bucket():
     return os.getenv("SUPABASE_RECORDINGS_BUCKET") or get_audio_bucket()
 
 
+def get_profile_photo_bucket():
+    return os.getenv("SUPABASE_PROFILE_PHOTO_BUCKET") or get_audio_bucket()
+
+
 def is_supabase_storage_configured():
     return bool(os.getenv("SUPABASE_URL") and os.getenv("SUPABASE_SERVICE_ROLE_KEY"))
 
@@ -337,6 +341,33 @@ def store_qa_keyword_recording_audio(
         f"{get_media_extension(content_type)}"
     )
     bucket = get_recordings_bucket()
+    upload_to_supabase_storage_bucket(content, bucket, object_path, content_type)
+    return StoredMedia(
+        bucket=bucket,
+        object_path=object_path,
+        storage_uri=f"storage://{bucket}/{object_path}",
+        content_type=content_type,
+        file_size=len(content),
+    )
+
+
+def store_participant_profile_photo(
+    content: bytes,
+    content_type: str,
+    participant_id: str,
+):
+    if not is_supabase_storage_configured():
+        raise RuntimeError("Supabase Storage is not configured")
+    if not content:
+        raise RuntimeError("Profile photo content is empty")
+
+    safe_participant_id = (participant_id or "unknown").strip().replace("/", "_")
+    object_path = (
+        f"profile-photos/{safe_participant_id}/"
+        f"{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S%f')}"
+        f"{get_media_extension(content_type)}"
+    )
+    bucket = get_profile_photo_bucket()
     upload_to_supabase_storage_bucket(content, bucket, object_path, content_type)
     return StoredMedia(
         bucket=bucket,

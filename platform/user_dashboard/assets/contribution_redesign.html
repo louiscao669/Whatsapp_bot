@@ -1,0 +1,124 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  .page { background: #F5F3EE; padding: 20px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 600px; display: flex; flex-direction: column; gap: 14px; }
+
+  /* Hero */
+  .hero { background: #EAF6FF; border-radius: 20px; border: 2px solid #A8D8FF; padding: 24px 28px; box-shadow: 0 4px 0 #7BBFE8; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+  .hero-left {}
+  .hero-eyebrow { font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #3A8FCC; margin-bottom: 8px; }
+  .hero-headline { font-size: 38px; font-weight: 900; color: #1a1a1a; line-height: 1.1; }
+  .hero-headline span { color: #1899FF; }
+  .hero-sub { font-size: 14px; color: #6699BB; margin-top: 8px; max-width: 320px; line-height: 1.5; }
+  .hero-impact { background: #fff; border-radius: 14px; border: 1.5px solid #A8D8FF; padding: 16px 20px; text-align: center; flex-shrink: 0; }
+  .impact-num { font-size: 28px; font-weight: 900; color: #1899FF; }
+  .impact-label { font-size: 11px; font-weight: 700; color: #6699BB; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 2px; }
+  .impact-sub { font-size: 12px; color: #99BBDD; margin-top: 4px; }
+
+  /* Stats row */
+  .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .stat-card { background: #fff; border-radius: 16px; padding: 18px 20px; border: 1.5px solid #E8E8E0; }
+  .stat-label { font-size: 10px; font-weight: 800; letter-spacing: 0.07em; text-transform: uppercase; color: #58CC02; margin-bottom: 6px; }
+  .stat-val { font-size: 32px; font-weight: 900; color: #1a1a1a; }
+  .stat-hint { font-size: 12px; color: #bbb; margin-top: 4px; }
+
+  /* Activity log */
+  .activity { background: #fff; border-radius: 20px; border: 1.5px solid #E8E8E0; padding: 20px 22px; }
+  .activity-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 18px; }
+  .act-eyebrow { font-size: 10px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #58CC02; margin-bottom: 4px; }
+  .act-title { font-size: 20px; font-weight: 900; color: #1a1a1a; }
+  .act-pill { background: #F0F0F0; color: #888; border-radius: 20px; font-size: 12px; font-weight: 800; padding: 5px 14px; border: 1.5px solid #E0E0E0; }
+  .act-pill.has-activity { background: #E8F9D4; color: #2E8A00; border-color: #58CC02; }
+
+  /* Chapter grid */
+  .ch-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 8px; }
+  .ch-item { aspect-ratio: 1; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; cursor: pointer; transition: transform 0.1s; border: 2px solid #E0E0E0; background: #F8F8F8; color: #bbb; }
+  .ch-item:hover { transform: scale(1.08); }
+  .ch-item.done { background: #E8F9D4; border-color: #58CC02; color: #2E8A00; box-shadow: 0 3px 0 #46A302; }
+  .ch-item.active { background: #FFF4E0; border-color: #FF9600; color: #CC6600; box-shadow: 0 3px 0 #E08000; }
+  .ch-item.locked { background: #F5F5F5; border-color: #E0E0E0; color: #DDD; }
+
+  /* Legend */
+  .legend { display: flex; gap: 16px; margin-top: 14px; padding-top: 14px; border-top: 1px solid #F0F0F0; }
+  .leg-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #888; }
+  .leg-dot { width: 12px; height: 12px; border-radius: 4px; flex-shrink: 0; }
+</style>
+
+<div class="page">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-left">
+      <div class="hero-eyebrow">Your contribution</div>
+      <div class="hero-headline"><span>0</span> questions<br>answered</div>
+      <div class="hero-sub">Every answer you submit helps train better Bible translation AI. Start answering to make an impact.</div>
+    </div>
+    <div class="hero-impact">
+      <div class="impact-num">2.3h</div>
+      <div class="impact-label">Time saved</div>
+      <div class="impact-sub">in translation work</div>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-label">Answered questions</div>
+      <div class="stat-val">0</div>
+      <div class="stat-hint">Answer your first today →</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Contributions</div>
+      <div class="stat-val">0</div>
+      <div class="stat-hint">Keep the streak alive</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Active chapters</div>
+      <div class="stat-val">0</div>
+      <div class="stat-hint">Unlock by progressing</div>
+    </div>
+  </div>
+
+  <!-- Activity log -->
+  <div class="activity">
+    <div class="activity-header">
+      <div>
+        <div class="act-eyebrow">Luke</div>
+        <div class="act-title">Activity log</div>
+      </div>
+      <div class="act-pill">0 active chapters</div>
+    </div>
+    <div class="ch-grid">
+      <div class="ch-item done">1</div>
+      <div class="ch-item done">2</div>
+      <div class="ch-item active">3</div>
+      <div class="ch-item locked">4</div>
+      <div class="ch-item locked">5</div>
+      <div class="ch-item locked">6</div>
+      <div class="ch-item locked">7</div>
+      <div class="ch-item locked">8</div>
+      <div class="ch-item locked">9</div>
+      <div class="ch-item locked">10</div>
+      <div class="ch-item locked">11</div>
+      <div class="ch-item locked">12</div>
+      <div class="ch-item locked">13</div>
+      <div class="ch-item locked">14</div>
+      <div class="ch-item locked">15</div>
+      <div class="ch-item locked">16</div>
+      <div class="ch-item locked">17</div>
+      <div class="ch-item locked">18</div>
+      <div class="ch-item locked">19</div>
+      <div class="ch-item locked">20</div>
+      <div class="ch-item locked">21</div>
+      <div class="ch-item locked">22</div>
+      <div class="ch-item locked">23</div>
+      <div class="ch-item locked">24</div>
+    </div>
+    <div class="legend">
+      <div class="leg-item"><div class="leg-dot" style="background:#58CC02;"></div> Completed</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#FF9600;"></div> In progress</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#E8E8E8;"></div> Locked</div>
+    </div>
+  </div>
+
+</div>

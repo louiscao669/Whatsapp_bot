@@ -1,5 +1,4 @@
 import type { QaItemDetail, QaItemExpectedAnswer } from '../api/qaItems'
-import { QaItemAssignForm } from '../components/QaItemAssignForm'
 import { QaItemSettingsForm } from '../components/QaItemSettingsForm'
 
 function ExpectedAnswerBlock({ answer }: { answer: QaItemExpectedAnswer }) {
@@ -111,7 +110,6 @@ export function QaItemOverviewTab({ item, onItemUpdated, onMessage, onError }: Q
         onMessage={onMessage}
         onError={onError}
       />
-      <QaItemAssignForm qaItemId={item.id} onMessage={onMessage} onError={onError} />
     </>
   )
 }

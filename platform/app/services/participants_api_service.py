@@ -12,6 +12,7 @@ from app.services.qa_item_stats_service import (
     format_choice_response_answer_display,
     open_response_status_label,
 )
+from app.services.system_languages_service import canonical_language_code, upsert_system_language
 from app.utils.admin_formatters import format_display_datetime
 from app.utils.privacy import hash_wa_id_for_display
 
@@ -19,6 +20,10 @@ from app.utils.privacy import hash_wa_id_for_display
 CORRECT_IS_CORRECT_VALUES = frozenset({"yes (auto)", "yes (expert)"})
 INCORRECT_IS_CORRECT_VALUES = frozenset({"no (expert)"})
 UNDER_REVIEW_IS_CORRECT_VALUES = frozenset({"pending"})
+
+
+class ParticipantMutationError(Exception):
+    pass
 
 
 def _truncate_text(value, max_length=240):
@@ -262,3 +267,18 @@ def get_participant_detail(db, participant_id: str):
         },
         "history": history,
     }
+
+
+def update_participant_language(db, participant_id: str, language_value):
+    participant = db.get(Participant, participant_id)
+    if not participant:
+        raise ParticipantMutationError("Participant not found")
+
+    language = canonical_language_code(language_value)
+    if not language:
+        raise ParticipantMutationError("Language is required")
+
+    participant.target_language = language
+    upsert_system_language(db, language, source="participant")
+    db.flush()
+    return participant

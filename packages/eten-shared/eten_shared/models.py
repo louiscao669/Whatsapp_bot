@@ -117,6 +117,8 @@ class Participant(Base):
     target_language: Mapped[Optional[str]] = mapped_column(String(64), index=True)
     locale: Mapped[Optional[str]] = mapped_column(String(32))
     timezone: Mapped[Optional[str]] = mapped_column(String(64))
+    profile_photo_uri: Mapped[Optional[str]] = mapped_column(Text)
+    dashboard_preferences: Mapped[dict] = mapped_column(JSON, default=dict, nullable=False)
     consented: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     preferred_batch_size: Mapped[int] = mapped_column(Integer, default=3, nullable=False)
     completed_count: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
@@ -135,6 +137,12 @@ class Participant(Base):
     events: Mapped[List["ParticipantEvent"]] = relationship(back_populates="participant")
     reminders: Mapped[List["Reminder"]] = relationship(back_populates="participant")
     badges: Mapped[List["ParticipantBadge"]] = relationship(back_populates="participant")
+    wallet: Mapped[Optional["ParticipantWallet"]] = relationship(
+        back_populates="participant", uselist=False
+    )
+    currency_events: Mapped[List["ParticipantCurrencyEvent"]] = relationship(
+        back_populates="participant"
+    )
     session: Mapped[Optional["ParticipantSession"]] = relationship(
         back_populates="participant", uselist=False
     )
@@ -476,6 +484,62 @@ class ParticipantBadge(Base):
     )
 
     participant: Mapped["Participant"] = relationship(back_populates="badges")
+
+
+class ParticipantWallet(Base):
+    __tablename__ = "participant_wallets"
+    __table_args__ = (
+        UniqueConstraint("participant_id", name="uq_participant_wallets_participant"),
+    )
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    participant_id: Mapped[str] = mapped_column(
+        ForeignKey("participants.id", ondelete="CASCADE"), nullable=False
+    )
+    balance: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    lifetime_earned: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    lifetime_spent: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utc_now, nullable=False
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utc_now, onupdate=utc_now, nullable=False
+    )
+
+    participant: Mapped["Participant"] = relationship(back_populates="wallet")
+    events: Mapped[List["ParticipantCurrencyEvent"]] = relationship(back_populates="wallet")
+
+
+class ParticipantCurrencyEvent(Base):
+    __tablename__ = "participant_currency_events"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    participant_id: Mapped[str] = mapped_column(
+        ForeignKey("participants.id", ondelete="CASCADE"), nullable=False
+    )
+    wallet_id: Mapped[Optional[str]] = mapped_column(
+        ForeignKey("participant_wallets.id", ondelete="SET NULL")
+    )
+    assignment_id: Mapped[Optional[str]] = mapped_column(
+        ForeignKey("assignments.id", ondelete="SET NULL")
+    )
+    response_id: Mapped[Optional[str]] = mapped_column(
+        ForeignKey("participant_responses.id", ondelete="SET NULL")
+    )
+    amount: Mapped[int] = mapped_column(Integer, nullable=False)
+    balance_after: Mapped[int] = mapped_column(Integer, nullable=False)
+    reason: Mapped[str] = mapped_column(String(64), index=True, nullable=False)
+    source: Mapped[Optional[str]] = mapped_column(String(64))
+    source_event_id: Mapped[Optional[str]] = mapped_column(String(36), index=True)
+    currency_metadata: Mapped[dict] = mapped_column(
+        "metadata", JSON, default=dict, nullable=False
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utc_now, nullable=False
+    )
+
+    participant: Mapped["Participant"] = relationship(back_populates="currency_events")
+    wallet: Mapped[Optional["ParticipantWallet"]] = relationship(back_populates="events")
 
 
 class ParticipantSession(Base):

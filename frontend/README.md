@@ -1,6 +1,6 @@
 # Frontend (React + Vite)
 
-Admin SPA for the ETEN WhatsApp bot. In production, Flask serves `dist/` on port **7860**; during development you can use Vite HMR on port **5173**.
+Admin SPA for the ETEN participant messaging platform. In production, Flask serves `dist/` on port **7860**; during development you can use Vite HMR on port **5173**.
 
 ## Run locally (dev)
 
@@ -12,15 +12,15 @@ npm run dev
 
 Open http://localhost:5173
 
-Vite proxies `/api` and `/admin` to the **platform** on port **7860**, and `/webhook` to the **whatsapp-bot** on port **7861**. Start both first:
+Vite proxies `/api` and `/admin` to the **platform** on port **7860**, and `/webhook` to the **message-bot** on port **7861**. Start both first:
 
 ```bash
 # from repository root
 pip install -e ./packages/eten-shared
 pip install -r platform/requirements.txt
-pip install -r whatsapp-bot/requirements.txt
+pip install -r message-bot/requirements.txt
 python platform/app.py    # terminal 1
-python whatsapp-bot/app.py  # terminal 2
+python message-bot/app.py  # terminal 2
 ```
 
 ## Production build

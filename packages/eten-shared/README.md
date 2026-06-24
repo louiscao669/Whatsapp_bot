@@ -1,6 +1,6 @@
 # eten-shared
 
-Shared Python package used by `whatsapp-bot` and `platform`:
+Shared Python package used by `message-bot` and `platform`:
 
 - `models.py`, `database.py` — Supabase Postgres ORM
 - `media_storage.py` — Supabase Storage + WhatsApp media fetch

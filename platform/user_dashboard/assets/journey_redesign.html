@@ -1,0 +1,176 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-sans); }
+  .page { display: grid; grid-template-columns: 200px 1fr 200px; gap: 16px; padding: 16px; background: #F5F3EE; min-height: 600px; }
+  
+  /* Sidebar */
+  .sidebar { display: flex; flex-direction: column; gap: 4px; }
+  .avatar-wrap { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 16px 0 20px; }
+  .avatar { width: 64px; height: 64px; border-radius: 50%; background: #ddd; overflow: hidden; border: 3px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
+  .avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .username { font-weight: 700; font-size: 15px; color: #1a1a1a; }
+  .user-sub { font-size: 12px; color: #888; }
+  .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 12px; font-size: 14px; font-weight: 500; color: #555; cursor: pointer; transition: background 0.15s; }
+  .nav-item:hover { background: rgba(0,0,0,0.05); }
+  .nav-item.active { background: #58CC02; color: #fff; }
+  .nav-item .ti { font-size: 20px; }
+  
+  /* Main */
+  .main { display: flex; flex-direction: column; gap: 12px; }
+  
+  /* Hero card */
+  .hero { background: #FFF9E6; border-radius: 20px; padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; border: 2px solid #FFE680; position: relative; overflow: hidden; }
+  .hero-label { font-size: 11px; font-weight: 800; letter-spacing: 0.08em; color: #A0850A; text-transform: uppercase; margin-bottom: 4px; }
+  .hero-title { font-size: 36px; font-weight: 900; color: #1a1a1a; line-height: 1; }
+  .hero-sub { font-size: 13px; color: #777; margin-top: 6px; max-width: 260px; }
+  .progress-ring { position: relative; width: 80px; height: 80px; flex-shrink: 0; }
+  .progress-ring svg { transform: rotate(-90deg); }
+  .ring-bg { fill: none; stroke: #E8E0C0; stroke-width: 7; }
+  .ring-fill { fill: none; stroke: #58CC02; stroke-width: 7; stroke-linecap: round; stroke-dasharray: 220; stroke-dashoffset: 152; }
+  .ring-label { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .ring-pct { font-size: 18px; font-weight: 900; color: #1a1a1a; line-height: 1; }
+  .ring-word { font-size: 9px; color: #888; text-transform: uppercase; letter-spacing: 0.05em; }
+  
+  /* Stats row */
+  .stats-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+  .stat-card { background: #fff; border-radius: 14px; padding: 14px 16px; border: 1.5px solid #E8E8E0; }
+  .stat-label { font-size: 10px; font-weight: 800; letter-spacing: 0.07em; text-transform: uppercase; color: #58CC02; margin-bottom: 4px; }
+  .stat-val { font-size: 20px; font-weight: 900; color: #1a1a1a; }
+  
+  /* Chapter cards */
+  .chapter { background: #fff; border-radius: 18px; padding: 18px 20px; border: 2px solid #E8E8E0; display: flex; align-items: center; gap: 16px; cursor: pointer; transition: transform 0.1s, box-shadow 0.1s; }
+  .chapter:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.08); }
+  .chapter.active-ch { border-color: #58CC02; box-shadow: 0 4px 0 #46A302; }
+  .ch-num { width: 52px; height: 52px; border-radius: 50%; background: #E8F9D4; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 900; color: #46A302; flex-shrink: 0; border: 2.5px solid #58CC02; }
+  .ch-body { flex: 1; }
+  .ch-top { display: flex; align-items: center; gap: 8px; margin-bottom: 2px; }
+  .ch-name { font-size: 17px; font-weight: 800; color: #1a1a1a; }
+  .badge { font-size: 11px; font-weight: 800; padding: 3px 10px; border-radius: 20px; }
+  .badge-active { background: #E8F9D4; color: #2E8A00; border: 1.5px solid #58CC02; }
+  .ch-sub { font-size: 13px; color: #888; margin-bottom: 8px; }
+  .prog-track { height: 10px; background: #EEE; border-radius: 10px; overflow: hidden; }
+  .prog-fill { height: 100%; border-radius: 10px; background: linear-gradient(90deg, #58CC02, #89E219); width: 45%; }
+  .prog-fill2 { background: linear-gradient(90deg, #58CC02, #89E219); width: 25%; }
+  .ch-btn { background: #fff; border: 2.5px solid #1a1a1a; border-radius: 12px; padding: 10px 20px; font-size: 14px; font-weight: 800; color: #1a1a1a; cursor: pointer; flex-shrink: 0; transition: background 0.1s; box-shadow: 0 3px 0 #1a1a1a; }
+  .ch-btn:hover { background: #f5f5f5; }
+  .ch-btn.primary-btn { background: #58CC02; color: #fff; border-color: #46A302; box-shadow: 0 3px 0 #46A302; }
+  .ch-btn.primary-btn:hover { background: #62D900; }
+  
+  /* Right panel */
+  .right { display: flex; flex-direction: column; gap: 12px; }
+  .widget-card { background: #fff; border-radius: 16px; padding: 16px; border: 1.5px solid #E8E8E0; }
+  .widget-title { font-size: 14px; font-weight: 800; color: #1a1a1a; margin-bottom: 4px; }
+  .widget-sub { font-size: 12px; color: #888; line-height: 1.4; }
+  .fire-icon { font-size: 28px; display: block; margin-bottom: 6px; }
+  
+  /* Top bar */
+  .topbar { display: flex; justify-content: flex-end; align-items: center; gap: 16px; padding: 4px 0 8px; }
+  .stat-pill { display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 800; color: #1a1a1a; }
+  .stat-pill .ti { font-size: 20px; color: #FF9600; }
+</style>
+
+<div class="page">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="avatar-wrap">
+      <div class="avatar" style="background: #c8d8e8; display:flex;align-items:center;justify-content:center;font-size:28px;">🧑</div>
+      <div class="username">Test User 3</div>
+      <div class="user-sub">WhatsApp 15551234567</div>
+    </div>
+    <div class="nav-item active"><i class="ti ti-route" aria-hidden="true"></i> Journey</div>
+    <div class="nav-item"><i class="ti ti-star" aria-hidden="true"></i> Achievements</div>
+    <div class="nav-item"><i class="ti ti-users" aria-hidden="true"></i> Community</div>
+    <div class="nav-item"><i class="ti ti-hand-stop" aria-hidden="true"></i> Contribution</div>
+    <div class="nav-item"><i class="ti ti-shopping-bag" aria-hidden="true"></i> Store</div>
+  </div>
+
+  <!-- Main content -->
+  <div class="main">
+    <!-- Top bar -->
+    <div class="topbar">
+      <div class="stat-pill"><i class="ti ti-flame" style="color:#FF4500"></i> 0</div>
+      <div class="stat-pill"><i class="ti ti-diamond" style="color:#48C8FF"></i> 912</div>
+      <div class="stat-pill"><i class="ti ti-heart" style="color:#FF4B4B"></i> 0</div>
+    </div>
+
+    <!-- Hero -->
+    <div class="hero">
+      <div>
+        <div class="hero-label">Current path</div>
+        <div class="hero-title">Luke 1</div>
+        <div class="hero-sub">Keep moving through the chapter path and complete each question batch.</div>
+      </div>
+      <div class="progress-ring">
+        <svg width="80" height="80" viewBox="0 0 80 80">
+          <circle class="ring-bg" cx="40" cy="40" r="35"/>
+          <circle class="ring-fill" cx="40" cy="40" r="35"/>
+        </svg>
+        <div class="ring-label">
+          <span class="ring-pct">31%</span>
+          <span class="ring-word">overall</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-label">Chapters done</div>
+        <div class="stat-val">0 / 2</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Active chapter</div>
+        <div class="stat-val" style="font-size:16px;padding-top:2px;">Luke 1</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Next reward</div>
+        <div class="stat-val" style="font-size:14px;padding-top:2px;">🔥 Daily streak</div>
+      </div>
+    </div>
+
+    <!-- Chapter 1 -->
+    <div class="chapter active-ch">
+      <div class="ch-num">1</div>
+      <div class="ch-body">
+        <div class="ch-top">
+          <span class="ch-name">Luke 1</span>
+          <span class="badge badge-active">In progress</span>
+        </div>
+        <div class="ch-sub">Continue this chapter to unlock the next step.</div>
+        <div class="prog-track"><div class="prog-fill"></div></div>
+      </div>
+      <button class="ch-btn primary-btn">Continue</button>
+    </div>
+
+    <!-- Chapter 2 -->
+    <div class="chapter">
+      <div class="ch-num" style="background:#F5F5F5;color:#aaa;border-color:#ddd;">2</div>
+      <div class="ch-body">
+        <div class="ch-top">
+          <span class="ch-name">Luke 2</span>
+          <span class="badge" style="background:#FFF4E0;color:#A07000;border:1.5px solid #FFD060;">In progress</span>
+        </div>
+        <div class="ch-sub">Continue this chapter to unlock the next step.</div>
+        <div class="prog-track"><div class="prog-fill prog-fill2"></div></div>
+      </div>
+      <button class="ch-btn">Continue</button>
+    </div>
+  </div>
+
+  <!-- Right widgets -->
+  <div class="right" style="padding-top:48px;">
+    <div class="widget-card" style="border-color:#FFD060;background:#FFFBEE;">
+      <span class="fire-icon">🔥</span>
+      <div class="widget-title">Daily challenge</div>
+      <div class="widget-sub">Answer today's question batch to keep your streak alive.</div>
+      <button style="margin-top:10px;background:#FF9600;color:#fff;border:none;border-radius:10px;padding:8px 14px;font-size:13px;font-weight:800;cursor:pointer;width:100%;box-shadow:0 3px 0 #CC7000;">Start challenge →</button>
+    </div>
+    <div class="widget-card">
+      <span style="font-size:28px;display:block;margin-bottom:6px;">🏆</span>
+      <div class="widget-title">Unlock the leaderboard</div>
+      <div class="widget-sub">Keep contributing to climb the weekly board.</div>
+      <button style="margin-top:10px;background:#fff;color:#1a1a1a;border:2px solid #1a1a1a;border-radius:10px;padding:8px 14px;font-size:13px;font-weight:800;cursor:pointer;width:100%;box-shadow:0 3px 0 #1a1a1a;">View board →</button>
+    </div>
+  </div>
+</div>

@@ -124,17 +124,6 @@ export function fetchQaItemStats(qaItemId: string, languages: string[] = []) {
   )
 }
 
-export type AssignParticipant = {
-  id: string
-  display_name: string | null
-  wa_id: string
-  target_language: string | null
-}
-
-export function fetchAssignParticipants() {
-  return apiFetch<{ participants: AssignParticipant[] }>('/api/v1/qa-items/participants')
-}
-
 export function fetchImportTemplate() {
   return apiFetch<{ template: string; hint: string }>('/api/v1/qa-items/import-template')
 }
@@ -197,9 +186,8 @@ export async function importQaItemsFromFile(
 }
 
 export function bulkQaItemsAction(payload: {
-  action: 'delete' | 'assign'
+  action: 'delete'
   qa_item_ids: string[]
-  participant_id?: string
 }) {
   return apiFetch<{ ok: true; action: string; count: number; message: string }>(
     '/api/v1/qa-items/bulk',
@@ -301,11 +289,4 @@ export function fetchQaItemAssignments(qaItemId: string, languages: string[] = [
   return apiFetch<{ assignments: QaItemAssignmentRow[]; languages: string[] }>(
     `/api/v1/qa-items/${qaItemId}/assignments${query ? `?${query}` : ''}`,
   )
-}
-
-export function assignQaItem(qaItemId: string, participantId: string) {
-  return apiFetch<{ ok: true; message: string }>(`/api/v1/qa-items/${qaItemId}/assign`, {
-    method: 'POST',
-    body: JSON.stringify({ participant_id: participantId }),
-  })
 }

@@ -1,0 +1,139 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  .page { background: #F5F3EE; padding: 20px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 600px; display: flex; flex-direction: column; gap: 20px; }
+
+  /* Currency bar */
+  .currency-bar { display: flex; align-items: center; justify-content: flex-end; gap: 8px; }
+  .currency-pill { background: #fff; border: 1.5px solid #E8E8E0; border-radius: 20px; padding: 8px 16px; display: flex; align-items: center; gap: 6px; font-size: 15px; font-weight: 800; color: #1a1a1a; }
+
+  /* Section */
+  .section-label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: #888; margin-bottom: 10px; }
+
+  /* Item cards — tools */
+  .tool-card { background: #fff; border-radius: 18px; border: 1.5px solid #E8E8E0; padding: 18px 20px; display: flex; align-items: center; gap: 16px; margin-bottom: 10px; transition: transform 0.1s; }
+  .tool-card:hover { transform: translateY(-1px); }
+  .tool-card.owned { border-color: #B8E8FF; background: #F0FAFF; }
+
+  .item-icon { width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 28px; flex-shrink: 0; }
+  .item-body { flex: 1; }
+  .item-name { font-size: 16px; font-weight: 800; color: #1a1a1a; margin-bottom: 2px; }
+  .item-desc { font-size: 13px; color: #888; margin-bottom: 8px; line-height: 1.4; }
+  .item-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+  .tag { font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 20px; display: flex; align-items: center; gap: 4px; }
+  .tag-diamond { background: #EAF6FF; color: #1899FF; border: 1.5px solid #A8D8FF; }
+  .tag-owned { background: #E8F9D4; color: #2E8A00; border: 1.5px solid #58CC02; }
+  .tag-stack { background: #FFF4E0; color: #A07000; border: 1.5px solid #FFD060; }
+
+  /* Buttons */
+  .btn-owned { background: #E8F9D4; color: #2E8A00; border: 2px solid #58CC02; border-radius: 12px; padding: 10px 20px; font-size: 14px; font-weight: 800; cursor: default; flex-shrink: 0; }
+  .btn-equip { background: #fff; color: #1a1a1a; border: 2px solid #1a1a1a; border-radius: 12px; padding: 10px 20px; font-size: 14px; font-weight: 800; cursor: pointer; flex-shrink: 0; box-shadow: 0 3px 0 #1a1a1a; transition: transform 0.1s; }
+  .btn-equip:hover { transform: translateY(-1px); }
+  .btn-buy { background: #48C8FF; color: #fff; border: 2px solid #00A0E0; border-radius: 12px; padding: 10px 20px; font-size: 14px; font-weight: 800; cursor: pointer; flex-shrink: 0; box-shadow: 0 3px 0 #0080C0; transition: transform 0.1s; }
+  .btn-buy:hover { transform: translateY(-1px); }
+
+  /* Decoration cards — grid */
+  .deco-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .deco-card { background: #fff; border-radius: 18px; border: 1.5px solid #E8E8E0; padding: 18px; display: flex; flex-direction: column; gap: 10px; transition: transform 0.1s; }
+  .deco-card:hover { transform: translateY(-2px); }
+  .deco-card.equipped { border-color: #FFD060; background: #FFFBEE; box-shadow: 0 3px 0 #F0C000; }
+  .deco-preview { height: 80px; border-radius: 10px; margin-bottom: 4px; display: flex; align-items: center; justify-content: center; font-size: 32px; }
+  .preview-sunrise { background: linear-gradient(135deg, #FFE4A0, #FFAA50, #FF7070); }
+  .preview-gold { background: linear-gradient(135deg, #FFF4CC, #FFD060, #CC9900); }
+  .preview-night { background: linear-gradient(135deg, #1a1a3a, #3a2a6a, #6a3a9a); }
+  .preview-ocean { background: linear-gradient(135deg, #A0D8FF, #48A8FF, #0060CC); }
+  .deco-footer { display: flex; align-items: center; justify-content: space-between; }
+  .equipped-badge { font-size: 11px; font-weight: 800; color: #A07000; background: #FFF4CC; border: 1.5px solid #FFD060; border-radius: 20px; padding: 3px 10px; }
+</style>
+
+<div class="page">
+
+  <!-- Currency -->
+  <div class="currency-bar">
+    <div class="currency-pill">💎 912</div>
+    <div class="currency-pill">❤️ 5</div>
+  </div>
+
+  <!-- Tools -->
+  <div>
+    <div class="section-label">🛠 Tools</div>
+
+    <div class="tool-card owned">
+      <div class="item-icon" style="background:#EEF6FF; border: 2px solid #B8D8FF;">🧊</div>
+      <div class="item-body">
+        <div class="item-name">Streak freeze</div>
+        <div class="item-desc">Protects your streak for one missed day.</div>
+        <div class="item-tags">
+          <span class="tag tag-diamond">💎 8</span>
+          <span class="tag tag-stack">📦 Owned 3/3</span>
+        </div>
+      </div>
+      <div class="btn-owned">✓ Owned</div>
+    </div>
+
+    <div class="tool-card owned">
+      <div class="item-icon" style="background:#FFF0F0; border: 2px solid #FFB8B8;">❤️</div>
+      <div class="item-body">
+        <div class="item-name">Extra life</div>
+        <div class="item-desc">A saved recovery chance for future retry mechanics.</div>
+        <div class="item-tags">
+          <span class="tag tag-diamond">💎 12</span>
+          <span class="tag tag-stack">📦 Owned 3/3</span>
+        </div>
+      </div>
+      <div class="btn-owned">✓ Owned</div>
+    </div>
+  </div>
+
+  <!-- Decoration -->
+  <div>
+    <div class="section-label">✨ Decoration</div>
+    <div class="deco-grid">
+
+      <div class="deco-card">
+        <div class="deco-preview preview-sunrise">🌅</div>
+        <div>
+          <div class="item-name">Sunrise background</div>
+          <div class="item-desc" style="margin-top:3px;">Warm sunrise colors on your dashboard.</div>
+        </div>
+        <div class="item-tags"><span class="tag tag-diamond">💎 8</span><span class="tag tag-owned">✓ Owned</span></div>
+        <button class="btn-equip">Equip</button>
+      </div>
+
+      <div class="deco-card equipped">
+        <div class="deco-preview preview-gold">👑</div>
+        <div>
+          <div class="item-name">Gold profile frame</div>
+          <div class="item-desc" style="margin-top:3px;">Adds a gold frame to your profile.</div>
+        </div>
+        <div class="item-tags"><span class="tag tag-diamond">💎 10</span><span class="tag tag-owned">✓ Owned</span></div>
+        <div class="deco-footer">
+          <button class="btn-equip" style="flex:1;">Unequip</button>
+          <span class="equipped-badge" style="margin-left:8px;">Equipped</span>
+        </div>
+      </div>
+
+      <div class="deco-card">
+        <div class="deco-preview preview-night">🌙</div>
+        <div>
+          <div class="item-name">Night sky background</div>
+          <div class="item-desc" style="margin-top:3px;">A deep purple starry night theme.</div>
+        </div>
+        <div class="item-tags"><span class="tag tag-diamond">💎 15</span></div>
+        <button class="btn-buy">💎 Buy</button>
+      </div>
+
+      <div class="deco-card">
+        <div class="deco-preview preview-ocean">🌊</div>
+        <div>
+          <div class="item-name">Ocean profile frame</div>
+          <div class="item-desc" style="margin-top:3px;">A cool blue frame for your profile.</div>
+        </div>
+        <div class="item-tags"><span class="tag tag-diamond">💎 10</span></div>
+        <button class="btn-buy">💎 Buy</button>
+      </div>
+
+    </div>
+  </div>
+
+</div>

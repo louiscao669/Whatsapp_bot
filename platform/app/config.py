@@ -2,10 +2,26 @@ import logging
 import os
 import sys
 from datetime import timedelta
+from importlib.util import module_from_spec, spec_from_file_location
 
 from dotenv import load_dotenv
 
 from eten_shared.repo_paths import REPO_ROOT
+
+
+def _load_config_defaults():
+    config_path = REPO_ROOT / "config.py"
+    if not config_path.exists():
+        return
+
+    spec = spec_from_file_location("eten_runtime_config", config_path)
+    if not spec or not spec.loader:
+        return
+
+    module = module_from_spec(spec)
+    spec.loader.exec_module(module)
+    for key, value in getattr(module, "CONFIG_DEFAULTS", {}).items():
+        os.environ.setdefault(key, str(value))
 
 
 def _strip_env_token(value):
@@ -15,6 +31,7 @@ def _strip_env_token(value):
 
 
 def load_configurations(app):
+    _load_config_defaults()
     load_dotenv(REPO_ROOT / ".env")
     load_dotenv()
     app.config["SECRET_KEY"] = os.getenv("FLASK_SECRET_KEY") or os.getenv("APP_SECRET")

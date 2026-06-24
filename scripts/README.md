@@ -1,5 +1,41 @@
 # Test scripts
 
+## Translate LLM QA output to Chinese
+
+Translate a mixed open-QA/MCQ JSON file shaped like:
+
+```json
+[
+  {"q_type": "open", "Q": "Who was with Luke?", "A": "The eyewitnesses."},
+  {
+    "q_type": "mcq",
+    "Q": "Who was with Luke?",
+    "A": {"A": "Pilate", "B": "Eyewitnesses", "C": "Herod", "D": "Pharisees"},
+    "correct": "B"
+  }
+]
+```
+
+Run from the repository root:
+
+```bash
+export OPENAI_API_KEY=...
+python evaluation/scripts/translate_llm_qa_to_chinese.py input.json evaluation/outputs/qa_zh.json
+```
+
+Use `--format native` to emit JSON that can be pasted into the admin QA importer:
+
+```bash
+python evaluation/scripts/translate_llm_qa_to_chinese.py input.json evaluation/outputs/qa_zh_native.json --format native
+```
+
+The compact output shape is:
+
+```json
+{"q_type": "open", "Q": "中文", "A": "中文"}
+{"q_type": "mcq", "Q": "中文", "A": {"A": "中文", "B": "中文", "C": "中文", "D": "中文"}}
+```
+
 ## Rescore existing responses (keywords)
 
 Re-run per-language keyword scoring on stored transcript/text:
@@ -18,7 +54,7 @@ python scripts/rescore_participant_responses.py --participant "test user 2" --co
 python scripts/rescore_participant_responses.py --qa-item-id f4b6925b-e0a7-4154-8261-334c61676383
 ```
 
-Requires `DATABASE_URL`, `OPENAI_API_KEY` (for `--retranscribe` or live audio ingest), and `pip install -e packages/eten-shared && pip install -r platform/requirements.txt && pip install -r whatsapp-bot/requirements.txt`.
+Requires `DATABASE_URL`, `OPENAI_API_KEY` (for `--retranscribe` or live audio ingest), and `pip install -e packages/eten-shared && pip install -r platform/requirements.txt && pip install -r message-bot/requirements.txt`.
 
 Run commands from the **repository root**.
 

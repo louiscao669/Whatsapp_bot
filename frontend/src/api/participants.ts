@@ -55,3 +55,13 @@ export function fetchParticipants() {
 export function fetchParticipantDetail(participantId: string) {
   return apiFetch<ParticipantDetail>(`/api/v1/participants/${participantId}`)
 }
+
+export function updateParticipantLanguage(participantId: string, language: string) {
+  return apiFetch<ParticipantDetail & { ok: true; message: string }>(
+    `/api/v1/participants/${participantId}/language`,
+    {
+      method: 'PATCH',
+      body: JSON.stringify({ language }),
+    },
+  )
+}

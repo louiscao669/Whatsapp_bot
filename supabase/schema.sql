@@ -5,6 +5,8 @@ create table if not exists participants (
     target_language text,
     locale text,
     timezone text,
+    profile_photo_uri text,
+    dashboard_preferences jsonb not null default '{}'::jsonb,
     consented boolean not null default false,
     preferred_batch_size integer not null default 3,
     completed_count integer not null default 0,
@@ -190,6 +192,32 @@ create table if not exists participant_badges (
     constraint uq_participant_badges_participant_badge_type unique (participant_id, badge_type)
 );
 
+create table if not exists participant_wallets (
+    id text primary key default gen_random_uuid()::text,
+    participant_id text not null references participants(id) on delete cascade,
+    balance integer not null default 0,
+    lifetime_earned integer not null default 0,
+    lifetime_spent integer not null default 0,
+    created_at timestamptz not null default now(),
+    updated_at timestamptz not null default now(),
+    constraint uq_participant_wallets_participant unique (participant_id)
+);
+
+create table if not exists participant_currency_events (
+    id text primary key default gen_random_uuid()::text,
+    participant_id text not null references participants(id) on delete cascade,
+    wallet_id text references participant_wallets(id) on delete set null,
+    assignment_id text references assignments(id) on delete set null,
+    response_id text references participant_responses(id) on delete set null,
+    amount integer not null,
+    balance_after integer not null,
+    reason text not null,
+    source text,
+    source_event_id text,
+    metadata jsonb not null default '{}'::jsonb,
+    created_at timestamptz not null default now()
+);
+
 create table if not exists participant_sessions (
     id text primary key default gen_random_uuid()::text,
     participant_id text not null references participants(id) on delete cascade,
@@ -252,6 +280,15 @@ create index if not exists idx_reminders_status on reminders(status);
 create index if not exists idx_reminders_scheduled_for on reminders(scheduled_for);
 create index if not exists idx_participant_badges_participant_id on participant_badges(participant_id);
 create index if not exists idx_participant_badges_badge_type on participant_badges(badge_type);
+create index if not exists idx_participant_wallets_participant_id on participant_wallets(participant_id);
+create index if not exists idx_participant_currency_events_participant_id
+    on participant_currency_events(participant_id);
+create index if not exists idx_participant_currency_events_reason
+    on participant_currency_events(reason);
+create index if not exists idx_participant_currency_events_source_event_id
+    on participant_currency_events(source_event_id);
+create index if not exists idx_participant_currency_events_created_at
+    on participant_currency_events(created_at);
 create index if not exists idx_participant_sessions_current_batch_id on participant_sessions(current_batch_id);
 create index if not exists idx_participant_sessions_state on participant_sessions(state);
 create index if not exists idx_admin_users_email on admin_users(email);
