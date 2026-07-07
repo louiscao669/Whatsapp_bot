@@ -132,7 +132,15 @@ export function parseWaIdFromLocation() {
 
 export function apiBaseFromLocation() {
   const params = new URLSearchParams(window.location.search);
-  return (params.get("api_base") || window.USER_DASHBOARD_API_BASE || DEFAULT_API_BASE).replace(/\/$/, "");
+  const explicit = params.get("api_base") || window.USER_DASHBOARD_API_BASE;
+  if (explicit) {
+    return explicit.replace(/\/$/, "");
+  }
+  const origin = window.location.origin;
+  if (origin && !["http://127.0.0.1:5500", "http://localhost:5500"].includes(origin)) {
+    return origin.replace(/\/$/, "");
+  }
+  return DEFAULT_API_BASE;
 }
 
 export function normalizeDashboard(payload) {
@@ -170,6 +178,19 @@ export async function postJson(waId, path, body) {
     throw new Error(payload.message || `Request failed with ${response.status}`);
   }
   return normalizeDashboard(payload);
+}
+
+export async function postRawJson(waId, path, body) {
+  const response = await fetch(`${apiBaseFromLocation()}/user-dashboard/api/${encodeURIComponent(waId)}${path}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body)
+  });
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(payload.message || `Request failed with ${response.status}`);
+  }
+  return payload;
 }
 
 export async function uploadProfilePhoto(waId, file) {

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { ApiError } from '../api/client'
+import { ApiError, getCachedApiData } from '../api/client'
 import {
   fetchReviewResponse,
   submitReviewResponseDecision,
@@ -71,17 +71,24 @@ function KeywordsBlock({ keywords }: { keywords: ReviewResponseItem['keywords'] 
 export function ReviewResponsePage() {
   const [searchParams, setSearchParams] = useSearchParams()
   const language = searchParams.get('language') ?? ''
+  const reviewPath = `/api/v1/review-response${language ? `?language=${encodeURIComponent(language)}` : ''}`
+  const cachedDashboard = getCachedApiData<ReviewResponseDashboard>(reviewPath)
 
-  const [dashboard, setDashboard] = useState<ReviewResponseDashboard | null>(null)
-  const [loading, setLoading] = useState(true)
+  const [dashboard, setDashboard] = useState<ReviewResponseDashboard | null>(cachedDashboard)
+  const [loading, setLoading] = useState(!cachedDashboard)
   const [error, setError] = useState('')
   const [message, setMessage] = useState('')
   const [busyId, setBusyId] = useState('')
 
   const load = useCallback((options?: { silent?: boolean }) => {
     const silent = options?.silent ?? false
+    const path = `/api/v1/review-response${language ? `?language=${encodeURIComponent(language)}` : ''}`
+    const cached = getCachedApiData<ReviewResponseDashboard>(path)
+    if (cached) {
+      setDashboard(cached)
+    }
     if (!silent) {
-      setLoading(true)
+      setLoading(!cached)
     }
     setError('')
     return fetchReviewResponse(language || undefined)

@@ -1,9 +1,27 @@
 """Participant wallet, store, and cosmetic helpers for the user dashboard."""
 
 from datetime import datetime, timedelta, timezone
+import os
+import random
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from sqlalchemy import distinct, func, select
 
+from eten_shared.domain.batch_schedules import (
+    BATCH_NEXT_ASSIGNMENT_TYPE,
+    cancel_pending_next_batch_schedules,
+)
+from eten_shared.domain.assignments import (
+    complete_current_batch_if_needed,
+    create_assignment_for_qa_item,
+    get_or_create_participant_session,
+    record_participant_event,
+)
+from eten_shared.domain.qa_eligibility import qa_item_is_assignable
+from eten_shared.keyword_matching import (
+    keyword_matches_in_response,
+    normalize_response_text,
+)
 from eten_shared.media_storage import (
     delete_storage_uri,
     download_storage_object,
@@ -20,6 +38,24 @@ from eten_shared.models import (
     ParticipantResponse,
     ParticipantWallet,
     QAItem,
+    QAItemRecording,
+    Reminder,
+    ReminderStatus,
+    ResponseType,
+    ReviewStatus,
+    SessionState,
+    utc_now,
+)
+from eten_shared.mcq import (
+    choice_response_is_correct,
+    choice_response_letter,
+    is_choice_scored_item,
+)
+from eten_shared.qa_keywords import get_language_keywords
+from eten_shared.question_discovery import select_next_qa_item
+from eten_shared.recordings import (
+    get_latest_question_recording,
+    participant_language_code,
 )
 from eten_shared.domain.streaks import (
     STREAK_FREEZE_ITEM_ID,
@@ -27,6 +63,11 @@ from eten_shared.domain.streaks import (
     latest_progress_report,
     set_streak_pause,
     streak_status_payload,
+    update_streak_for_response,
+)
+from app.services.qa_item_stats_service import (
+    format_choice_correctness_label,
+    open_response_status_label,
 )
 from user_dashboard.backend import compose_dashboard_view_model
 
@@ -34,6 +75,13 @@ from user_dashboard.backend import compose_dashboard_view_model
 LEADERBOARD_LIMIT = 10
 MAX_PROFILE_PHOTO_BYTES = 5 * 1024 * 1024
 PROFILE_PHOTO_CHANGE_COST = 5
+CHEST_REWARD_MIN = 2
+CHEST_REWARD_MAX = 5
+ANSWER_COMPLETED_DIAMONDS = 1
+FIRST_ANSWER_COMPLETED_DIAMONDS = 5
+BATCH_COMPLETED_BONUS_DIAMONDS = 3
+DEFAULT_NEXT_BATCH_HOUR = 8
+DEFAULT_NEXT_BATCH_TIMEZONE = "UTC"
 ALLOWED_PROFILE_PHOTO_TYPES = {
     "image/jpeg",
     "image/png",
@@ -100,8 +148,442 @@ class StreakPauseUpdateError(Exception):
     pass
 
 
+class ChestRewardError(Exception):
+    pass
+
+
+class DashboardAnswerError(Exception):
+    pass
+
+
 def _iso_datetime(value):
     return value.isoformat() if value else None
+
+
+def _luke_chapter_from_reference(passage_reference):
+    reference = str(passage_reference or "")
+    if not reference.lower().startswith("luke "):
+        return None
+    chapter_text = reference.split(" ", 1)[1].split(":", 1)[0].strip()
+    if not chapter_text.isdigit():
+        return None
+    return int(chapter_text)
+
+
+def _choice_text_for_letter(qa_item, letter):
+    normalized = (letter or "").strip().upper()
+    choices = list(qa_item.mcq_choices or [])
+    if not normalized or len(normalized) != 1:
+        return ""
+    index = ord(normalized) - ord("A")
+    if index < 0 or index >= len(choices):
+        return ""
+    return str(choices[index] or "").strip()
+
+
+def _format_choice_answer(qa_item, letter):
+    normalized = (letter or "").strip().upper()
+    text = _choice_text_for_letter(qa_item, normalized)
+    if normalized and text:
+        return f"{normalized}. {text}"
+    return normalized or "No answer recorded"
+
+
+def _latest_answer_recording(db, qa_item, participant):
+    language = participant_language_code(participant)
+    statement = select(QAItemRecording).where(
+        QAItemRecording.qa_item_id == qa_item.id,
+        QAItemRecording.recording_type == "answer",
+        func.lower(QAItemRecording.language) == language.lower(),
+    )
+    if is_choice_scored_item(qa_item):
+        correct_letter = (qa_item.mcq_correct_choice or "").strip().upper()
+        if correct_letter:
+            statement = statement.where(
+                QAItemRecording.version == ord(correct_letter) - ord("A") + 1
+            )
+    return db.scalars(
+        statement.order_by(
+            QAItemRecording.version.desc(),
+            QAItemRecording.created_at.desc(),
+        )
+    ).first()
+
+
+def _latest_question_audio_url(db, qa_item, participant):
+    language = participant_language_code(participant)
+    recording = get_latest_question_recording(db, qa_item.id, language)
+    if recording:
+        return f"/user-dashboard/api/{participant.wa_id}/qa-question-recording/{recording.id}/audio"
+    return qa_item.audio_url
+
+
+def _serialize_dashboard_question(
+    db,
+    participant,
+    assignment,
+    qa_item,
+    *,
+    question_index=0,
+):
+    chapter_number = _luke_chapter_from_reference(qa_item.passage_reference)
+    return {
+        "assignment_id": assignment.id,
+        "qa_item_id": qa_item.id,
+        "batch_id": assignment.batch_id,
+        "question_index": max(int(question_index or 0), 0),
+        "chapter": chapter_number,
+        "chapter_label": f"Chapter {chapter_number}" if chapter_number else None,
+        "passage_reference": qa_item.passage_reference,
+        "question": qa_item.question_text,
+        "question_type": (qa_item.question_type or "open").strip().lower(),
+        "mcq_choices": list(qa_item.mcq_choices or []),
+        "audio_url": _latest_question_audio_url(db, qa_item, participant),
+        "status": "current",
+    }
+
+
+def _score_text_response_with_rubric(response_text, rubric):
+    normalized_text = normalize_response_text(response_text or "")
+    required_keywords = rubric.required_keywords or []
+    matched_keywords = []
+    missing_keywords = []
+
+    for keyword in required_keywords:
+        if keyword_matches_in_response(
+            keyword,
+            response_text or "",
+            keyword_specs=rubric.required_keyword_specs,
+        ):
+            matched_keywords.append(keyword)
+        else:
+            missing_keywords.append(keyword)
+
+    if not required_keywords:
+        return (
+            normalized_text,
+            None,
+            matched_keywords,
+            missing_keywords,
+            True,
+            "Pending expert review: no required keywords configured for this language.",
+        )
+
+    correctness_score = len(matched_keywords) / len(required_keywords)
+    needs_expert_review = bool(missing_keywords)
+    flag_reason = (
+        "Missing required keywords: " + ", ".join(missing_keywords)
+        if missing_keywords
+        else None
+    )
+    return (
+        normalized_text,
+        correctness_score,
+        matched_keywords,
+        missing_keywords,
+        needs_expert_review,
+        flag_reason,
+    )
+
+
+def _score_open_dashboard_response(db, participant, qa_item, response_text):
+    rubric = get_language_keywords(db, qa_item.id, participant.target_language or "eng")
+    return _score_text_response_with_rubric(response_text, rubric)
+
+
+def _award_dashboard_currency(
+    db,
+    participant,
+    amount,
+    reason,
+    *,
+    assignment_id=None,
+    response_id=None,
+    source_event_id=None,
+    metadata=None,
+):
+    if not amount:
+        return None
+    existing = None
+    if response_id:
+        existing = db.scalars(
+            select(ParticipantCurrencyEvent).where(
+                ParticipantCurrencyEvent.participant_id == participant.id,
+                ParticipantCurrencyEvent.reason == reason,
+                ParticipantCurrencyEvent.response_id == response_id,
+            )
+        ).first()
+    elif source_event_id:
+        existing = db.scalars(
+            select(ParticipantCurrencyEvent).where(
+                ParticipantCurrencyEvent.participant_id == participant.id,
+                ParticipantCurrencyEvent.reason == reason,
+                ParticipantCurrencyEvent.source_event_id == source_event_id,
+            )
+        ).first()
+    if existing:
+        return None
+
+    wallet = _get_or_create_wallet(db, participant)
+    wallet.balance += amount
+    wallet.updated_at = utc_now()
+    if amount > 0:
+        wallet.lifetime_earned += amount
+    else:
+        wallet.lifetime_spent += abs(amount)
+    event = ParticipantCurrencyEvent(
+        participant_id=participant.id,
+        wallet_id=wallet.id,
+        assignment_id=assignment_id,
+        response_id=response_id,
+        amount=amount,
+        balance_after=wallet.balance,
+        reason=reason,
+        source="user_dashboard",
+        source_event_id=source_event_id,
+        currency_metadata=metadata or {},
+    )
+    db.add(event)
+    db.flush()
+    return {
+        "event_id": event.id,
+        "amount": event.amount,
+        "balance_after": event.balance_after,
+        "reason": event.reason,
+    }
+
+
+def _select_next_dashboard_qa_item(db, participant):
+    qa_item = select_next_qa_item(db, participant)
+    if qa_item:
+        return qa_item
+
+    assigned_qa_item_ids = set(
+        db.scalars(
+            select(Assignment.qa_item_id).where(
+                Assignment.participant_id == participant.id
+            )
+        ).all()
+    )
+    candidates = [
+        row
+        for row in db.scalars(
+            select(QAItem)
+            .where(
+                QAItem.active.is_(True),
+                QAItem.review_removed_at.is_(None),
+            )
+            .order_by(QAItem.review_priority.desc(), QAItem.created_at.asc())
+        ).all()
+        if row.id not in assigned_qa_item_ids and qa_item_is_assignable(row)
+    ]
+    return candidates[0] if candidates else None
+
+
+def _next_batch_hour():
+    raw = os.getenv("BATCH_NEXT_ASSIGN_HOUR", str(DEFAULT_NEXT_BATCH_HOUR)).strip()
+    try:
+        hour = int(raw)
+    except ValueError:
+        return DEFAULT_NEXT_BATCH_HOUR
+    return hour if 0 <= hour <= 23 else DEFAULT_NEXT_BATCH_HOUR
+
+
+def _participant_zone(participant):
+    for candidate in (
+        getattr(participant, "timezone", None),
+        os.getenv("BATCH_NEXT_ASSIGN_DEFAULT_TIMEZONE"),
+        os.getenv("MESSAGE_BOT_DEFAULT_TIMEZONE"),
+        DEFAULT_NEXT_BATCH_TIMEZONE,
+    ):
+        name = (candidate or "").strip()
+        if not name:
+            continue
+        try:
+            return name, ZoneInfo(name)
+        except ZoneInfoNotFoundError:
+            continue
+    return DEFAULT_NEXT_BATCH_TIMEZONE, ZoneInfo(DEFAULT_NEXT_BATCH_TIMEZONE)
+
+
+def _next_batch_scheduled_time(participant):
+    timezone_name, participant_tz = _participant_zone(participant)
+    local_now = utc_now().astimezone(participant_tz)
+    scheduled_local = (local_now + timedelta(days=1)).replace(
+        hour=_next_batch_hour(),
+        minute=0,
+        second=0,
+        microsecond=0,
+    )
+    return scheduled_local.astimezone(timezone.utc), scheduled_local, timezone_name
+
+
+def _pending_next_batch_reminder(db, participant_id):
+    return db.scalars(
+        select(Reminder)
+        .where(
+            Reminder.participant_id == participant_id,
+            Reminder.reminder_type == BATCH_NEXT_ASSIGNMENT_TYPE,
+            Reminder.status == ReminderStatus.PENDING.value,
+        )
+        .order_by(Reminder.scheduled_for.asc())
+    ).first()
+
+
+def _schedule_dashboard_next_batch(db, participant):
+    cancel_pending_next_batch_schedules(
+        db,
+        participant.id,
+        reason="Superseded by dashboard batch-completion schedule",
+    )
+    scheduled_for, scheduled_local, timezone_name = _next_batch_scheduled_time(participant)
+    reminder = Reminder(
+        participant_id=participant.id,
+        assignment_id=None,
+        reminder_type=BATCH_NEXT_ASSIGNMENT_TYPE,
+        message_text="Auto-assign next dashboard batch after completion",
+        status=ReminderStatus.PENDING.value,
+        scheduled_for=scheduled_for,
+        delivery_metadata={
+            "schedule": "next_day_local_time",
+            "local_time": scheduled_local.isoformat(),
+            "timezone": timezone_name,
+            "source_surface": "user_dashboard",
+        },
+    )
+    db.add(reminder)
+    db.flush()
+    db.add(
+        ParticipantEvent(
+            participant_id=participant.id,
+            event_type="batch_next_scheduled",
+            source="user_dashboard",
+            event_metadata={
+                "reminder_id": reminder.id,
+                "scheduled_for": scheduled_for.isoformat(),
+                "scheduled_local": scheduled_local.isoformat(),
+                "timezone": timezone_name,
+            },
+        )
+    )
+    return reminder
+
+
+def _assign_dashboard_next_batch(db, participant, *, source, reminder=None):
+    participant_session = get_or_create_participant_session(db, participant)
+    if participant_session.state not in (
+        SessionState.IDLE.value,
+        SessionState.ONBOARDING.value,
+    ):
+        raise DashboardAnswerError("Finish the current question before starting a new batch")
+
+    cancel_pending_next_batch_schedules(
+        db,
+        participant.id,
+        reason=f"Dashboard next batch started by {source}",
+    )
+    participant_session.current_assignment_id = None
+    participant_session.current_batch_id = None
+    participant_session.state = SessionState.IDLE.value
+
+    qa_item = _select_next_dashboard_qa_item(db, participant)
+    if not qa_item:
+        raise DashboardAnswerError("No eligible question is available for a new batch")
+
+    prompt = create_assignment_for_qa_item(
+        db,
+        participant,
+        participant_session,
+        qa_item,
+        completed_batch_size=0,
+        assignment_source=source,
+    )
+    assignment = db.get(Assignment, prompt.assignment_id)
+    if reminder:
+        reminder.status = ReminderStatus.SENT.value
+        reminder.sent_at = utc_now()
+        reminder.updated_at = reminder.sent_at
+    db.add(
+        ParticipantEvent(
+            participant_id=participant.id,
+            event_type="batch_next_delivered",
+            source="user_dashboard",
+            event_metadata={
+                "assignment_id": assignment.id,
+                "qa_item_id": qa_item.id,
+                "batch_id": assignment.batch_id,
+                "reminder_id": reminder.id if reminder else None,
+                "delivery": source,
+                "assigned": True,
+            },
+        )
+    )
+    db.flush()
+    return assignment
+
+
+def _materialize_due_dashboard_next_batch(db, participant):
+    reminder = _pending_next_batch_reminder(db, participant.id)
+    if not reminder or reminder.scheduled_for > utc_now():
+        return None
+    try:
+        return _assign_dashboard_next_batch(
+            db,
+            participant,
+            source="scheduled",
+            reminder=reminder,
+        )
+    except DashboardAnswerError as exc:
+        reminder.status = ReminderStatus.FAILED.value
+        reminder.failure_reason = str(exc)
+        reminder.updated_at = utc_now()
+        return None
+
+
+def _serialize_completed_question_review(db, participant, assignment, qa_item):
+    response = db.scalars(
+        select(ParticipantResponse)
+        .where(ParticipantResponse.assignment_id == assignment.id)
+        .order_by(ParticipantResponse.received_at.desc(), ParticipantResponse.id.desc())
+    ).first()
+    if not response:
+        return None
+
+    choice_scored = is_choice_scored_item(qa_item)
+    if choice_scored:
+        user_letter = (response.response_text or "").strip().upper()
+        correct_letter = (qa_item.mcq_correct_choice or "").strip().upper()
+        participant_answer = _format_choice_answer(qa_item, user_letter)
+        correct_answer = _format_choice_answer(qa_item, correct_letter)
+        correctness = format_choice_correctness_label(response.is_correct)
+    else:
+        participant_answer = (
+            response.transcript_text or response.response_text or ""
+        ).strip() or "No answer recorded"
+        correct_answer = (qa_item.expected_answer or "").strip() or "No answer recorded"
+        correctness = open_response_status_label(response.is_correct)
+
+    response_audio_url = (
+        f"/user-dashboard/api/{participant.wa_id}/participant-response/{response.id}/audio"
+        if (response.media_url or "").strip()
+        else None
+    )
+    correct_recording = _latest_answer_recording(db, qa_item, participant)
+    return {
+        "question": qa_item.question_text,
+        "passage_reference": qa_item.passage_reference,
+        "question_type": (qa_item.question_type or "open").strip().lower(),
+        "participant_answer": participant_answer,
+        "participant_audio_url": response_audio_url,
+        "correct_answer": correct_answer,
+        "correct_audio_url": (
+            f"/user-dashboard/api/{participant.wa_id}/qa-answer-recording/{correct_recording.id}/audio"
+            if correct_recording
+            else None
+        ),
+        "correctness": correctness,
+        "submitted_at": _iso_datetime(response.received_at),
+    }
 
 
 def _week_bounds(now=None):
@@ -321,6 +803,291 @@ def purchase_store_item(db, wa_id: str, item_id: str):
     return get_user_dashboard_payload(db, wa_id)
 
 
+def _batch_reward_event(db, participant_id, batch_id):
+    if not batch_id:
+        return None
+    return db.scalars(
+        select(ParticipantCurrencyEvent)
+        .where(
+            ParticipantCurrencyEvent.participant_id == participant_id,
+            ParticipantCurrencyEvent.reason == "batch_chest_reward",
+            ParticipantCurrencyEvent.source_event_id == batch_id,
+        )
+        .order_by(ParticipantCurrencyEvent.created_at.desc())
+    ).first()
+
+
+def _batch_is_complete(db, participant_id, batch_id):
+    if not batch_id:
+        return False
+    assignments = db.scalars(
+        select(Assignment).where(
+            Assignment.participant_id == participant_id,
+            Assignment.batch_id == batch_id,
+        )
+    ).all()
+    return bool(assignments) and all(
+        assignment.status == AssignmentStatus.COMPLETED.value
+        for assignment in assignments
+    )
+
+
+def claim_batch_chest_reward(db, wa_id: str, batch_id: str):
+    batch_id = (batch_id or "").strip()
+    if not batch_id:
+        raise ChestRewardError("Batch is required")
+
+    participant = _participant_by_wa_id(db, wa_id)
+    if not participant:
+        raise ChestRewardError("Participant not found")
+    if not _batch_is_complete(db, participant.id, batch_id):
+        raise ChestRewardError("Complete this batch before opening the chest")
+    if _batch_reward_event(db, participant.id, batch_id):
+        raise ChestRewardError("This chest is already opened")
+
+    wallet = _get_or_create_wallet(db, participant)
+    amount = random.randint(CHEST_REWARD_MIN, CHEST_REWARD_MAX)
+    wallet.balance += amount
+    wallet.lifetime_earned += amount
+    wallet.updated_at = datetime.now(timezone.utc)
+
+    db.add(
+        ParticipantCurrencyEvent(
+            participant_id=participant.id,
+            wallet_id=wallet.id,
+            amount=amount,
+            balance_after=wallet.balance,
+            reason="batch_chest_reward",
+            source="user_dashboard",
+            source_event_id=batch_id,
+            currency_metadata={
+                "batch_id": batch_id,
+                "reward_type": "chest",
+                "min": CHEST_REWARD_MIN,
+                "max": CHEST_REWARD_MAX,
+            },
+        )
+    )
+    db.flush()
+    payload = get_user_dashboard_payload(db, wa_id)
+    payload["last_reward"] = {
+        "type": "batch_chest",
+        "batch_id": batch_id,
+        "amount": amount,
+        "currency": "diamonds",
+    }
+    return payload
+
+
+def submit_dashboard_answer(db, wa_id: str, assignment_id: str, response_text: str):
+    assignment_id = (assignment_id or "").strip()
+    answer_text = (response_text or "").strip()
+    if not assignment_id:
+        raise DashboardAnswerError("Assignment is required")
+    if not answer_text:
+        raise DashboardAnswerError("Answer is required")
+
+    participant = _participant_by_wa_id(db, wa_id)
+    if not participant:
+        raise DashboardAnswerError("Participant not found")
+
+    assignment = db.get(Assignment, assignment_id)
+    if not assignment or assignment.participant_id != participant.id:
+        raise DashboardAnswerError("Assignment not found")
+    if assignment.status == AssignmentStatus.COMPLETED.value:
+        raise DashboardAnswerError("This question is already answered")
+
+    qa_item = assignment.qa_item or db.get(QAItem, assignment.qa_item_id)
+    if not qa_item:
+        raise DashboardAnswerError("Question not found")
+
+    participant_session = get_or_create_participant_session(db, participant)
+    participant_session.current_assignment_id = assignment.id
+    participant_session.current_batch_id = assignment.batch_id
+    participant_session.state = SessionState.AWAITING_RESPONSE.value
+
+    normalized_text = None
+    correctness_score = None
+    matched_keywords = []
+    missing_keywords = []
+    flag_reason = None
+    needs_expert_review = False
+    stored_response_text = answer_text
+
+    if is_choice_scored_item(qa_item):
+        choice_correct = choice_response_is_correct(qa_item, answer_text)
+        stored_response_text = choice_response_letter(qa_item, answer_text)
+        is_correct_label = "yes (auto)" if choice_correct else "no (auto)"
+        review_status = ReviewStatus.AUTO.value
+    else:
+        (
+            normalized_text,
+            correctness_score,
+            matched_keywords,
+            missing_keywords,
+            needs_expert_review,
+            flag_reason,
+        ) = _score_open_dashboard_response(db, participant, qa_item, answer_text)
+        if needs_expert_review:
+            is_correct_label = "pending"
+        elif correctness_score is not None and correctness_score < 1.0:
+            is_correct_label = "no (auto)"
+        else:
+            is_correct_label = "yes (auto)"
+        review_status = (
+            ReviewStatus.PENDING.value
+            if needs_expert_review
+            else ReviewStatus.AUTO.value
+        )
+
+    response = ParticipantResponse(
+        participant_id=participant.id,
+        qa_item_id=qa_item.id,
+        assignment_id=assignment.id,
+        response_type=ResponseType.TEXT.value,
+        response_text=stored_response_text,
+        normalized_text=normalized_text,
+        correctness_score=correctness_score,
+        matched_keywords=matched_keywords,
+        missing_keywords=missing_keywords,
+        is_correct=is_correct_label,
+        flag_reason=flag_reason,
+        review_status=review_status,
+    )
+    db.add(response)
+
+    now = utc_now()
+    assignment.status = AssignmentStatus.COMPLETED.value
+    assignment.completed_at = now
+    assignment.started_at = assignment.started_at or now
+    assignment.attempt_count += 1
+    participant.completed_count = (participant.completed_count or 0) + 1
+    participant.last_seen_at = now
+    participant_session.current_assignment_id = None
+    participant_session.state = SessionState.IDLE.value
+
+    record_participant_event(
+        db,
+        participant,
+        "response_recorded",
+        {
+            "assignment_id": assignment.id,
+            "qa_item_id": qa_item.id,
+            "response_type": ResponseType.TEXT.value,
+            "correctness_score": correctness_score,
+            "is_correct": is_correct_label,
+            "choice_scored": is_choice_scored_item(qa_item),
+            "question_type": qa_item.question_type,
+            "source_surface": "user_dashboard",
+        },
+        source="user_dashboard",
+    )
+    db.flush()
+
+    response_amount = (
+        FIRST_ANSWER_COMPLETED_DIAMONDS
+        if (participant.completed_count or 0) == 1
+        else ANSWER_COMPLETED_DIAMONDS
+    )
+    _award_dashboard_currency(
+        db,
+        participant,
+        response_amount,
+        "answer_completed",
+        assignment_id=assignment.id,
+        response_id=response.id,
+        metadata={
+            "qa_item_id": qa_item.id,
+            "response_type": response.response_type,
+            "first_answer_bonus": response_amount == FIRST_ANSWER_COMPLETED_DIAMONDS,
+        },
+    )
+    update_streak_for_response(db, participant, response)
+
+    batch_completed, completed_batch_size = complete_current_batch_if_needed(
+        db,
+        participant,
+        participant_session,
+    )
+    next_assignment_id = None
+    next_question = None
+    if batch_completed:
+        _schedule_dashboard_next_batch(db, participant)
+        batch_event = db.scalars(
+            select(ParticipantEvent)
+            .where(
+                ParticipantEvent.participant_id == participant.id,
+                ParticipantEvent.event_type == "batch_completed",
+            )
+            .order_by(ParticipantEvent.created_at.desc(), ParticipantEvent.id.desc())
+        ).first()
+        _award_dashboard_currency(
+            db,
+            participant,
+            BATCH_COMPLETED_BONUS_DIAMONDS,
+            "batch_completed_bonus",
+            source_event_id=batch_event.id if batch_event else assignment.batch_id,
+            metadata={
+                "batch_id": assignment.batch_id,
+                "completed_batch_size": completed_batch_size,
+            },
+        )
+    else:
+        participant_session.current_batch_id = assignment.batch_id
+        next_qa_item = _select_next_dashboard_qa_item(db, participant)
+        if next_qa_item:
+            next_prompt = create_assignment_for_qa_item(
+                db,
+                participant,
+                participant_session,
+                next_qa_item,
+                completed_batch_size=completed_batch_size,
+                assignment_source="user_dashboard",
+            )
+            next_assignment_id = next_prompt.assignment_id if next_prompt else None
+            if next_assignment_id:
+                next_assignment = db.get(Assignment, next_assignment_id)
+                next_question = _serialize_dashboard_question(
+                    db,
+                    participant,
+                    next_assignment,
+                    next_qa_item,
+                    question_index=completed_batch_size,
+                )
+        else:
+            participant_session.state = SessionState.IDLE.value
+
+    db.flush()
+    wallet = _get_or_create_wallet(db, participant)
+    return {
+        "answer_submission": {
+            "assignment_id": assignment.id,
+            "response_id": response.id,
+            "batch_id": assignment.batch_id,
+            "batch_completed": batch_completed,
+            "completed_batch_size": completed_batch_size,
+            "next_assignment_id": next_assignment_id,
+            "is_correct": is_correct_label,
+        },
+        "next_question": next_question,
+        "wallet": {
+            "balance": wallet.balance,
+        },
+        "awards": {
+            "answer": response_amount,
+            "batch_completed": BATCH_COMPLETED_BONUS_DIAMONDS if batch_completed else 0,
+        },
+    }
+
+
+def start_dashboard_new_batch(db, wa_id: str):
+    participant = _participant_by_wa_id(db, wa_id)
+    if not participant:
+        raise DashboardAnswerError("Participant not found")
+    _assign_dashboard_next_batch(db, participant, source="manual")
+    return get_user_dashboard_payload(db, wa_id)
+
+
 def update_profile_photo(db, wa_id: str, content: bytes, content_type: str):
     participant = _participant_by_wa_id(db, wa_id)
     if not participant:
@@ -445,13 +1212,7 @@ def get_luke_chapter_activity(db, participant_id, chapter_count=24):
     ).all()
     counts = {chapter: 0 for chapter in range(1, chapter_count + 1)}
     for passage_reference, response_count in rows:
-        reference = str(passage_reference or "")
-        if not reference.lower().startswith("luke "):
-            continue
-        chapter_text = reference.split(" ", 1)[1].split(":", 1)[0].strip()
-        if not chapter_text.isdigit():
-            continue
-        chapter = int(chapter_text)
+        chapter = _luke_chapter_from_reference(passage_reference)
         if chapter in counts:
             counts[chapter] += int(response_count or 0)
 
@@ -475,11 +1236,138 @@ def get_luke_chapter_activity(db, participant_id, chapter_count=24):
     return output
 
 
+def get_luke_journey_chapters(db, participant_id):
+    participant = db.get(Participant, participant_id)
+    preferred_batch_size = max(int(getattr(participant, "preferred_batch_size", 3) or 3), 1)
+    chest_reward_events = {
+        event.source_event_id: event
+        for event in db.scalars(
+            select(ParticipantCurrencyEvent).where(
+                ParticipantCurrencyEvent.participant_id == participant_id,
+                ParticipantCurrencyEvent.reason == "batch_chest_reward",
+                ParticipantCurrencyEvent.source_event_id.is_not(None),
+            )
+        ).all()
+    }
+    rows = db.execute(
+        select(Assignment, QAItem)
+        .join(QAItem, QAItem.id == Assignment.qa_item_id)
+        .where(Assignment.participant_id == participant_id)
+        .order_by(Assignment.assigned_at.asc(), Assignment.id.asc())
+    ).all()
+    batches = []
+    batch_index = {}
+    for assignment, qa_item in rows:
+        chapter_number = _luke_chapter_from_reference(qa_item.passage_reference)
+        if not chapter_number:
+            continue
+        batch_id = assignment.batch_id or f"single-{assignment.id}"
+        batch = batch_index.get(batch_id)
+        if not batch:
+            batch = {
+                "batch_id": batch_id,
+                "label": f"Batch {len(batches) + 1}",
+                "target_size": preferred_batch_size,
+                "questions": [],
+            }
+            batch_index[batch_id] = batch
+            batches.append(batch)
+        complete = assignment.status == AssignmentStatus.COMPLETED.value
+        question = {
+            **_serialize_dashboard_question(
+                db,
+                participant,
+                assignment,
+                qa_item,
+                question_index=len(batch["questions"]),
+            ),
+            "status": "complete" if complete else "current",
+        }
+        if complete:
+            question["review"] = _serialize_completed_question_review(
+                db, participant, assignment, qa_item
+            )
+        batch["questions"].append(question)
+
+    if not batches:
+        return []
+
+    completed_questions = 0
+    total_questions = 0
+    active_batch_index = None
+    for index, batch in enumerate(batches):
+        total_questions += len(batch["questions"])
+        batch_completed = all(
+            question["status"] == "complete" for question in batch["questions"]
+        )
+        if batch_completed:
+            batch["status"] = "complete"
+            completed_questions += len(batch["questions"])
+        elif active_batch_index is None:
+            active_batch_index = index
+            batch["status"] = "active"
+            batch["target_size"] = max(preferred_batch_size, len(batch["questions"]))
+            found_current = False
+            for question in batch["questions"]:
+                if question["status"] == "complete":
+                    completed_questions += 1
+                elif not found_current:
+                    question["status"] = "current"
+                    found_current = True
+                else:
+                    question["status"] = "locked"
+            while len(batch["questions"]) < batch["target_size"]:
+                batch["questions"].append(
+                    {
+                        "assignment_id": None,
+                        "qa_item_id": None,
+                        "chapter": None,
+                        "chapter_label": None,
+                        "passage_reference": None,
+                        "question": f"Question {len(batch['questions']) + 1}",
+                        "status": "locked",
+                        "placeholder": True,
+                    }
+                )
+        else:
+            batch["status"] = "locked"
+            for question in batch["questions"]:
+                if question["status"] != "complete":
+                    question["status"] = "locked"
+        reward_event = chest_reward_events.get(batch["batch_id"])
+        batch["reward"] = {
+            "type": "chest",
+            "min": CHEST_REWARD_MIN,
+            "max": CHEST_REWARD_MAX,
+            "currency": "diamonds",
+            "claimed": bool(reward_event),
+            "claimable": batch["status"] == "complete" and not reward_event,
+            "amount": reward_event.amount if reward_event else None,
+        }
+    if active_batch_index is None:
+        active_batch_index = max(0, len(batches) - 1)
+
+    return [
+        {
+            "title": "Question Path",
+            "batches": batches,
+            "progress": completed_questions / total_questions if total_questions else 0,
+            "status": (
+                "complete"
+                if total_questions and completed_questions == total_questions
+                else "continue"
+            ),
+            "current_batch_index": active_batch_index,
+        }
+    ]
+
+
 def get_user_dashboard_payload(db, wa_id: str, event_limit: int = 100):
     participant = _participant_by_wa_id(db, wa_id)
     if not participant:
         return None
 
+    _materialize_due_dashboard_next_batch(db, participant)
     wallet = _get_or_create_wallet(db, participant)
     currency_events = db.scalars(
         select(ParticipantCurrencyEvent)
@@ -511,6 +1399,7 @@ def get_user_dashboard_payload(db, wa_id: str, event_limit: int = 100):
         "total_questions_answered": int(total_questions_answered or 0),
         "total_batches_answered": int(total_batches_answered or 0),
         "chapter_activity": get_luke_chapter_activity(db, participant.id),
+        "journey_chapters": get_luke_journey_chapters(db, participant.id),
     }
     serialized_events = [
         {

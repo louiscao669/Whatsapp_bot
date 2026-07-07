@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
-import { ApiError } from '../api/client'
+import { ApiError, getCachedApiData, setCachedApiData } from '../api/client'
 import { addSystemLanguage, fetchSystemLanguages, removeSystemLanguage } from '../api/systemLanguages'
 import { useAuth } from '../auth/AuthContext'
 import { homePathForRole } from '../auth/homePath'
@@ -8,16 +8,21 @@ import { ExpertLogoutButton } from '../components/ExpertLogoutButton'
 
 export function SystemLanguagesPage() {
   const { user } = useAuth()
-  const [languages, setLanguages] = useState<string[]>([])
+  const cachedLanguages = getCachedApiData<{ languages: string[] }>('/api/v1/system-languages')
+  const [languages, setLanguages] = useState<string[]>(cachedLanguages?.languages ?? [])
   const [code, setCode] = useState('')
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(!cachedLanguages)
   const [error, setError] = useState('')
   const [message, setMessage] = useState('')
   const useStandaloneShell = user?.role === 'expert' || user?.role === 'admin'
   const backPath = homePathForRole(user?.role)
 
   const load = useCallback(() => {
-    setLoading(true)
+    const cached = getCachedApiData<{ languages: string[] }>('/api/v1/system-languages')
+    if (cached) {
+      setLanguages(cached.languages)
+    }
+    setLoading(!cached)
     return fetchSystemLanguages()
       .then((data) => setLanguages(data.languages))
       .catch((err) => {
@@ -36,6 +41,7 @@ export function SystemLanguagesPage() {
     try {
       const result = await addSystemLanguage(code.trim())
       setLanguages(result.languages)
+      setCachedApiData('/api/v1/system-languages', { languages: result.languages })
       setCode('')
       setMessage('Language added.')
     } catch (err) {
@@ -51,6 +57,7 @@ export function SystemLanguagesPage() {
     try {
       const result = await removeSystemLanguage(language)
       setLanguages(result.languages)
+      setCachedApiData('/api/v1/system-languages', { languages: result.languages })
       setMessage('Language removed.')
     } catch (err) {
       setError(err instanceof ApiError ? err.message : 'Could not remove language')

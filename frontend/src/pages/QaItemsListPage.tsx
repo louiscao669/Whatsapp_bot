@@ -1,19 +1,22 @@
 import { useCallback, useEffect, useState, type KeyboardEvent, type MouseEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ApiError } from '../api/client'
+import { ApiError, getCachedApiData } from '../api/client'
 import { fetchQaItems, type QaItemRow } from '../api/qaItems'
 import { QaItemsBulkPanel } from '../components/QaItemsBulkPanel'
 
+const QA_ITEMS_PATH = '/api/v1/qa-items'
+
 export function QaItemsListPage() {
   const navigate = useNavigate()
-  const [items, setItems] = useState<QaItemRow[]>([])
+  const cachedItems = getCachedApiData<{ items: QaItemRow[] }>(QA_ITEMS_PATH)
+  const [items, setItems] = useState<QaItemRow[]>(cachedItems?.items ?? [])
   const [selectedIds, setSelectedIds] = useState<string[]>([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(!cachedItems)
   const [error, setError] = useState('')
   const [message, setMessage] = useState('')
 
   const loadItems = useCallback(() => {
-    setLoading(true)
+    setLoading((current) => current && items.length === 0)
     setError('')
     return fetchQaItems()
       .then((data) => setItems(data.items))
@@ -21,7 +24,7 @@ export function QaItemsListPage() {
         setError(err instanceof ApiError ? err.message : 'Failed to load QA items')
       })
       .finally(() => setLoading(false))
-  }, [])
+  }, [items.length])
 
   useEffect(() => {
     loadItems()

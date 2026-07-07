@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { ApiError } from '../api/client'
+import { ApiError, getCachedApiData } from '../api/client'
 import {
   bulkReviewQaAll,
   bulkReviewQaChapter,
@@ -52,15 +52,28 @@ export function ReviewQaPage() {
   const [searchParams, setSearchParams] = useSearchParams()
   const tab = (searchParams.get('tab') as ReviewQaTab) || 'unreviewed'
   const activeTab: ReviewQaTab = TABS.some((entry) => entry.id === tab) ? tab : 'unreviewed'
+  const reviewQaPath = `/api/v1/review-qa?tab=${encodeURIComponent(activeTab)}`
+  const cachedDashboard = getCachedApiData<{
+    chapters: ReviewQaChapter[]
+    items: ReviewQaItem[]
+  }>(reviewQaPath)
 
-  const [chapters, setChapters] = useState<ReviewQaChapter[]>([])
-  const [removedItems, setRemovedItems] = useState<ReviewQaItem[]>([])
-  const [loading, setLoading] = useState(true)
+  const [chapters, setChapters] = useState<ReviewQaChapter[]>(cachedDashboard?.chapters ?? [])
+  const [removedItems, setRemovedItems] = useState<ReviewQaItem[]>(cachedDashboard?.items ?? [])
+  const [loading, setLoading] = useState(!cachedDashboard)
   const [error, setError] = useState('')
   const [message, setMessage] = useState('')
 
   const loadDashboard = useCallback((targetTab: ReviewQaTab) => {
-    setLoading(true)
+    const cached = getCachedApiData<{
+      chapters: ReviewQaChapter[]
+      items: ReviewQaItem[]
+    }>(`/api/v1/review-qa?tab=${encodeURIComponent(targetTab)}`)
+    if (cached) {
+      setChapters(cached.chapters)
+      setRemovedItems(cached.items)
+    }
+    setLoading(!cached)
     setError('')
     return fetchReviewQa(targetTab)
       .then((data) => {

@@ -38,10 +38,7 @@ def _format_assignment_label(assignment):
     if not qa_item:
         return assignment.qa_item_id
     passage = qa_item.passage_reference or qa_item.passage_id
-    question = _truncate_text(qa_item.question_text, 60)
-    if passage and question:
-        return f"{passage} — {question}"
-    return passage or question
+    return passage or "—"
 
 
 def _participant_response_stats(db, participant_ids):

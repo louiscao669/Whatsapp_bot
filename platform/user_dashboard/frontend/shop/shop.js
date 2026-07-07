@@ -82,7 +82,9 @@ function decorationCard(item, payload, actions) {
 
   return el("article", { className }, [
     el("div", { className: `deco-preview ${style.previewClass}` }, [
-      el("span", { text: style.previewText })
+      style.previewIcon
+        ? el("img", { src: style.previewIcon, alt: "", "aria-hidden": "true" })
+        : el("span", { text: style.previewText })
     ]),
     el("div", {}, [
       el("h3", { className: "item-name", text: item.title }),
@@ -177,16 +179,18 @@ function itemStyle(itemId) {
       previewText: "Frame"
     },
     dashboard_background_sunrise: {
-      icon: "/user_dashboard/assets/shop.svg",
+      icon: "/user_dashboard/assets/sunrise.svg",
       iconClass: "item-icon-sunrise",
       previewClass: "preview-sunrise",
-      previewText: "BG"
+      previewIcon: "/user_dashboard/assets/sunrise.svg",
+      previewText: ""
     },
     profile_frame_gold: {
-      icon: "/user_dashboard/assets/achievement.svg",
+      icon: "/user_dashboard/assets/crown.svg",
       iconClass: "item-icon-gold",
       previewClass: "preview-gold",
-      previewText: "Frame"
+      previewIcon: "/user_dashboard/assets/crown.svg",
+      previewText: ""
     }
   };
   return styles[itemId] || {

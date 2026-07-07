@@ -26,6 +26,7 @@ export function renderRightRail(payload, actions = {}) {
       el("button", {
         type: "button",
         className: "widget-action widget-action-primary",
+        onclick: () => actions.startDailyChallenge?.(),
         text: daily.completed ? "Completed" : "Start challenge"
       })
     ]),

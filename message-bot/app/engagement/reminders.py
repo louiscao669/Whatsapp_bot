@@ -21,6 +21,7 @@ from app.providers.whatsapp.reminders import (
     send_reminder,
 )
 from app.providers.whatsapp.schedule_policy import (
+    can_send_question_reminder,
     is_template_reminder,
     is_within_customer_service_window,
 )
@@ -167,6 +168,16 @@ def process_due_reminders(limit=50):
                     continue
 
                 template_reminder = is_template_reminder(reminder)
+                if not template_reminder:
+                    can_send, reason = can_send_question_reminder(
+                        db,
+                        reminder,
+                        assignment,
+                    )
+                    if not can_send:
+                        mark_reminder_cancelled(reminder, reason)
+                        continue
+
                 if (
                     not template_reminder
                     and not is_within_customer_service_window(participant)

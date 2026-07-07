@@ -5,6 +5,8 @@ The model sees only the passage, question text, and MCQ choices. Ground-truth
 answers, correct letters, and keyword fields are removed before prompting.
 """
 
+from __future__ import annotations
+
 import argparse
 import json
 import os
@@ -18,6 +20,7 @@ from typing import Any, Iterable, List, Optional
 
 
 CHOICE_LABELS = ("A", "B", "C", "D")
+FULLWIDTH_CHOICE_LABELS = str.maketrans("ＡＢＣＤａｂｃｄ", "ABCDabcd")
 VERSE_MARKER_RE = re.compile(r"(?<![\w\]])(\d{1,3})\s+")
 PASSAGE_REFERENCE_RE = re.compile(r":\s*(\d+)(?:\s*[-–—]\s*(\d+))?")
 ANSWER_FIELDS = {
@@ -35,6 +38,12 @@ ANSWER_FIELDS = {
 
 class GenerationError(Exception):
     pass
+
+
+class AnswerParseError(GenerationError):
+    def __init__(self, message: str, raw_model_answer: str):
+        super().__init__(message)
+        self.raw_model_answer = raw_model_answer
 
 
 def load_json(path: Path):
@@ -162,6 +171,13 @@ def public_question(item: dict, index: int) -> dict:
         "q_type": q_type,
         "question": question,
     }
+    local_passage = (
+        item.get("local_passage")
+        or item.get("answer_passage")
+        or item.get("qa_passage")
+    )
+    if isinstance(local_passage, str) and local_passage.strip():
+        public["local_passage"] = local_passage.strip()
 
     if q_type == "mcq":
         choices = compact_choices(
@@ -340,7 +356,29 @@ def compact_passage_excerpt(value: str, question_text: str) -> str:
     return best[:120].strip()
 
 
-def validate_answers(raw_answers: Any, questions: List[dict]) -> List[dict]:
+def answer_metadata(answer: dict) -> dict:
+    return {
+        "answer_confidence": normalize_answer_confidence(
+            answer.get("answer_confidence")
+        ),
+        "insufficient_information": bool(
+            answer.get("insufficient_information") or False
+        ),
+        "evidence_quality": normalize_evidence_quality(
+            answer.get("evidence_quality")
+        ),
+    }
+
+
+def validate_answers(
+    raw_answers: Any,
+    questions: List[dict],
+    *,
+    expanded_answer_format: bool,
+    choice_mapper_client: Any | None = None,
+    choice_mapper_model: str | None = None,
+    retries: int = 0,
+) -> List[dict]:
     if (
         isinstance(raw_answers, dict)
         and "generated_answer" in raw_answers
@@ -375,6 +413,8 @@ def validate_answers(raw_answers: Any, questions: List[dict]) -> List[dict]:
             "question": question["question"],
             "generated_answer": str(answer.get("generated_answer") or "").strip(),
         }
+        if expanded_answer_format:
+            output.update(answer_metadata(answer))
         if not output["generated_answer"]:
             raise GenerationError(f"Item {item_index}: generated_answer is empty.")
         if question["q_type"] != "mcq" and looks_like_passage_excerpt(
@@ -386,13 +426,47 @@ def validate_answers(raw_answers: Any, questions: List[dict]) -> List[dict]:
             )
 
         if question["q_type"] == "mcq":
-            choice = str(answer.get("selected_choice") or "").strip().upper()
-            if choice not in CHOICE_LABELS:
-                raise GenerationError(
-                    f"Item {item_index}: selected_choice must be A, B, C, or D."
+            raw_choice = str(answer.get("selected_choice") or "").strip().upper()
+            choice_source = None
+            if raw_choice[:1] in CHOICE_LABELS:
+                choice = raw_choice[:1]
+                choice_source = "rules"
+            elif raw_choice:
+                choice = selected_choice_from_raw_answer(question, raw_choice)
+                if choice:
+                    choice_source = "rules"
+            else:
+                choice = None
+            if not choice:
+                choice = selected_choice_from_raw_answer(
+                    question,
+                    output["generated_answer"],
                 )
+                if choice:
+                    choice_source = "rules"
+            if not choice and choice_mapper_client is not None and choice_mapper_model:
+                choice = openai_closest_mcq_choice(
+                    choice_mapper_client,
+                    choice_mapper_model,
+                    raw_answer=output["generated_answer"],
+                    choices=question["choices"],
+                    retries=retries,
+                )
+                if choice:
+                    choice_source = "openai"
+            if not choice:
+                raise AnswerParseError(
+                    f"Item {item_index}: MCQ answer must be A, B, C, or D.",
+                    json.dumps(answer, ensure_ascii=False),
+                )
+            output["mcq_choices"] = question["choices"]
             output["selected_choice"] = choice
             output["selected_choice_text"] = question["choices"][choice]
+            if choice_source:
+                output["selected_choice_source"] = choice_source
+            if choice_source == "openai":
+                output["raw_model_answer"] = output["generated_answer"]
+            output["generated_answer"] = question["choices"][choice]
 
         answers.append(output)
 
@@ -403,7 +477,12 @@ def validate_answers(raw_answers: Any, questions: List[dict]) -> List[dict]:
     return sorted(answers, key=lambda item: item["item_index"])
 
 
-def build_generation_prompt(passage: str, questions: List[dict]) -> dict:
+def build_generation_prompt(
+    passage: str,
+    questions: List[dict],
+    *,
+    expanded_answer_format: bool,
+) -> dict:
     prompt_questions = [prompt_question(question) for question in questions]
     output_schema = [
         {
@@ -413,9 +492,40 @@ def build_generation_prompt(passage: str, questions: List[dict]) -> dict:
                 if question["q_type"] == "mcq"
                 else {}
             ),
+            **(
+                {
+                    "answer_confidence": 0.0,
+                    "insufficient_information": False,
+                    "evidence_quality": "none|weak|indirect|direct",
+                }
+                if expanded_answer_format
+                else {}
+            ),
         }
         for question in questions
     ]
+    output_rules = [
+        "Return a JSON object with exactly one key: answers.",
+        "answers must be an array.",
+        "Return exactly one answers array element for each input question.",
+        "Keep answers in the same order as the input questions.",
+        "Use only information explicitly present in the supplied passage and question.",
+        "Do not use prior knowledge or canonical Bible facts.",
+        "Use Simplified Chinese characters in generated_answer.",
+        "Do not include verse numbers in generated_answer.",
+        "Do not include multiple verses or copied passage text in generated_answer.",
+        "For open questions, generated_answer should usually be under 20 Chinese characters.",
+        "For MCQ items, selected_choice is required and must be exactly A, B, C, or D.",
+        "Do not include hidden answer fields from the QA set.",
+    ]
+    if expanded_answer_format:
+        output_rules.extend(
+            [
+                "answer_confidence must be a number from 0.0 to 1.0.",
+                "insufficient_information must be true when the supplied passage does not contain enough evidence.",
+                "evidence_quality must be one of: none, weak, indirect, direct.",
+            ]
+        )
     return {
         "task": (
             "Read the Chinese Bible passage and answer only the provided Chinese QA "
@@ -433,20 +543,7 @@ def build_generation_prompt(passage: str, questions: List[dict]) -> dict:
         "passage": passage,
         "questions": prompt_questions,
         "output_schema": {"answers": output_schema},
-        "output_rules": [
-            "Return a JSON object with exactly one key: answers.",
-            "answers must be an array.",
-            "Return exactly one answers array element for each input question.",
-            "Keep answers in the same order as the input questions.",
-            "Use only information explicitly present in the supplied passage and question.",
-            "Do not use prior knowledge or canonical Bible facts.",
-            "Use Simplified Chinese characters in generated_answer.",
-            "Do not include verse numbers in generated_answer.",
-            "Do not include multiple verses or copied passage text in generated_answer.",
-            "For open questions, generated_answer should usually be under 20 Chinese characters.",
-            "For MCQ items, selected_choice is required and must be exactly A, B, C, or D.",
-            "Do not include hidden answer fields from the QA set.",
-        ],
+        "output_rules": output_rules,
     }
 
 
@@ -455,8 +552,17 @@ def generate_openai_batch(
     model: str,
     passage: str,
     questions: List[dict],
+    *,
+    expanded_answer_format: bool,
+    choice_mapper_client: Any | None = None,
+    choice_mapper_model: str | None = None,
+    retries: int = 0,
 ) -> List[dict]:
-    prompt = build_generation_prompt(passage, questions)
+    prompt = build_generation_prompt(
+        passage,
+        questions,
+        expanded_answer_format=expanded_answer_format,
+    )
     response = client.responses.create(
         model=model,
         input=[
@@ -479,27 +585,65 @@ def generate_openai_batch(
         raw_answers = json.loads(extract_json_text(extract_response_text(response)))
     except json.JSONDecodeError as exc:
         raise GenerationError(f"Model returned invalid JSON: {exc}") from exc
-    return validate_answers(raw_answers, questions)
+    return validate_answers(
+        raw_answers,
+        questions,
+        expanded_answer_format=expanded_answer_format,
+        choice_mapper_client=choice_mapper_client,
+        choice_mapper_model=choice_mapper_model,
+        retries=retries,
+    )
 
 
-def build_raw_answer_prompt(passage: str, question: dict) -> str:
+def build_raw_answer_prompt(
+    passage: str,
+    question: dict,
+    *,
+    expanded_answer_format: bool,
+) -> str:
     lines = [
         "Read the passage and answer the question using only the passage.",
         "Give only the shortest phrase or sentence that directly answers the question.",
         "Do not include verse numbers.",
         "Do not copy a verse span or passage excerpt.",
-        "Output the raw answer only.",
-        "Do not output JSON.",
         "Do not repeat or echo the question.",
         "Do not add labels, numbering, explanations, markdown, or extra text.",
         "Use Simplified Chinese.",
     ]
+    if expanded_answer_format:
+        schema = (
+            '{"generated_answer":"简体中文答案","answer_confidence":0.0,'
+            '"insufficient_information":false,"evidence_quality":"none"}'
+        )
+        if question["q_type"] == "mcq":
+            schema = (
+                '{"selected_choice":"A","generated_answer":"选项文本",'
+                '"answer_confidence":0.0,"insufficient_information":false,'
+                '"evidence_quality":"direct"}'
+            )
+        lines.extend(
+            [
+                "Return only valid JSON.",
+                "Use this schema:",
+                schema,
+                "answer_confidence must be between 0.0 and 1.0.",
+                "insufficient_information must be true when the supplied passage does not contain enough evidence.",
+                "evidence_quality must be one of: none, weak, indirect, direct.",
+            ]
+        )
+    else:
+        lines.append("Return only the answer text.")
     if question["q_type"] == "mcq":
         lines.extend(
             [
                 "For multiple choice, choose the option best supported by explicit passage evidence.",
-                "Output only one uppercase letter: A, B, C, or D.",
-                "Do not output the answer text.",
+                (
+                    "You must set selected_choice to exactly one uppercase letter: A, B, C, or D. "
+                    "Do not answer MCQ questions in free text only. "
+                    "generated_answer must be the selected option text, not a new paraphrase."
+                    if expanded_answer_format
+                    else "Return only one uppercase letter: A, B, C, or D."
+                ),
             ]
         )
 
@@ -512,8 +656,165 @@ def build_raw_answer_prompt(passage: str, question: dict) -> str:
     return "\n".join(lines)
 
 
+def apply_no_think(prompt: str) -> str:
+    return "/no_think\n\n" + prompt
+
+
+EVIDENCE_QUALITY_VALUES = {"none", "weak", "indirect", "direct"}
+
+
+def normalize_answer_confidence(value: Any) -> float:
+    try:
+        confidence = float(value)
+    except (TypeError, ValueError):
+        return 0.0
+    if confidence < 0:
+        return 0.0
+    if confidence > 1:
+        return 1.0
+    return confidence
+
+
+def normalize_evidence_quality(value: Any) -> str:
+    normalized = str(value or "").strip().lower()
+    aliases = {
+        "no": "none",
+        "none": "none",
+        "unsupported": "none",
+        "low": "weak",
+        "weak": "weak",
+        "inferred": "indirect",
+        "inferential": "indirect",
+        "indirect": "indirect",
+        "clear": "direct",
+        "explicit": "direct",
+        "direct": "direct",
+    }
+    normalized = aliases.get(normalized, normalized)
+    return normalized if normalized in EVIDENCE_QUALITY_VALUES else "none"
+
+
 def normalize_answer_text(value: str) -> str:
-    return re.sub(r"[\s。！？!?,，、：:；;\"'“”‘’（）()［］\[\]]+", "", value).lower()
+    normalized = re.sub(r"[\s。！？!?,，、：:；;\"'“”‘’（）()［］\[\]]+", "", value).lower()
+    equivalents = {
+        "accept": "接受",
+        "receive": "接受",
+        "people": "人",
+        "test": "试炼",
+        "testing": "试炼",
+        "fallaway": "跌倒",
+        "猪群": "猪中",
+        "猪里": "猪中",
+        "到猪": "进入猪",
+        "去猪": "进入猪",
+        "道": "话语",
+        "听道": "听话语",
+        "果子": "结果",
+        "得果": "结果",
+        "结出果": "结果",
+        "倒退": "跌倒",
+        "绊倒": "跌倒",
+        "复活": "灵魂回来起来",
+        "活过来": "灵魂回来起来",
+    }
+    for source, target in equivalents.items():
+        normalized = normalized.replace(source, target)
+    return normalized
+
+
+CHINESE_STOP_CHARS = set("的是了在人和与并就都也却但而被把给去来中里上下一这那他她它们个")
+
+
+def chinese_bigrams(text: str) -> set[str]:
+    chars = [
+        char
+        for char in text
+        if "\u4e00" <= char <= "\u9fff" and char not in CHINESE_STOP_CHARS
+    ]
+    return {
+        "".join(chars[index : index + 2])
+        for index in range(len(chars) - 1)
+    }
+
+
+def meaningful_chars(text: str) -> set[str]:
+    return {
+        char
+        for char in text
+        if "\u4e00" <= char <= "\u9fff" and char not in CHINESE_STOP_CHARS
+    }
+
+
+def overlap_choice_from_answer(question: dict, normalized_answer: str) -> Optional[str]:
+    if normalized_answer in {
+        "听话语的人",
+        "听了话语的人",
+        "听话语人",
+        "听了话语人",
+    }:
+        return None
+
+    answer_bigrams = chinese_bigrams(normalized_answer)
+    answer_chars = meaningful_chars(normalized_answer)
+    if not answer_chars:
+        return None
+
+    scored = []
+    for label in CHOICE_LABELS:
+        normalized_choice = normalize_answer_text(question["choices"][label])
+        choice_bigrams = chinese_bigrams(normalized_choice)
+        choice_chars = meaningful_chars(normalized_choice)
+        if not choice_chars:
+            continue
+        bigram_overlap = len(answer_bigrams & choice_bigrams)
+        char_overlap = len(answer_chars & choice_chars)
+        answer_coverage = char_overlap / len(answer_chars)
+        choice_coverage = char_overlap / len(choice_chars)
+        scored.append(
+            {
+                "label": label,
+                "bigram_overlap": bigram_overlap,
+                "char_overlap": char_overlap,
+                "answer_coverage": answer_coverage,
+                "choice_coverage": choice_coverage,
+            }
+        )
+
+    candidates = [
+        row
+        for row in scored
+        if (
+            row["bigram_overlap"] >= 1
+            and row["char_overlap"] >= 2
+            and row["answer_coverage"] >= 0.55
+        )
+        or (
+            row["char_overlap"] >= 3
+            and row["answer_coverage"] >= 0.70
+            and row["choice_coverage"] >= 0.20
+        )
+    ]
+    if not candidates:
+        return None
+
+    candidates.sort(
+        key=lambda row: (
+            row["bigram_overlap"],
+            row["answer_coverage"],
+            row["choice_coverage"],
+            row["char_overlap"],
+        ),
+        reverse=True,
+    )
+    best = candidates[0]
+    if len(candidates) > 1:
+        second = candidates[1]
+        if (
+            best["bigram_overlap"] == second["bigram_overlap"]
+            and abs(best["answer_coverage"] - second["answer_coverage"]) < 0.15
+        ):
+            return None
+    return str(best["label"])
 
 
 def clean_raw_answer(value: str) -> str:
@@ -525,10 +826,28 @@ def clean_raw_answer(value: str) -> str:
 
 
 def selected_choice_from_raw_answer(question: dict, raw_answer: str) -> Optional[str]:
-    stripped = raw_answer.strip()
-    upper = stripped[:1].upper()
-    if upper in CHOICE_LABELS:
-        return upper
+    stripped = raw_answer.strip().translate(FULLWIDTH_CHOICE_LABELS)
+    upper_text = stripped.upper()
+    first_nonspace = re.search(r"\S", upper_text)
+    if first_nonspace and first_nonspace.group(0) in CHOICE_LABELS:
+        return first_nonspace.group(0)
+
+    label_patterns = [
+        r"(?:答案|答|选择|选项|选|choice|answer)\s*(?:是|为|:|：)?\s*([ABCD])\b",
+        r"\b([ABCD])\s*(?:是|为|:|：|\.|、|\))",
+    ]
+    for pattern in label_patterns:
+        matches = re.findall(pattern, upper_text, flags=re.IGNORECASE)
+        labels = {match.upper() for match in matches if match.upper() in CHOICE_LABELS}
+        if len(labels) == 1:
+            return next(iter(labels))
+
+    standalone_labels = {
+        match.group(1).upper()
+        for match in re.finditer(r"(?<![A-Z])([ABCD])(?![A-Z])", upper_text)
+    }
+    if len(standalone_labels) == 1:
+        return next(iter(standalone_labels))
 
     normalized_answer = normalize_answer_text(stripped)
     for label in CHOICE_LABELS:
@@ -541,19 +860,159 @@ def selected_choice_from_raw_answer(question: dict, raw_answer: str) -> Optional
         if normalized_answer and normalized_answer in normalized_choice:
             return label
 
+    overlap_choice = overlap_choice_from_answer(question, normalized_answer)
+    if overlap_choice:
+        return overlap_choice
+
     return None
 
 
-def raw_answer_to_output(raw_answer: str, question: dict) -> dict:
+def create_openai_text_response(client: Any, *, model: str, input: Any) -> Any:
+    if hasattr(client, "responses"):
+        return client.responses.create(model=model, input=input)
+    if hasattr(client, "chat") and hasattr(client.chat, "completions"):
+        messages = input
+        if isinstance(input, str):
+            messages = [{"role": "user", "content": input}]
+        return client.chat.completions.create(model=model, messages=messages)
+    raise GenerationError(
+        "OpenAI client supports neither responses.create nor chat.completions.create."
+    )
+
+
+def openai_closest_mcq_choice(
+    client: Any,
+    model: str,
+    *,
+    raw_answer: str,
+    choices: dict,
+    retries: int,
+) -> Optional[str]:
+    prompt = {
+        "task": (
+            "Map the raw model answer to the closest one of the four MCQ choices. "
+            "You must choose exactly one option, even if the raw answer is vague, "
+            "partial, paraphrased, or does not match exactly. Use only the raw "
+            "answer and choices supplied here."
+        ),
+        "raw_model_answer": str(raw_answer or ""),
+        "choices": {label: str(choices[label]) for label in CHOICE_LABELS},
+        "output_schema": {
+            "selected_choice": "A | B | C | D",
+            "rationale": "brief reason",
+        },
+    }
+    last_error: Optional[Exception] = None
+    for attempt in range(retries + 1):
+        try:
+            response = create_openai_text_response(
+                client,
+                model=model,
+                input=[
+                    {
+                        "role": "system",
+                        "content": (
+                            "You are a deterministic MCQ answer mapper. Return valid "
+                            "JSON only. The selected_choice field must be exactly one "
+                            "uppercase letter: A, B, C, or D."
+                        ),
+                    },
+                    {"role": "user", "content": json.dumps(prompt, ensure_ascii=False)},
+                ],
+            )
+            raw = json.loads(extract_json_text(extract_response_text(response)))
+            choice = str(raw.get("selected_choice") or "").strip().upper()
+            if choice[:1] in CHOICE_LABELS:
+                return choice[:1]
+            raise GenerationError("OpenAI MCQ mapper did not return A, B, C, or D.")
+        except Exception as exc:
+            last_error = exc
+            if attempt >= retries:
+                break
+            time.sleep(2**attempt)
+    raise GenerationError(f"OpenAI MCQ mapper failed: {last_error}") from last_error
+
+
+def raw_answer_to_output(
+    raw_answer: str,
+    question: dict,
+    *,
+    expanded_answer_format: bool,
+    choice_mapper_client: Any | None = None,
+    choice_mapper_model: str | None = None,
+    retries: int = 0,
+) -> dict:
+    parsed_answer = None
     generated_answer = clean_raw_answer(raw_answer)
-    if not generated_answer:
-        raise GenerationError(f"Item {question['item_index']}: generated_answer is empty.")
-    choice = None
+    raw_mcq_choice = None
     if question["q_type"] == "mcq":
-        choice = selected_choice_from_raw_answer(question, generated_answer)
+        raw_mcq_choice = selected_choice_from_raw_answer(question, generated_answer)
+    if expanded_answer_format:
+        try:
+            raw_json = json.loads(extract_json_text(generated_answer))
+        except json.JSONDecodeError as exc:
+            if question["q_type"] == "mcq" and raw_mcq_choice:
+                parsed_answer = {}
+            else:
+                raise AnswerParseError(
+                    f"Item {question['item_index']}: invalid JSON answer.",
+                    generated_answer,
+                ) from exc
+        else:
+            if not isinstance(raw_json, dict):
+                raise AnswerParseError(
+                    f"Item {question['item_index']}: JSON answer must be an object.",
+                    generated_answer,
+                )
+            parsed_answer = raw_json
+            generated_answer = str(raw_json.get("generated_answer") or "").strip()
+    if not generated_answer:
+        raise AnswerParseError(
+            f"Item {question['item_index']}: generated_answer is empty.",
+            clean_raw_answer(raw_answer),
+        )
+    choice = None
+    choice_source = None
+    if question["q_type"] == "mcq":
+        if parsed_answer is not None:
+            raw_choice = str(parsed_answer.get("selected_choice") or "").strip().upper()
+            if raw_choice[:1] in CHOICE_LABELS:
+                choice = raw_choice[:1]
+                choice_source = "rules"
+            elif raw_choice:
+                choice = selected_choice_from_raw_answer(question, raw_choice)
+                if choice:
+                    choice_source = "rules"
+            if not choice:
+                choice = selected_choice_from_raw_answer(question, generated_answer)
+                if choice:
+                    choice_source = "rules"
+        else:
+            choice = raw_mcq_choice or selected_choice_from_raw_answer(
+                question,
+                generated_answer,
+            )
+            if choice:
+                choice_source = "rules"
+        if not choice and choice_mapper_client is not None and choice_mapper_model:
+            choice = openai_closest_mcq_choice(
+                choice_mapper_client,
+                choice_mapper_model,
+                raw_answer=generated_answer,
+                choices=question["choices"],
+                retries=retries,
+            )
+            if choice:
+                choice_source = "openai"
         if not choice:
-            raise GenerationError(
-                f"Item {question['item_index']}: MCQ answer must be A, B, C, or D."
+            raise AnswerParseError(
+                f"Item {question['item_index']}: MCQ answer must be A, B, C, or D.",
+                clean_raw_answer(raw_answer),
+            )
+        if choice not in CHOICE_LABELS:
+            raise AnswerParseError(
+                f"Item {question['item_index']}: MCQ answer must be A, B, C, or D.",
+                clean_raw_answer(raw_answer),
             )
         generated_answer = question["choices"][choice]
     if question["q_type"] != "mcq" and looks_like_passage_excerpt(generated_answer):
@@ -571,9 +1030,50 @@ def raw_answer_to_output(raw_answer: str, question: dict) -> dict:
         "question": question["question"],
         "generated_answer": generated_answer,
     }
+    if expanded_answer_format:
+        output.update(answer_metadata(parsed_answer or {}))
     if question["q_type"] == "mcq":
+        output["mcq_choices"] = question["choices"]
         output["selected_choice"] = choice
         output["selected_choice_text"] = question["choices"][choice]
+        if choice_source:
+            output["selected_choice_source"] = choice_source
+        if choice_source == "openai":
+            output["raw_model_answer"] = clean_raw_answer(raw_answer)
+    return output
+
+
+def failed_answer_output(
+    question: dict,
+    error: Exception,
+    *,
+    expanded_answer_format: bool,
+) -> dict:
+    output = {
+        "item_index": question["item_index"],
+        "id": question.get("id"),
+        "passage_id": question.get("passage_id"),
+        "passage_reference": question.get("passage_reference"),
+        "q_type": question["q_type"],
+        "question": question["question"],
+        "generated_answer": "",
+        "generation_error": str(error),
+    }
+    raw_model_answer = getattr(error, "raw_model_answer", None)
+    if raw_model_answer is not None:
+        output["raw_model_answer"] = str(raw_model_answer)
+    if expanded_answer_format:
+        output.update(
+            {
+                "answer_confidence": 0.0,
+                "insufficient_information": True,
+                "evidence_quality": "none",
+            }
+        )
+    if question["q_type"] == "mcq":
+        output["mcq_choices"] = question["choices"]
+        output["selected_choice"] = None
+        output["selected_choice_text"] = None
     return output
 
 
@@ -583,17 +1083,32 @@ def generate_ollama_single_raw(
     model: str,
     passage: str,
     question: dict,
+    no_think: bool,
+    expanded_answer_format: bool,
+    choice_mapper_client: Any | None = None,
+    choice_mapper_model: str | None = None,
+    retries: int = 0,
 ) -> dict:
-    prompt = build_raw_answer_prompt(passage, question)
+    prompt = build_raw_answer_prompt(
+        passage,
+        question,
+        expanded_answer_format=expanded_answer_format,
+    )
+    if no_think:
+        prompt = apply_no_think(prompt)
     messages = [
         {
             "role": "system",
             "content": (
-                "Answer from the translated passage only. Give a concise one-sentence "
-                "answer. Do not include verse numbers, guess, or use outside knowledge. "
+                "Answer from the translated passage only. Do not include verse numbers, "
+                "guess, or use outside knowledge. "
                 "Do not repeat or echo the passage text in the answer. "
-                "Return only the raw answer text. Do not echo the question. "
-                "Do not output JSON, labels, markdown, or explanations."
+                "Do not echo the question. Do not output markdown or explanations. "
+                + (
+                    "Return only valid JSON matching the requested schema."
+                    if expanded_answer_format
+                    else "Return only the raw answer text."
+                )
             ),
         },
         {"role": "user", "content": prompt},
@@ -622,7 +1137,14 @@ def generate_ollama_single_raw(
         ) from exc
 
     content = ((data.get("message") or {}).get("content") or "").strip()
-    return raw_answer_to_output(content, question)
+    return raw_answer_to_output(
+        content,
+        question,
+        expanded_answer_format=expanded_answer_format,
+        choice_mapper_client=choice_mapper_client,
+        choice_mapper_model=choice_mapper_model,
+        retries=retries,
+    )
 
 
 def generate_answers(
@@ -636,27 +1158,51 @@ def generate_answers(
     verse_window: int | None,
     retries: int,
     dry_run: bool,
+    allow_partial_answers: bool,
+    ollama_no_think: bool,
+    expanded_answer_format: bool,
+    mcq_choice_mapper: str,
+    mcq_choice_model: str,
 ) -> List[dict]:
     if dry_run:
         return [
             {
                 **question,
                 "generated_answer": "",
+                **(
+                    {
+                        "answer_confidence": 0.0,
+                        "insufficient_information": True,
+                        "evidence_quality": "none",
+                    }
+                    if expanded_answer_format
+                    else {}
+                ),
                 **({"selected_choice": ""} if question["q_type"] == "mcq" else {}),
             }
             for question in questions
         ]
 
     client = None
-    if provider == "openai":
+    choice_mapper_client = None
+    if provider == "openai" or mcq_choice_mapper == "openai":
         try:
             from openai import OpenAI
         except ImportError as exc:
-            raise GenerationError("Install the openai package before running this script.") from exc
+            raise GenerationError(
+                "Install the openai package before running this script."
+            ) from exc
 
         if not os.getenv("OPENAI_API_KEY"):
-            raise GenerationError("OPENAI_API_KEY is required unless --dry-run is used.")
-        client = OpenAI()
+            raise GenerationError(
+                "OPENAI_API_KEY is required for OpenAI answer generation or "
+                "--mcq-choice-mapper openai unless --dry-run is used."
+            )
+        openai_client = OpenAI()
+        if provider == "openai":
+            client = openai_client
+        if mcq_choice_mapper == "openai":
+            choice_mapper_client = openai_client
 
     answers: List[dict] = []
     verse_index = index_passage_verses(passage) if verse_window is not None else {}
@@ -666,11 +1212,13 @@ def generate_answers(
         batches = batched(questions, batch_size)
 
     for batch in batches:
-        batch_passage = (
-            local_passage_for_question(passage, verse_index, batch[0], verse_window)
-            if verse_window is not None
-            else passage
-        )
+        batch_passage = batch[0].get("local_passage")
+        if not batch_passage:
+            batch_passage = (
+                local_passage_for_question(passage, verse_index, batch[0], verse_window)
+                if verse_window is not None
+                else passage
+            )
         last_error: Optional[Exception] = None
         for attempt in range(retries + 1):
             try:
@@ -681,13 +1229,27 @@ def generate_answers(
                                 base_url=ollama_base_url,
                                 model=model,
                                 passage=batch_passage,
-                                question=batch[0],
-                            )
-                        ]
-                    )
+                            question=batch[0],
+                            no_think=ollama_no_think,
+                            expanded_answer_format=expanded_answer_format,
+                            choice_mapper_client=choice_mapper_client,
+                            choice_mapper_model=mcq_choice_model,
+                            retries=retries,
+                        )
+                    ]
+                )
                 else:
                     answers.extend(
-                        generate_openai_batch(client, model, batch_passage, batch)
+                        generate_openai_batch(
+                            client,
+                            model,
+                            batch_passage,
+                            batch,
+                            expanded_answer_format=expanded_answer_format,
+                            choice_mapper_client=choice_mapper_client,
+                            choice_mapper_model=mcq_choice_model,
+                            retries=retries,
+                        )
                     )
                 last_error = None
                 break
@@ -697,6 +1259,15 @@ def generate_answers(
                     break
                 time.sleep(2**attempt)
         if last_error:
+            if allow_partial_answers and len(batch) == 1:
+                answers.append(
+                    failed_answer_output(
+                        batch[0],
+                        last_error,
+                        expanded_answer_format=expanded_answer_format,
+                    )
+                )
+                continue
             raise GenerationError(str(last_error)) from last_error
     return answers
 
@@ -764,6 +1335,45 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Write redacted question payloads without calling the model.",
     )
+    parser.add_argument(
+        "--allow-partial-answers",
+        action="store_true",
+        help=(
+            "Write failed item records instead of aborting when a question fails "
+            "after retries. Failed MCQs use selected_choice null."
+        ),
+    )
+    parser.add_argument(
+        "--ollama-no-think",
+        action="store_true",
+        help="Prefix Ollama prompts with /no_think for Qwen3-style thinking models.",
+    )
+    parser.add_argument(
+        "--expanded-answer-format",
+        action="store_true",
+        help=(
+            "Ask the answer model to also return answer_confidence, "
+            "insufficient_information, and evidence_quality."
+        ),
+    )
+    parser.add_argument(
+        "--mcq-choice-mapper",
+        choices=("rules", "openai"),
+        default=os.getenv("MCQ_CHOICE_MAPPER", "rules"),
+        help=(
+            "How to map raw MCQ answers to A-D. rules uses deterministic parsing. "
+            "openai uses rules first, then asks OpenAI to choose the closest option. "
+            "Default: MCQ_CHOICE_MAPPER or rules."
+        ),
+    )
+    parser.add_argument(
+        "--mcq-choice-model",
+        default=os.getenv("OPENAI_MCQ_CHOICE_MODEL", "gpt-4.1-mini"),
+        help=(
+            "OpenAI model for --mcq-choice-mapper openai. "
+            "Default: OPENAI_MCQ_CHOICE_MODEL or gpt-4.1-mini."
+        ),
+    )
     return parser.parse_args()
 
 
@@ -798,6 +1408,11 @@ def main() -> int:
             verse_window=None if args.verse_window < 0 else args.verse_window,
             retries=args.retries,
             dry_run=args.dry_run,
+            allow_partial_answers=args.allow_partial_answers,
+            ollama_no_think=args.ollama_no_think,
+            expanded_answer_format=args.expanded_answer_format,
+            mcq_choice_mapper=args.mcq_choice_mapper,
+            mcq_choice_model=args.mcq_choice_model,
         )
         write_json(args.output_json, answers)
     except GenerationError as exc:

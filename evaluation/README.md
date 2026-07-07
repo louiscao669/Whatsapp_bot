@@ -16,16 +16,29 @@ python evaluation/main.py \
   --run-name luke_ch1
 ```
 
-python evaluation/main.py \
-  evaluation/datasets/luke_ch1_zh_passage.txt \
-  "/Users/louiscao/bible translation/ETEN-Bible-translation-project/v3/combo/qa_generation/outputs/full_pipeline/qa_output_luke_ch1_mixed.json" \
-  --run-name luke_ch1 \
-  --skip-llm-quality-methods
 
+for ch in {2..8}; do
+    qa="evaluation/datasets/qa_output_luke_ch${ch}_all_formats.json"
 
-python evaluation/main.py evaluation/datasets/test_passage_luke1.txt "/Users/louiscao/bible translation/ETEN-Bible-translation-project/v3/combo/qa_generation/outputs/full_pipeline/qa_output_luke_ch1_mixed.json" \
-    --skip-llm-quality-methods \
-    
+    python evaluation/main.py \
+      "evaluation/datasets/test_passage_luke${ch}.txt" \
+      "$qa" \
+      --output-dir "evaluation/outputs/luke${ch}/nllb_dropout_gradient" \
+      --run-name "luke_ch${ch}_all_formats" \
+      --methods \
+        nllb-200-1.3B-dropout-0.0 \
+        nllb-200-1.3B-dropout-0.1 \
+        nllb-200-1.3B-dropout-0.2 \
+        nllb-200-1.3B-dropout-0.3 \
+        nllb-200-1.3B-dropout-0.5 \
+        nllb-200-1.3B-dropout-0.7 \
+        nllb-200-1.3B-dropout-0.9 \
+      --answer-provider ollama \
+      --answer-model qwen3:1.7b \
+      --ollama-no-think \
+      --allow-partial-answers \
+      --continue-on-method-error
+done
 
 The pipeline:
 
@@ -197,4 +210,75 @@ python evaluation/scripts/score_generated_answers.py \
   evaluation/outputs/scores_zh_qwen.no_ai.json \
   --skip-llm \
   --skip-embeddings
+```
+
+## Controlled Mistranslation Variants
+
+Create MQM `Accuracy > Mistranslation` variants by replacing content phrases
+with same-role alternatives. The script copies the QA files and writes
+`mistranslation_metadata.json` with both the requested and actual changed
+content percentages.
+
+For chapter-specific coverage, first generate LLM-assisted banks. This uses the
+LLM only to propose substitutions; the generated JSON is then validated and
+frozen. Entries are categorized as:
+
+- `systematic`: when selected, all occurrences of that source phrase are
+  replaced.
+- `contextual`: selected occurrence-by-occurrence.
+
+```bash
+export OPENAI_API_KEY=...
+python evaluation/scripts/generate_mistranslation_banks.py \
+  --chapters 1 2 3 4 5 6 7 8 \
+  --source-model-dir 1.7b \
+  --source-method llm_prompt_high \
+  --force
+```
+
+Then create deterministic variants. When `--bank` is omitted, the script uses
+each chapter's generated
+`<source-model-dir>/_shared/mistranslation_bank_zh.json` if present; otherwise
+it falls back to the built-in bank.
+
+```bash
+python evaluation/scripts/create_mistranslation_variants.py \
+  --chapters 1 2 3 4 5 6 7 8 \
+  --source-model-dir 1.7b \
+  --source-method llm_prompt_high \
+  --output-model-dir mistranslation \
+  --rates 0% 5% 10% 15% 20% 30%
+```
+
+Use a custom substitution bank when you want tighter control over the exact
+semantic swaps:
+
+```bash
+python evaluation/scripts/create_mistranslation_variants.py \
+  --chapters 2 \
+  --bank evaluation/configs/mistranslation_bank_zh.json \
+  --rates 5% 10% \
+  --force
+```
+
+Bank format:
+
+```json
+{
+  "schema_version": 1,
+  "replacements": [
+    {
+      "source": "牧羊人",
+      "target": "渔夫",
+      "category": "entity",
+      "mode": "systematic"
+    },
+    {
+      "source": "三天",
+      "target": "七天",
+      "category": "number_time",
+      "mode": "contextual"
+    }
+  ]
+}
 ```

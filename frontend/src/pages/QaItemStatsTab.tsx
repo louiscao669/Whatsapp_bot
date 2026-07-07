@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { ApiError } from '../api/client'
+import { ApiError, getCachedApiData } from '../api/client'
 import { fetchQaItemStats, type QaItemStats } from '../api/qaItems'
 
 type QaItemStatsTabProps = {
@@ -35,18 +35,34 @@ function StatsBarChart({ rows }: { rows: QaItemStats['bar_chart'] }) {
   )
 }
 
+function statsPath(qaItemId: string, languages: string[]) {
+  const params = new URLSearchParams()
+  for (const language of languages) {
+    params.append('languages', language)
+  }
+  const query = params.toString()
+  return `/api/v1/qa-items/${qaItemId}/stats${query ? `?${query}` : ''}`
+}
+
 export function QaItemStatsTab({
   qaItemId,
   selectedLanguages,
   onLanguagesChange,
 }: QaItemStatsTabProps) {
-  const [stats, setStats] = useState<QaItemStats | null>(null)
-  const [loading, setLoading] = useState(true)
+  const cachedStats = getCachedApiData<{ stats: QaItemStats }>(
+    statsPath(qaItemId, selectedLanguages),
+  )
+  const [stats, setStats] = useState<QaItemStats | null>(cachedStats?.stats ?? null)
+  const [loading, setLoading] = useState(!cachedStats)
   const [error, setError] = useState('')
 
   useEffect(() => {
     let cancelled = false
-    setLoading(true)
+    const cached = getCachedApiData<{ stats: QaItemStats }>(statsPath(qaItemId, selectedLanguages))
+    if (cached) {
+      setStats(cached.stats)
+    }
+    setLoading(!cached)
     setError('')
 
     fetchQaItemStats(qaItemId, selectedLanguages)
@@ -86,6 +102,7 @@ export function QaItemStatsTab({
   const languageOptions = stats.language_options.length
     ? stats.language_options
     : stats.selected_languages
+  const selectedLanguageSet = new Set(stats.selected_languages)
 
   return (
     <section className="detail-card stats-tab">
@@ -115,11 +132,10 @@ export function QaItemStatsTab({
         >
           {languageOptions.map((language) => (
             <option key={language} value={language}>
-              {language}
+              {selectedLanguageSet.has(language) ? `${language} ✓` : language}
             </option>
           ))}
         </select>
-        <p className="hint">Hold Cmd/Ctrl to select multiple. Leave all selected for every language.</p>
         <button type="submit">Apply language filter</button>
       </form>
 

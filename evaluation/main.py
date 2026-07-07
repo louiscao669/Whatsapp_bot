@@ -11,6 +11,8 @@ Pipeline:
 7. Score against the initially imported English QA set.
 """
 
+from __future__ import annotations
+
 import argparse
 import json
 import os
@@ -59,9 +61,15 @@ from evaluation.scripts.translate_llm_qa_to_chinese import (
     write_json as write_translation_json,
 )
 from evaluation.scripts.translation_quality import (
+    DEFAULT_NLLB_DROPOUT_RATES,
+    NLLB_DROPOUT_METHOD_PREFIX,
     TranslationQualityError,
+    is_supported_method,
+    nllb_dropout_method_name,
+    parse_nllb_dropout_rate,
     read_texts_from_json_or_text,
     translate_with_method,
+    validate_nllb_dropout_rate,
     write_json as write_quality_json,
 )
 
@@ -76,6 +84,10 @@ ALL_TRANSLATION_METHODS = [
     "mBART-50",
     "nllb-200-distilled-600M",
     "nllb-200-1.3B",
+]
+NLLB_DROPOUT_GRADIENT_METHODS = [
+    nllb_dropout_method_name(rate)
+    for rate in DEFAULT_NLLB_DROPOUT_RATES
 ]
 LLM_QUALITY_METHODS = {"llm_prompt_low", "llm_prompt_medium", "llm_prompt_high"}
 NATURAL_SOURCE_MT_METHODS = {
@@ -100,6 +112,19 @@ class PipelineError(Exception):
     pass
 
 
+def is_nllb_dropout_method(method: str) -> bool:
+    if method == NLLB_DROPOUT_METHOD_PREFIX:
+        return True
+    try:
+        return parse_nllb_dropout_rate(method) is not None
+    except TranslationQualityError:
+        return False
+
+
+def uses_natural_source_text(method: str) -> bool:
+    return method in NATURAL_SOURCE_MT_METHODS or is_nllb_dropout_method(method)
+
+
 def default_run_name(qa_json: Path) -> str:
     name = qa_json.stem.strip() or "evaluation"
     for suffix in ("_en", "_qa", "_questions"):
@@ -116,6 +141,8 @@ def shared_output_paths(args: argparse.Namespace) -> dict:
         or output_dir / "_shared" / f"{run_name}_entity_inventory.json",
         "translated_qa": args.translated_qa_json
         or output_dir / "_shared" / f"{run_name}_qa_zh.json",
+        "decanonicalized_qa": args.decanonicalized_qa_json
+        or output_dir / "_shared" / f"{run_name}_qa_zh_decanonicalized.json",
     }
 
 
@@ -137,8 +164,23 @@ def method_output_paths(args: argparse.Namespace, method: str) -> dict:
     }
 
 
+def method_has_existing_artifacts(paths: dict) -> bool:
+    return (
+        paths["translated_passage_json"].exists()
+        and paths["translated_passage"].exists()
+        and paths["decanonicalized_passage"].exists()
+        and paths["decanonicalized_qa"].exists()
+    )
+
+
+def is_supported_or_existing_artifact_method(method: str, paths: dict) -> bool:
+    return is_supported_method(method) or method_has_existing_artifacts(paths)
+
+
 def selected_methods(args: argparse.Namespace) -> list[str]:
     methods = list(args.methods or ALL_TRANSLATION_METHODS)
+    if args.include_nllb_dropout_gradient:
+        methods.extend(NLLB_DROPOUT_GRADIENT_METHODS)
     if args.skip_llm_quality_methods:
         methods = [method for method in methods if method not in LLM_QUALITY_METHODS]
     seen = set()
@@ -375,15 +417,31 @@ def cleanup_protected_tokens(
     return value
 
 
-def llm_canonicalize_dataset(
+def canonicalization_context(
+    args: argparse.Namespace,
+    entity_inventory: dict | None,
+) -> tuple[list[dict], dict[str, str], str]:
+    extra_mapping = entity_inventory_chinese_mapping(entity_inventory)
+    if args.mapping_json:
+        extra_mapping.update(load_mapping_json(args.mapping_json))
+    entries = canonicalization_entries(extra_mapping, entity_inventory)
+    extra_token_mapping = {
+        str(entity.get("protected_token")): str(entity.get("placeholder"))
+        for entity in (entity_inventory or {}).get("entities", [])
+        if entity.get("protected_token") and entity.get("placeholder")
+    }
+    model = args.canonicalization_model or args.translation_model
+    return entries, extra_token_mapping, model
+
+
+def llm_canonicalize_qa_items(
     *,
-    passage_text: str,
     qa_items: list[dict],
     entries: list[dict],
     extra_token_mapping: dict[str, str] | None,
     model: str,
     retries: int,
-) -> tuple[str, list[dict]]:
+) -> list[dict]:
     try:
         from openai import OpenAI
     except ImportError as exc:
@@ -392,27 +450,17 @@ def llm_canonicalize_dataset(
     client = OpenAI()
     prompt = {
         "task": (
-            "Canonicalize a translated Chinese Bible passage and its translated QA set. "
-            "Replace every mention of each mapped person, place, object, role, group, "
-            "or divine title with its exact Chinese placeholder. Use the mapping table "
-            "field named placeholder as the required output form; never output the "
-            "protected_token value such as __PERSON_A__ unless it appears inside an "
-            "unchanged open-answer A field. "
-            "semantically: aliases may be translated, transliterated, abbreviated, or "
-            "awkwardly machine-translated. When an alias appears inside a compound "
-            "verb-object phrase, replace only the mapped object/title/name and preserve "
-            "the surrounding verb or grammar; for example, canonicalize 烧香 or 焚香 as "
-            "烧材料甲 or 焚材料甲, not by deleting the action. Apply the same replacements "
-            "consistently in both passage and QA. Do not otherwise translate, summarize, reorder, or "
-            "rewrite the text. Preserve verse numbers and QA metadata. For open QA "
-            "items, leave A exactly unchanged. For MCQ items, canonicalize Q and choice "
-            "text but preserve choice labels and correct."
+            "Canonicalize a translated Chinese QA set. Replace every mention of each "
+            "mapped person, place, object, role, group, or divine title with its exact "
+            "Chinese placeholder. Use the mapping table field named placeholder as the "
+            "required output form; never output protected_token values. Do not otherwise "
+            "translate, summarize, reorder, or rewrite the text. Preserve QA metadata. "
+            "For open QA items, leave A exactly unchanged. For MCQ items, canonicalize "
+            "Q and choice text but preserve choice labels and correct."
         ),
         "mapping": entries,
-        "passage": passage_text,
         "qa_items": qa_items,
         "output_schema": {
-            "passage": "canonicalized passage text",
             "qa_items": "canonicalized QA array with the same length and schema",
         },
     }
@@ -426,7 +474,68 @@ def llm_canonicalize_dataset(
                     {
                         "role": "system",
                         "content": (
-                            "You canonicalize translated evaluation text. Return valid "
+                            "You canonicalize translated evaluation QA. Return valid "
+                            "JSON only. Do not include markdown or explanations."
+                        ),
+                    },
+                    {"role": "user", "content": json.dumps(prompt, ensure_ascii=False)},
+                ],
+            )
+            data = json.loads(extract_json_object_text(extract_response_text(response)))
+            canonical_qa = validate_canonicalized_qa(data.get("qa_items"), qa_items)
+            return cleanup_protected_tokens(canonical_qa, extra_token_mapping)
+        except Exception as exc:
+            last_error = exc
+            if attempt >= retries:
+                break
+            time.sleep(2**attempt)
+    raise PipelineError(f"QA canonicalization failed: {last_error}") from last_error
+
+
+def llm_canonicalize_passage(
+    *,
+    passage_text: str,
+    entries: list[dict],
+    extra_token_mapping: dict[str, str] | None,
+    model: str,
+    retries: int,
+) -> str:
+    try:
+        from openai import OpenAI
+    except ImportError as exc:
+        raise PipelineError("Install the openai package before canonicalization.") from exc
+
+    client = OpenAI()
+    prompt = {
+        "task": (
+            "Canonicalize a translated Chinese Bible passage. Replace every mention of "
+            "each mapped person, place, object, role, group, or divine title with its "
+            "exact Chinese placeholder. Use the mapping table field named placeholder "
+            "as the required output form; never output protected_token values. Aliases "
+            "may be translated, transliterated, abbreviated, or awkwardly machine-"
+            "translated. When an alias appears inside a compound verb-object phrase, "
+            "replace only the mapped object/title/name and preserve the surrounding "
+            "verb or grammar; for example, canonicalize 烧香 or 焚香 as 烧材料甲 or "
+            "焚材料甲, not by deleting the action. Do not otherwise translate, "
+            "summarize, reorder, or rewrite the text. Preserve verse numbers."
+        ),
+        "mapping": entries,
+        "passage": passage_text,
+        "output_schema": {
+            "passage": "canonicalized passage text",
+        },
+    }
+
+    last_error: Exception | None = None
+    for attempt in range(retries + 1):
+        try:
+            response = client.responses.create(
+                model=model,
+                input=[
+                    {
+                        "role": "system",
+                        "content": (
+                            "You canonicalize translated Bible passages. Return valid "
                             "JSON only. Do not include markdown or explanations."
                         ),
                     },
@@ -437,17 +546,13 @@ def llm_canonicalize_dataset(
             passage = str(data.get("passage") or "").strip()
             if not passage:
                 raise PipelineError("Canonicalization response field passage is empty.")
-            canonical_qa = validate_canonicalized_qa(data.get("qa_items"), qa_items)
-            return cleanup_protected_tokens(
-                passage,
-                extra_token_mapping,
-            ), cleanup_protected_tokens(canonical_qa, extra_token_mapping)
+            return cleanup_protected_tokens(passage, extra_token_mapping)
         except Exception as exc:
             last_error = exc
             if attempt >= retries:
                 break
             time.sleep(2**attempt)
-    raise PipelineError(f"Canonicalization failed: {last_error}") from last_error
+    raise PipelineError(f"Passage canonicalization failed: {last_error}") from last_error
 
 
 def compact_source_items_for_entity_discovery(items: list[dict]) -> list[dict]:
@@ -649,6 +754,16 @@ def shared_needs_openai(
         force_stage=args.force_translate,
     ):
         return True
+    if stage_enabled(args, "decanonicalize") and should_run(
+        paths["decanonicalized_qa"],
+        force=args.force,
+        force_stage=(
+            args.force_decanonicalize
+            or args.force_translate
+            or entity_inventory_needed
+        ),
+    ):
+        return True
     return False
 
 
@@ -741,7 +856,7 @@ def run_passage_translate_stage(
 
     print(f"[{method}] run passage translate: {translated_passage_path}")
     raw_source_texts = read_texts_from_json_or_text(args.passage_file)
-    if method in NATURAL_SOURCE_MT_METHODS:
+    if uses_natural_source_text(method):
         source_texts = raw_source_texts
     else:
         source_mapping = dict(DEFAULT_ENGLISH_TOKEN_MAPPING)
@@ -761,14 +876,19 @@ def run_passage_translate_stage(
         mbart_model=args.mbart_model,
         nllb_distilled_model=args.nllb_distilled_model,
         nllb_model=args.nllb_model,
+        nllb_dropout_rate=args.nllb_dropout_rate,
         openai_model=args.passage_translation_model,
     )
+    method_dropout_rate = parse_nllb_dropout_rate(method) if is_nllb_dropout_method(method) else None
+    if method == NLLB_DROPOUT_METHOD_PREFIX:
+        method_dropout_rate = args.nllb_dropout_rate
     write_quality_json(
         translated_passage_json_path,
         {
             "method": method,
             "source_language": args.source_language,
             "target_language": args.target_language,
+            "nllb_dropout_rate": method_dropout_rate,
             "source_texts": source_texts,
             "translations": translations,
         },
@@ -803,11 +923,44 @@ def run_method_qa_stage(
     return True
 
 
+def run_shared_qa_decanonicalize_stage(
+    args: argparse.Namespace,
+    translated_qa_path: Path,
+    decanonicalized_qa_path: Path,
+    upstream_changed: bool,
+    entity_inventory: dict | None,
+) -> bool:
+    if not should_run(
+        decanonicalized_qa_path,
+        force=args.force,
+        force_stage=args.force_decanonicalize or upstream_changed,
+    ):
+        print(f"reuse shared QA decanonicalize: {decanonicalized_qa_path}")
+        return False
+
+    print(f"run shared QA decanonicalize: {decanonicalized_qa_path}")
+    entries, extra_token_mapping, canonicalization_model = canonicalization_context(
+        args,
+        entity_inventory,
+    )
+    qa_data = load_score_json(translated_qa_path)
+    qa_items = extract_items(qa_data)
+    transformed_qa = llm_canonicalize_qa_items(
+        qa_items=qa_items,
+        entries=entries,
+        extra_token_mapping=extra_token_mapping,
+        model=canonicalization_model,
+        retries=args.retries,
+    )
+    write_score_json(decanonicalized_qa_path, transformed_qa)
+    return True
+
+
 def run_decanonicalize_stage(
     args: argparse.Namespace,
     method: str,
     translated_passage_path: Path,
-    translated_qa_path: Path,
+    shared_decanonicalized_qa_path: Path,
     decanonicalized_passage_path: Path,
     decanonicalized_qa_path: Path,
     metadata_path: Path,
@@ -825,29 +978,20 @@ def run_decanonicalize_stage(
         return False
 
     print(f"[{method}] run decanonicalize: {decanonicalized_qa_path}")
-    extra_mapping = entity_inventory_chinese_mapping(entity_inventory)
-    if args.mapping_json:
-        extra_mapping.update(load_mapping_json(args.mapping_json))
-    entries = canonicalization_entries(extra_mapping, entity_inventory)
-    extra_token_mapping = {
-        str(entity.get("protected_token")): str(entity.get("placeholder"))
-        for entity in (entity_inventory or {}).get("entities", [])
-        if entity.get("protected_token") and entity.get("placeholder")
-    }
-    canonicalization_model = args.canonicalization_model or args.translation_model
+    entries, extra_token_mapping, canonicalization_model = canonicalization_context(
+        args,
+        entity_inventory,
+    )
 
     passage_text = translated_passage_path.read_text(encoding="utf-8")
-    qa_data = load_score_json(translated_qa_path)
-    qa_items = extract_items(qa_data)
-
-    transformed_passage, transformed_qa = llm_canonicalize_dataset(
+    transformed_passage = llm_canonicalize_passage(
         passage_text=passage_text,
-        qa_items=qa_items,
         entries=entries,
         extra_token_mapping=extra_token_mapping,
         model=canonicalization_model,
         retries=args.retries,
     )
+    transformed_qa = load_score_json(shared_decanonicalized_qa_path)
 
     decanonicalized_passage_path.parent.mkdir(parents=True, exist_ok=True)
     decanonicalized_qa_path.parent.mkdir(parents=True, exist_ok=True)
@@ -872,7 +1016,7 @@ def run_decanonicalize_stage(
                     method_output_paths(args, method)["source_decanonicalized_passage"]
                 ),
                 "translated_passage_file": str(translated_passage_path),
-                "translated_qa_file": str(translated_qa_path),
+                "shared_decanonicalized_qa_file": str(shared_decanonicalized_qa_path),
             },
             "outputs": {
                 "passage_file": str(decanonicalized_passage_path),
@@ -925,6 +1069,11 @@ def run_answer_stage(
         verse_window=None if args.answer_verse_window < 0 else args.answer_verse_window,
         retries=args.retries,
         dry_run=False,
+        allow_partial_answers=args.allow_partial_answers,
+        ollama_no_think=args.ollama_no_think,
+        expanded_answer_format=args.expanded_answer_format,
+        mcq_choice_mapper=args.mcq_choice_mapper,
+        mcq_choice_model=args.mcq_choice_model,
     )
     write_generated_json(generated_answers_path, answers)
     return True
@@ -1027,6 +1176,11 @@ def parse_args() -> argparse.Namespace:
         help="Override translated QA output path.",
     )
     parser.add_argument(
+        "--decanonicalized-qa-json",
+        type=Path,
+        help="Override shared decanonicalized QA output path.",
+    )
+    parser.add_argument(
         "--mapping-json",
         type=Path,
         help="Optional JSON object mapping canonical Chinese terms to placeholders.",
@@ -1047,8 +1201,19 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--methods",
         nargs="+",
-        choices=ALL_TRANSLATION_METHODS,
-        help="Passage translation methods to run. Default: all methods.",
+        help=(
+            "Passage translation methods to run. Default: existing baseline methods. "
+            "Also supports nllb-200-1.3B-dropout or "
+            "nllb-200-1.3B-dropout-<rate>, where rate is 0.0 to 0.9."
+        ),
+    )
+    parser.add_argument(
+        "--include-nllb-dropout-gradient",
+        action="store_true",
+        help=(
+            "Also run NLLB-200 1.3B dropout methods for rates "
+            "0.0, 0.1, 0.2, 0.3, 0.5, 0.7, and 0.9."
+        ),
     )
     parser.add_argument(
         "--skip-llm-quality-methods",
@@ -1103,6 +1268,46 @@ def parse_args() -> argparse.Namespace:
         help=(
             "Model for answer generation. Defaults to llama3.2:3b for Ollama, "
             "or OPENAI_EVALUATOR_MODEL/gpt-4.1-mini for OpenAI."
+        ),
+    )
+    parser.add_argument(
+        "--allow-partial-answers",
+        action="store_true",
+        help=(
+            "Write failed answer records instead of aborting a method when a "
+            "question fails after retries. Failed MCQs use selected_choice null "
+            "and score as wrong."
+        ),
+    )
+    parser.add_argument(
+        "--ollama-no-think",
+        action="store_true",
+        help="Prefix Ollama answer prompts with /no_think for Qwen3-style thinking models.",
+    )
+    parser.add_argument(
+        "--expanded-answer-format",
+        action="store_true",
+        help=(
+            "Ask the answer model to include answer_confidence, "
+            "insufficient_information, and evidence_quality in generated answers."
+        ),
+    )
+    parser.add_argument(
+        "--mcq-choice-mapper",
+        choices=("rules", "openai"),
+        default=os.getenv("MCQ_CHOICE_MAPPER", "rules"),
+        help=(
+            "How to map raw MCQ answers to A-D. rules uses deterministic parsing. "
+            "openai uses rules first, then asks OpenAI to choose the closest option. "
+            "Default: MCQ_CHOICE_MAPPER or rules."
+        ),
+    )
+    parser.add_argument(
+        "--mcq-choice-model",
+        default=os.getenv("OPENAI_MCQ_CHOICE_MODEL", "gpt-4.1-mini"),
+        help=(
+            "OpenAI model for --mcq-choice-mapper openai. "
+            "Default: OPENAI_MCQ_CHOICE_MODEL or gpt-4.1-mini."
         ),
     )
     parser.add_argument(
@@ -1161,6 +1366,15 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--mbart-model")
     parser.add_argument("--nllb-distilled-model")
     parser.add_argument("--nllb-model")
+    parser.add_argument(
+        "--nllb-dropout-rate",
+        type=float,
+        default=0.0,
+        help=(
+            "Dropout rate for method nllb-200-1.3B-dropout. Must be 0.0 to 0.9. "
+            "Ignored by methods that include the rate in the method name."
+        ),
+    )
     parser.add_argument("--retries", type=int, default=2)
     parser.add_argument("--skip-llm", action="store_true")
     parser.add_argument("--skip-embeddings", action="store_true")
@@ -1188,6 +1402,10 @@ def parse_args() -> argparse.Namespace:
 def validate_args(args: argparse.Namespace) -> None:
     if args.retries < 0:
         raise PipelineError("--retries must be zero or greater.")
+    try:
+        validate_nllb_dropout_rate(args.nllb_dropout_rate)
+    except TranslationQualityError as exc:
+        raise PipelineError(str(exc)) from exc
     if args.answer_verse_window < -1:
         raise PipelineError("--answer-verse-window must be -1 or greater.")
     for field in (
@@ -1205,6 +1423,15 @@ def validate_args(args: argparse.Namespace) -> None:
     methods = selected_methods(args)
     if not methods:
         raise PipelineError("No translation methods selected.")
+    for method in methods:
+        paths = method_output_paths(args, method)
+        if not is_supported_or_existing_artifact_method(method, paths):
+            raise PipelineError(
+                f"Unknown translation method: {method}. If this is an external "
+                "artifact folder, it must already contain passage_translation.json, "
+                "passage_target.txt, passage_target_decanonicalized.txt, and "
+                "qa_target_decanonicalized.json."
+            )
 
 def main() -> int:
     args = parse_args()
@@ -1254,6 +1481,16 @@ def main() -> int:
             print(f"shared_translated_qa: {shared_paths['translated_qa']}")
             return 0
 
+        shared_decanonicalized_qa_changed = False
+        if stage_enabled(args, "decanonicalize"):
+            shared_decanonicalized_qa_changed = run_shared_qa_decanonicalize_stage(
+                args,
+                shared_paths["translated_qa"],
+                shared_paths["decanonicalized_qa"],
+                translated_qa_changed or entity_inventory_changed,
+                entity_inventory,
+            )
+
         completed = []
         failed = []
         for method in methods:
@@ -1282,11 +1519,14 @@ def main() -> int:
                     args,
                     method,
                     paths["translated_passage"],
-                    paths["translated_qa"],
+                    shared_paths["decanonicalized_qa"],
                     paths["decanonicalized_passage"],
                     paths["decanonicalized_qa"],
                     paths["decanonicalized_metadata"],
-                    passage_changed or method_qa_changed or entity_inventory_changed,
+                    passage_changed
+                    or method_qa_changed
+                    or entity_inventory_changed
+                    or shared_decanonicalized_qa_changed,
                     entity_inventory,
                     shared_paths["entity_inventory"]
                     if not args.skip_entity_discovery
@@ -1345,6 +1585,7 @@ def main() -> int:
     if not args.skip_entity_discovery:
         print(f"entity_inventory: {shared_paths['entity_inventory']}")
     print(f"shared_translated_qa: {shared_paths['translated_qa']}")
+    print(f"shared_decanonicalized_qa: {shared_paths['decanonicalized_qa']}")
     for method in completed:
         print(f"{method}: {method_paths[method]['method_dir']}")
     if failed:

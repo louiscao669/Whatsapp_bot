@@ -1,6 +1,6 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { ApiError } from '../api/client'
+import { ApiError, getCachedApiData } from '../api/client'
 import {
   fetchParticipantDetail,
   updateParticipantLanguage,
@@ -10,10 +10,14 @@ import { fetchSystemLanguages } from '../api/systemLanguages'
 
 export function ParticipantDetailPage() {
   const { participantId } = useParams<{ participantId: string }>()
-  const [detail, setDetail] = useState<ParticipantDetail | null>(null)
-  const [languages, setLanguages] = useState<string[]>([])
-  const [language, setLanguage] = useState('')
-  const [loading, setLoading] = useState(true)
+  const cachedDetail = participantId
+    ? getCachedApiData<ParticipantDetail>(`/api/v1/participants/${participantId}`)
+    : null
+  const cachedLanguages = getCachedApiData<{ languages: string[] }>('/api/v1/system-languages')
+  const [detail, setDetail] = useState<ParticipantDetail | null>(cachedDetail)
+  const [languages, setLanguages] = useState<string[]>(cachedLanguages?.languages ?? [])
+  const [language, setLanguage] = useState(cachedDetail?.participant.language ?? '')
+  const [loading, setLoading] = useState(!cachedDetail || !cachedLanguages)
   const [error, setError] = useState('')
   const [message, setMessage] = useState('')
   const [savingLanguage, setSavingLanguage] = useState(false)
@@ -22,6 +26,16 @@ export function ParticipantDetailPage() {
     if (!participantId) {
       return
     }
+    const cachedParticipant = getCachedApiData<ParticipantDetail>(`/api/v1/participants/${participantId}`)
+    const cachedLanguagePayload = getCachedApiData<{ languages: string[] }>('/api/v1/system-languages')
+    if (cachedParticipant) {
+      setDetail(cachedParticipant)
+      setLanguage(cachedParticipant.participant.language)
+    }
+    if (cachedLanguagePayload) {
+      setLanguages(cachedLanguagePayload.languages)
+    }
+    setLoading(!cachedParticipant || !cachedLanguagePayload)
     Promise.all([fetchParticipantDetail(participantId), fetchSystemLanguages()])
       .then(([participantDetail, languagePayload]) => {
         setDetail(participantDetail)
@@ -90,24 +104,28 @@ export function ParticipantDetailPage() {
 
       <section className="detail-card">
         <h3>Participant</h3>
-        <form className="mutation-form" onSubmit={handleLanguageSubmit}>
+        <form className="mutation-form participant-language-form" onSubmit={handleLanguageSubmit}>
           <label htmlFor="participant-language">Language</label>
-          <input
-            id="participant-language"
-            list="participant-language-options"
-            value={language}
-            onChange={(event) => setLanguage(event.target.value)}
-            placeholder="e.g. eng"
-            required
-          />
-          <datalist id="participant-language-options">
-            {languages.map((option) => (
-              <option key={option} value={option} />
-            ))}
-          </datalist>
-          <button type="submit" disabled={savingLanguage}>
-            {savingLanguage ? 'Saving…' : 'Save language'}
-          </button>
+          <div className="participant-language-row">
+            <select
+              id="participant-language"
+              value={language}
+              onChange={(event) => setLanguage(event.target.value)}
+              required
+            >
+              {language && !languages.includes(language) ? (
+                <option value={language}>{language}</option>
+              ) : null}
+              {languages.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+            <button type="submit" disabled={savingLanguage}>
+              {savingLanguage ? 'Saving…' : 'Save language'}
+            </button>
+          </div>
         </form>
         <dl className="detail-list">
           <dt>WhatsApp ID</dt>
@@ -118,8 +136,6 @@ export function ParticipantDetailPage() {
           <dd>{participant.session_state}</dd>
           <dt>Currently working on</dt>
           <dd>{participant.current_question ?? '—'}</dd>
-          <dt>Assigned questions</dt>
-          <dd>{participant.assigned_questions ?? '—'}</dd>
           <dt>Questions completed</dt>
           <dd>{participant.questions_completed}</dd>
           <dt>Correct</dt>

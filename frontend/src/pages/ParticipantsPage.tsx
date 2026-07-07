@@ -1,11 +1,16 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ApiError } from '../api/client'
+import { ApiError, getCachedApiData } from '../api/client'
 import { fetchParticipants, type ParticipantRow } from '../api/participants'
 
+const PARTICIPANTS_PATH = '/api/v1/participants'
+
 export function ParticipantsPage() {
-  const [participants, setParticipants] = useState<ParticipantRow[]>([])
-  const [loading, setLoading] = useState(true)
+  const cachedParticipants = getCachedApiData<{ participants: ParticipantRow[] }>(PARTICIPANTS_PATH)
+  const [participants, setParticipants] = useState<ParticipantRow[]>(
+    cachedParticipants?.participants ?? [],
+  )
+  const [loading, setLoading] = useState(!cachedParticipants)
   const [error, setError] = useState('')
 
   useEffect(() => {
@@ -40,7 +45,6 @@ export function ParticipantsPage() {
               <th>Language</th>
               <th>Session</th>
               <th>Current question</th>
-              <th>Assigned</th>
               <th>Completed</th>
               <th>Correct</th>
               <th>Incorrect</th>
@@ -53,20 +57,19 @@ export function ParticipantsPage() {
           <tbody>
             {participants.map((row) => (
               <tr key={row.id}>
-                <td>{row.wa_id}</td>
-                <td>
+                <td className="wa-id-cell" title={row.wa_id}>{row.wa_id}</td>
+                <td className="participant-display-name-cell">
                   <Link to={`/participants/${row.id}`}>{row.display_name || row.wa_id}</Link>
                 </td>
                 <td>{row.language}</td>
                 <td>{row.session_state}</td>
                 <td>{row.current_question || '—'}</td>
-                <td className="question-cell">{row.assigned_questions || '—'}</td>
                 <td>{row.questions_completed}</td>
                 <td>{row.correct}</td>
                 <td>{row.incorrect}</td>
                 <td>{row.under_review}</td>
                 <td>{row.batch_size}</td>
-                <td>{row.last_seen ?? '—'}</td>
+                <td className="participant-last-seen-cell">{row.last_seen ?? '—'}</td>
                 <td>{row.consented ? 'Yes' : 'No'}</td>
               </tr>
             ))}

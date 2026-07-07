@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
-import { ApiError } from '../api/client'
+import { ApiError, getCachedApiData } from '../api/client'
 import { deleteQaItem, fetchQaItemDetail, type QaItemDetail } from '../api/qaItems'
 import { QaItemAssignmentsTab } from './QaItemAssignmentsTab'
 import { QaItemOverviewTab } from './QaItemOverviewTab'
@@ -35,9 +35,13 @@ export function QaItemDetailPage() {
     () => parseLanguagesParam(searchParams.get('languages')),
     [searchParams],
   )
+  const detailPath = qaItemId ? `/api/v1/qa-items/${qaItemId}` : ''
+  const cachedDetail = detailPath
+    ? getCachedApiData<{ item: QaItemDetail }>(detailPath)
+    : null
 
-  const [item, setItem] = useState<QaItemDetail | null>(null)
-  const [loading, setLoading] = useState(true)
+  const [item, setItem] = useState<QaItemDetail | null>(cachedDetail?.item ?? null)
+  const [loading, setLoading] = useState(!cachedDetail)
   const [error, setError] = useState('')
   const [message, setMessage] = useState('')
   const [deleting, setDeleting] = useState(false)
@@ -46,7 +50,13 @@ export function QaItemDetailPage() {
     if (!qaItemId) {
       return Promise.resolve()
     }
-    setLoading(true)
+    const cached = getCachedApiData<{ item: QaItemDetail }>(`/api/v1/qa-items/${qaItemId}`)
+    if (cached) {
+      setItem(cached.item)
+      setLoading(false)
+    } else {
+      setLoading(true)
+    }
     setError('')
     return fetchQaItemDetail(qaItemId)
       .then((data) => setItem(data.item))

@@ -75,10 +75,7 @@ export function QaItemOverviewTab({ item, onItemUpdated, onMessage, onError }: Q
           <h4>Question text</h4>
           <p className="detail-text">{item.question_text}</p>
           <PromptRecording label="Question recording" recording={item.prompt_recordings.question} />
-        </section>
-
-        <section className="detail-card">
-          <h3>Expected answer</h3>
+          <h4>Expected answer</h4>
           <ExpectedAnswerBlock answer={item.expected_answer} />
           <PromptRecording label="Answer recording" recording={item.prompt_recordings.answer} />
         </section>

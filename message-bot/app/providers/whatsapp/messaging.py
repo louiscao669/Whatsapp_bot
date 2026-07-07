@@ -13,6 +13,10 @@ from app.providers.whatsapp.schedule_policy import (
     BATCH_NEXT_WAIT_REPLY,
     format_batch_next_assign_hour,
 )
+from eten_shared.domain.batch_size_nudges import (
+    BATCH_SIZE_NUDGE_ACCEPT_REPLY,
+    BATCH_SIZE_NUDGE_DECLINE_REPLY,
+)
 from eten_shared.mcq import (
     QUESTION_TYPE_MCQ,
     QUESTION_TYPE_TF,
@@ -137,6 +141,51 @@ def get_next_batch_choice_message_input(recipient):
     )
 
 
+def get_batch_size_nudge_message_input(recipient, nudge):
+    action_word = "increase" if nudge.action == "increase" else "reduce"
+    if nudge.action == "increase":
+        body = (
+            "You've completed your batches within 24 hours for 3 days in a row. "
+            f"Do you want to increase your next batch size to {nudge.proposed_size}?"
+        )
+    else:
+        body = (
+            "It looks like this batch size may be hard to finish within 24 hours. "
+            f"Do you want to reduce your next batch size to {nudge.proposed_size}?"
+        )
+
+    return json.dumps(
+        {
+            "messaging_product": "whatsapp",
+            "recipient_type": "individual",
+            "to": recipient,
+            "type": "interactive",
+            "interactive": {
+                "type": "button",
+                "body": {"text": _truncate_whatsapp_text(body, 1024)},
+                "action": {
+                    "buttons": [
+                        {
+                            "type": "reply",
+                            "reply": {
+                                "id": BATCH_SIZE_NUDGE_ACCEPT_REPLY,
+                                "title": f"Yes, {action_word}",
+                            },
+                        },
+                        {
+                            "type": "reply",
+                            "reply": {
+                                "id": BATCH_SIZE_NUDGE_DECLINE_REPLY,
+                                "title": "Not now",
+                            },
+                        },
+                    ]
+                },
+            },
+        }
+    )
+
+
 def get_assignment_prompt_text(prompt):
     parts = []
     if prompt.passage_reference:
@@ -206,6 +255,10 @@ def send_badge_messages(recipient, badges):
 
 def send_next_batch_choice_message(recipient):
     send_message(get_next_batch_choice_message_input(recipient))
+
+
+def send_batch_size_nudge_message(recipient, nudge):
+    send_message(get_batch_size_nudge_message_input(recipient, nudge))
 
 
 def get_no_assignment_message(response_recorded):
@@ -321,6 +374,8 @@ def process_whatsapp_message(body):
                 ),
             )
         )
+        if workflow_result.batch_size_nudge:
+            send_batch_size_nudge_message(wa_id, workflow_result.batch_size_nudge)
         send_next_batch_choice_message(wa_id)
 
     if workflow_result.prompt:

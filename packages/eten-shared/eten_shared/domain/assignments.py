@@ -7,6 +7,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from eten_shared.domain.batch_schedules import cancel_pending_next_batch_schedules
+from eten_shared.domain.batch_size_nudges import clamp_batch_size
 from eten_shared.domain.qa_eligibility import qa_item_is_assignable
 from eten_shared.question_discovery import get_qa_item_distribution_metrics
 from eten_shared.models import (
@@ -138,7 +139,10 @@ def resume_incomplete_assignment(db: Session, participant, participant_session, 
 
 
 def get_preferred_batch_size(participant):
-    return max(participant.preferred_batch_size or 1, 1)
+    size = clamp_batch_size(participant.preferred_batch_size)
+    if participant.preferred_batch_size != size:
+        participant.preferred_batch_size = size
+    return size
 
 
 def count_completed_assignments_in_batch(db: Session, participant, batch_id):

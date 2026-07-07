@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import { ApiError } from '../api/client'
+import { ApiError, getCachedApiData } from '../api/client'
 import {
   deleteRecording,
   fetchRecordDashboard,
@@ -17,9 +17,11 @@ import { RetakeConfirmModal } from '../components/RetakeConfirmModal'
 export function RecordPage() {
   const [searchParams, setSearchParams] = useSearchParams()
   const language = searchParams.get('language') ?? ''
+  const recordPath = `/api/v1/record${language ? `?language=${encodeURIComponent(language)}` : ''}`
+  const cachedDashboard = getCachedApiData<RecordDashboard>(recordPath)
 
-  const [dashboard, setDashboard] = useState<RecordDashboard | null>(null)
-  const [loading, setLoading] = useState(true)
+  const [dashboard, setDashboard] = useState<RecordDashboard | null>(cachedDashboard)
+  const [loading, setLoading] = useState(!cachedDashboard)
   const [error, setError] = useState('')
   const [message, setMessage] = useState('')
   const [retakeBlob, setRetakeBlob] = useState<Blob | null>(null)
@@ -27,8 +29,13 @@ export function RecordPage() {
 
   const loadDashboard = useCallback((targetLanguage?: string, options?: { silent?: boolean }) => {
     const silent = options?.silent ?? false
+    const path = `/api/v1/record${targetLanguage ? `?language=${encodeURIComponent(targetLanguage)}` : ''}`
+    const cached = getCachedApiData<RecordDashboard>(path)
+    if (cached) {
+      setDashboard(cached)
+    }
     if (!silent) {
-      setLoading(true)
+      setLoading(!cached)
     }
     setError('')
     return fetchRecordDashboard(targetLanguage || undefined)
@@ -153,7 +160,6 @@ export function RecordPage() {
                 <th>Passage</th>
                 <th>Question</th>
                 <th>Standard answer</th>
-                <th>Question recording</th>
               </tr>
             </thead>
             <tbody>
@@ -206,20 +212,23 @@ function RecordRowView({
   return (
     <tr>
       <td>{row.passage}</td>
-      <td className="question-cell">{row.question}</td>
+      <td className="question-cell">
+        <div className="record-question-panel">
+          <p>{row.question}</p>
+          <QuestionRecordingCell
+            row={row}
+            language={language}
+            onRecordingSaved={onRecordingSaved}
+            onError={onError}
+            onDelete={onDelete}
+            onRetakePreview={onRetakePreview}
+          />
+        </div>
+      </td>
       <td>
         <AnswerCell
           answer={row.answer}
           qaItemId={row.qa_item_id}
-          language={language}
-          onRecordingSaved={onRecordingSaved}
-          onError={onError}
-          onRetakePreview={onRetakePreview}
-        />
-      </td>
-      <td>
-        <QuestionRecordingCell
-          row={row}
           language={language}
           onRecordingSaved={onRecordingSaved}
           onError={onError}
@@ -271,37 +280,34 @@ function QuestionRecordingCell({
 
   return (
     <div className="recording-take">
-      <div className="recording-take-header">
-        <span className="detail-meta">{recording.label}</span>
-        <div className="action-row">
-          <RecordControls
-            qaItemId={row.qa_item_id}
-            recordingType="question"
-            language={language}
-            mode="retake"
-            label="Retake"
-            recordingId={recording.id}
-            version={recording.version}
-            onComplete={(message, saved) =>
-              onRecordingSaved(row.qa_item_id, 'question', message, saved)
-            }
-            onError={onError}
-            onRetakePreview={onRetakePreview}
-          />
-          <button
-            type="button"
-            className="link-button"
-            onClick={() => onDelete(row.qa_item_id, recording)}
-          >
-            Remove
-          </button>
-        </div>
-      </div>
       {recording.has_storage ? (
         <audio controls preload="none" src={recording.media_url} />
       ) : (
         <span className="detail-meta">No stored file</span>
       )}
+      <div className="recording-actions">
+        <RecordControls
+          qaItemId={row.qa_item_id}
+          recordingType="question"
+          language={language}
+          mode="retake"
+          label="Retake"
+          recordingId={recording.id}
+          version={recording.version}
+          onComplete={(message, saved) =>
+            onRecordingSaved(row.qa_item_id, 'question', message, saved)
+          }
+          onError={onError}
+          onRetakePreview={onRetakePreview}
+        />
+        <button
+          type="button"
+          className="link-button"
+          onClick={() => onDelete(row.qa_item_id, recording)}
+        >
+          Remove
+        </button>
+      </div>
     </div>
   )
 }
@@ -312,6 +318,7 @@ function AnswerCell({
   language,
   onRecordingSaved,
   onError,
+  onDelete,
   onRetakePreview,
 }: {
   answer: RecordAnswer
@@ -325,6 +332,7 @@ function AnswerCell({
     choiceLetter?: string,
   ) => void
   onError: (message: string) => void
+  onDelete: (qaItemId: string, recording: RecordTake) => void
   onRetakePreview: (blob: Blob) => Promise<boolean>
 }) {
   if (answer.kind === 'open') {
@@ -337,6 +345,7 @@ function AnswerCell({
           recording={answer.recording}
           onRecordingSaved={onRecordingSaved}
           onError={onError}
+          onDelete={onDelete}
           onRetakePreview={onRetakePreview}
         />
       </div>
@@ -358,6 +367,7 @@ function AnswerCell({
             recording={slot.recording}
             onRecordingSaved={onRecordingSaved}
             onError={onError}
+            onDelete={onDelete}
             onRetakePreview={onRetakePreview}
           />
         </li>
@@ -373,6 +383,7 @@ function AnswerRecordingSlot({
   recording,
   onRecordingSaved,
   onError,
+  onDelete,
   onRetakePreview,
 }: {
   qaItemId: string
@@ -387,6 +398,7 @@ function AnswerRecordingSlot({
     choiceLetter?: string,
   ) => void
   onError: (message: string) => void
+  onDelete: (qaItemId: string, recording: RecordTake) => void
   onRetakePreview: (blob: Blob) => Promise<boolean>
 }) {
   if (!recording) {
@@ -413,21 +425,30 @@ function AnswerRecordingSlot({
       ) : (
         <span className="detail-meta">No stored file</span>
       )}
-      <RecordControls
-        qaItemId={qaItemId}
-        recordingType="answer"
-        language={language}
-        mode="retake"
-        label="Retake"
-        choiceLetter={choiceLetter}
-        recordingId={recording.id}
-        version={recording.version}
-        onComplete={(message, saved) =>
-          onRecordingSaved(qaItemId, 'answer', message, saved, choiceLetter)
-        }
-        onError={onError}
-        onRetakePreview={onRetakePreview}
-      />
+      <div className="recording-actions">
+        <RecordControls
+          qaItemId={qaItemId}
+          recordingType="answer"
+          language={language}
+          mode="retake"
+          label="Retake"
+          choiceLetter={choiceLetter}
+          recordingId={recording.id}
+          version={recording.version}
+          onComplete={(message, saved) =>
+            onRecordingSaved(qaItemId, 'answer', message, saved, choiceLetter)
+          }
+          onError={onError}
+          onRetakePreview={onRetakePreview}
+        />
+        <button
+          type="button"
+          className="link-button"
+          onClick={() => onDelete(qaItemId, recording)}
+        >
+          Remove
+        </button>
+      </div>
     </div>
   )
 }

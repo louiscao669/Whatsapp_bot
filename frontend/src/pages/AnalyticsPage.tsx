@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ApiError } from '../api/client'
+import { ApiError, getCachedApiData } from '../api/client'
 import { fetchAnalytics, type AnalyticsDashboard } from '../api/analytics'
 
+const ANALYTICS_PATH = '/api/v1/analytics'
+
 export function AnalyticsPage() {
-  const [dashboard, setDashboard] = useState<AnalyticsDashboard | null>(null)
-  const [loading, setLoading] = useState(true)
+  const cachedDashboard = getCachedApiData<AnalyticsDashboard>(ANALYTICS_PATH)
+  const [dashboard, setDashboard] = useState<AnalyticsDashboard | null>(cachedDashboard)
+  const [loading, setLoading] = useState(!cachedDashboard)
   const [error, setError] = useState('')
 
   useEffect(() => {

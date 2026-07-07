@@ -1,4 +1,4 @@
-import { ApiError, apiFetch } from './client'
+import { ApiError, apiFetch, clearApiCache } from './client'
 
 export type RecordTake = {
   id: string
@@ -85,6 +85,7 @@ export async function uploadRecording(params: UploadRecordingParams) {
   if (!response.ok) {
     throw new ApiError(payload.message ?? response.statusText, response.status, payload.error)
   }
+  clearApiCache('/api/v1/record')
   return payload
 }
 

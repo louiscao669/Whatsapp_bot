@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
-import { ApiError } from '../api/client'
+import { ApiError, getCachedApiData } from '../api/client'
 import { downloadAudioZip, fetchAudioExport, type AudioExportChapter } from '../api/exports'
 
 export function ExportAudioPage() {
-  const [chapters, setChapters] = useState<AudioExportChapter[]>([])
+  const cachedExport = getCachedApiData<{ chapters: AudioExportChapter[] }>('/api/v1/export/audio')
+  const [chapters, setChapters] = useState<AudioExportChapter[]>(cachedExport?.chapters ?? [])
   const [selected, setSelected] = useState<Set<string>>(new Set())
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(!cachedExport)
   const [error, setError] = useState('')
   const [downloading, setDownloading] = useState(false)
 

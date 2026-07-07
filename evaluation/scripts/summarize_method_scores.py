@@ -116,6 +116,12 @@ def summarize_score_file(score_path: Path, root: Path) -> dict:
         "llm_incorrect": counts["incorrect"],
         "llm_other": counts["other"],
         "combined_score": combined_score,
+        "answer_confidence_mean": summary.get("answer_confidence_mean"),
+        "insufficient_information_rate": summary.get("insufficient_information_rate"),
+        "direct_evidence_rate": summary.get("direct_evidence_rate"),
+        "evidence_supported_rate": summary.get("evidence_supported_rate"),
+        "wrong_high_confidence_count": summary.get("wrong_high_confidence_count"),
+        "correct_low_confidence_count": summary.get("correct_low_confidence_count"),
     }
 
 
@@ -150,6 +156,10 @@ def print_table(rows: list[dict]) -> None:
         ("llm_correct", "correct"),
         ("llm_partial", "partial"),
         ("llm_incorrect", "wrong"),
+        ("answer_confidence_mean", "conf"),
+        ("insufficient_information_rate", "insuff"),
+        ("direct_evidence_rate", "direct_ev"),
+        ("wrong_high_confidence_count", "wrong_hi"),
     ]
     table = []
     for row in rows:

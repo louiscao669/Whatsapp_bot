@@ -24,7 +24,7 @@ def compose_dashboard_view_model(
         "achievements_view": achievements_view(streak, badges),
         "community_view": community,
         "contribution_view": contribution,
-        "journey": journey_view(history_summary),
+        "journey": journey_view(history_summary, streak),
         "shop_view": shop_view(store),
         "daily_challenge": {
             "title": "Daily challenge",

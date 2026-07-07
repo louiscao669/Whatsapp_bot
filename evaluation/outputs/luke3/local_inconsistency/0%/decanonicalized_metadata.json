@@ -1,0 +1,1210 @@
+{
+  "dataset_id": "luke_ch3_all_formats_llm_prompt_high_target_decanonicalized",
+  "method": "llm_prompt_high",
+  "source": {
+    "passage_file": "evaluation/datasets/test_passage_luke3.txt",
+    "qa_file": "evaluation/datasets/qa_output_luke_ch3_all_formats.json",
+    "source_decanonicalized_passage_file": "evaluation/outputs/luke3/1.5b/llm_prompt_high/passage_source_decanonicalized.txt",
+    "translated_passage_file": "evaluation/outputs/luke3/1.5b/llm_prompt_high/passage_target.txt",
+    "shared_decanonicalized_qa_file": "evaluation/outputs/luke3/1.5b/_shared/luke_ch3_all_formats_qa_zh_decanonicalized.json"
+  },
+  "outputs": {
+    "passage_file": "evaluation/outputs/luke3/1.5b/llm_prompt_high/passage_target_decanonicalized.txt",
+    "qa_file": "evaluation/outputs/luke3/1.5b/llm_prompt_high/qa_target_decanonicalized.json"
+  },
+  "canonicalization": {
+    "method": "llm",
+    "model": "gpt-4.1-mini",
+    "mapping": [
+      {
+        "placeholder": "文本甲",
+        "protected_token": "__TEXT_A__",
+        "english_aliases": [],
+        "chinese_alias_hints": [
+          "路加福音"
+        ]
+      },
+      {
+        "placeholder": "作者甲",
+        "protected_token": "__AUTHOR_A__",
+        "english_aliases": [
+          "Luke",
+          "Luke's",
+          "Luke’s"
+        ],
+        "chinese_alias_hints": [
+          "路加"
+        ]
+      },
+      {
+        "placeholder": "收信者甲",
+        "protected_token": "__RECIPIENT_A__",
+        "english_aliases": [
+          "Theophilus",
+          "Theophilus's",
+          "Theophilus’s"
+        ],
+        "chinese_alias_hints": [
+          "提阿非罗",
+          "提阿非罗斯"
+        ]
+      },
+      {
+        "placeholder": "人物甲",
+        "protected_token": "__PERSON_A__",
+        "english_aliases": [
+          "Zechariah",
+          "Zechariah's",
+          "Zechariah’s"
+        ],
+        "chinese_alias_hints": [
+          "撒迦利亚"
+        ]
+      },
+      {
+        "placeholder": "人物乙",
+        "protected_token": "__PERSON_B__",
+        "english_aliases": [
+          "Elizabeth",
+          "Elizabeth's",
+          "Elizabeth’s"
+        ],
+        "chinese_alias_hints": [
+          "以利沙伯"
+        ]
+      },
+      {
+        "placeholder": "人物丙",
+        "protected_token": "__PERSON_C__",
+        "english_aliases": [
+          "John",
+          "John's",
+          "John’s"
+        ],
+        "chinese_alias_hints": [
+          "约翰"
+        ]
+      },
+      {
+        "placeholder": "人物丁",
+        "protected_token": "__PERSON_D__",
+        "english_aliases": [
+          "Mary",
+          "Mary's",
+          "Mary’s"
+        ],
+        "chinese_alias_hints": [
+          "马利亚"
+        ]
+      },
+      {
+        "placeholder": "人物戊",
+        "protected_token": "__PERSON_E__",
+        "english_aliases": [
+          "Joseph",
+          "Joseph's",
+          "Joseph’s"
+        ],
+        "chinese_alias_hints": [
+          "约瑟"
+        ]
+      },
+      {
+        "placeholder": "人物己",
+        "protected_token": "__PERSON_F__",
+        "english_aliases": [
+          "Jesus",
+          "Jesus'",
+          "Jesus’"
+        ],
+        "chinese_alias_hints": [
+          "耶稣"
+        ]
+      },
+      {
+        "placeholder": "使者乙",
+        "protected_token": "__MESSENGER_B__",
+        "english_aliases": [
+          "Gabriel"
+        ],
+        "chinese_alias_hints": [
+          "加百列"
+        ]
+      },
+      {
+        "placeholder": "族群甲",
+        "protected_token": "__PEOPLE_A__",
+        "english_aliases": [
+          "Israel",
+          "Israel's",
+          "Israel’s"
+        ],
+        "chinese_alias_hints": [
+          "以色列"
+        ]
+      },
+      {
+        "placeholder": "先祖甲",
+        "protected_token": "__ANCESTOR_A__",
+        "english_aliases": [
+          "Abraham",
+          "Abraham's",
+          "Abraham’s"
+        ],
+        "chinese_alias_hints": [
+          "亚伯拉罕"
+        ]
+      },
+      {
+        "placeholder": "先祖乙",
+        "protected_token": "__ANCESTOR_B__",
+        "english_aliases": [
+          "Jacob",
+          "Jacob's",
+          "Jacob’s"
+        ],
+        "chinese_alias_hints": [
+          "雅各"
+        ]
+      },
+      {
+        "placeholder": "君王甲",
+        "protected_token": "__KING_A__",
+        "english_aliases": [
+          "David",
+          "David's",
+          "David’s"
+        ],
+        "chinese_alias_hints": [
+          "大卫"
+        ]
+      },
+      {
+        "placeholder": "村庄甲",
+        "protected_token": "__VILLAGE_A__",
+        "english_aliases": [
+          "Nazareth"
+        ],
+        "chinese_alias_hints": [
+          "拿撒勒"
+        ]
+      },
+      {
+        "placeholder": "地区甲",
+        "protected_token": "__REGION_A__",
+        "english_aliases": [
+          "Galilee"
+        ],
+        "chinese_alias_hints": [
+          "加利利"
+        ]
+      },
+      {
+        "placeholder": "城市甲",
+        "protected_token": "__CITY_A__",
+        "english_aliases": [
+          "Jerusalem"
+        ],
+        "chinese_alias_hints": [
+          "耶路撒冷"
+        ]
+      },
+      {
+        "placeholder": "班次甲",
+        "protected_token": "__DIVISION_A__",
+        "english_aliases": [
+          "Abijah"
+        ],
+        "chinese_alias_hints": [
+          "亚比雅"
+        ]
+      },
+      {
+        "placeholder": "祖先乙",
+        "protected_token": "__FOREFATHER_B__",
+        "english_aliases": [
+          "Aaron",
+          "Aaron's",
+          "Aaron’s"
+        ],
+        "chinese_alias_hints": [
+          "亚伦"
+        ]
+      },
+      {
+        "placeholder": "统治者甲",
+        "protected_token": "__RULER_A__",
+        "english_aliases": [
+          "Herod",
+          "Herod's",
+          "Herod’s"
+        ],
+        "chinese_alias_hints": [
+          "希律",
+          "希律王"
+        ]
+      },
+      {
+        "placeholder": "先知甲",
+        "protected_token": "__PROPHET_A__",
+        "english_aliases": [
+          "Elijah",
+          "Elijah's",
+          "Elijah’s"
+        ],
+        "chinese_alias_hints": [
+          "以利亚"
+        ]
+      },
+      {
+        "placeholder": "至高者甲",
+        "protected_token": "__MOST_HIGH_A__",
+        "english_aliases": [
+          "God",
+          "God's",
+          "God’s"
+        ],
+        "chinese_alias_hints": [
+          "神"
+        ]
+      },
+      {
+        "placeholder": "主人甲",
+        "protected_token": "__MASTER_A__",
+        "english_aliases": [
+          "Lord",
+          "Lord's",
+          "Lord’s"
+        ],
+        "chinese_alias_hints": [
+          "主"
+        ]
+      },
+      {
+        "placeholder": "灵甲",
+        "protected_token": "__SPIRIT_A__",
+        "english_aliases": [
+          "Holy Spirit"
+        ],
+        "chinese_alias_hints": [
+          "圣灵",
+          "圣鬼"
+        ]
+      },
+      {
+        "placeholder": "尊者甲",
+        "protected_token": "__HONORED_A__",
+        "english_aliases": [
+          "Most High"
+        ],
+        "chinese_alias_hints": [
+          "最高者"
+        ]
+      },
+      {
+        "placeholder": "职员甲",
+        "protected_token": "__WORKER_A__",
+        "english_aliases": [
+          "priest",
+          "priests"
+        ],
+        "chinese_alias_hints": [
+          "祭司"
+        ]
+      },
+      {
+        "placeholder": "场所甲",
+        "protected_token": "__PLACE_A__",
+        "english_aliases": [
+          "temple"
+        ],
+        "chinese_alias_hints": [
+          "庙",
+          "殿"
+        ]
+      },
+      {
+        "placeholder": "材料甲",
+        "protected_token": "__MATERIAL_A__",
+        "english_aliases": [
+          "incense"
+        ],
+        "chinese_alias_hints": [
+          "烧香",
+          "焚香",
+          "熏香",
+          "献香",
+          "香",
+          "香料",
+          "香气"
+        ]
+      },
+      {
+        "placeholder": "请求",
+        "protected_token": "__REQUEST_A__",
+        "english_aliases": [
+          "prayer",
+          "prayers",
+          "praying"
+        ],
+        "chinese_alias_hints": [
+          "祈祷",
+          "祷告"
+        ]
+      },
+      {
+        "placeholder": "人物01",
+        "protected_token": "__LOCAL_PERSON_01__",
+        "english_aliases": [
+          "Tiberius Caesar",
+          "Tiberius Caesar's"
+        ],
+        "chinese_alias_hints": [
+          "提比略凯撒"
+        ]
+      },
+      {
+        "placeholder": "角色01",
+        "protected_token": "__LOCAL_ROLE_01__",
+        "english_aliases": [
+          "Pontius Pilate",
+          "Pontius Pilate's"
+        ],
+        "chinese_alias_hints": [
+          "本丢彼拉多"
+        ]
+      },
+      {
+        "placeholder": "人物02",
+        "protected_token": "__LOCAL_PERSON_02__",
+        "english_aliases": [
+          "Philip",
+          "Philip's"
+        ],
+        "chinese_alias_hints": [
+          "腓力"
+        ]
+      },
+      {
+        "placeholder": "地点01",
+        "protected_token": "__LOCAL_PLACE_01__",
+        "english_aliases": [
+          "Iturea"
+        ],
+        "chinese_alias_hints": [
+          "伊土利亚"
+        ]
+      },
+      {
+        "placeholder": "地点02",
+        "protected_token": "__LOCAL_PLACE_02__",
+        "english_aliases": [
+          "Traconitis"
+        ],
+        "chinese_alias_hints": [
+          "特拉科尼提斯"
+        ]
+      },
+      {
+        "placeholder": "人物03",
+        "protected_token": "__LOCAL_PERSON_03__",
+        "english_aliases": [
+          "Lysanias",
+          "Lysanias'"
+        ],
+        "chinese_alias_hints": [
+          "利西尼亚"
+        ]
+      },
+      {
+        "placeholder": "地点03",
+        "protected_token": "__LOCAL_PLACE_03__",
+        "english_aliases": [
+          "Abilene"
+        ],
+        "chinese_alias_hints": [
+          "亚比伦"
+        ]
+      },
+      {
+        "placeholder": "角色02",
+        "protected_token": "__LOCAL_ROLE_02__",
+        "english_aliases": [
+          "Annas",
+          "Annas'"
+        ],
+        "chinese_alias_hints": [
+          "亚那"
+        ]
+      },
+      {
+        "placeholder": "角色03",
+        "protected_token": "__LOCAL_ROLE_03__",
+        "english_aliases": [
+          "Caiaphas",
+          "Caiaphas'"
+        ],
+        "chinese_alias_hints": [
+          "该亚法"
+        ]
+      },
+      {
+        "placeholder": "人物04",
+        "protected_token": "__LOCAL_PERSON_04__",
+        "english_aliases": [
+          "Isaiah",
+          "Isaiah's"
+        ],
+        "chinese_alias_hints": [
+          "以赛亚"
+        ]
+      },
+      {
+        "placeholder": "地点04",
+        "protected_token": "__LOCAL_PLACE_04__",
+        "english_aliases": [
+          "Babylon"
+        ],
+        "chinese_alias_hints": [
+          "巴比伦"
+        ]
+      },
+      {
+        "placeholder": "群体01",
+        "protected_token": "__LOCAL_GROUP_01__",
+        "english_aliases": [
+          "Tax collectors",
+          "tax collector"
+        ],
+        "chinese_alias_hints": [
+          "税吏"
+        ]
+      },
+      {
+        "placeholder": "群体02",
+        "protected_token": "__LOCAL_GROUP_02__",
+        "english_aliases": [
+          "Soldiers"
+        ],
+        "chinese_alias_hints": [
+          "士兵"
+        ]
+      },
+      {
+        "placeholder": "称号01",
+        "protected_token": "__LOCAL_TITLE_01__",
+        "english_aliases": [
+          "Messiah"
+        ],
+        "chinese_alias_hints": [
+          "弥赛亚"
+        ]
+      },
+      {
+        "placeholder": "人物05",
+        "protected_token": "__LOCAL_PERSON_05__",
+        "english_aliases": [
+          "Herodias",
+          "Herodias'"
+        ],
+        "chinese_alias_hints": [
+          "希罗底"
+        ]
+      },
+      {
+        "placeholder": "人物06",
+        "protected_token": "__LOCAL_PERSON_06__",
+        "english_aliases": [
+          "Heli",
+          "Heli's"
+        ],
+        "chinese_alias_hints": [
+          "希利"
+        ]
+      },
+      {
+        "placeholder": "人物07",
+        "protected_token": "__LOCAL_PERSON_07__",
+        "english_aliases": [
+          "Matthat",
+          "Matthat's"
+        ],
+        "chinese_alias_hints": [
+          "玛塔"
+        ]
+      },
+      {
+        "placeholder": "人物08",
+        "protected_token": "__LOCAL_PERSON_08__",
+        "english_aliases": [
+          "Levi",
+          "Levi's"
+        ],
+        "chinese_alias_hints": [
+          "利未"
+        ]
+      },
+      {
+        "placeholder": "人物09",
+        "protected_token": "__LOCAL_PERSON_09__",
+        "english_aliases": [
+          "Melki",
+          "Melki's"
+        ],
+        "chinese_alias_hints": [
+          "麦基"
+        ]
+      },
+      {
+        "placeholder": "人物10",
+        "protected_token": "__LOCAL_PERSON_10__",
+        "english_aliases": [
+          "Jannai",
+          "Jannai's"
+        ],
+        "chinese_alias_hints": [
+          "雅奈"
+        ]
+      },
+      {
+        "placeholder": "人物11",
+        "protected_token": "__LOCAL_PERSON_11__",
+        "english_aliases": [
+          "Mattathias",
+          "Mattathias'"
+        ],
+        "chinese_alias_hints": [
+          "玛他提亚"
+        ]
+      },
+      {
+        "placeholder": "人物12",
+        "protected_token": "__LOCAL_PERSON_12__",
+        "english_aliases": [
+          "Amos",
+          "Amos'"
+        ],
+        "chinese_alias_hints": [
+          "亚摩司"
+        ]
+      },
+      {
+        "placeholder": "人物13",
+        "protected_token": "__LOCAL_PERSON_13__",
+        "english_aliases": [
+          "Nahum",
+          "Nahum's"
+        ],
+        "chinese_alias_hints": [
+          "拿鸿"
+        ]
+      },
+      {
+        "placeholder": "人物14",
+        "protected_token": "__LOCAL_PERSON_14__",
+        "english_aliases": [
+          "Esli",
+          "Esli's"
+        ],
+        "chinese_alias_hints": [
+          "以斯利"
+        ]
+      },
+      {
+        "placeholder": "人物15",
+        "protected_token": "__LOCAL_PERSON_15__",
+        "english_aliases": [
+          "Naggai",
+          "Naggai's"
+        ],
+        "chinese_alias_hints": [
+          "拿该"
+        ]
+      },
+      {
+        "placeholder": "人物16",
+        "protected_token": "__LOCAL_PERSON_16__",
+        "english_aliases": [
+          "Maath",
+          "Maath's"
+        ],
+        "chinese_alias_hints": [
+          "玛他"
+        ]
+      },
+      {
+        "placeholder": "人物17",
+        "protected_token": "__LOCAL_PERSON_17__",
+        "english_aliases": [
+          "Semein",
+          "Semein's"
+        ],
+        "chinese_alias_hints": [
+          "西面"
+        ]
+      },
+      {
+        "placeholder": "人物18",
+        "protected_token": "__LOCAL_PERSON_18__",
+        "english_aliases": [
+          "Josek",
+          "Josek's"
+        ],
+        "chinese_alias_hints": [
+          "约瑟"
+        ]
+      },
+      {
+        "placeholder": "人物19",
+        "protected_token": "__LOCAL_PERSON_19__",
+        "english_aliases": [
+          "Joda",
+          "Joda's"
+        ],
+        "chinese_alias_hints": [
+          "约大"
+        ]
+      },
+      {
+        "placeholder": "人物20",
+        "protected_token": "__LOCAL_PERSON_20__",
+        "english_aliases": [
+          "Joanan",
+          "Joanan's"
+        ],
+        "chinese_alias_hints": [
+          "约南"
+        ]
+      },
+      {
+        "placeholder": "人物21",
+        "protected_token": "__LOCAL_PERSON_21__",
+        "english_aliases": [
+          "Rhesa",
+          "Rhesa's"
+        ],
+        "chinese_alias_hints": [
+          "勒撒"
+        ]
+      },
+      {
+        "placeholder": "人物22",
+        "protected_token": "__LOCAL_PERSON_22__",
+        "english_aliases": [
+          "Zerubbabel",
+          "Zerubbabel's"
+        ],
+        "chinese_alias_hints": [
+          "所罗巴伯"
+        ]
+      },
+      {
+        "placeholder": "人物23",
+        "protected_token": "__LOCAL_PERSON_23__",
+        "english_aliases": [
+          "Shealtiel",
+          "Shealtiel's"
+        ],
+        "chinese_alias_hints": [
+          "示利结"
+        ]
+      },
+      {
+        "placeholder": "人物24",
+        "protected_token": "__LOCAL_PERSON_24__",
+        "english_aliases": [
+          "Neri",
+          "Neri's"
+        ],
+        "chinese_alias_hints": [
+          "尼利"
+        ]
+      },
+      {
+        "placeholder": "人物25",
+        "protected_token": "__LOCAL_PERSON_25__",
+        "english_aliases": [
+          "Addi",
+          "Addi's"
+        ],
+        "chinese_alias_hints": [
+          "亚弟"
+        ]
+      },
+      {
+        "placeholder": "人物26",
+        "protected_token": "__LOCAL_PERSON_26__",
+        "english_aliases": [
+          "Cosam",
+          "Cosam's"
+        ],
+        "chinese_alias_hints": [
+          "哥算"
+        ]
+      },
+      {
+        "placeholder": "人物27",
+        "protected_token": "__LOCAL_PERSON_27__",
+        "english_aliases": [
+          "Elmadam",
+          "Elmadam's"
+        ],
+        "chinese_alias_hints": [
+          "以利达"
+        ]
+      },
+      {
+        "placeholder": "人物28",
+        "protected_token": "__LOCAL_PERSON_28__",
+        "english_aliases": [
+          "Er",
+          "Er's"
+        ],
+        "chinese_alias_hints": [
+          "以拉"
+        ]
+      },
+      {
+        "placeholder": "人物29",
+        "protected_token": "__LOCAL_PERSON_29__",
+        "english_aliases": [
+          "Joshua",
+          "Joshua's"
+        ],
+        "chinese_alias_hints": [
+          "约书亚"
+        ]
+      },
+      {
+        "placeholder": "人物30",
+        "protected_token": "__LOCAL_PERSON_30__",
+        "english_aliases": [
+          "Eliezer",
+          "Eliezer's"
+        ],
+        "chinese_alias_hints": [
+          "以利以谢"
+        ]
+      },
+      {
+        "placeholder": "人物31",
+        "protected_token": "__LOCAL_PERSON_31__",
+        "english_aliases": [
+          "Jorim",
+          "Jorim's"
+        ],
+        "chinese_alias_hints": [
+          "约利"
+        ]
+      },
+      {
+        "placeholder": "人物32",
+        "protected_token": "__LOCAL_PERSON_32__",
+        "english_aliases": [
+          "Simeon",
+          "Simeon's"
+        ],
+        "chinese_alias_hints": [
+          "西缅"
+        ]
+      },
+      {
+        "placeholder": "人物33",
+        "protected_token": "__LOCAL_PERSON_33__",
+        "english_aliases": [
+          "Judah",
+          "Judah's"
+        ],
+        "chinese_alias_hints": [
+          "犹大"
+        ]
+      },
+      {
+        "placeholder": "人物34",
+        "protected_token": "__LOCAL_PERSON_34__",
+        "english_aliases": [
+          "Jonam",
+          "Jonam's"
+        ],
+        "chinese_alias_hints": [
+          "约南"
+        ]
+      },
+      {
+        "placeholder": "人物35",
+        "protected_token": "__LOCAL_PERSON_35__",
+        "english_aliases": [
+          "Eliakim",
+          "Eliakim's"
+        ],
+        "chinese_alias_hints": [
+          "以利亚敬"
+        ]
+      },
+      {
+        "placeholder": "人物36",
+        "protected_token": "__LOCAL_PERSON_36__",
+        "english_aliases": [
+          "Melea",
+          "Melea's"
+        ],
+        "chinese_alias_hints": [
+          "迈勒"
+        ]
+      },
+      {
+        "placeholder": "人物37",
+        "protected_token": "__LOCAL_PERSON_37__",
+        "english_aliases": [
+          "Menna",
+          "Menna's"
+        ],
+        "chinese_alias_hints": [
+          "迈拿"
+        ]
+      },
+      {
+        "placeholder": "人物38",
+        "protected_token": "__LOCAL_PERSON_38__",
+        "english_aliases": [
+          "Mattatha",
+          "Mattatha's"
+        ],
+        "chinese_alias_hints": [
+          "玛大他"
+        ]
+      },
+      {
+        "placeholder": "人物39",
+        "protected_token": "__LOCAL_PERSON_39__",
+        "english_aliases": [
+          "Nathan",
+          "Nathan's"
+        ],
+        "chinese_alias_hints": [
+          "拿坦"
+        ]
+      },
+      {
+        "placeholder": "人物40",
+        "protected_token": "__LOCAL_PERSON_40__",
+        "english_aliases": [
+          "Jesse",
+          "Jesse's"
+        ],
+        "chinese_alias_hints": [
+          "以赛"
+        ]
+      },
+      {
+        "placeholder": "人物41",
+        "protected_token": "__LOCAL_PERSON_41__",
+        "english_aliases": [
+          "Obed",
+          "Obed's"
+        ],
+        "chinese_alias_hints": [
+          "俄备得"
+        ]
+      },
+      {
+        "placeholder": "人物42",
+        "protected_token": "__LOCAL_PERSON_42__",
+        "english_aliases": [
+          "Boaz",
+          "Boaz'"
+        ],
+        "chinese_alias_hints": [
+          "波阿斯"
+        ]
+      },
+      {
+        "placeholder": "人物43",
+        "protected_token": "__LOCAL_PERSON_43__",
+        "english_aliases": [
+          "Salmon",
+          "Salmon's"
+        ],
+        "chinese_alias_hints": [
+          "撒门"
+        ]
+      },
+      {
+        "placeholder": "人物44",
+        "protected_token": "__LOCAL_PERSON_44__",
+        "english_aliases": [
+          "Nahshon",
+          "Nahshon's"
+        ],
+        "chinese_alias_hints": [
+          "拿顺"
+        ]
+      },
+      {
+        "placeholder": "人物45",
+        "protected_token": "__LOCAL_PERSON_45__",
+        "english_aliases": [
+          "Amminadab",
+          "Amminadab's"
+        ],
+        "chinese_alias_hints": [
+          "亚米拿达"
+        ]
+      },
+      {
+        "placeholder": "人物46",
+        "protected_token": "__LOCAL_PERSON_46__",
+        "english_aliases": [
+          "Ram",
+          "Ram's"
+        ],
+        "chinese_alias_hints": [
+          "腓勒"
+        ]
+      },
+      {
+        "placeholder": "人物47",
+        "protected_token": "__LOCAL_PERSON_47__",
+        "english_aliases": [
+          "Hezron",
+          "Hezron's"
+        ],
+        "chinese_alias_hints": [
+          "希斯仑"
+        ]
+      },
+      {
+        "placeholder": "人物48",
+        "protected_token": "__LOCAL_PERSON_48__",
+        "english_aliases": [
+          "Perez",
+          "Perez'"
+        ],
+        "chinese_alias_hints": [
+          "珥斯"
+        ]
+      },
+      {
+        "placeholder": "人物49",
+        "protected_token": "__LOCAL_PERSON_49__",
+        "english_aliases": [
+          "Terah",
+          "Terah's"
+        ],
+        "chinese_alias_hints": [
+          "他拉"
+        ]
+      },
+      {
+        "placeholder": "人物50",
+        "protected_token": "__LOCAL_PERSON_50__",
+        "english_aliases": [
+          "Nahor",
+          "Nahor's"
+        ],
+        "chinese_alias_hints": [
+          "拿鹤"
+        ]
+      },
+      {
+        "placeholder": "人物51",
+        "protected_token": "__LOCAL_PERSON_51__",
+        "english_aliases": [
+          "Serug",
+          "Serug's"
+        ],
+        "chinese_alias_hints": [
+          "肃拉"
+        ]
+      },
+      {
+        "placeholder": "人物52",
+        "protected_token": "__LOCAL_PERSON_52__",
+        "english_aliases": [
+          "Reu",
+          "Reu's"
+        ],
+        "chinese_alias_hints": [
+          "拉吴"
+        ]
+      },
+      {
+        "placeholder": "人物53",
+        "protected_token": "__LOCAL_PERSON_53__",
+        "english_aliases": [
+          "Peleg",
+          "Peleg's"
+        ],
+        "chinese_alias_hints": [
+          "法勒革"
+        ]
+      },
+      {
+        "placeholder": "人物54",
+        "protected_token": "__LOCAL_PERSON_54__",
+        "english_aliases": [
+          "Eber",
+          "Eber's"
+        ],
+        "chinese_alias_hints": [
+          "希伯"
+        ]
+      },
+      {
+        "placeholder": "人物55",
+        "protected_token": "__LOCAL_PERSON_55__",
+        "english_aliases": [
+          "Shelah",
+          "Shelah's"
+        ],
+        "chinese_alias_hints": [
+          "撒拉"
+        ]
+      },
+      {
+        "placeholder": "人物56",
+        "protected_token": "__LOCAL_PERSON_56__",
+        "english_aliases": [
+          "Cainan",
+          "Cainan's"
+        ],
+        "chinese_alias_hints": [
+          "该南"
+        ]
+      },
+      {
+        "placeholder": "人物57",
+        "protected_token": "__LOCAL_PERSON_57__",
+        "english_aliases": [
+          "Arphaxad",
+          "Arphaxad's"
+        ],
+        "chinese_alias_hints": [
+          "亚法撒"
+        ]
+      },
+      {
+        "placeholder": "人物58",
+        "protected_token": "__LOCAL_PERSON_58__",
+        "english_aliases": [
+          "Shem",
+          "Shem's"
+        ],
+        "chinese_alias_hints": [
+          "闪"
+        ]
+      },
+      {
+        "placeholder": "人物59",
+        "protected_token": "__LOCAL_PERSON_59__",
+        "english_aliases": [
+          "Noah",
+          "Noah's"
+        ],
+        "chinese_alias_hints": [
+          "挪亚"
+        ]
+      },
+      {
+        "placeholder": "人物60",
+        "protected_token": "__LOCAL_PERSON_60__",
+        "english_aliases": [
+          "Lamech",
+          "Lamech's"
+        ],
+        "chinese_alias_hints": [
+          "拉麦"
+        ]
+      },
+      {
+        "placeholder": "人物61",
+        "protected_token": "__LOCAL_PERSON_61__",
+        "english_aliases": [
+          "Methuselah",
+          "Methuselah's"
+        ],
+        "chinese_alias_hints": [
+          "玛土撒拉"
+        ]
+      },
+      {
+        "placeholder": "人物62",
+        "protected_token": "__LOCAL_PERSON_62__",
+        "english_aliases": [
+          "Enoch",
+          "Enoch's"
+        ],
+        "chinese_alias_hints": [
+          "以诺"
+        ]
+      },
+      {
+        "placeholder": "人物63",
+        "protected_token": "__LOCAL_PERSON_63__",
+        "english_aliases": [
+          "Jared",
+          "Jared's"
+        ],
+        "chinese_alias_hints": [
+          "雅列"
+        ]
+      },
+      {
+        "placeholder": "人物64",
+        "protected_token": "__LOCAL_PERSON_64__",
+        "english_aliases": [
+          "Mahalalel",
+          "Mahalalel's"
+        ],
+        "chinese_alias_hints": [
+          "玛勒列"
+        ]
+      },
+      {
+        "placeholder": "人物65",
+        "protected_token": "__LOCAL_PERSON_65__",
+        "english_aliases": [
+          "Kenan",
+          "Kenan's"
+        ],
+        "chinese_alias_hints": [
+          "该南"
+        ]
+      },
+      {
+        "placeholder": "人物66",
+        "protected_token": "__LOCAL_PERSON_66__",
+        "english_aliases": [
+          "Enosh",
+          "Enosh's"
+        ],
+        "chinese_alias_hints": [
+          "以诺士"
+        ]
+      },
+      {
+        "placeholder": "人物67",
+        "protected_token": "__LOCAL_PERSON_67__",
+        "english_aliases": [
+          "Seth",
+          "Seth's"
+        ],
+        "chinese_alias_hints": [
+          "塞特"
+        ]
+      },
+      {
+        "placeholder": "人物68",
+        "protected_token": "__LOCAL_PERSON_68__",
+        "english_aliases": [
+          "Adam",
+          "Adam's"
+        ],
+        "chinese_alias_hints": [
+          "亚当"
+        ]
+      }
+    ],
+    "entity_inventory_file": "evaluation/outputs/luke3/1.5b/_shared/luke_ch3_all_formats_entity_inventory.json"
+  }
+}

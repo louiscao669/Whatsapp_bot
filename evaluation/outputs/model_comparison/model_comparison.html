@@ -1,0 +1,3999 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Answer Model Comparison</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --panel: #ffffff;
+      --ink: #172033;
+      --muted: #687386;
+      --line: #d9e1ec;
+      --track: #e8eef6;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    main {
+      width: min(1480px, calc(100% - 48px));
+      margin: 0 auto;
+      padding: 36px 0 56px;
+    }
+    h1 { margin: 0 0 8px; font-size: 34px; letter-spacing: 0; }
+    h2.section-title { margin: 34px 0 14px; font-size: 22px; }
+    .subtle { color: var(--muted); margin: 0 0 24px; }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .model-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-top: 8px solid var(--accent);
+      border-radius: 8px;
+      padding: 18px;
+    }
+    .model-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      color: var(--muted);
+    }
+    .model-card h2 { margin: 0; color: var(--ink); font-size: 22px; }
+    .big-score { font-size: 46px; line-height: 1; font-weight: 850; margin: 18px 0; }
+    .metric-row {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 12px;
+      align-items: center;
+      margin-top: 10px;
+      color: var(--muted);
+    }
+    .metric-bar {
+      display: inline-block;
+      height: 12px;
+      background: var(--track);
+      border-radius: 999px;
+      overflow: hidden;
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+    .metric-bar span {
+      display: block;
+      height: 100%;
+      background: #2563eb;
+      border-radius: 999px;
+    }
+    .chapter-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 14px;
+    }
+    .chapter-group {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .chapter-title {
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+    .chapter-title span {
+      color: var(--muted);
+      font-weight: 650;
+      margin-left: 8px;
+    }
+    .chapter-bar {
+      display: grid;
+      grid-template-columns: 74px 1fr 54px;
+      align-items: center;
+      gap: 8px;
+      margin: 7px 0;
+      font-size: 13px;
+    }
+    .bar-label { color: var(--muted); }
+    .bar-track {
+      height: 12px;
+      border-radius: 999px;
+      background: var(--track);
+      overflow: hidden;
+    }
+    .bar-track.empty {
+      background: repeating-linear-gradient(
+        135deg,
+        #eef2f7,
+        #eef2f7 6px,
+        #dde5ef 6px,
+        #dde5ef 12px
+      );
+    }
+    .bar-track i {
+      display: block;
+      height: 100%;
+      border-radius: 999px;
+    }
+    .table-wrap {
+      overflow: auto;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      min-width: 920px;
+      font-size: 13px;
+    }
+    th, td {
+      border-bottom: 1px solid var(--line);
+      padding: 9px 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      position: sticky;
+      top: 0;
+      background: #f1f5f9;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      color: #475569;
+    }
+    tr:last-child td { border-bottom: none; }
+    .question-cell { min-width: 240px; }
+    .answer-cell { min-width: 220px; max-width: 360px; }
+    .dot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      margin-right: 7px;
+    }
+    .muted { color: var(--muted); }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Answer Model Comparison</h1>
+  <p class="subtle">Generated from answer-model comparison CSVs. Scores are shown as percentages; open-answer scores use the LLM judge score.</p>
+
+  <h2 class="section-title">Overall</h2>
+  <div class="cards">
+            <section class="model-card" style="--accent:#2fbf71">
+              <div class="model-card-top">
+                <h2>1.7b</h2>
+                <span>816 items</span>
+              </div>
+              <div class="big-score">77.8%</div>
+              <div class="metric-row"><span>MCQ accuracy</span><div class='metric-bar' style='width:180px'><span style='width:88.2%'></span></div><b>88.2%</b></div>
+              <div class="metric-row"><span>Open LLM mean</span><div class='metric-bar' style='width:180px'><span style='width:67.4%'></span></div><b>67.4%</b></div>
+            </section>
+            
+
+            <section class="model-card" style="--accent:#f7b32b">
+              <div class="model-card-top">
+                <h2>1.5b</h2>
+                <span>816 items</span>
+              </div>
+              <div class="big-score">66.7%</div>
+              <div class="metric-row"><span>MCQ accuracy</span><div class='metric-bar' style='width:180px'><span style='width:73.8%'></span></div><b>73.8%</b></div>
+              <div class="metric-row"><span>Open LLM mean</span><div class='metric-bar' style='width:180px'><span style='width:59.6%'></span></div><b>59.6%</b></div>
+            </section>
+            
+
+            <section class="model-card" style="--accent:#ef6f6c">
+              <div class="model-card-top">
+                <h2>llama 1b</h2>
+                <span>798 items</span>
+              </div>
+              <div class="big-score">37.8%</div>
+              <div class="metric-row"><span>MCQ accuracy</span><div class='metric-bar' style='width:180px'><span style='width:35.9%'></span></div><b>35.9%</b></div>
+              <div class="metric-row"><span>Open LLM mean</span><div class='metric-bar' style='width:180px'><span style='width:39.7%'></span></div><b>39.7%</b></div>
+            </section>
+            </div>
+
+  <h2 class="section-title">Combined Score By Chapter And Method</h2>
+  <div class="chapter-grid">
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 1 <span>google_word_by_word</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:75.0%; background:#f7b32b"></i></div>
+                      <b>75.0%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:79.5%; background:#2fbf71"></i></div>
+                      <b>79.5%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:40.9%; background:#ef6f6c"></i></div>
+                      <b>40.9%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 1 <span>llm_prompt_high</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:86.4%; background:#f7b32b"></i></div>
+                      <b>86.4%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:93.2%; background:#2fbf71"></i></div>
+                      <b>93.2%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:59.1%; background:#ef6f6c"></i></div>
+                      <b>59.1%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 1 <span>mBART-50</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:63.6%; background:#f7b32b"></i></div>
+                      <b>63.6%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:81.8%; background:#2fbf71"></i></div>
+                      <b>81.8%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:38.6%; background:#ef6f6c"></i></div>
+                      <b>38.6%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 1 <span>nllb-200-1.3B</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:72.7%; background:#f7b32b"></i></div>
+                      <b>72.7%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:86.4%; background:#2fbf71"></i></div>
+                      <b>86.4%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:45.5%; background:#ef6f6c"></i></div>
+                      <b>45.5%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 2 <span>google_word_by_word</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:50.0%; background:#f7b32b"></i></div>
+                      <b>50.0%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:62.5%; background:#2fbf71"></i></div>
+                      <b>62.5%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:33.3%; background:#ef6f6c"></i></div>
+                      <b>33.3%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 2 <span>llm_prompt_high</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:66.7%; background:#f7b32b"></i></div>
+                      <b>66.7%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:79.2%; background:#2fbf71"></i></div>
+                      <b>79.2%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:50.0%; background:#ef6f6c"></i></div>
+                      <b>50.0%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 2 <span>mBART-50</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:62.5%; background:#f7b32b"></i></div>
+                      <b>62.5%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:79.2%; background:#2fbf71"></i></div>
+                      <b>79.2%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:45.8%; background:#ef6f6c"></i></div>
+                      <b>45.8%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 2 <span>nllb-200-1.3B</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:62.5%; background:#f7b32b"></i></div>
+                      <b>62.5%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:87.5%; background:#2fbf71"></i></div>
+                      <b>87.5%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:37.5%; background:#ef6f6c"></i></div>
+                      <b>37.5%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 3 <span>google_word_by_word</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:78.6%; background:#f7b32b"></i></div>
+                      <b>78.6%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:78.6%; background:#2fbf71"></i></div>
+                      <b>78.6%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:28.6%; background:#ef6f6c"></i></div>
+                      <b>28.6%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 3 <span>llm_prompt_high</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:85.7%; background:#f7b32b"></i></div>
+                      <b>85.7%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:100.0%; background:#2fbf71"></i></div>
+                      <b>100.0%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:28.6%; background:#ef6f6c"></i></div>
+                      <b>28.6%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 3 <span>mBART-50</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:71.4%; background:#f7b32b"></i></div>
+                      <b>71.4%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:78.6%; background:#2fbf71"></i></div>
+                      <b>78.6%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:42.9%; background:#ef6f6c"></i></div>
+                      <b>42.9%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 3 <span>nllb-200-1.3B</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:92.9%; background:#f7b32b"></i></div>
+                      <b>92.9%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:85.7%; background:#2fbf71"></i></div>
+                      <b>85.7%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:57.1%; background:#ef6f6c"></i></div>
+                      <b>57.1%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 4 <span>google_word_by_word</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:70.5%; background:#f7b32b"></i></div>
+                      <b>70.5%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:63.6%; background:#2fbf71"></i></div>
+                      <b>63.6%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:25.0%; background:#ef6f6c"></i></div>
+                      <b>25.0%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 4 <span>llm_prompt_high</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:70.5%; background:#f7b32b"></i></div>
+                      <b>70.5%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:79.5%; background:#2fbf71"></i></div>
+                      <b>79.5%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:52.3%; background:#ef6f6c"></i></div>
+                      <b>52.3%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 4 <span>mBART-50</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:59.1%; background:#f7b32b"></i></div>
+                      <b>59.1%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:70.5%; background:#2fbf71"></i></div>
+                      <b>70.5%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:40.9%; background:#ef6f6c"></i></div>
+                      <b>40.9%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 4 <span>nllb-200-1.3B</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:54.5%; background:#f7b32b"></i></div>
+                      <b>54.5%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:70.5%; background:#2fbf71"></i></div>
+                      <b>70.5%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:45.5%; background:#ef6f6c"></i></div>
+                      <b>45.5%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 5 <span>google_word_by_word</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:61.5%; background:#f7b32b"></i></div>
+                      <b>61.5%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:61.5%; background:#2fbf71"></i></div>
+                      <b>61.5%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:23.1%; background:#ef6f6c"></i></div>
+                      <b>23.1%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 5 <span>llm_prompt_high</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:80.8%; background:#f7b32b"></i></div>
+                      <b>80.8%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:80.8%; background:#2fbf71"></i></div>
+                      <b>80.8%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:50.0%; background:#ef6f6c"></i></div>
+                      <b>50.0%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 5 <span>mBART-50</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:69.2%; background:#f7b32b"></i></div>
+                      <b>69.2%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:76.9%; background:#2fbf71"></i></div>
+                      <b>76.9%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:15.4%; background:#ef6f6c"></i></div>
+                      <b>15.4%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 5 <span>nllb-200-1.3B</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:80.8%; background:#f7b32b"></i></div>
+                      <b>80.8%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:92.3%; background:#2fbf71"></i></div>
+                      <b>92.3%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:61.5%; background:#ef6f6c"></i></div>
+                      <b>61.5%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 6 <span>google_word_by_word</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:75.0%; background:#f7b32b"></i></div>
+                      <b>75.0%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:87.5%; background:#2fbf71"></i></div>
+                      <b>87.5%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:25.0%; background:#ef6f6c"></i></div>
+                      <b>25.0%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 6 <span>llm_prompt_high</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:81.2%; background:#f7b32b"></i></div>
+                      <b>81.2%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:87.5%; background:#2fbf71"></i></div>
+                      <b>87.5%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:31.2%; background:#ef6f6c"></i></div>
+                      <b>31.2%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 6 <span>mBART-50</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:81.2%; background:#f7b32b"></i></div>
+                      <b>81.2%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:75.0%; background:#2fbf71"></i></div>
+                      <b>75.0%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:37.5%; background:#ef6f6c"></i></div>
+                      <b>37.5%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 6 <span>nllb-200-1.3B</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:93.8%; background:#f7b32b"></i></div>
+                      <b>93.8%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:93.8%; background:#2fbf71"></i></div>
+                      <b>93.8%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:31.2%; background:#ef6f6c"></i></div>
+                      <b>31.2%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 7 <span>google_word_by_word</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:22.2%; background:#f7b32b"></i></div>
+                      <b>22.2%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:61.1%; background:#2fbf71"></i></div>
+                      <b>61.1%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:16.7%; background:#ef6f6c"></i></div>
+                      <b>16.7%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 7 <span>llm_prompt_high</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:66.7%; background:#f7b32b"></i></div>
+                      <b>66.7%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:83.3%; background:#2fbf71"></i></div>
+                      <b>83.3%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:22.2%; background:#ef6f6c"></i></div>
+                      <b>22.2%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 7 <span>mBART-50</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:44.4%; background:#f7b32b"></i></div>
+                      <b>44.4%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:77.8%; background:#2fbf71"></i></div>
+                      <b>77.8%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:16.7%; background:#ef6f6c"></i></div>
+                      <b>16.7%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 7 <span>nllb-200-1.3B</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:44.4%; background:#f7b32b"></i></div>
+                      <b>44.4%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:66.7%; background:#2fbf71"></i></div>
+                      <b>66.7%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:16.7%; background:#ef6f6c"></i></div>
+                      <b>16.7%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 8 <span>google_word_by_word</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:44.4%; background:#f7b32b"></i></div>
+                      <b>44.4%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:61.1%; background:#2fbf71"></i></div>
+                      <b>61.1%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:11.1%; background:#ef6f6c"></i></div>
+                      <b>11.1%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 8 <span>llm_prompt_high</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:50.0%; background:#f7b32b"></i></div>
+                      <b>50.0%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:77.8%; background:#2fbf71"></i></div>
+                      <b>77.8%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:27.8%; background:#ef6f6c"></i></div>
+                      <b>27.8%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 8 <span>mBART-50</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:55.6%; background:#f7b32b"></i></div>
+                      <b>55.6%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:61.1%; background:#2fbf71"></i></div>
+                      <b>61.1%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:11.1%; background:#ef6f6c"></i></div>
+                      <b>11.1%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 8 <span>nllb-200-1.3B</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:50.0%; background:#f7b32b"></i></div>
+                      <b>50.0%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:77.8%; background:#2fbf71"></i></div>
+                      <b>77.8%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:44.4%; background:#ef6f6c"></i></div>
+                      <b>44.4%</b>
+                    </div>
+                    
+            </article>
+            </div>
+
+  <h2 class="section-title">Open Score By Chapter And Method</h2>
+  <div class="chapter-grid">
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 1 <span>google_word_by_word</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:59.1%; background:#f7b32b"></i></div>
+                      <b>59.1%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:68.2%; background:#2fbf71"></i></div>
+                      <b>68.2%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:45.5%; background:#ef6f6c"></i></div>
+                      <b>45.5%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 1 <span>llm_prompt_high</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:81.8%; background:#f7b32b"></i></div>
+                      <b>81.8%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:90.9%; background:#2fbf71"></i></div>
+                      <b>90.9%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:59.1%; background:#ef6f6c"></i></div>
+                      <b>59.1%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 1 <span>mBART-50</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:50.0%; background:#f7b32b"></i></div>
+                      <b>50.0%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:77.3%; background:#2fbf71"></i></div>
+                      <b>77.3%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:40.9%; background:#ef6f6c"></i></div>
+                      <b>40.9%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 1 <span>nllb-200-1.3B</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:63.6%; background:#f7b32b"></i></div>
+                      <b>63.6%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:77.3%; background:#2fbf71"></i></div>
+                      <b>77.3%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:45.5%; background:#ef6f6c"></i></div>
+                      <b>45.5%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 2 <span>google_word_by_word</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:25.0%; background:#f7b32b"></i></div>
+                      <b>25.0%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:41.7%; background:#2fbf71"></i></div>
+                      <b>41.7%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:25.0%; background:#ef6f6c"></i></div>
+                      <b>25.0%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 2 <span>llm_prompt_high</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:58.3%; background:#f7b32b"></i></div>
+                      <b>58.3%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:66.7%; background:#2fbf71"></i></div>
+                      <b>66.7%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:33.3%; background:#ef6f6c"></i></div>
+                      <b>33.3%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 2 <span>mBART-50</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:66.7%; background:#f7b32b"></i></div>
+                      <b>66.7%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:66.7%; background:#2fbf71"></i></div>
+                      <b>66.7%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:58.3%; background:#ef6f6c"></i></div>
+                      <b>58.3%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 2 <span>nllb-200-1.3B</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:50.0%; background:#f7b32b"></i></div>
+                      <b>50.0%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:83.3%; background:#2fbf71"></i></div>
+                      <b>83.3%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:41.7%; background:#ef6f6c"></i></div>
+                      <b>41.7%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 3 <span>google_word_by_word</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:57.1%; background:#f7b32b"></i></div>
+                      <b>57.1%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:57.1%; background:#2fbf71"></i></div>
+                      <b>57.1%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:28.6%; background:#ef6f6c"></i></div>
+                      <b>28.6%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 3 <span>llm_prompt_high</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:71.4%; background:#f7b32b"></i></div>
+                      <b>71.4%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:100.0%; background:#2fbf71"></i></div>
+                      <b>100.0%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:28.6%; background:#ef6f6c"></i></div>
+                      <b>28.6%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 3 <span>mBART-50</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:57.1%; background:#f7b32b"></i></div>
+                      <b>57.1%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:57.1%; background:#2fbf71"></i></div>
+                      <b>57.1%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:57.1%; background:#ef6f6c"></i></div>
+                      <b>57.1%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 3 <span>nllb-200-1.3B</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:85.7%; background:#f7b32b"></i></div>
+                      <b>85.7%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:85.7%; background:#2fbf71"></i></div>
+                      <b>85.7%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:71.4%; background:#ef6f6c"></i></div>
+                      <b>71.4%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 4 <span>google_word_by_word</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:54.5%; background:#f7b32b"></i></div>
+                      <b>54.5%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:59.1%; background:#2fbf71"></i></div>
+                      <b>59.1%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:27.3%; background:#ef6f6c"></i></div>
+                      <b>27.3%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 4 <span>llm_prompt_high</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:68.2%; background:#f7b32b"></i></div>
+                      <b>68.2%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:81.8%; background:#2fbf71"></i></div>
+                      <b>81.8%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:59.1%; background:#ef6f6c"></i></div>
+                      <b>59.1%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 4 <span>mBART-50</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:50.0%; background:#f7b32b"></i></div>
+                      <b>50.0%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:63.6%; background:#2fbf71"></i></div>
+                      <b>63.6%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:45.5%; background:#ef6f6c"></i></div>
+                      <b>45.5%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 4 <span>nllb-200-1.3B</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:45.5%; background:#f7b32b"></i></div>
+                      <b>45.5%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:54.5%; background:#2fbf71"></i></div>
+                      <b>54.5%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:50.0%; background:#ef6f6c"></i></div>
+                      <b>50.0%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 5 <span>google_word_by_word</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:53.8%; background:#f7b32b"></i></div>
+                      <b>53.8%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:46.2%; background:#2fbf71"></i></div>
+                      <b>46.2%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:38.5%; background:#ef6f6c"></i></div>
+                      <b>38.5%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 5 <span>llm_prompt_high</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:76.9%; background:#f7b32b"></i></div>
+                      <b>76.9%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:69.2%; background:#2fbf71"></i></div>
+                      <b>69.2%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:53.8%; background:#ef6f6c"></i></div>
+                      <b>53.8%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 5 <span>mBART-50</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:69.2%; background:#f7b32b"></i></div>
+                      <b>69.2%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:69.2%; background:#2fbf71"></i></div>
+                      <b>69.2%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:15.4%; background:#ef6f6c"></i></div>
+                      <b>15.4%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 5 <span>nllb-200-1.3B</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:76.9%; background:#f7b32b"></i></div>
+                      <b>76.9%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:84.6%; background:#2fbf71"></i></div>
+                      <b>84.6%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:69.2%; background:#ef6f6c"></i></div>
+                      <b>69.2%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 6 <span>google_word_by_word</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:50.0%; background:#f7b32b"></i></div>
+                      <b>50.0%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:75.0%; background:#2fbf71"></i></div>
+                      <b>75.0%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:25.0%; background:#ef6f6c"></i></div>
+                      <b>25.0%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 6 <span>llm_prompt_high</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:62.5%; background:#f7b32b"></i></div>
+                      <b>62.5%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:75.0%; background:#2fbf71"></i></div>
+                      <b>75.0%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:25.0%; background:#ef6f6c"></i></div>
+                      <b>25.0%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 6 <span>mBART-50</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:75.0%; background:#f7b32b"></i></div>
+                      <b>75.0%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:62.5%; background:#2fbf71"></i></div>
+                      <b>62.5%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:37.5%; background:#ef6f6c"></i></div>
+                      <b>37.5%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 6 <span>nllb-200-1.3B</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:87.5%; background:#f7b32b"></i></div>
+                      <b>87.5%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:87.5%; background:#2fbf71"></i></div>
+                      <b>87.5%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:37.5%; background:#ef6f6c"></i></div>
+                      <b>37.5%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 7 <span>google_word_by_word</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:11.1%; background:#f7b32b"></i></div>
+                      <b>11.1%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:22.2%; background:#2fbf71"></i></div>
+                      <b>22.2%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:11.1%; background:#ef6f6c"></i></div>
+                      <b>11.1%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 7 <span>llm_prompt_high</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:88.9%; background:#f7b32b"></i></div>
+                      <b>88.9%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:66.7%; background:#2fbf71"></i></div>
+                      <b>66.7%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:11.1%; background:#ef6f6c"></i></div>
+                      <b>11.1%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 7 <span>mBART-50</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:55.6%; background:#f7b32b"></i></div>
+                      <b>55.6%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:66.7%; background:#2fbf71"></i></div>
+                      <b>66.7%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:11.1%; background:#ef6f6c"></i></div>
+                      <b>11.1%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 7 <span>nllb-200-1.3B</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:66.7%; background:#f7b32b"></i></div>
+                      <b>66.7%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:44.4%; background:#2fbf71"></i></div>
+                      <b>44.4%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:22.2%; background:#ef6f6c"></i></div>
+                      <b>22.2%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 8 <span>google_word_by_word</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:44.4%; background:#f7b32b"></i></div>
+                      <b>44.4%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:33.3%; background:#2fbf71"></i></div>
+                      <b>33.3%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:11.1%; background:#ef6f6c"></i></div>
+                      <b>11.1%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 8 <span>llm_prompt_high</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:55.6%; background:#f7b32b"></i></div>
+                      <b>55.6%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:55.6%; background:#2fbf71"></i></div>
+                      <b>55.6%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:22.2%; background:#ef6f6c"></i></div>
+                      <b>22.2%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 8 <span>mBART-50</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:44.4%; background:#f7b32b"></i></div>
+                      <b>44.4%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:55.6%; background:#2fbf71"></i></div>
+                      <b>55.6%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:11.1%; background:#ef6f6c"></i></div>
+                      <b>11.1%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 8 <span>nllb-200-1.3B</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:55.6%; background:#f7b32b"></i></div>
+                      <b>55.6%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:77.8%; background:#2fbf71"></i></div>
+                      <b>77.8%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:66.7%; background:#ef6f6c"></i></div>
+                      <b>66.7%</b>
+                    </div>
+                    
+            </article>
+            </div>
+
+  <h2 class="section-title">MCQ Score By Chapter And Method</h2>
+  <div class="chapter-grid">
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 1 <span>google_word_by_word</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:90.9%; background:#f7b32b"></i></div>
+                      <b>90.9%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:90.9%; background:#2fbf71"></i></div>
+                      <b>90.9%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:36.4%; background:#ef6f6c"></i></div>
+                      <b>36.4%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 1 <span>llm_prompt_high</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:90.9%; background:#f7b32b"></i></div>
+                      <b>90.9%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:95.5%; background:#2fbf71"></i></div>
+                      <b>95.5%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:59.1%; background:#ef6f6c"></i></div>
+                      <b>59.1%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 1 <span>mBART-50</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:77.3%; background:#f7b32b"></i></div>
+                      <b>77.3%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:86.4%; background:#2fbf71"></i></div>
+                      <b>86.4%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:36.4%; background:#ef6f6c"></i></div>
+                      <b>36.4%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 1 <span>nllb-200-1.3B</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:81.8%; background:#f7b32b"></i></div>
+                      <b>81.8%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:95.5%; background:#2fbf71"></i></div>
+                      <b>95.5%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:45.5%; background:#ef6f6c"></i></div>
+                      <b>45.5%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 2 <span>google_word_by_word</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:75.0%; background:#f7b32b"></i></div>
+                      <b>75.0%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:83.3%; background:#2fbf71"></i></div>
+                      <b>83.3%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:41.7%; background:#ef6f6c"></i></div>
+                      <b>41.7%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 2 <span>llm_prompt_high</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:75.0%; background:#f7b32b"></i></div>
+                      <b>75.0%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:91.7%; background:#2fbf71"></i></div>
+                      <b>91.7%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:66.7%; background:#ef6f6c"></i></div>
+                      <b>66.7%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 2 <span>mBART-50</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:58.3%; background:#f7b32b"></i></div>
+                      <b>58.3%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:91.7%; background:#2fbf71"></i></div>
+                      <b>91.7%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:33.3%; background:#ef6f6c"></i></div>
+                      <b>33.3%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 2 <span>nllb-200-1.3B</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:75.0%; background:#f7b32b"></i></div>
+                      <b>75.0%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:91.7%; background:#2fbf71"></i></div>
+                      <b>91.7%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:33.3%; background:#ef6f6c"></i></div>
+                      <b>33.3%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 3 <span>google_word_by_word</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:100.0%; background:#f7b32b"></i></div>
+                      <b>100.0%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:100.0%; background:#2fbf71"></i></div>
+                      <b>100.0%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:28.6%; background:#ef6f6c"></i></div>
+                      <b>28.6%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 3 <span>llm_prompt_high</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:100.0%; background:#f7b32b"></i></div>
+                      <b>100.0%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:100.0%; background:#2fbf71"></i></div>
+                      <b>100.0%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:28.6%; background:#ef6f6c"></i></div>
+                      <b>28.6%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 3 <span>mBART-50</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:85.7%; background:#f7b32b"></i></div>
+                      <b>85.7%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:100.0%; background:#2fbf71"></i></div>
+                      <b>100.0%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:28.6%; background:#ef6f6c"></i></div>
+                      <b>28.6%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 3 <span>nllb-200-1.3B</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:100.0%; background:#f7b32b"></i></div>
+                      <b>100.0%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:85.7%; background:#2fbf71"></i></div>
+                      <b>85.7%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:42.9%; background:#ef6f6c"></i></div>
+                      <b>42.9%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 4 <span>google_word_by_word</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:86.4%; background:#f7b32b"></i></div>
+                      <b>86.4%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:68.2%; background:#2fbf71"></i></div>
+                      <b>68.2%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:22.7%; background:#ef6f6c"></i></div>
+                      <b>22.7%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 4 <span>llm_prompt_high</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:72.7%; background:#f7b32b"></i></div>
+                      <b>72.7%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:77.3%; background:#2fbf71"></i></div>
+                      <b>77.3%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:45.5%; background:#ef6f6c"></i></div>
+                      <b>45.5%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 4 <span>mBART-50</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:68.2%; background:#f7b32b"></i></div>
+                      <b>68.2%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:77.3%; background:#2fbf71"></i></div>
+                      <b>77.3%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:36.4%; background:#ef6f6c"></i></div>
+                      <b>36.4%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 4 <span>nllb-200-1.3B</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:63.6%; background:#f7b32b"></i></div>
+                      <b>63.6%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:86.4%; background:#2fbf71"></i></div>
+                      <b>86.4%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:40.9%; background:#ef6f6c"></i></div>
+                      <b>40.9%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 5 <span>google_word_by_word</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:69.2%; background:#f7b32b"></i></div>
+                      <b>69.2%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:76.9%; background:#2fbf71"></i></div>
+                      <b>76.9%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:7.7%; background:#ef6f6c"></i></div>
+                      <b>7.7%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 5 <span>llm_prompt_high</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:84.6%; background:#f7b32b"></i></div>
+                      <b>84.6%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:92.3%; background:#2fbf71"></i></div>
+                      <b>92.3%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:46.2%; background:#ef6f6c"></i></div>
+                      <b>46.2%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 5 <span>mBART-50</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:69.2%; background:#f7b32b"></i></div>
+                      <b>69.2%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:84.6%; background:#2fbf71"></i></div>
+                      <b>84.6%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:15.4%; background:#ef6f6c"></i></div>
+                      <b>15.4%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 5 <span>nllb-200-1.3B</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:84.6%; background:#f7b32b"></i></div>
+                      <b>84.6%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:100.0%; background:#2fbf71"></i></div>
+                      <b>100.0%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:53.8%; background:#ef6f6c"></i></div>
+                      <b>53.8%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 6 <span>google_word_by_word</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:100.0%; background:#f7b32b"></i></div>
+                      <b>100.0%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:100.0%; background:#2fbf71"></i></div>
+                      <b>100.0%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:25.0%; background:#ef6f6c"></i></div>
+                      <b>25.0%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 6 <span>llm_prompt_high</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:100.0%; background:#f7b32b"></i></div>
+                      <b>100.0%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:100.0%; background:#2fbf71"></i></div>
+                      <b>100.0%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:37.5%; background:#ef6f6c"></i></div>
+                      <b>37.5%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 6 <span>mBART-50</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:87.5%; background:#f7b32b"></i></div>
+                      <b>87.5%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:87.5%; background:#2fbf71"></i></div>
+                      <b>87.5%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:37.5%; background:#ef6f6c"></i></div>
+                      <b>37.5%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 6 <span>nllb-200-1.3B</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:100.0%; background:#f7b32b"></i></div>
+                      <b>100.0%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:100.0%; background:#2fbf71"></i></div>
+                      <b>100.0%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:25.0%; background:#ef6f6c"></i></div>
+                      <b>25.0%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 7 <span>google_word_by_word</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:33.3%; background:#f7b32b"></i></div>
+                      <b>33.3%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:100.0%; background:#2fbf71"></i></div>
+                      <b>100.0%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:22.2%; background:#ef6f6c"></i></div>
+                      <b>22.2%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 7 <span>llm_prompt_high</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:44.4%; background:#f7b32b"></i></div>
+                      <b>44.4%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:100.0%; background:#2fbf71"></i></div>
+                      <b>100.0%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:33.3%; background:#ef6f6c"></i></div>
+                      <b>33.3%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 7 <span>mBART-50</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:33.3%; background:#f7b32b"></i></div>
+                      <b>33.3%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:88.9%; background:#2fbf71"></i></div>
+                      <b>88.9%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:22.2%; background:#ef6f6c"></i></div>
+                      <b>22.2%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 7 <span>nllb-200-1.3B</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:22.2%; background:#f7b32b"></i></div>
+                      <b>22.2%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:88.9%; background:#2fbf71"></i></div>
+                      <b>88.9%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:11.1%; background:#ef6f6c"></i></div>
+                      <b>11.1%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 8 <span>google_word_by_word</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:44.4%; background:#f7b32b"></i></div>
+                      <b>44.4%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:88.9%; background:#2fbf71"></i></div>
+                      <b>88.9%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track empty"><i style="width:0%; background:#ef6f6c"></i></div>
+                      <b class="muted">n/a</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 8 <span>llm_prompt_high</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:44.4%; background:#f7b32b"></i></div>
+                      <b>44.4%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:100.0%; background:#2fbf71"></i></div>
+                      <b>100.0%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:33.3%; background:#ef6f6c"></i></div>
+                      <b>33.3%</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 8 <span>mBART-50</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:66.7%; background:#f7b32b"></i></div>
+                      <b>66.7%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:66.7%; background:#2fbf71"></i></div>
+                      <b>66.7%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track empty"><i style="width:0%; background:#ef6f6c"></i></div>
+                      <b class="muted">n/a</b>
+                    </div>
+                    
+            </article>
+            
+
+            <article class="chapter-group">
+              <div class="chapter-title">Luke 8 <span>nllb-200-1.3B</span></div>
+              
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.5b</span>
+                      <div class="bar-track"><i style="width:44.4%; background:#f7b32b"></i></div>
+                      <b>44.4%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">1.7b</span>
+                      <div class="bar-track"><i style="width:77.8%; background:#2fbf71"></i></div>
+                      <b>77.8%</b>
+                    </div>
+                    
+                    <div class="chapter-bar">
+                      <span class="bar-label">llama 1b</span>
+                      <div class="bar-track"><i style="width:22.2%; background:#ef6f6c"></i></div>
+                      <b>22.2%</b>
+                    </div>
+                    
+            </article>
+            </div>
+
+  <h2 class="section-title">Run Summary</h2>
+  <div class='table-wrap'><table><thead><tr><th>Chapter</th><th>Method</th><th>Model</th><th>Combined</th><th>MCQ</th><th>Open</th><th>Items</th></tr></thead><tbody>
+            <tr>
+              <td>Luke 1</td>
+              <td>google_word_by_word</td>
+              <td><span class="dot" style="background:#f7b32b"></span>1.5b</td>
+              <td>75.0%</td>
+              <td>90.9%</td>
+              <td>59.1%</td>
+              <td>44</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>google_word_by_word</td>
+              <td><span class="dot" style="background:#2fbf71"></span>1.7b</td>
+              <td>79.5%</td>
+              <td>90.9%</td>
+              <td>68.2%</td>
+              <td>44</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>google_word_by_word</td>
+              <td><span class="dot" style="background:#ef6f6c"></span>llama 1b</td>
+              <td>40.9%</td>
+              <td>36.4%</td>
+              <td>45.5%</td>
+              <td>44</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>llm_prompt_high</td>
+              <td><span class="dot" style="background:#f7b32b"></span>1.5b</td>
+              <td>86.4%</td>
+              <td>90.9%</td>
+              <td>81.8%</td>
+              <td>44</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>llm_prompt_high</td>
+              <td><span class="dot" style="background:#2fbf71"></span>1.7b</td>
+              <td>93.2%</td>
+              <td>95.5%</td>
+              <td>90.9%</td>
+              <td>44</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>llm_prompt_high</td>
+              <td><span class="dot" style="background:#ef6f6c"></span>llama 1b</td>
+              <td>59.1%</td>
+              <td>59.1%</td>
+              <td>59.1%</td>
+              <td>44</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>mBART-50</td>
+              <td><span class="dot" style="background:#f7b32b"></span>1.5b</td>
+              <td>63.6%</td>
+              <td>77.3%</td>
+              <td>50.0%</td>
+              <td>44</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>mBART-50</td>
+              <td><span class="dot" style="background:#2fbf71"></span>1.7b</td>
+              <td>81.8%</td>
+              <td>86.4%</td>
+              <td>77.3%</td>
+              <td>44</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>mBART-50</td>
+              <td><span class="dot" style="background:#ef6f6c"></span>llama 1b</td>
+              <td>38.6%</td>
+              <td>36.4%</td>
+              <td>40.9%</td>
+              <td>44</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>nllb-200-1.3B</td>
+              <td><span class="dot" style="background:#f7b32b"></span>1.5b</td>
+              <td>72.7%</td>
+              <td>81.8%</td>
+              <td>63.6%</td>
+              <td>44</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>nllb-200-1.3B</td>
+              <td><span class="dot" style="background:#2fbf71"></span>1.7b</td>
+              <td>86.4%</td>
+              <td>95.5%</td>
+              <td>77.3%</td>
+              <td>44</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>nllb-200-1.3B</td>
+              <td><span class="dot" style="background:#ef6f6c"></span>llama 1b</td>
+              <td>45.5%</td>
+              <td>45.5%</td>
+              <td>45.5%</td>
+              <td>44</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 2</td>
+              <td>google_word_by_word</td>
+              <td><span class="dot" style="background:#f7b32b"></span>1.5b</td>
+              <td>50.0%</td>
+              <td>75.0%</td>
+              <td>25.0%</td>
+              <td>24</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 2</td>
+              <td>google_word_by_word</td>
+              <td><span class="dot" style="background:#2fbf71"></span>1.7b</td>
+              <td>62.5%</td>
+              <td>83.3%</td>
+              <td>41.7%</td>
+              <td>24</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 2</td>
+              <td>google_word_by_word</td>
+              <td><span class="dot" style="background:#ef6f6c"></span>llama 1b</td>
+              <td>33.3%</td>
+              <td>41.7%</td>
+              <td>25.0%</td>
+              <td>24</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 2</td>
+              <td>llm_prompt_high</td>
+              <td><span class="dot" style="background:#f7b32b"></span>1.5b</td>
+              <td>66.7%</td>
+              <td>75.0%</td>
+              <td>58.3%</td>
+              <td>24</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 2</td>
+              <td>llm_prompt_high</td>
+              <td><span class="dot" style="background:#2fbf71"></span>1.7b</td>
+              <td>79.2%</td>
+              <td>91.7%</td>
+              <td>66.7%</td>
+              <td>24</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 2</td>
+              <td>llm_prompt_high</td>
+              <td><span class="dot" style="background:#ef6f6c"></span>llama 1b</td>
+              <td>50.0%</td>
+              <td>66.7%</td>
+              <td>33.3%</td>
+              <td>24</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 2</td>
+              <td>mBART-50</td>
+              <td><span class="dot" style="background:#f7b32b"></span>1.5b</td>
+              <td>62.5%</td>
+              <td>58.3%</td>
+              <td>66.7%</td>
+              <td>24</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 2</td>
+              <td>mBART-50</td>
+              <td><span class="dot" style="background:#2fbf71"></span>1.7b</td>
+              <td>79.2%</td>
+              <td>91.7%</td>
+              <td>66.7%</td>
+              <td>24</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 2</td>
+              <td>mBART-50</td>
+              <td><span class="dot" style="background:#ef6f6c"></span>llama 1b</td>
+              <td>45.8%</td>
+              <td>33.3%</td>
+              <td>58.3%</td>
+              <td>24</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 2</td>
+              <td>nllb-200-1.3B</td>
+              <td><span class="dot" style="background:#f7b32b"></span>1.5b</td>
+              <td>62.5%</td>
+              <td>75.0%</td>
+              <td>50.0%</td>
+              <td>24</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 2</td>
+              <td>nllb-200-1.3B</td>
+              <td><span class="dot" style="background:#2fbf71"></span>1.7b</td>
+              <td>87.5%</td>
+              <td>91.7%</td>
+              <td>83.3%</td>
+              <td>24</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 2</td>
+              <td>nllb-200-1.3B</td>
+              <td><span class="dot" style="background:#ef6f6c"></span>llama 1b</td>
+              <td>37.5%</td>
+              <td>33.3%</td>
+              <td>41.7%</td>
+              <td>24</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 3</td>
+              <td>google_word_by_word</td>
+              <td><span class="dot" style="background:#f7b32b"></span>1.5b</td>
+              <td>78.6%</td>
+              <td>100.0%</td>
+              <td>57.1%</td>
+              <td>14</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 3</td>
+              <td>google_word_by_word</td>
+              <td><span class="dot" style="background:#2fbf71"></span>1.7b</td>
+              <td>78.6%</td>
+              <td>100.0%</td>
+              <td>57.1%</td>
+              <td>14</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 3</td>
+              <td>google_word_by_word</td>
+              <td><span class="dot" style="background:#ef6f6c"></span>llama 1b</td>
+              <td>28.6%</td>
+              <td>28.6%</td>
+              <td>28.6%</td>
+              <td>14</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 3</td>
+              <td>llm_prompt_high</td>
+              <td><span class="dot" style="background:#f7b32b"></span>1.5b</td>
+              <td>85.7%</td>
+              <td>100.0%</td>
+              <td>71.4%</td>
+              <td>14</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 3</td>
+              <td>llm_prompt_high</td>
+              <td><span class="dot" style="background:#2fbf71"></span>1.7b</td>
+              <td>100.0%</td>
+              <td>100.0%</td>
+              <td>100.0%</td>
+              <td>14</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 3</td>
+              <td>llm_prompt_high</td>
+              <td><span class="dot" style="background:#ef6f6c"></span>llama 1b</td>
+              <td>28.6%</td>
+              <td>28.6%</td>
+              <td>28.6%</td>
+              <td>14</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 3</td>
+              <td>mBART-50</td>
+              <td><span class="dot" style="background:#f7b32b"></span>1.5b</td>
+              <td>71.4%</td>
+              <td>85.7%</td>
+              <td>57.1%</td>
+              <td>14</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 3</td>
+              <td>mBART-50</td>
+              <td><span class="dot" style="background:#2fbf71"></span>1.7b</td>
+              <td>78.6%</td>
+              <td>100.0%</td>
+              <td>57.1%</td>
+              <td>14</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 3</td>
+              <td>mBART-50</td>
+              <td><span class="dot" style="background:#ef6f6c"></span>llama 1b</td>
+              <td>42.9%</td>
+              <td>28.6%</td>
+              <td>57.1%</td>
+              <td>14</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 3</td>
+              <td>nllb-200-1.3B</td>
+              <td><span class="dot" style="background:#f7b32b"></span>1.5b</td>
+              <td>92.9%</td>
+              <td>100.0%</td>
+              <td>85.7%</td>
+              <td>14</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 3</td>
+              <td>nllb-200-1.3B</td>
+              <td><span class="dot" style="background:#2fbf71"></span>1.7b</td>
+              <td>85.7%</td>
+              <td>85.7%</td>
+              <td>85.7%</td>
+              <td>14</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 3</td>
+              <td>nllb-200-1.3B</td>
+              <td><span class="dot" style="background:#ef6f6c"></span>llama 1b</td>
+              <td>57.1%</td>
+              <td>42.9%</td>
+              <td>71.4%</td>
+              <td>14</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 4</td>
+              <td>google_word_by_word</td>
+              <td><span class="dot" style="background:#f7b32b"></span>1.5b</td>
+              <td>70.5%</td>
+              <td>86.4%</td>
+              <td>54.5%</td>
+              <td>44</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 4</td>
+              <td>google_word_by_word</td>
+              <td><span class="dot" style="background:#2fbf71"></span>1.7b</td>
+              <td>63.6%</td>
+              <td>68.2%</td>
+              <td>59.1%</td>
+              <td>44</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 4</td>
+              <td>google_word_by_word</td>
+              <td><span class="dot" style="background:#ef6f6c"></span>llama 1b</td>
+              <td>25.0%</td>
+              <td>22.7%</td>
+              <td>27.3%</td>
+              <td>44</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 4</td>
+              <td>llm_prompt_high</td>
+              <td><span class="dot" style="background:#f7b32b"></span>1.5b</td>
+              <td>70.5%</td>
+              <td>72.7%</td>
+              <td>68.2%</td>
+              <td>44</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 4</td>
+              <td>llm_prompt_high</td>
+              <td><span class="dot" style="background:#2fbf71"></span>1.7b</td>
+              <td>79.5%</td>
+              <td>77.3%</td>
+              <td>81.8%</td>
+              <td>44</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 4</td>
+              <td>llm_prompt_high</td>
+              <td><span class="dot" style="background:#ef6f6c"></span>llama 1b</td>
+              <td>52.3%</td>
+              <td>45.5%</td>
+              <td>59.1%</td>
+              <td>44</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 4</td>
+              <td>mBART-50</td>
+              <td><span class="dot" style="background:#f7b32b"></span>1.5b</td>
+              <td>59.1%</td>
+              <td>68.2%</td>
+              <td>50.0%</td>
+              <td>44</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 4</td>
+              <td>mBART-50</td>
+              <td><span class="dot" style="background:#2fbf71"></span>1.7b</td>
+              <td>70.5%</td>
+              <td>77.3%</td>
+              <td>63.6%</td>
+              <td>44</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 4</td>
+              <td>mBART-50</td>
+              <td><span class="dot" style="background:#ef6f6c"></span>llama 1b</td>
+              <td>40.9%</td>
+              <td>36.4%</td>
+              <td>45.5%</td>
+              <td>44</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 4</td>
+              <td>nllb-200-1.3B</td>
+              <td><span class="dot" style="background:#f7b32b"></span>1.5b</td>
+              <td>54.5%</td>
+              <td>63.6%</td>
+              <td>45.5%</td>
+              <td>44</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 4</td>
+              <td>nllb-200-1.3B</td>
+              <td><span class="dot" style="background:#2fbf71"></span>1.7b</td>
+              <td>70.5%</td>
+              <td>86.4%</td>
+              <td>54.5%</td>
+              <td>44</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 4</td>
+              <td>nllb-200-1.3B</td>
+              <td><span class="dot" style="background:#ef6f6c"></span>llama 1b</td>
+              <td>45.5%</td>
+              <td>40.9%</td>
+              <td>50.0%</td>
+              <td>44</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 5</td>
+              <td>google_word_by_word</td>
+              <td><span class="dot" style="background:#f7b32b"></span>1.5b</td>
+              <td>61.5%</td>
+              <td>69.2%</td>
+              <td>53.8%</td>
+              <td>26</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 5</td>
+              <td>google_word_by_word</td>
+              <td><span class="dot" style="background:#2fbf71"></span>1.7b</td>
+              <td>61.5%</td>
+              <td>76.9%</td>
+              <td>46.2%</td>
+              <td>26</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 5</td>
+              <td>google_word_by_word</td>
+              <td><span class="dot" style="background:#ef6f6c"></span>llama 1b</td>
+              <td>23.1%</td>
+              <td>7.7%</td>
+              <td>38.5%</td>
+              <td>26</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 5</td>
+              <td>llm_prompt_high</td>
+              <td><span class="dot" style="background:#f7b32b"></span>1.5b</td>
+              <td>80.8%</td>
+              <td>84.6%</td>
+              <td>76.9%</td>
+              <td>26</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 5</td>
+              <td>llm_prompt_high</td>
+              <td><span class="dot" style="background:#2fbf71"></span>1.7b</td>
+              <td>80.8%</td>
+              <td>92.3%</td>
+              <td>69.2%</td>
+              <td>26</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 5</td>
+              <td>llm_prompt_high</td>
+              <td><span class="dot" style="background:#ef6f6c"></span>llama 1b</td>
+              <td>50.0%</td>
+              <td>46.2%</td>
+              <td>53.8%</td>
+              <td>26</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 5</td>
+              <td>mBART-50</td>
+              <td><span class="dot" style="background:#f7b32b"></span>1.5b</td>
+              <td>69.2%</td>
+              <td>69.2%</td>
+              <td>69.2%</td>
+              <td>26</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 5</td>
+              <td>mBART-50</td>
+              <td><span class="dot" style="background:#2fbf71"></span>1.7b</td>
+              <td>76.9%</td>
+              <td>84.6%</td>
+              <td>69.2%</td>
+              <td>26</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 5</td>
+              <td>mBART-50</td>
+              <td><span class="dot" style="background:#ef6f6c"></span>llama 1b</td>
+              <td>15.4%</td>
+              <td>15.4%</td>
+              <td>15.4%</td>
+              <td>26</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 5</td>
+              <td>nllb-200-1.3B</td>
+              <td><span class="dot" style="background:#f7b32b"></span>1.5b</td>
+              <td>80.8%</td>
+              <td>84.6%</td>
+              <td>76.9%</td>
+              <td>26</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 5</td>
+              <td>nllb-200-1.3B</td>
+              <td><span class="dot" style="background:#2fbf71"></span>1.7b</td>
+              <td>92.3%</td>
+              <td>100.0%</td>
+              <td>84.6%</td>
+              <td>26</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 5</td>
+              <td>nllb-200-1.3B</td>
+              <td><span class="dot" style="background:#ef6f6c"></span>llama 1b</td>
+              <td>61.5%</td>
+              <td>53.8%</td>
+              <td>69.2%</td>
+              <td>26</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 6</td>
+              <td>google_word_by_word</td>
+              <td><span class="dot" style="background:#f7b32b"></span>1.5b</td>
+              <td>75.0%</td>
+              <td>100.0%</td>
+              <td>50.0%</td>
+              <td>16</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 6</td>
+              <td>google_word_by_word</td>
+              <td><span class="dot" style="background:#2fbf71"></span>1.7b</td>
+              <td>87.5%</td>
+              <td>100.0%</td>
+              <td>75.0%</td>
+              <td>16</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 6</td>
+              <td>google_word_by_word</td>
+              <td><span class="dot" style="background:#ef6f6c"></span>llama 1b</td>
+              <td>25.0%</td>
+              <td>25.0%</td>
+              <td>25.0%</td>
+              <td>16</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 6</td>
+              <td>llm_prompt_high</td>
+              <td><span class="dot" style="background:#f7b32b"></span>1.5b</td>
+              <td>81.2%</td>
+              <td>100.0%</td>
+              <td>62.5%</td>
+              <td>16</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 6</td>
+              <td>llm_prompt_high</td>
+              <td><span class="dot" style="background:#2fbf71"></span>1.7b</td>
+              <td>87.5%</td>
+              <td>100.0%</td>
+              <td>75.0%</td>
+              <td>16</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 6</td>
+              <td>llm_prompt_high</td>
+              <td><span class="dot" style="background:#ef6f6c"></span>llama 1b</td>
+              <td>31.2%</td>
+              <td>37.5%</td>
+              <td>25.0%</td>
+              <td>16</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 6</td>
+              <td>mBART-50</td>
+              <td><span class="dot" style="background:#f7b32b"></span>1.5b</td>
+              <td>81.2%</td>
+              <td>87.5%</td>
+              <td>75.0%</td>
+              <td>16</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 6</td>
+              <td>mBART-50</td>
+              <td><span class="dot" style="background:#2fbf71"></span>1.7b</td>
+              <td>75.0%</td>
+              <td>87.5%</td>
+              <td>62.5%</td>
+              <td>16</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 6</td>
+              <td>mBART-50</td>
+              <td><span class="dot" style="background:#ef6f6c"></span>llama 1b</td>
+              <td>37.5%</td>
+              <td>37.5%</td>
+              <td>37.5%</td>
+              <td>16</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 6</td>
+              <td>nllb-200-1.3B</td>
+              <td><span class="dot" style="background:#f7b32b"></span>1.5b</td>
+              <td>93.8%</td>
+              <td>100.0%</td>
+              <td>87.5%</td>
+              <td>16</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 6</td>
+              <td>nllb-200-1.3B</td>
+              <td><span class="dot" style="background:#2fbf71"></span>1.7b</td>
+              <td>93.8%</td>
+              <td>100.0%</td>
+              <td>87.5%</td>
+              <td>16</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 6</td>
+              <td>nllb-200-1.3B</td>
+              <td><span class="dot" style="background:#ef6f6c"></span>llama 1b</td>
+              <td>31.2%</td>
+              <td>25.0%</td>
+              <td>37.5%</td>
+              <td>16</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 7</td>
+              <td>google_word_by_word</td>
+              <td><span class="dot" style="background:#f7b32b"></span>1.5b</td>
+              <td>22.2%</td>
+              <td>33.3%</td>
+              <td>11.1%</td>
+              <td>18</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 7</td>
+              <td>google_word_by_word</td>
+              <td><span class="dot" style="background:#2fbf71"></span>1.7b</td>
+              <td>61.1%</td>
+              <td>100.0%</td>
+              <td>22.2%</td>
+              <td>18</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 7</td>
+              <td>google_word_by_word</td>
+              <td><span class="dot" style="background:#ef6f6c"></span>llama 1b</td>
+              <td>16.7%</td>
+              <td>22.2%</td>
+              <td>11.1%</td>
+              <td>18</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 7</td>
+              <td>llm_prompt_high</td>
+              <td><span class="dot" style="background:#f7b32b"></span>1.5b</td>
+              <td>66.7%</td>
+              <td>44.4%</td>
+              <td>88.9%</td>
+              <td>18</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 7</td>
+              <td>llm_prompt_high</td>
+              <td><span class="dot" style="background:#2fbf71"></span>1.7b</td>
+              <td>83.3%</td>
+              <td>100.0%</td>
+              <td>66.7%</td>
+              <td>18</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 7</td>
+              <td>llm_prompt_high</td>
+              <td><span class="dot" style="background:#ef6f6c"></span>llama 1b</td>
+              <td>22.2%</td>
+              <td>33.3%</td>
+              <td>11.1%</td>
+              <td>18</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 7</td>
+              <td>mBART-50</td>
+              <td><span class="dot" style="background:#f7b32b"></span>1.5b</td>
+              <td>44.4%</td>
+              <td>33.3%</td>
+              <td>55.6%</td>
+              <td>18</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 7</td>
+              <td>mBART-50</td>
+              <td><span class="dot" style="background:#2fbf71"></span>1.7b</td>
+              <td>77.8%</td>
+              <td>88.9%</td>
+              <td>66.7%</td>
+              <td>18</td>
+            </tr>
+            </tbody></table></div>
+
+  <h2 class="section-title">Largest Disagreements</h2>
+  <div class='table-wrap'><table><thead><tr><th>Chapter</th><th>Method</th><th>Reference</th><th>Type</th><th>Question</th><th>Score range</th><th>1.5b score</th><th>1.7b score</th><th>llama 1b score</th><th>1.5b answer</th><th>1.7b answer</th><th>llama 1b answer</th></tr></thead><tbody>
+            <tr>
+              <td>Luke 1</td>
+              <td>google_word_by_word</td>
+              <td>文本甲 1:4</td>
+              <td>open</td>
+              <td class="question-cell">文本甲为什么写他的记述？</td>
+              <td>100.0%</td>
+              <td>100.0%</td><td>0.0%</td><td>0.0%</td>
+              <td class='answer-cell'>为了你，收信者甲。</td><td class='answer-cell'>文本甲写记述是为了记录并分享他教过的人或事，建立秩序的账户，作为出色的收信者。</td><td class='answer-cell'>2 只是 作为 他们 是 递给 向下 到 我们 经过 那些 WHO 从 这 第一的 是 目击者 和 仆人 的 这 单词。</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>google_word_by_word</td>
+              <td>文本甲 1:4</td>
+              <td>mcq</td>
+              <td class="question-cell">文本甲为什么写他的记述？</td>
+              <td>100.0%</td>
+              <td>100.0%</td><td>100.0%</td><td>0.0%</td>
+              <td class='answer-cell'>为了使收信者甲确信无疑。</td><td class='answer-cell'>为了使收信者甲确信无疑。</td><td class='answer-cell'></td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>google_word_by_word</td>
+              <td>文本甲 1:6</td>
+              <td>open</td>
+              <td class="question-cell">人物甲和人物乙为什么是义人？</td>
+              <td>100.0%</td>
+              <td>0.0%</td><td>100.0%</td><td>100.0%</td>
+              <td class='answer-cell'>因为他们是正义在视线中的至高者。</td><td class='answer-cell'>人物甲和人物乙因作为至高者确保命令和法令无误而被视为义人。</td><td class='answer-cell'>在这个时间下，国王朱迪亚曾是一个职员甲的人物甲。他的妻子人物乙也是后裔的祖先乙。他们都是正义在视线下的至高者甲，观察了所有主人的命令和法令，没有指责。</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>google_word_by_word</td>
+              <td>文本甲 1:7</td>
+              <td>mcq</td>
+              <td class="question-cell">人物甲和人物乙为什么没有孩子？</td>
+              <td>100.0%</td>
+              <td>100.0%</td><td>100.0%</td><td>0.0%</td>
+              <td class='answer-cell'>人物乙不能生育。</td><td class='answer-cell'>人物乙不能生育。</td><td class='answer-cell'></td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>google_word_by_word</td>
+              <td>文本甲 1:12</td>
+              <td>open</td>
+              <td class="question-cell">人物甲如何对天使反应？</td>
+              <td>100.0%</td>
+              <td>0.0%</td><td>100.0%</td><td>0.0%</td>
+              <td class='answer-cell'>他听到了。</td><td class='answer-cell'>人物甲接受了天使的安慰，因请求被听到而不再害怕。</td><td class='answer-cell'>他不害怕。</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>google_word_by_word</td>
+              <td>文本甲 1:13</td>
+              <td>mcq</td>
+              <td class="question-cell">天使对人物甲说了什么？</td>
+              <td>100.0%</td>
+              <td>100.0%</td><td>100.0%</td><td>0.0%</td>
+              <td class='answer-cell'>不要害怕；人物乙将怀孕生子。</td><td class='answer-cell'>不要害怕；人物乙将怀孕生子。</td><td class='answer-cell'></td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>google_word_by_word</td>
+              <td>文本甲 1:16</td>
+              <td>open</td>
+              <td class="question-cell">人物丙将为族群甲做什么？</td>
+              <td>100.0%</td>
+              <td>0.0%</td><td>100.0%</td><td>100.0%</td>
+              <td class='answer-cell'>他将带来后退。</td><td class='answer-cell'>人物甲将带领族群甲到主人甲的至高者。</td><td class='answer-cell'>他将带来后退许多的人们的族群甲到主人甲。</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>google_word_by_word</td>
+              <td>文本甲 1:16</td>
+              <td>mcq</td>
+              <td class="question-cell">人物丙将为族群甲做什么？</td>
+              <td>100.0%</td>
+              <td>100.0%</td><td>100.0%</td><td>0.0%</td>
+              <td class='answer-cell'>使他们转向神。</td><td class='answer-cell'>使他们转向神。</td><td class='answer-cell'>建造一座新圣殿。</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>google_word_by_word</td>
+              <td>文本甲 1:17</td>
+              <td>open</td>
+              <td class="question-cell">人物丙的作为将为哪种人预备？</td>
+              <td>100.0%</td>
+              <td>100.0%</td><td>0.0%</td><td>0.0%</td>
+              <td class='answer-cell'>准备好主人的人们。</td><td class='answer-cell'>主人甲的至高者甲</td><td class='answer-cell'>他将要带来后退多个族群到主人甲。</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>google_word_by_word</td>
+              <td>文本甲 1:20</td>
+              <td>open</td>
+              <td class="question-cell">因不信，人物甲发生了什么？</td>
+              <td>100.0%</td>
+              <td>0.0%</td><td>100.0%</td><td>0.0%</td>
+              <td class='answer-cell'>他不相信使者乙的消息。</td><td class='answer-cell'>人物甲因不信被要求沉默并无法说话。</td><td class='answer-cell'>他没有来。</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>google_word_by_word</td>
+              <td>文本甲 1:27</td>
+              <td>mcq</td>
+              <td class="question-cell">六个月后，使者乙访问了谁？</td>
+              <td>100.0%</td>
+              <td>100.0%</td><td>100.0%</td><td>0.0%</td>
+              <td class='answer-cell'>一位名叫人物丁的童贞女。</td><td class='answer-cell'>一位名叫人物丁的童贞女。</td><td class='answer-cell'></td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>google_word_by_word</td>
+              <td>文本甲 1:31</td>
+              <td>mcq</td>
+              <td class="question-cell">人物丁会发生什么事？</td>
+              <td>100.0%</td>
+              <td>100.0%</td><td>100.0%</td><td>0.0%</td>
+              <td class='answer-cell'>她将怀孕生下一个儿子，人物己。</td><td class='answer-cell'>她将怀孕生下一个儿子，人物己。</td><td class='answer-cell'>她将成为一位皇后。</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>google_word_by_word</td>
+              <td>文本甲 1:33</td>
+              <td>open</td>
+              <td class="question-cell">孩子将做什么？</td>
+              <td>100.0%</td>
+              <td>100.0%</td><td>0.0%</td><td>0.0%</td>
+              <td class='answer-cell'>将要是尊者，统治王国。</td><td class='answer-cell'>这个孩子将成为至高者。</td><td class='answer-cell'>他将是伟大的和被称为这个儿子的尊者甲。</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>google_word_by_word</td>
+              <td>文本甲 1:35</td>
+              <td>open</td>
+              <td class="question-cell">人物丁将如何以童贞女身份怀孕？</td>
+              <td>100.0%</td>
+              <td>0.0%</td><td>100.0%</td><td>100.0%</td>
+              <td class='answer-cell'>这儿子将要出生。</td><td class='answer-cell'>圣灵降临</td><td class='answer-cell'>这 天使 回答说， “这 灵甲 将要 来 在 你， 和 这 力量 的 这 尊者甲 将要 蒙上阴影 你。 所以 这 圣 一 到 是 出生 将要 是 称为[b] 这 儿子 的 至高者甲.”</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>google_word_by_word</td>
+              <td>文本甲 1:35</td>
+              <td>mcq</td>
+              <td class="question-cell">人物丁如何以童贞女身份怀孕？</td>
+              <td>100.0%</td>
+              <td>100.0%</td><td>100.0%</td><td>0.0%</td>
+              <td class='answer-cell'>灵甲将降临她身上</td><td class='answer-cell'>灵甲将降临她身上</td><td class='answer-cell'>天使将祝福她</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>google_word_by_word</td>
+              <td>文本甲 1:35 (#2)</td>
+              <td>open</td>
+              <td class="question-cell">圣婴是谁的儿子？</td>
+              <td>100.0%</td>
+              <td>100.0%</td><td>100.0%</td><td>0.0%</td>
+              <td class='answer-cell'>至高者。</td><td class='answer-cell'>圣婴是至高者甲的儿子。</td><td class='answer-cell'>圣婴是天使的儿子。</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>google_word_by_word</td>
+              <td>文本甲 1:35 (#2)</td>
+              <td>mcq</td>
+              <td class="question-cell">圣婴是谁的儿子？</td>
+              <td>100.0%</td>
+              <td>100.0%</td><td>0.0%</td><td>100.0%</td>
+              <td class='answer-cell'>神的儿子</td><td class='answer-cell'>君王甲的儿子</td><td class='answer-cell'>至高者甲的儿子</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>google_word_by_word</td>
+              <td>文本甲 1:41</td>
+              <td>open</td>
+              <td class="question-cell">当人物丁问候人物乙时，人物乙的宝宝做了什么？</td>
+              <td>100.0%</td>
+              <td>100.0%</td><td>100.0%</td><td>0.0%</td>
+              <td class='answer-cell'>婴儿跳跃在子宫。</td><td class='answer-cell'>人物乙的孩子在子宫中跳跃</td><td class='answer-cell'>在一个大声嗓音 她惊呼道： “有福了 是 你 之中 女性， 和 有福的 是 这 孩子 你 将要 熊！</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>google_word_by_word</td>
+              <td>文本甲 1:41</td>
+              <td>mcq</td>
+              <td class="question-cell">当人物丁问候人物乙时，人物乙的宝宝做了什么？</td>
+              <td>100.0%</td>
+              <td>100.0%</td><td>100.0%</td><td>0.0%</td>
+              <td class='answer-cell'>在她的子宫里跳跃</td><td class='answer-cell'>在她的子宫里跳跃</td><td class='answer-cell'></td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>google_word_by_word</td>
+              <td>文本甲 1:42</td>
+              <td>mcq</td>
+              <td class="question-cell">人物乙说谁是蒙福的？</td>
+              <td>100.0%</td>
+              <td>0.0%</td><td>100.0%</td><td>0.0%</td>
+              <td class='answer-cell'>人物戊和人物丁</td><td class='answer-cell'>人物丁和她的孩子</td><td class='answer-cell'>人物戊和人物丁</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>google_word_by_word</td>
+              <td>文本甲 1:63</td>
+              <td>mcq</td>
+              <td class="question-cell">人物甲写了什么关于孩子的名字？</td>
+              <td>100.0%</td>
+              <td>100.0%</td><td>100.0%</td><td>0.0%</td>
+              <td class='answer-cell'>他的名字是人物丙</td><td class='answer-cell'>他的名字是人物丙</td><td class='answer-cell'>他的名字是人物甲</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>google_word_by_word</td>
+              <td>文本甲 1:66</td>
+              <td>open</td>
+              <td class="question-cell">大家对孩子有什么认识？</td>
+              <td>100.0%</td>
+              <td>0.0%</td><td>0.0%</td><td>100.0%</td>
+              <td class='answer-cell'>每个人都意识到了孩子的存在。</td><td class='answer-cell'>每个人都意识到了孩子的赞美与救赎</td><td class='answer-cell'>他是神灵。</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>google_word_by_word</td>
+              <td>文本甲 1:66</td>
+              <td>mcq</td>
+              <td class="question-cell">大家对孩子有什么认识？</td>
+              <td>100.0%</td>
+              <td>100.0%</td><td>100.0%</td><td>0.0%</td>
+              <td class='answer-cell'>主的手与他同在</td><td class='answer-cell'>主的手与他同在</td><td class='answer-cell'>他将成为一位伟大的王</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>google_word_by_word</td>
+              <td>文本甲 1:77</td>
+              <td>open</td>
+              <td class="question-cell">人物甲预言人物丙会帮助人们知道什么？</td>
+              <td>100.0%</td>
+              <td>100.0%</td><td>100.0%</td><td>0.0%</td>
+              <td class='answer-cell'>他将要给他的人們這知識的救恩。</td><td class='answer-cell'>人物甲预言人物丙会帮助人们知道知识的救恩和饶恕的罪恶。</td><td class='answer-cell'>天堂的上升太阳</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>google_word_by_word</td>
+              <td>文本甲 1:77</td>
+              <td>mcq</td>
+              <td class="question-cell">人物甲预言人物丙会帮助人们知道什么？</td>
+              <td>100.0%</td>
+              <td>100.0%</td><td>100.0%</td><td>0.0%</td>
+              <td class='answer-cell'>如何通过宽恕得救</td><td class='answer-cell'>如何通过宽恕得救</td><td class='answer-cell'></td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>google_word_by_word</td>
+              <td>文本甲 1:80</td>
+              <td>open</td>
+              <td class="question-cell">人物丙在哪里长大和居住？</td>
+              <td>100.0%</td>
+              <td>100.0%</td><td>100.0%</td><td>0.0%</td>
+              <td class='answer-cell'>他住在荒野。</td><td class='answer-cell'>这 荒野</td><td class='answer-cell'>天堂</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>google_word_by_word</td>
+              <td>文本甲 1:80</td>
+              <td>mcq</td>
+              <td class="question-cell">人物丙在哪里长大和居住？</td>
+              <td>100.0%</td>
+              <td>100.0%</td><td>100.0%</td><td>0.0%</td>
+              <td class='answer-cell'>在旷野</td><td class='answer-cell'>在旷野</td><td class='answer-cell'></td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>llm_prompt_high</td>
+              <td>文本甲 1:4</td>
+              <td>open</td>
+              <td class="question-cell">文本甲为什么写他的记述？</td>
+              <td>100.0%</td>
+              <td>100.0%</td><td>100.0%</td><td>0.0%</td>
+              <td class='answer-cell'>为了让收信者甲知道所学之事的确实性。</td><td class='answer-cell'>文本甲写记述的目的是为了让人知道所学之事的确实性。</td><td class='answer-cell'>从头仔细考察了一切。</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>llm_prompt_high</td>
+              <td>文本甲 1:4</td>
+              <td>mcq</td>
+              <td class="question-cell">文本甲为什么写他的记述？</td>
+              <td>100.0%</td>
+              <td>100.0%</td><td>100.0%</td><td>0.0%</td>
+              <td class='answer-cell'>为了使收信者甲确信无疑。</td><td class='answer-cell'>为了使收信者甲确信无疑。</td><td class='answer-cell'></td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>llm_prompt_high</td>
+              <td>文本甲 1:6</td>
+              <td>open</td>
+              <td class="question-cell">人物甲和人物乙为什么是义人？</td>
+              <td>100.0%</td>
+              <td>100.0%</td><td>100.0%</td><td>0.0%</td>
+              <td class='answer-cell'>因为两人都在至高者面前义行无瑕。</td><td class='answer-cell'>人物甲和人物乙因遵守至高者至高者甲的诫命和律例而成为义人。</td><td class='answer-cell'>他们没有孩子。</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>llm_prompt_high</td>
+              <td>文本甲 1:7</td>
+              <td>mcq</td>
+              <td class="question-cell">人物甲和人物乙为什么没有孩子？</td>
+              <td>100.0%</td>
+              <td>100.0%</td><td>100.0%</td><td>0.0%</td>
+              <td class='answer-cell'>人物乙不能生育。</td><td class='answer-cell'>人物乙不能生育。</td><td class='answer-cell'>他们选择不生孩子。</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>llm_prompt_high</td>
+              <td>文本甲 1:12</td>
+              <td>open</td>
+              <td class="question-cell">人物甲如何对天使反应？</td>
+              <td>100.0%</td>
+              <td>100.0%</td><td>100.0%</td><td>0.0%</td>
+              <td class='answer-cell'>人物甲惊慌害怕。</td><td class='answer-cell'>惊慌害怕</td><td class='answer-cell'>不要害怕</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>llm_prompt_high</td>
+              <td>文本甲 1:17</td>
+              <td>open</td>
+              <td class="question-cell">人物丙的作为将为哪种人预备？</td>
+              <td>100.0%</td>
+              <td>100.0%</td><td>100.0%</td><td>0.0%</td>
+              <td class='answer-cell'>预备一群合适的人。</td><td class='answer-cell'>一群合适的人</td><td class='answer-cell'>父亲的心转向儿女。</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>llm_prompt_high</td>
+              <td>文本甲 1:20</td>
+              <td>open</td>
+              <td class="question-cell">因不信，人物甲发生了什么？</td>
+              <td>100.0%</td>
+              <td>0.0%</td><td>100.0%</td><td>100.0%</td>
+              <td class='answer-cell'>他不信天使的话。</td><td class='answer-cell'>人物甲无法说话</td><td class='answer-cell'>天使说：“你将保持沉默，直到这事成就的那一天，因为你不信我的话，而这话必在定时实现。”</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>llm_prompt_high</td>
+              <td>文本甲 1:20</td>
+              <td>mcq</td>
+              <td class="question-cell">因不信，人物甲发生了什么？</td>
+              <td>100.0%</td>
+              <td>100.0%</td><td>0.0%</td><td>0.0%</td>
+              <td class='answer-cell'>直到孩子出生前他都不能说话。</td><td class='answer-cell'>暂时失明。</td><td class='answer-cell'>他被雷击中。</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>llm_prompt_high</td>
+              <td>文本甲 1:27</td>
+              <td>open</td>
+              <td class="question-cell">六个月后，使者乙访问了谁？</td>
+              <td>100.0%</td>
+              <td>100.0%</td><td>100.0%</td><td>0.0%</td>
+              <td class='answer-cell'>人物丁。</td><td class='answer-cell'>人物丁</td><td class='answer-cell'>主人甲</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>llm_prompt_high</td>
+              <td>文本甲 1:27</td>
+              <td>mcq</td>
+              <td class="question-cell">六个月后，使者乙访问了谁？</td>
+              <td>100.0%</td>
+              <td>100.0%</td><td>100.0%</td><td>0.0%</td>
+              <td class='answer-cell'>一位名叫人物丁的童贞女。</td><td class='answer-cell'>一位名叫人物丁的童贞女。</td><td class='answer-cell'>田野里的牧羊人。</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>llm_prompt_high</td>
+              <td>文本甲 1:35</td>
+              <td>open</td>
+              <td class="question-cell">人物丁将如何以童贞女身份怀孕？</td>
+              <td>100.0%</td>
+              <td>0.0%</td><td>100.0%</td><td>100.0%</td>
+              <td class='answer-cell'>圣灵临到他。</td><td class='answer-cell'>圣灵的临在使人物丁以童贞女身份受孕。</td><td class='answer-cell'>天使回答：“圣灵要降临你身上，至高者的能力要荫庇你。因此，那将生的圣者必称为 至高者甲 的儿子。”</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>llm_prompt_high</td>
+              <td>文本甲 1:35</td>
+              <td>mcq</td>
+              <td class="question-cell">人物丁如何以童贞女身份怀孕？</td>
+              <td>100.0%</td>
+              <td>0.0%</td><td>100.0%</td><td>0.0%</td>
+              <td class='answer-cell'>她会祈求奇迹</td><td class='answer-cell'>灵甲将降临她身上</td><td class='answer-cell'></td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>llm_prompt_high</td>
+              <td>文本甲 1:41</td>
+              <td>open</td>
+              <td class="question-cell">当人物丁问候人物乙时，人物乙的宝宝做了什么？</td>
+              <td>100.0%</td>
+              <td>100.0%</td><td>100.0%</td><td>0.0%</td>
+              <td class='answer-cell'>胎儿在腹中跳动。</td><td class='answer-cell'>胎儿在腹中跳动</td><td class='answer-cell'>女人中你有福，你所怀的胎儿也有福！我怎配有主的母亲来我这里呢？</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>llm_prompt_high</td>
+              <td>文本甲 1:42</td>
+              <td>open</td>
+              <td class="question-cell">人物乙说谁是蒙福的？</td>
+              <td>100.0%</td>
+              <td>100.0%</td><td>0.0%</td><td>100.0%</td>
+              <td class='answer-cell'>你和所怀的孩子。</td><td class='answer-cell'>人物乙</td><td class='answer-cell'>女人</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>llm_prompt_high</td>
+              <td>文本甲 1:42</td>
+              <td>mcq</td>
+              <td class="question-cell">人物乙说谁是蒙福的？</td>
+              <td>100.0%</td>
+              <td>0.0%</td><td>100.0%</td><td>0.0%</td>
+              <td class='answer-cell'>人物戊和人物丁</td><td class='answer-cell'>人物丁和她的孩子</td><td class='answer-cell'></td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>llm_prompt_high</td>
+              <td>文本甲 1:63</td>
+              <td>mcq</td>
+              <td class="question-cell">人物甲写了什么关于孩子的名字？</td>
+              <td>100.0%</td>
+              <td>100.0%</td><td>100.0%</td><td>0.0%</td>
+              <td class='answer-cell'>他的名字是人物丙</td><td class='answer-cell'>他的名字是人物丙</td><td class='answer-cell'>他的名字是人物甲</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>llm_prompt_high</td>
+              <td>文本甲 1:66</td>
+              <td>mcq</td>
+              <td class="question-cell">大家对孩子有什么认识？</td>
+              <td>100.0%</td>
+              <td>100.0%</td><td>100.0%</td><td>0.0%</td>
+              <td class='answer-cell'>主的手与他同在</td><td class='answer-cell'>主的手与他同在</td><td class='answer-cell'>他将成为一位伟大的王</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>llm_prompt_high</td>
+              <td>文本甲 1:68</td>
+              <td>open</td>
+              <td class="question-cell">至高者甲完成了什么，使人物甲赞美？</td>
+              <td>100.0%</td>
+              <td>100.0%</td><td>100.0%</td><td>0.0%</td>
+              <td class='answer-cell'>主来看顾他的百姓，救赎他们。</td><td class='answer-cell'>至高者甲通过救赎百姓和兴起救恩的角使人物甲称赞。</td><td class='answer-cell'>主人甲的颂歌</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>llm_prompt_high</td>
+              <td>文本甲 1:77</td>
+              <td>open</td>
+              <td class="question-cell">人物甲预言人物丙会帮助人们知道什么？</td>
+              <td>100.0%</td>
+              <td>0.0%</td><td>100.0%</td><td>0.0%</td>
+              <td class='answer-cell'>你将被称为至尊者的先知。</td><td class='answer-cell'>人物甲预言人物丙会帮助人们知道救恩的知识。</td><td class='answer-cell'>圣洁、公义无所畏惧地事奉主。</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>llm_prompt_high</td>
+              <td>文本甲 1:77</td>
+              <td>mcq</td>
+              <td class="question-cell">人物甲预言人物丙会帮助人们知道什么？</td>
+              <td>100.0%</td>
+              <td>100.0%</td><td>100.0%</td><td>0.0%</td>
+              <td class='answer-cell'>如何通过宽恕得救</td><td class='answer-cell'>如何通过宽恕得救</td><td class='answer-cell'>如何变得富有</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>mBART-50</td>
+              <td>文本甲 1:4</td>
+              <td>mcq</td>
+              <td class="question-cell">文本甲为什么写他的记述？</td>
+              <td>100.0%</td>
+              <td>100.0%</td><td>100.0%</td><td>0.0%</td>
+              <td class='answer-cell'>为了使收信者甲确信无疑。</td><td class='answer-cell'>为了使收信者甲确信无疑。</td><td class='answer-cell'></td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>mBART-50</td>
+              <td>文本甲 1:6</td>
+              <td>open</td>
+              <td class="question-cell">人物甲和人物乙为什么是义人？</td>
+              <td>100.0%</td>
+              <td>100.0%</td><td>100.0%</td><td>0.0%</td>
+              <td class='answer-cell'>因为他们遵从主人甲的命令。</td><td class='answer-cell'>人物甲和人物乙因遵从主人甲的命令且无罪而成为义人。</td><td class='answer-cell'>人物甲和人物乙因为人物乙不能怀孕,而且他们都很年老。</td>
+            </tr>
+            
+
+            <tr>
+              <td>Luke 1</td>
+              <td>mBART-50</td>
+              <td>文本甲 1:6</td>
+              <td>mcq</td>
+              <td class="question-cell">为什么人物甲和人物乙被认为是义人？</td>
+              <td>100.0%</td>
+              <td>100.0%</td><td>100.0%</td><td>0.0%</td>
+              <td class='answer-cell'>他们无可指摘地遵守了诫命。</td><td class='answer-cell'>他们无可指摘地遵守了诫命。</td><td class='answer-cell'></td>
+            </tr>
+            </tbody></table></div>
+</main>
+</body>
+</html>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { ApiError } from '../api/client'
+import { ApiError, getCachedApiData } from '../api/client'
 import { fetchQaItemAssignments, type QaItemAssignmentRow } from '../api/qaItems'
 
 type QaItemAssignmentsTabProps = {
@@ -7,13 +7,35 @@ type QaItemAssignmentsTabProps = {
   languages: string[]
 }
 
+function assignmentsPath(qaItemId: string, languages: string[]) {
+  const params = new URLSearchParams()
+  for (const language of languages) {
+    params.append('languages', language)
+  }
+  const query = params.toString()
+  return `/api/v1/qa-items/${qaItemId}/assignments${query ? `?${query}` : ''}`
+}
+
 export function QaItemAssignmentsTab({ qaItemId, languages }: QaItemAssignmentsTabProps) {
-  const [assignments, setAssignments] = useState<QaItemAssignmentRow[]>([])
-  const [loading, setLoading] = useState(true)
+  const cachedAssignments = getCachedApiData<{
+    assignments: QaItemAssignmentRow[]
+    languages: string[]
+  }>(assignmentsPath(qaItemId, languages))
+  const [assignments, setAssignments] = useState<QaItemAssignmentRow[]>(
+    cachedAssignments?.assignments ?? [],
+  )
+  const [loading, setLoading] = useState(!cachedAssignments)
   const [error, setError] = useState('')
 
   useEffect(() => {
-    setLoading(true)
+    const cached = getCachedApiData<{
+      assignments: QaItemAssignmentRow[]
+      languages: string[]
+    }>(assignmentsPath(qaItemId, languages))
+    if (cached) {
+      setAssignments(cached.assignments)
+    }
+    setLoading(!cached)
     fetchQaItemAssignments(qaItemId, languages)
       .then((data) => setAssignments(data.assignments))
       .catch((err) => {

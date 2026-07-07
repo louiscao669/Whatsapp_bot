@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "language": "zh-CN",
+  "notes": [
+    "Use neutral_addition and plausible_unsupported_addition for the main MQM Addition simulation.",
+    "Use adversarial_answer_targeted_addition only as a separate stress/adversarial condition; do not mix it into the main fair comparison.",
+    "Templates avoid direct use of MCQ wrong choices by default. Fill placeholders only when intentionally running an adversarial experiment."
+  ],
+  "categories": {
+    "neutral_addition": {
+      "description": "Generic extra content that is plausible but not designed to change answers.",
+      "recommended_use": "main_mqm_addition_simulation",
+      "clauses": [
+        "众人后来也谈论这些事。",
+        "这事在附近的人中间被人记住。",
+        "有人把这些话存在心里。",
+        "这些事后来也使许多人感到惊奇。",
+        "这消息在当地传开了。",
+        "旁边的人听见后都默默思想。",
+        "这件事也被许多人反复提起。",
+        "他们对所发生的事感到稀奇。",
+        "后来有人把这些事告诉别人。",
+        "周围的人都注意到这件事。",
+        "这话使在场的人心里思量。",
+        "那地方的人后来仍记得这事。",
+        "他们彼此谈论所听见的话。",
+        "许多人因此停下来思想。",
+        "这件事在众人中留下印象。"
+      ]
+    },
+    "plausible_unsupported_addition": {
+      "description": "Unsupported but non-targeted details that sound contextually plausible and are not copied from QA distractors.",
+      "recommended_use": "main_mqm_addition_simulation_or_secondary_analysis",
+      "clauses": [
+        "那时也有几个人从远处来到那里。",
+        "他们在路上又停留了一会儿。",
+        "有些人听见以后就回到自己的家。",
+        "旁边还有人静静地观看这一切。",
+        "有人说这些事以后还会被记念。",
+        "他们在屋里又等了一段时间。",
+        "这话说完以后，众人仍然没有立刻离开。",
+        "当地的人也把这件事看作重要的记号。",
+        "有人在旁边询问这些话的意思。",
+        "他们后来又聚在一起谈论这事。",
+        "有些人把这事与从前听过的话相比。",
+        "这件事发生时，也有人正在附近祷告。",
+        "众人听见后，一时不知道该怎样回答。",
+        "他们把这些事看作值得留意的消息。",
+        "后来这事也被传到邻近的地方。"
+      ]
+    },
+    "adversarial_answer_targeted_addition": {
+      "description": "Templates that can directly mislead answers. Use only in a separately labeled adversarial condition.",
+      "recommended_use": "stress_test_only",
+      "requires_manual_or_scripted_placeholder_filling": true,
+      "templates": [
+        "也有人说，答案其实是{wrong_entity}。",
+        "旁边的人却认为应当选择{wrong_choice_label}。",
+        "有人补充说，这件事发生在{wrong_place}。",
+        "另有人说，孩子应当名叫{wrong_name}。",
+        "有人误以为说话的人是{wrong_speaker}。",
+        "也有人传说，真正的原因是{wrong_reason}。",
+        "旁边的人说，所应许的事不会发生。",
+        "有人说，这人并没有感到害怕。",
+        "也有人说，人物并没有去到那里。",
+        "有人声称，这孩子不是所说的那个人。",
+        "另有人补充说，人物的反应正好相反。",
+        "有人说，所给的记号其实是另一件事。",
+        "旁边的人却说，这话指的是{wrong_referent}。",
+        "有人传开另一个说法，说结果是{wrong_outcome}。",
+        "也有人说，这命令不是给{correct_entity}，而是给{wrong_entity}。"
+      ]
+    }
+  }
+}

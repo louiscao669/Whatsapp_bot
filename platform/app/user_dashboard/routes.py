@@ -1,18 +1,29 @@
 from flask import Blueprint, Response, jsonify, request, send_from_directory
+from sqlalchemy import select
 
 from eten_shared.database import get_session_factory
+from eten_shared.models import Assignment, AssignmentStatus, Participant, ParticipantResponse, QAItemRecording
 from eten_shared.repo_paths import REPO_ROOT
+from app.services.admin_media_service import (
+    load_participant_response_media,
+    load_qa_recording_media,
+)
 from app.user_dashboard.service import (
+    ChestRewardError,
     CosmeticUpdateError,
+    DashboardAnswerError,
     ProfilePhotoUploadError,
     ProfilePhotoNotFoundError,
     StorePurchaseError,
     StreakPauseUpdateError,
     get_user_dashboard_payload,
+    claim_batch_chest_reward,
     load_profile_photo,
     purchase_store_item,
     set_cosmetic_equipped,
     set_user_streak_pause,
+    start_dashboard_new_batch,
+    submit_dashboard_answer,
     update_profile_photo,
 )
 
@@ -46,6 +57,8 @@ def get_user_dashboard(wa_id):
     session_factory = get_session_factory()
     with session_factory() as db:
         payload = get_user_dashboard_payload(db, wa_id)
+        if payload:
+            db.commit()
 
     if not payload:
         return jsonify({"error": "not_found", "message": "Participant not found"}), 404
@@ -125,6 +138,76 @@ def update_user_dashboard_streak_pause(wa_id):
 
 
 @user_dashboard_blueprint.route(
+    "/user-dashboard/api/<wa_id>/batch-rewards",
+    methods=["POST", "OPTIONS"],
+)
+def claim_user_dashboard_batch_reward(wa_id):
+    if request.method == "OPTIONS":
+        return _cors_response(jsonify({"ok": True}))
+
+    body = request.get_json(silent=True) or {}
+    session_factory = get_session_factory()
+    try:
+        with session_factory() as db:
+            payload = claim_batch_chest_reward(db, wa_id, body.get("batch_id"))
+            db.commit()
+    except ChestRewardError as exc:
+        message = str(exc)
+        status = 404 if message == "Participant not found" else 400
+        return jsonify({"error": "chest_reward_error", "message": message}), status
+
+    return jsonify({"ok": True, **payload})
+
+
+@user_dashboard_blueprint.route(
+    "/user-dashboard/api/<wa_id>/answers",
+    methods=["POST", "OPTIONS"],
+)
+def submit_user_dashboard_answer(wa_id):
+    if request.method == "OPTIONS":
+        return _cors_response(jsonify({"ok": True}))
+
+    body = request.get_json(silent=True) or {}
+    session_factory = get_session_factory()
+    try:
+        with session_factory() as db:
+            payload = submit_dashboard_answer(
+                db,
+                wa_id,
+                body.get("assignment_id"),
+                body.get("response_text"),
+            )
+            db.commit()
+    except DashboardAnswerError as exc:
+        message = str(exc)
+        status = 404 if message in {"Participant not found", "Assignment not found"} else 400
+        return jsonify({"error": "answer_error", "message": message}), status
+
+    return jsonify({"ok": True, **payload})
+
+
+@user_dashboard_blueprint.route(
+    "/user-dashboard/api/<wa_id>/start-batch",
+    methods=["POST", "OPTIONS"],
+)
+def start_user_dashboard_batch(wa_id):
+    if request.method == "OPTIONS":
+        return _cors_response(jsonify({"ok": True}))
+
+    session_factory = get_session_factory()
+    try:
+        with session_factory() as db:
+            payload = start_dashboard_new_batch(db, wa_id)
+            db.commit()
+    except DashboardAnswerError as exc:
+        message = str(exc)
+        status = 404 if message == "Participant not found" else 400
+        return jsonify({"error": "start_batch_error", "message": message}), status
+
+    return jsonify({"ok": True, **payload})
+
+
+@user_dashboard_blueprint.route(
     "/user-dashboard/api/<wa_id>/profile-photo",
     methods=["GET", "POST", "OPTIONS"],
 )
@@ -176,6 +259,95 @@ def user_dashboard_profile_photo(wa_id):
         return jsonify({"error": "profile_photo_error", "message": message}), status
 
     return jsonify({"ok": True, **payload})
+
+
+@user_dashboard_blueprint.route(
+    "/user-dashboard/api/<wa_id>/participant-response/<response_id>/audio",
+    methods=["GET"],
+)
+def user_dashboard_participant_response_audio(wa_id, response_id):
+    session_factory = get_session_factory()
+    with session_factory() as db:
+        participant = db.scalars(
+            select(Participant).where(Participant.wa_id == wa_id)
+        ).first()
+        response_row = db.get(ParticipantResponse, response_id)
+        if (
+            not participant
+            or not response_row
+            or response_row.participant_id != participant.id
+        ):
+            return jsonify({"error": "not_found", "message": "Audio not found"}), 404
+
+    _, content, content_type = load_participant_response_media(response_id)
+    if not content:
+        return jsonify({"error": "not_found", "message": "Audio not available"}), 404
+    return Response(content, mimetype=content_type or "application/octet-stream")
+
+
+@user_dashboard_blueprint.route(
+    "/user-dashboard/api/<wa_id>/qa-question-recording/<recording_id>/audio",
+    methods=["GET"],
+)
+def user_dashboard_qa_question_recording_audio(wa_id, recording_id):
+    session_factory = get_session_factory()
+    with session_factory() as db:
+        participant = db.scalars(
+            select(Participant).where(Participant.wa_id == wa_id)
+        ).first()
+        recording = db.get(QAItemRecording, recording_id)
+        if (
+            not participant
+            or not recording
+            or (recording.recording_type or "").strip().lower() != "question"
+        ):
+            return jsonify({"error": "not_found", "message": "Audio not found"}), 404
+        assigned = db.scalars(
+            select(Assignment).where(
+                Assignment.participant_id == participant.id,
+                Assignment.qa_item_id == recording.qa_item_id,
+            )
+        ).first()
+        if not assigned:
+            return jsonify({"error": "not_found", "message": "Audio not found"}), 404
+
+    _, content, content_type = load_qa_recording_media(recording_id)
+    if not content:
+        return jsonify({"error": "not_found", "message": "Audio not available"}), 404
+    return Response(content, mimetype=content_type or "application/octet-stream")
+
+
+@user_dashboard_blueprint.route(
+    "/user-dashboard/api/<wa_id>/qa-answer-recording/<recording_id>/audio",
+    methods=["GET"],
+)
+def user_dashboard_qa_answer_recording_audio(wa_id, recording_id):
+    session_factory = get_session_factory()
+    with session_factory() as db:
+        participant = db.scalars(
+            select(Participant).where(Participant.wa_id == wa_id)
+        ).first()
+        recording = db.get(QAItemRecording, recording_id)
+        if (
+            not participant
+            or not recording
+            or (recording.recording_type or "").strip().lower() != "answer"
+        ):
+            return jsonify({"error": "not_found", "message": "Audio not found"}), 404
+        completed_assignment = db.scalars(
+            select(Assignment).where(
+                Assignment.participant_id == participant.id,
+                Assignment.qa_item_id == recording.qa_item_id,
+                Assignment.status == AssignmentStatus.COMPLETED.value,
+            )
+        ).first()
+        if not completed_assignment:
+            return jsonify({"error": "not_found", "message": "Audio not found"}), 404
+
+    _, content, content_type = load_qa_recording_media(recording_id)
+    if not content:
+        return jsonify({"error": "not_found", "message": "Audio not available"}), 404
+    return Response(content, mimetype=content_type or "application/octet-stream")
 
 
 @user_dashboard_blueprint.route("/user_dashboard/", methods=["GET"])

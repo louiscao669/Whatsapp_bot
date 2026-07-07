@@ -42,11 +42,7 @@ export function renderContribution(payload) {
         el("div", {}, [
           el("p", { className: "contribution-log-eyebrow", text: "Luke" }),
           el("h2", { text: "Activity Log" })
-        ]),
-        el("span", {
-          className: activeChapters ? "has-activity" : "",
-          text: `${activeChapters} active chapters`
-        })
+        ])
       ]),
       el("div", { className: "chapter-activity-grid" }, chapters.map((chapter) => (
         el("span", {

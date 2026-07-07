@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Create a de-canonicalized Chinese Bible QA evaluation dataset."""
 
+from __future__ import annotations
+
 import argparse
 import json
 import re

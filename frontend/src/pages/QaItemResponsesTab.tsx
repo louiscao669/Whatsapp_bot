@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
-import { ApiError } from '../api/client'
+import { ApiError, getCachedApiData } from '../api/client'
 import {
+  type QaItemResponsesPayload,
   fetchQaItemResponses,
   type QaItemChoiceResponse,
   type QaItemOpenResponse,
@@ -12,13 +13,31 @@ type QaItemResponsesTabProps = {
   choiceScored: boolean
 }
 
+function responsesPath(qaItemId: string, languages: string[]) {
+  const params = new URLSearchParams()
+  for (const language of languages) {
+    params.append('languages', language)
+  }
+  const query = params.toString()
+  return `/api/v1/qa-items/${qaItemId}/responses${query ? `?${query}` : ''}`
+}
+
 export function QaItemResponsesTab({ qaItemId, languages, choiceScored }: QaItemResponsesTabProps) {
-  const [responses, setResponses] = useState<(QaItemOpenResponse | QaItemChoiceResponse)[]>([])
-  const [loading, setLoading] = useState(true)
+  const cachedResponses = getCachedApiData<QaItemResponsesPayload>(
+    responsesPath(qaItemId, languages),
+  )
+  const [responses, setResponses] = useState<(QaItemOpenResponse | QaItemChoiceResponse)[]>(
+    cachedResponses?.responses ?? [],
+  )
+  const [loading, setLoading] = useState(!cachedResponses)
   const [error, setError] = useState('')
 
   useEffect(() => {
-    setLoading(true)
+    const cached = getCachedApiData<QaItemResponsesPayload>(responsesPath(qaItemId, languages))
+    if (cached) {
+      setResponses(cached.responses)
+    }
+    setLoading(!cached)
     fetchQaItemResponses(qaItemId, languages)
       .then((data) => setResponses(data.responses))
       .catch((err) => {

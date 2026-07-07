@@ -6,6 +6,8 @@ OpenAI embedding cosine similarity and an LLM judgment after back-translation
 to English.
 """
 
+from __future__ import annotations
+
 import argparse
 import json
 import math
@@ -310,6 +312,12 @@ def extract_response_text(response: Any) -> str:
     text = getattr(response, "output_text", None)
     if text:
         return text
+    choices = getattr(response, "choices", None) or []
+    if choices:
+        message = getattr(choices[0], "message", None)
+        content = getattr(message, "content", None)
+        if content:
+            return content
     chunks = []
     for output in getattr(response, "output", []) or []:
         for content in getattr(output, "content", []) or []:
@@ -319,6 +327,19 @@ def extract_response_text(response: Any) -> str:
     if chunks:
         return "\n".join(chunks)
     raise ScoreError("Model response did not include text output.")
+
+
+def create_text_response(client: Any, *, model: str, input: Any) -> Any:
+    if hasattr(client, "responses"):
+        return client.responses.create(model=model, input=input)
+    if hasattr(client, "chat") and hasattr(client.chat, "completions"):
+        messages = input
+        if isinstance(input, str):
+            messages = [{"role": "user", "content": input}]
+        return client.chat.completions.create(model=model, messages=messages)
+    raise ScoreError(
+        "OpenAI client supports neither responses.create nor chat.completions.create."
+    )
 
 
 def extract_json_text(text: str) -> str:
@@ -385,7 +406,8 @@ def translate_open_answers_to_english(
         translations_by_index: Dict[int, str] = {}
         for attempt in range(retries + 1):
             try:
-                response = client.responses.create(
+                response = create_text_response(
+                    client,
                     model=model,
                     input=[
                         {
@@ -475,7 +497,7 @@ def backtranslate_generated_answers(
             ).strip() or None,
         }
         output_by_index[int(item_index)] = generated
-        if not row["generated_answer_english"]:
+        if row["generated_answer"] and not row["generated_answer_english"]:
             open_rows.append(row)
 
     if open_rows:
@@ -512,14 +534,21 @@ def llm_judge_one(
             "event needed to answer the question, even if it omits an attribute, title, "
             "relationship, descriptive clause, or other secondary detail from the "
             "standard answer. Mark incorrect only when the core answer is missing, "
-            "wrong, contradicted, or too vague to identify the main answer."
+            "wrong, contradicted, or too vague to identify the main answer. "
+            "Placeholder labels such as Person A, Person F, Master A, Place A, and Text A "
+            "are artificial anonymized labels. Use the placeholder labels exactly as shown "
+            "in the question; do not infer or invent a different label from alphabetic or "
+            "ordinal order. If the standard answer uses a pronoun such as him, her, it, or "
+            "them, resolve that pronoun from the question. Do not mark an answer incorrect "
+            "merely because it repeats the explicit placeholder from the question while the "
+            "standard answer uses a pronoun."
         )
     else:
         raise ScoreError(f"Unknown LLM judge mode: {mode}")
 
     prompt = {
         "task": task,
-        "question": item["question"],
+        "question": normalize_chinese_placeholders_to_english(item["question"]),
         "standard_answer": item["standard_answer"],
         "generated_answer": item[answer_field],
         "output_schema": {
@@ -531,7 +560,8 @@ def llm_judge_one(
     last_error: Optional[Exception] = None
     for attempt in range(retries + 1):
         try:
-            response = client.responses.create(
+            response = create_text_response(
+                client,
                 model=model,
                 input=[
                     {
@@ -583,14 +613,21 @@ def llm_judge_batch(
         "place, action, or event needed to answer the question, even if it omits "
         "an attribute, title, relationship, descriptive clause, or other secondary "
         "detail from the standard answer. Mark incorrect only when the core answer "
-        "is missing, wrong, contradicted, or too vague to identify the main answer."
+        "is missing, wrong, contradicted, or too vague to identify the main answer. "
+        "Placeholder labels such as Person A, Person F, Master A, Place A, and Text A "
+        "are artificial anonymized labels. Use the placeholder labels exactly as shown "
+        "in the question; do not infer or invent a different label from alphabetic or "
+        "ordinal order. If the standard answer uses a pronoun such as him, her, it, or "
+        "them, resolve that pronoun from the question. Do not mark an answer incorrect "
+        "merely because it repeats the explicit placeholder from the question while the "
+        "standard answer uses a pronoun."
     )
     prompt = {
         "task": task,
         "items": [
             {
                 "item_index": row["item_index"],
-                "question": row["question"],
+                "question": normalize_chinese_placeholders_to_english(row["question"]),
                 "standard_answer": row["standard_answer"],
                 "generated_answer": row[answer_field],
             }
@@ -611,7 +648,8 @@ def llm_judge_batch(
     last_error: Optional[Exception] = None
     for attempt in range(retries + 1):
         try:
-            response = client.responses.create(
+            response = create_text_response(
+                client,
                 model=model,
                 input=[
                     {
@@ -702,7 +740,14 @@ def score_items(
             "generated_answer_english": str(
                 generated.get("generated_answer_english") or ""
             ).strip() or None,
+            "generation_error": generated.get("generation_error"),
         }
+        if "answer_confidence" in generated:
+            row["answer_confidence"] = generated.get("answer_confidence")
+        if "insufficient_information" in generated:
+            row["insufficient_information"] = generated.get("insufficient_information")
+        if "evidence_quality" in generated:
+            row["evidence_quality"] = generated.get("evidence_quality")
         if row["item_index"] in (None, ""):
             row["item_index"] = standard["item_index"]
 
@@ -739,7 +784,19 @@ def score_items(
                     "llm_english_rationale": None,
                 }
             )
-            open_rows.append(row)
+            if row["generated_answer"]:
+                open_rows.append(row)
+            else:
+                row.update(
+                    {
+                        "llm_label": "incorrect",
+                        "llm_score": 0.0,
+                        "llm_rationale": "No generated answer.",
+                        "llm_english_label": "incorrect",
+                        "llm_english_score": 0.0,
+                        "llm_english_rationale": "No generated answer.",
+                    }
+                )
 
         scored.append(row)
 
@@ -747,14 +804,17 @@ def score_items(
     if open_rows and (not skip_embeddings or not skip_llm):
         client = get_embedding_client()
         rows_missing_translation = [
-            row for row in open_rows if not row.get("generated_answer_english")
+            row
+            for row in open_rows
+            if row.get("generated_answer") and not row.get("generated_answer_english")
         ]
-        translate_open_answers_to_english(
-            client,
-            translation_model,
-            rows_missing_translation,
-            retries,
-        )
+        if rows_missing_translation:
+            translate_open_answers_to_english(
+                client,
+                translation_model,
+                rows_missing_translation,
+                retries,
+            )
 
     if open_rows and not skip_embeddings:
         texts = []
@@ -823,6 +883,49 @@ def summarize(scored: List[dict]) -> dict:
         for item in open_items
         if item.get("llm_english_score") is not None
     ]
+    confidence_values = [
+        float(item["answer_confidence"])
+        for item in scored
+        if item.get("answer_confidence") is not None
+    ]
+    insufficient_items = [
+        item
+        for item in scored
+        if item.get("insufficient_information") is not None
+    ]
+    evidence_items = [
+        item
+        for item in scored
+        if item.get("evidence_quality") is not None
+    ]
+    wrong_high_confidence = [
+        item
+        for item in scored
+        if item.get("answer_confidence") is not None
+        and float(item.get("answer_confidence") or 0) >= 0.8
+        and (
+            (item["q_type"] == "mcq" and not item.get("direct_correct"))
+            or (
+                item["q_type"] != "mcq"
+                and item.get("llm_score") is not None
+                and float(item["llm_score"]) < 0.5
+            )
+        )
+    ]
+    correct_low_confidence = [
+        item
+        for item in scored
+        if item.get("answer_confidence") is not None
+        and float(item.get("answer_confidence") or 0) <= 0.4
+        and (
+            (item["q_type"] == "mcq" and item.get("direct_correct"))
+            or (
+                item["q_type"] != "mcq"
+                and item.get("llm_score") is not None
+                and float(item["llm_score"]) >= 0.5
+            )
+        )
+    ]
     return {
         "total": len(scored),
         "mcq_count": len(mcq),
@@ -839,6 +942,35 @@ def summarize(scored: List[dict]) -> dict:
             if llm_english_scores
             else None
         ),
+        "answer_confidence_mean": (
+            sum(confidence_values) / len(confidence_values)
+            if confidence_values
+            else None
+        ),
+        "insufficient_information_rate": (
+            sum(1 for item in insufficient_items if item.get("insufficient_information"))
+            / len(insufficient_items)
+            if insufficient_items
+            else None
+        ),
+        "direct_evidence_rate": (
+            sum(1 for item in evidence_items if item.get("evidence_quality") == "direct")
+            / len(evidence_items)
+            if evidence_items
+            else None
+        ),
+        "evidence_supported_rate": (
+            sum(
+                1
+                for item in evidence_items
+                if item.get("evidence_quality") in {"direct", "indirect"}
+            )
+            / len(evidence_items)
+            if evidence_items
+            else None
+        ),
+        "wrong_high_confidence_count": len(wrong_high_confidence),
+        "correct_low_confidence_count": len(correct_low_confidence),
     }
 
 

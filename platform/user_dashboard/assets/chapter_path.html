@@ -1,0 +1,123 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  .page { background: #F5F3EE; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; padding: 24px 20px; min-height: 700px; display: flex; flex-direction: column; align-items: center; }
+
+  .batch-label { display: flex; align-items: center; gap: 10px; width: 100%; max-width: 320px; margin-bottom: 8px; }
+  .batch-line { flex: 1; height: 2px; background: #D8D4CC; border-radius: 2px; }
+  .batch-text { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: #B0A898; }
+
+  .path { display: flex; flex-direction: column; align-items: center; gap: 0; width: 100%; max-width: 320px; position: relative; }
+
+  /* Connector lines between nodes */
+  .connector { width: 4px; height: 28px; border-radius: 4px; }
+  .connector.done { background: #58CC02; }
+  .connector.locked { background: #DDD; }
+
+  /* Nodes */
+  .node-wrap { display: flex; flex-direction: column; align-items: center; }
+  .node-row { display: flex; align-items: center; gap: 0; position: relative; }
+
+  .node { width: 72px; height: 72px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; cursor: pointer; transition: transform 0.15s; position: relative; flex-shrink: 0; }
+  .node:hover { transform: scale(1.08); }
+
+  /* Done */
+  .node.done { background: #58CC02; border: 4px solid #46A302; box-shadow: 0 5px 0 #2E8A00; }
+  /* Active / star */
+  .node.active { background: #FFD060; border: 4px solid #FFB800; box-shadow: 0 5px 0 #CC8800; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{box-shadow:0 5px 0 #CC8800,0 0 0 0 rgba(255,184,0,0.4)} 50%{box-shadow:0 5px 0 #CC8800,0 0 0 10px rgba(255,184,0,0)} }
+  /* Locked */
+  .node.locked { background: #E8E4DC; border: 4px solid #D0CCC4; box-shadow: 0 5px 0 #B8B4AC; }
+  /* Chest */
+  .node.chest { background: #8B5E3C; border: 4px solid #6B3E1C; box-shadow: 0 5px 0 #4A2A0A; width: 88px; height: 72px; border-radius: 16px; }
+  .node.chest.unlocked { background: #C87941; border-color: #A05920; box-shadow: 0 5px 0 #7A3F10; animation: chestglow 2s infinite; }
+  @keyframes chestglow { 0%,100%{box-shadow:0 5px 0 #7A3F10,0 0 0 0 rgba(200,121,65,0.4)} 50%{box-shadow:0 5px 0 #7A3F10,0 0 0 12px rgba(200,121,65,0)} }
+
+  /* Offset rows (zigzag) */
+  .offset-left { align-self: flex-start; margin-left: 20px; }
+  .offset-right { align-self: flex-end; margin-right: 20px; }
+  .offset-center { align-self: center; }
+
+  /* Connector angled — use SVG */
+  .path-svg { width: 100%; max-width: 320px; }
+
+  /* Tooltip on active */
+  .node-tooltip { position: absolute; top: -38px; left: 50%; transform: translateX(-50%); background: #1a1a1a; color: #fff; font-size: 11px; font-weight: 800; padding: 5px 10px; border-radius: 8px; white-space: nowrap; pointer-events: none; }
+  .node-tooltip::after { content:''; position:absolute; bottom:-5px; left:50%; transform:translateX(-50%); border:5px solid transparent; border-bottom:none; border-top-color:#1a1a1a; }
+</style>
+
+<div class="page">
+
+  <!-- Batch 1 header -->
+  <div class="batch-label">
+    <div class="batch-line"></div>
+    <div class="batch-text">Batch 1</div>
+    <div class="batch-line"></div>
+  </div>
+
+  <!-- Path via SVG for curves + nodes overlaid -->
+  <div style="position:relative; width:320px; height:580px;">
+
+    <!-- SVG trail -->
+    <svg width="320" height="580" viewBox="0 0 320 580" style="position:absolute;top:0;left:0;">
+      <!-- Done segments (green) -->
+      <path d="M 160 60 Q 100 100 90 150" stroke="#58CC02" stroke-width="8" fill="none" stroke-linecap="round" stroke-dasharray="none"/>
+      <!-- Partial done to active -->
+      <path d="M 90 150 Q 80 210 160 260" stroke="#58CC02" stroke-width="8" fill="none" stroke-linecap="round"/>
+      <!-- Locked segments -->
+      <path d="M 160 260 Q 230 310 240 370" stroke="#D8D4CC" stroke-width="8" fill="none" stroke-linecap="round" stroke-dasharray="12 8"/>
+      <path d="M 240 370 Q 250 420 180 460" stroke="#D8D4CC" stroke-width="8" fill="none" stroke-linecap="round" stroke-dasharray="12 8"/>
+      <path d="M 180 460 Q 120 490 160 530" stroke="#D8D4CC" stroke-width="8" fill="none" stroke-linecap="round" stroke-dasharray="12 8"/>
+    </svg>
+
+    <!-- Node 1 — Done (checkmark) -->
+    <div style="position:absolute;top:24px;left:124px;">
+      <div class="node done">✓</div>
+    </div>
+
+    <!-- Node 2 — Active (star) -->
+    <div style="position:absolute;top:114px;left:54px;">
+      <div class="node active" style="position:relative;">
+        <div class="node-tooltip">Continue!</div>
+        ⭐
+      </div>
+    </div>
+
+    <!-- Node 3 — Locked -->
+    <div style="position:absolute;top:224px;left:124px;">
+      <div class="node locked">🔒</div>
+    </div>
+
+    <!-- Node 4 — Locked -->
+    <div style="position:absolute;top:334px;left:204px;">
+      <div class="node locked">🔒</div>
+    </div>
+
+    <!-- Node 5 — Locked -->
+    <div style="position:absolute;top:424px;left:144px;">
+      <div class="node locked">🔒</div>
+    </div>
+
+    <!-- Chest — reward at end of batch -->
+    <div style="position:absolute;top:498px;left:116px;">
+      <div class="node chest unlocked" style="font-size:36px;">🎁</div>
+    </div>
+
+  </div>
+
+  <!-- Batch 2 header -->
+  <div class="batch-label" style="margin-top:4px;">
+    <div class="batch-line"></div>
+    <div class="batch-text">Batch 2</div>
+    <div class="batch-line"></div>
+  </div>
+
+  <!-- Batch 2 starts locked -->
+  <div style="position:relative; width:320px; height:120px; display:flex; align-items:center; justify-content:center; opacity:0.4;">
+    <svg width="320" height="80" viewBox="0 0 320 80" style="position:absolute;">
+      <path d="M 160 0 Q 160 40 160 70" stroke="#D8D4CC" stroke-width="8" fill="none" stroke-dasharray="12 8"/>
+    </svg>
+    <div style="margin-top:20px;" class="node locked">🔒</div>
+  </div>
+
+</div>

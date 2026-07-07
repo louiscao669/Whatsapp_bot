@@ -30,3 +30,9 @@ api_blueprint.register_blueprint(exports_blueprint, url_prefix="/export")
 @api_blueprint.route("/health", methods=["GET"])
 def health():
     return jsonify({"status": "ok"})
+
+
+@api_blueprint.route("/courses", methods=["GET"])
+def list_courses():
+    """Compatibility response for stale/dev clients that probe for course data."""
+    return jsonify({"courses": [], "items": [], "total": 0})

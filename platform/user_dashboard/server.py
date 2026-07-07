@@ -8,6 +8,18 @@ PLATFORM_ROOT = Path(__file__).resolve().parents[1]
 
 
 class DashboardHandler(SimpleHTTPRequestHandler):
+    def do_GET(self):
+        parsed = urlparse(self.path)
+        if parsed.path.startswith("/platform/user_dashboard/"):
+            target = parsed.path.removeprefix("/platform")
+            if parsed.query:
+                target = f"{target}?{parsed.query}"
+            self.send_response(302)
+            self.send_header("Location", target)
+            self.end_headers()
+            return
+        super().do_GET()
+
     def translate_path(self, path):
         parsed = urlparse(path)
         if parsed.path.startswith("/user_dashboard/index.html/"):

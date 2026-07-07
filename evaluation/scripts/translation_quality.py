@@ -18,7 +18,7 @@ from pathlib import Path
 from typing import Any, Iterable, Literal, Optional
 
 
-TranslationMethod = Literal[
+SUPPORTED_BASE_METHODS = {
     "google_word_by_word",
     "llm_prompt_low",
     "llm_prompt_medium",
@@ -27,11 +27,74 @@ TranslationMethod = Literal[
     "mBART-50",
     "nllb-200-distilled-600M",
     "nllb-200-1.3B",
-]
+}
+NLLB_DROPOUT_METHOD_PREFIX = "nllb-200-1.3B-dropout"
+DEFAULT_NLLB_DROPOUT_RATES = (0.0, 0.1, 0.2, 0.3, 0.5, 0.7, 0.9)
 
 
 class TranslationQualityError(Exception):
     pass
+
+
+def format_dropout_rate(rate: float) -> str:
+    return f"{rate:.1f}"
+
+
+def nllb_dropout_method_name(rate: float) -> str:
+    return f"{NLLB_DROPOUT_METHOD_PREFIX}-{format_dropout_rate(rate)}"
+
+
+def parse_nllb_dropout_rate(method: str) -> Optional[float]:
+    if method == NLLB_DROPOUT_METHOD_PREFIX:
+        return None
+    prefix = f"{NLLB_DROPOUT_METHOD_PREFIX}-"
+    if not str(method or "").startswith(prefix):
+        return None
+    raw_rate = str(method)[len(prefix) :]
+    try:
+        rate = float(raw_rate)
+    except ValueError as exc:
+        raise TranslationQualityError(
+            f"NLLB dropout method must end with a numeric rate, got: {method}"
+        ) from exc
+    validate_nllb_dropout_rate(rate)
+    return rate
+
+
+def is_supported_method(method: str) -> bool:
+    if method in SUPPORTED_BASE_METHODS or method == NLLB_DROPOUT_METHOD_PREFIX:
+        return True
+    try:
+        return parse_nllb_dropout_rate(method) is not None
+    except TranslationQualityError:
+        return False
+
+
+def validate_nllb_dropout_rate(rate: float) -> None:
+    if rate < 0.0 or rate > 0.9:
+        raise TranslationQualityError("--nllb-dropout-rate must be between 0.0 and 0.9.")
+
+
+def set_dropout_rate(model, rate: float) -> None:
+    import torch
+
+    validate_nllb_dropout_rate(rate)
+    for module in model.modules():
+        if isinstance(module, torch.nn.Dropout):
+            module.p = rate
+            module.train()
+            continue
+
+        # NLLB-200 1.3B loads through Transformers' M2M100 classes, which use
+        # functional dropout with numeric attributes instead of nn.Dropout modules.
+        has_dropout_attr = False
+        for attr in ("dropout", "activation_dropout"):
+            value = getattr(module, attr, None)
+            if isinstance(value, float):
+                setattr(module, attr, rate)
+                has_dropout_attr = True
+        if has_dropout_attr:
+            module.train()
 
 
 def normalize_target_language(target_language: str) -> str:
@@ -97,8 +160,6 @@ def method_output_path(output_path: Path, method: str) -> Path:
 
 
 PROTECTED_TOKEN_PATTERN = re.compile(r"^\W*__[A-Z0-9_]+__\W*$")
-PROTECTED_TOKEN_IN_TEXT_PATTERN = re.compile(r"__([A-Z0-9_]+)__")
-PROTECTED_TOKEN_SPLIT_PATTERN = re.compile(r"(__[A-Z0-9_]+__)")
 VERSE_MARKER_PATTERN = re.compile(r"(?<![\w\]])(\d{1,3})\s+")
 
 
@@ -129,30 +190,6 @@ def split_long_translation_text(text: str, max_chars: int = 450) -> list[str]:
     if remaining:
         chunks.append(remaining)
     return chunks
-
-
-def translation_units_without_placeholders(text: str) -> list[dict[str, str | bool]]:
-    units: list[dict[str, str | bool]] = []
-    for part in PROTECTED_TOKEN_SPLIT_PATTERN.split(text):
-        if not part:
-            continue
-        if PROTECTED_TOKEN_IN_TEXT_PATTERN.fullmatch(part):
-            units.append({"translate": False, "text": part})
-            continue
-        for chunk in split_long_translation_text(part):
-            match = re.fullmatch(r"(\s*)(.*?)(\s*)", chunk, flags=re.DOTALL)
-            if not match or not match.group(2):
-                units.append({"translate": False, "text": chunk})
-                continue
-            units.append(
-                {
-                    "translate": True,
-                    "text": match.group(2),
-                    "prefix": match.group(1),
-                    "suffix": match.group(3),
-                }
-            )
-    return units
 
 
 def assemble_translation_plans(plans: list[list[dict[str, str | bool]]]) -> list[str]:
@@ -500,7 +537,9 @@ def nllb_translate(
     *,
     model_name: str,
     target_language: str = "Simplified Chinese",
+    source_language: str = "en",
     batch_size: int = 4,
+    dropout_rate: float = 0.0,
 ) -> list[str]:
     try:
         import torch
@@ -512,13 +551,17 @@ def nllb_translate(
         ) from exc
 
     torch.set_num_threads(1)
-    src_lang = "eng_Latn"
-    tgt_lang = "zho_Hans"
-    tokenizer = AutoTokenizer.from_pretrained(model_name, src_lang=src_lang)
+    src_lang = nllb_language_code(source_language, default="eng_Latn")
+    tgt_lang = nllb_language_code(target_language, default="zho_Hans")
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
     model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
     model.eval()
+    set_dropout_rate(model, dropout_rate)
 
+    tokenizer.src_lang = src_lang
     forced_bos_token_id = tokenizer.convert_tokens_to_ids(tgt_lang)
+    if forced_bos_token_id is None or forced_bos_token_id == tokenizer.unk_token_id:
+        raise TranslationQualityError(f"Unknown NLLB target language code: {tgt_lang}")
     input_texts = ensure_texts(texts)
     plans = verse_translation_plans(input_texts)
     translatable_units = translatable_units_from_verse_plans(plans)
@@ -538,6 +581,7 @@ def nllb_translate(
                 **encoded,
                 forced_bos_token_id=forced_bos_token_id,
                 max_new_tokens=1024,
+                num_beams=1,
             )
         decoded = tokenizer.batch_decode(generated, skip_special_tokens=True)
         for unit, translated in zip(unit_batch, decoded):
@@ -545,9 +589,30 @@ def nllb_translate(
     return assemble_verse_translation_plans(plans)
 
 
+def nllb_language_code(value: str, *, default: str) -> str:
+    normalized = str(value or "").strip()
+    if "_" in normalized and len(normalized) >= 7:
+        return normalized
+    aliases = {
+        "en": "eng_Latn",
+        "english": "eng_Latn",
+        "eng": "eng_Latn",
+        "zh": "zho_Hans",
+        "zh-cn": "zho_Hans",
+        "chinese": "zho_Hans",
+        "simplified chinese": "zho_Hans",
+        "mandarin": "zho_Hans",
+        "fr": "fra_Latn",
+        "french": "fra_Latn",
+        "es": "spa_Latn",
+        "spanish": "spa_Latn",
+    }
+    return aliases.get(normalized.lower(), default)
+
+
 def translate_with_method(
     texts: str | Iterable[str],
-    method: TranslationMethod,
+    method: str,
     *,
     target_language: str = "Simplified Chinese",
     source_language: str = "en",
@@ -556,6 +621,7 @@ def translate_with_method(
     nllb_distilled_model: Optional[str] = None,
     nllb_model: Optional[str] = None,
     openai_model: Optional[str] = None,
+    nllb_dropout_rate: Optional[float] = None,
 ) -> list[str]:
     if method == "google_word_by_word":
         return google_word_by_word(
@@ -603,6 +669,7 @@ def translate_with_method(
             model_name=nllb_distilled_model
             or os.getenv("NLLB_DISTILLED_MODEL", "facebook/nllb-200-distilled-600M"),
             target_language=target_language,
+            source_language=source_language,
         )
     if method == "nllb-200-1.3B":
         return nllb_translate(
@@ -610,6 +677,22 @@ def translate_with_method(
             model_name=nllb_model
             or os.getenv("NLLB_MODEL", "facebook/nllb-200-1.3B"),
             target_language=target_language,
+            source_language=source_language,
+            dropout_rate=0.0,
+        )
+    parsed_dropout_rate = parse_nllb_dropout_rate(method)
+    if method == NLLB_DROPOUT_METHOD_PREFIX or parsed_dropout_rate is not None:
+        rate = nllb_dropout_rate if parsed_dropout_rate is None else parsed_dropout_rate
+        if rate is None:
+            rate = 0.0
+        validate_nllb_dropout_rate(rate)
+        return nllb_translate(
+            texts,
+            model_name=nllb_model
+            or os.getenv("NLLB_MODEL", "facebook/nllb-200-1.3B"),
+            target_language=target_language,
+            source_language=source_language,
+            dropout_rate=rate,
         )
     raise TranslationQualityError(f"Unknown translation method: {method}")
 
@@ -630,16 +713,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--method",
         required=True,
-        choices=[
-            "google_word_by_word",
-            "llm_prompt_low",
-            "llm_prompt_medium",
-            "llm_prompt_high",
-            "helsinki",
-            "mBART-50",
-            "nllb-200-distilled-600M",
-            "nllb-200-1.3B",
-        ],
+        help=(
+            "Translation method. Also supports nllb-200-1.3B-dropout or "
+            "nllb-200-1.3B-dropout-<rate>, where rate is 0.0 to 0.9."
+        ),
     )
     parser.add_argument("--target-language", default="Simplified Chinese")
     parser.add_argument("--source-language", default="en")
@@ -647,6 +724,15 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--mbart-model")
     parser.add_argument("--nllb-distilled-model")
     parser.add_argument("--nllb-model")
+    parser.add_argument(
+        "--nllb-dropout-rate",
+        type=float,
+        default=0.0,
+        help=(
+            "Dropout rate for nllb-200-1.3B-dropout. Must be between 0.0 and 0.9. "
+            "Ignored when the method name already includes a rate."
+        ),
+    )
     parser.add_argument("--openai-model")
     return parser.parse_args()
 
@@ -655,6 +741,9 @@ def main() -> int:
     args = parse_args()
     try:
         source_texts = read_texts_from_json_or_text(args.input_file)
+        if not is_supported_method(args.method):
+            raise TranslationQualityError(f"Unknown translation method: {args.method}")
+        validate_nllb_dropout_rate(args.nllb_dropout_rate)
         translations = translate_with_method(
             source_texts,
             args.method,
@@ -664,14 +753,19 @@ def main() -> int:
             mbart_model=args.mbart_model,
             nllb_distilled_model=args.nllb_distilled_model,
             nllb_model=args.nllb_model,
+            nllb_dropout_rate=args.nllb_dropout_rate,
             openai_model=args.openai_model,
         )
         output_json = method_output_path(args.output_path, args.method)
+        method_dropout_rate = parse_nllb_dropout_rate(args.method)
+        if args.method == NLLB_DROPOUT_METHOD_PREFIX:
+            method_dropout_rate = args.nllb_dropout_rate
         write_json(
             output_json,
             {
                 "method": args.method,
                 "target_language": args.target_language,
+                "nllb_dropout_rate": method_dropout_rate,
                 "translations": translations,
             },
         )

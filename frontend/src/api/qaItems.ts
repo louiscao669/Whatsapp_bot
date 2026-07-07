@@ -1,4 +1,4 @@
-import { ApiError, apiFetch } from './client'
+import { ApiError, apiFetch, clearApiCache } from './client'
 
 export type QaItemRow = {
   id: string
@@ -182,6 +182,7 @@ export async function importQaItemsFromFile(
   if (!response.ok) {
     throw new ApiError(payload.message ?? response.statusText, response.status, payload.error)
   }
+  clearApiCache('/api/v1/qa-items')
   return payload
 }
 

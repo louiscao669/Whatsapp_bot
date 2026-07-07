@@ -1,8 +1,15 @@
 export function el(tag, options = {}, children = []) {
-  const node = document.createElement(tag);
+  const svgTags = new Set(["svg", "path", "circle", "rect", "line", "polyline", "polygon", "g"]);
+  const node = svgTags.has(tag)
+    ? document.createElementNS("http://www.w3.org/2000/svg", tag)
+    : document.createElement(tag);
   for (const [key, value] of Object.entries(options)) {
     if (key === "className") {
-      node.className = value;
+      if (node.namespaceURI === "http://www.w3.org/2000/svg") {
+        node.setAttribute("class", value);
+      } else {
+        node.className = value;
+      }
     } else if (key === "text") {
       node.textContent = value;
     } else if (key === "html") {
@@ -24,7 +31,16 @@ export function setActiveBodyCosmetics(payload) {
 
 export function showModal(message, title = "Action unavailable") {
   document.querySelector("#actionModalTitle").textContent = title;
-  document.querySelector("#actionModalMessage").textContent = message;
+  document.querySelector("#actionModalMessage").replaceChildren(
+    el("p", { text: message })
+  );
+  document.querySelector("#actionModal").hidden = false;
+  document.querySelector("#actionModalClose").focus();
+}
+
+export function showModalContent(title, children = []) {
+  document.querySelector("#actionModalTitle").textContent = title;
+  document.querySelector("#actionModalMessage").replaceChildren(...children.filter(Boolean));
   document.querySelector("#actionModal").hidden = false;
   document.querySelector("#actionModalClose").focus();
 }

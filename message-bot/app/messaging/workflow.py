@@ -20,6 +20,12 @@ from eten_shared.domain.assignments import (
     resume_incomplete_assignment,
 )
 from eten_shared.domain.batch_schedules import has_pending_next_batch_schedule
+from eten_shared.domain.batch_size_nudges import (
+    apply_batch_size_nudge_response,
+    batch_size_response_choice,
+    recommend_batch_size_nudge,
+    record_batch_size_nudge_sent,
+)
 from eten_shared.domain.streaks import update_streak_for_response
 from eten_shared.question_discovery import select_next_qa_item
 from app.engagement.badges import evaluate_and_award_badges
@@ -86,6 +92,7 @@ class WorkflowResult:
     currency_awards: tuple = ()
     currency_balance: Optional[int] = None
     status_message: Optional[str] = None
+    batch_size_nudge: Optional[object] = None
 
 
 def score_text_response_with_rubric(response_text: str, rubric: KeywordRubric):
@@ -418,6 +425,29 @@ def record_whatsapp_answer(
             }
             event_metadata.update(message_metadata or {})
 
+            nudge_choice = batch_size_response_choice(response_text)
+            if nudge_choice:
+                nudge_response = apply_batch_size_nudge_response(
+                    db,
+                    participant,
+                    nudge_choice,
+                    source="whatsapp",
+                )
+                if nudge_response:
+                    record_participant_event(
+                        db,
+                        participant,
+                        "message_received",
+                        event_metadata,
+                    )
+                    db.commit()
+                    return WorkflowResult(
+                        participant_id=participant.id,
+                        session_id=participant_session.id,
+                        session_state=participant_session.state,
+                        status_message=nudge_response["message"],
+                    )
+
             if has_pending_next_batch_schedule(db, participant.id):
                 next_batch_choice = batch_next_response_choice(response_text)
                 event_metadata["batch_next_choice"] = next_batch_choice or "unrecognized"
@@ -510,7 +540,17 @@ def record_whatsapp_answer(
                 )
                 if batch_award:
                     currency_awards.append(batch_award)
+                batch_size_nudge = recommend_batch_size_nudge(db, participant)
+                if batch_size_nudge:
+                    record_batch_size_nudge_sent(
+                        db,
+                        participant,
+                        batch_size_nudge,
+                        source="whatsapp",
+                    )
                 schedule_next_batch_assignment(db, participant, participant_session)
+            else:
+                batch_size_nudge = None
             awarded_badges = list(streak_badges) + evaluate_and_award_badges(
                 db,
                 participant,
@@ -540,6 +580,7 @@ def record_whatsapp_answer(
                 currency_balance=(
                     currency_awards[-1]["balance_after"] if currency_awards else None
                 ),
+                batch_size_nudge=batch_size_nudge,
             )
         except SQLAlchemyError:
             db.rollback()

@@ -1,7 +1,7 @@
 import { renderAchievements } from "./achievements/achievements.js";
 import { renderCommunity } from "./community/community.js";
 import { renderContribution } from "./contribution/contribution.js";
-import { bindModal, el, setActiveBodyCosmetics, showModal } from "./dom.js";
+import { bindModal, el, setActiveBodyCosmetics, showModal, showModalContent } from "./dom.js";
 import { renderJourney } from "./journey/journey.js";
 import { renderRightRail } from "./rightRail.js";
 import { renderShop } from "./shop/shop.js";
@@ -12,6 +12,7 @@ import {
   normalizeDashboard,
   parseWaIdFromLocation,
   postJson,
+  postRawJson,
   sampleDashboard,
   uploadProfilePhoto
 } from "./state.js";
@@ -20,11 +21,18 @@ const app = document.querySelector("#app");
 const state = {
   waId: parseWaIdFromLocation(),
   activePage: "journey",
+  journeyChapterIndex: null,
+  journeyAnswerAssignmentId: null,
+  journeyAnswerQuestion: null,
+  questionCompletion: null,
+  startingBatch: false,
+  claimingBatchRewardId: null,
   communityTab: "individual",
   shopMessage: "",
   payload: normalizeDashboard(sampleDashboard)
 };
 
+hydrateCachedDashboard();
 hydrateCachedProfilePhoto();
 
 const pageRenderers = {
@@ -39,7 +47,18 @@ function render() {
   setActiveBodyCosmetics(state.payload);
   const actions = {
     navigate,
+    startDailyChallenge,
     setCommunityTab,
+    setJourneyChapter,
+    clearJourneyChapter,
+    openQuestion,
+    closeQuestion,
+    submitAnswer,
+    continueAfterAnswer,
+    startNewBatch,
+    startingBatch: state.startingBatch,
+    claimingBatchRewardId: state.claimingBatchRewardId,
+    claimBatchReward,
     purchase,
     setCosmetic,
     setStreakPause,
@@ -64,7 +83,61 @@ function render() {
 
 function navigate(pageId) {
   state.activePage = pageId;
+  if (pageId !== "journey") {
+    state.journeyChapterIndex = null;
+    state.journeyAnswerAssignmentId = null;
+    state.journeyAnswerQuestion = null;
+    state.questionCompletion = null;
+  }
   state.shopMessage = "";
+  render();
+}
+
+function startDailyChallenge() {
+  const chapterIndex = Number.isInteger(state.payload.journey?.summary?.active_chapter_index)
+    ? state.payload.journey.summary.active_chapter_index
+    : 0;
+  state.activePage = "journey";
+  state.journeyChapterIndex = chapterIndex;
+  state.journeyAnswerAssignmentId = null;
+  state.journeyAnswerQuestion = null;
+  state.questionCompletion = null;
+  state.shopMessage = "";
+  render();
+}
+
+function setJourneyChapter(index) {
+  state.journeyChapterIndex = index;
+  state.journeyAnswerAssignmentId = null;
+  state.journeyAnswerQuestion = null;
+  state.questionCompletion = null;
+  render();
+}
+
+function clearJourneyChapter() {
+  state.journeyChapterIndex = null;
+  state.journeyAnswerAssignmentId = null;
+  state.journeyAnswerQuestion = null;
+  state.questionCompletion = null;
+  render();
+}
+
+function openQuestion(assignmentId) {
+  if (!assignmentId) {
+    showModal("This question is not ready yet.");
+    return;
+  }
+  state.journeyAnswerAssignmentId = assignmentId;
+  state.journeyAnswerQuestion = null;
+  state.questionCompletion = null;
+  state.shopMessage = "";
+  render();
+}
+
+function closeQuestion() {
+  state.journeyAnswerAssignmentId = null;
+  state.journeyAnswerQuestion = null;
+  state.questionCompletion = null;
   render();
 }
 
@@ -80,6 +153,8 @@ async function refreshMutation(mutation) {
   }
   try {
     state.payload = await mutation();
+    rememberDashboard();
+    rememberProfilePhoto();
     state.shopMessage = "";
     render();
   } catch (error) {
@@ -103,6 +178,208 @@ async function setStreakPause(paused) {
   await refreshMutation(() => postJson(state.waId, "/streak-pause", { paused }));
 }
 
+async function claimBatchReward(batchId) {
+  if (!batchId) {
+    showModal("Batch reward is not available yet.");
+    return;
+  }
+  if (!state.waId) {
+    showModal("Open a user dashboard URL before opening chests.");
+    return;
+  }
+  if (state.claimingBatchRewardId) {
+    return;
+  }
+  state.claimingBatchRewardId = batchId;
+  render();
+  try {
+    const payload = await postJson(state.waId, "/batch-rewards", { batch_id: batchId });
+    state.payload = payload;
+    rememberDashboard();
+    rememberProfilePhoto();
+    state.claimingBatchRewardId = null;
+    render();
+    showChestRewardModal(payload.last_reward?.amount || 0);
+  } catch (error) {
+    state.claimingBatchRewardId = null;
+    render();
+    showModal(error.message);
+  }
+}
+
+async function submitAnswer(assignmentId, responseText) {
+  if (!state.waId) {
+    showModal("Open a user dashboard URL before answering questions.");
+    return;
+  }
+  if (!assignmentId || !String(responseText || "").trim()) {
+    showModal("Answer the question before submitting.");
+    return;
+  }
+  state.questionCompletion = {
+    pending: true,
+    submission: {},
+    nextQuestion: null,
+    awards: {},
+    wallet: {}
+  };
+  state.journeyAnswerAssignmentId = null;
+  state.journeyAnswerQuestion = null;
+  render();
+  try {
+    const payload = await postRawJson(state.waId, "/answers", {
+      assignment_id: assignmentId,
+      response_text: responseText
+    });
+    applyCompactAnswerResult(payload, assignmentId);
+    rememberDashboard();
+    rememberProfilePhoto();
+    const submission = payload.answer_submission || {};
+    state.questionCompletion = {
+      pending: false,
+      submission,
+      nextQuestion: payload.next_question || null,
+      awards: payload.awards || {},
+      wallet: payload.wallet || {}
+    };
+    render();
+  } catch (error) {
+    state.questionCompletion = {
+      pending: false,
+      failed: true,
+      errorMessage: error.message,
+      submission: {},
+      nextQuestion: null,
+      awards: {},
+      wallet: {}
+    };
+    render();
+    showModal(error.message);
+  }
+}
+
+async function continueAfterAnswer() {
+  const completion = state.questionCompletion;
+  if (!completion) {
+    return;
+  }
+  if (completion.pending) {
+    return;
+  }
+  if (completion.failed) {
+    closeQuestion();
+    return;
+  }
+  state.questionCompletion = null;
+  const submission = completion.submission || {};
+  if (submission.batch_completed) {
+    state.journeyAnswerAssignmentId = null;
+    state.journeyAnswerQuestion = null;
+    render();
+    refreshDashboardInBackground();
+    return;
+  }
+  const nextQuestion = completion.nextQuestion || null;
+  state.journeyAnswerQuestion = nextQuestion;
+  state.journeyAnswerAssignmentId = nextQuestion?.assignment_id
+    || submission.next_assignment_id
+    || null;
+  render();
+}
+
+async function refreshDashboardInBackground() {
+  if (!state.waId) {
+    return;
+  }
+  try {
+    state.payload = await fetchDashboard(state.waId);
+    rememberDashboard();
+    rememberProfilePhoto();
+    render();
+  } catch (error) {
+    showModal(error.message, "Dashboard refresh failed");
+  }
+}
+
+async function startNewBatch() {
+  if (!state.waId) {
+    showModal("Open a user dashboard URL before starting a new batch.");
+    return;
+  }
+  if (state.startingBatch) {
+    return;
+  }
+  state.startingBatch = true;
+  render();
+  try {
+    state.payload = await postJson(state.waId, "/start-batch", {});
+    rememberDashboard();
+    rememberProfilePhoto();
+    const chapterIndex = Number.isInteger(state.payload.journey?.summary?.active_chapter_index)
+      ? state.payload.journey.summary.active_chapter_index
+      : state.journeyChapterIndex;
+    state.journeyChapterIndex = chapterIndex;
+    state.journeyAnswerAssignmentId = null;
+    state.journeyAnswerQuestion = null;
+    state.questionCompletion = null;
+    state.startingBatch = false;
+    render();
+  } catch (error) {
+    state.startingBatch = false;
+    render();
+    showModal(error.message);
+  }
+}
+
+function applyCompactAnswerResult(payload, answeredAssignmentId) {
+  state.payload = {
+    ...state.payload,
+    wallet: {
+      ...(state.payload.wallet || {}),
+      ...(payload.wallet || {})
+    }
+  };
+  const submission = payload.answer_submission || {};
+  const nextQuestion = payload.next_question || null;
+  const chapters = state.payload.journey?.chapters || [];
+  for (const chapter of chapters) {
+    for (const batch of chapter.batches || []) {
+      const questions = batch.questions || [];
+      const answeredIndex = questions.findIndex((question) => (
+        question.assignment_id === answeredAssignmentId
+      ));
+      if (answeredIndex < 0) {
+        continue;
+      }
+      questions[answeredIndex] = {
+        ...questions[answeredIndex],
+        status: "complete"
+      };
+      if (submission.batch_completed) {
+        batch.status = "complete";
+        return;
+      }
+      if (nextQuestion) {
+        const existingIndex = questions.findIndex((question) => (
+          question.assignment_id === nextQuestion.assignment_id
+        ));
+        const insertIndex = existingIndex >= 0
+          ? existingIndex
+          : questions.findIndex((question, index) => (
+            index > answeredIndex && question.status === "locked"
+          ));
+        if (insertIndex >= 0) {
+          questions[insertIndex] = nextQuestion;
+        } else {
+          questions.push(nextQuestion);
+        }
+        batch.status = "active";
+      }
+      return;
+    }
+  }
+}
+
 async function uploadPhoto(file) {
   if (!state.waId) {
     showModal("Open a user dashboard URL before changing photo.");
@@ -118,11 +395,37 @@ async function uploadPhoto(file) {
   }
   try {
     state.payload = await uploadProfilePhoto(state.waId, file);
+    rememberDashboard();
     rememberProfilePhoto();
     render();
   } catch (error) {
     showModal(error.message);
   }
+}
+
+function showChestRewardModal(amount) {
+  const diamondCount = Math.max(1, Math.min(5, Number(amount || 0)));
+  showModalContent("Treasure chest!", [
+    el("div", { className: "chest-claim-modal" }, [
+      el("span", { className: "chest-claim-sparkle", text: "*" }),
+      el("span", { className: "chest-claim-sparkle", text: "*" }),
+      el("span", { className: "chest-claim-sparkle", text: "*" }),
+      Number(amount) > 2 ? el("div", { className: "chest-claim-eyebrow", text: "You got lucky!" }) : null,
+      el("div", { className: "chest-claim-icon-wrap" }, [
+        el("div", { className: "chest-claim-ring" }),
+        el("img", {
+          className: "chest-claim-icon",
+          src: "/user_dashboard/assets/chest_opened.svg",
+          alt: "",
+          "aria-hidden": "true"
+        })
+      ]),
+      el("div", { className: "chest-claim-title", text: `+${amount} diamonds!` }),
+      el("div", { className: "chest-claim-diamonds" }, Array.from({ length: diamondCount }, () => (
+        el("img", { src: "/user_dashboard/assets/diamond.svg", alt: "", "aria-hidden": "true" })
+      )))
+    ])
+  ]);
 }
 
 async function boot() {
@@ -133,10 +436,13 @@ async function boot() {
   }
   try {
     state.payload = await fetchDashboard(state.waId);
+    rememberDashboard();
     rememberProfilePhoto();
   } catch (error) {
-    state.payload = normalizeDashboard(emptyDashboard(state.waId));
-    hydrateCachedProfilePhoto();
+    if (!hydrateCachedDashboard()) {
+      state.payload = normalizeDashboard(emptyDashboard(state.waId));
+      hydrateCachedProfilePhoto();
+    }
     showModal(`Could not load dashboard: ${error.message}`, "Dashboard error");
   }
   render();
@@ -144,8 +450,41 @@ async function boot() {
 
 boot();
 
+function dashboardCacheKey() {
+  return state.waId ? `user_dashboard_payload:${state.waId}` : "";
+}
+
 function profilePhotoCacheKey() {
   return state.waId ? `user_dashboard_profile_photo:${state.waId}` : "";
+}
+
+function hydrateCachedDashboard() {
+  const key = dashboardCacheKey();
+  if (!key) {
+    return false;
+  }
+  try {
+    const cachedPayload = window.localStorage.getItem(key);
+    if (!cachedPayload) {
+      return false;
+    }
+    state.payload = normalizeDashboard(JSON.parse(cachedPayload));
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function rememberDashboard() {
+  const key = dashboardCacheKey();
+  if (!key) {
+    return;
+  }
+  try {
+    window.localStorage.setItem(key, JSON.stringify(state.payload));
+  } catch {
+    // Ignore storage failures; live API data still renders normally.
+  }
 }
 
 function hydrateCachedProfilePhoto() {
