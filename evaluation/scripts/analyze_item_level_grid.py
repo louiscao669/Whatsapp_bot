@@ -13,6 +13,8 @@ from itertools import combinations
 from pathlib import Path
 from typing import Any
 
+from _common import average_ranks_desc
+
 
 DEFAULT_INPUT = Path("evaluation/outputs/reports/item_level_grid.csv")
 DEFAULT_OUT_DIR = Path("evaluation/outputs/reports/item_level_grid_analysis")
@@ -87,21 +89,6 @@ def missing_cells(rows: list[dict], methods: list[str], models: list[str]) -> li
                         }
                     )
     return missing
-
-
-def average_ranks_desc(values: dict[str, float]) -> dict[str, float]:
-    ordered = sorted(values.items(), key=lambda item: (-item[1], item[0]))
-    ranks = {}
-    index = 0
-    while index < len(ordered):
-        end = index + 1
-        while end < len(ordered) and math.isclose(ordered[end][1], ordered[index][1]):
-            end += 1
-        rank = (index + 1 + end) / 2
-        for key, _ in ordered[index:end]:
-            ranks[key] = rank
-        index = end
-    return ranks
 
 
 def rank_order(values: dict[str, float]) -> str:

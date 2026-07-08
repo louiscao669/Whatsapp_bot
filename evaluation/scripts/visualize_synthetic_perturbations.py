@@ -53,7 +53,7 @@ def series_from_variant(experiment: str, variant: str) -> str:
         return "baseline"
     if experiment == "addition":
         return variant.split("_", 1)[0]
-    if experiment == "inconsistency":
+    if experiment in {"inconsistency", "local_inconsistency"}:
         return variant.split("_", 1)[0]
     return "single"
 
@@ -249,12 +249,22 @@ def render_experiment(
         ]
     )
     chapter_text = ",".join(str(chapter) for chapter in chapters) or "none"
+    definitions = ""
+    if name == "addition":
+        definitions = """
+      <ul class="definitions">
+        <li><strong>neutral</strong>: plausible but mostly irrelevant extra information.</li>
+        <li><strong>bad</strong>: noisy or incorrect additions that are not directly MCQ distractors.</li>
+        <li><strong>adversarial</strong>: misleading additions derived from wrong MCQ options and inserted near the referenced verse when possible.</li>
+      </ul>
+"""
     return f"""
 <section class="experiment" id="{escape(section_id)}">
   <div class="section-head">
     <div>
       <h2>{escape(display_title)}</h2>
       <p>{escape(description)}</p>
+      {definitions}
     </div>
     <span class="chapters">Chapters: {escape(chapter_text)}</span>
   </div>
@@ -272,7 +282,7 @@ def display_experiment_sections(
     for name in EXPERIMENTS:
         if name not in by_experiment:
             continue
-        if name != "inconsistency":
+        if name not in {"inconsistency", "local_inconsistency"}:
             sections.append(
                 {
                     "id": name,
@@ -296,27 +306,33 @@ def display_experiment_sections(
             for row in rows
             if row.get("variant") == "0%" or str(row.get("variant") or "").startswith("style_")
         ]
+        title_prefix = "local " if name == "local_inconsistency" else ""
+        description_prefix = (
+            "MQM Inconsistency > Question-local "
+            if name == "local_inconsistency"
+            else "MQM Inconsistency > "
+        )
         sections.extend(
             [
                 {
-                    "id": "inconsistency-name",
-                    "title": "name inconsistency",
+                    "id": f"{name}-name",
+                    "title": f"{title_prefix}name inconsistency",
                     "source_experiment": name,
                     "rows": name_rows,
                     "chapters": chapter_map.get(name, []),
                     "description": (
-                        "MQM Inconsistency > Name/entity: inconsistent entity names "
+                        f"{description_prefix}Name/entity: inconsistent entity names "
                         "or placeholder renderings."
                     ),
                 },
                 {
-                    "id": "inconsistency-style",
-                    "title": "style inconsistency",
+                    "id": f"{name}-style",
+                    "title": f"{title_prefix}style inconsistency",
                     "source_experiment": name,
                     "rows": style_rows,
                     "chapters": chapter_map.get(name, []),
                     "description": (
-                        "MQM Inconsistency > Style/register: inconsistent formality, "
+                        f"{description_prefix}Style/register: inconsistent formality, "
                         "tone, or wording style."
                     ),
                 },
@@ -386,6 +402,14 @@ def render_html(
     h1 {{ font-size: 28px; }}
     h2 {{ font-size: 20px; }}
     p {{ margin: 6px 0 0; color: var(--muted); }}
+    .definitions {{
+      margin: 8px 0 0;
+      padding-left: 18px;
+      color: var(--muted);
+      max-width: 760px;
+    }}
+    .definitions li {{ margin: 3px 0; }}
+    .definitions strong {{ color: var(--ink); }}
     nav {{
       display: flex;
       flex-wrap: wrap;

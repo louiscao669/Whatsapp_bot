@@ -8,7 +8,8 @@ import math
 from collections import defaultdict
 from pathlib import Path
 from statistics import mean, pstdev
-from typing import Any
+
+from _common import extract_items, load_json
 
 
 METHODS = [
@@ -23,18 +24,6 @@ METHODS = [
 ]
 DEFAULT_CHAPTERS = list(range(2, 9))
 DEFAULT_SCORE_FILE = "scores_target_llama.json"
-
-
-def load_json(path: Path) -> Any:
-    return json.loads(path.read_text(encoding="utf-8"))
-
-
-def extract_items(data: Any) -> list[dict]:
-    if isinstance(data, dict) and isinstance(data.get("items"), list):
-        return [item for item in data["items"] if isinstance(item, dict)]
-    if isinstance(data, list):
-        return [item for item in data if isinstance(item, dict)]
-    return []
 
 
 def safe_div(numerator: float, denominator: float) -> float | None:

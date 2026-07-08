@@ -12,6 +12,8 @@ from pathlib import Path
 from statistics import mean
 from typing import Any
 
+from _common import extract_items, load_json, numeric
+
 
 DEFAULT_ROOT = Path("evaluation/outputs")
 DEFAULT_SCORE_FILE = "scores_target_llama.json"
@@ -68,6 +70,13 @@ EXPERIMENTS = {
         "variants": INCONSISTENCY_VARIANTS,
         "description": "MQM Inconsistency: separate name/entity and style/register inconsistency.",
     },
+    "local_inconsistency": {
+        "variants": INCONSISTENCY_VARIANTS,
+        "description": (
+            "MQM Inconsistency: question-local name/entity and style/register "
+            "inconsistency inside each QA verse window."
+        ),
+    },
     "awkward": {
         "variants": RATE_VARIANTS,
         "description": "MQM Style > Awkward: literalized/source-like phrasing replacements.",
@@ -75,29 +84,8 @@ EXPERIMENTS = {
 }
 
 
-def load_json(path: Path) -> Any:
-    return json.loads(path.read_text(encoding="utf-8"))
-
-
-def extract_items(data: Any) -> list[dict]:
-    if isinstance(data, dict) and isinstance(data.get("items"), list):
-        return [item for item in data["items"] if isinstance(item, dict)]
-    if isinstance(data, list):
-        return [item for item in data if isinstance(item, dict)]
-    return []
-
-
 def safe_div(numerator: float, denominator: float) -> float | None:
     return numerator / denominator if denominator else None
-
-
-def numeric(value: Any) -> float | None:
-    if value is None:
-        return None
-    try:
-        return float(value)
-    except (TypeError, ValueError):
-        return None
 
 
 def fmt(value: Any, digits: int = 3) -> str:
@@ -128,9 +116,20 @@ def discover_chapters(root: Path) -> list[int]:
 def experiment_chapters(root: Path, experiment: str, requested: list[int]) -> list[int]:
     chapters = []
     for chapter in requested:
-        if (root / f"luke{chapter}" / experiment).is_dir():
+        if experiment_dir(root, chapter, experiment).is_dir():
             chapters.append(chapter)
     return chapters
+
+
+def experiment_dir(root: Path, chapter: int, experiment: str) -> Path:
+    chapter_dir = root / f"luke{chapter}"
+    direct = chapter_dir / experiment
+    if direct.is_dir():
+        return direct
+    nested = chapter_dir / "1.7b" / experiment
+    if nested.is_dir():
+        return nested
+    return direct
 
 
 def score_metrics(score_path: Path) -> dict:
@@ -260,7 +259,7 @@ def collect_variant(
     missing = []
     actual_rates = []
     for chapter in chapters:
-        variant_dir = root / f"luke{chapter}" / experiment / variant
+        variant_dir = experiment_dir(root, chapter, experiment) / variant
         path = variant_dir / score_file
         if path.exists():
             metrics = score_metrics(path)

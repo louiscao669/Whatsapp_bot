@@ -7,6 +7,8 @@ import json
 from pathlib import Path
 from typing import Any, Iterable
 
+from _common import extract_items
+
 
 DEFAULT_OUTPUT_ROOT = Path("evaluation/outputs/decanonicalized")
 DEFAULT_SCORE_FILE = "scores_target_llama.json"
@@ -17,16 +19,6 @@ def load_json(path: Path) -> Any:
         return json.loads(path.read_text(encoding="utf-8"))
     except json.JSONDecodeError as exc:
         raise ValueError(f"Invalid JSON in {path}: {exc}") from exc
-
-
-def extract_items(data: Any) -> list[dict]:
-    if isinstance(data, dict):
-        value = data.get("items")
-        if isinstance(value, list):
-            return [item for item in value if isinstance(item, dict)]
-    if isinstance(data, list):
-        return [item for item in data if isinstance(item, dict)]
-    return []
 
 
 def mean(values: Iterable[float]) -> float | None:

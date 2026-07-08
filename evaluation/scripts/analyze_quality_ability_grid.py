@@ -5,13 +5,14 @@ from __future__ import annotations
 
 import argparse
 import csv
-import json
 import math
 import statistics
 from collections import defaultdict
 from itertools import combinations
 from pathlib import Path
 from typing import Any
+
+from _common import average_ranks_desc, load_json, numeric
 
 
 DEFAULT_CHAPTERS = tuple(range(1, 9))
@@ -25,19 +26,6 @@ DEFAULT_METHODS = (
 )
 DEFAULT_OUT_DIR = Path("evaluation/outputs/model_comparison/quality_ability_grid")
 SCORE_FILE = "scores_target_llama.json"
-
-
-def load_json(path: Path) -> Any:
-    return json.loads(path.read_text(encoding="utf-8"))
-
-
-def numeric(value: Any) -> float | None:
-    if value is None:
-        return None
-    try:
-        return float(value)
-    except (TypeError, ValueError):
-        return None
 
 
 def item_score(item: dict) -> float | None:
@@ -141,21 +129,6 @@ def summarize_methods(rows: list[dict], item_uids: set[str]) -> list[dict]:
             }
         )
     return out
-
-
-def average_ranks_desc(values: dict[str, float]) -> dict[str, float]:
-    ordered = sorted(values.items(), key=lambda item: (-item[1], item[0]))
-    ranks: dict[str, float] = {}
-    index = 0
-    while index < len(ordered):
-        end = index + 1
-        while end < len(ordered) and math.isclose(ordered[end][1], ordered[index][1]):
-            end += 1
-        average_rank = (index + 1 + end) / 2
-        for key, _ in ordered[index:end]:
-            ranks[key] = average_rank
-        index = end
-    return ranks
 
 
 def rank_groups_desc(values: dict[str, float]) -> str:

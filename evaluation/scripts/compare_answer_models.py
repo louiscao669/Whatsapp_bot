@@ -12,29 +12,16 @@ from __future__ import annotations
 
 import argparse
 import csv
-import json
 import statistics
 from collections import defaultdict
 from pathlib import Path
-from typing import Any
+
+from _common import load_json, numeric
 
 
 DEFAULT_MODELS = ("llama 1b", "1.5b", "1.7b")
 DEFAULT_CHAPTERS = tuple(range(1, 9))
 SCORE_FILE = "scores_target_llama.json"
-
-
-def load_json(path: Path) -> Any:
-    return json.loads(path.read_text(encoding="utf-8"))
-
-
-def numeric(value: Any) -> float | None:
-    if value is None:
-        return None
-    try:
-        return float(value)
-    except (TypeError, ValueError):
-        return None
 
 
 def item_score(item: dict) -> float | None:
