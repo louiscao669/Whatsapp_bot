@@ -1,0 +1,162 @@
+{
+  "generated": "2026-07-08",
+  "metric": "open=llm_score[0,1]; mcq=1.0 if direct_correct else 0.0",
+  "models": [
+    "llama1b",
+    "qwen1.5b",
+    "qwen1.7b"
+  ],
+  "methods": [
+    "google_word_by_word",
+    "mBART-50",
+    "helsinki",
+    "nllb-200-distilled-600M",
+    "llm_prompt_low",
+    "llm_prompt_medium",
+    "nllb-200-1.3B",
+    "llm_prompt_high"
+  ],
+  "per_model_method_mean": {
+    "llama1b": {
+      "google_word_by_word": 0.2545856920856921,
+      "mBART-50": 0.3111229048729049,
+      "helsinki": 0.2855139652014652,
+      "nllb-200-distilled-600M": 0.3395822927072928,
+      "llm_prompt_low": 0.3288551726051726,
+      "llm_prompt_medium": 0.3729405515119801,
+      "nllb-200-1.3B": 0.5593538406038406,
+      "llm_prompt_high": 0.5497098387723388
+    },
+    "qwen1.5b": {
+      "google_word_by_word": 0.633300727050727,
+      "mBART-50": 0.6485311563436563,
+      "helsinki": 0.740217248029748,
+      "nllb-200-distilled-600M": 0.7131549006549007,
+      "llm_prompt_low": 0.7930940587190589,
+      "llm_prompt_medium": 0.7514638139638141,
+      "nllb-200-1.3B": 0.6853771228771229,
+      "llm_prompt_high": 0.7718609515484516
+    },
+    "qwen1.7b": {
+      "google_word_by_word": 0.6943924131424131,
+      "mBART-50": 0.7510284854034854,
+      "helsinki": 0.75439639725354,
+      "nllb-200-distilled-600M": 0.8056606092320379,
+      "llm_prompt_low": 0.7699357933732935,
+      "llm_prompt_medium": 0.7921097999223,
+      "nllb-200-1.3B": 0.8256682553557554,
+      "llm_prompt_high": 0.8515928515928516
+    }
+  },
+  "per_model_ranks_1worst_8best": {
+    "llama1b": {
+      "google_word_by_word": 1,
+      "helsinki": 2,
+      "mBART-50": 3,
+      "llm_prompt_low": 4,
+      "nllb-200-distilled-600M": 5,
+      "llm_prompt_medium": 6,
+      "llm_prompt_high": 7,
+      "nllb-200-1.3B": 8
+    },
+    "qwen1.5b": {
+      "google_word_by_word": 1,
+      "mBART-50": 2,
+      "nllb-200-1.3B": 3,
+      "nllb-200-distilled-600M": 4,
+      "helsinki": 5,
+      "llm_prompt_medium": 6,
+      "llm_prompt_high": 7,
+      "llm_prompt_low": 8
+    },
+    "qwen1.7b": {
+      "google_word_by_word": 1,
+      "mBART-50": 2,
+      "helsinki": 3,
+      "llm_prompt_low": 4,
+      "llm_prompt_medium": 5,
+      "nllb-200-distilled-600M": 6,
+      "nllb-200-1.3B": 7,
+      "llm_prompt_high": 8
+    }
+  },
+  "pairwise_spearman_rho": {
+    "llama1b vs qwen1.5b": 0.381,
+    "llama1b vs qwen1.7b": 0.929,
+    "qwen1.5b vs qwen1.7b": 0.5
+  },
+  "consensus_ranking": [
+    {
+      "rank": 1,
+      "method": "llm_prompt_high",
+      "consensus": 0.7344,
+      "llama1b": 0.5729,
+      "qwen1.5b": 0.7812,
+      "qwen1.7b": 0.849,
+      "n_items": 192
+    },
+    {
+      "rank": 2,
+      "method": "nllb-200-1.3B",
+      "consensus": 0.684,
+      "llama1b": 0.5781,
+      "qwen1.5b": 0.6615,
+      "qwen1.7b": 0.8125,
+      "n_items": 192
+    },
+    {
+      "rank": 3,
+      "method": "llm_prompt_medium",
+      "consensus": 0.6709,
+      "llama1b": 0.4103,
+      "qwen1.5b": 0.7885,
+      "qwen1.7b": 0.8141,
+      "n_items": 156
+    },
+    {
+      "rank": 4,
+      "method": "llm_prompt_low",
+      "consensus": 0.659,
+      "llama1b": 0.3218,
+      "qwen1.5b": 0.8448,
+      "qwen1.7b": 0.8103,
+      "n_items": 174
+    },
+    {
+      "rank": 5,
+      "method": "nllb-200-distilled-600M",
+      "consensus": 0.6378,
+      "llama1b": 0.36,
+      "qwen1.5b": 0.74,
+      "qwen1.7b": 0.8133,
+      "n_items": 150
+    },
+    {
+      "rank": 6,
+      "method": "helsinki",
+      "consensus": 0.6329,
+      "llama1b": 0.3116,
+      "qwen1.5b": 0.7826,
+      "qwen1.7b": 0.8043,
+      "n_items": 138
+    },
+    {
+      "rank": 7,
+      "method": "mBART-50",
+      "consensus": 0.5958,
+      "llama1b": 0.3506,
+      "qwen1.5b": 0.6552,
+      "qwen1.7b": 0.7816,
+      "n_items": 174
+    },
+    {
+      "rank": 8,
+      "method": "google_word_by_word",
+      "consensus": 0.5498,
+      "llama1b": 0.2931,
+      "qwen1.5b": 0.6494,
+      "qwen1.7b": 0.7069,
+      "n_items": 174
+    }
+  ]
+}

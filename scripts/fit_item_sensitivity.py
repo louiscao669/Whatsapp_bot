@@ -562,7 +562,7 @@ def main(argv=None):
                         "defect = translation-variant dose ladders (q = -dose)")
     p.add_argument("--defects", default=",".join(DEFAULT_DEFECTS),
                    help="defect types to fit on the defect axis")
-    p.add_argument("--out-defect", default=str(REPO_ROOT / "evaluation" / "outputs" / "reports"
+    p.add_argument("--out-defect", default=str(REPO_ROOT / "QA_algorithm" / "outputs" / "reports"
                                                / "item_sensitivity" / "s_item_by_defect.csv"))
     p.add_argument("--models", default=",".join(DEFAULT_MODELS))
     p.add_argument("--methods", default=",".join(DEFAULT_METHODS))
@@ -574,9 +574,9 @@ def main(argv=None):
     p.add_argument("--min-qspread", type=float, default=0.75, help="min z-scored q range for 2-var")
     p.add_argument("--sigma-s", type=float, default=1.0, help="pooling SD for slope s_i")
     p.add_argument("--sigma-c", type=float, default=2.0, help="pooling SD for intercept c_i")
-    p.add_argument("--out", default=str(REPO_ROOT / "evaluation" / "outputs" / "reports"
+    p.add_argument("--out", default=str(REPO_ROOT / "QA_algorithm" / "outputs" / "reports"
                                         / "item_sensitivity" / "s_item.csv"))
-    p.add_argument("--spearman-csv", default=str(REPO_ROOT / "evaluation" / "outputs" / "reports"
+    p.add_argument("--spearman-csv", default=str(REPO_ROOT / "QA_algorithm" / "outputs" / "reports"
                                                  / "item_level_grid_analysis"
                                                  / "item_discrimination_spearman.csv"))
     p.add_argument("--no-validate", action="store_true")
