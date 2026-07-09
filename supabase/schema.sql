@@ -15,6 +15,27 @@ create table if not exists participants (
     updated_at timestamptz not null default now()
 );
 
+create table if not exists participant_provider_contacts (
+    id text primary key default gen_random_uuid()::text,
+    participant_id text not null references participants(id) on delete cascade,
+    provider text not null,
+    external_user_id text not null,
+    display_name text,
+    username text,
+    first_name text,
+    last_name text,
+    phone text,
+    locale text,
+    metadata jsonb not null default '{}'::jsonb,
+    opted_in_at timestamptz,
+    opted_out_at timestamptz,
+    last_seen_at timestamptz,
+    created_at timestamptz not null default now(),
+    updated_at timestamptz not null default now(),
+    constraint uq_participant_provider_contacts_provider_external_user_id
+        unique (provider, external_user_id)
+);
+
 create table if not exists qa_items (
     id text primary key default gen_random_uuid()::text,
     passage_id text not null,
@@ -257,6 +278,10 @@ create table if not exists admin_login_codes (
 
 create index if not exists idx_participants_wa_id on participants(wa_id);
 create index if not exists idx_participants_target_language on participants(target_language);
+create index if not exists idx_participant_provider_contacts_participant_id
+    on participant_provider_contacts(participant_id);
+create index if not exists idx_participant_provider_contacts_provider
+    on participant_provider_contacts(provider);
 create index if not exists idx_qa_items_passage_id on qa_items(passage_id);
 create index if not exists idx_qa_item_recordings_qa_item_id on qa_item_recordings(qa_item_id);
 create index if not exists idx_qa_item_recordings_language on qa_item_recordings(language);

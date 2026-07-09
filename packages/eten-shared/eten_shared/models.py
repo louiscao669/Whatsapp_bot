@@ -146,6 +146,47 @@ class Participant(Base):
     session: Mapped[Optional["ParticipantSession"]] = relationship(
         back_populates="participant", uselist=False
     )
+    provider_contacts: Mapped[List["ParticipantProviderContact"]] = relationship(
+        back_populates="participant",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+    )
+
+
+class ParticipantProviderContact(Base):
+    __tablename__ = "participant_provider_contacts"
+    __table_args__ = (
+        UniqueConstraint(
+            "provider",
+            "external_user_id",
+            name="uq_participant_provider_contacts_provider_external_user_id",
+        ),
+    )
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    participant_id: Mapped[str] = mapped_column(
+        ForeignKey("participants.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    provider: Mapped[str] = mapped_column(String(64), nullable=False, index=True)
+    external_user_id: Mapped[str] = mapped_column(String(255), nullable=False, index=True)
+    display_name: Mapped[Optional[str]] = mapped_column(String(255))
+    username: Mapped[Optional[str]] = mapped_column(String(255))
+    first_name: Mapped[Optional[str]] = mapped_column(String(255))
+    last_name: Mapped[Optional[str]] = mapped_column(String(255))
+    phone: Mapped[Optional[str]] = mapped_column(String(64))
+    locale: Mapped[Optional[str]] = mapped_column(String(32))
+    contact_metadata: Mapped[dict] = mapped_column("metadata", JSON, default=dict, nullable=False)
+    opted_in_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
+    opted_out_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
+    last_seen_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utc_now, nullable=False
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utc_now, onupdate=utc_now, nullable=False
+    )
+
+    participant: Mapped["Participant"] = relationship(back_populates="provider_contacts")
 
 
 class QAItem(Base):

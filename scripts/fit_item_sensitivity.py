@@ -371,7 +371,10 @@ def assemble_rows_defect(args):
     eval_root = Path(args.eval_root)
     for ch in args.chapters:
         for defect in args.defects:
-            ddir = eval_root / f"luke{ch}" / defect
+            chapter_dir = eval_root / f"luke{ch}"
+            nested = chapter_dir / "1.7b" / defect
+            direct = chapter_dir / defect
+            ddir = nested if nested.is_dir() else direct
             if not ddir.is_dir():
                 continue
             levels = {}

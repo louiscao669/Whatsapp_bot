@@ -31,6 +31,12 @@ INCONSISTENCY_VARIANTS = (
     "name_20%",
     "style_20%",
 )
+LOCAL_INCONSISTENCY_VARIANTS = (
+    "style_5%",
+    "style_10%",
+    "style_15%",
+    "style_20%",
+)
 ADDITION_VARIANTS = (
     "0%",
     "neutral_5%",
@@ -71,10 +77,10 @@ EXPERIMENTS = {
         "description": "MQM Inconsistency: separate name/entity and style/register inconsistency.",
     },
     "local_inconsistency": {
-        "variants": INCONSISTENCY_VARIANTS,
+        "variants": LOCAL_INCONSISTENCY_VARIANTS,
         "description": (
-            "MQM Inconsistency: question-local name/entity and style/register "
-            "inconsistency inside each QA verse window."
+            "MQM Inconsistency: question-local style/register inconsistency "
+            "inside each QA verse window."
         ),
     },
     "awkward": {
@@ -123,12 +129,12 @@ def experiment_chapters(root: Path, experiment: str, requested: list[int]) -> li
 
 def experiment_dir(root: Path, chapter: int, experiment: str) -> Path:
     chapter_dir = root / f"luke{chapter}"
-    direct = chapter_dir / experiment
-    if direct.is_dir():
-        return direct
     nested = chapter_dir / "1.7b" / experiment
     if nested.is_dir():
         return nested
+    direct = chapter_dir / experiment
+    if direct.is_dir():
+        return direct
     return direct
 
 

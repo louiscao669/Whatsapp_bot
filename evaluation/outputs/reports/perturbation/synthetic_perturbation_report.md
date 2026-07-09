@@ -11,8 +11,7 @@ Blank experiments are wired into the table and can be filled by rerunning the sc
 - `omission` baseline combined score is 0.868; lowest scored variant is `30%` at 0.716 (-0.152 vs baseline).
 - `mistranslation` baseline combined score is 0.843; lowest scored variant is `30%` at 0.681 (-0.162 vs baseline).
 - `grammar` baseline combined score is 0.799; lowest scored variant is `20%` at 0.760 (-0.039 vs baseline).
-- `inconsistency` baseline combined score is 0.779; lowest scored variant is `style_10%` at 0.768 (-0.011 vs baseline).
-- `local_inconsistency` baseline combined score is 0.806; lowest scored variant is `style_20%` at 0.800 (-0.006 vs baseline).
+- `local_inconsistency` has scored variants; best observed combined score is `style_5%` at 0.863.
 - `awkward` baseline combined score is 0.833; lowest scored variant is `10%` at 0.784 (-0.049 vs baseline).
 
 ## Experiment Tables
@@ -87,41 +86,18 @@ Experiment chapters present: `1,2,3,4,5,6,7,8`
 | 20% | complete | 1,2,3,4,5,6,7,8 | 20.3% | 0.760 | 87.3% | 0.647 | 0.823 | 7.4% | 95.3% | 1 |
 | 30% | complete | 1,2,3,4,5,6,7,8 | 30.4% | 0.775 | 85.3% | 0.696 | 0.843 | 7.5% | 95.6% | 1 |
 
-### inconsistency
-
-MQM Inconsistency: separate name/entity and style/register inconsistency.
-
-Experiment chapters present: `1,2,3,4,5,6,7,8`
-
-| Variant | Status | Ch | Actual | Combined | MCQ | Open | Conf | Insuff | Evidence | Errors |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 0% | partial | 1,2,4,5,6,7,8 |  | 0.779 | 86.3% | 0.695 | 0.855 | 4.3% | 95.4% | 1 |
-| name_5% | partial | 1,2,4,5,6,7,8 | 5.5% | 0.779 | 89.5% | 0.663 | 0.840 | 6.2% | 93.5% | 3 |
-| style_5% | partial | 1,2,4,5,6,7,8 | 5.3% | 0.784 | 87.4% | 0.695 | 0.830 | 5.7% | 93.2% | 1 |
-| name_10% | partial | 1,2,4,5,6,7,8 | 10.3% | 0.821 | 91.6% | 0.726 | 0.846 | 6.5% | 94.8% | 2 |
-| style_10% | partial | 1,2,4,5,6,7,8 | 7.9% | 0.768 | 88.4% | 0.653 | 0.820 | 6.9% | 92.1% | 1 |
-| name_15% | partial | 1,2,4,5,6,7,8 | 14.7% | 0.800 | 90.5% | 0.695 | 0.833 | 5.5% | 92.5% | 3 |
-| style_15% | partial | 1,2,4,5,6,7,8 | 8.7% | 0.789 | 88.4% | 0.695 | 0.812 | 7.3% | 91.7% | 1 |
-| name_20% | partial | 1,2,4,5,6,7,8 | 18.9% | 0.795 | 88.4% | 0.705 | 0.838 | 6.9% | 93.7% | 1 |
-| style_20% | partial | 1,2,4,5,6,7,8 | 9.4% | 0.842 | 90.5% | 0.779 | 0.826 | 7.2% | 92.9% | 0 |
-
 ### local_inconsistency
 
-MQM Inconsistency: question-local name/entity and style/register inconsistency inside each QA verse window.
+MQM Inconsistency: question-local style/register inconsistency inside each QA verse window.
 
 Experiment chapters present: `1,2,3,4,5,6,7,8`
 
 | Variant | Status | Ch | Actual | Combined | MCQ | Open | Conf | Insuff | Evidence | Errors |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 0% | complete | 1,2,3,4,5,6,7,8 |  | 0.806 | 88.2% | 0.729 | 0.855 | 4.3% | 95.4% | 0 |
-| name_5% | partial | 1 | 7.5% | 1.000 | 100.0% | 1.000 |  |  |  | 0 |
-| style_5% | partial | 1 | 9.1% | 1.000 | 100.0% | 1.000 |  |  |  | 0 |
-| name_10% | partial | 1 | 13.0% | 1.000 | 100.0% | 1.000 |  |  |  | 0 |
-| style_10% | partial | 1 | 12.3% | 1.000 | 100.0% | 1.000 |  |  |  | 0 |
-| name_15% | partial | 1 | 18.0% | 1.000 | 100.0% | 1.000 |  |  |  | 0 |
-| style_15% | partial | 1 | 17.4% | 1.000 | 100.0% | 1.000 |  |  |  | 0 |
-| name_20% | partial | 1 | 21.3% | 1.000 | 100.0% | 1.000 |  |  |  | 0 |
-| style_20% | partial | 1 | 21.4% | 0.800 | 100.0% | 0.600 |  |  |  | 0 |
+| style_5% | complete | 1,2,3,4,5,6,7,8 | 5.9% | 0.863 | 97.5% | 0.750 | 0.848 | 5.0% | 96.2% | 0 |
+| style_10% | complete | 1,2,3,4,5,6,7,8 | 7.4% | 0.838 | 95.0% | 0.725 | 0.846 | 3.8% | 96.2% | 0 |
+| style_15% | complete | 1,2,3,4,5,6,7,8 | 8.7% | 0.863 | 97.5% | 0.750 | 0.838 | 6.2% | 95.0% | 0 |
+| style_20% | complete | 1,2,3,4,5,6,7,8 | 9.6% | 0.838 | 97.5% | 0.700 | 0.849 | 6.2% | 95.0% | 0 |
 
 ### awkward
 

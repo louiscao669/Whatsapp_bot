@@ -132,6 +132,48 @@ def _run_startup_migrations(engine: Engine):
                 "dashboard_preferences jsonb NOT NULL DEFAULT '{}'::jsonb"
             )
         )
+        connection.execute(
+            text(
+                """
+                CREATE TABLE IF NOT EXISTS participant_provider_contacts (
+                    id text PRIMARY KEY DEFAULT gen_random_uuid()::text,
+                    participant_id text NOT NULL REFERENCES participants(id) ON DELETE CASCADE,
+                    provider text NOT NULL,
+                    external_user_id text NOT NULL,
+                    display_name text,
+                    username text,
+                    first_name text,
+                    last_name text,
+                    phone text,
+                    locale text,
+                    metadata jsonb NOT NULL DEFAULT '{}'::jsonb,
+                    opted_in_at timestamptz,
+                    opted_out_at timestamptz,
+                    last_seen_at timestamptz,
+                    created_at timestamptz NOT NULL DEFAULT now(),
+                    updated_at timestamptz NOT NULL DEFAULT now(),
+                    CONSTRAINT uq_participant_provider_contacts_provider_external_user_id
+                        UNIQUE (provider, external_user_id)
+                )
+                """
+            )
+        )
+        connection.execute(
+            text(
+                """
+                CREATE INDEX IF NOT EXISTS idx_participant_provider_contacts_participant_id
+                ON participant_provider_contacts(participant_id)
+                """
+            )
+        )
+        connection.execute(
+            text(
+                """
+                CREATE INDEX IF NOT EXISTS idx_participant_provider_contacts_provider
+                ON participant_provider_contacts(provider)
+                """
+            )
+        )
 
         connection.execute(
             text("ALTER TABLE qa_items ADD COLUMN IF NOT EXISTS passage_text text")

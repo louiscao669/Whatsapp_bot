@@ -59,9 +59,6 @@ def series_from_variant(experiment: str, variant: str) -> str:
 
 
 def row_rate(row: dict) -> float:
-    value = row.get("actual_rate_mean")
-    if isinstance(value, (int, float)):
-        return float(value) * 100
     parsed = rate_from_variant(str(row.get("variant") or ""))
     return parsed if parsed is not None else 0.0
 
@@ -122,7 +119,11 @@ def render_svg_chart(rows: list[dict], metric: str, title: str) -> str:
     if math.isclose(min_y, max_y):
         min_y = max(0.0, min_y - 0.1)
         max_y = min(1.0, max_y + 0.1)
-    max_x = max(30.0, max(xs) if xs else 30.0)
+    max_x = max(xs) if xs else 0.0
+    if max_x <= 0:
+        max_x = 30.0
+    else:
+        max_x = math.ceil(max_x / 5.0) * 5.0
 
     width = 780
     height = 250
@@ -306,14 +307,22 @@ def display_experiment_sections(
             for row in rows
             if row.get("variant") == "0%" or str(row.get("variant") or "").startswith("style_")
         ]
+        has_name_rows = any(
+            str(row.get("variant") or "").startswith("name_") and row.get("status") != "missing"
+            for row in rows
+        )
+        has_style_rows = any(
+            str(row.get("variant") or "").startswith("style_") and row.get("status") != "missing"
+            for row in rows
+        )
         title_prefix = "local " if name == "local_inconsistency" else ""
         description_prefix = (
             "MQM Inconsistency > Question-local "
             if name == "local_inconsistency"
             else "MQM Inconsistency > "
         )
-        sections.extend(
-            [
+        if has_name_rows:
+            sections.append(
                 {
                     "id": f"{name}-name",
                     "title": f"{title_prefix}name inconsistency",
@@ -324,7 +333,10 @@ def display_experiment_sections(
                         f"{description_prefix}Name/entity: inconsistent entity names "
                         "or placeholder renderings."
                     ),
-                },
+                }
+            )
+        if has_style_rows:
+            sections.append(
                 {
                     "id": f"{name}-style",
                     "title": f"{title_prefix}style inconsistency",
@@ -335,9 +347,8 @@ def display_experiment_sections(
                         f"{description_prefix}Style/register: inconsistent formality, "
                         "tone, or wording style."
                     ),
-                },
-            ]
-        )
+                }
+            )
     return sections
 
 
