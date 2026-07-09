@@ -4,7 +4,6 @@ import threading
 import time
 from datetime import timedelta
 
-import requests
 from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
 
@@ -16,10 +15,12 @@ from eten_shared.models import (
     ReminderStatus,
     utc_now,
 )
-from app.providers.whatsapp.reminders import (
-    create_next_template_reminder,
-    send_reminder,
+from app.providers.delivery import (
+    provider_name_for_participant,
+    send_assignment_prompt as send_provider_assignment_prompt,
+    send_reminder as send_provider_reminder,
 )
+from app.providers.whatsapp.reminders import create_next_template_reminder
 from app.providers.whatsapp.schedule_policy import (
     can_send_question_reminder,
     is_template_reminder,
@@ -132,15 +133,7 @@ def process_due_reminders(limit=50):
                     prompt = process_batch_next_assignment_reminder(db, reminder)
                     participant = reminder.participant
                     if prompt and participant:
-                        if _flask_app is None:
-                            logging.error(
-                                "Cannot send scheduled next-batch assignment without Flask app context"
-                            )
-                        else:
-                            from app.providers.whatsapp.messaging import send_assignment_prompt
-
-                            with _flask_app.app_context():
-                                send_assignment_prompt(participant.wa_id, prompt)
+                        send_provider_assignment_prompt(db, participant, prompt)
                     processed_count += 1
                     continue
 
@@ -167,6 +160,7 @@ def process_due_reminders(limit=50):
                     mark_reminder_cancelled(reminder, "Participant opted out")
                     continue
 
+                provider_name = provider_name_for_participant(db, participant)
                 template_reminder = is_template_reminder(reminder)
                 if not template_reminder:
                     can_send, reason = can_send_question_reminder(
@@ -179,7 +173,8 @@ def process_due_reminders(limit=50):
                         continue
 
                 if (
-                    not template_reminder
+                    provider_name == "whatsapp"
+                    and not template_reminder
                     and not is_within_customer_service_window(participant)
                 ):
                     mark_reminder_cancelled(
@@ -189,8 +184,8 @@ def process_due_reminders(limit=50):
                     continue
 
                 try:
-                    response = send_reminder(participant, assignment, reminder)
-                except requests.RequestException as exc:
+                    response = send_provider_reminder(db, participant, assignment, reminder)
+                except Exception as exc:
                     mark_reminder_for_retry(reminder, str(exc))
                     continue
 
@@ -201,7 +196,7 @@ def process_due_reminders(limit=50):
                     **(reminder.delivery_metadata or {}),
                     "http_status": response.status_code,
                 }
-                if is_template_reminder(reminder):
+                if provider_name == "whatsapp" and is_template_reminder(reminder):
                     create_next_template_reminder(db, reminder, assignment, participant)
                 if participant_session:
                     participant_session.last_reminder_sent_at = reminder.sent_at
@@ -215,6 +210,7 @@ def process_due_reminders(limit=50):
                             "reminder_id": reminder.id,
                             "assignment_id": assignment.id,
                             "reminder_type": reminder.reminder_type,
+                            "provider": getattr(response, "provider", provider_name),
                             "scheduled_for": reminder.scheduled_for.isoformat(),
                             "sent_at": reminder.sent_at.isoformat(),
                         },

@@ -63,6 +63,7 @@ from eten_shared.models import (
     AssignmentStatus,
     Participant,
     ParticipantEvent,
+    ParticipantProviderContact,
     ParticipantResponse,
     ParticipantSession,
     QAItem,
@@ -76,6 +77,23 @@ from eten_shared.models import (
 
 def record_participant_event(db: Session, participant, event_type, metadata=None):
     return _record_participant_event(db, participant, event_type, metadata, source="whatsapp")
+
+
+def record_provider_participant_event(
+    db: Session,
+    participant,
+    event_type,
+    metadata=None,
+    *,
+    provider="workflow",
+):
+    return _record_participant_event(
+        db,
+        participant,
+        event_type,
+        metadata,
+        source=provider,
+    )
 
 
 @dataclass
@@ -248,6 +266,7 @@ def save_response_for_current_assignment(
     media_id=None,
     media_url=None,
     transcript_text=None,
+    provider="workflow",
 ):
     if not participant_session.current_assignment_id:
         if participant_session.state == SessionState.ONBOARDING.value:
@@ -369,7 +388,7 @@ def save_response_for_current_assignment(
     participant_session.current_assignment_id = None
     participant_session.state = SessionState.IDLE.value
 
-    record_participant_event(
+    record_provider_participant_event(
         db,
         participant,
         "response_recorded",
@@ -385,14 +404,17 @@ def save_response_for_current_assignment(
             "choice_scored": is_choice_scored_item(qa_item),
             "question_type": qa_item.question_type,
         },
+        provider=provider,
     )
 
     db.flush()
     return response
 
 
-def record_whatsapp_answer(
-    wa_id,
+def _record_provider_answer_for_participant(
+    *,
+    participant,
+    provider,
     display_name,
     message_id,
     message_type,
@@ -401,12 +423,16 @@ def record_whatsapp_answer(
     media_id=None,
     media_url=None,
     transcript_text=None,
+    record_response=True,
 ):
     session_factory = get_session_factory()
 
     with session_factory() as db:
         try:
-            participant = get_or_create_participant(db, wa_id, display_name)
+            participant = db.merge(participant)
+            participant.last_seen_at = utc_now()
+            if display_name and participant.display_name != display_name:
+                participant.display_name = display_name
             participant_session = get_or_create_participant_session(db, participant)
             from app.engagement.batch_continuation import (
                 cancel_pending_next_batch_schedules,
@@ -431,14 +457,15 @@ def record_whatsapp_answer(
                     db,
                     participant,
                     nudge_choice,
-                    source="whatsapp",
+                    source=provider,
                 )
                 if nudge_response:
-                    record_participant_event(
+                    record_provider_participant_event(
                         db,
                         participant,
                         "message_received",
                         event_metadata,
+                        provider=provider,
                     )
                     db.commit()
                     return WorkflowResult(
@@ -451,19 +478,21 @@ def record_whatsapp_answer(
             if has_pending_next_batch_schedule(db, participant.id):
                 next_batch_choice = batch_next_response_choice(response_text)
                 event_metadata["batch_next_choice"] = next_batch_choice or "unrecognized"
-                record_participant_event(
+                record_provider_participant_event(
                     db,
                     participant,
                     "message_received",
                     event_metadata,
+                    provider=provider,
                 )
 
                 if next_batch_choice == "wait":
-                    record_participant_event(
+                    record_provider_participant_event(
                         db,
                         participant,
                         "batch_next_wait_selected",
                         {"message_id": message_id},
+                        provider=provider,
                     )
                     db.commit()
                     return WorkflowResult(
@@ -494,30 +523,35 @@ def record_whatsapp_answer(
                     participant.id,
                     reason="Participant requested the next batch immediately",
                 )
-                record_participant_event(
+                record_provider_participant_event(
                     db,
                     participant,
                     "batch_next_start_now_selected",
                     {"message_id": message_id},
+                    provider=provider,
                 )
             else:
-                record_participant_event(
+                record_provider_participant_event(
                     db,
                     participant,
                     "message_received",
                     event_metadata,
+                    provider=provider,
                 )
 
-            response = save_response_for_current_assignment(
-                db,
-                participant,
-                participant_session,
-                response_text=response_text,
-                response_type=message_type,
-                media_id=media_id,
-                media_url=media_url,
-                transcript_text=transcript_text,
-            )
+            response = None
+            if record_response:
+                response = save_response_for_current_assignment(
+                    db,
+                    participant,
+                    participant_session,
+                    response_text=response_text,
+                    response_type=message_type,
+                    media_id=media_id,
+                    media_url=media_url,
+                    transcript_text=transcript_text,
+                    provider=provider,
+                )
             currency_awards = []
             response_award = award_response_currency(db, participant, response)
             if response_award:
@@ -546,7 +580,7 @@ def record_whatsapp_answer(
                         db,
                         participant,
                         batch_size_nudge,
-                        source="whatsapp",
+                        source=provider,
                     )
                 schedule_next_batch_assignment(db, participant, participant_session)
             else:
@@ -584,8 +618,106 @@ def record_whatsapp_answer(
             )
         except SQLAlchemyError:
             db.rollback()
-            logging.exception("Failed to persist WhatsApp chatbot workflow")
+            logging.exception("Failed to persist %s chatbot workflow", provider)
             raise
+
+
+def record_whatsapp_answer(
+    wa_id,
+    display_name,
+    message_id,
+    message_type,
+    message_metadata,
+    response_text=None,
+    media_id=None,
+    media_url=None,
+    transcript_text=None,
+):
+    session_factory = get_session_factory()
+    with session_factory() as db:
+        participant = get_or_create_participant(db, wa_id, display_name)
+        db.commit()
+
+    return _record_provider_answer_for_participant(
+        participant=participant,
+        provider="whatsapp",
+        display_name=display_name,
+        message_id=message_id,
+        message_type=message_type,
+        message_metadata=message_metadata,
+        response_text=response_text,
+        media_id=media_id,
+        media_url=media_url,
+        transcript_text=transcript_text,
+    )
+
+
+def get_participant_by_provider_contact(provider, external_user_id):
+    session_factory = get_session_factory()
+    with session_factory() as db:
+        contact = db.scalars(
+            select(ParticipantProviderContact).where(
+                ParticipantProviderContact.provider == provider,
+                ParticipantProviderContact.external_user_id == str(external_user_id),
+                ParticipantProviderContact.opted_out_at.is_(None),
+            )
+        ).first()
+        if not contact:
+            return None
+        participant = contact.participant
+        participant.last_seen_at = utc_now()
+        contact.last_seen_at = utc_now()
+        db.commit()
+        return participant
+
+
+def record_provider_text_message(
+    *,
+    provider,
+    external_user_id,
+    display_name,
+    message_id,
+    message_text,
+    record_response=True,
+):
+    participant = get_participant_by_provider_contact(provider, external_user_id)
+    if participant is None:
+        raise ValueError(
+            f"No active {provider} contact found for external_user_id={external_user_id}"
+        )
+
+    return _record_provider_answer_for_participant(
+        participant=participant,
+        provider=provider,
+        display_name=display_name,
+        message_id=message_id,
+        message_type=ResponseType.TEXT.value,
+        message_metadata={
+            "provider": provider,
+            "external_user_id": str(external_user_id),
+            "message_text": message_text,
+        },
+        response_text=message_text,
+        record_response=record_response,
+    )
+
+
+def record_telegram_text_message(
+    chat_id,
+    display_name,
+    message_id,
+    message_text,
+    *,
+    record_response=True,
+):
+    return record_provider_text_message(
+        provider="telegram",
+        external_user_id=str(chat_id),
+        display_name=display_name,
+        message_id=message_id,
+        message_text=message_text,
+        record_response=record_response,
+    )
 
 
 def record_whatsapp_text_message(wa_id, display_name, message_id, message_text):

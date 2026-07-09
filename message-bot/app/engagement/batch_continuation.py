@@ -21,6 +21,7 @@ from app.providers.whatsapp.schedule_policy import (
     is_within_customer_service_window,
     next_batch_assignment_time,
 )
+from app.providers.delivery import provider_name_for_participant
 
 
 def has_pending_next_batch_schedule(db: Session, participant_id: str) -> bool:
@@ -131,7 +132,8 @@ def process_batch_next_assignment_reminder(db: Session, reminder: Reminder):
         )
         return None
 
-    if not is_within_customer_service_window(participant):
+    provider_name = provider_name_for_participant(db, participant)
+    if provider_name == "whatsapp" and not is_within_customer_service_window(participant):
         mark_reminder_cancelled(
             reminder,
             "Outside WhatsApp 24-hour customer service window",
