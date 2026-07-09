@@ -16,8 +16,12 @@ from eten_shared.models import (
     SessionState,
     utc_now,
 )
+from app.providers.telegram.config import default_target_language
 
 PROVIDER = "telegram"
+LANGUAGE_PENDING = "pending"
+LANGUAGE_CONFIRMED = "confirmed"
+LANGUAGE_REJECTED = "rejected"
 
 
 @dataclass(frozen=True)
@@ -101,6 +105,10 @@ def upsert_telegram_contact(contact_input: TelegramContactInput):
         contact.username = contact_input.username
         contact.first_name = contact_input.first_name
         contact.last_name = contact_input.last_name
+        metadata = dict(contact.contact_metadata or {})
+        metadata.setdefault("language_confirmation_status", LANGUAGE_PENDING)
+        metadata.setdefault("default_target_language", default_target_language())
+        contact.contact_metadata = metadata
         contact.opted_out_at = None
         if contact.opted_in_at is None:
             contact.opted_in_at = now
@@ -125,6 +133,83 @@ def upsert_telegram_contact(contact_input: TelegramContactInput):
         )
         db.commit()
         return participant, contact, created
+
+
+def language_confirmation_status(contact) -> str:
+    metadata = getattr(contact, "contact_metadata", None) or {}
+    return metadata.get("language_confirmation_status") or LANGUAGE_PENDING
+
+
+def language_is_confirmed(contact) -> bool:
+    return language_confirmation_status(contact) == LANGUAGE_CONFIRMED
+
+
+def confirm_telegram_default_language(contact_input: TelegramContactInput):
+    session_factory = get_session_factory()
+    now = utc_now()
+    language = default_target_language()
+
+    with session_factory() as db:
+        contact = _get_contact(db, contact_input.chat_id)
+        if contact is None:
+            return None, None
+
+        participant = contact.participant
+        participant.target_language = language
+        participant.last_seen_at = now
+        contact.last_seen_at = now
+        metadata = dict(contact.contact_metadata or {})
+        metadata["language_confirmation_status"] = LANGUAGE_CONFIRMED
+        metadata["default_target_language"] = language
+        metadata["language_confirmed_at"] = now.isoformat()
+        contact.contact_metadata = metadata
+        record_participant_event(
+            db,
+            participant,
+            "provider_language_confirmed",
+            {
+                "provider": PROVIDER,
+                "external_user_id": contact_input.chat_id,
+                "target_language": language,
+                "message_id": contact_input.message_id,
+            },
+            source=PROVIDER,
+        )
+        db.commit()
+        return participant, contact
+
+
+def reject_telegram_default_language(contact_input: TelegramContactInput):
+    session_factory = get_session_factory()
+    now = utc_now()
+
+    with session_factory() as db:
+        contact = _get_contact(db, contact_input.chat_id)
+        if contact is None:
+            return None, None
+
+        participant = contact.participant
+        participant.last_seen_at = now
+        contact.last_seen_at = now
+        metadata = dict(contact.contact_metadata or {})
+        metadata["language_confirmation_status"] = LANGUAGE_REJECTED
+        metadata["default_target_language"] = default_target_language()
+        metadata["language_rejected_at"] = now.isoformat()
+        contact.contact_metadata = metadata
+        record_participant_event(
+            db,
+            participant,
+            "provider_language_rejected",
+            {
+                "provider": PROVIDER,
+                "external_user_id": contact_input.chat_id,
+                "default_target_language": default_target_language(),
+                "message_id": contact_input.message_id,
+            },
+            source=PROVIDER,
+        )
+        db.commit()
+        return participant, contact
 
 
 def opt_out_telegram_contact(contact_input: TelegramContactInput) -> bool:

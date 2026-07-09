@@ -22,3 +22,19 @@ def telegram_bot_token() -> str:
     if not token:
         raise RuntimeError("Missing TELEGRAM_BOT_TOKEN. Set it in the repo .env file.")
     return token
+
+
+def default_target_language() -> str:
+    return (
+        os.getenv("TELEGRAM_DEFAULT_TARGET_LANGUAGE")
+        or os.getenv("MESSAGE_BOT_DEFAULT_TARGET_LANGUAGE")
+        or "eng"
+    ).strip() or "eng"
+
+
+def default_target_language_label() -> str:
+    return (
+        os.getenv("TELEGRAM_DEFAULT_TARGET_LANGUAGE_LABEL")
+        or os.getenv("MESSAGE_BOT_DEFAULT_TARGET_LANGUAGE_LABEL")
+        or default_target_language()
+    ).strip() or default_target_language()

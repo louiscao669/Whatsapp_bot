@@ -767,7 +767,6 @@ def score_items(
                     "llm_score": None,
                     "llm_rationale": None,
                     "llm_english_label": None,
-                    "llm_english_score": None,
                     "llm_english_rationale": None,
                 }
             )
@@ -780,7 +779,6 @@ def score_items(
                     "llm_score": None,
                     "llm_rationale": None,
                     "llm_english_label": None,
-                    "llm_english_score": None,
                     "llm_english_rationale": None,
                 }
             )
@@ -793,7 +791,6 @@ def score_items(
                         "llm_score": 0.0,
                         "llm_rationale": "No generated answer.",
                         "llm_english_label": "incorrect",
-                        "llm_english_score": 0.0,
                         "llm_english_rationale": "No generated answer.",
                     }
                 )
@@ -856,7 +853,6 @@ def score_items(
             for row in batch:
                 english_judgment = judgments[int(row["item_index"])]
                 row["llm_english_label"] = english_judgment["label"]
-                row["llm_english_score"] = english_judgment["score"]
                 row["llm_english_rationale"] = english_judgment["rationale"]
                 row["llm_label"] = english_judgment["label"]
                 row["llm_score"] = english_judgment["score"]
@@ -877,11 +873,6 @@ def summarize(scored: List[dict]) -> dict:
         item["llm_score"]
         for item in open_items
         if item.get("llm_score") is not None
-    ]
-    llm_english_scores = [
-        item["llm_english_score"]
-        for item in open_items
-        if item.get("llm_english_score") is not None
     ]
     confidence_values = [
         float(item["answer_confidence"])
@@ -936,11 +927,6 @@ def summarize(scored: List[dict]) -> dict:
         ),
         "open_llm_score_mean": (
             sum(llm_scores) / len(llm_scores) if llm_scores else None
-        ),
-        "open_llm_english_score_mean": (
-            sum(llm_english_scores) / len(llm_english_scores)
-            if llm_english_scores
-            else None
         ),
         "answer_confidence_mean": (
             sum(confidence_values) / len(confidence_values)

@@ -242,8 +242,6 @@ def score_item_correct(item: dict) -> bool | None:
         return None
     score = item.get("llm_score")
     if score is None:
-        score = item.get("llm_english_score")
-    if score is None:
         return None
     try:
         return float(score) >= 0.5
