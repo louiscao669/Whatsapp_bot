@@ -13,6 +13,7 @@ from app.providers.telegram.config import (
     default_target_language_label,
     telegram_bot_token,
 )
+from app.engagement.dashboard_nudge import dashboard_link_reply, is_dashboard_command
 from app.engagement.reminders import start_reminder_scheduler
 from app.messaging.workflow import record_telegram_text_message
 from app.providers.telegram.messaging import send_workflow_result
@@ -91,11 +92,22 @@ async def stop(update, context):
         )
 
 
+async def dashboard(update, context):
+    contact_input = contact_input_from_update(update)
+    participant, contact, _ = upsert_telegram_contact(contact_input)
+    await update.effective_message.reply_text(dashboard_link_reply(participant))
+
+
 async def unknown_text(update, context):
     contact_input = contact_input_from_update(update)
     participant, contact, _ = upsert_telegram_contact(contact_input)
     message_text = update.effective_message.text or ""
     normalized_text = message_text.strip().lower()
+
+    # Let participants pull their dashboard link at any point in the chat.
+    if is_dashboard_command(message_text):
+        await update.effective_message.reply_text(dashboard_link_reply(participant))
+        return
 
     status = language_confirmation_status(contact)
     if status != LANGUAGE_CONFIRMED:
@@ -132,6 +144,7 @@ def build_application():
     app = Application.builder().token(telegram_bot_token()).build()
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("stop", stop))
+    app.add_handler(CommandHandler("dashboard", dashboard))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, unknown_text))
     return app
 

@@ -8,6 +8,10 @@ from app.messaging.workflow import (
     record_whatsapp_audio_message,
     record_whatsapp_text_message,
 )
+from app.engagement.dashboard_nudge import (
+    dashboard_link_reply_for_contact,
+    is_dashboard_command,
+)
 from app.providers.whatsapp.schedule_policy import (
     BATCH_NEXT_START_NOW_REPLY,
     BATCH_NEXT_WAIT_REPLY,
@@ -321,6 +325,15 @@ def process_whatsapp_message(body):
     message = body["entry"][0]["changes"][0]["value"]["messages"][0]
     message_type = message.get("type")
     payload_text, normalized_type = extract_inbound_message_payload(message)
+
+    # Let participants pull their dashboard link at any point in the chat.
+    if normalized_type == "text" and is_dashboard_command(payload_text):
+        send_message(
+            get_text_message_input(
+                wa_id, dashboard_link_reply_for_contact("whatsapp", wa_id, name)
+            )
+        )
+        return
 
     if normalized_type == "text":
         workflow_result = record_whatsapp_text_message(

@@ -18,6 +18,11 @@ import logging
 from typing import Optional
 
 from eten_shared.dashboard_links import DashboardLinkError, build_dashboard_link
+from eten_shared.database import get_session_factory
+from eten_shared.domain.identity import (
+    PROVIDER_WHATSAPP,
+    get_or_create_participant_by_contact,
+)
 from eten_shared.domain.platform_nudges import (
     PLATFORM_DASHBOARD,
     nudge_platform_for_next_batch,
@@ -54,6 +59,55 @@ def question_reminder_message(link: str) -> str:
         "You still have a question waiting. "
         f"Answer it on your dashboard: {link}"
     )
+
+
+# --- On-demand dashboard link ("/dashboard" command) ----------------------
+
+DASHBOARD_COMMAND_ALIASES = {
+    "dashboard",
+    "my dashboard",
+    "dashboard link",
+    "open dashboard",
+    "my link",
+}
+
+
+def is_dashboard_command(text) -> bool:
+    """True when an inbound message is a request for the dashboard link
+    (e.g. "/dashboard", "dashboard", "my dashboard")."""
+
+    if not text:
+        return False
+    return text.strip().lower().lstrip("/") in DASHBOARD_COMMAND_ALIASES
+
+
+def dashboard_link_reply(participant) -> str:
+    """Reply text handing the participant their signed dashboard deep link."""
+
+    link = dashboard_deep_link(participant)
+    if link:
+        return "Here's your dashboard link — tap to open it:\n" + link
+    return (
+        "Sorry, your dashboard link isn't available right now. "
+        "Please let the study team know."
+    )
+
+
+def dashboard_link_reply_for_contact(
+    provider: str, external_user_id, display_name: Optional[str] = None
+) -> str:
+    """Resolve the participant for a provider identity and return the dashboard
+    link reply. Used by surfaces (WhatsApp) that hold an external id rather than
+    a participant object."""
+
+    extra = {"phone": external_user_id} if provider == PROVIDER_WHATSAPP else {}
+    with get_session_factory()() as db:
+        participant, _contact, _created = get_or_create_participant_by_contact(
+            db, provider, external_user_id, display_name=display_name, **extra
+        )
+        reply = dashboard_link_reply(participant)
+        db.commit()
+        return reply
 
 
 def resolve_dashboard_nudge(db, participant) -> Optional[str]:
