@@ -262,7 +262,7 @@ export type QaItemResponsesPayload = {
 
 export type QaItemAssignmentRow = {
   participant: string
-  wa_id: string
+  participant_id: string
   language: string
   status: string
   assigned_at: string | null

@@ -72,9 +72,9 @@ export function QaItemAssignmentsTab({ qaItemId, languages }: QaItemAssignmentsT
         </thead>
         <tbody>
           {assignments.map((row, index) => (
-            <tr key={`${row.wa_id}-${index}`}>
+            <tr key={`${row.participant_id}-${index}`}>
               <td>{row.participant}</td>
-              <td>{row.wa_id}</td>
+              <td>{row.participant_id}</td>
               <td>{row.language}</td>
               <td>{row.status}</td>
               <td>{row.assigned_at ?? '—'}</td>

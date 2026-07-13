@@ -1,0 +1,22 @@
+Step 2b: noise vs real — adjudicating the Step-2 additivity FAIL
+
+---- [BOTH q_types]  n=62 cells ----
+(1) var_obs(Delta)=0.746  mean SE^2=0.448  reliability=0.40  CEILING rho=0.63
+    observed rho=+0.076 (pearson +0.076)  disattenuated ~ +0.121
+    verdict: failure NOT explained by Delta noise
+(2) method-FE: k=-0.0275 +/- 0.0471  (no within-method signal)   within-method rho=-0.109
+    two-way FE (method+chapter): k=+0.0064 +/- 0.0401  (ns)
+(5) shape (with method FE): best alpha=0.25 R^2=0.224 vs alpha=1 R^2=0.220  (no material nonlinearity)
+
+---- [FILTERED (mcq-only = deployment pool)]  n=62 cells ----
+(1) var_obs(Delta)=1.057  mean SE^2=1.574  reliability=0.00  CEILING rho=0.00
+    observed rho=+0.091 (pearson +0.072)  disattenuated ~ n/a (ceiling~0)
+    verdict: NOISE-LIMITED (ceiling low)
+(2) method-FE: k=+0.0134 +/- 0.0680  (no within-method signal)   within-method rho=+0.078
+    two-way FE (method+chapter): k=+0.0660 +/- 0.0604  (ns)
+(5) shape (with method FE): best alpha=0.25 R^2=0.127 vs alpha=1 R^2=0.122  (no material nonlinearity)
+
+(4) [BOTH] method level (n=8): rho(Delta, consensus_acc) = -0.93 (expect negative & strong if response side healthy)
+    rho(Delta, B) = +0.36   rho(B, consensus_acc) = -0.57
+(4) [MCQ] method level (n=8): rho(Delta, consensus_acc) = -0.52 (expect negative & strong if response side healthy)
+    rho(Delta, B) = +0.26   rho(B, consensus_acc) = -0.57

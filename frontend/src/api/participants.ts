@@ -2,7 +2,7 @@ import { apiFetch } from './client'
 
 export type ParticipantRow = {
   id: string
-  wa_id: string
+  participant_id: string
   display_name: string
   language: string
   session_state: string
@@ -30,7 +30,7 @@ export type ParticipantHistoryRow = {
 export type ParticipantDetail = {
   participant: {
     id: string
-    wa_id: string
+    participant_id: string
     display_name: string
     language: string
     session_state: string

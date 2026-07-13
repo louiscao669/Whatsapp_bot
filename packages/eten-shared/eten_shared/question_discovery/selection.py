@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 from eten_shared.domain.qa_eligibility import qa_item_is_assignable
 from eten_shared.models import Assignment, ParticipantResponse, QAItem
-from eten_shared.recordings import has_question_recording_for_participant
+from eten_shared.recordings import participant_question_audio_satisfied
 
 
 def get_qa_item_distribution_metrics(db: Session, qa_item):
@@ -72,7 +72,7 @@ def select_next_qa_item(db: Session, participant):
         qa_item
         for qa_item in db.scalars(statement).all()
         if qa_item.id not in assigned_qa_item_ids
-        and has_question_recording_for_participant(db, qa_item.id, participant)
+        and participant_question_audio_satisfied(db, qa_item.id, participant)
         and qa_item_is_assignable(qa_item)
     ]
     if not candidates:

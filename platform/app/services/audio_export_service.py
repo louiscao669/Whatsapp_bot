@@ -18,7 +18,6 @@ from eten_shared.media_storage import (
     is_supabase_storage_configured,
     parse_storage_uri,
 )
-from app.utils.privacy import hash_wa_id_for_display
 
 
 @dataclass
@@ -29,7 +28,7 @@ class AudioExportItem:
     passage_label: str
     chapter_label: str
     question_text: str
-    wa_id: str
+    participant_id: str
     participant_label: str
     export_filename: str
     media_url: str
@@ -130,8 +129,6 @@ def load_audio_export_item(response, used_names=None) -> Optional[AudioExportIte
         filename_registry,
     )
 
-    display_wa_id = hash_wa_id_for_display(participant.wa_id)
-
     return AudioExportItem(
         response_id=response.id,
         qa_item_id=qa_item.id,
@@ -139,8 +136,8 @@ def load_audio_export_item(response, used_names=None) -> Optional[AudioExportIte
         passage_label=passage_label,
         chapter_label=chapter_label,
         question_text=qa_item.question_text,
-        wa_id=display_wa_id,
-        participant_label=participant.display_name or display_wa_id,
+        participant_id=participant.id,
+        participant_label=participant.display_name or participant.id,
         export_filename=export_filename,
         media_url=media_url,
         received_at=response.received_at,
@@ -199,7 +196,7 @@ def get_audio_export_chapters() -> List[AudioExportChapter]:
         for qa_group in chapter.qa_groups:
             qa_group.items.sort(
                 key=lambda item: (
-                    item.wa_id,
+                    item.participant_id,
                     item.received_at or datetime.min.replace(tzinfo=timezone.utc),
                 )
             )

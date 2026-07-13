@@ -1113,14 +1113,20 @@ def generate_ollama_single_raw(
         },
         {"role": "user", "content": prompt},
     ]
+    options = {
+        "temperature": 0,
+        "num_ctx": int(os.getenv("OLLAMA_NUM_CTX", "8192")),
+    }
+    num_predict = os.getenv("OLLAMA_NUM_PREDICT")
+    if num_predict:
+        options["num_predict"] = int(num_predict)
+    timeout = float(os.getenv("OLLAMA_TIMEOUT", "600"))
+
     payload = {
         "model": model,
         "messages": messages,
         "stream": False,
-        "options": {
-            "temperature": 0,
-            "num_ctx": int(os.getenv("OLLAMA_NUM_CTX", "8192")),
-        },
+        "options": options,
     }
     request = urllib.request.Request(
         base_url.rstrip("/") + "/api/chat",
@@ -1129,7 +1135,7 @@ def generate_ollama_single_raw(
         method="POST",
     )
     try:
-        with urllib.request.urlopen(request, timeout=600) as response:
+        with urllib.request.urlopen(request, timeout=timeout) as response:
             data = json.loads(response.read().decode("utf-8"))
     except urllib.error.URLError as exc:
         raise GenerationError(

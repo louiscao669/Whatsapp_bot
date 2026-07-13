@@ -5,7 +5,21 @@
     "mcq_correct": 4,
     "open_count": 22,
     "open_embedding_mean": 0.5065900461239743,
-    "open_llm_score_mean": 0.5909090909090909
+    "open_llm_score_mean": 0.5909090909090909,
+    "core_claim": {
+      "total": 26,
+      "mcq_count": 4,
+      "mcq_correct": 4,
+      "open_count": 22,
+      "open_embedding_mean": null,
+      "open_llm_score_mean": 0.5909090909090909,
+      "answer_confidence_mean": null,
+      "insufficient_information_rate": null,
+      "direct_evidence_rate": null,
+      "evidence_supported_rate": null,
+      "wrong_high_confidence_count": 0,
+      "correct_low_confidence_count": 0
+    }
   },
   "items": [
     {
@@ -24,7 +38,22 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer describes an action but does not contain the main object or concept of 'certainty of taught things' present in the standard answer.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer describes an action but does not contain the main object or concept of 'certainty of taught things' present in the standard answer."
+      "llm_english_rationale": "The generated answer describes an action but does not contain the main object or concept of 'certainty of taught things' present in the standard answer.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Author A wrote Recipient A a neat report",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "The generated answer talks about writing a report, not about certainty of taught things.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "The generated answer talks about writing a report, not about certainty of taught things.",
+        "llm_required_slot": "statement/content",
+        "llm_core_claim_expected": "That Author A wanted Recipient A to know certainty of the things taught",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 2,
@@ -42,7 +71,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer includes the main idea of being blameless or innocent by obeying commands, which aligns with walking blamelessly in commandments.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer includes the main idea of being blameless or innocent by obeying commands, which aligns with walking blamelessly in commandments."
+      "llm_english_rationale": "The generated answer includes the main idea of being blameless or innocent by obeying commands, which aligns with walking blamelessly in commandments.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Obeying Master A's commands and being sinless",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "It preserves the core idea of obeying commands and being sinless/blameless.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "It preserves the core idea of obeying commands and being sinless/blameless.",
+        "llm_required_slot": "reason/cause",
+        "llm_core_claim_expected": "They were righteous because they walked blamelessly in the commandments",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 3,
@@ -60,7 +104,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer correctly identifies the main reason Person B has no children by stating that Person B cannot get pregnant, matching the core idea of the standard answer that Person B was unable to bear.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer correctly identifies the main reason Person B has no children by stating that Person B cannot get pregnant, matching the core idea of the standard answer that Person B was unable to bear."
+      "llm_english_rationale": "The generated answer correctly identifies the main reason Person B has no children by stating that Person B cannot get pregnant, matching the core idea of the standard answer that Person B was unable to bear.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Person B could not conceive",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "'Could not conceive' matches inability to bear children.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "'Could not conceive' matches inability to bear children.",
+        "llm_required_slot": "reason/cause",
+        "llm_core_claim_expected": "Person B was unable to bear children",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 4,
@@ -78,7 +137,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer contains the main action 'Burning Material A', corresponding to 'Burns Material A' in the standard answer, which is the core response to the question.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer contains the main action 'Burning Material A', corresponding to 'Burns Material A' in the standard answer, which is the core response to the question."
+      "llm_english_rationale": "The generated answer contains the main action 'Burning Material A', corresponding to 'Burns Material A' in the standard answer, which is the core response to the question.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Burning Material A",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "The answer states that Person A is burning Material A, which matches the core action.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "The answer states that Person A is burning Material A, which matches the core action.",
+        "llm_required_slot": "action/event",
+        "llm_core_claim_expected": "Burns Material A to Most High A",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 5,
@@ -96,7 +170,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer 'Master A's messenger' correctly identifies the main person (an angel or messenger of Master A) who appeared before Person A, matching the standard answer's core meaning.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer 'Master A's messenger' correctly identifies the main person (an angel or messenger of Master A) who appeared before Person A, matching the standard answer's core meaning."
+      "llm_english_rationale": "The generated answer 'Master A's messenger' correctly identifies the main person (an angel or messenger of Master A) who appeared before Person A, matching the standard answer's core meaning.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "An angel of Master A",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "The generated answer identifies the same visitor.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "The generated answer identifies the same visitor.",
+        "llm_required_slot": "person/group",
+        "llm_core_claim_expected": "An angel of the Master A",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 6,
@@ -114,7 +203,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer conveys fear and fright, which correspond to being troubled and afraid in the standard answer.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer conveys fear and fright, which correspond to being troubled and afraid in the standard answer."
+      "llm_english_rationale": "The generated answer conveys fear and fright, which correspond to being troubled and afraid in the standard answer.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Terrified, startled with fear",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "Terrified and fearful is the same reaction.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "Terrified and fearful is the same reaction.",
+        "llm_required_slot": "statement/content",
+        "llm_core_claim_expected": "He is troubled and afraid",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 7,
@@ -134,7 +238,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "C",
+        "selected_choice": "C",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 8,
@@ -152,7 +273,22 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer 'Make many people happy' does not contain the core action of 'turning them back to the Master A,' which is the main event needed to answer the question.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer 'Make many people happy' does not contain the core action of 'turning them back to the Master A,' which is the main event needed to answer the question."
+      "llm_english_rationale": "The generated answer 'Make many people happy' does not contain the core action of 'turning them back to the Master A,' which is the main event needed to answer the question.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Make many people rejoice",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "Making many people rejoice is a different outcome than turning them back to the Master A.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "Making many people rejoice is a different outcome than turning them back to the Master A.",
+        "llm_required_slot": "result/outcome",
+        "llm_core_claim_expected": "Turn them back to the Master A",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 9,
@@ -170,7 +306,22 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer describes a person with specific attributes but does not mention being prepared for the Master, which is the core answer.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer describes a person with specific attributes but does not mention being prepared for the Master, which is the core answer."
+      "llm_english_rationale": "The generated answer describes a person with specific attributes but does not mention being prepared for the Master, which is the core answer.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "One who does not drink wine and is filled with the Spirit",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "The generated answer describes traits of Person C, not the people he will prepare.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "The generated answer describes traits of Person C, not the people he will prepare.",
+        "llm_required_slot": "statement/content",
+        "llm_core_claim_expected": "A people prepared for the Master A",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 10,
@@ -188,7 +339,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer contains the main elements: Messenger B and the presence (location) of Most High A, matching the core information of the standard answer.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer contains the main elements: Messenger B and the presence (location) of Most High A, matching the core information of the standard answer."
+      "llm_english_rationale": "The generated answer contains the main elements: Messenger B and the presence (location) of Most High A, matching the core information of the standard answer.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Messenger B, before Most High A",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "partial",
+        "llm_score": 0.5,
+        "llm_rationale": "'Before Most High A' is close to being in his presence, but it omits the explicit named identification as asked.",
+        "llm_english_label": "partial",
+        "llm_english_rationale": "'Before Most High A' is close to being in his presence, but it omits the explicit named identification as asked.",
+        "llm_required_slot": "object/place",
+        "llm_core_claim_expected": "Messenger B is in the presence of Most High A",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 11,
@@ -206,7 +372,22 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer does not address the main event (becoming mute) that happened due to unbelief; it is vague and unrelated.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer does not address the main event (becoming mute) that happened due to unbelief; it is vague and unrelated."
+      "llm_english_rationale": "The generated answer does not address the main event (becoming mute) that happened due to unbelief; it is vague and unrelated.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "It will surely be fulfilled at the appointed time",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "The answer about fulfillment time does not mention muteness or the consequence of unbelief.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "The answer about fulfillment time does not mention muteness or the consequence of unbelief.",
+        "llm_required_slot": "result/outcome",
+        "llm_core_claim_expected": "He becomes mute until birth",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 12,
@@ -224,7 +405,22 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer names a different person and place than the standard answer, missing the core correct person visited.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer names a different person and place than the standard answer, missing the core correct person visited."
+      "llm_english_rationale": "The generated answer names a different person and place than the standard answer, missing the core correct person visited.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Person B from Village A",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "The generated answer names a different person and village, not the visitor's target.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "The generated answer names a different person and village, not the visitor's target.",
+        "llm_required_slot": "person/group",
+        "llm_core_claim_expected": "Person D, engaged to Person E",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 13,
@@ -244,7 +440,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "B",
+        "selected_choice": "B",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 14,
@@ -262,7 +475,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer includes the main action of becoming a king and ruling, which corresponds to reigning over descendants, matching the core meaning of the standard answer.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer includes the main action of becoming a king and ruling, which corresponds to reigning over descendants, matching the core meaning of the standard answer."
+      "llm_english_rationale": "The generated answer includes the main action of becoming a king and ruling, which corresponds to reigning over descendants, matching the core meaning of the standard answer.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Become king and rule his kingdom",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "'Become king and rule his kingdom' matches the reign/outcome.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "'Become king and rule his kingdom' matches the reign/outcome.",
+        "llm_required_slot": "result/outcome",
+        "llm_core_claim_expected": "Reign over Ancestor B's descendants",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 15,
@@ -280,7 +508,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer conveys the essential action of Spirit A coming upon her, which corresponds to the Spirit overshadowing her, thus containing the main event needed to answer the question.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer conveys the essential action of Spirit A coming upon her, which corresponds to the Spirit overshadowing her, thus containing the main event needed to answer the question."
+      "llm_english_rationale": "The generated answer conveys the essential action of Spirit A coming upon her, which corresponds to the Spirit overshadowing her, thus containing the main event needed to answer the question.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "The Spirit A came upon her",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "'The Spirit A came upon her' is an equivalent conception wording.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "'The Spirit A came upon her' is an equivalent conception wording.",
+        "llm_required_slot": "action/event",
+        "llm_core_claim_expected": "Spirit A will overshadow her",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 16,
@@ -298,7 +541,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer contains the main information about the son of Most High A, matching the core of the standard answer.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer contains the main information about the son of Most High A, matching the core of the standard answer."
+      "llm_english_rationale": "The generated answer contains the main information about the son of Most High A, matching the core of the standard answer.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Most High A's Son",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "It directly states the child is Most High A's Son.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "It directly states the child is Most High A's Son.",
+        "llm_required_slot": "person/group",
+        "llm_core_claim_expected": "Son of Most High A",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 17,
@@ -316,7 +574,22 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer 'Jumped into her arms' does not convey the main action 'Leaps for joy.' The core action needed to answer the question is missing or different.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer 'Jumped into her arms' does not convey the main action 'Leaps for joy.' The core action needed to answer the question is missing or different."
+      "llm_english_rationale": "The generated answer 'Jumped into her arms' does not convey the main action 'Leaps for joy.' The core action needed to answer the question is missing or different.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Jumped in her womb",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "Jumped in her womb is a paraphrase of leaping for joy.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "Jumped in her womb is a paraphrase of leaping for joy.",
+        "llm_required_slot": "action/event",
+        "llm_core_claim_expected": "Leaps for joy",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 18,
@@ -334,7 +607,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer correctly identifies the main subjects as women and their children, which corresponds to person D and her baby described in the standard answer, capturing the core idea of who is blessed.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer correctly identifies the main subjects as women and their children, which corresponds to person D and her baby described in the standard answer, capturing the core idea of who is blessed."
+      "llm_english_rationale": "The generated answer correctly identifies the main subjects as women and their children, which corresponds to person D and her baby described in the standard answer, capturing the core idea of who is blessed.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Women and the children they bear",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "The answer refers broadly to women and children, not specifically Person D and her baby.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "The answer refers broadly to women and children, not specifically Person D and her baby.",
+        "llm_required_slot": "person/group",
+        "llm_core_claim_expected": "Person D and her baby",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 19,
@@ -352,7 +640,22 @@
       "llm_score": 0.0,
       "llm_rationale": "The standard answer states God helped because He remembered His mercy, whereas the generated answer attributes it to God lifting up the humble, which changes the reason and misses the core answer.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The standard answer states God helped because He remembered His mercy, whereas the generated answer attributes it to God lifting up the humble, which changes the reason and misses the core answer."
+      "llm_english_rationale": "The standard answer states God helped because He remembered His mercy, whereas the generated answer attributes it to God lifting up the humble, which changes the reason and misses the core answer.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Because God raises up the humble",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "Raising up the humble is a different reason from remembering mercy.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "Raising up the humble is a different reason from remembering mercy.",
+        "llm_required_slot": "reason/cause",
+        "llm_core_claim_expected": "He remembered his mercy",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 20,
@@ -370,7 +673,22 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer 'Person A's name' does not specify that the son's name is taken after his father, which is the core detail required by the question and standard answer.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer 'Person A's name' does not specify that the son's name is taken after his father, which is the core detail required by the question and standard answer."
+      "llm_english_rationale": "The generated answer 'Person A's name' does not specify that the son's name is taken after his father, which is the core detail required by the question and standard answer.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Person A's name",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "partial",
+        "llm_score": 0.5,
+        "llm_rationale": "It gives the father's name but omits the full idea of naming the child after his father.",
+        "llm_english_label": "partial",
+        "llm_english_rationale": "It gives the father's name but omits the full idea of naming the child after his father.",
+        "llm_required_slot": "person/group",
+        "llm_core_claim_expected": "Person A, after his father",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 21,
@@ -388,7 +706,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer includes the main object, the name 'Person C', which is the essential information to answer the question.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer includes the main object, the name 'Person C', which is the essential information to answer the question."
+      "llm_english_rationale": "The generated answer includes the main object, the name 'Person C', which is the essential information to answer the question.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Person C",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "The generated answer directly gives the child's name.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "The generated answer directly gives the child's name.",
+        "llm_required_slot": "statement/content",
+        "llm_core_claim_expected": "His name is Person C",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 22,
@@ -408,7 +741,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "C",
+        "selected_choice": "C",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 23,
@@ -426,7 +776,22 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer talks about people being surprised and wondering, which does not contain the core idea that 'The Master A's hand is with him.' The key action or relationship from the standard answer is missing.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer talks about people being surprised and wondering, which does not contain the core idea that 'The Master A's hand is with him.' The key action or relationship from the standard answer is missing."
+      "llm_english_rationale": "The generated answer talks about people being surprised and wondering, which does not contain the core idea that 'The Master A's hand is with him.' The key action or relationship from the standard answer is missing.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Amazed, asking what he would be like",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "Being amazed and wondering what he would be like does not state that the Master's hand was with him.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "Being amazed and wondering what he would be like does not state that the Master's hand was with him.",
+        "llm_required_slot": "statement/content",
+        "llm_core_claim_expected": "The Master A's hand is with him",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 24,
@@ -444,7 +809,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer correctly identifies the core action of saving or redeeming his people, which matches the main idea of the standard answer.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer correctly identifies the core action of saving or redeeming his people, which matches the main idea of the standard answer."
+      "llm_english_rationale": "The generated answer correctly identifies the core action of saving or redeeming his people, which matches the main idea of the standard answer.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "saved his people",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "The generated answer conveys the same core action/result as the standard answer: saving his people is equivalent to redemption for his people.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "The generated answer conveys the same core action/result as the standard answer: saving his people is equivalent to redemption for his people.",
+        "llm_required_slot": "action/event",
+        "llm_core_claim_expected": "redemption for his people",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 25,
@@ -464,7 +844,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "A",
+        "selected_choice": "A",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 26,
@@ -482,7 +879,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer correctly identifies the main location where the person grew up and lived as 'In the wilderness,' matching the standard answer.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer correctly identifies the main location where the person grew up and lived as 'In the wilderness,' matching the standard answer."
+      "llm_english_rationale": "The generated answer correctly identifies the main location where the person grew up and lived as 'In the wilderness,' matching the standard answer.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "in the wilderness",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "The generated answer exactly matches the expected place and contains the core claim.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "The generated answer exactly matches the expected place and contains the core claim.",
+        "llm_required_slot": "object/place",
+        "llm_core_claim_expected": "Person C grew up and lived in the wilderness.",
+        "llm_core_claim_found": true
+      }
     }
   ]
 }

@@ -5,7 +5,21 @@
     "mcq_correct": 8,
     "open_count": 8,
     "open_embedding_mean": 0.5359831555220022,
-    "open_llm_score_mean": 1.0
+    "open_llm_score_mean": 1.0,
+    "core_claim": {
+      "total": 16,
+      "mcq_count": 8,
+      "mcq_correct": 8,
+      "open_count": 8,
+      "open_embedding_mean": null,
+      "open_llm_score_mean": 0.9375,
+      "answer_confidence_mean": null,
+      "insufficient_information_rate": null,
+      "direct_evidence_rate": null,
+      "evidence_supported_rate": null,
+      "wrong_high_confidence_count": 0,
+      "correct_low_confidence_count": 0
+    }
   },
   "items": [
     {
@@ -24,7 +38,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer mentions harvesting and eating grain on the Sabbath, covering the main actions.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer mentions harvesting and eating grain on the Sabbath, covering the main actions."
+      "llm_english_rationale": "The generated answer mentions harvesting and eating grain on the Sabbath, covering the main actions.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Person F's group 02 gathers grain and eats kernels on the Sabbath.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "The generated answer says they gather grain and eat kernels on the Sabbath, which preserves the core action even if 'rub' is omitted.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "The generated answer says they gather grain and eat kernels on the Sabbath, which preserves the core action even if 'rub' is omitted.",
+        "llm_required_slot": "action/event",
+        "llm_core_claim_expected": "Pick, rub, and eat grain on the Sabbath.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 2,
@@ -44,7 +73,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "C",
+        "selected_choice": "C",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 3,
@@ -62,7 +108,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer exactly matches the standard answer.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer exactly matches the standard answer."
+      "llm_english_rationale": "The generated answer exactly matches the standard answer.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Master A of the Sabbath.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "Exact match to the expected title.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "Exact match to the expected title.",
+        "llm_required_slot": "statement/content",
+        "llm_core_claim_expected": "Master A of the Sabbath.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 4,
@@ -82,7 +143,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "B",
+        "selected_choice": "B",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 5,
@@ -100,7 +178,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer mentions rejoicing due to a great reward in heaven, fulfilling the core answer.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer mentions rejoicing due to a great reward in heaven, fulfilling the core answer."
+      "llm_english_rationale": "The generated answer mentions rejoicing due to a great reward in heaven, fulfilling the core answer.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "On that day, you should rejoice and leap for joy, because your reward in heaven is great, and their ancestors treated the prophets the same way.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "The answer states the same reason in equivalent wording.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "The answer states the same reason in equivalent wording.",
+        "llm_required_slot": "reason/cause",
+        "llm_core_claim_expected": "Because their reward in heaven is great.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 6,
@@ -120,7 +213,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "A",
+        "selected_choice": "A",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 7,
@@ -138,7 +248,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer includes loving and doing good to enemies, aligning with the standard answer.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer includes loving and doing good to enemies, aligning with the standard answer."
+      "llm_english_rationale": "The generated answer includes loving and doing good to enemies, aligning with the standard answer.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Group 02 should love their enemies and do good to those who hate them.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "It explicitly includes loving enemies and doing good to those who hate them.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "It explicitly includes loving enemies and doing good to those who hate them.",
+        "llm_required_slot": "action/event",
+        "llm_core_claim_expected": "Love and do good to enemies.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 8,
@@ -158,7 +283,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "C",
+        "selected_choice": "C",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 9,
@@ -176,7 +318,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer states the Most High's kindness, capturing the main attitude.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer states the Most High's kindness, capturing the main attitude."
+      "llm_english_rationale": "The generated answer states the Most High's kindness, capturing the main attitude.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "The Most High is kind to the ungrateful.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "partial",
+        "llm_score": 0.5,
+        "llm_rationale": "The generated answer captures only part of the idea ('kind') and omits 'merciful', so it is incomplete.",
+        "llm_english_label": "partial",
+        "llm_english_rationale": "The generated answer captures only part of the idea ('kind') and omits 'merciful', so it is incomplete.",
+        "llm_required_slot": "statement/content",
+        "llm_core_claim_expected": "Kind and merciful.",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 10,
@@ -196,7 +353,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "D",
+        "selected_choice": "D",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 11,
@@ -214,7 +388,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer identifies removing a plank (log) before the speck, matching the core of the standard answer.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer identifies removing a plank (log) before the speck, matching the core of the standard answer."
+      "llm_english_rationale": "The generated answer identifies removing a plank (log) before the speck, matching the core of the standard answer.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Before removing the speck from your eye, you must remove the plank.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "It preserves the required sequence: remove the plank/log first before removing the speck.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "It preserves the required sequence: remove the plank/log first before removing the speck.",
+        "llm_required_slot": "action/event",
+        "llm_core_claim_expected": "Remove the log before the speck.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 12,
@@ -234,7 +423,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "D",
+        "selected_choice": "D",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 13,
@@ -252,7 +458,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer captures hearing and acting as the one like a builder on rock.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer captures hearing and acting as the one like a builder on rock."
+      "llm_english_rationale": "The generated answer captures hearing and acting as the one like a builder on rock.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "The one who hears and practices is like a builder on rock.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "The answer matches the meaning: the person who hears and practices is the one built on rock.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "The answer matches the meaning: the person who hears and practices is the one built on rock.",
+        "llm_required_slot": "person/group",
+        "llm_core_claim_expected": "One who hears and does.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 14,
@@ -272,7 +493,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "D",
+        "selected_choice": "D",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 15,
@@ -290,7 +528,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer correctly identifies listeners who do not act as lacking foundation.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer correctly identifies listeners who do not act as lacking foundation."
+      "llm_english_rationale": "The generated answer correctly identifies listeners who do not act as lacking foundation.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "The hearer who does not practice.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "The hearer who does not practice matches the expected description of someone without a foundation.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "The hearer who does not practice matches the expected description of someone without a foundation.",
+        "llm_required_slot": "person/group",
+        "llm_core_claim_expected": "One who hears and disobeys.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 16,
@@ -310,7 +563,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "D",
+        "selected_choice": "D",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     }
   ]
 }

@@ -98,7 +98,7 @@ export function ParticipantDetailPage() {
       <p className="back-link">
         <Link to="/participants">← Back to Participants</Link>
       </p>
-      <h2>{participant.display_name || participant.wa_id}</h2>
+      <h2>{participant.display_name || participant.participant_id}</h2>
       {error ? <p className="error-message">{error}</p> : null}
       {message ? <p className="success-message">{message}</p> : null}
 
@@ -129,7 +129,7 @@ export function ParticipantDetailPage() {
         </form>
         <dl className="detail-list">
           <dt>WhatsApp ID</dt>
-          <dd>{participant.wa_id}</dd>
+          <dd>{participant.participant_id}</dd>
           <dt>Language</dt>
           <dd>{participant.language}</dd>
           <dt>Session state</dt>

@@ -20,14 +20,15 @@ def get_graph_api_version():
     return os.getenv("VERSION", "v25.0")
 
 
-def get_template_body_parameters(participant, assignment, reminder):
+def get_template_body_parameters(participant, assignment, reminder, recipient=""):
     configured_value = os.getenv("REMINDER_TEMPLATE_BODY_PARAMS", "")
     if not configured_value.strip():
         return []
 
     context = {
         "name": participant.display_name or "there",
-        "wa_id": participant.wa_id,
+        "wa_id": recipient,
+        "participant_id": participant.id,
         "assignment_id": assignment.id if assignment else "",
         "reminder_type": reminder.reminder_type if reminder else "",
     }
@@ -118,20 +119,22 @@ def send_whatsapp_template(recipient, participant, assignment, reminder):
             recipient=recipient,
             template_name=template_name,
             language_code=language_code,
-            body_parameters=get_template_body_parameters(participant, assignment, reminder),
+            body_parameters=get_template_body_parameters(
+                participant, assignment, reminder, recipient
+            ),
         )
     )
 
 
-def send_reminder(participant, assignment, reminder):
+def send_reminder(participant, assignment, reminder, recipient):
     if is_template_reminder(reminder):
         return send_whatsapp_template(
-            participant.wa_id,
+            recipient,
             participant,
             assignment,
             reminder,
         )
-    return send_whatsapp_text(participant.wa_id, reminder.message_text)
+    return send_whatsapp_text(recipient, reminder.message_text)
 
 
 def create_next_template_reminder(db, reminder, assignment, participant):

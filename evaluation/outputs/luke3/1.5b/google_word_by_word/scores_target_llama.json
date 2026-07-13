@@ -11,7 +11,21 @@
     "direct_evidence_rate": null,
     "evidence_supported_rate": null,
     "wrong_high_confidence_count": 0,
-    "correct_low_confidence_count": 0
+    "correct_low_confidence_count": 0,
+    "core_claim": {
+      "total": 14,
+      "mcq_count": 7,
+      "mcq_correct": 7,
+      "open_count": 7,
+      "open_embedding_mean": null,
+      "open_llm_score_mean": 0.42857142857142855,
+      "answer_confidence_mean": null,
+      "insufficient_information_rate": null,
+      "direct_evidence_rate": null,
+      "evidence_supported_rate": null,
+      "wrong_high_confidence_count": 0,
+      "correct_low_confidence_count": 0
+    }
   },
   "items": [
     {
@@ -31,7 +45,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer mentions 'baptism of repentance for the forgiveness of sins,' matching the main elements of the standard answer.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer mentions 'baptism of repentance for the forgiveness of sins,' matching the main elements of the standard answer."
+      "llm_english_rationale": "The generated answer mentions 'baptism of repentance for the forgiveness of sins,' matching the main elements of the standard answer.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "A baptism of repentance for the forgiveness of sins.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "The generated answer matches the expected message: it says 'a baptism of repentance for the forgiveness of sins,' which contains the core claim from the standard answer.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "The generated answer matches the expected message: it says 'a baptism of repentance for the forgiveness of sins,' which contains the core claim from the standard answer.",
+        "llm_required_slot": "statement/content",
+        "llm_core_claim_expected": "baptism of repentance for forgiveness",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 2,
@@ -52,7 +81,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "A",
+        "selected_choice": "A",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 3,
@@ -71,7 +117,22 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer 'Person A' is incorrect; the standard answer is 'The Master A,' which is a distinct placeholder.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer 'Person A' is incorrect; the standard answer is 'The Master A,' which is a distinct placeholder."
+      "llm_english_rationale": "The generated answer 'Person A' is incorrect; the standard answer is 'The Master A,' which is a distinct placeholder.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Person A",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "The generated answer only says 'Person A', which does not express who Person C was preparing the road for. It misses the required relationship and core claim.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "The generated answer only says 'Person A', which does not express who Person C was preparing the road for. It misses the required relationship and core claim.",
+        "llm_required_slot": "person/group",
+        "llm_core_claim_expected": "Person C prepares the road for The Master A.",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 4,
@@ -92,7 +153,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "C",
+        "selected_choice": "C",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 5,
@@ -111,7 +189,22 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer focuses on baptism, but the standard answer is about producing fruits from repentance, which is the main action.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer focuses on baptism, but the standard answer is about producing fruits from repentance, which is the main action."
+      "llm_english_rationale": "The generated answer focuses on baptism, but the standard answer is about producing fruits from repentance, which is the main action.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "He told them to go be baptized by him.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "The generated answer says he told them to be baptized, which is a different instruction and does not contain the core claim about producing fruits from repentance.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "The generated answer says he told them to be baptized, which is a different instruction and does not contain the core claim about producing fruits from repentance.",
+        "llm_required_slot": "action/event",
+        "llm_core_claim_expected": "Tell people to produce fruits worthy of repentance.",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 6,
@@ -132,7 +225,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "B",
+        "selected_choice": "B",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 7,
@@ -151,7 +261,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer mentions the tree being cut down, which corresponds to 'chopped down and thrown into fire' in the standard answer; the main event is captured.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer mentions the tree being cut down, which corresponds to 'chopped down and thrown into fire' in the standard answer; the main event is captured."
+      "llm_english_rationale": "The generated answer mentions the tree being cut down, which corresponds to 'chopped down and thrown into fire' in the standard answer; the main event is captured.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "The tree that does not bear good fruit will be cut down.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "partial",
+        "llm_score": 0.5,
+        "llm_rationale": "The generated answer matches part of the outcome by saying the tree will be cut down, but it omits the key remaining claim that it will be thrown into fire.",
+        "llm_english_label": "partial",
+        "llm_english_rationale": "The generated answer matches part of the outcome by saying the tree will be cut down, but it omits the key remaining claim that it will be thrown into fire.",
+        "llm_required_slot": "result/outcome",
+        "llm_core_claim_expected": "The tree will be chopped down and thrown into fire.",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 8,
@@ -172,7 +297,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "C",
+        "selected_choice": "C",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 9,
@@ -191,7 +333,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer includes 'Spirit A and fire,' though it adds water, the main elements required are present.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer includes 'Spirit A and fire,' though it adds water, the main elements required are present."
+      "llm_english_rationale": "The generated answer includes 'Spirit A and fire,' though it adds water, the main elements required are present.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "With water and Spirit A, with fire.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "partial",
+        "llm_score": 0.5,
+        "llm_rationale": "The generated answer includes the core claim 'Spirit A and fire,' but it also adds 'water,' which is not part of the expected answer. So it partially matches the required content.",
+        "llm_english_label": "partial",
+        "llm_english_rationale": "The generated answer includes the core claim 'Spirit A and fire,' but it also adds 'water,' which is not part of the expected answer. So it partially matches the required content.",
+        "llm_required_slot": "statement/content",
+        "llm_core_claim_expected": "Spirit A and fire",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 10,
@@ -212,7 +369,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "A",
+        "selected_choice": "A",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 11,
@@ -231,7 +405,22 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer describes a voice from heaven, but the standard answer focuses on the Spirit A descending like a dove; the main answer is missing.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer describes a voice from heaven, but the standard answer focuses on the Spirit A descending like a dove; the main answer is missing."
+      "llm_english_rationale": "The generated answer describes a voice from heaven, but the standard answer focuses on the Spirit A descending like a dove; the main answer is missing.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "A voice came from heaven, saying he was the Son of God.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "The generated answer gives a voice from heaven, which is a different event/content. It does not state that the Spirit descended like a dove.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "The generated answer gives a voice from heaven, which is a different event/content. It does not state that the Spirit descended like a dove.",
+        "llm_required_slot": "person/group",
+        "llm_core_claim_expected": "The Spirit came down like a dove.",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 12,
@@ -252,7 +441,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "C",
+        "selected_choice": "C",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 13,
@@ -271,7 +477,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer essentially conveys the same message as the standard answer, including the beloved son and a positive declaration.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer essentially conveys the same message as the standard answer, including the beloved son and a positive declaration."
+      "llm_english_rationale": "The generated answer essentially conveys the same message as the standard answer, including the beloved son and a positive declaration.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "You are my son, whom I love; with you I am well pleased.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "The generated answer preserves the core statement that the speaker is 'my son' and loved/beloved, which matches the expected meaning. The added phrase about being well pleased is extra but does not change the core claim.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "The generated answer preserves the core statement that the speaker is 'my son' and loved/beloved, which matches the expected meaning. The added phrase about being well pleased is extra but does not change the core claim.",
+        "llm_required_slot": "statement/content",
+        "llm_core_claim_expected": "God says the person is his beloved son",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 14,
@@ -292,7 +513,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "C",
+        "selected_choice": "C",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     }
   ]
 }

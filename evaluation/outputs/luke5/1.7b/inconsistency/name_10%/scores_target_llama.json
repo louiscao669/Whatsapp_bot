@@ -11,7 +11,21 @@
     "direct_evidence_rate": 0.8846153846153846,
     "evidence_supported_rate": 0.9230769230769231,
     "wrong_high_confidence_count": 3,
-    "correct_low_confidence_count": 3
+    "correct_low_confidence_count": 3,
+    "core_claim": {
+      "total": 26,
+      "mcq_count": 13,
+      "mcq_correct": 13,
+      "open_count": 13,
+      "open_embedding_mean": null,
+      "open_llm_score_mean": 0.7307692307692307,
+      "answer_confidence_mean": 0.7884615384615384,
+      "insufficient_information_rate": 0.19230769230769232,
+      "direct_evidence_rate": 0.8846153846153846,
+      "evidence_supported_rate": 0.9230769230769231,
+      "wrong_high_confidence_count": 3,
+      "correct_low_confidence_count": 3
+    }
   },
   "items": [
     {
@@ -34,7 +48,25 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer includes the main action of going to deep water and casting nets, which corresponds to taking the boat to deep water.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer includes the main action of going to deep water and casting nets, which corresponds to taking the boat to deep water."
+      "llm_english_rationale": "The generated answer includes the main action of going to deep water and casting nets, which corresponds to taking the boat to deep water.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Put the object 02 into deeper water and cast the net to catch fish",
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "The generated answer includes going into deeper water and casting the net, which matches the core action.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "The generated answer includes going into deeper water and casting the net, which matches the core action.",
+        "llm_required_slot": "action/event",
+        "llm_core_claim_expected": "Take boat to deep water.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 2,
@@ -58,7 +90,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "correct_choice": "A",
+        "selected_choice": "A",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 3,
@@ -80,7 +132,25 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer does not mention letting down the nets, which is the main action the question asks about.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer does not mention letting down the nets, which is the main action the question asks about."
+      "llm_english_rationale": "The generated answer does not mention letting down the nets, which is the main action the question asks about.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "He taught the crowd",
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "It says he taught the crowd, which is a different action and misses the required claim.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "It says he taught the crowd, which is a different action and misses the required claim.",
+        "llm_required_slot": "action/event",
+        "llm_core_claim_expected": "He let down the nets.",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 4,
@@ -104,7 +174,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "correct_choice": "C",
+        "selected_choice": "C",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 5,
@@ -126,7 +216,25 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer correctly identifies that the nets caught many fish and almost broke, matching the main event of the nets beginning to break.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer correctly identifies that the nets caught many fish and almost broke, matching the main event of the nets beginning to break."
+      "llm_english_rationale": "The generated answer correctly identifies that the nets caught many fish and almost broke, matching the main event of the nets beginning to break.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "They caught many fish in the net, and the net was about to break",
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "The answer states the net was about to break, which matches the expected outcome.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "The answer states the net was about to break, which matches the expected outcome.",
+        "llm_required_slot": "result/outcome",
+        "llm_core_claim_expected": "Nets began to break.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 6,
@@ -150,7 +258,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "correct_choice": "D",
+        "selected_choice": "D",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 7,
@@ -172,7 +300,25 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer about wishing to be forgiven does not match the main action of wanting Master A to go away.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer about wishing to be forgiven does not match the main action of wanting Master A to go away."
+      "llm_english_rationale": "The generated answer about wishing to be forgiven does not match the main action of wanting Master A to go away.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "He hoped to receive forgiveness",
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "Hoping to receive forgiveness is not the same as wanting Master A to go away.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "Hoping to receive forgiveness is not the same as wanting Master A to go away.",
+        "llm_required_slot": "action/event",
+        "llm_core_claim_expected": "Go away from him.",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 8,
@@ -196,7 +342,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": true,
+        "evidence_quality": "direct",
+        "correct_choice": "B",
+        "selected_choice": "B",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 9,
@@ -218,7 +384,25 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer includes the key reason that Person 01 wants Master A to leave due to considering himself a sinner.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer includes the key reason that Person 01 wants Master A to leave due to considering himself a sinner."
+      "llm_english_rationale": "The generated answer includes the key reason that Person 01 wants Master A to leave due to considering himself a sinner.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Person 01 asked Request A to leave because he considered himself a sinner",
+        "generation_error": null,
+        "answer_confidence": 0.0,
+        "insufficient_information": true,
+        "evidence_quality": "none",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "It says he asked Master A to leave because he considered himself a sinner, matching the core reason.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "It says he asked Master A to leave because he considered himself a sinner, matching the core reason.",
+        "llm_required_slot": "reason/cause",
+        "llm_core_claim_expected": "Go away from him.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 10,
@@ -242,7 +426,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": true,
+        "evidence_quality": "direct",
+        "correct_choice": "B",
+        "selected_choice": "B",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 11,
@@ -264,7 +468,25 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer 'Preacher' does not match the main specified future job of 'Catching men'.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer 'Preacher' does not match the main specified future job of 'Catching men'."
+      "llm_english_rationale": "The generated answer 'Preacher' does not match the main specified future job of 'Catching men'.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "A preacher",
+        "generation_error": null,
+        "answer_confidence": 0.8,
+        "insufficient_information": false,
+        "evidence_quality": "indirect",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "A preacher is related but does not directly contain the specific future work of catching men.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "A preacher is related but does not directly contain the specific future work of catching men.",
+        "llm_required_slot": "statement/content",
+        "llm_core_claim_expected": "Catching men.",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 12,
@@ -288,7 +510,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.0,
+        "insufficient_information": true,
+        "evidence_quality": "direct",
+        "correct_choice": "D",
+        "selected_choice": "D",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 13,
@@ -310,7 +552,25 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer correctly states that Master A said the person's sins are forgiven, matching the core content.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer correctly states that Master A said the person's sins are forgiven, matching the core content."
+      "llm_english_rationale": "The generated answer correctly states that Master A said the person's sins are forgiven, matching the core content.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Your sins are forgiven",
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "The generated answer exactly matches the statement.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "The generated answer exactly matches the statement.",
+        "llm_required_slot": "statement/content",
+        "llm_core_claim_expected": "His sins are forgiven.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 14,
@@ -334,7 +594,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "correct_choice": "B",
+        "selected_choice": "B",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 15,
@@ -356,7 +636,25 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer maintains the core meaning that only God has authority to forgive sins, aligning with the standard answer.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer maintains the core meaning that only God has authority to forgive sins, aligning with the standard answer."
+      "llm_english_rationale": "The generated answer maintains the core meaning that only God has authority to forgive sins, aligning with the standard answer.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "They thought Jesus had no authority to forgive sins; only God can do that",
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "It gives the same reason in equivalent wording: only God can forgive sins.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "It gives the same reason in equivalent wording: only God can forgive sins.",
+        "llm_required_slot": "reason/cause",
+        "llm_core_claim_expected": "Only Most High A can forgive sins.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 16,
@@ -380,7 +678,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "correct_choice": "A",
+        "selected_choice": "A",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 17,
@@ -402,7 +720,25 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer directly matches the main authority Master A showed: forgiving sins.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer directly matches the main authority Master A showed: forgiving sins."
+      "llm_english_rationale": "The generated answer directly matches the main authority Master A showed: forgiving sins.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "The authority to forgive sins",
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "The answer directly states the authority shown was to forgive sins.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "The answer directly states the authority shown was to forgive sins.",
+        "llm_required_slot": "result/outcome",
+        "llm_core_claim_expected": "Authority to forgive sins.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 18,
@@ -426,7 +762,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "correct_choice": "D",
+        "selected_choice": "D",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 19,
@@ -448,7 +804,25 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer correctly captures the purpose of calling sinners to repentance.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer correctly captures the purpose of calling sinners to repentance."
+      "llm_english_rationale": "The generated answer correctly captures the purpose of calling sinners to repentance.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "To call sinners to repentance",
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "It exactly matches the purpose stated in the expected answer.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "It exactly matches the purpose stated in the expected answer.",
+        "llm_required_slot": "statement/content",
+        "llm_core_claim_expected": "Call sinners to repentance.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 20,
@@ -472,7 +846,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "correct_choice": "B",
+        "selected_choice": "B",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 21,
@@ -494,7 +888,25 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer implies the main timing of fasting corresponds to after Person F is taken away (when Jesus left them).",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer implies the main timing of fasting corresponds to after Person F is taken away (when Jesus left them)."
+      "llm_english_rationale": "The generated answer implies the main timing of fasting corresponds to after Person F is taken away (when Jesus left them).",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "When Jesus left them",
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "partial",
+        "llm_score": 0.5,
+        "llm_rationale": "It gives a related time reference, but 'when Jesus left them' is too vague and does not fully match the expected condition.",
+        "llm_english_label": "partial",
+        "llm_english_rationale": "It gives a related time reference, but 'when Jesus left them' is too vague and does not fully match the expected condition.",
+        "llm_required_slot": "time",
+        "llm_core_claim_expected": "After Person F is taken away.",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 22,
@@ -518,7 +930,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.8,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "correct_choice": "D",
+        "selected_choice": "D",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 23,
@@ -540,7 +972,25 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer describes the consequence of putting new wine in old wineskins, matching the core event of the wine bursting the wineskins.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer describes the consequence of putting new wine in old wineskins, matching the core event of the wine bursting the wineskins."
+      "llm_english_rationale": "The generated answer describes the consequence of putting new wine in old wineskins, matching the core event of the wine bursting the wineskins.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "The wine would spill out and the container would be damaged",
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "The answer preserves the core outcome that the container/wineskin will be damaged by the new wine.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "The answer preserves the core outcome that the container/wineskin will be damaged by the new wine.",
+        "llm_required_slot": "result/outcome",
+        "llm_core_claim_expected": "Wine will burst wineskins.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 24,
@@ -564,7 +1014,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "correct_choice": "C",
+        "selected_choice": "C",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 25,
@@ -586,7 +1056,25 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer clearly states Person 01 wanted Master A to leave, matching the main point of the standard answer.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer clearly states Person 01 wanted Master A to leave, matching the main point of the standard answer."
+      "llm_english_rationale": "The generated answer clearly states Person 01 wanted Master A to leave, matching the main point of the standard answer.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Person 01 knelt and begged Master A to leave",
+        "generation_error": null,
+        "answer_confidence": 0.0,
+        "insufficient_information": true,
+        "evidence_quality": "none",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "It says he begged Master A to leave, which matches the expected action.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "It says he begged Master A to leave, which matches the expected action.",
+        "llm_required_slot": "action/event",
+        "llm_core_claim_expected": "Go away from him.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 26,
@@ -610,7 +1098,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "correct_choice": "B",
+        "selected_choice": "B",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     }
   ]
 }

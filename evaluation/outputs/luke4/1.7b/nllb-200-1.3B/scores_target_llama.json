@@ -5,7 +5,21 @@
     "mcq_correct": 19,
     "open_count": 22,
     "open_embedding_mean": 0.3689756820536555,
-    "open_llm_score_mean": 0.5454545454545454
+    "open_llm_score_mean": 0.5454545454545454,
+    "core_claim": {
+      "total": 44,
+      "mcq_count": 22,
+      "mcq_correct": 19,
+      "open_count": 22,
+      "open_embedding_mean": null,
+      "open_llm_score_mean": 0.4090909090909091,
+      "answer_confidence_mean": null,
+      "insufficient_information_rate": null,
+      "direct_evidence_rate": null,
+      "evidence_supported_rate": null,
+      "wrong_high_confidence_count": 0,
+      "correct_low_confidence_count": 0
+    }
   },
   "items": [
     {
@@ -24,7 +38,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer correctly identifies the Spirit A as leading Person F into Place 01, matching the main elements of the standard answer.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer correctly identifies the Spirit A as leading Person F into Place 01, matching the main elements of the standard answer."
+      "llm_english_rationale": "The generated answer correctly identifies the Spirit A as leading Person F into Place 01, matching the main elements of the standard answer.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Spirit A",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "The generated answer names Spirit A, matching the expected person/group.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "The generated answer names Spirit A, matching the expected person/group.",
+        "llm_required_slot": "person/group",
+        "llm_core_claim_expected": "The Spirit A.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 2,
@@ -44,7 +73,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "A",
+        "selected_choice": "A",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 3,
@@ -62,7 +108,22 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer states 'four days' which contradicts the standard answer '40 days'.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer states 'four days' which contradicts the standard answer '40 days'."
+      "llm_english_rationale": "The generated answer states 'four days' which contradicts the standard answer '40 days'.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Four days",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "It says four days, which contradicts the expected time of 40 days.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "It says four days, which contradicts the expected time of 40 days.",
+        "llm_required_slot": "time",
+        "llm_core_claim_expected": "40 days",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 4,
@@ -82,7 +143,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "B",
+        "selected_choice": "B",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 5,
@@ -100,7 +178,22 @@
       "llm_score": 0.0,
       "llm_rationale": "The standard answer is 'Turn stones into bread' but the generated answer incorrectly mentions fasting for forty days.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The standard answer is 'Turn stones into bread' but the generated answer incorrectly mentions fasting for forty days."
+      "llm_english_rationale": "The standard answer is 'Turn stones into bread' but the generated answer incorrectly mentions fasting for forty days.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Person 01 challenged Person F to fast for forty days until starving to death.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "The response describes fasting, not the requested action of turning stones into bread.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "The response describes fasting, not the requested action of turning stones into bread.",
+        "llm_required_slot": "action/event",
+        "llm_core_claim_expected": "Turn stones into bread",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 6,
@@ -120,7 +213,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "B",
+        "selected_choice": "B",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 7,
@@ -138,7 +248,22 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer 'Person F answered yes' does not contain the correct response from Person F given in the standard answer.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer 'Person F answered yes' does not contain the correct response from Person F given in the standard answer."
+      "llm_english_rationale": "The generated answer 'Person F answered yes' does not contain the correct response from Person F given in the standard answer.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Person F answered, \"Yes\"",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "The answer 'Yes' does not contain the expected statement.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "The answer 'Yes' does not contain the expected statement.",
+        "llm_required_slot": "statement/content",
+        "llm_core_claim_expected": "Man shall not live on bread alone.",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 8,
@@ -158,7 +283,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "B",
+        "selected_choice": "B",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 9,
@@ -176,7 +318,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer includes 'all the kingdoms of the world from a high place,' matching the standard answer's main content.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer includes 'all the kingdoms of the world from a high place,' matching the standard answer's main content."
+      "llm_english_rationale": "The generated answer includes 'all the kingdoms of the world from a high place,' matching the standard answer's main content.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Person 01 showed all the kingdoms of the world",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "It states that all the kingdoms of the world were shown, matching the expected content.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "It states that all the kingdoms of the world were shown, matching the expected content.",
+        "llm_required_slot": "object/place",
+        "llm_core_claim_expected": "All kingdoms of the world",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 10,
@@ -196,7 +353,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "B",
+        "selected_choice": "B",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 11,
@@ -214,7 +388,22 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer states Person 01 wanted Person F to be thrown down, which contradicts the standard answer of bowing down before him.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer states Person 01 wanted Person F to be thrown down, which contradicts the standard answer of bowing down before him."
+      "llm_english_rationale": "The generated answer states Person 01 wanted Person F to be thrown down, which contradicts the standard answer of bowing down before him.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Person 01 wanted Person F to throw himself down from here",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "Throwing himself down is different from bowing down before him.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "Throwing himself down is different from bowing down before him.",
+        "llm_required_slot": "action/event",
+        "llm_core_claim_expected": "Bow down before him",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 12,
@@ -234,7 +423,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "B",
+        "selected_choice": "A",
+        "direct_correct": false,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 13,
@@ -252,7 +458,22 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer says Person 01 told Person F to be placed on top of Place A, which contradicts the standard instruction to jump down.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer says Person 01 told Person F to be placed on top of Place A, which contradicts the standard instruction to jump down."
+      "llm_english_rationale": "The generated answer says Person 01 told Person F to be placed on top of Place A, which contradicts the standard instruction to jump down.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Person 01 told Person F to stand at the top of Place A.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "The generated answer says stand at the top, which is the opposite of jumping down.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "The generated answer says stand at the top, which is the opposite of jumping down.",
+        "llm_required_slot": "action/event",
+        "llm_core_claim_expected": "Jump down from there",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 14,
@@ -272,7 +493,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "C",
+        "selected_choice": "C",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 15,
@@ -290,7 +528,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer identifies that Person F read a scroll of a prophet at Place 03, matching the standard answer about reading the scroll of Prophet Isaiah.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer identifies that Person F read a scroll of a prophet at Place 03, matching the standard answer about reading the scroll of Prophet Isaiah."
+      "llm_english_rationale": "The generated answer identifies that Person F read a scroll of a prophet at Place 03, matching the standard answer about reading the scroll of Prophet Isaiah.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "the scroll of Prophet Person 02",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "It mentions a different scroll/person, not Isaiah.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "It mentions a different scroll/person, not Isaiah.",
+        "llm_required_slot": "object/place",
+        "llm_core_claim_expected": "Prophet Isaiah",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 16,
@@ -310,7 +563,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "A",
+        "selected_choice": "A",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 17,
@@ -328,7 +598,22 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer about fulfilling a wish to 'heal myself' does not match the standard answer about scripture from Isaiah.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer about fulfilling a wish to 'heal myself' does not match the standard answer about scripture from Isaiah."
+      "llm_english_rationale": "The generated answer about fulfilling a wish to 'heal myself' does not match the standard answer about scripture from Isaiah.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Person F said that day fulfilled the wish to \"heal oneself.\"",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "The response about healing oneself does not convey fulfillment of Isaiah scripture.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "The response about healing oneself does not convey fulfillment of Isaiah scripture.",
+        "llm_required_slot": "statement/content",
+        "llm_core_claim_expected": "Scripture from Isaiah",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 18,
@@ -348,7 +633,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "D",
+        "selected_choice": "A",
+        "direct_correct": false,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 19,
@@ -366,7 +668,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer that the prophet was unwelcome aligns with the standard answer that no prophet is accepted.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer that the prophet was unwelcome aligns with the standard answer that no prophet is accepted."
+      "llm_english_rationale": "The generated answer that the prophet was unwelcome aligns with the standard answer that no prophet is accepted.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "The prophet was not welcomed in his own country",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "The generated answer clearly says the prophet was not welcomed in his own country, which matches the core claim.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "The generated answer clearly says the prophet was not welcomed in his own country, which matches the core claim.",
+        "llm_required_slot": "statement/content",
+        "llm_core_claim_expected": "No prophet is accepted",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 20,
@@ -386,7 +703,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "A",
+        "selected_choice": "A",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 21,
@@ -404,7 +738,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer describes people being angry and expelling him, which corresponds with being filled with rage.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer describes people being angry and expelling him, which corresponds with being filled with rage."
+      "llm_english_rationale": "The generated answer describes people being angry and expelling him, which corresponds with being filled with rage.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "People were angry at Person F's example and drove him out.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "partial",
+        "llm_score": 0.5,
+        "llm_rationale": "It includes anger and driving him out, but does not clearly state the expected outcome 'filled with rage'.",
+        "llm_english_label": "partial",
+        "llm_english_rationale": "It includes anger and driving him out, but does not clearly state the expected outcome 'filled with rage'.",
+        "llm_required_slot": "result/outcome",
+        "llm_core_claim_expected": "Filled with rage",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 22,
@@ -424,7 +773,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "C",
+        "selected_choice": "C",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 23,
@@ -442,7 +808,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer about attempting to kill Person F by pushing him down a mountain corresponds with throwing him off a cliff.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer about attempting to kill Person F by pushing him down a mountain corresponds with throwing him off a cliff."
+      "llm_english_rationale": "The generated answer about attempting to kill Person F by pushing him down a mountain corresponds with throwing him off a cliff.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "People took Person F to the top of a hill and tried to kill him by throwing him down.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "It says they tried to kill him by throwing him down from the hill, which matches throwing him off the cliff.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "It says they tried to kill him by throwing him down from the hill, which matches throwing him off the cliff.",
+        "llm_required_slot": "action/event",
+        "llm_core_claim_expected": "Throw him off the cliff",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 24,
@@ -462,7 +843,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "D",
+        "selected_choice": "D",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 25,
@@ -480,7 +878,22 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer says Person F avoided being killed by expelling spirits, differing from the standard answer that he walked through their midst.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer says Person F avoided being killed by expelling spirits, differing from the standard answer that he walked through their midst."
+      "llm_english_rationale": "The generated answer says Person F avoided being killed by expelling spirits, differing from the standard answer that he walked through their midst.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Person F avoided being killed by casting out the unclean entity.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "Casting out an unclean entity is unrelated to escaping by walking through the crowd.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "Casting out an unclean entity is unrelated to escaping by walking through the crowd.",
+        "llm_required_slot": "action/event",
+        "llm_core_claim_expected": "Walks through their midst",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 26,
@@ -500,7 +913,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "A",
+        "selected_choice": "A",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 27,
@@ -518,7 +948,22 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer about being possessed by a demon contradicts the standard answer that Person F is the Holy One.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer about being possessed by a demon contradicts the standard answer that Person F is the Holy One."
+      "llm_english_rationale": "The generated answer about being possessed by a demon contradicts the standard answer that Person F is the Holy One.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Village A knew Person F was possessed by a demon",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "The generated answer says Person F was possessed by a demon, which contradicts the expected claim.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "The generated answer says Person F was possessed by a demon, which contradicts the expected claim.",
+        "llm_required_slot": "statement/content",
+        "llm_core_claim_expected": "Person F is the Holy One",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 28,
@@ -538,7 +983,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "D",
+        "selected_choice": "D",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 29,
@@ -556,7 +1018,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer that people were confused and intrigued after the expulsion aligns with them being astonished.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer that people were confused and intrigued after the expulsion aligns with them being astonished."
+      "llm_english_rationale": "The generated answer that people were confused and intrigued after the expulsion aligns with them being astonished.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "The people were alarmed and said to one another, \"What kind of word is this?\"",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "partial",
+        "llm_score": 0.5,
+        "llm_rationale": "The reaction is close but different: being alarmed and asking a question is not the same as astonishment.",
+        "llm_english_label": "partial",
+        "llm_english_rationale": "The reaction is close but different: being alarmed and asking a question is not the same as astonishment.",
+        "llm_required_slot": "result/outcome",
+        "llm_core_claim_expected": "They were astonished",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 30,
@@ -576,7 +1053,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "D",
+        "selected_choice": "D",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 31,
@@ -594,7 +1088,22 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer about people asking for healing after expelling demons does not match the standard answer that focuses on astonishment.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer about people asking for healing after expelling demons does not match the standard answer that focuses on astonishment."
+      "llm_english_rationale": "The generated answer about people asking for healing after expelling demons does not match the standard answer that focuses on astonishment.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "The people asked him to heal his wife",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "It answers with asking to heal his wife, which is a different event and not the reaction asked for.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "It answers with asking to heal his wife, which is a different event and not the reaction asked for.",
+        "llm_required_slot": "result/outcome",
+        "llm_core_claim_expected": "They were astonished",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 32,
@@ -614,7 +1123,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "D",
+        "selected_choice": "D",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 33,
@@ -632,7 +1158,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer includes healing patients by laying on hands, matching the core of the standard answer.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer includes healing patients by laying on hands, matching the core of the standard answer."
+      "llm_english_rationale": "The generated answer includes healing patients by laying on hands, matching the core of the standard answer.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Person F healed the sick by laying hands on them.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "The answer directly states that he healed the sick by laying hands on them.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "The answer directly states that he healed the sick by laying hands on them.",
+        "llm_required_slot": "action/event",
+        "llm_core_claim_expected": "Lays hands and heals",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 34,
@@ -652,7 +1193,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "D",
+        "selected_choice": "D",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 35,
@@ -670,7 +1228,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer quotes the expelled spirit referring to the Most High, aligning with the standard answer identifying Person F as Son of Most High.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer quotes the expelled spirit referring to the Most High, aligning with the standard answer identifying Person F as Son of Most High."
+      "llm_english_rationale": "The generated answer quotes the expelled spirit referring to the Most High, aligning with the standard answer identifying Person F as Son of Most High.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "He said, \"I must preach the gospel of the kingdom of Most High A in other cities, because I was sent for this purpose.\"",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "The generated quote is about preaching the gospel, not the demon's statement identifying him.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "The generated quote is about preaching the gospel, not the demon's statement identifying him.",
+        "llm_required_slot": "statement/content",
+        "llm_core_claim_expected": "Person F is the Son of Most High A",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 36,
@@ -690,7 +1263,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "B",
+        "selected_choice": "B",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 37,
@@ -708,7 +1298,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer mentions the spirit was silenced because it knew Person F was Christ, matching the standard answer.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer mentions the spirit was silenced because it knew Person F was Christ, matching the standard answer."
+      "llm_english_rationale": "The generated answer mentions the spirit was silenced because it knew Person F was Christ, matching the standard answer.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "The spirit knew he was the Christ, so it was rebuked and could not speak.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "It says the spirit knew he was the Christ, which matches the identity claim.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "It says the spirit knew he was the Christ, which matches the identity claim.",
+        "llm_required_slot": "reason/cause",
+        "llm_core_claim_expected": "Person F is the Son of Most High A",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 38,
@@ -728,7 +1333,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "B",
+        "selected_choice": "B",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 39,
@@ -746,7 +1368,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer that Person F was sent to preach the gospel aligns with the standard answer.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer that Person F was sent to preach the gospel aligns with the standard answer."
+      "llm_english_rationale": "The generated answer that Person F was sent to preach the gospel aligns with the standard answer.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Person F was sent to preach the gospel in other cities.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "The generated answer explicitly says he was sent to preach the gospel.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "The generated answer explicitly says he was sent to preach the gospel.",
+        "llm_required_slot": "reason/cause",
+        "llm_core_claim_expected": "To preach the gospel",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 40,
@@ -766,7 +1403,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "D",
+        "selected_choice": "D",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 41,
@@ -784,7 +1438,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer accurately conveys the reaction of people being amazed, which matches the core concept of 'astonished' in the standard answer.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer accurately conveys the reaction of people being amazed, which matches the core concept of 'astonished' in the standard answer."
+      "llm_english_rationale": "The generated answer accurately conveys the reaction of people being amazed, which matches the core concept of 'astonished' in the standard answer.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Everyone was amazed, and said to one another, \"What kind of words are these? For with authority and power he commands the unclean __Spirit A__, and they come out!\"",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "The generated answer clearly states that everyone was amazed, which matches the expected reaction of being astonished.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "The generated answer clearly states that everyone was amazed, which matches the expected reaction of being astonished.",
+        "llm_required_slot": "result/outcome",
+        "llm_core_claim_expected": "They were astonished.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 42,
@@ -804,7 +1473,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "D",
+        "selected_choice": "D",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 43,
@@ -822,7 +1508,22 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer does not include or relate to the core statement about 'Person F is the Son of Most High A'; instead, it mentions reproaching fire, which is unrelated.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer does not include or relate to the core statement about 'Person F is the Son of Most High A'; instead, it mentions reproaching fire, which is unrelated."
+      "llm_english_rationale": "The generated answer does not include or relate to the core statement about 'Person F is the Son of Most High A'; instead, it mentions reproaching fire, which is unrelated.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Person F rebuked the burn",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "The question asks what the demon said when being expelled, so the required slot is the statement/content of the demon's words. The generated answer says 'Person F rebuked the burn,' which describes an action by Person F and does not contain the expected claim that Person F is the Son of Most High A.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "The question asks what the demon said when being expelled, so the required slot is the statement/content of the demon's words. The generated answer says 'Person F rebuked the burn,' which describes an action by Person F and does not contain the expected claim that Person F is the Son of Most High A.",
+        "llm_required_slot": "statement/content",
+        "llm_core_claim_expected": "Person F is the Son of Most High A.",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 44,
@@ -842,7 +1543,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "B",
+        "selected_choice": "C",
+        "direct_correct": false,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     }
   ]
 }

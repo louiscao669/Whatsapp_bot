@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Core-Claim Re-scoring — Old vs New Comparison</title>
+<style>
+  :root{--good:#1a7f37;--bad:#b3261e;--flat:#8a6d00;--line:#e2e2e2;--ink:#1a1a1a;--mut:#666;}
+  body{font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--ink);
+       max-width:1080px;margin:32px auto;padding:0 20px;line-height:1.5;}
+  h1{font-size:24px;margin-bottom:4px}
+  h2{font-size:18px;margin-top:34px;border-bottom:2px solid var(--line);padding-bottom:6px}
+  p.sub{color:var(--mut);margin-top:0}
+  table{border-collapse:collapse;width:100%;margin:12px 0;font-size:14px}
+  th,td{border:1px solid var(--line);padding:6px 9px;text-align:right}
+  th:first-child,td:first-child{text-align:left}
+  th{background:#f6f6f6}
+  .pos{color:var(--good);font-weight:600}
+  .neg{color:var(--bad);font-weight:600}
+  .flat{color:var(--flat)}
+  .verdict{background:#f6f8fa;border-left:4px solid #0969da;padding:10px 14px;margin:10px 0;border-radius:4px}
+  .verdict b{color:#0969da}
+  .tag{display:inline-block;font-size:11px;padding:1px 7px;border-radius:10px;color:#fff;vertical-align:middle}
+  .t-hold{background:var(--good)} .t-shift{background:var(--flat)} .t-check{background:#0969da}
+  code{background:#f0f0f0;padding:1px 5px;border-radius:3px;font-size:13px}
+  ul{margin:6px 0}
+  a{color:#0969da}
+</style>
+</head>
+<body>
+<h1>Core-Claim Re-scoring: Old vs New</h1>
+<p class="sub">Every result below recomputes the pipeline against the <b>core-claim grading</b>
+(the newly rescored answers) and compares to the original top-level grading.
+Metric for accuracy = per-item correctness averaged per cell (MCQ = <code>direct_correct</code>,
+open = <code>llm_score</code>). Generated 2026-07-12.</p>
+
+<div class="verdict"><b>Headline:</b> Core-claim grading is <b>uniformly stricter on open (LLM-graded) questions and identical on MCQ</b>
+(MCQ correctness is deterministic, so it cannot change). Every <i>ranking / ordering</i> result is preserved;
+only <i>absolute levels</i> and open-question calibration move.</div>
+
+<h2>1 · IRT model ability (θ) &nbsp;<span class="tag t-shift">open shifts · mcq identical</span></h2>
+<table>
+<tr><th>q-type</th><th>model</th><th>old θ</th><th>new θ</th><th>Δθ</th><th>se</th></tr>
+<tr><td>open</td><td>llama 1b</td><td>−0.966</td><td>−1.046</td><td class="neg">−0.080</td><td>0.21</td></tr>
+<tr><td>open</td><td>qwen 1.5b</td><td>0.439</td><td>0.486</td><td class="pos">+0.046</td><td>0.23</td></tr>
+<tr><td>open</td><td>qwen 1.7b</td><td>0.598</td><td>0.949</td><td class="pos">+0.351</td><td>0.27</td></tr>
+<tr><td>mcq</td><td>llama 1b</td><td>0.278</td><td>0.278</td><td>0.000</td><td>0.22</td></tr>
+<tr><td>mcq</td><td>qwen 1.5b</td><td>0.875</td><td>0.875</td><td>0.000</td><td>0.26</td></tr>
+<tr><td>mcq</td><td>qwen 1.7b</td><td>1.671</td><td>1.671</td><td>0.000</td><td>0.34</td></tr>
+</table>
+<p>Ability <b>ladder stays monotonic</b> (1b &lt; 1.5b &lt; 1.7b) in both gradings. The only material move is
+qwen-1.7b on open (+0.35 logits): core-claim credits its open answers more relative to the anchor.
+<b>Deployment note:</b> open-side anchor offsets / re-zeroing must be refit; MCQ anchors are unchanged.</p>
+
+<h2>2 · Translation-method ranking &nbsp;<span class="tag t-hold">preserved · ρ=+0.98</span></h2>
+<table>
+<tr><th>method</th><th>old acc</th><th>old r</th><th>new acc</th><th>new r</th><th>Δacc</th></tr>
+<tr><td>google_word_by_word</td><td>0.527</td><td>1</td><td>0.503</td><td>1</td><td class="neg">−0.024</td></tr>
+<tr><td>mBART-50</td><td>0.570</td><td>2</td><td>0.541</td><td>2</td><td class="neg">−0.029</td></tr>
+<tr><td>helsinki</td><td>0.586</td><td>3</td><td>0.553</td><td>3</td><td class="neg">−0.033</td></tr>
+<tr><td>nllb-200-distilled-600M</td><td>0.611</td><td>4</td><td>0.615</td><td>5</td><td class="pos">+0.003</td></tr>
+<tr><td>llm_prompt_low</td><td>0.631</td><td>5</td><td>0.611</td><td>4</td><td class="neg">−0.020</td></tr>
+<tr><td>llm_prompt_medium</td><td>0.650</td><td>6</td><td>0.620</td><td>6</td><td class="neg">−0.030</td></tr>
+<tr><td>nllb-200-1.3B</td><td>0.690</td><td>7</td><td>0.663</td><td>7</td><td class="neg">−0.027</td></tr>
+<tr><td>llm_prompt_high</td><td>0.724</td><td>8</td><td>0.709</td><td>8</td><td class="neg">−0.015</td></tr>
+</table>
+<p>Overall Spearman(old, new) = <b>+0.976</b>. Per-model: llama-1b +0.95, qwen-1.5b +1.00, qwen-1.7b +0.93.
+Only swap is nllb-distilled ↔ llm_prompt_low (ranks 4/5), which were within 0.02 of each other in both gradings.
+The ~19-pt quality spread the design relies on is intact.</p>
+
+<h2>3 · Defect dose-response (qwen-1.7b) &nbsp;<span class="tag t-hold">adequacy-vs-fluency pattern held</span></h2>
+<p class="sub">Defect variants were answered only for 1.7b, so this is the one model with a full defect grid.
+Slope = acc(max dose) − acc(0%).</p>
+<table>
+<tr><th>defect</th><th>acc@0 old/new</th><th>acc@max old/new</th><th>slope old</th><th>slope new</th><th>type</th></tr>
+<tr><td>omission</td><td>0.88 / 0.83</td><td>0.72 / 0.69</td><td class="neg">−0.157</td><td class="neg">−0.140</td><td>adequacy</td></tr>
+<tr><td>mistranslation</td><td>0.85 / 0.81</td><td>0.71 / 0.65</td><td class="neg">−0.138</td><td class="neg">−0.167</td><td>adequacy</td></tr>
+<tr><td>addition</td><td>0.84 / 0.80</td><td>0.77 / 0.74</td><td class="neg">−0.076</td><td class="neg">−0.058</td><td>mixed</td></tr>
+<tr><td>grammar</td><td>0.81 / 0.79</td><td>0.79 / 0.77</td><td class="flat">−0.013</td><td class="flat">−0.018</td><td>fluency</td></tr>
+<tr><td>inconsistency</td><td>0.78 / 0.76</td><td>0.81 / 0.76</td><td class="flat">+0.024</td><td class="flat">−0.003</td><td>fluency</td></tr>
+</table>
+<p>The core empirical claim — <b>meaning-destroying defects move the QA proxy, stylistic ones don't</b> — survives
+re-grading. Omission and mistranslation stay the steep, usable knobs; grammar/inconsistency stay flat.</p>
+
+<h2>4 · Ability separability (v4) &nbsp;<span class="tag t-hold">verdict unchanged</span></h2>
+<table>
+<tr><th>cross-model method-rank ρ</th><th>llama↔1.5b</th><th>llama↔1.7b</th><th>1.5b↔1.7b</th></tr>
+<tr><td>OLD</td><td>+0.38</td><td>+0.93</td><td>+0.50</td></tr>
+<tr><td>NEW</td><td>+0.38</td><td>+0.83</td><td>+0.60</td></tr>
+</table>
+<p>Same story: strong llama-1b ↔ qwen-1.7b agreement, qwen-1.5b the weaker/disagreeing link.
+The v4 "partial-fail / respondent×translation interaction" verdict is <b>not overturned</b>.</p>
+
+<h2>5 · Adaptive-selection input — defect-family slopes λ_g &nbsp;<span class="tag t-hold">ordering preserved</span></h2>
+<table>
+<tr><th>defect family</th><th>old λ</th><th>new λ</th></tr>
+<tr><td>mistranslation</td><td>0.357</td><td>0.330</td></tr>
+<tr><td>omission</td><td>0.300</td><td>0.288</td></tr>
+<tr><td>addition:adversarial</td><td>0.264</td><td>0.174</td></tr>
+<tr><td>addition:bad</td><td>0.097</td><td>0.060</td></tr>
+<tr><td>awkward</td><td>0.072</td><td>0.003</td></tr>
+<tr><td>grammar</td><td>0.068</td><td>0.069</td></tr>
+<tr><td>addition:neutral</td><td>0.058</td><td>0.047</td></tr>
+<tr><td>inconsistency:name</td><td>−0.051</td><td>−0.020</td></tr>
+<tr><td>inconsistency:style</td><td>−0.127</td><td>−0.029</td></tr>
+</table>
+<p>The λ_g model the adaptive sim adopted keeps its shape: adequacy families on top, fluency families ≈ 0.
+Slight compression (adversarial-addition and awkward drop toward the fluency floor). H3 conclusions
+(adaptive savings, τ=0 within family, λ-gate pass) should hold; expect marginally smaller info-per-item.</p>
+
+<h2>Impact summary by experiment</h2>
+<div class="verdict"><span class="tag t-hold">HOLDS</span> <b>Method ranking / quality gradient</b> — ρ=0.98, spread intact. Reports rebuilt on new data.</div>
+<div class="verdict"><span class="tag t-hold">HOLDS</span> <b>Defect adequacy-vs-fluency (semireal V2 dose ordering)</b> — adequacy slopes still steep &amp; ordered, fluency flat.</div>
+<div class="verdict"><span class="tag t-hold">HOLDS</span> <b>Ability separability (V4)</b> — same cross-model agreement structure; 1.5b still the weak link.</div>
+<div class="verdict"><span class="tag t-hold">HOLDS</span> <b>Adaptive simulation (H3)</b> — λ_g family ordering preserved; magnitudes slightly compressed.</div>
+<div class="verdict"><span class="tag t-shift">SHIFTS</span> <b>IRT ability (open)</b> — qwen-1.7b +0.35 logits; open anchor offsets/re-zeroing must be refit. MCQ unchanged.</div>
+<div class="verdict"><span class="tag t-shift">SHIFTS</span> <b>Item sensitivity (method axis)</b> — global β 0.083 → <b>0.163</b> (≈2×): core-claim items discriminate translation quality more sharply. Strengthens the "response side is healthy" leg of the Step-2 additivity diagnosis (weak link remains the MQM defect vector, which is grading-independent).</div>
+<div class="verdict"><span class="tag t-check">RECOMPUTE-ON-DEMAND</span> <b>Step-2 additivity / burden bridge</b> — Δ is response-derived so it re-fits, but the FAIL/UNTESTED diagnosis pinned the weak link on the MQM vector (unchanged by grading). Qualitative verdict expected to stand; can rerun if you want the exact ρ.</div>
+
+<h2>Regenerated visualizations on the new data</h2>
+<ul>
+<li><a href="method_report_1.7b_coreclaim.html">method_report_1.7b_coreclaim.html</a> — per-method QA report, qwen-1.7b (new grading)</li>
+<li><a href="method_report_1.5b_coreclaim.html">method_report_1.5b_coreclaim.html</a> — per-method QA report, qwen-1.5b (new grading)</li>
+<li><a href="model_comparison_coreclaim.html">model_comparison_coreclaim.html</a> — 3-model answer comparison (new grading)</li>
+<li><a href="synthetic_perturbation_visualization_coreclaim.html">synthetic_perturbation_visualization_coreclaim.html</a> — defect dose-response viz (new grading)</li>
+<li><a href="quality_ability_grid_coreclaim/rank_stability_report.md">quality_ability_grid_coreclaim/</a> — method ranking × ability grid (new grading)</li>
+<li><code>s_item_method_coreclaim.csv</code>, <code>s_item_by_defect_coreclaim.csv</code>, <code>defect_dose_compare.csv</code> — raw recomputed tables</li>
+</ul>
+<p class="sub">Source data: shadow score tree at <code>evaluation/outputs_cc/</code> (642 cells, core-claim grading promoted to top level).
+Safe to delete after review; originals untouched, backup at
+<code>evaluation/outputs/_backup_scores_target_llama_20260712_210244.tar.gz</code>.</p>
+</body>
+</html>

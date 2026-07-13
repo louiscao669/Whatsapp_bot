@@ -5,7 +5,21 @@
     "mcq_correct": 12,
     "open_count": 13,
     "open_embedding_mean": 0.494313725010105,
-    "open_llm_score_mean": 0.6153846153846154
+    "open_llm_score_mean": 0.6153846153846154,
+    "core_claim": {
+      "total": 26,
+      "mcq_count": 13,
+      "mcq_correct": 12,
+      "open_count": 13,
+      "open_embedding_mean": null,
+      "open_llm_score_mean": 0.6153846153846154,
+      "answer_confidence_mean": null,
+      "insufficient_information_rate": null,
+      "direct_evidence_rate": null,
+      "evidence_supported_rate": null,
+      "wrong_high_confidence_count": 0,
+      "correct_low_confidence_count": 0
+    }
   },
   "items": [
     {
@@ -24,7 +38,22 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer states sprinkling water from the shore instead of taking the boat to deep water, which contradicts the main action.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer states sprinkling water from the shore instead of taking the boat to deep water, which contradicts the main action."
+      "llm_english_rationale": "The generated answer states sprinkling water from the shore instead of taking the boat to deep water, which contradicts the main action.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Master A instructed Person 01 to sprinkle some water from the shore.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "The generated answer says to sprinkle water from the shore, which is a different action and place than taking the boat to deep water.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "The generated answer says to sprinkle water from the shore, which is a different action and place than taking the boat to deep water.",
+        "llm_required_slot": "action/event",
+        "llm_core_claim_expected": "Take boat to deep water",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 2,
@@ -44,7 +73,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "A",
+        "selected_choice": "A",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 3,
@@ -62,7 +108,22 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer talks about teaching fishing and catching many fish, which is not equivalent to 'He let down the nets.'",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer talks about teaching fishing and catching many fish, which is not equivalent to 'He let down the nets.'"
+      "llm_english_rationale": "The generated answer talks about teaching fishing and catching many fish, which is not equivalent to 'He let down the nets.'",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Person 02 taught people to fish with a net and successfully caught a large number of fish.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "It describes teaching people to fish and catching many fish, not the specific action of letting down the nets despite getting nothing.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "It describes teaching people to fish and catching many fish, not the specific action of letting down the nets despite getting nothing.",
+        "llm_required_slot": "action/event",
+        "llm_core_claim_expected": "He let down the nets",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 4,
@@ -82,7 +143,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "C",
+        "selected_choice": "C",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 5,
@@ -100,7 +178,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer correctly identifies the main event as the fishing net beginning to tear, equivalent to nets breaking.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer correctly identifies the main event as the fishing net beginning to tear, equivalent to nets breaking."
+      "llm_english_rationale": "The generated answer correctly identifies the main event as the fishing net beginning to tear, equivalent to nets breaking.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "After they lowered the net, the fishing net began to break.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "The answer directly states that the fishing net began to break, matching the expected outcome.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "The answer directly states that the fishing net began to break, matching the expected outcome.",
+        "llm_required_slot": "result/outcome",
+        "llm_core_claim_expected": "Nets began to break",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 6,
@@ -120,7 +213,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "D",
+        "selected_choice": "D",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 7,
@@ -138,7 +248,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer contains the main idea that Person 01 wants Master A to keep away or go away.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer contains the main idea that Person 01 wants Master A to keep away or go away."
+      "llm_english_rationale": "The generated answer contains the main idea that Person 01 wants Master A to keep away or go away.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Person 01 hoped Master A would stay away from him.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "\"Stay away from him\" is a paraphrase of wanting Master A to go away/keep away.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "\"Stay away from him\" is a paraphrase of wanting Master A to go away/keep away.",
+        "llm_required_slot": "action/event",
+        "llm_core_claim_expected": "Go away from him",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 8,
@@ -158,7 +283,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "B",
+        "selected_choice": "B",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 9,
@@ -176,7 +318,22 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer incorrectly identifies Person 02 as the requester; also includes an unrelated reason about crime.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer incorrectly identifies Person 02 as the requester; also includes an unrelated reason about crime."
+      "llm_english_rationale": "The generated answer incorrectly identifies Person 02 as the requester; also includes an unrelated reason about crime.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Person 02 asked Master A to leave because of sin.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "The question asks why Person 01 wanted Master A to leave; the generated answer gives a different person and an unrelated reason about sin.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "The question asks why Person 01 wanted Master A to leave; the generated answer gives a different person and an unrelated reason about sin.",
+        "llm_required_slot": "reason/cause",
+        "llm_core_claim_expected": "Go away from him",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 10,
@@ -196,7 +353,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "B",
+        "selected_choice": "B",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 11,
@@ -214,7 +388,22 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer wrongly states the future work as 'fish for everyone' instead of 'catching men.'",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer wrongly states the future work as 'fish for everyone' instead of 'catching men.'"
+      "llm_english_rationale": "The generated answer wrongly states the future work as 'fish for everyone' instead of 'catching men.'",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Master A said Person 01's future work would be to fish for people.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "\"Fish for people\" is a valid paraphrase of catching men.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "\"Fish for people\" is a valid paraphrase of catching men.",
+        "llm_required_slot": "action/event",
+        "llm_core_claim_expected": "Catching men",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 12,
@@ -234,7 +423,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "D",
+        "selected_choice": "A",
+        "direct_correct": false,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 13,
@@ -252,7 +458,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer correctly states that the ruler said the man's sins are forgiven.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer correctly states that the ruler said the man's sins are forgiven."
+      "llm_english_rationale": "The generated answer correctly states that the ruler said the man's sins are forgiven.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Lord A said, “Friend, your sins are forgiven.”",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "The generated answer matches the statement that the man's sins are forgiven.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "The generated answer matches the statement that the man's sins are forgiven.",
+        "llm_required_slot": "statement/content",
+        "llm_core_claim_expected": "His sins are forgiven",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 14,
@@ -272,7 +493,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "B",
+        "selected_choice": "B",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 15,
@@ -290,7 +528,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer captures the core reason that only God can forgive sins, making the words blasphemous.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer captures the core reason that only God can forgive sins, making the words blasphemous."
+      "llm_english_rationale": "The generated answer captures the core reason that only God can forgive sins, making the words blasphemous.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "The scribes thought Master A's words were blasphemous because their faith held that only God could forgive sins, and Master A's words seemed insincere.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "It includes the core reason that only God can forgive sins, which is the expected claim.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "It includes the core reason that only God can forgive sins, which is the expected claim.",
+        "llm_required_slot": "reason/cause",
+        "llm_core_claim_expected": "Only Most High A can forgive sins",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 16,
@@ -310,7 +563,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "A",
+        "selected_choice": "A",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 17,
@@ -328,7 +598,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer correctly identifies the authority demonstrated as the authority to forgive sins.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer correctly identifies the authority demonstrated as the authority to forgive sins."
+      "llm_english_rationale": "The generated answer correctly identifies the authority demonstrated as the authority to forgive sins.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Esa showed authority to forgive sins.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "The answer states that authority to forgive sins was shown, matching the expected claim.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "The answer states that authority to forgive sins was shown, matching the expected claim.",
+        "llm_required_slot": "statement/content",
+        "llm_core_claim_expected": "Authority to forgive sins",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 18,
@@ -348,7 +633,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "D",
+        "selected_choice": "D",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 19,
@@ -366,7 +668,22 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer wrongly states that Master A came to repent, omitting the correct core purpose of calling sinners to repentance.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer wrongly states that Master A came to repent, omitting the correct core purpose of calling sinners to repentance."
+      "llm_english_rationale": "The generated answer wrongly states that Master A came to repent, omitting the correct core purpose of calling sinners to repentance.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Master A came to repent.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "\"Came to repent\" is not the same as coming to call sinners to repentance; it misses the core purpose.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "\"Came to repent\" is not the same as coming to call sinners to repentance; it misses the core purpose.",
+        "llm_required_slot": "action/event",
+        "llm_core_claim_expected": "Call sinners to repentance",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 20,
@@ -386,7 +703,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "B",
+        "selected_choice": "B",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 21,
@@ -404,7 +738,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer matches the condition when the disciples fasted after Title 01 (Person F) was taken away.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer matches the condition when the disciples fasted after Title 01 (Person F) was taken away."
+      "llm_english_rationale": "The generated answer matches the condition when the disciples fasted after Title 01 (Person F) was taken away.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "When Title 01 is taken away.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "partial",
+        "llm_score": 0.5,
+        "llm_rationale": "It gives a similar time frame but substitutes an unrelated title/name and does not clearly preserve the expected meaning.",
+        "llm_english_label": "partial",
+        "llm_english_rationale": "It gives a similar time frame but substitutes an unrelated title/name and does not clearly preserve the expected meaning.",
+        "llm_required_slot": "time",
+        "llm_core_claim_expected": "After Person F is taken away",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 22,
@@ -424,7 +773,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "D",
+        "selected_choice": "D",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 23,
@@ -442,7 +808,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer accurately describes that new wine will burst old wineskins.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer accurately describes that new wine will burst old wineskins."
+      "llm_english_rationale": "The generated answer accurately describes that new wine will burst old wineskins.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "The new wine will burst, and the old wine will be destroyed.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "partial",
+        "llm_score": 0.5,
+        "llm_rationale": "It captures that the wine will burst, but it is incomplete because it does not clearly state the wineskins bursting and adds an odd claim about old wine being destroyed.",
+        "llm_english_label": "partial",
+        "llm_english_rationale": "It captures that the wine will burst, but it is incomplete because it does not clearly state the wineskins bursting and adds an odd claim about old wine being destroyed.",
+        "llm_required_slot": "result/outcome",
+        "llm_core_claim_expected": "Wine will burst wineskins",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 24,
@@ -462,7 +843,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "C",
+        "selected_choice": "C",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 25,
@@ -480,7 +878,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer conveys the main request for Master A to stay/go away from Person 01.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer conveys the main request for Master A to stay/go away from Person 01."
+      "llm_english_rationale": "The generated answer conveys the main request for Master A to stay/go away from Person 01.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Person 01 wanted Master A to stay away from him.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "\"Wanted Master A to stay away from him\" matches the expected meaning.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "\"Wanted Master A to stay away from him\" matches the expected meaning.",
+        "llm_required_slot": "action/event",
+        "llm_core_claim_expected": "Go away from him",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 26,
@@ -500,7 +913,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "B",
+        "selected_choice": "B",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     }
   ]
 }

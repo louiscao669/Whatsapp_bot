@@ -5,7 +5,21 @@
     "mcq_correct": 2,
     "open_count": 8,
     "open_embedding_mean": 0.3027387239848825,
-    "open_llm_score_mean": 0.25
+    "open_llm_score_mean": 0.25,
+    "core_claim": {
+      "total": 16,
+      "mcq_count": 8,
+      "mcq_correct": 2,
+      "open_count": 8,
+      "open_embedding_mean": null,
+      "open_llm_score_mean": 0.375,
+      "answer_confidence_mean": null,
+      "insufficient_information_rate": null,
+      "direct_evidence_rate": null,
+      "evidence_supported_rate": null,
+      "wrong_high_confidence_count": 0,
+      "correct_low_confidence_count": 0
+    }
   },
   "items": [
     {
@@ -24,7 +38,22 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer does not mention picking, rubbing, or eating grain, which is the main action needed to answer the question, instead referring to going to the synagogue to teach and being hungry.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer does not mention picking, rubbing, or eating grain, which is the main action needed to answer the question, instead referring to going to the synagogue to teach and being hungry."
+      "llm_english_rationale": "The generated answer does not mention picking, rubbing, or eating grain, which is the main action needed to answer the question, instead referring to going to the synagogue to teach and being hungry.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "1. He goes to the synagogue and teaches on the Sabbath.\n2. On the Sabbath, he and his companions are hungry.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "The generated answer talks about synagogue teaching and hunger, not the disciples' Sabbath actions.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "The generated answer talks about synagogue teaching and hunger, not the disciples' Sabbath actions.",
+        "llm_required_slot": "action/event",
+        "llm_core_claim_expected": "People pick, rub, and eat grain on the Sabbath.",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 2,
@@ -44,7 +73,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "C",
+        "selected_choice": "D",
+        "direct_correct": false,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 3,
@@ -62,7 +108,22 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer changes the title from 'Master' to 'King' and the name from 'A' to 'Jia', which contradicts the standard answer's core details.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer changes the title from 'Master' to 'King' and the name from 'A' to 'Jia', which contradicts the standard answer's core details."
+      "llm_english_rationale": "The generated answer changes the title from 'Master' to 'King' and the name from 'A' to 'Jia', which contradicts the standard answer's core details.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "King A claimed the title \"Lord of the Sabbath\" for himself.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "It states the same title, 'Lord of the Sabbath,' which matches the expected claim.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "It states the same title, 'Lord of the Sabbath,' which matches the expected claim.",
+        "llm_required_slot": "statement/content",
+        "llm_core_claim_expected": "Master/Lord of the Sabbath.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 4,
@@ -82,7 +143,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "B",
+        "selected_choice": "A",
+        "direct_correct": false,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 5,
@@ -100,7 +178,22 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer does not mention the main reason given in the standard answer, which is the great reward in heaven; instead, it focuses on worldly benefits unrelated to the original reason.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer does not mention the main reason given in the standard answer, which is the great reward in heaven; instead, it focuses on worldly benefits unrelated to the original reason."
+      "llm_english_rationale": "The generated answer does not mention the main reason given in the standard answer, which is the great reward in heaven; instead, it focuses on worldly benefits unrelated to the original reason.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Blessed people will be rich, beautiful, and benefited.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "The answer gives unrelated blessings like being rich or beautiful, not the reason tied to a heavenly reward.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "The answer gives unrelated blessings like being rich or beautiful, not the reason tied to a heavenly reward.",
+        "llm_required_slot": "reason/cause",
+        "llm_core_claim_expected": "People should rejoice because of a great reward in heaven.",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 6,
@@ -120,7 +213,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "A",
+        "selected_choice": null,
+        "direct_correct": false,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 7,
@@ -138,7 +248,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer contains the core action of loving enemies, which aligns with the key message of loving and doing good to enemies.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer contains the core action of loving enemies, which aligns with the key message of loving and doing good to enemies."
+      "llm_english_rationale": "The generated answer contains the core action of loving enemies, which aligns with the key message of loving and doing good to enemies.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Love your enemies.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "'Love your enemies' matches the core command; it captures the required action toward enemies.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "'Love your enemies' matches the core command; it captures the required action toward enemies.",
+        "llm_required_slot": "action/event",
+        "llm_core_claim_expected": "Love and do good to enemies.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 8,
@@ -158,7 +283,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "C",
+        "selected_choice": null,
+        "direct_correct": false,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 9,
@@ -176,7 +318,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer conveys the kindness and mercy of the Most High through actions and attributes, which aligns with the standard answer's description of His attitude as kind and merciful.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer conveys the kindness and mercy of the Most High through actions and attributes, which aligns with the standard answer's description of His attitude as kind and merciful."
+      "llm_english_rationale": "The generated answer conveys the kindness and mercy of the Most High through actions and attributes, which aligns with the standard answer's description of His attitude as kind and merciful.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Love your enemies, do good to them, and lend to them without expecting anything in return. Then your reward will be great, and you will be children of the Honored One, because he is kind to the ungrateful and evil.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "The answer explicitly says he is kind to the ungrateful and evil, which conveys the expected kindness and mercy.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "The answer explicitly says he is kind to the ungrateful and evil, which conveys the expected kindness and mercy.",
+        "llm_required_slot": "statement/content",
+        "llm_core_claim_expected": "The Most High is kind and merciful.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 10,
@@ -196,7 +353,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "D",
+        "selected_choice": "D",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 11,
@@ -214,7 +388,22 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer does not mention removing the log or any equivalent action necessary before removing the eye's speck, which is the core answer.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer does not mention removing the log or any equivalent action necessary before removing the eye's speck, which is the core answer."
+      "llm_english_rationale": "The generated answer does not mention removing the log or any equivalent action necessary before removing the eye's speck, which is the core answer.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "A bad tree bears bad fruit; a bad tree does not bear good fruit.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "It discusses good/bad trees and fruit, not the instruction to remove the log first.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "It discusses good/bad trees and fruit, not the instruction to remove the log first.",
+        "llm_required_slot": "action/event",
+        "llm_core_claim_expected": "Remove the log before removing the speck.",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 12,
@@ -234,7 +423,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "D",
+        "selected_choice": null,
+        "direct_correct": false,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 13,
@@ -252,7 +458,22 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer does not mention the person who builds on the rock, which is the main object needed to answer the question.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer does not mention the person who builds on the rock, which is the main object needed to answer the question."
+      "llm_english_rationale": "The generated answer does not mention the person who builds on the rock, which is the main object needed to answer the question.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Why do you call me, Master A, Master A?",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "The response is a rhetorical question and does not identify the person who builds on rock.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "The response is a rhetorical question and does not identify the person who builds on rock.",
+        "llm_required_slot": "person/group",
+        "llm_core_claim_expected": "The one who hears and does is like the person on the rock.",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 14,
@@ -272,7 +493,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "D",
+        "selected_choice": null,
+        "direct_correct": false,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 15,
@@ -290,7 +528,22 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer 'They are builders' does not identify who is like a person building without a foundation; it lacks the key element of hearing and disobeying that the standard answer contains.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer 'They are builders' does not identify who is like a person building without a foundation; it lacks the key element of hearing and disobeying that the standard answer contains."
+      "llm_english_rationale": "The generated answer 'They are builders' does not identify who is like a person building without a foundation; it lacks the key element of hearing and disobeying that the standard answer contains.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "They are the builders.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "'They are the builders' does not convey the intended person/group or the unstable builder analogy.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "'They are the builders' does not convey the intended person/group or the unstable builder analogy.",
+        "llm_required_slot": "person/group",
+        "llm_core_claim_expected": "The one who hears and disobeys is like the person without a foundation.",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 16,
@@ -310,7 +563,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "D",
+        "selected_choice": "D",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     }
   ]
 }

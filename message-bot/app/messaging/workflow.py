@@ -13,13 +13,18 @@ from eten_shared.domain.assignments import (
     complete_current_batch_if_needed,
     create_assignment_for_qa_item,
     get_incomplete_assignment,
-    get_or_create_participant,
     get_or_create_participant_session,
     get_preferred_batch_size,
     record_participant_event as _record_participant_event,
     resume_incomplete_assignment,
+    try_complete_assignment,
 )
 from eten_shared.domain.batch_schedules import has_pending_next_batch_schedule
+from eten_shared.domain.identity import (
+    PROVIDER_WHATSAPP,
+    get_or_create_participant_by_contact,
+    resolve_participant,
+)
 from eten_shared.domain.batch_size_nudges import (
     apply_batch_size_nudge_response,
     batch_size_response_choice,
@@ -61,7 +66,6 @@ from eten_shared.transcription import (
 from eten_shared.models import (
     Assignment,
     AssignmentStatus,
-    Participant,
     ParticipantEvent,
     ParticipantProviderContact,
     ParticipantResponse,
@@ -236,6 +240,9 @@ def create_assignment_prompt(db: Session, participant, participant_session):
             db, participant, participant_session, incomplete
         )
         if prompt:
+            # Question is about to be delivered on the messenger: start the
+            # time-on-task clock (kept if already started on another surface).
+            incomplete.started_at = incomplete.started_at or utc_now()
             return prompt, False, completed_batch_size
 
     qa_item = select_next_qa_item(
@@ -254,6 +261,11 @@ def create_assignment_prompt(db: Session, participant, participant_session):
         completed_batch_size=completed_batch_size,
         assignment_source="auto",
     )
+    if prompt:
+        # Delivered immediately over the messenger: start the clock.
+        new_assignment = db.get(Assignment, prompt.assignment_id)
+        if new_assignment:
+            new_assignment.started_at = new_assignment.started_at or utc_now()
     return prompt, False, completed_batch_size
 
 
@@ -280,6 +292,14 @@ def save_response_for_current_assignment(
         return None
 
     if assignment.status == AssignmentStatus.COMPLETED.value:
+        participant_session.current_assignment_id = None
+        participant_session.state = SessionState.IDLE.value
+        return None
+
+    # Race guard: first surface to complete the assignment wins. If another
+    # surface (e.g. the dashboard) completed it concurrently, treat this like
+    # the already-completed case above.
+    if not try_complete_assignment(db, assignment):
         participant_session.current_assignment_id = None
         participant_session.state = SessionState.IDLE.value
         return None
@@ -378,12 +398,12 @@ def save_response_for_current_assignment(
             if needs_expert_review
             else ReviewStatus.AUTO.value
         ),
+        source_channel=provider if provider != "workflow" else None,
     )
     db.add(response)
 
-    assignment.status = AssignmentStatus.COMPLETED.value
-    assignment.completed_at = utc_now()
-    assignment.attempt_count += 1
+    # Assignment completion (status/completed_at/attempt_count) already
+    # applied atomically by try_complete_assignment above.
     participant.completed_count += 1
     participant_session.current_assignment_id = None
     participant_session.state = SessionState.IDLE.value
@@ -635,7 +655,9 @@ def record_whatsapp_answer(
 ):
     session_factory = get_session_factory()
     with session_factory() as db:
-        participant = get_or_create_participant(db, wa_id, display_name)
+        participant, _contact, _created = get_or_create_participant_by_contact(
+            db, PROVIDER_WHATSAPP, wa_id, display_name=display_name, phone=wa_id
+        )
         db.commit()
 
     return _record_provider_answer_for_participant(
@@ -751,9 +773,7 @@ def record_whatsapp_audio_message(
     language_hint = None
     try:
         with get_session_factory()() as db:
-            participant = db.scalars(
-                select(Participant).where(Participant.wa_id == wa_id)
-            ).first()
+            participant = resolve_participant(db, PROVIDER_WHATSAPP, wa_id)
             if participant:
                 language_hint = participant.target_language
     except Exception:

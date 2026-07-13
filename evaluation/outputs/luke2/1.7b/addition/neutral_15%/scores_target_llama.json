@@ -11,7 +11,21 @@
     "direct_evidence_rate": 0.9166666666666666,
     "evidence_supported_rate": 0.9166666666666666,
     "wrong_high_confidence_count": 5,
-    "correct_low_confidence_count": 0
+    "correct_low_confidence_count": 0,
+    "core_claim": {
+      "total": 24,
+      "mcq_count": 12,
+      "mcq_correct": 11,
+      "open_count": 12,
+      "open_embedding_mean": null,
+      "open_llm_score_mean": 0.5,
+      "answer_confidence_mean": 0.8250000000000001,
+      "insufficient_information_rate": 0.125,
+      "direct_evidence_rate": 0.9166666666666666,
+      "evidence_supported_rate": 0.9166666666666666,
+      "wrong_high_confidence_count": 2,
+      "correct_low_confidence_count": 1
+    }
   },
   "items": [
     {
@@ -34,7 +48,25 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer 'Family belonging' does not mention 'descendant of King A,' which is the core information required.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer 'Family belonging' does not mention 'descendant of King A,' which is the core information required."
+      "llm_english_rationale": "The generated answer 'Family belonging' does not mention 'descendant of King A,' which is the core information required.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "family belonging",
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "partial",
+        "llm_score": 0.5,
+        "llm_rationale": "The generated answer gives the family lineage idea, but it is incomplete and less specific than the expected reason.",
+        "llm_english_label": "partial",
+        "llm_english_rationale": "The generated answer gives the family lineage idea, but it is incomplete and less specific than the expected reason.",
+        "llm_required_slot": "reason/cause",
+        "llm_core_claim_expected": "He was a descendant of King A.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 2,
@@ -58,7 +90,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "correct_choice": "C",
+        "selected_choice": "C",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 3,
@@ -80,7 +132,25 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer 'Object 01' is too vague and does not specify 'manger' as the place where the son was placed.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer 'Object 01' is too vague and does not specify 'manger' as the place where the son was placed."
+      "llm_english_rationale": "The generated answer 'Object 01' is too vague and does not specify 'manger' as the place where the son was placed.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "object 01",
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "'object 01' is just a placeholder and does not convey the specific place 'a manger'.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "'object 01' is just a placeholder and does not convey the specific place 'a manger'.",
+        "llm_required_slot": "object/place",
+        "llm_core_claim_expected": "In a manger.",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 4,
@@ -104,7 +174,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "correct_choice": "D",
+        "selected_choice": "D",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 5,
@@ -126,7 +216,25 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer 'Fear' captures the main reaction 'They were very afraid.'",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer 'Fear' captures the main reaction 'They were very afraid.'"
+      "llm_english_rationale": "The generated answer 'Fear' captures the main reaction 'They were very afraid.'",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "fear",
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "partial",
+        "llm_score": 0.5,
+        "llm_rationale": "'fear' captures the general response, but it is too vague and does not state the full claim of being very afraid.",
+        "llm_english_label": "partial",
+        "llm_english_rationale": "'fear' captures the general response, but it is too vague and does not state the full claim of being very afraid.",
+        "llm_required_slot": "statement/content",
+        "llm_core_claim_expected": "They were very afraid.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 6,
@@ -150,7 +258,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "correct_choice": "D",
+        "selected_choice": "D",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 7,
@@ -172,7 +300,25 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer 'Good news' contains the core event that 'The Savior had been born.'",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer 'Good news' contains the core event that 'The Savior had been born.'"
+      "llm_english_rationale": "The generated answer 'Good news' contains the core event that 'The Savior had been born.'",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "good news",
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "partial",
+        "llm_score": 0.5,
+        "llm_rationale": "'good news' is related, but it does not explicitly contain the core claim about the Savior's birth.",
+        "llm_english_label": "partial",
+        "llm_english_rationale": "'good news' is related, but it does not explicitly contain the core claim about the Savior's birth.",
+        "llm_required_slot": "statement/content",
+        "llm_core_claim_expected": "The Savior had been born.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 8,
@@ -196,7 +342,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "correct_choice": "A",
+        "selected_choice": "A",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 9,
@@ -218,7 +384,25 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer 'Went to Location 02' matches 'Went to Bethlehem to see the child,' with place substituted.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer 'Went to Location 02' matches 'Went to Bethlehem to see the child,' with place substituted."
+      "llm_english_rationale": "The generated answer 'Went to Location 02' matches 'Went to Bethlehem to see the child,' with place substituted.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "went to location 02",
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": true,
+        "evidence_quality": "direct",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "partial",
+        "llm_score": 0.5,
+        "llm_rationale": "It mentions going to location 02, but omits the purpose of seeing the child.",
+        "llm_english_label": "partial",
+        "llm_english_rationale": "It mentions going to location 02, but omits the purpose of seeing the child.",
+        "llm_required_slot": "action/event",
+        "llm_core_claim_expected": "Went to Bethlehem to see the child.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 10,
@@ -242,7 +426,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "correct_choice": "B",
+        "selected_choice": "B",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 11,
@@ -264,7 +468,25 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer 'What Master A told them' does not identify the actual discovery (Person D, Person E, and the baby).",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer 'What Master A told them' does not identify the actual discovery (Person D, Person E, and the baby)."
+      "llm_english_rationale": "The generated answer 'What Master A told them' does not identify the actual discovery (Person D, Person E, and the baby).",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "what Master A told them",
+        "generation_error": null,
+        "answer_confidence": 0.0,
+        "insufficient_information": true,
+        "evidence_quality": "none",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "The answer refers to what Master A told them, not the people they found.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "The answer refers to what Master A told them, not the people they found.",
+        "llm_required_slot": "person/group",
+        "llm_core_claim_expected": "Person D, Person E, and the baby.",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 12,
@@ -288,7 +510,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "correct_choice": "A",
+        "selected_choice": "A",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 13,
@@ -310,7 +552,25 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer gives a reason 'Because the purification day had come' but omits the main action purpose 'to present him to the Master A.'",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer gives a reason 'Because the purification day had come' but omits the main action purpose 'to present him to the Master A.'"
+      "llm_english_rationale": "The generated answer gives a reason 'Because the purification day had come' but omits the main action purpose 'to present him to the Master A.'",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "because the days of purification had come",
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "partial",
+        "llm_score": 0.5,
+        "llm_rationale": "It gives a related reason, but only mentions purification and misses the core purpose of presenting him to Master A.",
+        "llm_english_label": "partial",
+        "llm_english_rationale": "It gives a related reason, but only mentions purification and misses the core purpose of presenting him to Master A.",
+        "llm_required_slot": "reason/cause",
+        "llm_core_claim_expected": "To present him to the Master A.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 14,
@@ -334,7 +594,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "correct_choice": "A",
+        "selected_choice": "A",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 15,
@@ -356,7 +636,25 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer conveys the core prophecy about seeing the Messiah established by Master A.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer conveys the core prophecy about seeing the Messiah established by Master A."
+      "llm_english_rationale": "The generated answer conveys the core prophecy about seeing the Messiah established by Master A.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "that he would not die before seeing the Messiah whom Master A had appointed",
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "The generated answer contains the core meaning that he would see the Messiah/Christ.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "The generated answer contains the core meaning that he would see the Messiah/Christ.",
+        "llm_required_slot": "statement/content",
+        "llm_core_claim_expected": "He would see the Master A's Christ.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 16,
@@ -380,7 +678,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "correct_choice": "C",
+        "selected_choice": "C",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 17,
@@ -402,7 +720,25 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer 'Signs of being opposed' does not specify the key event 'a sword would pierce her soul.'",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer 'Signs of being opposed' does not specify the key event 'a sword would pierce her soul.'"
+      "llm_english_rationale": "The generated answer 'Signs of being opposed' does not specify the key event 'a sword would pierce her soul.'",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "a sign that would be opposed",
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "partial",
+        "llm_score": 0.5,
+        "llm_rationale": "The generated answer gives a different statement ('a sign that would be opposed') and does not include the sword piercing her soul.",
+        "llm_english_label": "partial",
+        "llm_english_rationale": "The generated answer gives a different statement ('a sign that would be opposed') and does not include the sword piercing her soul.",
+        "llm_required_slot": "statement/content",
+        "llm_core_claim_expected": "A sword would pierce her soul.",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 18,
@@ -426,7 +762,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.8,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "correct_choice": "C",
+        "selected_choice": "C",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 19,
@@ -448,7 +804,25 @@
       "llm_score": 0.0,
       "llm_rationale": "The standard answer indicates growth and strength, but the generated answer mentions 'continued to watch' which does not match the core event.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The standard answer indicates growth and strength, but the generated answer mentions 'continued to watch' which does not match the core event."
+      "llm_english_rationale": "The standard answer indicates growth and strength, but the generated answer mentions 'continued to watch' which does not match the core event.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Person F returned to Village A and kept waiting",
+        "generation_error": null,
+        "answer_confidence": 0.0,
+        "insufficient_information": true,
+        "evidence_quality": "none",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "partial",
+        "llm_score": 0.5,
+        "llm_rationale": "It mentions returning and waiting, but not the outcome that he grew and became strong.",
+        "llm_english_label": "partial",
+        "llm_english_rationale": "It mentions returning and waiting, but not the outcome that he grew and became strong.",
+        "llm_required_slot": "result/outcome",
+        "llm_core_claim_expected": "He grew and became strong.",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 20,
@@ -472,7 +846,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "correct_choice": "B",
+        "selected_choice": "B",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 21,
@@ -494,7 +888,25 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer 'Place A' matches the core location 'Place A with teachers'.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer 'Place A' matches the core location 'Place A with teachers'."
+      "llm_english_rationale": "The generated answer 'Place A' matches the core location 'Place A with teachers'.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Place A",
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "partial",
+        "llm_score": 0.5,
+        "llm_rationale": "The place is identified, but the answer is incomplete because it omits that he was with teachers.",
+        "llm_english_label": "partial",
+        "llm_english_rationale": "The place is identified, but the answer is incomplete because it omits that he was with teachers.",
+        "llm_required_slot": "object/place",
+        "llm_core_claim_expected": "In the Place A with teachers.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 22,
@@ -518,7 +930,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "correct_choice": "A",
+        "selected_choice": "D",
+        "direct_correct": false,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 23,
@@ -540,7 +972,25 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer captures the core meaning of the standard answer about being in the Father's business.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer captures the core meaning of the standard answer about being in the Father's business."
+      "llm_english_rationale": "The generated answer captures the core meaning of the standard answer about being in the Father's business.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Did you not know that I should be about my Father's affairs?",
+        "generation_error": null,
+        "answer_confidence": 1.0,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "The generated answer preserves the core meaning of being in his Father's house/affairs.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "The generated answer preserves the core meaning of being in his Father's house/affairs.",
+        "llm_required_slot": "statement/content",
+        "llm_core_claim_expected": "I must be in my Father’s house.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 24,
@@ -564,7 +1014,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "correct_choice": "D",
+        "selected_choice": "D",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     }
   ]
 }

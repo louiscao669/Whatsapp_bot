@@ -10,7 +10,7 @@ import {
   emptyDashboard,
   fetchDashboard,
   normalizeDashboard,
-  parseWaIdFromLocation,
+  parseParticipantIdFromLocation,
   postJson,
   postRawJson,
   sampleDashboard,
@@ -19,7 +19,7 @@ import {
 
 const app = document.querySelector("#app");
 const state = {
-  waId: parseWaIdFromLocation(),
+  participantId: parseParticipantIdFromLocation(),
   activePage: "journey",
   journeyChapterIndex: null,
   journeyAnswerAssignmentId: null,
@@ -122,6 +122,16 @@ function clearJourneyChapter() {
   render();
 }
 
+function pingQuestionViewed(assignmentId) {
+  // Fire-and-forget: starts the time-on-task clock on the backend the
+  // first time a question is rendered on the dashboard.
+  if (!state.participantId || !assignmentId) {
+    return;
+  }
+  postRawJson(state.participantId, "/question-viewed", { assignment_id: assignmentId })
+    .catch(() => {});
+}
+
 function openQuestion(assignmentId) {
   if (!assignmentId) {
     showModal("This question is not ready yet.");
@@ -131,6 +141,7 @@ function openQuestion(assignmentId) {
   state.journeyAnswerQuestion = null;
   state.questionCompletion = null;
   state.shopMessage = "";
+  pingQuestionViewed(assignmentId);
   render();
 }
 
@@ -147,7 +158,7 @@ function setCommunityTab(tab) {
 }
 
 async function refreshMutation(mutation) {
-  if (!state.waId) {
+  if (!state.participantId) {
     showModal("Open a user dashboard URL before making changes.");
     return;
   }
@@ -165,17 +176,17 @@ async function refreshMutation(mutation) {
 async function purchase(itemId) {
   state.shopMessage = "Purchasing...";
   render();
-  await refreshMutation(() => postJson(state.waId, "/purchases", { item_id: itemId }));
+  await refreshMutation(() => postJson(state.participantId, "/purchases", { item_id: itemId }));
 }
 
 async function setCosmetic(itemId, equipped) {
   state.shopMessage = equipped ? "Equipping..." : "Removing...";
   render();
-  await refreshMutation(() => postJson(state.waId, "/cosmetics", { item_id: itemId, equipped }));
+  await refreshMutation(() => postJson(state.participantId, "/cosmetics", { item_id: itemId, equipped }));
 }
 
 async function setStreakPause(paused) {
-  await refreshMutation(() => postJson(state.waId, "/streak-pause", { paused }));
+  await refreshMutation(() => postJson(state.participantId, "/streak-pause", { paused }));
 }
 
 async function claimBatchReward(batchId) {
@@ -183,7 +194,7 @@ async function claimBatchReward(batchId) {
     showModal("Batch reward is not available yet.");
     return;
   }
-  if (!state.waId) {
+  if (!state.participantId) {
     showModal("Open a user dashboard URL before opening chests.");
     return;
   }
@@ -193,7 +204,7 @@ async function claimBatchReward(batchId) {
   state.claimingBatchRewardId = batchId;
   render();
   try {
-    const payload = await postJson(state.waId, "/batch-rewards", { batch_id: batchId });
+    const payload = await postJson(state.participantId, "/batch-rewards", { batch_id: batchId });
     state.payload = payload;
     rememberDashboard();
     rememberProfilePhoto();
@@ -208,7 +219,7 @@ async function claimBatchReward(batchId) {
 }
 
 async function submitAnswer(assignmentId, responseText) {
-  if (!state.waId) {
+  if (!state.participantId) {
     showModal("Open a user dashboard URL before answering questions.");
     return;
   }
@@ -227,7 +238,7 @@ async function submitAnswer(assignmentId, responseText) {
   state.journeyAnswerQuestion = null;
   render();
   try {
-    const payload = await postRawJson(state.waId, "/answers", {
+    const payload = await postRawJson(state.participantId, "/answers", {
       assignment_id: assignmentId,
       response_text: responseText
     });
@@ -284,15 +295,16 @@ async function continueAfterAnswer() {
   state.journeyAnswerAssignmentId = nextQuestion?.assignment_id
     || submission.next_assignment_id
     || null;
+  pingQuestionViewed(state.journeyAnswerAssignmentId);
   render();
 }
 
 async function refreshDashboardInBackground() {
-  if (!state.waId) {
+  if (!state.participantId) {
     return;
   }
   try {
-    state.payload = await fetchDashboard(state.waId);
+    state.payload = await fetchDashboard(state.participantId);
     rememberDashboard();
     rememberProfilePhoto();
     render();
@@ -302,7 +314,7 @@ async function refreshDashboardInBackground() {
 }
 
 async function startNewBatch() {
-  if (!state.waId) {
+  if (!state.participantId) {
     showModal("Open a user dashboard URL before starting a new batch.");
     return;
   }
@@ -312,7 +324,7 @@ async function startNewBatch() {
   state.startingBatch = true;
   render();
   try {
-    state.payload = await postJson(state.waId, "/start-batch", {});
+    state.payload = await postJson(state.participantId, "/start-batch", {});
     rememberDashboard();
     rememberProfilePhoto();
     const chapterIndex = Number.isInteger(state.payload.journey?.summary?.active_chapter_index)
@@ -381,7 +393,7 @@ function applyCompactAnswerResult(payload, answeredAssignmentId) {
 }
 
 async function uploadPhoto(file) {
-  if (!state.waId) {
+  if (!state.participantId) {
     showModal("Open a user dashboard URL before changing photo.");
     return;
   }
@@ -394,7 +406,7 @@ async function uploadPhoto(file) {
     return;
   }
   try {
-    state.payload = await uploadProfilePhoto(state.waId, file);
+    state.payload = await uploadProfilePhoto(state.participantId, file);
     rememberDashboard();
     rememberProfilePhoto();
     render();
@@ -430,17 +442,20 @@ function showChestRewardModal(amount) {
 
 async function boot() {
   bindModal();
-  render();
-  if (!state.waId) {
+  if (!state.participantId) {
+    // No identity in the URL — send them to the login page to resolve their
+    // WhatsApp number / Telegram chat id into a participant id.
+    window.location.replace("/user_dashboard/login");
     return;
   }
+  render();
   try {
-    state.payload = await fetchDashboard(state.waId);
+    state.payload = await fetchDashboard(state.participantId);
     rememberDashboard();
     rememberProfilePhoto();
   } catch (error) {
     if (!hydrateCachedDashboard()) {
-      state.payload = normalizeDashboard(emptyDashboard(state.waId));
+      state.payload = normalizeDashboard(emptyDashboard(state.participantId));
       hydrateCachedProfilePhoto();
     }
     showModal(`Could not load dashboard: ${error.message}`, "Dashboard error");
@@ -451,11 +466,11 @@ async function boot() {
 boot();
 
 function dashboardCacheKey() {
-  return state.waId ? `user_dashboard_payload:${state.waId}` : "";
+  return state.participantId ? `user_dashboard_payload:${state.participantId}` : "";
 }
 
 function profilePhotoCacheKey() {
-  return state.waId ? `user_dashboard_profile_photo:${state.waId}` : "";
+  return state.participantId ? `user_dashboard_profile_photo:${state.participantId}` : "";
 }
 
 function hydrateCachedDashboard() {

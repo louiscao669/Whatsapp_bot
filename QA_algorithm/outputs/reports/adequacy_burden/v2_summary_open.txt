@@ -1,0 +1,28 @@
+V2 semi-real validation — defect axis (410 conditions; model tier 1.7b; q_types=open; 20 splits)
+
+== (1) DOSE ORDERING: Spearman(Delta, dose) per family (median over chapters; pass adequacy >= +0.7) ==
+  addition:adversarial         ADEQUACY median rho = +0.49 (n_ch=8, range -0.26..+1.00)  FAIL
+  addition:bad                 ADEQUACY median rho = +0.29 (n_ch=8, range -0.09..+0.94)  FAIL
+  addition:neutral                      median rho = +0.14 (n_ch=7, range -0.60..+0.94)
+  awkward                               median rho = +0.63 (n_ch=8, range -0.37..+1.00)
+  grammar                               median rho = +0.29 (n_ch=8, range -0.26..+0.77)
+  inconsistency:name                    median rho = +0.10 (n_ch=7, range -0.60..+0.70)
+  inconsistency:style                   median rho = +0.10 (n_ch=6, range -0.80..+0.70)
+  local_inconsistency:style             median rho = +0.80 (n_ch=1, range +0.80..+0.80)
+  mistranslation               ADEQUACY median rho = +0.71 (n_ch=8, range -0.60..+0.94)  PASS
+  omission                     ADEQUACY median rho = +0.71 (n_ch=8, range +0.09..+1.00)  PASS
+
+== (2) ZERO POINT: dose-0 Delta ~ 0 within 1.13*2*SE (47 unique chapterxdefect cells) ==
+  mean Delta_0 = -0.048  (SE of mean 0.104);  median -0.039
+  fraction within tolerance: 1.00  [PASS]
+  -> Step-2 method-axis offset was +0.4-0.5; if Delta_0 ~ 0 here, that offset is text-specific, not estimator bias.
+
+== (3) SPLIT-HALF kappa_real (4160 splits) ==
+  pooled kappa_real = sd(z) = 0.983   (honest ~ 1; deployment carries max(1.13, this))
+  |z|>2 fraction = 0.026 (honest ~ 0.05)
+  per-family: addition:adversarial=0.92, addition:bad=1.01, addition:neutral=0.95, awkward=1.02, grammar=0.99, inconsistency:name=1.03, inconsistency:style=0.93, mistranslation=1.03, omission=0.95
+
+== VERDICTS ==
+  dose ordering: adequacy families addition:adversarial +0.49, addition:bad +0.29, mistranslation +0.71, omission +0.71
+  zero point: PASS (mean Delta_0 -0.048)
+  kappa_real = 0.983 -> protocol carries kappa = 1.130

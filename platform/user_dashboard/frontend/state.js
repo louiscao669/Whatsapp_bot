@@ -4,7 +4,7 @@ export const sampleDashboard = {
   participant: {
     id: "participant_sample_001",
     display_name: "Sample Participant",
-    wa_id: "15551234567",
+    participant_id: "15551234567",
     profile_photo_url: ""
   },
   wallet: {
@@ -93,13 +93,13 @@ export const sampleDashboard = {
   ]
 };
 
-export function emptyDashboard(waId) {
+export function emptyDashboard(participantId) {
   return {
     ...sampleDashboard,
     participant: {
       id: "",
       display_name: "Participant",
-      wa_id: waId,
+      participant_id: participantId,
       profile_photo_url: ""
     },
     wallet: { balance: 0 },
@@ -108,16 +108,17 @@ export function emptyDashboard(waId) {
   };
 }
 
-export function parseWaIdFromLocation() {
+export function parseParticipantIdFromLocation() {
   const params = new URLSearchParams(window.location.search);
-  const queryWaId = params.get("wa_id") || params.get("wa");
-  if (queryWaId) {
-    return queryWaId.trim();
+  const queryParticipantId =
+    params.get("participant_id") || params.get("pid") || params.get("participant");
+  if (queryParticipantId) {
+    return queryParticipantId.trim();
   }
 
-  const hashWaId = window.location.hash.replace(/^#\/?/, "").trim();
-  if (hashWaId) {
-    return hashWaId;
+  const hashParticipantId = window.location.hash.replace(/^#\/?/, "").trim();
+  if (hashParticipantId) {
+    return hashParticipantId;
   }
 
   const decodedPath = decodeURIComponent(window.location.pathname);
@@ -158,8 +159,8 @@ export function normalizeDashboard(payload) {
   };
 }
 
-export async function fetchDashboard(waId) {
-  const response = await fetch(`${apiBaseFromLocation()}/user-dashboard/api/${encodeURIComponent(waId)}`);
+export async function fetchDashboard(participantId) {
+  const response = await fetch(`${apiBaseFromLocation()}/user-dashboard/api/${encodeURIComponent(participantId)}`);
   const payload = await response.json().catch(() => ({}));
   if (!response.ok) {
     throw new Error(payload.message || `Request failed with ${response.status}`);
@@ -167,8 +168,8 @@ export async function fetchDashboard(waId) {
   return normalizeDashboard(payload);
 }
 
-export async function postJson(waId, path, body) {
-  const response = await fetch(`${apiBaseFromLocation()}/user-dashboard/api/${encodeURIComponent(waId)}${path}`, {
+export async function postJson(participantId, path, body) {
+  const response = await fetch(`${apiBaseFromLocation()}/user-dashboard/api/${encodeURIComponent(participantId)}${path}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body)
@@ -180,8 +181,8 @@ export async function postJson(waId, path, body) {
   return normalizeDashboard(payload);
 }
 
-export async function postRawJson(waId, path, body) {
-  const response = await fetch(`${apiBaseFromLocation()}/user-dashboard/api/${encodeURIComponent(waId)}${path}`, {
+export async function postRawJson(participantId, path, body) {
+  const response = await fetch(`${apiBaseFromLocation()}/user-dashboard/api/${encodeURIComponent(participantId)}${path}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body)
@@ -193,10 +194,10 @@ export async function postRawJson(waId, path, body) {
   return payload;
 }
 
-export async function uploadProfilePhoto(waId, file) {
+export async function uploadProfilePhoto(participantId, file) {
   const formData = new FormData();
   formData.append("photo", file);
-  const response = await fetch(`${apiBaseFromLocation()}/user-dashboard/api/${encodeURIComponent(waId)}/profile-photo`, {
+  const response = await fetch(`${apiBaseFromLocation()}/user-dashboard/api/${encodeURIComponent(participantId)}/profile-photo`, {
     method: "POST",
     body: formData
   });

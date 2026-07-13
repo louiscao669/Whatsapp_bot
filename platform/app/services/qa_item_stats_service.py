@@ -19,7 +19,6 @@ from app.services.system_languages_service import (
     sync_system_languages_registry,
 )
 from app.utils.admin_formatters import format_display_datetime
-from app.utils.privacy import hash_wa_id_for_display
 
 
 OPEN_RESPONSE_STATUS_LABELS = {
@@ -139,11 +138,7 @@ def build_stats_participant_rows(qa_item: QAItem, responses):
         participant = response.participant
         participant_label = ""
         if participant:
-            participant_label = (
-                participant.display_name
-                or hash_wa_id_for_display(participant.wa_id)
-                or participant.id
-            )
+            participant_label = participant.display_name or participant.id
 
         if choice_scored:
             correctness = format_choice_correctness_label(response.is_correct)

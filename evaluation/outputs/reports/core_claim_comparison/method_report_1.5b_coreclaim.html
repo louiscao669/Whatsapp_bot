@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Luke 1-8 Translation Method Results</title>
+  <style>
+    :root {
+      --ink: #202124;
+      --muted: #667085;
+      --line: #d9dee7;
+      --panel: #f7f8fa;
+      --high: #2e7d32;
+      --mid: #8a6d1f;
+      --low: #b45309;
+      --very-low: #b42318;
+      --accent: #315fbd;
+    }
+    body {
+      margin: 0;
+      color: var(--ink);
+      font: 14px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #fff;
+    }
+    main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 28px 24px 48px;
+    }
+    h1, h2 {
+      margin: 0 0 12px;
+      letter-spacing: 0;
+    }
+    h1 { font-size: 28px; }
+    h2 { margin-top: 28px; font-size: 18px; }
+    .subtle { color: var(--muted); margin-bottom: 22px; }
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      padding: 14px 16px;
+      margin: 16px 0;
+    }
+    .analysis li { margin: 7px 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0 20px;
+      background: #fff;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 8px 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: #eef1f5; font-weight: 650; }
+    .bar {
+      height: 6px;
+      background: #e6eaf0;
+      border-radius: 999px;
+      margin-top: 5px;
+      overflow: hidden;
+    }
+    .bar span {
+      display: block;
+      height: 100%;
+      background: var(--accent);
+    }
+    .high { background: #dff0df; color: var(--high); font-weight: 650; }
+    .mid { background: #fff3cd; color: var(--mid); font-weight: 650; }
+    .low { background: #fdebd3; color: var(--low); font-weight: 650; }
+    .very-low { background: #f8d7da; color: var(--very-low); font-weight: 650; }
+    .missing { background: #f3f4f6; color: var(--muted); }
+    code { background: #eef1f5; padding: 1px 4px; border-radius: 4px; }
+    .note { color: var(--muted); font-size: 13px; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Luke 1-8 Translation Method Results</h1>
+
+  <section class="panel">
+    <h2>High-Level Analysis</h2>
+    <ul class="analysis">
+      <li>Best overall method by weighted combined score is <strong>llm_prompt_low</strong> at 0.799.</li><li>Best open-question mean is <strong>llm_prompt_low</strong> at 0.755.</li><li>Best MCQ accuracy is <strong>llm_prompt_low</strong> at 84.3%.</li><li>Most consistent method by chapter-to-chapter combined-score standard deviation is <strong>mBART-50</strong> (0.092).</li><li>Hardest chapter on average is <strong>Luke 7</strong> (0.503); easiest is <strong>Luke 3</strong> (0.848).</li>
+    </ul>
+  </section>
+
+  <h2>Method Ranking</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Method</th>
+        <th>Combined</th>
+        <th>Open LLM Mean</th>
+        <th>MCQ Accuracy</th>
+        <th>MCQ Correct</th>
+        <th>Null MCQ</th>
+        <th>Generation Errors</th>
+        <th>Chapter Std Dev</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>llm_prompt_low</td><td>0.799<div class="bar"><span style="width:80%"></span></div></td><td>0.755</td><td>84.3%</td><td>86/102</td><td>0</td><td>0</td><td>0.154</td></tr>
+<tr><td>llm_prompt_high</td><td>0.748<div class="bar"><span style="width:75%"></span></div></td><td>0.672</td><td>82.4%</td><td>84/102</td><td>0</td><td>0</td><td>0.120</td></tr>
+<tr><td>helsinki</td><td>0.740<div class="bar"><span style="width:74%"></span></div></td><td>0.667</td><td>81.4%</td><td>83/102</td><td>0</td><td>0</td><td>0.156</td></tr>
+<tr><td>llm_prompt_medium</td><td>0.733<div class="bar"><span style="width:73%"></span></div></td><td>0.642</td><td>82.4%</td><td>84/102</td><td>0</td><td>0</td><td>0.100</td></tr>
+<tr><td>nllb-200-distilled-600M</td><td>0.728<div class="bar"><span style="width:73%"></span></div></td><td>0.701</td><td>75.5%</td><td>77/102</td><td>0</td><td>0</td><td>0.141</td></tr>
+<tr><td>nllb-200-1.3B</td><td>0.669<div class="bar"><span style="width:67%"></span></div></td><td>0.583</td><td>75.5%</td><td>77/102</td><td>0</td><td>0</td><td>0.209</td></tr>
+<tr><td>mBART-50</td><td>0.650<div class="bar"><span style="width:65%"></span></div></td><td>0.583</td><td>71.6%</td><td>73/102</td><td>0</td><td>0</td><td>0.092</td></tr>
+<tr><td>google_word_by_word</td><td>0.603<div class="bar"><span style="width:60%"></span></div></td><td>0.412</td><td>79.4%</td><td>81/102</td><td>0</td><td>0</td><td>0.137</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Combined Score Heatmap</h2>
+  <table><thead><tr><th>Method</th><th>Luke 1</th><th>Luke 2</th><th>Luke 3</th><th>Luke 4</th><th>Luke 5</th><th>Luke 6</th><th>Luke 7</th><th>Luke 8</th></tr></thead><tbody><tr><th>google_word_by_word</th><td class="mid">0.636</td><td class="mid">0.500</td><td class="mid">0.714</td><td class="mid">0.682</td><td class="mid">0.654</td><td class="high">0.750</td><td class="low">0.333</td><td class="low">0.444</td></tr><tr><th>llm_prompt_low</th><td class="high">0.920</td><td class="mid">0.729</td><td class="high">0.964</td><td class="high">0.818</td><td class="high">0.923</td><td class="mid">0.719</td><td class="mid">0.611</td><td class="mid">0.500</td></tr><tr><th>llm_prompt_medium</th><td class="high">0.773</td><td class="mid">0.729</td><td class="high">0.893</td><td class="mid">0.727</td><td class="mid">0.712</td><td class="high">0.844</td><td class="mid">0.556</td><td class="mid">0.639</td></tr><tr><th>llm_prompt_high</th><td class="high">0.818</td><td class="mid">0.625</td><td class="high">0.893</td><td class="mid">0.739</td><td class="high">0.808</td><td class="high">0.875</td><td class="mid">0.667</td><td class="mid">0.528</td></tr><tr><th>helsinki</th><td class="high">0.886</td><td class="mid">0.729</td><td class="high">0.750</td><td class="mid">0.716</td><td class="mid">0.712</td><td class="high">0.969</td><td class="mid">0.611</td><td class="low">0.417</td></tr><tr><th>mBART-50</th><td class="mid">0.682</td><td class="mid">0.646</td><td class="high">0.750</td><td class="mid">0.648</td><td class="mid">0.692</td><td class="high">0.750</td><td class="mid">0.500</td><td class="mid">0.500</td></tr><tr><th>nllb-200-distilled-600M</th><td class="high">0.795</td><td class="mid">0.708</td><td class="high">0.893</td><td class="mid">0.727</td><td class="high">0.788</td><td class="high">0.844</td><td class="low">0.444</td><td class="mid">0.556</td></tr><tr><th>nllb-200-1.3B</th><td class="mid">0.716</td><td class="mid">0.667</td><td class="high">0.929</td><td class="mid">0.534</td><td class="high">0.865</td><td class="high">0.938</td><td class="low">0.306</td><td class="mid">0.528</td></tr></tbody></table>
+
+  <h2>MCQ Accuracy Heatmap</h2>
+  <table><thead><tr><th>Method</th><th>Luke 1</th><th>Luke 2</th><th>Luke 3</th><th>Luke 4</th><th>Luke 5</th><th>Luke 6</th><th>Luke 7</th><th>Luke 8</th></tr></thead><tbody><tr><th>google_word_by_word</th><td class="high">90.9%</td><td class="high">75.0%</td><td class="high">100.0%</td><td class="high">86.4%</td><td class="high">84.6%</td><td class="high">100.0%</td><td class="low">33.3%</td><td class="low">44.4%</td></tr><tr><th>llm_prompt_low</th><td class="high">100.0%</td><td class="high">83.3%</td><td class="high">100.0%</td><td class="high">90.9%</td><td class="high">92.3%</td><td class="high">87.5%</td><td class="low">33.3%</td><td class="mid">55.6%</td></tr><tr><th>llm_prompt_medium</th><td class="high">90.9%</td><td class="high">83.3%</td><td class="high">100.0%</td><td class="high">86.4%</td><td class="mid">61.5%</td><td class="high">100.0%</td><td class="mid">55.6%</td><td class="high">77.8%</td></tr><tr><th>llm_prompt_high</th><td class="high">90.9%</td><td class="high">83.3%</td><td class="high">100.0%</td><td class="high">86.4%</td><td class="high">92.3%</td><td class="high">100.0%</td><td class="low">44.4%</td><td class="low">44.4%</td></tr><tr><th>helsinki</th><td class="high">100.0%</td><td class="high">83.3%</td><td class="high">85.7%</td><td class="high">90.9%</td><td class="high">76.9%</td><td class="high">100.0%</td><td class="low">33.3%</td><td class="low">44.4%</td></tr><tr><th>mBART-50</th><td class="high">77.3%</td><td class="mid">58.3%</td><td class="high">100.0%</td><td class="high">77.3%</td><td class="mid">69.2%</td><td class="high">87.5%</td><td class="low">33.3%</td><td class="mid">66.7%</td></tr><tr><th>nllb-200-distilled-600M</th><td class="high">81.8%</td><td class="mid">66.7%</td><td class="high">85.7%</td><td class="high">81.8%</td><td class="high">84.6%</td><td class="high">100.0%</td><td class="low">33.3%</td><td class="mid">55.6%</td></tr><tr><th>nllb-200-1.3B</th><td class="high">81.8%</td><td class="high">75.0%</td><td class="high">100.0%</td><td class="high">77.3%</td><td class="high">84.6%</td><td class="high">100.0%</td><td class="very-low">22.2%</td><td class="mid">55.6%</td></tr></tbody></table>
+
+  <h2>Open LLM Score Heatmap</h2>
+  <table><thead><tr><th>Method</th><th>Luke 1</th><th>Luke 2</th><th>Luke 3</th><th>Luke 4</th><th>Luke 5</th><th>Luke 6</th><th>Luke 7</th><th>Luke 8</th></tr></thead><tbody><tr><th>google_word_by_word</th><td class="low">0.364</td><td class="low">0.250</td><td class="low">0.429</td><td class="mid">0.500</td><td class="low">0.462</td><td class="mid">0.500</td><td class="low">0.333</td><td class="low">0.444</td></tr><tr><th>llm_prompt_low</th><td class="high">0.841</td><td class="mid">0.625</td><td class="high">0.929</td><td class="mid">0.727</td><td class="high">0.923</td><td class="mid">0.562</td><td class="high">0.889</td><td class="low">0.444</td></tr><tr><th>llm_prompt_medium</th><td class="mid">0.636</td><td class="mid">0.625</td><td class="high">0.786</td><td class="mid">0.591</td><td class="high">0.808</td><td class="mid">0.688</td><td class="mid">0.556</td><td class="mid">0.500</td></tr><tr><th>llm_prompt_high</th><td class="mid">0.727</td><td class="low">0.417</td><td class="high">0.786</td><td class="mid">0.614</td><td class="mid">0.692</td><td class="high">0.750</td><td class="high">0.889</td><td class="mid">0.611</td></tr><tr><th>helsinki</th><td class="high">0.773</td><td class="mid">0.625</td><td class="mid">0.643</td><td class="mid">0.523</td><td class="mid">0.654</td><td class="high">0.938</td><td class="high">0.889</td><td class="low">0.389</td></tr><tr><th>mBART-50</th><td class="mid">0.591</td><td class="mid">0.708</td><td class="mid">0.500</td><td class="mid">0.523</td><td class="mid">0.692</td><td class="mid">0.625</td><td class="mid">0.667</td><td class="low">0.333</td></tr><tr><th>nllb-200-distilled-600M</th><td class="high">0.773</td><td class="high">0.750</td><td class="high">0.929</td><td class="mid">0.636</td><td class="mid">0.731</td><td class="mid">0.688</td><td class="mid">0.556</td><td class="mid">0.556</td></tr><tr><th>nllb-200-1.3B</th><td class="mid">0.614</td><td class="mid">0.583</td><td class="high">0.857</td><td class="low">0.295</td><td class="high">0.885</td><td class="high">0.875</td><td class="low">0.389</td><td class="mid">0.500</td></tr></tbody></table>
+
+  <h2>Chapter Difficulty</h2>
+  <table>
+    <thead>
+      <tr><th>Chapter</th><th>Mean Combined</th><th>Min</th><th>Max</th><th>Methods</th></tr>
+    </thead>
+    <tbody><tr><td>Luke 1</td><td>0.778</td><td>0.636</td><td>0.920</td><td>8</td></tr>
+<tr><td>Luke 2</td><td>0.667</td><td>0.500</td><td>0.729</td><td>8</td></tr>
+<tr><td>Luke 3</td><td>0.848</td><td>0.714</td><td>0.964</td><td>8</td></tr>
+<tr><td>Luke 4</td><td>0.699</td><td>0.534</td><td>0.818</td><td>8</td></tr>
+<tr><td>Luke 5</td><td>0.769</td><td>0.654</td><td>0.923</td><td>8</td></tr>
+<tr><td>Luke 6</td><td>0.836</td><td>0.719</td><td>0.969</td><td>8</td></tr>
+<tr><td>Luke 7</td><td>0.503</td><td>0.306</td><td>0.667</td><td>8</td></tr>
+<tr><td>Luke 8</td><td>0.514</td><td>0.417</td><td>0.639</td><td>8</td></tr></tbody>
+  </table>
+
+  <p class="note">
+    Interpretation note: because QA text is shared across methods, method differences
+    should mainly reflect the translated passage quality plus answer-model behavior.
+    MCQ failures with null selected choices are counted as incorrect.
+  </p>
+</main>
+</body>
+</html>

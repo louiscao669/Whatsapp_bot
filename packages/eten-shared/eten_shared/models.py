@@ -72,6 +72,21 @@ class QuestionType(str, Enum):
     TF = "tf"
 
 
+class SourceChannel(str, Enum):
+    USER_DASHBOARD = "user_dashboard"
+    TELEGRAM = "telegram"
+    WHATSAPP = "whatsapp"
+    IMESSAGE = "imessage"
+
+
+class OutboxStatus(str, Enum):
+    PENDING = "pending"
+    SENT = "sent"
+    FAILED = "failed"
+    CANCELLED = "cancelled"
+    SUPERSEDED = "superseded"
+
+
 class AdminRole(str, Enum):
     ADMIN = "admin"
     EXPERT = "expert"
@@ -112,7 +127,6 @@ class Participant(Base):
     __tablename__ = "participants"
 
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
-    wa_id: Mapped[str] = mapped_column(String(32), unique=True, index=True, nullable=False)
     display_name: Mapped[Optional[str]] = mapped_column(String(255))
     target_language: Mapped[Optional[str]] = mapped_column(String(64), index=True)
     locale: Mapped[Optional[str]] = mapped_column(String(32))
@@ -122,6 +136,9 @@ class Participant(Base):
     consented: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     preferred_batch_size: Mapped[int] = mapped_column(Integer, default=3, nullable=False)
     completed_count: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    nudge_platform_sequence: Mapped[list] = mapped_column(
+        JSON, default=list, nullable=False
+    )
     last_seen_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=utc_now, nullable=False
@@ -443,6 +460,7 @@ class ParticipantResponse(Base):
     review_status: Mapped[str] = mapped_column(
         String(32), default=ReviewStatus.PENDING.value, index=True, nullable=False
     )
+    source_channel: Mapped[Optional[str]] = mapped_column(String(32), index=True)
     received_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=utc_now, nullable=False
     )
@@ -470,6 +488,35 @@ class ParticipantEvent(Base):
     )
 
     participant: Mapped["Participant"] = relationship(back_populates="events")
+
+
+class OutboxNotification(Base):
+    """Cross-surface notification queue.
+
+    The platform (user dashboard) enqueues rows; the message-bot's background
+    poller drains them and pushes messenger notifications (e.g. "answer
+    recorded via dashboard"). Keeps the two processes decoupled.
+    """
+
+    __tablename__ = "outbox_notifications"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    participant_id: Mapped[str] = mapped_column(
+        ForeignKey("participants.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    notification_type: Mapped[str] = mapped_column(String(64), index=True, nullable=False)
+    payload: Mapped[dict] = mapped_column(JSON, default=dict, nullable=False)
+    status: Mapped[str] = mapped_column(
+        String(32), default=OutboxStatus.PENDING.value, index=True, nullable=False
+    )
+    attempt_count: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    failure_reason: Mapped[Optional[str]] = mapped_column(Text)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utc_now, index=True, nullable=False
+    )
+    sent_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
+
+    participant: Mapped["Participant"] = relationship()
 
 
 class Reminder(Base):

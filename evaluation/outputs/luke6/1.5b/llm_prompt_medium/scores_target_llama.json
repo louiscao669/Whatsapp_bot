@@ -11,7 +11,21 @@
     "direct_evidence_rate": null,
     "evidence_supported_rate": null,
     "wrong_high_confidence_count": 0,
-    "correct_low_confidence_count": 0
+    "correct_low_confidence_count": 0,
+    "core_claim": {
+      "total": 16,
+      "mcq_count": 8,
+      "mcq_correct": 8,
+      "open_count": 8,
+      "open_embedding_mean": null,
+      "open_llm_score_mean": 0.6875,
+      "answer_confidence_mean": null,
+      "insufficient_information_rate": null,
+      "direct_evidence_rate": null,
+      "evidence_supported_rate": null,
+      "wrong_high_confidence_count": 0,
+      "correct_low_confidence_count": 0
+    }
   },
   "items": [
     {
@@ -31,7 +45,22 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer describes a man's hand withering, which does not contain the main actions of picking, rubbing, or eating grain as in the standard answer.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer describes a man's hand withering, which does not contain the main actions of picking, rubbing, or eating grain as in the standard answer."
+      "llm_english_rationale": "The generated answer describes a man's hand withering, which does not contain the main actions of picking, rubbing, or eating grain as in the standard answer.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "A man's right hand was withered.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "The generated answer describes a different event (a man's withered hand) and does not mention the Sabbath grain-picking action.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "The generated answer describes a different event (a man's withered hand) and does not mention the Sabbath grain-picking action.",
+        "llm_required_slot": "action/event",
+        "llm_core_claim_expected": "Pick, rub, and eat grain on the Sabbath.",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 2,
@@ -52,7 +81,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "C",
+        "selected_choice": "C",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 3,
@@ -71,7 +117,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer includes the core title 'Master A of the Sabbath', matching the standard answer despite added placeholder.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer includes the core title 'Master A of the Sabbath', matching the standard answer despite added placeholder."
+      "llm_english_rationale": "The generated answer includes the core title 'Master A of the Sabbath', matching the standard answer despite added placeholder.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "The title 01 is Master A of the Sabbath.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "The generated answer states that title 01 is 'Master A of the Sabbath,' which matches the core claim.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "The generated answer states that title 01 is 'Master A of the Sabbath,' which matches the core claim.",
+        "llm_required_slot": "statement/content",
+        "llm_core_claim_expected": "Person F called himself Master A of the Sabbath.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 4,
@@ -92,7 +153,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "B",
+        "selected_choice": "B",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 5,
@@ -111,7 +189,22 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer mentions being blessed when persecuted but does not mention the main reason of 'Great reward in heaven' from the standard answer.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer mentions being blessed when persecuted but does not mention the main reason of 'Great reward in heaven' from the standard answer."
+      "llm_english_rationale": "The generated answer mentions being blessed when persecuted but does not mention the main reason of 'Great reward in heaven' from the standard answer.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "When people hate you, exclude you, insult you, and reject your name as evil because of title 01, you are blessed.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "partial",
+        "llm_score": 0.5,
+        "llm_rationale": "The answer gives the condition for blessedness when persecuted, but omits the actual reason/cause: the great reward in heaven.",
+        "llm_english_label": "partial",
+        "llm_english_rationale": "The answer gives the condition for blessedness when persecuted, but omits the actual reason/cause: the great reward in heaven.",
+        "llm_required_slot": "reason/cause",
+        "llm_core_claim_expected": "People should rejoice because of great reward in heaven.",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 6,
@@ -132,7 +225,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "A",
+        "selected_choice": "A",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 7,
@@ -151,7 +261,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer contains the core instruction to 'Love your enemies', aligning with the standard answer's 'Love and do good'.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer contains the core instruction to 'Love your enemies', aligning with the standard answer's 'Love and do good'."
+      "llm_english_rationale": "The generated answer contains the core instruction to 'Love your enemies', aligning with the standard answer's 'Love and do good'.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Love your enemies.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "The answer directly includes loving enemies, which captures the core command.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "The answer directly includes loving enemies, which captures the core command.",
+        "llm_required_slot": "action/event",
+        "llm_core_claim_expected": "Love and do good to enemies.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 8,
@@ -172,7 +297,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "C",
+        "selected_choice": "C",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 9,
@@ -191,7 +333,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer reflects kindness and mercy by stating 'He is kind to the ungrateful and evil', matching the standard answer's 'Kind and merciful'.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer reflects kindness and mercy by stating 'He is kind to the ungrateful and evil', matching the standard answer's 'Kind and merciful'."
+      "llm_english_rationale": "The generated answer reflects kindness and mercy by stating 'He is kind to the ungrateful and evil', matching the standard answer's 'Kind and merciful'.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "He is kind to the ungrateful and the wicked.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "Saying he is kind to the ungrateful and the wicked matches the expected kindness/mercy claim.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "Saying he is kind to the ungrateful and the wicked matches the expected kindness/mercy claim.",
+        "llm_required_slot": "statement/content",
+        "llm_core_claim_expected": "He is kind and merciful.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 10,
@@ -212,7 +369,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "D",
+        "selected_choice": "D",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 11,
@@ -231,7 +405,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer correctly identifies the core action of removing the log/plank from one's own eye.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer correctly identifies the core action of removing the log/plank from one's own eye."
+      "llm_english_rationale": "The generated answer correctly identifies the core action of removing the log/plank from one's own eye.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "First remove the plank from your own eye.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "The generated answer preserves the key instruction to first remove the plank/log from one's own eye.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "The generated answer preserves the key instruction to first remove the plank/log from one's own eye.",
+        "llm_required_slot": "action/event",
+        "llm_core_claim_expected": "Remove the log from your own eye first.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 12,
@@ -252,7 +441,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "D",
+        "selected_choice": "D",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 13,
@@ -271,7 +477,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer captures the core idea of those who build on the rock, equivalent to 'One who hears and does'.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer captures the core idea of those who build on the rock, equivalent to 'One who hears and does'."
+      "llm_english_rationale": "The generated answer captures the core idea of those who build on the rock, equivalent to 'One who hears and does'.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "It is like the one who builds on rock.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "partial",
+        "llm_score": 0.5,
+        "llm_rationale": "It identifies the rock builder, but leaves out the important condition that this person hears and does.",
+        "llm_english_label": "partial",
+        "llm_english_rationale": "It identifies the rock builder, but leaves out the important condition that this person hears and does.",
+        "llm_required_slot": "person/group",
+        "llm_core_claim_expected": "The one who hears and does is like the person building on rock.",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 14,
@@ -292,7 +513,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "D",
+        "selected_choice": "D",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 15,
@@ -311,7 +549,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer correctly identifies the core concept of those who hear but do not act, matching the standard answer's 'One who hears, disobeys'.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer correctly identifies the core concept of those who hear but do not act, matching the standard answer's 'One who hears, disobeys'."
+      "llm_english_rationale": "The generated answer correctly identifies the core concept of those who hear but do not act, matching the standard answer's 'One who hears, disobeys'.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Those who hear the word but do not do it are like those who build without a foundation.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "partial",
+        "llm_score": 0.5,
+        "llm_rationale": "The answer mentions hearing without doing and building without a foundation, but it does not fully capture the comparison as clearly as expected.",
+        "llm_english_label": "partial",
+        "llm_english_rationale": "The answer mentions hearing without doing and building without a foundation, but it does not fully capture the comparison as clearly as expected.",
+        "llm_required_slot": "person/group",
+        "llm_core_claim_expected": "The one who hears but does not obey is like the person building without a foundation.",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 16,
@@ -332,7 +585,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "D",
+        "selected_choice": "D",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     }
   ]
 }

@@ -1,6 +1,6 @@
 # Per-item discrimination (Spearman of item-score vs translation-quality rank)
 
-_Generated 2026-07-08_
+_Generated 2026-07-12_
 
 For each item, rho correlates the 8 methods' **global quality rank** with the item's **score under each method** (mean of 3 answer models). High +rho = the question detects translation quality; ~0 = insensitive; negative = perverse.
 

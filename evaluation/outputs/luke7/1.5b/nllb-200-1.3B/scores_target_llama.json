@@ -11,7 +11,21 @@
     "direct_evidence_rate": null,
     "evidence_supported_rate": null,
     "wrong_high_confidence_count": 0,
-    "correct_low_confidence_count": 0
+    "correct_low_confidence_count": 0,
+    "core_claim": {
+      "total": 18,
+      "mcq_count": 9,
+      "mcq_correct": 2,
+      "open_count": 9,
+      "open_embedding_mean": null,
+      "open_llm_score_mean": 0.3888888888888889,
+      "answer_confidence_mean": null,
+      "insufficient_information_rate": null,
+      "direct_evidence_rate": null,
+      "evidence_supported_rate": null,
+      "wrong_high_confidence_count": 0,
+      "correct_low_confidence_count": 0
+    }
   },
   "items": [
     {
@@ -31,7 +45,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer correctly identifies that the request to Person F was to heal the slave (character 02). Although it adds detail about sending several group 01 members, it contains the core answer.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer correctly identifies that the request to Person F was to heal the slave (character 02). Although it adds detail about sending several group 01 members, it contains the core answer."
+      "llm_english_rationale": "The generated answer correctly identifies that the request to Person F was to heal the slave (character 02). Although it adds detail about sending several group 01 members, it contains the core answer.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "He sent several people from group 01 to ask Person F to heal his role 02.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "partial",
+        "llm_score": 0.5,
+        "llm_rationale": "The generated answer preserves the core action of requesting Person F to heal someone, but it omits the key detail that the person to be healed was his slave and adds extraneous wording.",
+        "llm_english_label": "partial",
+        "llm_english_rationale": "The generated answer preserves the core action of requesting Person F to heal someone, but it omits the key detail that the person to be healed was his slave and adds extraneous wording.",
+        "llm_required_slot": "action/event",
+        "llm_core_claim_expected": "ask Person F to come and heal his slave",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 2,
@@ -52,7 +81,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "D",
+        "selected_choice": "C",
+        "direct_correct": false,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 3,
@@ -71,7 +117,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer conveys the main point that character 01 felt unworthy for Person F to come, matching the standard answer.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer conveys the main point that character 01 felt unworthy for Person F to come, matching the standard answer."
+      "llm_english_rationale": "The generated answer conveys the main point that character 01 felt unworthy for Person F to come, matching the standard answer.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Because I am not worthy for you to enter under my roof.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "The generated answer gives the same reason in paraphrased form: the speaker says he is not worthy for Person F to enter his house.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "The generated answer gives the same reason in paraphrased form: the speaker says he is not worthy for Person F to enter his house.",
+        "llm_required_slot": "reason/cause",
+        "llm_core_claim_expected": "He felt unworthy for Person F to come.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 4,
@@ -92,7 +153,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "D",
+        "selected_choice": "B",
+        "direct_correct": false,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 5,
@@ -111,7 +189,22 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer misses the core answer about healing 'by just saying a word' and instead contradicts by saying Person F told character 02 to visit him.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer misses the core answer about healing 'by just saying a word' and instead contradicts by saying Person F told character 02 to visit him."
+      "llm_english_rationale": "The generated answer misses the core answer about healing 'by just saying a word' and instead contradicts by saying Person F told character 02 to visit him.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Person F sent role 02 to see him.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "The expected answer is about the manner of healing: by simply saying a word. The generated answer says Person F sent someone to see him, which is a different action and does not contain the core claim.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "The expected answer is about the manner of healing: by simply saying a word. The generated answer says Person F sent someone to see him, which is a different action and does not contain the core claim.",
+        "llm_required_slot": "action/event",
+        "llm_core_claim_expected": "Person F should heal/cure by just saying a word",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 6,
@@ -132,7 +225,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "D",
+        "selected_choice": "B",
+        "direct_correct": false,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 7,
@@ -151,7 +261,22 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer does not address Person F's evaluation of character 01's faith and is too vague.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer does not address Person F's evaluation of character 01's faith and is too vague."
+      "llm_english_rationale": "The generated answer does not address Person F's evaluation of character 01's faith and is too vague.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "There were group 03.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "The generated answer does not evaluate Role 01's confidence or state that it is absent even among People A. It only mentions a group, which is unrelated context.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "The generated answer does not evaluate Role 01's confidence or state that it is absent even among People A. It only mentions a group, which is unrelated context.",
+        "llm_required_slot": "statement/content",
+        "llm_core_claim_expected": "Role 01's faith is not even found among People A; Person F says there is not such faith even in People A.",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 8,
@@ -172,7 +297,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "D",
+        "selected_choice": "C",
+        "direct_correct": false,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 9,
@@ -191,7 +333,22 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer does not report what people said after the resurrection and instead describes an unrelated action.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer does not report what people said after the resurrection and instead describes an unrelated action."
+      "llm_english_rationale": "The generated answer does not report what people said after the resurrection and instead describes an unrelated action.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "After Person F raised that role 03's son, people said, 'Person F gave him to his mother.'",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "The generated answer gives a different statement: that Person F gave the son back to his mother. It does not contain the core claim that people said a great prophet had risen.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "The generated answer gives a different statement: that Person F gave the son back to his mother. It does not contain the core claim that people said a great prophet had risen.",
+        "llm_required_slot": "statement/content",
+        "llm_core_claim_expected": "people said that a great prophet has risen",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 10,
@@ -212,7 +369,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "C",
+        "selected_choice": "C",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 11,
@@ -231,7 +405,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer contains the core comparison that Person C is greater than a prophet, consistent with the standard answer.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer contains the core comparison that Person C is greater than a prophet, consistent with the standard answer."
+      "llm_english_rationale": "The generated answer contains the core comparison that Person C is greater than a prophet, consistent with the standard answer.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Person F thought Person C was greater than the prophets.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "The generated answer conveys the same core evaluation: Person C is greater than/more than the prophets, which matches the expected claim.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "The generated answer conveys the same core evaluation: Person C is greater than/more than the prophets, which matches the expected claim.",
+        "llm_required_slot": "statement/content",
+        "llm_core_claim_expected": "Person C is more than a prophet.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 12,
@@ -252,7 +441,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "D",
+        "selected_choice": "B",
+        "direct_correct": false,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 13,
@@ -271,7 +477,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer covers the main actions (standing behind, crying at his feet) which imply washing and anointing, matching the core of the standard.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer covers the main actions (standing behind, crying at his feet) which imply washing and anointing, matching the core of the standard."
+      "llm_english_rationale": "The generated answer covers the main actions (standing behind, crying at his feet) which imply washing and anointing, matching the core of the standard.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "She stood behind Person F, crying at his feet.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "partial",
+        "llm_score": 0.5,
+        "llm_rationale": "The generated answer names one related action, standing behind him and crying at his feet, but it misses the core actions in the expected answer: wetting, wiping, kissing, and anointing his feet.",
+        "llm_english_label": "partial",
+        "llm_english_rationale": "The generated answer names one related action, standing behind him and crying at his feet, but it misses the core actions in the expected answer: wetting, wiping, kissing, and anointing his feet.",
+        "llm_required_slot": "action/event",
+        "llm_core_claim_expected": "The woman wet, wiped, kissed, and anointed his feet",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 14,
@@ -292,7 +513,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "D",
+        "selected_choice": "C",
+        "direct_correct": false,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 15,
@@ -311,7 +549,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer captures the core reason that the woman loved more.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer captures the core reason that the woman loved more."
+      "llm_english_rationale": "The generated answer captures the core reason that the woman loved more.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Because she loved much.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "The generated answer gives the opposite causal relation. The expected answer says she loves much because her many sins are forgiven, while the generated answer says because she loved much.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "The generated answer gives the opposite causal relation. The expected answer says she loves much because her many sins are forgiven, while the generated answer says because she loved much.",
+        "llm_required_slot": "reason/cause",
+        "llm_core_claim_expected": "Her many sins are forgiven.",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 16,
@@ -332,7 +585,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "D",
+        "selected_choice": "D",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 17,
@@ -351,7 +621,22 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer reflects the core reaction of people wondering who forgave sins, matching the standard.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer reflects the core reaction of people wondering who forgave sins, matching the standard."
+      "llm_english_rationale": "The generated answer reflects the core reaction of people wondering who forgave sins, matching the standard.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "People talked among themselves, wondering, 'Who is this who forgives her?'",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "partial",
+        "llm_score": 0.5,
+        "llm_rationale": "The generated answer captures the reaction of questioning who forgives sins, but it is paraphrased and slightly off in pronoun/target ('her' vs. the expected Person F). It still contains the core claim.",
+        "llm_english_label": "partial",
+        "llm_english_rationale": "The generated answer captures the reaction of questioning who forgives sins, but it is paraphrased and slightly off in pronoun/target ('her' vs. the expected Person F). It still contains the core claim.",
+        "llm_required_slot": "statement/content",
+        "llm_core_claim_expected": "They ask who forgives sins.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 18,
@@ -372,7 +657,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "D",
+        "selected_choice": "C",
+        "direct_correct": false,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     }
   ]
 }

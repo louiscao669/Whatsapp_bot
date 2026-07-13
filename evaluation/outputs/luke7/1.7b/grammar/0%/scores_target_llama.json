@@ -11,7 +11,21 @@
     "direct_evidence_rate": 0.9444444444444444,
     "evidence_supported_rate": 0.9444444444444444,
     "wrong_high_confidence_count": 5,
-    "correct_low_confidence_count": 0
+    "correct_low_confidence_count": 0,
+    "core_claim": {
+      "total": 18,
+      "mcq_count": 9,
+      "mcq_correct": 7,
+      "open_count": 9,
+      "open_embedding_mean": null,
+      "open_llm_score_mean": 0.6111111111111112,
+      "answer_confidence_mean": 0.8222222222222224,
+      "insufficient_information_rate": 0.05555555555555555,
+      "direct_evidence_rate": 0.9444444444444444,
+      "evidence_supported_rate": 0.9444444444444444,
+      "wrong_high_confidence_count": 3,
+      "correct_low_confidence_count": 0
+    }
   },
   "items": [
     {
@@ -34,7 +48,25 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer correctly includes the request for healing the slave (Character 02).",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer correctly includes the request for healing the slave (Character 02)."
+      "llm_english_rationale": "The generated answer correctly includes the request for healing the slave (Character 02).",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Ask him to heal his role 02.",
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "partial",
+        "llm_score": 0.5,
+        "llm_rationale": "The answer preserves the healing request, but changes the object from his slave to 'role 02', so it is incomplete/incorrect in detail.",
+        "llm_english_label": "partial",
+        "llm_english_rationale": "The answer preserves the healing request, but changes the object from his slave to 'role 02', so it is incomplete/incorrect in detail.",
+        "llm_required_slot": "action/event",
+        "llm_core_claim_expected": "Ask Person F to come and heal his slave.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 2,
@@ -58,7 +90,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "correct_choice": "D",
+        "selected_choice": "D",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 3,
@@ -80,7 +132,25 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer changes the reason to showing weakness, which contradicts the standard answer's reason of feeling unworthy.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer changes the reason to showing weakness, which contradicts the standard answer's reason of feeling unworthy."
+      "llm_english_rationale": "The generated answer changes the reason to showing weakness, which contradicts the standard answer's reason of feeling unworthy.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Role 01 sent group 02 to see Person F to show weakness.",
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "partial",
+        "llm_score": 0.5,
+        "llm_rationale": "It gives a similar idea of weakness, but does not clearly state unworthiness for Person F to come.",
+        "llm_english_label": "partial",
+        "llm_english_rationale": "It gives a similar idea of weakness, but does not clearly state unworthiness for Person F to come.",
+        "llm_required_slot": "reason/cause",
+        "llm_core_claim_expected": "He felt unworthy for Person F to come.",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 4,
@@ -104,7 +174,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.8,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "correct_choice": "D",
+        "selected_choice": "D",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 5,
@@ -126,7 +216,25 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer is too vague ('Do') and does not include the key detail of healing by just saying a word.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer is too vague ('Do') and does not include the key detail of healing by just saying a word."
+      "llm_english_rationale": "The generated answer is too vague ('Do') and does not include the key detail of healing by just saying a word.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Do it.",
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "The response 'Do it' does not capture the specific manner of healing by simply speaking a word.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "The response 'Do it' does not capture the specific manner of healing by simply speaking a word.",
+        "llm_required_slot": "statement/content",
+        "llm_core_claim_expected": "By just saying a word.",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 6,
@@ -150,7 +258,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.8,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "correct_choice": "D",
+        "selected_choice": "D",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 7,
@@ -172,7 +300,25 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer acknowledges great confidence, matching the core of faith in the question.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer acknowledges great confidence, matching the core of faith in the question."
+      "llm_english_rationale": "The generated answer acknowledges great confidence, matching the core of faith in the question.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Such great faith.",
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "It matches the core meaning that Person F praised the person's great faith, essentially saying no such faith was found even in People A.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "It matches the core meaning that Person F praised the person's great faith, essentially saying no such faith was found even in People A.",
+        "llm_required_slot": "statement/content",
+        "llm_core_claim_expected": "Not even in People A such faith.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 8,
@@ -196,7 +342,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "correct_choice": "D",
+        "selected_choice": "A",
+        "direct_correct": false,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 9,
@@ -218,7 +384,25 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer contains the main statement about a great prophet rising, matching the core answer.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer contains the main statement about a great prophet rising, matching the core answer."
+      "llm_english_rationale": "The generated answer contains the main statement about a great prophet rising, matching the core answer.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "A great prophet has arisen among us, and Most High A has come to help His People A.",
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "The generated answer includes the core statement that a great prophet has arisen among them.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "The generated answer includes the core statement that a great prophet has arisen among them.",
+        "llm_required_slot": "statement/content",
+        "llm_core_claim_expected": "A great prophet has risen.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 10,
@@ -242,7 +426,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "correct_choice": "C",
+        "selected_choice": "C",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 11,
@@ -264,7 +468,25 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer explicitly states Person C is more than a prophet, matching the core answer.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer explicitly states Person C is more than a prophet, matching the core answer."
+      "llm_english_rationale": "The generated answer explicitly states Person C is more than a prophet, matching the core answer.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Person F pointed out the importance of Person C, and that he is more than just a prophet.",
+        "generation_error": null,
+        "answer_confidence": 0.8,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "It directly states that Person C is more than just a prophet.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "It directly states that Person C is more than just a prophet.",
+        "llm_required_slot": "statement/content",
+        "llm_core_claim_expected": "Person C is more than a prophet.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 12,
@@ -288,7 +510,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.8,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "correct_choice": "D",
+        "selected_choice": "D",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 13,
@@ -310,7 +552,25 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer includes wetting, kissing, and anointing with Material A, thus covering the main actions.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer includes wetting, kissing, and anointing with Material A, thus covering the main actions."
+      "llm_english_rationale": "The generated answer includes wetting, kissing, and anointing with Material A, thus covering the main actions.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "The woman wet and kissed Person F's feet with her tears, and poured Material A on his feet.",
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "The answer contains the key actions toward Person F's feet, including wetting, kissing, and pouring ointment/anointing.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "The answer contains the key actions toward Person F's feet, including wetting, kissing, and pouring ointment/anointing.",
+        "llm_required_slot": "action/event",
+        "llm_core_claim_expected": "She wet, wiped, kissed, and anointed his feet.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 14,
@@ -334,7 +594,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "correct_choice": "D",
+        "selected_choice": "D",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 15,
@@ -356,7 +636,25 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer incorrectly states the reason as greater love leads to more forgiveness, confusing cause and effect.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer incorrectly states the reason as greater love leads to more forgiveness, confusing cause and effect."
+      "llm_english_rationale": "The generated answer incorrectly states the reason as greater love leads to more forgiveness, confusing cause and effect.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Because great love leads to great forgiveness.",
+        "generation_error": null,
+        "answer_confidence": 0.0,
+        "insufficient_information": true,
+        "evidence_quality": "none",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "The answer gives a different causal explanation about great love and forgiveness, not that she loves much because her many sins are forgiven.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "The answer gives a different causal explanation about great love and forgiveness, not that she loves much because her many sins are forgiven.",
+        "llm_required_slot": "reason/cause",
+        "llm_core_claim_expected": "Her many sins are forgiven.",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 16,
@@ -380,7 +678,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.8,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "correct_choice": "D",
+        "selected_choice": "D",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 17,
@@ -402,7 +720,25 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer states amazement rather than questioning who forgives sins, missing the core reaction.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer states amazement rather than questioning who forgives sins, missing the core reaction."
+      "llm_english_rationale": "The generated answer states amazement rather than questioning who forgives sins, missing the core reaction.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "They were amazed at Person F's act of forgiving sins.",
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "partial",
+        "llm_score": 0.5,
+        "llm_rationale": "It refers to amazement at forgiving sins, but misses the specific reaction that people questioned who can forgive sins.",
+        "llm_english_label": "partial",
+        "llm_english_rationale": "It refers to amazement at forgiving sins, but misses the specific reaction that people questioned who can forgive sins.",
+        "llm_required_slot": "statement/content",
+        "llm_core_claim_expected": "They ask who forgives sins.",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 18,
@@ -426,7 +762,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "correct_choice": "D",
+        "selected_choice": "C",
+        "direct_correct": false,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     }
   ]
 }

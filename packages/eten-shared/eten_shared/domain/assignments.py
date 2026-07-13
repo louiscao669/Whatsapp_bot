@@ -3,7 +3,7 @@
 from dataclasses import dataclass
 from typing import Optional
 
-from sqlalchemy import select
+from sqlalchemy import select, update
 from sqlalchemy.orm import Session
 
 from eten_shared.domain.batch_schedules import cancel_pending_next_batch_schedules
@@ -23,8 +23,8 @@ from eten_shared.models import (
 )
 from eten_shared.recordings import (
     get_latest_question_recording,
-    has_question_recording_for_participant,
     participant_language_code,
+    participant_question_audio_satisfied,
     question_recording_playback_url,
 )
 
@@ -56,25 +56,35 @@ class AssignmentAssignError(Exception):
     pass
 
 
-def get_or_create_participant(db: Session, wa_id, display_name=None):
-    participant = db.scalars(select(Participant).where(Participant.wa_id == wa_id)).first()
+def try_complete_assignment(db: Session, assignment) -> bool:
+    """Atomically mark an assignment completed; first commit wins.
+
+    Guards against the same assignment being answered simultaneously on two
+    surfaces (dashboard + messenger). Returns True when THIS caller completed
+    the assignment, False when another writer got there first.
+    """
+
     now = utc_now()
-
-    if participant is None:
-        participant = Participant(
-            wa_id=wa_id,
-            display_name=display_name,
-            last_seen_at=now,
+    result = db.execute(
+        update(Assignment)
+        .where(
+            Assignment.id == assignment.id,
+            Assignment.status != AssignmentStatus.COMPLETED.value,
         )
-        db.add(participant)
-        db.flush()
-        return participant
+        .values(
+            status=AssignmentStatus.COMPLETED.value,
+            completed_at=now,
+            attempt_count=Assignment.attempt_count + 1,
+        )
+    )
+    if result.rowcount == 0:
+        db.expire(assignment)
+        return False
 
-    participant.last_seen_at = now
-    if display_name and participant.display_name != display_name:
-        participant.display_name = display_name
-
-    return participant
+    # Refresh the in-session object so callers see the completed state.
+    assignment.status = AssignmentStatus.COMPLETED.value
+    assignment.completed_at = now
+    return True
 
 
 def get_or_create_participant_session(db: Session, participant):
@@ -259,11 +269,12 @@ def assign_qa_item_to_participant(db: Session, participant, participant_session,
             "This question was removed during QA review and cannot be assigned."
         )
 
-    if not has_question_recording_for_participant(db, qa_item.id, participant):
+    if not participant_question_audio_satisfied(db, qa_item.id, participant):
         language = participant_language_code(participant)
         raise AssignmentAssignError(
             f"No expert question recording for language '{language}'. "
-            "Record the question at /record before assigning."
+            "Record the question at /record before assigning, or set "
+            "REQUIRE_QUESTION_AUDIO=false to allow text-only questions."
         )
 
     existing_assignment = db.scalars(

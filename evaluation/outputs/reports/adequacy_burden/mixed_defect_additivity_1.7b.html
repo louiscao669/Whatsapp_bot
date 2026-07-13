@@ -1,0 +1,64 @@
+<!DOCTYPE html><html><head><meta charset=utf-8><title>Mixed-Defect Additivity — 1.7b</title>
+<style>
+body{font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;max-width:1000px;margin:30px auto;padding:0 20px;color:#1a1a1a;line-height:1.5}
+h1{font-size:23px;margin-bottom:2px} h3{margin-top:26px}
+.sub{color:#666;font-weight:400;font-size:13px}
+table{border-collapse:collapse;width:100%;margin:10px 0;font-size:14px}
+th,td{border:1px solid #e2e2e2;padding:6px 9px;text-align:right} th:first-child,td:first-child{text-align:left}
+th{background:#f6f6f6;font-weight:600} tr.mean td{background:#fafafa;font-weight:700}
+.pos{color:#b3261e;font-weight:700}
+.verdict{background:#fff4f2;border-left:4px solid #b3261e;padding:11px 15px;margin:14px 0;border-radius:4px}
+.note{background:#f6f8fa;border-left:4px solid #0969da;padding:10px 14px;margin:12px 0;border-radius:4px;font-size:14px}
+ul{margin:6px 0} li{margin:3px 0}
+.legend span{display:inline-block;height:11px;width:22px;border-radius:2px;vertical-align:middle;margin:0 4px 0 12px}
+</style></head><body>
+<div style="background:#7a1f1a;color:#fff;padding:14px 18px;border-radius:6px;margin-bottom:16px;font-size:15px">
+<b>⚠ INVALIDATED — do not use these numbers.</b> The "superadditive collapse" below is an artifact of a
+generation failure in the mixed answering run: <b>44% of mixed items have empty answers</b>
+(<code>generation_error: "generated_answer is empty"</code>) vs &lt;1% in the single-defect and baseline runs.
+Empty answers are scored as wrong, which fabricates the collapse. On <b>answered-only</b> items MCQ returns to
+baseline (~0.90–0.96) and open matches single-defect levels (~0.57–0.64). The mixed answering must be re-run
+before additivity can be judged. See diagnostic 2026-07-12.</div>
+<h1>Mixed-Defect Additivity Test — qwen-1.7b</h1>
+<p class=sub>80 mixed cells (5 defect pairs × doses × 8 chapters). Estimand: does stacking two defects equal the sum of their individual damage?
+Interaction <b>I = observed drop − (drop_A + drop_B)</b>. I &gt; 0 = <b>superadditive</b> (worse than the sum).</p>
+<p class=legend>legend: <span style="background:#9db4c0"></span>predicted (sum of singles) &nbsp; <span style="background:#b3261e"></span>observed (mixed)</p>
+
+<div class=verdict><b>Verdict: additivity REJECTED — strongly superadditive.</b> Every pair, both question types.
+Single defects at 10–20% barely move accuracy, but stacking two of them collapses it far past the sum of the parts
+(mean I = +0.33 MCQ, +0.25 open, all &gt; 3 SE). The mixed campaign was the designed clean causal test of additivity; it fails decisively.</div>
+
+<h3>MCQ &nbsp;<span class=sub>clean baseline acc = 0.93</span></h3>
+<table><tr><th>defect pair</th><th>acc A</th><th>acc B</th><th>acc A+B mixed</th><th>predicted drop<br>(drop_A+drop_B)</th><th>observed drop<br>(mixed)</th><th>interaction I</th></tr>
+<tr><td>mistrans 20% + omission 20%</td><td>0.89</td><td>0.86</td><td><b>0.43</b></td><td><span style="display:inline-block;height:11px;width:15px;background:#9db4c0;border-radius:2px;vertical-align:middle"></span> 0.10</td><td><span style="display:inline-block;height:11px;width:75px;background:#b3261e;border-radius:2px;vertical-align:middle"></span> 0.50</td><td class=pos>+0.40</td></tr>
+<tr><td>mistrans 10% + omission 20%</td><td>0.95</td><td>0.86</td><td><b>0.52</b></td><td><span style="display:inline-block;height:11px;width:6px;background:#9db4c0;border-radius:2px;vertical-align:middle"></span> 0.04</td><td><span style="display:inline-block;height:11px;width:62px;background:#b3261e;border-radius:2px;vertical-align:middle"></span> 0.41</td><td class=pos>+0.37</td></tr>
+<tr><td>mistrans 20% + addition bad20%</td><td>0.89</td><td>0.92</td><td><b>0.50</b></td><td><span style="display:inline-block;height:11px;width:6px;background:#9db4c0;border-radius:2px;vertical-align:middle"></span> 0.04</td><td><span style="display:inline-block;height:11px;width:64px;background:#b3261e;border-radius:2px;vertical-align:middle"></span> 0.43</td><td class=pos>+0.39</td></tr>
+<tr><td>mistrans 10% + addition bad20%</td><td>0.95</td><td>0.92</td><td><b>0.60</b></td><td><span style="display:inline-block;height:11px;width:0px;background:#9db4c0;border-radius:2px;vertical-align:middle"></span> -0.02</td><td><span style="display:inline-block;height:11px;width:49px;background:#b3261e;border-radius:2px;vertical-align:middle"></span> 0.33</td><td class=pos>+0.35</td></tr>
+<tr><td>grammar 10% + omission 20%</td><td>0.90</td><td>0.86</td><td><b>0.68</b></td><td><span style="display:inline-block;height:11px;width:13px;background:#9db4c0;border-radius:2px;vertical-align:middle"></span> 0.09</td><td><span style="display:inline-block;height:11px;width:37px;background:#b3261e;border-radius:2px;vertical-align:middle"></span> 0.25</td><td class=pos>+0.16</td></tr>
+<tr class=mean><td>MEAN</td><td></td><td></td><td></td><td>0.05</td><td>0.38</td><td class=pos>+0.33</td></tr>
+</table>
+<h3>OPEN &nbsp;<span class=sub>clean baseline acc = 0.82</span></h3>
+<table><tr><th>defect pair</th><th>acc A</th><th>acc B</th><th>acc A+B mixed</th><th>predicted drop<br>(drop_A+drop_B)</th><th>observed drop<br>(mixed)</th><th>interaction I</th></tr>
+<tr><td>mistrans 20% + omission 20%</td><td>0.64</td><td>0.72</td><td><b>0.24</b></td><td><span style="display:inline-block;height:11px;width:44px;background:#9db4c0;border-radius:2px;vertical-align:middle"></span> 0.29</td><td><span style="display:inline-block;height:11px;width:87px;background:#b3261e;border-radius:2px;vertical-align:middle"></span> 0.58</td><td class=pos>+0.29</td></tr>
+<tr><td>mistrans 10% + omission 20%</td><td>0.68</td><td>0.72</td><td><b>0.26</b></td><td><span style="display:inline-block;height:11px;width:38px;background:#9db4c0;border-radius:2px;vertical-align:middle"></span> 0.25</td><td><span style="display:inline-block;height:11px;width:85px;background:#b3261e;border-radius:2px;vertical-align:middle"></span> 0.57</td><td class=pos>+0.32</td></tr>
+<tr><td>mistrans 20% + addition bad20%</td><td>0.64</td><td>0.72</td><td><b>0.27</b></td><td><span style="display:inline-block;height:11px;width:43px;background:#9db4c0;border-radius:2px;vertical-align:middle"></span> 0.29</td><td><span style="display:inline-block;height:11px;width:84px;background:#b3261e;border-radius:2px;vertical-align:middle"></span> 0.56</td><td class=pos>+0.27</td></tr>
+<tr><td>mistrans 10% + addition bad20%</td><td>0.68</td><td>0.72</td><td><b>0.34</b></td><td><span style="display:inline-block;height:11px;width:37px;background:#9db4c0;border-radius:2px;vertical-align:middle"></span> 0.25</td><td><span style="display:inline-block;height:11px;width:72px;background:#b3261e;border-radius:2px;vertical-align:middle"></span> 0.48</td><td class=pos>+0.23</td></tr>
+<tr><td>grammar 10% + omission 20%</td><td>0.67</td><td>0.72</td><td><b>0.40</b></td><td><span style="display:inline-block;height:11px;width:39px;background:#9db4c0;border-radius:2px;vertical-align:middle"></span> 0.26</td><td><span style="display:inline-block;height:11px;width:64px;background:#b3261e;border-radius:2px;vertical-align:middle"></span> 0.43</td><td class=pos>+0.16</td></tr>
+<tr class=mean><td>MEAN</td><td></td><td></td><td></td><td>0.27</td><td>0.52</td><td class=pos>+0.25</td></tr>
+</table>
+
+<div class=note><b>Why the raw-accuracy view, not the logit-Δ script output.</b> The single-defect MCQ conditions sit near the ceiling (0.89–0.95 vs baseline 0.93),
+where the 1PL common-shift Δ-fitter is ill-conditioned — it reports MCQ as "subadditive −5 logits", which inverts the real effect.
+In accuracy space (immune to the ceiling blow-up) both MCQ and open are cleanly superadditive. Treat <code>additivity_mixed_1.7b</code>'s
+logit pooled value with caution; the accuracy-space interaction above is the trustworthy read.</div>
+
+<h3>Implications</h3>
+<ul>
+<li><b>Absolute thresholds are NOT re-licensed — the opposite.</b> A single-λ additive burden model (deployment §3) <i>understates</i> damage when defects co-occur. Real translations carry multiple defects, so linear composition would be optimistic/lenient.</li>
+<li><b>Compounding mechanism.</b> When meaning is mistranslated <i>and</i> content is omitted, the passage loses the redundancy respondents lean on; damage compounds. Even MCQ — robust to single defects because options allow reconstruction/guessing — collapses toward chance (0.43–0.50) once two defects stack.</li>
+<li><b>MCQ's fluency-blindness is bounded.</b> The earlier "MCQ misses single defects" limitation does not extend to realistic multi-defect translations, which MCQ clearly catches. Good for field QC.</li>
+<li><b>Fluency defects aren't inert in context.</b> grammar 10% (flat on its own) still amplifies omission (I = +0.16). Fluency damage reduces the slack that helps respondents absorb adequacy damage.</li>
+<li><b>Resolves the "additivity UNTESTED" status.</b> Step-2/step2b left additivity untestable via MQM. This causal manipulation tests it directly (no MQM involved) and rejects it — strengthening the empirical-benchmarking deployment path (calibrate on real multi-defect translations) over the compositional model. If composition is kept, it needs a superadditive/interaction term.</li>
+</ul>
+<p class=sub>Source: evaluation/outputs/luke*/1.7b/mixed/ · script: QA_algorithm/scripts/semireal_validation/additivity_mixed_defects.py (logit) · accuracy-space recomputation this run.</p>
+</body></html>

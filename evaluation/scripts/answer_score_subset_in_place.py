@@ -147,6 +147,15 @@ def scored_full_keys(score_items_existing: list[dict]) -> set[str]:
     }
 
 
+def empty_generation_error_keys(items: list[dict]) -> set[str]:
+    return {
+        full_item_key(item, index)
+        for index, item in enumerate(items, start=1)
+        if item.get("generation_error")
+        and not str(item.get("generated_answer") or "").strip()
+    }
+
+
 def base_has_unscored_target(
     base_id: str,
     target_items: list[dict],
@@ -173,6 +182,7 @@ def choose_base_ids(
     chapter: int,
     formats: set[str] | None,
     skip_scored: bool,
+    allow_fewer: bool = False,
 ) -> list[str]:
     candidates = ordered_source_base_ids(standard_items)
     target_base_ids = {
@@ -194,10 +204,13 @@ def choose_base_ids(
             )
         ]
     if count > len(candidates):
-        raise SubsetRunError(
-            f"Luke {chapter}: requested {count} question(s), but only "
-            f"{len(candidates)} candidate(s) are available."
-        )
+        if allow_fewer:
+            count = len(candidates)
+        else:
+            raise SubsetRunError(
+                f"Luke {chapter}: requested {count} question(s), but only "
+                f"{len(candidates)} candidate(s) are available."
+            )
     rng = random.Random(seed + chapter)
     selected = set(rng.sample(candidates, count))
     return [key for key in candidates if key in selected]
@@ -255,21 +268,49 @@ def answer_score_method_subset(
     standard_items = extract_items(load_json(standard_path))
     target_items = extract_items(load_json(qa_path))
     existing_scores = optional_items(scores_path)
-    base_ids = choose_base_ids(
-        standard_items,
-        target_items,
-        existing_scores,
-        count=count,
-        seed=seed,
-        chapter=chapter,
-        formats=formats,
-        skip_scored=skip_scored,
-    )
-    base_id_set = set(base_ids)
-    selected_standard_items = filter_by_base_ids(standard_items, base_id_set, formats=None)
-    selected_target_items = filter_by_base_ids(target_items, base_id_set, formats=formats)
+    if args.only_empty_generation_errors:
+        existing_generated = optional_items(generated_path)
+        retry_keys = empty_generation_error_keys(existing_generated) | empty_generation_error_keys(
+            existing_scores
+        )
+        selected_target_items = [
+            item
+            for index, item in enumerate(target_items, start=1)
+            if full_item_key(item, index) in retry_keys
+            and (
+                formats is None
+                or item_format(item) in formats
+                or item_format(item) is None
+            )
+        ]
+        base_ids = ordered_source_base_ids(selected_target_items)
+        if count < len(base_ids):
+            rng = random.Random(seed + chapter)
+            selected_base_id_set = set(rng.sample(base_ids, count))
+            base_ids = [key for key in base_ids if key in selected_base_id_set]
+            selected_target_items = filter_by_base_ids(
+                selected_target_items,
+                set(base_ids),
+                formats=formats,
+            )
+    else:
+        base_ids = choose_base_ids(
+            standard_items,
+            target_items,
+            existing_scores,
+            count=count,
+            seed=seed,
+            chapter=chapter,
+            formats=formats,
+            skip_scored=skip_scored,
+            allow_fewer=args.allow_fewer,
+        )
+        base_id_set = set(base_ids)
+        selected_target_items = filter_by_base_ids(target_items, base_id_set, formats=formats)
 
-    if skip_scored and existing_scores:
+    selected_standard_items = filter_by_base_ids(standard_items, set(base_ids), formats=None)
+
+    if skip_scored and existing_scores and not args.only_empty_generation_errors:
         scored_keys = scored_full_keys(existing_scores)
         selected_target_items = [
             item
@@ -375,6 +416,12 @@ def parse_args() -> argparse.Namespace:
         )
     )
     parser.add_argument("questions_per_chapter", type=int)
+    parser.add_argument(
+        "--allow-fewer",
+        action="store_true",
+        help="If a chapter has fewer candidate questions than requested, use "
+        "all of them instead of failing (chapter pools range 7-22).",
+    )
     parser.add_argument("--chapters", type=int, nargs="+", default=DEFAULT_CHAPTERS)
     parser.add_argument("--methods", nargs="+", default=["name_5%"])
     parser.add_argument(
@@ -398,6 +445,15 @@ def parse_args() -> argparse.Namespace:
         "--include-scored",
         action="store_true",
         help="Allow replacing already scored items. Default is to select unscored items.",
+    )
+    parser.add_argument(
+        "--only-empty-generation-errors",
+        action="store_true",
+        help=(
+            "Retry only existing items whose generated_answer is empty and "
+            "generation_error is set. This replaces those failed rows in the "
+            "generated/backtranslated/scores files."
+        ),
     )
     parser.add_argument(
         "--answer-provider",

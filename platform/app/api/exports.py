@@ -31,7 +31,7 @@ def _serialize_audio_chapters(chapters):
                     "items": [
                         {
                             "response_id": item.response_id,
-                            "wa_id": item.wa_id,
+                            "participant_id": item.participant_id,
                             "participant_label": item.participant_label,
                             "export_filename": item.export_filename,
                             "received_at": item.received_at.isoformat() if item.received_at else None,

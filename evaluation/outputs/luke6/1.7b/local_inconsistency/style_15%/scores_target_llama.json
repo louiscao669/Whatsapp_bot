@@ -11,7 +11,21 @@
     "direct_evidence_rate": 0.9,
     "evidence_supported_rate": 0.9,
     "wrong_high_confidence_count": 1,
-    "correct_low_confidence_count": 0
+    "correct_low_confidence_count": 0,
+    "core_claim": {
+      "total": 10,
+      "mcq_count": 5,
+      "mcq_correct": 5,
+      "open_count": 5,
+      "open_embedding_mean": null,
+      "open_llm_score_mean": 0.8,
+      "answer_confidence_mean": 0.9100000000000001,
+      "insufficient_information_rate": 0.0,
+      "direct_evidence_rate": 0.9,
+      "evidence_supported_rate": 0.9,
+      "wrong_high_confidence_count": 1,
+      "correct_low_confidence_count": 0
+    }
   },
   "items": [
     {
@@ -34,7 +48,25 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer includes picking and eating grain, which covers the main actions in the standard answer.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer includes picking and eating grain, which covers the main actions in the standard answer."
+      "llm_english_rationale": "The generated answer includes picking and eating grain, which covers the main actions in the standard answer.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Plucking heads of grain and eating the kernels",
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "The generated answer describes the same action: plucking grain and eating it, which matches the expected core claim.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "The generated answer describes the same action: plucking grain and eating it, which matches the expected core claim.",
+        "llm_required_slot": "action/event",
+        "llm_core_claim_expected": "Pick, rub, eat grain.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 2,
@@ -58,7 +90,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "correct_choice": "C",
+        "selected_choice": "C",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 3,
@@ -80,7 +132,25 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer correctly includes loving enemies and doing good, matching the core of the standard answer.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer correctly includes loving enemies and doing good, matching the core of the standard answer."
+      "llm_english_rationale": "The generated answer correctly includes loving enemies and doing good, matching the core of the standard answer.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Love your enemies and do good to those who hate you",
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "The generated answer contains the core instruction to love and do good toward enemies, matching the expected answer's meaning.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "The generated answer contains the core instruction to love and do good toward enemies, matching the expected answer's meaning.",
+        "llm_required_slot": "action/event",
+        "llm_core_claim_expected": "Love and do good.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 4,
@@ -104,7 +174,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "correct_choice": "C",
+        "selected_choice": "C",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 5,
@@ -126,7 +216,25 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer describes forgiveness but does not mention the main attitude of kindness and mercy.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer describes forgiveness but does not mention the main attitude of kindness and mercy."
+      "llm_english_rationale": "The generated answer describes forgiveness but does not mention the main attitude of kindness and mercy.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "If you forgive people, you will be forgiven",
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "The generated answer gives a related teaching about forgiveness, but it does not state Most High A's attitude. It misses the core claim that the attitude is kind and merciful.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "The generated answer gives a related teaching about forgiveness, but it does not state Most High A's attitude. It misses the core claim that the attitude is kind and merciful.",
+        "llm_required_slot": "statement/content",
+        "llm_core_claim_expected": "Kind and merciful",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 6,
@@ -150,7 +258,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "correct_choice": "D",
+        "selected_choice": "D",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 7,
@@ -172,7 +300,25 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer clearly states removing the plank/log from one's own eye as required, matching the standard answer.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer clearly states removing the plank/log from one's own eye as required, matching the standard answer."
+      "llm_english_rationale": "The generated answer clearly states removing the plank/log from one's own eye as required, matching the standard answer.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "First take the log out of your own eye",
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "The generated answer states the same required action: taking the log out of your own eye before removing the speck.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "The generated answer states the same required action: taking the log out of your own eye before removing the speck.",
+        "llm_required_slot": "action/event",
+        "llm_core_claim_expected": "Remove the log.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 8,
@@ -196,7 +342,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "correct_choice": "D",
+        "selected_choice": "D",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 9,
@@ -218,7 +384,25 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer identifies a person who hears but does not act, which aligns with the standard answer's one who hears, disobeys.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer identifies a person who hears but does not act, which aligns with the standard answer's one who hears, disobeys."
+      "llm_english_rationale": "The generated answer identifies a person who hears but does not act, which aligns with the standard answer's one who hears, disobeys.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Those who hear but do not do",
+        "generation_error": null,
+        "answer_confidence": 1.0,
+        "insufficient_information": false,
+        "evidence_quality": "none",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "The generated answer matches the expected group: those who hear and do not act/obey, which is the core claim.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "The generated answer matches the expected group: those who hear and do not act/obey, which is the core claim.",
+        "llm_required_slot": "person/group",
+        "llm_core_claim_expected": "A person who hears but does not obey/do",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 10,
@@ -242,7 +426,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "correct_choice": "D",
+        "selected_choice": "D",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     }
   ]
 }

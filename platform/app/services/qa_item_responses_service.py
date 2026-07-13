@@ -19,7 +19,6 @@ from app.services.system_languages_service import (
 )
 from app.utils.admin_formatters import format_correctness_score, format_display_datetime
 from app.utils.media_urls import participant_response_media_url
-from app.utils.privacy import hash_wa_id_for_display
 
 
 def _iso_datetime(value):
@@ -139,7 +138,7 @@ def get_qa_item_assignments_payload(db, qa_item_id: str, *, languages=None):
         rows.append(
             {
                 "participant": (participant.display_name or participant.id) if participant else "",
-                "wa_id": hash_wa_id_for_display(participant.wa_id) if participant else "",
+                "participant_id": participant.id if participant else "",
                 "language": participant_language_for_qa(participant),
                 "status": assignment.status,
                 "assigned_at": format_display_datetime(assignment.assigned_at),

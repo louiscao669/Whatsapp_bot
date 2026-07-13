@@ -1,6 +1,5 @@
 create table if not exists participants (
     id text primary key default gen_random_uuid()::text,
-    wa_id text not null unique,
     display_name text,
     target_language text,
     locale text,
@@ -10,6 +9,7 @@ create table if not exists participants (
     consented boolean not null default false,
     preferred_batch_size integer not null default 3,
     completed_count integer not null default 0,
+    nudge_platform_sequence jsonb not null default '[]'::jsonb,
     last_seen_at timestamptz,
     created_at timestamptz not null default now(),
     updated_at timestamptz not null default now()
@@ -171,6 +171,7 @@ create table if not exists participant_responses (
     is_correct text not null default 'pending',
     flag_reason text,
     review_status text not null default 'pending',
+    source_channel text,
     received_at timestamptz not null default now(),
     created_at timestamptz not null default now(),
     constraint ck_participant_responses_correctness_score
@@ -185,6 +186,18 @@ create table if not exists participant_events (
     source text,
     metadata jsonb not null default '{}'::jsonb,
     created_at timestamptz not null default now()
+);
+
+create table if not exists outbox_notifications (
+    id text primary key default gen_random_uuid()::text,
+    participant_id text not null references participants(id) on delete cascade,
+    notification_type text not null,
+    payload jsonb not null default '{}'::jsonb,
+    status text not null default 'pending',
+    attempt_count integer not null default 0,
+    failure_reason text,
+    created_at timestamptz not null default now(),
+    sent_at timestamptz
 );
 
 create table if not exists reminders (
@@ -276,7 +289,6 @@ create table if not exists admin_login_codes (
     created_at timestamptz not null default now()
 );
 
-create index if not exists idx_participants_wa_id on participants(wa_id);
 create index if not exists idx_participants_target_language on participants(target_language);
 create index if not exists idx_participant_provider_contacts_participant_id
     on participant_provider_contacts(participant_id);
@@ -295,6 +307,11 @@ create index if not exists idx_assignments_batch_id on assignments(batch_id);
 create index if not exists idx_assignments_status on assignments(status);
 create index if not exists idx_participant_responses_is_correct on participant_responses(is_correct);
 create index if not exists idx_participant_responses_review_status on participant_responses(review_status);
+create index if not exists idx_participant_responses_source_channel on participant_responses(source_channel);
+create index if not exists idx_outbox_notifications_participant_id on outbox_notifications(participant_id);
+create index if not exists idx_outbox_notifications_status on outbox_notifications(status);
+create index if not exists idx_outbox_notifications_notification_type on outbox_notifications(notification_type);
+create index if not exists idx_outbox_notifications_created_at on outbox_notifications(created_at);
 
 create index if not exists idx_participant_events_participant_id on participant_events(participant_id);
 create index if not exists idx_participant_events_event_type on participant_events(event_type);

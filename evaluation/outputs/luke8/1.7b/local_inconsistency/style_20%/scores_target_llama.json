@@ -11,7 +11,21 @@
     "direct_evidence_rate": 0.9,
     "evidence_supported_rate": 0.9,
     "wrong_high_confidence_count": 2,
-    "correct_low_confidence_count": 0
+    "correct_low_confidence_count": 0,
+    "core_claim": {
+      "total": 10,
+      "mcq_count": 5,
+      "mcq_correct": 5,
+      "open_count": 5,
+      "open_embedding_mean": null,
+      "open_llm_score_mean": 0.4,
+      "answer_confidence_mean": 0.8000000000000002,
+      "insufficient_information_rate": 0.1,
+      "direct_evidence_rate": 0.9,
+      "evidence_supported_rate": 0.9,
+      "wrong_high_confidence_count": 2,
+      "correct_low_confidence_count": 1
+    }
   },
   "items": [
     {
@@ -34,7 +48,25 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer identifies the main event: the devil takes the word from those who heard.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer identifies the main event: the devil takes the word from those who heard."
+      "llm_english_rationale": "The generated answer identifies the main event: the devil takes the word from those who heard.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Those who hear, but then the devil comes and takes away the word from their hearts",
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "The generated answer matches the group described in the standard answer: those who hear, but then the devil takes away the word.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "The generated answer matches the group described in the standard answer: those who hear, but then the devil takes away the word.",
+        "llm_required_slot": "person/group",
+        "llm_core_claim_expected": "People who hear, but the devil takes the word away.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 2,
@@ -58,7 +90,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "correct_choice": "A",
+        "selected_choice": "A",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 3,
@@ -80,7 +132,25 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer omits the core action of falling away during testing, which is essential in the standard answer.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer omits the core action of falling away during testing, which is essential in the standard answer."
+      "llm_english_rationale": "The generated answer omits the core action of falling away during testing, which is essential in the standard answer.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "The seed on the rocky ground is those who receive the word with joy when they hear it",
+        "generation_error": null,
+        "answer_confidence": 0.0,
+        "insufficient_information": true,
+        "evidence_quality": "none",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "partial",
+        "llm_score": 0.5,
+        "llm_rationale": "It identifies the rocky-ground hearers receiving the word with joy, but misses the key part about falling away during testing.",
+        "llm_english_label": "partial",
+        "llm_english_rationale": "It identifies the rocky-ground hearers receiving the word with joy, but misses the key part about falling away during testing.",
+        "llm_required_slot": "person/group",
+        "llm_core_claim_expected": "People who receive the word but fall away during testing.",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 4,
@@ -104,7 +174,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "correct_choice": "C",
+        "selected_choice": "C",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 5,
@@ -126,7 +216,25 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer is too vague and does not mention hearing, holding the word, or producing fruit, which are critical parts of the standard answer.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer is too vague and does not mention hearing, holding the word, or producing fruit, which are critical parts of the standard answer."
+      "llm_english_rationale": "The generated answer is too vague and does not mention hearing, holding the word, or producing fruit, which are critical parts of the standard answer.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "People with good and pure hearts",
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "partial",
+        "llm_score": 0.5,
+        "llm_rationale": "It describes a related trait, having good and pure hearts, but does not include hearing, holding, and producing fruit.",
+        "llm_english_label": "partial",
+        "llm_english_rationale": "It describes a related trait, having good and pure hearts, but does not include hearing, holding, and producing fruit.",
+        "llm_required_slot": "person/group",
+        "llm_core_claim_expected": "People who hear, hold on to the word, and produce fruit.",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 6,
@@ -150,7 +258,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.8,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "correct_choice": "C",
+        "selected_choice": "C",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 7,
@@ -172,7 +300,25 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer repeats the question placeholder without providing the main answer, which is those who hear and obey.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer repeats the question placeholder without providing the main answer, which is those who hear and obey."
+      "llm_english_rationale": "The generated answer repeats the question placeholder without providing the main answer, which is those who hear and obey.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Person F's mother and brothers",
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "The answer repeats the question subject rather than giving the intended identification of who counts as his mother and brothers.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "The answer repeats the question subject rather than giving the intended identification of who counts as his mother and brothers.",
+        "llm_required_slot": "person/group",
+        "llm_core_claim_expected": "Those who hear and obey are Person F's mother and brothers.",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 8,
@@ -196,7 +342,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "correct_choice": "A",
+        "selected_choice": "A",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 9,
@@ -218,7 +384,25 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer mentions the core event of touching Person F healing the woman, aligning with the standard answer about her faith in Person F.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer mentions the core event of touching Person F healing the woman, aligning with the standard answer about her faith in Person F."
+      "llm_english_rationale": "The generated answer mentions the core event of touching Person F healing the woman, aligning with the standard answer about her faith in Person F.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Touching him",
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "Touching him is an action, not the cause of healing; the core claim is faith, which is missing.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "Touching him is an action, not the cause of healing; the core claim is faith, which is missing.",
+        "llm_required_slot": "reason/cause",
+        "llm_core_claim_expected": "Her faith in Person F healed her.",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 10,
@@ -242,7 +426,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "correct_choice": "C",
+        "selected_choice": "C",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     }
   ]
 }

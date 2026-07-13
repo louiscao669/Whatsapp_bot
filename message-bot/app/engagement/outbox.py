@@ -1,0 +1,218 @@
+"""Drain cross-surface outbox notifications enqueued by the platform.
+
+The user dashboard enqueues an `outbox_notifications` row when a participant
+answers there (see platform user_dashboard service). This poller pushes a
+messenger confirmation ("recorded via dashboard") plus the participant's
+current open question, keeping the chat surface in step without coupling the
+two processes.
+"""
+
+import logging
+import os
+import threading
+import time
+
+from sqlalchemy import select
+from sqlalchemy.exc import SQLAlchemyError
+
+from eten_shared.database import get_session_factory
+from eten_shared.models import (
+    Assignment,
+    AssignmentStatus,
+    OutboxNotification,
+    OutboxStatus,
+    ParticipantEvent,
+    QAItem,
+    utc_now,
+)
+from eten_shared.domain.assignments import build_assignment_prompt
+from app.providers.delivery import (
+    provider_name_for_participant,
+    send_assignment_prompt as send_provider_assignment_prompt,
+    send_text_message,
+)
+from app.providers.whatsapp.schedule_policy import is_within_customer_service_window
+
+DASHBOARD_ANSWER_SYNCED_TYPE = "dashboard_answer_synced"
+
+_outbox_started = False
+_outbox_lock = threading.Lock()
+
+
+def get_outbox_poll_interval_seconds():
+    return int(os.getenv("OUTBOX_POLL_INTERVAL_SECONDS", "60"))
+
+
+def get_outbox_max_attempts():
+    return int(os.getenv("OUTBOX_MAX_ATTEMPTS", "3"))
+
+
+def outbox_push_enabled():
+    return (
+        os.getenv("OUTBOX_PUSH_ENABLED", "true").lower() == "true"
+        and bool(os.getenv("DATABASE_URL"))
+    )
+
+
+def _cancel(notification, reason):
+    notification.status = OutboxStatus.CANCELLED.value
+    notification.failure_reason = reason
+
+
+def _mark_failure(notification, error_message):
+    notification.attempt_count += 1
+    notification.failure_reason = error_message
+    if notification.attempt_count >= get_outbox_max_attempts():
+        notification.status = OutboxStatus.FAILED.value
+
+
+def _current_open_assignment(db, participant, participant_session):
+    assignment_id = (
+        participant_session.current_assignment_id if participant_session else None
+    )
+    if assignment_id:
+        assignment = db.get(Assignment, assignment_id)
+        if assignment and assignment.status != AssignmentStatus.COMPLETED.value:
+            return assignment
+    return None
+
+
+def _dashboard_synced_message(payload):
+    if payload.get("batch_completed"):
+        size = payload.get("completed_batch_size")
+        question_label = "question" if size == 1 else "questions"
+        suffix = f" That completed your batch of {size} {question_label}." if size else ""
+        return (
+            "Your answer was recorded via the dashboard."
+            + suffix
+        )
+    return "Your answer was recorded via the dashboard."
+
+
+def process_pending_outbox(limit=50):
+    """Send pending outbox notifications. Returns the number processed."""
+
+    session_factory = get_session_factory()
+    processed = 0
+
+    with session_factory() as db:
+        try:
+            notifications = db.scalars(
+                select(OutboxNotification)
+                .where(OutboxNotification.status == OutboxStatus.PENDING.value)
+                .order_by(OutboxNotification.created_at)
+                .limit(limit)
+            ).all()
+
+            for notification in notifications:
+                participant = notification.participant
+                if not participant:
+                    _cancel(notification, "Participant no longer exists")
+                    continue
+
+                participant_session = participant.session
+                if participant_session and participant_session.opted_out_at:
+                    _cancel(notification, "Participant opted out")
+                    continue
+
+                if notification.notification_type != DASHBOARD_ANSWER_SYNCED_TYPE:
+                    _cancel(
+                        notification,
+                        f"Unknown notification type {notification.notification_type!r}",
+                    )
+                    continue
+
+                provider_name = provider_name_for_participant(db, participant)
+                if provider_name == "whatsapp" and not is_within_customer_service_window(
+                    participant
+                ):
+                    _cancel(
+                        notification,
+                        "Outside WhatsApp 24-hour customer service window",
+                    )
+                    continue
+
+                payload = notification.payload or {}
+                try:
+                    send_text_message(
+                        db, participant, _dashboard_synced_message(payload)
+                    )
+                    # Keep the chat surface in step: deliver the participant's
+                    # currently open question (created by the dashboard flow),
+                    # if any, so they can continue on either surface.
+                    open_assignment = _current_open_assignment(
+                        db, participant, participant_session
+                    )
+                    delivered_assignment_id = None
+                    if open_assignment:
+                        qa_item = open_assignment.qa_item or db.get(
+                            QAItem, open_assignment.qa_item_id
+                        )
+                        if qa_item:
+                            prompt = build_assignment_prompt(
+                                db, open_assignment, qa_item, participant
+                            )
+                            send_provider_assignment_prompt(db, participant, prompt)
+                            open_assignment.started_at = (
+                                open_assignment.started_at or utc_now()
+                            )
+                            delivered_assignment_id = open_assignment.id
+                except Exception as exc:  # delivery errors: retry next tick
+                    _mark_failure(notification, str(exc))
+                    continue
+
+                notification.status = OutboxStatus.SENT.value
+                notification.sent_at = utc_now()
+                db.add(
+                    ParticipantEvent(
+                        participant_id=participant.id,
+                        event_type="outbox_notification_sent",
+                        source="scheduler",
+                        event_metadata={
+                            "outbox_notification_id": notification.id,
+                            "notification_type": notification.notification_type,
+                            "provider": provider_name,
+                            "delivered_assignment_id": delivered_assignment_id,
+                            "payload": payload,
+                        },
+                    )
+                )
+                processed += 1
+
+            db.commit()
+        except SQLAlchemyError:
+            db.rollback()
+            logging.exception("Failed to process outbox notifications")
+            raise
+
+    return processed
+
+
+def outbox_loop():
+    logging.info("Outbox poller started")
+    while True:
+        try:
+            process_pending_outbox()
+        except Exception:
+            logging.exception("Outbox poller tick failed")
+        time.sleep(get_outbox_poll_interval_seconds())
+
+
+def start_outbox_poller():
+    global _outbox_started
+
+    if not outbox_push_enabled():
+        logging.info("Outbox poller disabled")
+        return
+
+    with _outbox_lock:
+        if _outbox_started:
+            return
+
+        thread = threading.Thread(
+            target=outbox_loop,
+            name="outbox-poller",
+            daemon=True,
+        )
+        thread.start()
+        _outbox_started = True

@@ -16,6 +16,7 @@ from eten_shared.domain.assignments import (
     create_assignment_for_qa_item,
     get_or_create_participant_session,
     record_participant_event,
+    try_complete_assignment,
 )
 from eten_shared.domain.qa_eligibility import qa_item_is_assignable
 from eten_shared.keyword_matching import (
@@ -31,6 +32,8 @@ from eten_shared.media_storage import (
 from eten_shared.models import (
     Assignment,
     AssignmentStatus,
+    OutboxNotification,
+    OutboxStatus,
     Participant,
     ParticipantBadge,
     ParticipantCurrencyEvent,
@@ -44,6 +47,7 @@ from eten_shared.models import (
     ResponseType,
     ReviewStatus,
     SessionState,
+    SourceChannel,
     utc_now,
 )
 from eten_shared.mcq import (
@@ -214,7 +218,7 @@ def _latest_question_audio_url(db, qa_item, participant):
     language = participant_language_code(participant)
     recording = get_latest_question_recording(db, qa_item.id, language)
     if recording:
-        return f"/user-dashboard/api/{participant.wa_id}/qa-question-recording/{recording.id}/audio"
+        return f"/user-dashboard/api/{participant.id}/qa-question-recording/{recording.id}/audio"
     return qa_item.audio_url
 
 
@@ -564,7 +568,7 @@ def _serialize_completed_question_review(db, participant, assignment, qa_item):
         correctness = open_response_status_label(response.is_correct)
 
     response_audio_url = (
-        f"/user-dashboard/api/{participant.wa_id}/participant-response/{response.id}/audio"
+        f"/user-dashboard/api/{participant.id}/participant-response/{response.id}/audio"
         if (response.media_url or "").strip()
         else None
     )
@@ -577,7 +581,7 @@ def _serialize_completed_question_review(db, participant, assignment, qa_item):
         "participant_audio_url": response_audio_url,
         "correct_answer": correct_answer,
         "correct_audio_url": (
-            f"/user-dashboard/api/{participant.wa_id}/qa-answer-recording/{correct_recording.id}/audio"
+            f"/user-dashboard/api/{participant.id}/qa-answer-recording/{correct_recording.id}/audio"
             if correct_recording
             else None
         ),
@@ -611,19 +615,19 @@ def _language_code(participant):
     return (participant.target_language or "unknown").strip() or "unknown"
 
 
-def _participant_by_wa_id(db, wa_id):
-    return db.scalars(select(Participant).where(Participant.wa_id == wa_id)).first()
+def _participant_by_id(db, participant_id):
+    return db.scalars(select(Participant).where(Participant.id == participant_id)).first()
 
 
-def _profile_photo_url(wa_id, participant):
+def _profile_photo_url(participant_id, participant):
     if not (participant.profile_photo_uri or "").strip():
         return None
     version = int((participant.updated_at or participant.created_at).timestamp())
-    return f"/user-dashboard/api/{wa_id}/profile-photo?v={version}"
+    return f"/user-dashboard/api/{participant_id}/profile-photo?v={version}"
 
 
-def load_profile_photo(db, wa_id: str):
-    participant = _participant_by_wa_id(db, wa_id)
+def load_profile_photo(db, participant_id: str):
+    participant = _participant_by_id(db, participant_id)
     if not participant:
         raise ProfilePhotoNotFoundError("Participant not found")
 
@@ -709,7 +713,7 @@ def get_equipped_cosmetics(participant):
     }
 
 
-def set_cosmetic_equipped(db, wa_id: str, item_id: str, equipped: bool):
+def set_cosmetic_equipped(db, participant_id: str, item_id: str, equipped: bool):
     item = STORE_ITEMS.get((item_id or "").strip())
     if not item:
         raise CosmeticUpdateError("Store item not found")
@@ -719,7 +723,7 @@ def set_cosmetic_equipped(db, wa_id: str, item_id: str, equipped: bool):
     if not slot:
         raise CosmeticUpdateError("Cosmetic slot not found")
 
-    participant = _participant_by_wa_id(db, wa_id)
+    participant = _participant_by_id(db, participant_id)
     if not participant:
         raise CosmeticUpdateError("Participant not found")
 
@@ -749,11 +753,11 @@ def set_cosmetic_equipped(db, wa_id: str, item_id: str, equipped: bool):
         )
     )
     db.flush()
-    return get_user_dashboard_payload(db, wa_id)
+    return get_user_dashboard_payload(db, participant_id)
 
 
-def set_user_streak_pause(db, wa_id: str, paused: bool):
-    participant = _participant_by_wa_id(db, wa_id)
+def set_user_streak_pause(db, participant_id: str, paused: bool):
+    participant = _participant_by_id(db, participant_id)
     if not participant:
         raise StreakPauseUpdateError("Participant not found")
 
@@ -761,15 +765,15 @@ def set_user_streak_pause(db, wa_id: str, paused: bool):
         set_streak_pause(db, participant, paused)
     except ValueError as exc:
         raise StreakPauseUpdateError(str(exc)) from exc
-    return get_user_dashboard_payload(db, wa_id)
+    return get_user_dashboard_payload(db, participant_id)
 
 
-def purchase_store_item(db, wa_id: str, item_id: str):
+def purchase_store_item(db, participant_id: str, item_id: str):
     item = STORE_ITEMS.get((item_id or "").strip())
     if not item:
         raise StorePurchaseError("Store item not found")
 
-    participant = _participant_by_wa_id(db, wa_id)
+    participant = _participant_by_id(db, participant_id)
     if not participant:
         raise StorePurchaseError("Participant not found")
 
@@ -800,7 +804,7 @@ def purchase_store_item(db, wa_id: str, item_id: str):
     )
     db.add(event)
     db.flush()
-    return get_user_dashboard_payload(db, wa_id)
+    return get_user_dashboard_payload(db, participant_id)
 
 
 def _batch_reward_event(db, participant_id, batch_id):
@@ -832,12 +836,12 @@ def _batch_is_complete(db, participant_id, batch_id):
     )
 
 
-def claim_batch_chest_reward(db, wa_id: str, batch_id: str):
+def claim_batch_chest_reward(db, participant_id: str, batch_id: str):
     batch_id = (batch_id or "").strip()
     if not batch_id:
         raise ChestRewardError("Batch is required")
 
-    participant = _participant_by_wa_id(db, wa_id)
+    participant = _participant_by_id(db, participant_id)
     if not participant:
         raise ChestRewardError("Participant not found")
     if not _batch_is_complete(db, participant.id, batch_id):
@@ -869,7 +873,7 @@ def claim_batch_chest_reward(db, wa_id: str, batch_id: str):
         )
     )
     db.flush()
-    payload = get_user_dashboard_payload(db, wa_id)
+    payload = get_user_dashboard_payload(db, participant_id)
     payload["last_reward"] = {
         "type": "batch_chest",
         "batch_id": batch_id,
@@ -879,7 +883,85 @@ def claim_batch_chest_reward(db, wa_id: str, batch_id: str):
     return payload
 
 
-def submit_dashboard_answer(db, wa_id: str, assignment_id: str, response_text: str):
+DASHBOARD_ANSWER_SYNCED_NOTIFICATION = "dashboard_answer_synced"
+
+
+def _enqueue_outbox_notification(db, participant, notification_type, payload):
+    """Queue a cross-surface notification for the message-bot poller.
+
+    Older pending notifications of the same type for the same participant
+    are superseded so rapid dashboard answering collapses into one push.
+    """
+
+    stale = db.scalars(
+        select(OutboxNotification).where(
+            OutboxNotification.participant_id == participant.id,
+            OutboxNotification.notification_type == notification_type,
+            OutboxNotification.status == OutboxStatus.PENDING.value,
+        )
+    ).all()
+    for notification in stale:
+        notification.status = OutboxStatus.SUPERSEDED.value
+        notification.failure_reason = "Superseded by a newer notification"
+
+    notification = OutboxNotification(
+        participant_id=participant.id,
+        notification_type=notification_type,
+        payload=payload or {},
+        status=OutboxStatus.PENDING.value,
+    )
+    db.add(notification)
+    return notification
+
+
+def mark_dashboard_question_viewed(db, participant_id: str, assignment_id: str):
+    """Record that a question was first rendered on the dashboard.
+
+    Starts the time-on-task clock (assignment.started_at) if it has not
+    already been started by a messenger delivery.
+    """
+
+    assignment_id = (assignment_id or "").strip()
+    if not assignment_id:
+        raise DashboardAnswerError("Assignment is required")
+
+    participant = _participant_by_id(db, participant_id)
+    if not participant:
+        raise DashboardAnswerError("Participant not found")
+
+    assignment = db.get(Assignment, assignment_id)
+    if not assignment or assignment.participant_id != participant.id:
+        raise DashboardAnswerError("Assignment not found")
+
+    started_now = False
+    if (
+        assignment.status != AssignmentStatus.COMPLETED.value
+        and assignment.started_at is None
+    ):
+        assignment.started_at = utc_now()
+        started_now = True
+
+    record_participant_event(
+        db,
+        participant,
+        "question_viewed",
+        {
+            "assignment_id": assignment.id,
+            "qa_item_id": assignment.qa_item_id,
+            "batch_id": assignment.batch_id,
+            "started_clock": started_now,
+            "source_surface": "user_dashboard",
+        },
+        source="user_dashboard",
+    )
+    return {
+        "assignment_id": assignment.id,
+        "started_at": _iso_datetime(assignment.started_at),
+        "started_clock": started_now,
+    }
+
+
+def submit_dashboard_answer(db, participant_id: str, assignment_id: str, response_text: str):
     assignment_id = (assignment_id or "").strip()
     answer_text = (response_text or "").strip()
     if not assignment_id:
@@ -887,7 +969,7 @@ def submit_dashboard_answer(db, wa_id: str, assignment_id: str, response_text: s
     if not answer_text:
         raise DashboardAnswerError("Answer is required")
 
-    participant = _participant_by_wa_id(db, wa_id)
+    participant = _participant_by_id(db, participant_id)
     if not participant:
         raise DashboardAnswerError("Participant not found")
 
@@ -900,6 +982,11 @@ def submit_dashboard_answer(db, wa_id: str, assignment_id: str, response_text: s
     qa_item = assignment.qa_item or db.get(QAItem, assignment.qa_item_id)
     if not qa_item:
         raise DashboardAnswerError("Question not found")
+
+    # Race guard: atomically claim the assignment; the first surface
+    # (dashboard or messenger) to complete it wins.
+    if not try_complete_assignment(db, assignment):
+        raise DashboardAnswerError("This question is already answered")
 
     participant_session = get_or_create_participant_session(db, participant)
     participant_session.current_assignment_id = assignment.id
@@ -953,14 +1040,15 @@ def submit_dashboard_answer(db, wa_id: str, assignment_id: str, response_text: s
         is_correct=is_correct_label,
         flag_reason=flag_reason,
         review_status=review_status,
+        source_channel=SourceChannel.USER_DASHBOARD.value,
     )
     db.add(response)
 
     now = utc_now()
-    assignment.status = AssignmentStatus.COMPLETED.value
-    assignment.completed_at = now
-    assignment.started_at = assignment.started_at or now
-    assignment.attempt_count += 1
+    # status/completed_at/attempt_count were set atomically by
+    # try_complete_assignment above; keep the started_at backfill as a
+    # fallback for assignments never marked viewed.
+    assignment.started_at = assignment.started_at or assignment.completed_at or now
     participant.completed_count = (participant.completed_count or 0) + 1
     participant.last_seen_at = now
     participant_session.current_assignment_id = None
@@ -1057,6 +1145,21 @@ def submit_dashboard_answer(db, wa_id: str, assignment_id: str, response_text: s
         else:
             participant_session.state = SessionState.IDLE.value
 
+    _enqueue_outbox_notification(
+        db,
+        participant,
+        DASHBOARD_ANSWER_SYNCED_NOTIFICATION,
+        {
+            "response_id": response.id,
+            "assignment_id": assignment.id,
+            "qa_item_id": qa_item.id,
+            "batch_id": assignment.batch_id,
+            "batch_completed": batch_completed,
+            "completed_batch_size": completed_batch_size,
+            "next_assignment_id": next_assignment_id,
+        },
+    )
+
     db.flush()
     wallet = _get_or_create_wallet(db, participant)
     return {
@@ -1080,16 +1183,16 @@ def submit_dashboard_answer(db, wa_id: str, assignment_id: str, response_text: s
     }
 
 
-def start_dashboard_new_batch(db, wa_id: str):
-    participant = _participant_by_wa_id(db, wa_id)
+def start_dashboard_new_batch(db, participant_id: str):
+    participant = _participant_by_id(db, participant_id)
     if not participant:
         raise DashboardAnswerError("Participant not found")
     _assign_dashboard_next_batch(db, participant, source="manual")
-    return get_user_dashboard_payload(db, wa_id)
+    return get_user_dashboard_payload(db, participant_id)
 
 
-def update_profile_photo(db, wa_id: str, content: bytes, content_type: str):
-    participant = _participant_by_wa_id(db, wa_id)
+def update_profile_photo(db, participant_id: str, content: bytes, content_type: str):
+    participant = _participant_by_id(db, participant_id)
     if not participant:
         raise ProfilePhotoUploadError("Participant not found")
 
@@ -1133,7 +1236,7 @@ def update_profile_photo(db, wa_id: str, content: bytes, content_type: str):
     if previous_uri and previous_uri != stored.storage_uri:
         delete_storage_uri(previous_uri)
 
-    return get_user_dashboard_payload(db, wa_id)
+    return get_user_dashboard_payload(db, participant_id)
 
 
 def get_language_weekly_leaderboard(db, participant, limit=LEADERBOARD_LIMIT):
@@ -1362,8 +1465,8 @@ def get_luke_journey_chapters(db, participant_id):
     ]
 
 
-def get_user_dashboard_payload(db, wa_id: str, event_limit: int = 100):
-    participant = _participant_by_wa_id(db, wa_id)
+def get_user_dashboard_payload(db, participant_id: str, event_limit: int = 100):
+    participant = _participant_by_id(db, participant_id)
     if not participant:
         return None
 
@@ -1443,8 +1546,8 @@ def get_user_dashboard_payload(db, wa_id: str, event_limit: int = 100):
         "participant": {
             "id": participant.id,
             "display_name": participant.display_name or "",
-            "wa_id": participant.wa_id,
-            "profile_photo_url": _profile_photo_url(wa_id, participant),
+            "participant_id": participant.id,
+            "profile_photo_url": _profile_photo_url(participant_id, participant),
         },
         "wallet": wallet_payload,
         "xp_points": 0,

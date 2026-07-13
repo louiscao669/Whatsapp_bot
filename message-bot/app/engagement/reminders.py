@@ -19,6 +19,12 @@ from app.providers.delivery import (
     provider_name_for_participant,
     send_assignment_prompt as send_provider_assignment_prompt,
     send_reminder as send_provider_reminder,
+    send_text_message as send_provider_text_message,
+)
+from app.engagement.dashboard_nudge import (
+    batch_ready_message,
+    question_reminder_message,
+    resolve_dashboard_nudge,
 )
 from app.providers.whatsapp.reminders import create_next_template_reminder
 from app.providers.whatsapp.schedule_policy import (
@@ -133,7 +139,31 @@ def process_due_reminders(limit=50):
                     prompt = process_batch_next_assignment_reminder(db, reminder)
                     participant = reminder.participant
                     if prompt and participant:
-                        send_provider_assignment_prompt(db, participant, prompt)
+                        # Platform-engagement experiment: dashboard-nudged
+                        # batches get a deep-link nudge instead of the
+                        # in-chat question; the assignment still exists in the
+                        # DB to be answered on the dashboard.
+                        dashboard_link = resolve_dashboard_nudge(db, participant)
+                        if dashboard_link:
+                            send_provider_text_message(
+                                db, participant, batch_ready_message(dashboard_link)
+                            )
+                            surface = "dashboard"
+                        else:
+                            send_provider_assignment_prompt(db, participant, prompt)
+                            surface = "messenger"
+                        db.add(
+                            ParticipantEvent(
+                                participant_id=participant.id,
+                                event_type="batch_next_nudged",
+                                source="scheduler",
+                                event_metadata={
+                                    "reminder_id": reminder.id,
+                                    "assignment_id": prompt.assignment_id,
+                                    "nudge_surface": surface,
+                                },
+                            )
+                        )
                     processed_count += 1
                     continue
 
@@ -183,8 +213,26 @@ def process_due_reminders(limit=50):
                     )
                     continue
 
+                # Platform-engagement experiment: for dashboard-nudged
+                # batches, point follow-up reminders at the dashboard (deep
+                # link) instead of re-sending the question in chat. Falls back
+                # to the in-chat reminder for template reminders (which have
+                # their own WhatsApp-window handling) or when no link can be
+                # built.
+                dashboard_link = (
+                    None
+                    if template_reminder
+                    else resolve_dashboard_nudge(db, participant)
+                )
                 try:
-                    response = send_provider_reminder(db, participant, assignment, reminder)
+                    if dashboard_link:
+                        response = send_provider_text_message(
+                            db, participant, question_reminder_message(dashboard_link)
+                        )
+                    else:
+                        response = send_provider_reminder(
+                            db, participant, assignment, reminder
+                        )
                 except Exception as exc:
                     mark_reminder_for_retry(reminder, str(exc))
                     continue
@@ -211,6 +259,7 @@ def process_due_reminders(limit=50):
                             "assignment_id": assignment.id,
                             "reminder_type": reminder.reminder_type,
                             "provider": getattr(response, "provider", provider_name),
+                            "nudge_surface": "dashboard" if dashboard_link else "messenger",
                             "scheduled_for": reminder.scheduled_for.isoformat(),
                             "sent_at": reminder.sent_at.isoformat(),
                         },

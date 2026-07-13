@@ -1,6 +1,8 @@
-from flask import Blueprint, Response, jsonify, request, send_from_directory
+from flask import Blueprint, Response, jsonify, redirect, request, send_from_directory
 from sqlalchemy import select
 
+from eten_shared.dashboard_links import DashboardLinkError, verify_dashboard_token
+from eten_shared.domain.identity import resolve_login
 from eten_shared.database import get_session_factory
 from eten_shared.models import Assignment, AssignmentStatus, Participant, ParticipantResponse, QAItemRecording
 from eten_shared.repo_paths import REPO_ROOT
@@ -19,6 +21,7 @@ from app.user_dashboard.service import (
     get_user_dashboard_payload,
     claim_batch_chest_reward,
     load_profile_photo,
+    mark_dashboard_question_viewed,
     purchase_store_item,
     set_cosmetic_equipped,
     set_user_streak_pause,
@@ -48,15 +51,15 @@ def add_cors_headers(response):
     return _cors_response(response)
 
 
-@user_dashboard_blueprint.route("/user-dashboard/api/<wa_id>", methods=["GET", "OPTIONS"])
-@user_dashboard_blueprint.route("/api/v1/user-dashboard/<wa_id>", methods=["GET", "OPTIONS"])
-def get_user_dashboard(wa_id):
+@user_dashboard_blueprint.route("/user-dashboard/api/<participant_id>", methods=["GET", "OPTIONS"])
+@user_dashboard_blueprint.route("/api/v1/user-dashboard/<participant_id>", methods=["GET", "OPTIONS"])
+def get_user_dashboard(participant_id):
     if request.method == "OPTIONS":
         return _cors_response(jsonify({"ok": True}))
 
     session_factory = get_session_factory()
     with session_factory() as db:
-        payload = get_user_dashboard_payload(db, wa_id)
+        payload = get_user_dashboard_payload(db, participant_id)
         if payload:
             db.commit()
 
@@ -67,10 +70,10 @@ def get_user_dashboard(wa_id):
 
 
 @user_dashboard_blueprint.route(
-    "/user-dashboard/api/<wa_id>/purchases",
+    "/user-dashboard/api/<participant_id>/purchases",
     methods=["POST", "OPTIONS"],
 )
-def purchase_user_dashboard_item(wa_id):
+def purchase_user_dashboard_item(participant_id):
     if request.method == "OPTIONS":
         return _cors_response(jsonify({"ok": True}))
 
@@ -78,7 +81,7 @@ def purchase_user_dashboard_item(wa_id):
     session_factory = get_session_factory()
     try:
         with session_factory() as db:
-            payload = purchase_store_item(db, wa_id, body.get("item_id"))
+            payload = purchase_store_item(db, participant_id, body.get("item_id"))
             db.commit()
     except StorePurchaseError as exc:
         message = str(exc)
@@ -89,10 +92,10 @@ def purchase_user_dashboard_item(wa_id):
 
 
 @user_dashboard_blueprint.route(
-    "/user-dashboard/api/<wa_id>/cosmetics",
+    "/user-dashboard/api/<participant_id>/cosmetics",
     methods=["POST", "OPTIONS"],
 )
-def update_user_dashboard_cosmetic(wa_id):
+def update_user_dashboard_cosmetic(participant_id):
     if request.method == "OPTIONS":
         return _cors_response(jsonify({"ok": True}))
 
@@ -102,7 +105,7 @@ def update_user_dashboard_cosmetic(wa_id):
         with session_factory() as db:
             payload = set_cosmetic_equipped(
                 db,
-                wa_id,
+                participant_id,
                 body.get("item_id"),
                 body.get("equipped") is True,
             )
@@ -116,10 +119,10 @@ def update_user_dashboard_cosmetic(wa_id):
 
 
 @user_dashboard_blueprint.route(
-    "/user-dashboard/api/<wa_id>/streak-pause",
+    "/user-dashboard/api/<participant_id>/streak-pause",
     methods=["POST", "OPTIONS"],
 )
-def update_user_dashboard_streak_pause(wa_id):
+def update_user_dashboard_streak_pause(participant_id):
     if request.method == "OPTIONS":
         return _cors_response(jsonify({"ok": True}))
 
@@ -127,7 +130,7 @@ def update_user_dashboard_streak_pause(wa_id):
     session_factory = get_session_factory()
     try:
         with session_factory() as db:
-            payload = set_user_streak_pause(db, wa_id, body.get("paused") is True)
+            payload = set_user_streak_pause(db, participant_id, body.get("paused") is True)
             db.commit()
     except StreakPauseUpdateError as exc:
         message = str(exc)
@@ -138,10 +141,10 @@ def update_user_dashboard_streak_pause(wa_id):
 
 
 @user_dashboard_blueprint.route(
-    "/user-dashboard/api/<wa_id>/batch-rewards",
+    "/user-dashboard/api/<participant_id>/batch-rewards",
     methods=["POST", "OPTIONS"],
 )
-def claim_user_dashboard_batch_reward(wa_id):
+def claim_user_dashboard_batch_reward(participant_id):
     if request.method == "OPTIONS":
         return _cors_response(jsonify({"ok": True}))
 
@@ -149,7 +152,7 @@ def claim_user_dashboard_batch_reward(wa_id):
     session_factory = get_session_factory()
     try:
         with session_factory() as db:
-            payload = claim_batch_chest_reward(db, wa_id, body.get("batch_id"))
+            payload = claim_batch_chest_reward(db, participant_id, body.get("batch_id"))
             db.commit()
     except ChestRewardError as exc:
         message = str(exc)
@@ -160,10 +163,10 @@ def claim_user_dashboard_batch_reward(wa_id):
 
 
 @user_dashboard_blueprint.route(
-    "/user-dashboard/api/<wa_id>/answers",
+    "/user-dashboard/api/<participant_id>/answers",
     methods=["POST", "OPTIONS"],
 )
-def submit_user_dashboard_answer(wa_id):
+def submit_user_dashboard_answer(participant_id):
     if request.method == "OPTIONS":
         return _cors_response(jsonify({"ok": True}))
 
@@ -173,7 +176,7 @@ def submit_user_dashboard_answer(wa_id):
         with session_factory() as db:
             payload = submit_dashboard_answer(
                 db,
-                wa_id,
+                participant_id,
                 body.get("assignment_id"),
                 body.get("response_text"),
             )
@@ -187,17 +190,17 @@ def submit_user_dashboard_answer(wa_id):
 
 
 @user_dashboard_blueprint.route(
-    "/user-dashboard/api/<wa_id>/start-batch",
+    "/user-dashboard/api/<participant_id>/start-batch",
     methods=["POST", "OPTIONS"],
 )
-def start_user_dashboard_batch(wa_id):
+def start_user_dashboard_batch(participant_id):
     if request.method == "OPTIONS":
         return _cors_response(jsonify({"ok": True}))
 
     session_factory = get_session_factory()
     try:
         with session_factory() as db:
-            payload = start_dashboard_new_batch(db, wa_id)
+            payload = start_dashboard_new_batch(db, participant_id)
             db.commit()
     except DashboardAnswerError as exc:
         message = str(exc)
@@ -208,17 +211,17 @@ def start_user_dashboard_batch(wa_id):
 
 
 @user_dashboard_blueprint.route(
-    "/user-dashboard/api/<wa_id>/profile-photo",
+    "/user-dashboard/api/<participant_id>/profile-photo",
     methods=["GET", "POST", "OPTIONS"],
 )
-def user_dashboard_profile_photo(wa_id):
+def user_dashboard_profile_photo(participant_id):
     if request.method == "OPTIONS":
         return _cors_response(jsonify({"ok": True}))
     if request.method == "GET":
         session_factory = get_session_factory()
         try:
             with session_factory() as db:
-                photo = load_profile_photo(db, wa_id)
+                photo = load_profile_photo(db, participant_id)
         except ProfilePhotoNotFoundError as exc:
             return jsonify({"error": "profile_photo_error", "message": str(exc)}), 404
 
@@ -248,7 +251,7 @@ def user_dashboard_profile_photo(wa_id):
         with session_factory() as db:
             payload = update_profile_photo(
                 db,
-                wa_id,
+                participant_id,
                 photo.read(),
                 photo.mimetype,
             )
@@ -262,14 +265,14 @@ def user_dashboard_profile_photo(wa_id):
 
 
 @user_dashboard_blueprint.route(
-    "/user-dashboard/api/<wa_id>/participant-response/<response_id>/audio",
+    "/user-dashboard/api/<participant_id>/participant-response/<response_id>/audio",
     methods=["GET"],
 )
-def user_dashboard_participant_response_audio(wa_id, response_id):
+def user_dashboard_participant_response_audio(participant_id, response_id):
     session_factory = get_session_factory()
     with session_factory() as db:
         participant = db.scalars(
-            select(Participant).where(Participant.wa_id == wa_id)
+            select(Participant).where(Participant.id == participant_id)
         ).first()
         response_row = db.get(ParticipantResponse, response_id)
         if (
@@ -286,14 +289,14 @@ def user_dashboard_participant_response_audio(wa_id, response_id):
 
 
 @user_dashboard_blueprint.route(
-    "/user-dashboard/api/<wa_id>/qa-question-recording/<recording_id>/audio",
+    "/user-dashboard/api/<participant_id>/qa-question-recording/<recording_id>/audio",
     methods=["GET"],
 )
-def user_dashboard_qa_question_recording_audio(wa_id, recording_id):
+def user_dashboard_qa_question_recording_audio(participant_id, recording_id):
     session_factory = get_session_factory()
     with session_factory() as db:
         participant = db.scalars(
-            select(Participant).where(Participant.wa_id == wa_id)
+            select(Participant).where(Participant.id == participant_id)
         ).first()
         recording = db.get(QAItemRecording, recording_id)
         if (
@@ -318,14 +321,14 @@ def user_dashboard_qa_question_recording_audio(wa_id, recording_id):
 
 
 @user_dashboard_blueprint.route(
-    "/user-dashboard/api/<wa_id>/qa-answer-recording/<recording_id>/audio",
+    "/user-dashboard/api/<participant_id>/qa-answer-recording/<recording_id>/audio",
     methods=["GET"],
 )
-def user_dashboard_qa_answer_recording_audio(wa_id, recording_id):
+def user_dashboard_qa_answer_recording_audio(participant_id, recording_id):
     session_factory = get_session_factory()
     with session_factory() as db:
         participant = db.scalars(
-            select(Participant).where(Participant.wa_id == wa_id)
+            select(Participant).where(Participant.id == participant_id)
         ).first()
         recording = db.get(QAItemRecording, recording_id)
         if (
@@ -350,10 +353,105 @@ def user_dashboard_qa_answer_recording_audio(wa_id, recording_id):
     return Response(content, mimetype=content_type or "application/octet-stream")
 
 
+@user_dashboard_blueprint.route(
+    "/user-dashboard/api/<participant_id>/question-viewed",
+    methods=["POST", "OPTIONS"],
+)
+def user_dashboard_question_viewed(participant_id):
+    if request.method == "OPTIONS":
+        return _cors_response(jsonify({"ok": True}))
+
+    body = request.get_json(silent=True) or {}
+    session_factory = get_session_factory()
+    try:
+        with session_factory() as db:
+            payload = mark_dashboard_question_viewed(
+                db,
+                participant_id,
+                body.get("assignment_id"),
+            )
+            db.commit()
+    except DashboardAnswerError as exc:
+        message = str(exc)
+        status = 404 if message in {"Participant not found", "Assignment not found"} else 400
+        return jsonify({"error": "question_viewed_error", "message": message}), status
+
+    return jsonify({"ok": True, **payload})
+
+
+@user_dashboard_blueprint.route("/user-dashboard/api/login", methods=["POST", "OPTIONS"])
+@user_dashboard_blueprint.route("/api/v1/user-dashboard/login", methods=["POST", "OPTIONS"])
+def user_dashboard_login():
+    """Resolve a WhatsApp phone / Telegram chat id to a participant and hand
+    back their dashboard link. Resolve-only: never creates or links accounts
+    (linking is done at provisioning time)."""
+
+    if request.method == "OPTIONS":
+        return _cors_response(jsonify({"ok": True}))
+
+    body = request.get_json(silent=True) or {}
+    identifier = (body.get("identifier") or "").strip()
+    provider = (body.get("provider") or "").strip() or None
+    if not identifier:
+        return (
+            jsonify(
+                {
+                    "error": "missing_identifier",
+                    "message": "Enter your WhatsApp number or Telegram chat id.",
+                }
+            ),
+            400,
+        )
+
+    session_factory = get_session_factory()
+    with session_factory() as db:
+        participant = resolve_login(db, identifier, provider)
+        if participant is None:
+            return (
+                jsonify(
+                    {
+                        "error": "not_found",
+                        "message": (
+                            "No participant found for that WhatsApp number or "
+                            "Telegram chat id."
+                        ),
+                    }
+                ),
+                404,
+            )
+        return _cors_response(
+            jsonify(
+                {
+                    "participant_id": participant.id,
+                    "redirect": f"/user_dashboard/index.html/{participant.id}",
+                }
+            )
+        )
+
+
+@user_dashboard_blueprint.route("/user_dashboard/login", methods=["GET"])
+def user_dashboard_login_page():
+    return send_from_directory(USER_DASHBOARD_DIR, "login.html")
+
+
+@user_dashboard_blueprint.route("/user_dashboard/t/<token>", methods=["GET"])
+def user_dashboard_deep_link(token):
+    """Signed deep link used in messenger nudges: lands the participant on
+    their own dashboard page without typing a participant_id."""
+
+    try:
+        participant_id = verify_dashboard_token(token)
+    except DashboardLinkError:
+        # Stale/invalid link: fall back to the login page rather than an error
+        # so the participant can still get in with their phone / chat id.
+        return redirect("/user_dashboard/login?notice=link_expired")
+    return redirect(f"/user_dashboard/index.html/{participant_id}")
+
+
 @user_dashboard_blueprint.route("/user_dashboard/", methods=["GET"])
 @user_dashboard_blueprint.route("/user_dashboard/index.html", methods=["GET"])
-@user_dashboard_blueprint.route("/user_dashboard/index.html/<wa_id>", methods=["GET"])
-def user_dashboard_index(wa_id=None):
+@user_dashboard_blueprint.route("/user_dashboard/index.html/<participant_id>", methods=["GET"])
+def user_dashboard_index(participant_id=None):
     return send_from_directory(USER_DASHBOARD_DIR, "index.html")
 
 

@@ -27,7 +27,12 @@ from sqlalchemy.orm import selectinload
 
 from app import create_app
 from eten_shared.database import get_session_factory
-from eten_shared.models import Participant, ParticipantResponse, ReviewStatus
+from eten_shared.models import (
+    Participant,
+    ParticipantProviderContact,
+    ParticipantResponse,
+    ReviewStatus,
+)
 from app.services.workflow import (
     audio_answer_lacks_usable_transcript,
     has_usable_text_for_keyword_scoring,
@@ -59,10 +64,14 @@ def load_responses(db, response_ids, qa_item_id, participant_query):
     if qa_item_id:
         statement = statement.where(ParticipantResponse.qa_item_id == qa_item_id)
     if participant_query:
+        like = f"%{participant_query}%"
         statement = statement.join(Participant).where(
             or_(
-                Participant.display_name.ilike(f"%{participant_query}%"),
-                Participant.wa_id.ilike(f"%{participant_query}%"),
+                Participant.display_name.ilike(like),
+                Participant.id.ilike(like),
+                Participant.provider_contacts.any(
+                    ParticipantProviderContact.external_user_id.ilike(like)
+                ),
             )
         )
 
@@ -229,7 +238,7 @@ def main():
     parser.add_argument("--qa-item-id", help="Score all responses for this QA item")
     parser.add_argument(
         "--participant",
-        help="Filter by participant display_name or wa_id (substring match)",
+        help="Filter by participant display_name, id, or provider contact id (substring match)",
     )
     parser.add_argument(
         "--commit",

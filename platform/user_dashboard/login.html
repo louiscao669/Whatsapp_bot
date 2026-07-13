@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Open your dashboard</title>
+    <style>
+      :root {
+        --ink: #172033;
+        --muted: #667085;
+        --line: #d7deea;
+        --panel: #ffffff;
+        --canvas: #f5f8fc;
+        --green: #58cc02;
+        --green-dark: #46a302;
+        --danger: #b42318;
+        --shadow: 0 18px 46px rgba(15, 23, 42, 0.12);
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--canvas);
+        color: var(--ink);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system,
+          BlinkMacSystemFont, "Segoe UI", sans-serif;
+        padding: 20px;
+      }
+      .card {
+        background: var(--panel);
+        width: 100%;
+        max-width: 420px;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        box-shadow: var(--shadow);
+        padding: 28px 26px 30px;
+      }
+      h1 { font-size: 1.4rem; margin: 0 0 6px; }
+      p.lead { margin: 0 0 20px; color: var(--muted); font-size: 0.95rem; line-height: 1.45; }
+      label { display: block; font-weight: 600; font-size: 0.85rem; margin: 14px 0 6px; }
+      .segmented { display: flex; gap: 8px; }
+      .segmented button {
+        flex: 1;
+        padding: 9px 6px;
+        border: 1px solid var(--line);
+        background: #fff;
+        border-radius: 10px;
+        font: inherit;
+        font-size: 0.85rem;
+        cursor: pointer;
+        color: var(--muted);
+      }
+      .segmented button[aria-pressed="true"] {
+        border-color: var(--green);
+        background: #f2fbe9;
+        color: var(--green-dark);
+        font-weight: 700;
+      }
+      input[type="text"] {
+        width: 100%;
+        padding: 12px 13px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        font: inherit;
+        font-size: 1rem;
+      }
+      input[type="text"]:focus { outline: 2px solid var(--green); border-color: var(--green); }
+      .hint { font-size: 0.8rem; color: var(--muted); margin: 6px 2px 0; min-height: 1em; }
+      button.submit {
+        width: 100%;
+        margin-top: 20px;
+        padding: 13px;
+        border: none;
+        border-radius: 12px;
+        background: var(--green);
+        color: #fff;
+        font: inherit;
+        font-weight: 800;
+        font-size: 1rem;
+        cursor: pointer;
+        box-shadow: 0 4px 0 var(--green-dark);
+      }
+      button.submit:disabled { opacity: 0.6; cursor: default; box-shadow: none; }
+      .message { margin-top: 16px; font-size: 0.9rem; min-height: 1.2em; }
+      .message.error { color: var(--danger); }
+    </style>
+  </head>
+  <body>
+    <main class="card">
+      <h1>Open your dashboard</h1>
+      <p class="lead">
+        The quickest way in is the “open your dashboard” link in your Telegram
+        or WhatsApp chat. If you don't have it handy, enter the WhatsApp number
+        or Telegram chat id you use with the study bot.
+      </p>
+      <p class="message error" id="notice" role="status"></p>
+
+      <form id="loginForm" autocomplete="off">
+        <label>Sign in with</label>
+        <div class="segmented" id="providerToggle" role="group" aria-label="Identity type">
+          <button type="button" data-provider="" aria-pressed="true">Auto-detect</button>
+          <button type="button" data-provider="whatsapp" aria-pressed="false">WhatsApp</button>
+          <button type="button" data-provider="telegram" aria-pressed="false">Telegram</button>
+        </div>
+
+        <label for="identifier" id="identifierLabel">WhatsApp number or Telegram chat id</label>
+        <input
+          type="text"
+          id="identifier"
+          name="identifier"
+          inputmode="numeric"
+          placeholder="e.g. 15551234567"
+          required
+        />
+        <p class="hint" id="identifierHint">
+          WhatsApp: full number with country code, digits only. Telegram: your numeric chat id.
+        </p>
+
+        <button type="submit" class="submit" id="submitBtn">Open dashboard</button>
+        <p class="message" id="message" role="status"></p>
+      </form>
+    </main>
+
+    <script>
+      (function () {
+        const apiBase = window.location.origin.replace(/\/$/, "");
+        let provider = "";
+
+        const toggle = document.getElementById("providerToggle");
+        const label = document.getElementById("identifierLabel");
+        const hint = document.getElementById("identifierHint");
+        const input = document.getElementById("identifier");
+        const form = document.getElementById("loginForm");
+        const btn = document.getElementById("submitBtn");
+        const message = document.getElementById("message");
+
+        const copy = {
+          "": {
+            label: "WhatsApp number or Telegram chat id",
+            hint: "WhatsApp: full number with country code, digits only. Telegram: your numeric chat id.",
+            placeholder: "e.g. 15551234567",
+          },
+          whatsapp: {
+            label: "WhatsApp number",
+            hint: "Full number with country code, digits only (no + or spaces).",
+            placeholder: "e.g. 15551234567",
+          },
+          telegram: {
+            label: "Telegram chat id",
+            hint: "Your numeric Telegram id (get it from @userinfobot).",
+            placeholder: "e.g. 987654321",
+          },
+        };
+
+        toggle.addEventListener("click", function (event) {
+          const target = event.target.closest("button[data-provider]");
+          if (!target) return;
+          provider = target.dataset.provider || "";
+          for (const b of toggle.querySelectorAll("button")) {
+            b.setAttribute("aria-pressed", String(b === target));
+          }
+          label.textContent = copy[provider].label;
+          hint.textContent = copy[provider].hint;
+          input.placeholder = copy[provider].placeholder;
+          input.focus();
+        });
+
+        form.addEventListener("submit", async function (event) {
+          event.preventDefault();
+          const identifier = input.value.trim();
+          message.textContent = "";
+          message.className = "message";
+          if (!identifier) return;
+
+          btn.disabled = true;
+          btn.textContent = "Opening…";
+          try {
+            const response = await fetch(apiBase + "/user-dashboard/api/login", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ identifier: identifier, provider: provider }),
+            });
+            const payload = await response.json().catch(() => ({}));
+            if (response.ok && payload.redirect) {
+              window.location.href = payload.redirect;
+              return;
+            }
+            message.textContent =
+              payload.message || "Could not open your dashboard. Please try again.";
+            message.className = "message error";
+          } catch (err) {
+            message.textContent = "Network error — please try again.";
+            message.className = "message error";
+          } finally {
+            btn.disabled = false;
+            btn.textContent = "Open dashboard";
+          }
+        });
+
+        const notice = document.getElementById("notice");
+        if (new URLSearchParams(window.location.search).get("notice") === "link_expired") {
+          notice.textContent =
+            "That dashboard link has expired. Tap the newest one in your chat, or sign in below.";
+        }
+
+        input.focus();
+      })();
+    </script>
+  </body>
+</html>

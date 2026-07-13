@@ -1,0 +1,24 @@
+Mixed-defect additivity (tier=1.7b, q_types=mcq, 80 cells, margin=0.3)
+
+pair                        doses               I (logits)     SE  n_ch   verdict
+grammar+omission            10% x 10%               +0.787  0.616     8   underpowered
+grammar+omission            10% x 20%               +0.313  0.592     8   underpowered
+grammar+omission            POOLED                  +0.540  0.427         underpowered
+
+mistranslation+addition     10% x bad_10%           -1.234  0.678     8   underpowered
+mistranslation+addition     10% x bad_20%           -8.412  0.766     8   SUBADDITIVE
+mistranslation+addition     20% x bad_10%           -1.951  0.753     8   SUBADDITIVE
+mistranslation+addition     20% x bad_20%          -21.324  1.054     8   SUBADDITIVE
+mistranslation+addition     POOLED                  -6.058  0.391         SUBADDITIVE
+
+mistranslation+omission     10% x 10%               -6.922  0.794     8   SUBADDITIVE
+mistranslation+omission     10% x 20%               -6.677  0.754     8   SUBADDITIVE
+mistranslation+omission     20% x 10%              -17.827  1.043     8   SUBADDITIVE
+mistranslation+omission     20% x 20%              -12.093  0.901     8   SUBADDITIVE
+mistranslation+omission     POOLED                  -9.828  0.427         SUBADDITIVE
+
+ALL PAIRS                   POOLED                  -5.173  0.239         SUBADDITIVE
+
+I > 0: superadditive (stacked damage worse than sum) — threshold transfer from singles UNDERSTATES damage.
+I < 0: subadditive (overlap/saturation) — thresholds OVERSTATE damage; consider a saturating combination rule.
+ADDITIVE pooled verdict => absolute-threshold claims (burden doc §3) are re-licensed at these doses.

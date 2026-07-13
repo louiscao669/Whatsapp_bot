@@ -50,10 +50,6 @@ def contact_input_from_update(update) -> TelegramContactInput:
     )
 
 
-def _compat_wa_id(chat_id: str) -> str:
-    return f"telegram:{chat_id}"
-
-
 def _get_contact(db: Session, chat_id: str) -> ParticipantProviderContact | None:
     return db.scalars(
         select(ParticipantProviderContact).where(
@@ -73,7 +69,6 @@ def upsert_telegram_contact(contact_input: TelegramContactInput):
 
         if contact is None:
             participant = Participant(
-                wa_id=_compat_wa_id(contact_input.chat_id),
                 display_name=contact_input.display_name,
                 locale=contact_input.language_code,
                 last_seen_at=now,

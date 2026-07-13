@@ -32,8 +32,69 @@ from evaluation.scripts.decanonicalize_chinese_dataset import (
 CHOICE_LABELS = ("A", "B", "C", "D")
 
 
+CORE_CLAIM_JUDGE_TASK = """Grade the generated answer against the expected answer.
+
+  Be semantically flexible: accept paraphrases, rough grammar, anonymized names, and equivalent wording.
+
+  But require the generated answer to contain the expected answer's core claim. Do not mark an answer correct merely because it
+  mentions related passage context, a nearby event, or something true from the passage.
+
+  First identify the required answer slot:
+  - person/group
+  - object/place
+  - action/event
+  - reason/cause
+  - time
+  - statement/content
+  - result/outcome
+
+  Then check whether the generated answer fills that slot with the same meaning as the expected answer.
+
+  Scores:
+  1.0 = contains the core claim required by the expected answer.
+  0.5 = partially answers the right slot but is incomplete, overly broad, or missing one important element.
+  0.0 = wrong slot, nearby context only, contradiction, or missing the core claim.
+
+  Return JSON:
+  {
+    "score": 0.0 | 0.5 | 1.0,
+    "label": "correct" | "partial" | "incorrect",
+    "required_slot": "...",
+    "core_claim_expected": "...",
+    "core_claim_found": true | false,
+    "rationale": "..."
+  }"""
+
+
 class ScoreError(Exception):
     pass
+
+
+def normalize_judgment(raw: dict) -> dict:
+    label = str(raw.get("label") or "").strip().lower()
+    try:
+        score = float(raw.get("score"))
+    except (TypeError, ValueError):
+        score = {"correct": 1.0, "partial": 0.5, "incorrect": 0.0}.get(label, 0.0)
+
+    if score >= 0.75:
+        score = 1.0
+        label = "correct"
+    elif score >= 0.25:
+        score = 0.5
+        label = "partial"
+    else:
+        score = 0.0
+        label = "incorrect"
+
+    return {
+        "label": label,
+        "score": score,
+        "rationale": str(raw.get("rationale") or "").strip(),
+        "required_slot": str(raw.get("required_slot") or "").strip() or None,
+        "core_claim_expected": str(raw.get("core_claim_expected") or "").strip() or None,
+        "core_claim_found": raw.get("core_claim_found"),
+    }
 
 
 def load_json(path: Path):
@@ -353,20 +414,46 @@ def extract_json_text(text: str) -> str:
 
 def extract_json_array_or_object_text(text: str) -> str:
     value = (text or "").strip()
-    object_start = value.find("{")
-    object_end = value.rfind("}")
-    array_start = value.find("[")
-    array_end = value.rfind("]")
-
-    starts = [start for start in (object_start, array_start) if start != -1]
-    if not starts:
-        return value
-    start = min(starts)
-    if start == array_start and array_end > array_start:
-        return value[array_start : array_end + 1]
-    if object_end > object_start:
-        return value[object_start : object_end + 1]
+    decoder = json.JSONDecoder()
+    starts = sorted(
+        index for index, char in enumerate(value) if char in "[{"
+    )
+    for start in starts:
+        try:
+            _, end = decoder.raw_decode(value[start:])
+        except json.JSONDecodeError:
+            continue
+        return value[start : start + end]
     return value
+
+
+def coerce_indexed_items(raw: Any, list_keys: tuple[str, ...]) -> List[dict]:
+    if isinstance(raw, list):
+        return raw
+    if not isinstance(raw, dict):
+        return []
+
+    for key in list_keys:
+        value = raw.get(key)
+        if isinstance(value, list):
+            return value
+
+    if "item_index" in raw:
+        return [raw]
+
+    indexed_items = []
+    for key, value in raw.items():
+        try:
+            item_index = int(key)
+        except (TypeError, ValueError):
+            continue
+        if isinstance(value, dict):
+            item = dict(value)
+            item.setdefault("item_index", item_index)
+        else:
+            item = {"item_index": item_index, "translation": value}
+        indexed_items.append(item)
+    return indexed_items
 
 
 def translate_open_answers_to_english(
@@ -379,7 +466,7 @@ def translate_open_answers_to_english(
     if not rows:
         return
 
-    for batch in batched(rows, batch_size):
+    def request_translations(batch_rows: List[dict]) -> Dict[int, str]:
         prompt = {
             "task": (
                 "Translate each generated answer into concise English. Preserve item_index "
@@ -393,7 +480,7 @@ def translate_open_answers_to_english(
                         row["generated_answer"]
                     ),
                 }
-                for row in batch
+                for row in batch_rows
             ],
             "output_schema": [
                 {
@@ -423,8 +510,10 @@ def translate_open_answers_to_english(
                 raw = json.loads(
                     extract_json_array_or_object_text(extract_response_text(response))
                 )
-                if isinstance(raw, dict):
-                    raw = raw.get("items") or raw.get("translations") or raw.get("data")
+                raw = coerce_indexed_items(
+                    raw,
+                    ("items", "translations", "data", "results"),
+                )
                 if not isinstance(raw, list):
                     raise ScoreError("Back-translation response must be a JSON array.")
                 for item in raw:
@@ -451,18 +540,36 @@ def translate_open_answers_to_english(
 
         if last_error and not translations_by_index:
             raise ScoreError(f"Back-translation failed: {last_error}") from last_error
+        return translations_by_index
 
-        missing = []
+    for batch in batched(rows, batch_size):
+        translations_by_index = request_translations(batch)
+
+        missing_rows = []
         for row in batch:
             item_index = int(row["item_index"] or 0)
             translated = translations_by_index.get(item_index)
             if translated:
                 row["generated_answer_english"] = translated
             else:
-                missing.append(str(row["item_index"]))
-        if missing:
+                missing_rows.append(row)
+
+        for row in missing_rows:
+            item_index = int(row["item_index"] or 0)
+            translations_by_index = request_translations([row])
+            translated = translations_by_index.get(item_index)
+            if translated:
+                row["generated_answer_english"] = translated
+
+        still_missing = [
+            str(row["item_index"])
+            for row in batch
+            if not row.get("generated_answer_english")
+        ]
+        if still_missing:
             raise ScoreError(
-                "Back-translation omitted item_index value(s): " + ", ".join(missing)
+                "Back-translation omitted item_index value(s): "
+                + ", ".join(still_missing)
             )
 
 
@@ -527,22 +634,7 @@ def llm_judge_one(
     mode: str,
 ) -> dict:
     if mode == "english":
-        task = (
-            "Compare a back-translated generated English answer to a standard English answer "
-            "for a Bible QA item. Make a binary correctness judgment. Mark correct if "
-            "the generated answer contains the main object, person, place, action, or "
-            "event needed to answer the question, even if it omits an attribute, title, "
-            "relationship, descriptive clause, or other secondary detail from the "
-            "standard answer. Mark incorrect only when the core answer is missing, "
-            "wrong, contradicted, or too vague to identify the main answer. "
-            "Placeholder labels such as Person A, Person F, Master A, Place A, and Text A "
-            "are artificial anonymized labels. Use the placeholder labels exactly as shown "
-            "in the question; do not infer or invent a different label from alphabetic or "
-            "ordinal order. If the standard answer uses a pronoun such as him, her, it, or "
-            "them, resolve that pronoun from the question. Do not mark an answer incorrect "
-            "merely because it repeats the explicit placeholder from the question while the "
-            "standard answer uses a pronoun."
-        )
+        task = CORE_CLAIM_JUDGE_TASK
     else:
         raise ScoreError(f"Unknown LLM judge mode: {mode}")
 
@@ -552,8 +644,11 @@ def llm_judge_one(
         "standard_answer": item["standard_answer"],
         "generated_answer": item[answer_field],
         "output_schema": {
-            "label": "correct | incorrect",
-            "score": "1.0 if correct, 0.0 if incorrect",
+            "score": "0.0 | 0.5 | 1.0",
+            "label": "correct | partial | incorrect",
+            "required_slot": "person/group | object/place | action/event | reason/cause | time | statement/content | result/outcome",
+            "core_claim_expected": "short core claim from standard answer",
+            "core_claim_found": "true if generated answer contains the core claim, else false",
             "rationale": "short reason in English",
         },
     }
@@ -574,16 +669,10 @@ def llm_judge_one(
                     {"role": "user", "content": json.dumps(prompt, ensure_ascii=False)},
                 ],
             )
-            raw = json.loads(extract_json_text(extract_response_text(response)))
-            label = str(raw.get("label") or "").strip().lower()
-            if label not in {"correct", "incorrect"}:
-                label = "incorrect"
-            score = 1.0 if label == "correct" else 0.0
-            return {
-                "label": label,
-                "score": score,
-                "rationale": str(raw.get("rationale") or "").strip(),
-            }
+            raw = json.loads(
+                extract_json_array_or_object_text(extract_response_text(response))
+            )
+            return normalize_judgment(raw)
         except Exception as exc:
             last_error = exc
             if attempt >= retries:
@@ -606,22 +695,7 @@ def llm_judge_batch(
     if mode != "english":
         raise ScoreError(f"Unknown LLM judge mode: {mode}")
 
-    task = (
-        "Compare each back-translated generated English answer to its standard "
-        "English answer for a Bible QA item. Make a binary correctness judgment. "
-        "Mark correct if the generated answer contains the main object, person, "
-        "place, action, or event needed to answer the question, even if it omits "
-        "an attribute, title, relationship, descriptive clause, or other secondary "
-        "detail from the standard answer. Mark incorrect only when the core answer "
-        "is missing, wrong, contradicted, or too vague to identify the main answer. "
-        "Placeholder labels such as Person A, Person F, Master A, Place A, and Text A "
-        "are artificial anonymized labels. Use the placeholder labels exactly as shown "
-        "in the question; do not infer or invent a different label from alphabetic or "
-        "ordinal order. If the standard answer uses a pronoun such as him, her, it, or "
-        "them, resolve that pronoun from the question. Do not mark an answer incorrect "
-        "merely because it repeats the explicit placeholder from the question while the "
-        "standard answer uses a pronoun."
-    )
+    task = CORE_CLAIM_JUDGE_TASK
     prompt = {
         "task": task,
         "items": [
@@ -636,8 +710,11 @@ def llm_judge_batch(
         "output_schema": [
             {
                 "item_index": 1,
-                "label": "correct | incorrect",
-                "score": "1.0 if correct, 0.0 if incorrect",
+                "score": "0.0 | 0.5 | 1.0",
+                "label": "correct | partial | incorrect",
+                "required_slot": "person/group | object/place | action/event | reason/cause | time | statement/content | result/outcome",
+                "core_claim_expected": "short core claim from standard answer",
+                "core_claim_found": "true if generated answer contains the core claim, else false",
                 "rationale": "short reason in English",
             }
         ],
@@ -665,8 +742,10 @@ def llm_judge_batch(
             raw = json.loads(
                 extract_json_array_or_object_text(extract_response_text(response))
             )
-            if isinstance(raw, dict):
-                raw = raw.get("items") or raw.get("judgments") or raw.get("data")
+            raw = coerce_indexed_items(
+                raw,
+                ("items", "judgments", "data", "results"),
+            )
             if not isinstance(raw, list):
                 raise ScoreError("LLM judge response must be a JSON array.")
 
@@ -677,14 +756,7 @@ def llm_judge_batch(
                 item_index = int(item.get("item_index") or 0)
                 if item_index not in expected_indexes:
                     continue
-                label = str(item.get("label") or "").strip().lower()
-                if label not in {"correct", "incorrect"}:
-                    label = "incorrect"
-                judgments[item_index] = {
-                    "label": label,
-                    "score": 1.0 if label == "correct" else 0.0,
-                    "rationale": str(item.get("rationale") or "").strip(),
-                }
+                judgments[item_index] = normalize_judgment(item)
 
             missing = expected_indexes - set(judgments)
             if missing:
@@ -768,6 +840,9 @@ def score_items(
                     "llm_rationale": None,
                     "llm_english_label": None,
                     "llm_english_rationale": None,
+                    "llm_required_slot": None,
+                    "llm_core_claim_expected": None,
+                    "llm_core_claim_found": None,
                 }
             )
         else:
@@ -780,6 +855,9 @@ def score_items(
                     "llm_rationale": None,
                     "llm_english_label": None,
                     "llm_english_rationale": None,
+                    "llm_required_slot": None,
+                    "llm_core_claim_expected": None,
+                    "llm_core_claim_found": None,
                 }
             )
             if row["generated_answer"]:
@@ -792,6 +870,9 @@ def score_items(
                         "llm_rationale": "No generated answer.",
                         "llm_english_label": "incorrect",
                         "llm_english_rationale": "No generated answer.",
+                        "llm_required_slot": None,
+                        "llm_core_claim_expected": standard["standard_answer"],
+                        "llm_core_claim_found": False,
                     }
                 )
 
@@ -857,6 +938,11 @@ def score_items(
                 row["llm_label"] = english_judgment["label"]
                 row["llm_score"] = english_judgment["score"]
                 row["llm_rationale"] = english_judgment["rationale"]
+                row["llm_required_slot"] = english_judgment.get("required_slot")
+                row["llm_core_claim_expected"] = english_judgment.get(
+                    "core_claim_expected"
+                )
+                row["llm_core_claim_found"] = english_judgment.get("core_claim_found")
 
     return scored
 
@@ -981,11 +1067,11 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--judge-model",
-        default=os.getenv("OPENAI_JUDGE_MODEL", "gpt-4.1-mini"),
+        default=os.getenv("OPENAI_JUDGE_MODEL", "gpt-5.4-mini"),
     )
     parser.add_argument(
         "--translation-model",
-        default=os.getenv("OPENAI_TRANSLATION_MODEL", "gpt-4.1-mini"),
+        default=os.getenv("OPENAI_TRANSLATION_MODEL", "gpt-5.4-mini"),
         help="OpenAI model for back-translating generated open answers to English.",
     )
     parser.add_argument(

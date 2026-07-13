@@ -81,7 +81,7 @@ export function ExportAudioPage() {
                       />
                       <span>{item.export_filename}</span>
                       <span className="detail-meta">
-                        {item.participant_label} ({item.wa_id})
+                        {item.participant_label} ({item.participant_id})
                       </span>
                     </label>
                     {item.has_storage ? (

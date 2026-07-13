@@ -36,8 +36,11 @@ from eten_shared.models import QAItem, SessionState
 from eten_shared.domain.assignments import (
     AssignmentAssignError,
     assign_qa_item_to_participant,
-    get_or_create_participant,
     get_or_create_participant_session,
+)
+from eten_shared.domain.identity import (
+    PROVIDER_WHATSAPP,
+    get_or_create_participant_by_contact,
 )
 from app.webhook.messaging import get_assignment_prompt_text
 from scripts.uw_qa_content import find_uw_entry, qa_item_payload_from_uw_entry
@@ -170,7 +173,9 @@ def ensure_uw_qa_item(db, json_path, content_id):
 
 
 def assign_question(db, wa_id, display_name, language, qa_item=None):
-    participant = get_or_create_participant(db, wa_id, display_name)
+    participant, _contact, _created = get_or_create_participant_by_contact(
+        db, PROVIDER_WHATSAPP, wa_id, display_name=display_name, phone=wa_id
+    )
     participant.target_language = language
     participant.consented = True
 
@@ -198,7 +203,7 @@ def assign_question(db, wa_id, display_name, language, qa_item=None):
     db.commit()
 
     print(f"Participant ID: {participant.id}")
-    print(f"WA ID: {participant.wa_id}")
+    print(f"WhatsApp id: {wa_id}")
     print(f"Session state: {participant_session.state}")
 
     if not prompt:

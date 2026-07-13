@@ -57,9 +57,9 @@ export function ParticipantsPage() {
           <tbody>
             {participants.map((row) => (
               <tr key={row.id}>
-                <td className="wa-id-cell" title={row.wa_id}>{row.wa_id}</td>
+                <td className="wa-id-cell" title={row.participant_id}>{row.participant_id}</td>
                 <td className="participant-display-name-cell">
-                  <Link to={`/participants/${row.id}`}>{row.display_name || row.wa_id}</Link>
+                  <Link to={`/participants/${row.id}`}>{row.display_name || row.participant_id}</Link>
                 </td>
                 <td>{row.language}</td>
                 <td>{row.session_state}</td>

@@ -2,7 +2,7 @@ import { apiFetch } from './client'
 
 export type AudioExportItem = {
   response_id: string
-  wa_id: string
+  participant_id: string
   participant_label: string
   export_filename: string
   received_at: string | null

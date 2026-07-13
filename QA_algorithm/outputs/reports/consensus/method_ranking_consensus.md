@@ -1,6 +1,6 @@
 # Method Ranking & Cross-Model Consensus
 
-_Generated 2026-07-06 · source: `outputs/luke1-8/{model}/{method}/scores_target_llama.json`_
+_Generated 2026-07-12 · source: `outputs/luke1-8/{model}/{method}/scores_target_llama.json`_
 
 **Metric.** Per item: open answers use the LLM judge score in [0,1]; MCQ items score 1.0 if correct else 0.0. Combined per method as noted below.
 

@@ -11,7 +11,21 @@
     "direct_evidence_rate": 0.9375,
     "evidence_supported_rate": 0.9375,
     "wrong_high_confidence_count": 3,
-    "correct_low_confidence_count": 0
+    "correct_low_confidence_count": 0,
+    "core_claim": {
+      "total": 16,
+      "mcq_count": 8,
+      "mcq_correct": 8,
+      "open_count": 8,
+      "open_embedding_mean": null,
+      "open_llm_score_mean": 0.8125,
+      "answer_confidence_mean": 0.9062500000000002,
+      "insufficient_information_rate": 0.0,
+      "direct_evidence_rate": 0.9375,
+      "evidence_supported_rate": 0.9375,
+      "wrong_high_confidence_count": 1,
+      "correct_low_confidence_count": 0
+    }
   },
   "items": [
     {
@@ -34,7 +48,25 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer includes the main actions of picking and eating grain, which covers the core activities in the standard answer.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer includes the main actions of picking and eating grain, which covers the core activities in the standard answer."
+      "llm_english_rationale": "The generated answer includes the main actions of picking and eating grain, which covers the core activities in the standard answer.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Pluck heads of grain and eat the kernels.",
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "The generated answer conveys the same action: plucking grain heads and eating the kernels.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "The generated answer conveys the same action: plucking grain heads and eating the kernels.",
+        "llm_required_slot": "action/event",
+        "llm_core_claim_expected": "Pick, rub, and eat grain on the Sabbath.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 2,
@@ -58,7 +90,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "correct_choice": "C",
+        "selected_choice": "C",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 3,
@@ -80,7 +132,25 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer correctly states the title 'Master A of the Sabbath,' matching the core element of the standard answer.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer correctly states the title 'Master A of the Sabbath,' matching the core element of the standard answer."
+      "llm_english_rationale": "The generated answer correctly states the title 'Master A of the Sabbath,' matching the core element of the standard answer.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Master A of the Sabbath.",
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "The generated answer exactly matches the expected title.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "The generated answer exactly matches the expected title.",
+        "llm_required_slot": "statement/content",
+        "llm_core_claim_expected": "He calls himself Master A of the Sabbath.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 4,
@@ -104,7 +174,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "correct_choice": "B",
+        "selected_choice": "B",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 5,
@@ -126,7 +216,25 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer does not mention the main reason 'Great reward in heaven,' instead it states an unrelated reason.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer does not mention the main reason 'Great reward in heaven,' instead it states an unrelated reason."
+      "llm_english_rationale": "The generated answer does not mention the main reason 'Great reward in heaven,' instead it states an unrelated reason.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Because they receive blessing in their weeping.",
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "partial",
+        "llm_score": 0.5,
+        "llm_rationale": "The answer gives a related blessing in suffering/weeping, but it does not state the core reason about a great reward in heaven.",
+        "llm_english_label": "partial",
+        "llm_english_rationale": "The answer gives a related blessing in suffering/weeping, but it does not state the core reason about a great reward in heaven.",
+        "llm_required_slot": "reason/cause",
+        "llm_core_claim_expected": "People should rejoice because of great reward in heaven.",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 6,
@@ -150,7 +258,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "correct_choice": "A",
+        "selected_choice": "A",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 7,
@@ -172,7 +300,25 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer contains the main actions 'Love and do good,' matching the standard answer even with extra detail.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer contains the main actions 'Love and do good,' matching the standard answer even with extra detail."
+      "llm_english_rationale": "The generated answer contains the main actions 'Love and do good,' matching the standard answer even with extra detail.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Love your enemies and do good to those who hate you.",
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "The generated answer directly matches the expected command, with equivalent wording.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "The generated answer directly matches the expected command, with equivalent wording.",
+        "llm_required_slot": "statement/content",
+        "llm_core_claim_expected": "Love and do good to enemies.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 8,
@@ -196,7 +342,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "correct_choice": "C",
+        "selected_choice": "C",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 9,
@@ -218,7 +384,25 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer focuses on forgiveness but does not explicitly state the attitude 'Kind and merciful' of Most High A.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer focuses on forgiveness but does not explicitly state the attitude 'Kind and merciful' of Most High A."
+      "llm_english_rationale": "The generated answer focuses on forgiveness but does not explicitly state the attitude 'Kind and merciful' of Most High A.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Forgive others, and you will be forgiven.",
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "The generated answer is about forgiving others, which is related context but not the same statement about Most High A's attitude.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "The generated answer is about forgiving others, which is related context but not the same statement about Most High A's attitude.",
+        "llm_required_slot": "statement/content",
+        "llm_core_claim_expected": "Kind and merciful.",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 10,
@@ -242,7 +426,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "correct_choice": "D",
+        "selected_choice": "D",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 11,
@@ -264,7 +468,25 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer correctly identifies the main action 'remove the log' before removing the splinter.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer correctly identifies the main action 'remove the log' before removing the splinter."
+      "llm_english_rationale": "The generated answer correctly identifies the main action 'remove the log' before removing the splinter.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "First remove the beam from your own eye.",
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "This is a paraphrase of removing the log before dealing with the speck.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "This is a paraphrase of removing the log before dealing with the speck.",
+        "llm_required_slot": "action/event",
+        "llm_core_claim_expected": "Remove the log from your own eye first.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 12,
@@ -288,7 +510,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "correct_choice": "D",
+        "selected_choice": "D",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 13,
@@ -310,7 +552,25 @@
       "llm_score": 0.0,
       "llm_rationale": "The generated answer does not explicitly mention 'One who hears and does,' instead it gives a vague phrase 'Those who follow the Lord's words.'",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "The generated answer does not explicitly mention 'One who hears and does,' instead it gives a vague phrase 'Those who follow the Lord's words.'"
+      "llm_english_rationale": "The generated answer does not explicitly mention 'One who hears and does,' instead it gives a vague phrase 'Those who follow the Lord's words.'",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "The one who obeys the Lord's words.",
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "The generated answer conveys hearing and obeying/doing, which matches the expected person.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "The generated answer conveys hearing and obeying/doing, which matches the expected person.",
+        "llm_required_slot": "person/group",
+        "llm_core_claim_expected": "One who hears and does.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 14,
@@ -334,7 +594,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "correct_choice": "D",
+        "selected_choice": "D",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 15,
@@ -356,7 +636,25 @@
       "llm_score": 1.0,
       "llm_rationale": "The generated answer contains the main idea 'One who hears but does not act,' matching the standard answer's core.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "The generated answer contains the main idea 'One who hears but does not act,' matching the standard answer's core."
+      "llm_english_rationale": "The generated answer contains the main idea 'One who hears but does not act,' matching the standard answer's core.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "The one who hears but does not do.",
+        "generation_error": null,
+        "answer_confidence": 1.0,
+        "insufficient_information": false,
+        "evidence_quality": "none",
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "The generated answer matches the expected description of hearing without doing.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "The generated answer matches the expected description of hearing without doing.",
+        "llm_required_slot": "person/group",
+        "llm_core_claim_expected": "One who hears but does not do.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 16,
@@ -380,7 +678,27 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "answer_confidence": 0.9,
+        "insufficient_information": false,
+        "evidence_quality": "direct",
+        "correct_choice": "D",
+        "selected_choice": "D",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     }
   ]
 }

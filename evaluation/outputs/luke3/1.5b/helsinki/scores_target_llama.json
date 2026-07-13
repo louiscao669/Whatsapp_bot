@@ -11,7 +11,21 @@
     "direct_evidence_rate": null,
     "evidence_supported_rate": null,
     "wrong_high_confidence_count": 0,
-    "correct_low_confidence_count": 0
+    "correct_low_confidence_count": 0,
+    "core_claim": {
+      "total": 14,
+      "mcq_count": 7,
+      "mcq_correct": 6,
+      "open_count": 7,
+      "open_embedding_mean": null,
+      "open_llm_score_mean": 0.6428571428571429,
+      "answer_confidence_mean": null,
+      "insufficient_information_rate": null,
+      "direct_evidence_rate": null,
+      "evidence_supported_rate": null,
+      "wrong_high_confidence_count": 0,
+      "correct_low_confidence_count": 0
+    }
   },
   "items": [
     {
@@ -31,7 +45,22 @@
       "llm_score": 1.0,
       "llm_rationale": "Generated answer contains the main message about baptism of repentance for forgiveness, matching the standard answer.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "Generated answer contains the main message about baptism of repentance for forgiveness, matching the standard answer."
+      "llm_english_rationale": "Generated answer contains the main message about baptism of repentance for forgiveness, matching the standard answer.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "He went throughout all the land of Jordan proclaiming a baptism of repentance for the forgiveness of sins.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "The generated answer states that he proclaimed a baptism of repentance for the forgiveness of sins, which matches the expected core message.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "The generated answer states that he proclaimed a baptism of repentance for the forgiveness of sins, which matches the expected core message.",
+        "llm_required_slot": "statement/content",
+        "llm_core_claim_expected": "Baptism of repentance for forgiveness.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 2,
@@ -52,7 +81,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "A",
+        "selected_choice": "A",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 3,
@@ -71,7 +117,22 @@
       "llm_score": 1.0,
       "llm_rationale": "Generated answer correctly identifies Person C preparing the way for Master A.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "Generated answer correctly identifies Person C preparing the way for Master A."
+      "llm_english_rationale": "Generated answer correctly identifies Person C preparing the way for Master A.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "Character 03 prepared the way for A.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "The generated answer preserves the core claim that Character 03 prepared the way for A, which matches the expected meaning despite anonymized wording.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "The generated answer preserves the core claim that Character 03 prepared the way for A, which matches the expected meaning despite anonymized wording.",
+        "llm_required_slot": "person/group",
+        "llm_core_claim_expected": "Person C prepared the way for the Master A.",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 4,
@@ -92,7 +153,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "C",
+        "selected_choice": "C",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 5,
@@ -111,7 +189,22 @@
       "llm_score": 0.0,
       "llm_rationale": "Generated answer talks about escaping fire, which is different from producing fruits from repentance.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "Generated answer talks about escaping fire, which is different from producing fruits from repentance."
+      "llm_english_rationale": "Generated answer talks about escaping fire, which is different from producing fruits from repentance.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "He warned you to flee from the fire.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "The generated answer talks about warning people to flee from fire, which is a different action and does not contain the core claim that Person C told people to produce fruits from repentance.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "The generated answer talks about warning people to flee from fire, which is a different action and does not contain the core claim that Person C told people to produce fruits from repentance.",
+        "llm_required_slot": "action/event",
+        "llm_core_claim_expected": "advise people to produce fruits worthy of repentance",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 6,
@@ -132,7 +225,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "B",
+        "selected_choice": "B",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 7,
@@ -151,7 +261,22 @@
       "llm_score": 1.0,
       "llm_rationale": "Generated answer correctly states that an unfruitful tree will be cut down and thrown into fire.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "Generated answer correctly states that an unfruitful tree will be cut down and thrown into fire."
+      "llm_english_rationale": "Generated answer correctly states that an unfruitful tree will be cut down and thrown into fire.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "It will be cut down and then thrown into the lake of fire.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "The generated answer preserves the core outcome: the tree is cut down and thrown into fire. 'Lake of fire' is a paraphrased/expanded form but still matches the expected consequence.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "The generated answer preserves the core outcome: the tree is cut down and thrown into fire. 'Lake of fire' is a paraphrased/expanded form but still matches the expected consequence.",
+        "llm_required_slot": "result/outcome",
+        "llm_core_claim_expected": "chopped down and thrown into fire",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 8,
@@ -172,7 +297,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "C",
+        "selected_choice": "C",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 9,
@@ -191,7 +333,22 @@
       "llm_score": 1.0,
       "llm_rationale": "Generated answer mentions baptism with Spirit A and fire, matching the core answer.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "Generated answer mentions baptism with Spirit A and fire, matching the core answer."
+      "llm_english_rationale": "Generated answer mentions baptism with Spirit A and fire, matching the core answer.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "He will baptize you with Spirit A and fire.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "correct",
+        "llm_score": 1.0,
+        "llm_rationale": "The generated answer states the same content as the expected answer: baptism with Spirit A and fire.",
+        "llm_english_label": "correct",
+        "llm_english_rationale": "The generated answer states the same content as the expected answer: baptism with Spirit A and fire.",
+        "llm_required_slot": "statement/content",
+        "llm_core_claim_expected": "Spirit A and fire",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 10,
@@ -212,7 +369,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "A",
+        "selected_choice": "C",
+        "direct_correct": false,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 11,
@@ -231,7 +405,22 @@
       "llm_score": 0.0,
       "llm_rationale": "Generated answer misses the main object, Spirit A like a dove; only says heavens opened.",
       "llm_english_label": "incorrect",
-      "llm_english_rationale": "Generated answer misses the main object, Spirit A like a dove; only says heavens opened."
+      "llm_english_rationale": "Generated answer misses the main object, Spirit A like a dove; only says heavens opened.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "The heavens were opened.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "incorrect",
+        "llm_score": 0.0,
+        "llm_rationale": "The generated answer only says the heavens were opened, which is nearby context but does not state who came down from heaven.",
+        "llm_english_label": "incorrect",
+        "llm_english_rationale": "The generated answer only says the heavens were opened, which is nearby context but does not state who came down from heaven.",
+        "llm_required_slot": "action/event",
+        "llm_core_claim_expected": "The Spirit descended like a dove from heaven after F was baptized.",
+        "llm_core_claim_found": false
+      }
     },
     {
       "item_index": 12,
@@ -252,7 +441,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "C",
+        "selected_choice": "C",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     },
     {
       "item_index": 13,
@@ -271,7 +477,22 @@
       "llm_score": 1.0,
       "llm_rationale": "Generated answer conveys the message that the person is a beloved son, aligned with the standard answer.",
       "llm_english_label": "correct",
-      "llm_english_rationale": "Generated answer conveys the message that the person is a beloved son, aligned with the standard answer."
+      "llm_english_rationale": "Generated answer conveys the message that the person is a beloved son, aligned with the standard answer.",
+      "core_claim": {
+        "q_type": "open",
+        "generated_answer_english": "You are my Son, I love him, I am pleased with you.",
+        "generation_error": null,
+        "direct_correct": null,
+        "embedding_similarity": null,
+        "llm_label": "partial",
+        "llm_score": 0.5,
+        "llm_rationale": "The generated answer includes the core idea that the speaker identifies the person as his son, but it adds mixed/incorrect wording and does not cleanly reproduce the full statement 'my beloved son.'",
+        "llm_english_label": "partial",
+        "llm_english_rationale": "The generated answer includes the core idea that the speaker identifies the person as his son, but it adds mixed/incorrect wording and does not cleanly reproduce the full statement 'my beloved son.'",
+        "llm_required_slot": "statement/content",
+        "llm_core_claim_expected": "God said, 'You are my beloved son.'",
+        "llm_core_claim_found": true
+      }
     },
     {
       "item_index": 14,
@@ -292,7 +513,24 @@
       "llm_score": null,
       "llm_rationale": null,
       "llm_english_label": null,
-      "llm_english_rationale": null
+      "llm_english_rationale": null,
+      "core_claim": {
+        "q_type": "mcq",
+        "generated_answer_english": null,
+        "generation_error": null,
+        "correct_choice": "C",
+        "selected_choice": "C",
+        "direct_correct": true,
+        "embedding_similarity": null,
+        "llm_label": null,
+        "llm_score": null,
+        "llm_rationale": null,
+        "llm_english_label": null,
+        "llm_english_rationale": null,
+        "llm_required_slot": null,
+        "llm_core_claim_expected": null,
+        "llm_core_claim_found": null
+      }
     }
   ]
 }
