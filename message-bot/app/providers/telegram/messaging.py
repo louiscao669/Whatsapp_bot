@@ -18,7 +18,11 @@ from eten_shared.mcq import (
 )
 
 
-def assignment_prompt_text(prompt):
+def assignment_prompt_text(prompt, include_audio_url=True):
+    """Build the prompt text. When ``include_audio_url`` is False the raw audio
+    link is omitted — used as the caption when the recording is delivered as an
+    actual voice message instead of a link."""
+
     parts = []
     if prompt.passage_reference:
         parts.append(f"Passage: {prompt.passage_reference}")
@@ -27,7 +31,8 @@ def assignment_prompt_text(prompt):
     if question_type in {QUESTION_TYPE_MCQ, QUESTION_TYPE_TF} and getattr(prompt, "mcq_choices", None):
         if prompt.audio_url:
             parts.append("Listen to the audio, then choose your answer:")
-            parts.append(prompt.audio_url)
+            if include_audio_url:
+                parts.append(prompt.audio_url)
         elif question_type == QUESTION_TYPE_TF:
             parts.append("Choose your answer (reply A or B):")
         else:
@@ -38,7 +43,8 @@ def assignment_prompt_text(prompt):
 
     if prompt.audio_url:
         parts.append("Listen to the audio, then reply with your answer:")
-        parts.append(prompt.audio_url)
+        if include_audio_url:
+            parts.append(prompt.audio_url)
     else:
         parts.append("Reply with your answer:")
 
@@ -111,7 +117,34 @@ async def send_text(bot, chat_id, text):
         return await send_text(bot, chat_id, text)
 
 
+async def _send_question_voice(bot, chat_id, audio_url, caption):
+    """Deliver the question recording as a Telegram voice note.
+
+    Telegram voice notes must be OGG/OPUS; if the recording is another format,
+    fall back to a titled audio file, and finally to a text message with the
+    link so the participant can always reach the question.
+    """
+
+    import asyncio
+
+    for _ in range(2):
+        try:
+            return await bot.send_voice(chat_id=chat_id, voice=audio_url, caption=caption)
+        except RetryAfter as exc:
+            await asyncio.sleep(exc.retry_after)
+        except TelegramError:
+            break
+
+    try:
+        return await bot.send_audio(chat_id=chat_id, audio=audio_url, caption=caption)
+    except TelegramError:
+        return await send_text(bot, chat_id, f"{caption}\n\n{audio_url}")
+
+
 async def send_assignment_prompt(bot, chat_id, prompt):
+    if prompt.audio_url:
+        caption = assignment_prompt_text(prompt, include_audio_url=False)
+        return await _send_question_voice(bot, chat_id, prompt.audio_url, caption)
     return await send_text(bot, chat_id, assignment_prompt_text(prompt))
 
 
