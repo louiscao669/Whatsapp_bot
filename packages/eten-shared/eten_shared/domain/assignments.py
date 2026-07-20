@@ -125,7 +125,7 @@ def get_incomplete_assignment(db: Session, participant, batch_id=None):
             Assignment.participant_id == participant.id,
             Assignment.status == AssignmentStatus.ASSIGNED.value,
         )
-        .order_by(Assignment.assigned_at)
+        .order_by(Assignment.assigned_at, Assignment.id)
     )
     if batch_id:
         in_batch = db.scalars(statement.where(Assignment.batch_id == batch_id)).first()
