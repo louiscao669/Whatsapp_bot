@@ -46,6 +46,15 @@ DRY_RUN="${DRY_RUN:-0}"
 SKIP_DEFECTS_SMALL="${SKIP_DEFECTS_SMALL:-untranslated inconsistency}"
 LOCAL_INCON_SUBFAMILY_SMALL="${LOCAL_INCON_SUBFAMILY_SMALL:-style}"  # keep style_* (+ 0%)
 
+# Weak small models (1b/1.5b) frequently emit MCQ answers the RULE parser can't
+# map to A/B/C/D (non-empty but garbled) -> the cell hard-aborts with
+# "MCQ answer must be A, B, C, or D." Use the OpenAI choice mapper (gpt-4.1-mini)
+# to map the model's OWN answer text to the closest choice. It fires only when
+# the rules parser fails, so parseable answers are untouched. Needs
+# OPENAI_API_KEY (already required for back-translation + judge). Full tier
+# (1.7b) keeps "rules" — its grid was built that way and it rarely fails.
+MCQ_CHOICE_MAPPER_SMALL="${MCQ_CHOICE_MAPPER_SMALL:-openai}"
+
 run() { if [ "$DRY_RUN" = "1" ]; then echo "+ $*"; else echo "+ $*"; "$@"; fi; }
 
 # Whether a given dose-level dir should be run for this defect/tier.
@@ -118,7 +127,9 @@ import json
 d = json.load(open('evaluation/datasets/qa_output_luke_ch${CH}_all_formats.json'))
 recs = d if isinstance(d, list) else d.get('items', d.get('questions', []))
 print(len(recs))")
-      echo "== [$M / $TIER] luke${CH} $DEFECT (N=$N):$LEVELS"
+      # weak small models: rescue unparseable MCQ answers via OpenAI mapper
+      MAPPER="rules"; [ "$TIER" != "1.7b" ] && MAPPER="$MCQ_CHOICE_MAPPER_SMALL"
+      echo "== [$M / $TIER] luke${CH} $DEFECT (N=$N, mcq-mapper=$MAPPER):$LEVELS"
       # shellcheck disable=SC2086
       run python3 evaluation/scripts/answer_score_subset_in_place.py "$N" \
           --chapters "$CH" \
@@ -127,6 +138,7 @@ print(len(recs))")
           --answer-provider ollama \
           --answer-model "$OLLAMA_MODEL" $EXTRA \
           --answer-verse-window "$VERSE_WINDOW" \
+          --mcq-choice-mapper "$MAPPER" \
           --summary-json "evaluation/outputs/reports/variant_runs_${M}_${DEFECT}_luke${CH}.json"
     done
   done

@@ -8,6 +8,7 @@ from app.services.participant_assignment_service import (
     assign_questions_with_passages,
     get_assignment_options,
     parse_qa_chapter_verse,
+    qa_reference_sort_key,
 )
 from eten_shared.models import (
     Assignment,
@@ -29,6 +30,21 @@ class ParticipantAssignmentServiceTests(unittest.TestCase):
     def test_parses_qa_reference(self):
         self.assertEqual(parse_qa_chapter_verse("Luke 2:4"), (2, 4))
         self.assertIsNone(parse_qa_chapter_verse("Unknown passage"))
+
+    def test_sorts_qa_references_by_numeric_chapter_and_verse(self):
+        items = [
+            QAItem(id="68", passage_id="luke-1-68", passage_reference="Luke 1:68"),
+            QAItem(id="7", passage_id="luke-1-7", passage_reference="Luke 1:7"),
+            QAItem(id="2", passage_id="luke-2-1", passage_reference="Luke 2:1"),
+        ]
+
+        ordered = sorted(items, key=qa_reference_sort_key)
+
+        self.assertEqual([item.passage_reference for item in ordered], [
+            "Luke 1:7",
+            "Luke 1:68",
+            "Luke 2:1",
+        ])
 
     def test_automatic_assignment_is_disabled_by_default_and_can_be_enabled(self):
         with patch.dict("os.environ", {}, clear=True):

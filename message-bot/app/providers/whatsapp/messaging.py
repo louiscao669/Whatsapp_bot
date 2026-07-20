@@ -389,7 +389,6 @@ def process_whatsapp_message(body):
         )
         if workflow_result.batch_size_nudge:
             send_batch_size_nudge_message(wa_id, workflow_result.batch_size_nudge)
-        send_next_batch_choice_message(wa_id)
 
     if workflow_result.prompt:
         send_assignment_prompt(wa_id, workflow_result.prompt)

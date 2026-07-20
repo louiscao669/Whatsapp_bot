@@ -467,7 +467,6 @@ def _record_provider_answer_for_participant(
             participant_session = get_or_create_participant_session(db, participant)
             from app.engagement.batch_continuation import (
                 cancel_pending_next_batch_schedules,
-                schedule_next_batch_assignment,
             )
             from app.providers.whatsapp.schedule_policy import (
                 batch_next_response_choice,
@@ -613,7 +612,22 @@ def _record_provider_answer_for_participant(
                         batch_size_nudge,
                         source=provider,
                     )
-                schedule_next_batch_assignment(db, participant, participant_session)
+                # Start the next batch immediately (parity with the dashboard)
+                # instead of scheduling it for tomorrow and asking the
+                # participant to confirm "Start now / Tomorrow".
+                cancel_pending_next_batch_schedules(
+                    db,
+                    participant.id,
+                    reason="Bot starts the next batch immediately after completion",
+                )
+                next_prompt, _, _ = create_assignment_prompt(
+                    db, participant, participant_session
+                )
+                if next_prompt:
+                    prompt = next_prompt
+                    next_assignment = db.get(Assignment, next_prompt.assignment_id)
+                    if next_assignment:
+                        create_assignment_reminders(db, next_assignment, participant)
             else:
                 batch_size_nudge = None
             awarded_badges = list(streak_badges) + evaluate_and_award_badges(

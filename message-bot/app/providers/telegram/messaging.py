@@ -257,7 +257,6 @@ async def send_workflow_result(bot, chat_id, workflow_result):
         )
         if workflow_result.batch_size_nudge:
             await send_text(bot, chat_id, batch_size_nudge_message(workflow_result.batch_size_nudge))
-        await send_text(bot, chat_id, next_batch_choice_message())
 
     if workflow_result.prompt:
         await send_assignment_prompt(bot, chat_id, workflow_result.prompt)

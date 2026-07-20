@@ -34,6 +34,16 @@ def parse_qa_chapter_verse(reference):
     return int(match.group("chapter")), int(match.group("verse"))
 
 
+def qa_reference_sort_key(qa_item):
+    reference = str(qa_item.passage_reference or qa_item.passage_id or "").strip()
+    location = parse_qa_chapter_verse(reference)
+    if not location:
+        return (1, reference.casefold(), 0, 0, qa_item.id)
+    chapter, verse = location
+    book = reference.rsplit(None, 1)[0].casefold()
+    return (0, book, chapter, verse, qa_item.id)
+
+
 def _translation_options(db, language, chapter, target_verse):
     translations = db.scalars(
         select(PassageTranslation)
@@ -70,7 +80,8 @@ def get_assignment_options(db, participant_id):
         ).all()
     )
     questions = []
-    for qa_item in db.scalars(select(QAItem).order_by(QAItem.passage_reference, QAItem.id)).all():
+    qa_items = sorted(db.scalars(select(QAItem)).all(), key=qa_reference_sort_key)
+    for qa_item in qa_items:
         location = parse_qa_chapter_verse(qa_item.passage_reference or qa_item.passage_id)
         if qa_item.id in assigned_ids or not qa_item_is_assignable(qa_item) or not location:
             continue
