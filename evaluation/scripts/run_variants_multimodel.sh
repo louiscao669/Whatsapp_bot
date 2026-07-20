@@ -35,7 +35,31 @@ CHAPTERS="${CHAPTERS:-1 2 3 4 5 6 7 8}"
 VERSE_WINDOW="${VERSE_WINDOW:-2}"
 DRY_RUN="${DRY_RUN:-0}"
 
+# --- small-tier (1b / 1.5b) scoping (2026-07-20) ---
+# For the smaller answer models we deliberately do NOT run these defects:
+#   - untranslated: never answered even at 1.7b (no scores to compare against)
+#   - inconsistency: flat / non-responsive proxy signal, not worth the compute
+# And for local_inconsistency we answer ONLY the style_* sub-family (plus the
+# 0% clean baseline as the dose anchor); the name_* sub-family is skipped.
+# These restrictions apply only to non-1.7b tiers — a MODELS="1.7b" gap-fill
+# run is unaffected.
+SKIP_DEFECTS_SMALL="${SKIP_DEFECTS_SMALL:-untranslated inconsistency}"
+LOCAL_INCON_SUBFAMILY_SMALL="${LOCAL_INCON_SUBFAMILY_SMALL:-style}"  # keep style_* (+ 0%)
+
 run() { if [ "$DRY_RUN" = "1" ]; then echo "+ $*"; else echo "+ $*"; "$@"; fi; }
+
+# Whether a given dose-level dir should be run for this defect/tier.
+# Returns 0 (include) / 1 (skip). Full-tier (1.7b) always includes everything.
+level_included() {
+  local defect="$1" tier="$2" lev="$3"
+  if [ "$tier" != "1.7b" ] && [ "$defect" = "local_inconsistency" ]; then
+    case "$lev" in
+      "${LOCAL_INCON_SUBFAMILY_SMALL}"_*|"0%") return 0 ;;
+      *) return 1 ;;
+    esac
+  fi
+  return 0
+}
 
 for M in $MODELS; do
   case "$M" in
@@ -46,6 +70,12 @@ for M in $MODELS; do
   esac
 
   for DEFECT in $DEFECTS; do
+    # small-tier defect skip (untranslated / inconsistency); full tier unaffected
+    if [ "$TIER" != "1.7b" ]; then
+      case " $SKIP_DEFECTS_SMALL " in
+        *" $DEFECT "*) echo "[skip] $DEFECT not run for tier '$TIER'"; continue ;;
+      esac
+    fi
     for CH in $CHAPTERS; do
       SRC="evaluation/outputs/luke${CH}/1.7b/${DEFECT}"
       DST="evaluation/outputs/luke${CH}/${TIER}/${DEFECT}"
@@ -55,6 +85,7 @@ for M in $MODELS; do
         for LEVDIR in "$SRC"/*/; do
           LEV="$(basename "$LEVDIR")"
           [ "$LEV" = "_shared" ] && continue
+          level_included "$DEFECT" "$TIER" "$LEV" || continue
           mkdir -p "$DST/$LEV"
           for F in passage_target.txt passage_target_decanonicalized.txt \
                    passage_source_decanonicalized.txt qa_target.json \
@@ -76,7 +107,9 @@ for M in $MODELS; do
       for LEVDIR in "$SRCD"/*%/; do
         [ -d "$LEVDIR" ] || continue
         [ -f "$LEVDIR/passage_target_decanonicalized.txt" ] || continue
-        LEVELS="$LEVELS $(basename "$LEVDIR")"
+        LEV="$(basename "$LEVDIR")"
+        level_included "$DEFECT" "$TIER" "$LEV" || continue
+        LEVELS="$LEVELS $LEV"
       done
       [ -z "$LEVELS" ] && { echo "[skip] luke${CH}/${DEFECT}: no usable levels"; continue; }
       # all available questions for this chapter (runner errors if N > avail)

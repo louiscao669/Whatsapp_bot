@@ -8,6 +8,7 @@ answers, correct letters, and keyword fields are removed before prompting.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import re
@@ -1077,6 +1078,44 @@ def failed_answer_output(
     return output
 
 
+def random_mcq_fallback_output(question: dict, error: Exception) -> dict:
+    """Return a reproducible pseudo-random MCQ choice after an empty response."""
+    choices = question["choices"]
+    labels = [label for label in CHOICE_LABELS if label in choices]
+    if not labels:
+        raise GenerationError(
+            f"Item {question['item_index']}: MCQ has no available fallback choices."
+        )
+    identity = "|".join(
+        str(question.get(key) or "")
+        for key in ("id", "passage_id", "item_index", "question")
+    )
+    digest = hashlib.sha256(identity.encode("utf-8")).digest()
+    selected = labels[int.from_bytes(digest[:8], "big") % len(labels)]
+    return {
+        "item_index": question["item_index"],
+        "id": question.get("id"),
+        "passage_id": question.get("passage_id"),
+        "passage_reference": question.get("passage_reference"),
+        "q_type": "mcq",
+        "question": question["question"],
+        "generated_answer": choices[selected],
+        "mcq_choices": choices,
+        "selected_choice": selected,
+        "selected_choice_text": choices[selected],
+        "selected_choice_source": "random_empty_response_fallback",
+        "generation_error": str(error),
+    }
+
+
+def is_empty_answer_error(error: Exception) -> bool:
+    return (
+        isinstance(error, AnswerParseError)
+        and not str(getattr(error, "raw_model_answer", "") or "").strip()
+        and "generated_answer is empty" in str(error)
+    )
+
+
 def generate_ollama_single_raw(
     *,
     base_url: str,
@@ -1265,6 +1304,21 @@ def generate_answers(
                     break
                 time.sleep(2**attempt)
         if last_error:
+            if len(batch) == 1 and is_empty_answer_error(last_error):
+                if batch[0]["q_type"] == "mcq":
+                    answers.append(random_mcq_fallback_output(batch[0], last_error))
+                else:
+                    # Preserve the skipped open question as an explicit failed
+                    # row; scoring records it as incorrect without aborting the
+                    # remaining questions in the cell.
+                    answers.append(
+                        failed_answer_output(
+                            batch[0],
+                            last_error,
+                            expanded_answer_format=expanded_answer_format,
+                        )
+                    )
+                continue
             if allow_partial_answers and len(batch) == 1:
                 answers.append(
                     failed_answer_output(

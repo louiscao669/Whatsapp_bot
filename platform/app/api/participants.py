@@ -8,6 +8,11 @@ from app.services.participants_api_service import (
     list_participants_dashboard,
     update_participant_language,
 )
+from app.services.participant_assignment_service import (
+    ParticipantAssignmentError,
+    assign_questions_with_passages,
+    get_assignment_options,
+)
 
 participants_blueprint = Blueprint("api_participants", __name__)
 
@@ -52,3 +57,39 @@ def patch_participant_language(participant_id):
         return jsonify({"error": "validation_error", "message": message}), status
 
     return jsonify({"ok": True, "message": "Participant language updated", **payload})
+
+
+@participants_blueprint.route("/<participant_id>/assignment-options", methods=["GET"])
+@require_roles("admin")
+def participant_assignment_options(participant_id):
+    session_factory = get_session_factory()
+    try:
+        with session_factory() as db:
+            payload = get_assignment_options(db, participant_id)
+    except ParticipantAssignmentError as exc:
+        status = 404 if str(exc) == "Participant not found" else 400
+        return jsonify({"error": "validation_error", "message": str(exc)}), status
+    return jsonify(payload)
+
+
+@participants_blueprint.route("/<participant_id>/assignments", methods=["POST"])
+@require_roles("admin")
+def create_participant_assignments(participant_id):
+    body = _json_body()
+    session_factory = get_session_factory()
+    try:
+        with session_factory() as db:
+            assignments = assign_questions_with_passages(
+                db, participant_id, body.get("selections")
+            )
+            db.commit()
+    except ParticipantAssignmentError as exc:
+        status = 404 if str(exc) == "Participant not found" else 400
+        return jsonify({"error": "validation_error", "message": str(exc)}), status
+    return jsonify(
+        {
+            "ok": True,
+            "assigned_count": len(assignments),
+            "message": f"Assigned {len(assignments)} question(s)",
+        }
+    ), 201

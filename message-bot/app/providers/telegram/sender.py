@@ -38,7 +38,7 @@ async def run_campaign(text: str | None = None):
     bot = Bot(token=telegram_bot_token())
     contacts = active_telegram_contacts()
     default_text = (
-        "Hi {name}, this is a message from the [Study Name] research team. ..."
+        "Hi {name}, this is a message from the Notre Dame SaNDwich Lab Bible translation research team. ..."
     )
 
     for index, contact in enumerate(contacts, 1):

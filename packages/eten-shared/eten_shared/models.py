@@ -206,6 +206,56 @@ class ParticipantProviderContact(Base):
     participant: Mapped["Participant"] = relationship(back_populates="provider_contacts")
 
 
+class PassageTranslation(Base):
+    __tablename__ = "passage_translations"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    language: Mapped[str] = mapped_column(String(64), nullable=False, index=True)
+    name: Mapped[Optional[str]] = mapped_column(String(255))
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utc_now, nullable=False
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utc_now, onupdate=utc_now, nullable=False
+    )
+
+    verses: Mapped[List["PassageVerse"]] = relationship(
+        back_populates="translation",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+        order_by="PassageVerse.position",
+    )
+
+
+class PassageVerse(Base):
+    __tablename__ = "passage_verses"
+    __table_args__ = (
+        UniqueConstraint(
+            "translation_id", "verse_number", name="uq_passage_verses_translation_number"
+        ),
+        UniqueConstraint(
+            "translation_id", "position", name="uq_passage_verses_translation_position"
+        ),
+        CheckConstraint("chapter_number > 0", name="passage_verses_chapter_number_positive"),
+    )
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    translation_id: Mapped[str] = mapped_column(
+        ForeignKey("passage_translations.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
+    )
+    verse_number: Mapped[str] = mapped_column(String(16), nullable=False)
+    chapter_number: Mapped[int] = mapped_column(Integer, nullable=False)
+    position: Mapped[int] = mapped_column(Integer, nullable=False)
+    text: Mapped[str] = mapped_column(Text, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utc_now, nullable=False
+    )
+
+    translation: Mapped["PassageTranslation"] = relationship(back_populates="verses")
+
+
 class QAItem(Base):
     __tablename__ = "qa_items"
 
@@ -399,6 +449,12 @@ class Assignment(Base):
     qa_item_id: Mapped[str] = mapped_column(
         ForeignKey("qa_items.id", ondelete="CASCADE"), nullable=False
     )
+    passage_translation_id: Mapped[Optional[str]] = mapped_column(
+        ForeignKey("passage_translations.id", ondelete="SET NULL")
+    )
+    passage_chapter_number: Mapped[Optional[int]] = mapped_column(Integer)
+    passage_verse_numbers: Mapped[List[str]] = mapped_column(JSON, default=list, nullable=False)
+    passage_text: Mapped[Optional[str]] = mapped_column(Text)
     batch_id: Mapped[Optional[str]] = mapped_column(String(36), index=True)
     status: Mapped[str] = mapped_column(
         String(32), default=AssignmentStatus.ASSIGNED.value, index=True, nullable=False
@@ -413,6 +469,7 @@ class Assignment(Base):
 
     participant: Mapped["Participant"] = relationship(back_populates="assignments")
     qa_item: Mapped["QAItem"] = relationship(back_populates="assignments")
+    passage_translation: Mapped[Optional["PassageTranslation"]] = relationship()
     responses: Mapped[List["ParticipantResponse"]] = relationship(
         back_populates="assignment"
     )

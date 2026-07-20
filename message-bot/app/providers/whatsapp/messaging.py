@@ -81,8 +81,8 @@ def get_choice_list_message_input(recipient, prompt):
         )
 
     body_lines = []
-    if prompt.passage_reference:
-        body_lines.append(f"Passage: {prompt.passage_reference}")
+    if getattr(prompt, "passage_text", None):
+        body_lines.append(prompt.passage_text)
     body_lines.append(prompt.question_text)
     if question_type == QUESTION_TYPE_TF:
         body_lines.append("Tap Choose an answer and pick A or B.")
@@ -192,8 +192,8 @@ def get_batch_size_nudge_message_input(recipient, nudge):
 
 def get_assignment_prompt_text(prompt):
     parts = []
-    if prompt.passage_reference:
-        parts.append(f"Passage: {prompt.passage_reference}")
+    if getattr(prompt, "passage_text", None):
+        parts.append(prompt.passage_text)
 
     question_type = (getattr(prompt, "question_type", None) or "open").strip().lower()
     if question_type in {QUESTION_TYPE_MCQ, QUESTION_TYPE_TF} and getattr(prompt, "mcq_choices", None):

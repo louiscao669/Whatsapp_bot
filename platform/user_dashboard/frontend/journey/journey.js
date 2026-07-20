@@ -217,6 +217,9 @@ function renderQuestionAnswerPage(target, actions) {
       question.passage_reference
         ? el("div", { className: "answer-reference", text: question.passage_reference })
         : null,
+      question.passage_text
+        ? el("div", { className: "answer-passage", text: question.passage_text })
+        : null,
       el("h1", { text: question.question || "Question" }),
       question.audio_url
         ? el("audio", { className: "answer-audio", controls: true, src: question.audio_url })

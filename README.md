@@ -18,16 +18,16 @@ eten-whatsapp-bot/
   packages/eten-shared/   # Shared Python package (models, DB, storage, scoring)
   message-bot/            # Flask: provider webhook, participant workflow, engagement
   platform/               # Flask: JSON API, expert/admin services, SPA hosting
-  frontend/               # React + Vite admin SPA
+    frontend/             # React + Vite admin SPA (served by platform)
   supabase/               # schema, migrations, seeds
   scripts/                # CLI utilities
 ```
 
 | Component | Run locally |
 |-----------|-------------|
-| Platform + SPA (production) | `cd frontend && npm run build` then `python platform/app.py` → http://localhost:7860 |
+| Platform + SPA (production) | `cd platform/frontend && npm run build` then `python platform/app.py` → http://localhost:7860 |
 | Message bot | `python message-bot/app.py` → http://localhost:7861 (`/webhook`) |
-| Frontend dev (HMR) | `cd frontend && npm install && npm run dev` → http://localhost:5173 |
+| Frontend dev (HMR) | `cd platform/frontend && npm install && npm run dev` → http://localhost:5173 |
 | Both backends | `docker compose up --build` |
 
 Install shared package first (or use `-e ../packages/eten-shared` in each service's `requirements.txt`):
@@ -46,9 +46,9 @@ Runtime configuration is split between **root `config.py`** and **root `.env`**:
   database URLs, SMTP passwords, and service role keys.
 
 Both backend services load `config.py` first and `.env` second, so environment
-variables and local secrets can override defaults. See `frontend/README.md`.
+variables and local secrets can override defaults. See `platform/frontend/README.md`.
 
-JSON admin APIs live under `/api/v1` on the **platform** service (`platform/app/api/`). The platform serves the built React SPA from `frontend/dist/`. Legacy `/admin/*` URLs redirect to SPA routes; `/admin/media/*` redirects to `/api/v1/media/*`.
+JSON admin APIs live under `/api/v1` on the **platform** service (`platform/app/api/`). The platform serves the built React SPA from `platform/frontend/dist/`. Legacy `/admin/*` URLs redirect to SPA routes; `/admin/media/*` redirects to `/api/v1/media/*`.
 
 The default Docker image builds the **platform** (see root `Dockerfile`). Use `message-bot/Dockerfile` for the webhook service. Point Meta's webhook URL at the message-bot host when using the WhatsApp provider.
 
@@ -275,7 +275,7 @@ across `participant_id` and `badge_type`.
 
 ## Admin and expert dashboards
 
-The React admin SPA is served from `/` (build with `cd frontend && npm run build`).
+The React admin SPA is served from `/` (build with `cd platform/frontend && npm run build`).
 JSON APIs live under `/api/v1`. Main routes:
 
 ```text

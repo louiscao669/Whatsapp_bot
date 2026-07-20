@@ -1,5 +1,6 @@
 """Participant assignment DB logic shared by the message bot and platform."""
 
+import os
 from dataclasses import dataclass
 from typing import Optional
 
@@ -16,6 +17,7 @@ from eten_shared.models import (
     Participant,
     ParticipantEvent,
     ParticipantSession,
+    PassageVerse,
     QAItem,
     SessionState,
     new_id,
@@ -48,12 +50,23 @@ class AssignmentPrompt:
     audio_url: Optional[str]
     question_text: str
     passage_reference: Optional[str] = None
+    passage_text: Optional[str] = None
     question_type: str = "open"
     mcq_choices: tuple = ()
 
 
 class AssignmentAssignError(Exception):
     pass
+
+
+def automatic_assignment_enabled() -> bool:
+    """Return whether automatic QA selection is enabled for this deployment."""
+    return os.getenv("ENABLE_AUTOMATIC_ASSIGNMENT", "false").strip().lower() in {
+        "1",
+        "true",
+        "yes",
+        "on",
+    }
 
 
 def try_complete_assignment(db: Session, assignment) -> bool:
@@ -122,6 +135,49 @@ def get_incomplete_assignment(db: Session, participant, batch_id=None):
     return db.scalars(statement).first()
 
 
+PASSAGE_CONTEXT_WINDOW = 2
+
+
+def surrounding_passage_text(db: Session, assignment, window: int = PASSAGE_CONTEXT_WINDOW):
+    """Return the assigned verse(s) plus ``window`` verses of context on each
+    side, joined as one flowing paragraph (no verse numbers or reference).
+
+    Uses global verse ``position`` ordering, so the window spans a chapter
+    boundary when the target sits near a chapter edge. Returns ``None`` when the
+    verse data is unavailable, so callers can fall back to stored passage text.
+    """
+
+    translation_id = getattr(assignment, "passage_translation_id", None)
+    verse_numbers = list(getattr(assignment, "passage_verse_numbers", None) or [])
+    if not translation_id or not verse_numbers:
+        return None
+
+    target_positions = db.scalars(
+        select(PassageVerse.position).where(
+            PassageVerse.translation_id == translation_id,
+            PassageVerse.verse_number.in_(verse_numbers),
+        )
+    ).all()
+    if not target_positions:
+        return None
+
+    low = min(target_positions) - window
+    high = max(target_positions) + window
+    verses = db.scalars(
+        select(PassageVerse)
+        .where(
+            PassageVerse.translation_id == translation_id,
+            PassageVerse.position >= low,
+            PassageVerse.position <= high,
+        )
+        .order_by(PassageVerse.position)
+    ).all()
+    texts = [verse.text.strip() for verse in verses if verse.text and verse.text.strip()]
+    if not texts:
+        return None
+    return " ".join(texts)
+
+
 def build_assignment_prompt(db: Session, assignment, qa_item, participant):
     language = participant_language_code(participant)
     recording = get_latest_question_recording(db, qa_item.id, language)
@@ -132,6 +188,9 @@ def build_assignment_prompt(db: Session, assignment, qa_item, participant):
         audio_url=audio_url,
         question_text=qa_item.question_text,
         passage_reference=qa_item.passage_reference,
+        passage_text=surrounding_passage_text(db, assignment)
+        or assignment.passage_text
+        or qa_item.passage_text,
         question_type=qa_item.question_type or "open",
         mcq_choices=tuple(qa_item.mcq_choices or ()),
     )

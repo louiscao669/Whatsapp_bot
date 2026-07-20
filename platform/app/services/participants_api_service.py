@@ -217,7 +217,10 @@ def get_participant_detail(db, participant_id: str):
     assignments = db.scalars(
         select(Assignment)
         .where(Assignment.participant_id == participant_id)
-        .options(selectinload(Assignment.qa_item))
+        .options(
+            selectinload(Assignment.qa_item),
+            selectinload(Assignment.passage_translation),
+        )
         .order_by(Assignment.assigned_at.desc())
     ).all()
     stats = _participant_response_stats(db, [participant_id]).get(
@@ -243,6 +246,26 @@ def get_participant_detail(db, participant_id: str):
             }
         )
 
+    assigned_questions = []
+    for assignment in assignments:
+        qa_item = assignment.qa_item
+        if not qa_item:
+            continue
+        translation = assignment.passage_translation
+        assigned_questions.append(
+            {
+                "assignment_id": assignment.id,
+                "qa_item_id": qa_item.id,
+                "passage": qa_item.passage_reference or qa_item.passage_id or "",
+                "question": _truncate_text(qa_item.question_text, 100),
+                "translation_name": translation.name if translation else None,
+                "passage_verse_numbers": list(assignment.passage_verse_numbers or []),
+                "batch_id": assignment.batch_id,
+                "status": assignment.status,
+                "assigned_at": _iso_datetime(assignment.assigned_at),
+            }
+        )
+
     return {
         "participant": {
             "id": participant.id,
@@ -261,6 +284,7 @@ def get_participant_detail(db, participant_id: str):
             "consented": participant.consented,
             "created_at": _iso_datetime(participant.created_at),
         },
+        "assigned_questions": assigned_questions,
         "history": history,
     }
 

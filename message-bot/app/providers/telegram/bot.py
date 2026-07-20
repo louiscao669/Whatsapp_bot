@@ -2,7 +2,13 @@ import logging
 import sys
 from pathlib import Path
 
-from telegram.ext import Application, CommandHandler, MessageHandler, filters
+from telegram.ext import (
+    Application,
+    CallbackQueryHandler,
+    CommandHandler,
+    MessageHandler,
+    filters,
+)
 
 REPO_ROOT = Path(__file__).resolve().parents[4]
 MESSAGE_BOT_ROOT = REPO_ROOT / "message-bot"
@@ -15,8 +21,16 @@ from app.providers.telegram.config import (
 )
 from app.engagement.dashboard_nudge import dashboard_link_reply, is_dashboard_command
 from app.engagement.reminders import start_reminder_scheduler
-from app.messaging.workflow import record_telegram_text_message
-from app.providers.telegram.messaging import send_workflow_result
+from app.messaging.workflow import (
+    record_telegram_choice_answer,
+    record_telegram_text_message,
+    record_telegram_voice_message,
+)
+from app.providers.telegram.messaging import (
+    MCQ_CALLBACK_PREFIX,
+    parse_mcq_callback_data,
+    send_workflow_result,
+)
 from app.providers.telegram.store import (
     LANGUAGE_CONFIRMED,
     LANGUAGE_PENDING,
@@ -41,7 +55,7 @@ NO_RESPONSES = {"no", "n", "nope", "not yet", "不是", "不会"}
 
 def language_question():
     return (
-        f"Thanks for joining the [Study Name]. Do you speak "
+        f"Thanks for joining the Notre Dame SaNDwich Lab Bible translation research. Do you speak "
         f"{default_target_language_label()}?\n\n"
         "Reply yes or no."
     )
@@ -140,12 +154,114 @@ async def unknown_text(update, context):
     await send_workflow_result(context.bot, contact.external_user_id, workflow_result)
 
 
+async def voice_message(update, context):
+    """Participant answered with a voice note (or an audio file).
+
+    Mirrors the WhatsApp audio path: download from the Telegram Bot API,
+    store in Supabase, transcribe with Whisper, keyword-score the transcript.
+    """
+    contact_input = contact_input_from_update(update)
+    participant, contact, _ = upsert_telegram_contact(contact_input)
+
+    status = language_confirmation_status(contact)
+    if status != LANGUAGE_CONFIRMED:
+        # Language onboarding needs a yes/no text reply first.
+        await update.effective_message.reply_text(language_question())
+        return
+
+    message = update.effective_message
+    voice = message.voice or message.audio
+    if voice is None:
+        return
+
+    try:
+        telegram_file = await context.bot.get_file(voice.file_id)
+        audio_bytes = bytes(await telegram_file.download_as_bytearray())
+    except Exception:
+        logging.exception(
+            "Failed to download Telegram voice file %s for chat %s",
+            voice.file_id,
+            contact.external_user_id,
+        )
+        await message.reply_text(
+            "Sorry, I couldn't receive your voice message. "
+            "Please try sending it again, or type your answer instead."
+        )
+        return
+
+    workflow_result = record_telegram_voice_message(
+        chat_id=contact.external_user_id,
+        display_name=contact.display_name or participant.display_name,
+        message_id=contact_input.message_id,
+        file_id=voice.file_id,
+        audio_bytes=audio_bytes,
+        file_unique_id=getattr(voice, "file_unique_id", None),
+        mime_type=getattr(voice, "mime_type", None),
+        duration_seconds=getattr(voice, "duration", None),
+        record_response=True,
+    )
+    await send_workflow_result(context.bot, contact.external_user_id, workflow_result)
+
+
+async def mcq_button_tap(update, context):
+    """Participant tapped an inline-keyboard answer button on an MCQ/TF question."""
+    query = update.callback_query
+    parsed = parse_mcq_callback_data(query.data or "")
+    if parsed is None:
+        await query.answer()
+        return
+    assignment_id, choice_index = parsed
+
+    contact_input = contact_input_from_update(update)
+    participant, contact, _ = upsert_telegram_contact(contact_input)
+
+    try:
+        workflow_result = record_telegram_choice_answer(
+            chat_id=contact.external_user_id,
+            display_name=contact.display_name or participant.display_name,
+            message_id=contact_input.message_id,
+            assignment_id=assignment_id,
+            choice_index=choice_index,
+        )
+    except Exception:
+        logging.exception(
+            "Failed to record inline-keyboard answer for chat %s assignment %s",
+            contact.external_user_id,
+            assignment_id,
+        )
+        await query.answer(
+            "Sorry, something went wrong recording your answer. Please try again."
+        )
+        return
+
+    if workflow_result is None:
+        # Stale tap: the button belongs to a question that is no longer current.
+        await query.answer("This question was already answered.")
+        try:
+            await query.edit_message_reply_markup(reply_markup=None)
+        except Exception:
+            pass
+        return
+
+    await query.answer("Answer recorded.")
+    # Remove the buttons so the same question can't be tapped twice.
+    try:
+        await query.edit_message_reply_markup(reply_markup=None)
+    except Exception:
+        pass
+    await send_workflow_result(context.bot, contact.external_user_id, workflow_result)
+
+
 def build_application():
     app = Application.builder().token(telegram_bot_token()).build()
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("stop", stop))
     app.add_handler(CommandHandler("dashboard", dashboard))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, unknown_text))
+    app.add_handler(MessageHandler(filters.VOICE | filters.AUDIO, voice_message))
+    app.add_handler(
+        CallbackQueryHandler(mcq_button_tap, pattern=rf"^{MCQ_CALLBACK_PREFIX}:")
+    )
     return app
 
 

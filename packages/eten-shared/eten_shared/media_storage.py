@@ -233,6 +233,39 @@ def build_audio_object_path(media_id, mime_type):
     return f"whatsapp/{today}/{media_id}{get_media_extension(mime_type)}"
 
 
+def build_provider_audio_object_path(provider, media_id, mime_type):
+    safe_provider = (provider or "unknown").strip().replace("/", "_")
+    safe_media_id = (str(media_id) or "unknown").strip().replace("/", "_")
+    today = datetime.now(timezone.utc).strftime("%Y/%m/%d")
+    return (
+        f"{safe_provider}/{today}/{safe_media_id}{get_media_extension(mime_type)}"
+    )
+
+
+def store_provider_audio_bytes(content, media_id, mime_type=None, provider="telegram"):
+    """Store already-downloaded participant audio bytes (e.g. a Telegram voice
+    note) in the participant-audio bucket. Mirrors store_whatsapp_audio but
+    takes the raw bytes instead of fetching from the Meta Graph API."""
+    if not content:
+        return None
+
+    if not is_supabase_storage_configured():
+        logging.info("Supabase Storage is not configured; skipping audio upload")
+        return None
+
+    content_type = mime_type or "audio/ogg"
+    object_path = build_provider_audio_object_path(provider, media_id, content_type)
+    bucket = upload_to_supabase_storage(content, object_path, content_type)
+
+    return StoredMedia(
+        bucket=bucket,
+        object_path=object_path,
+        storage_uri=f"storage://{bucket}/{object_path}",
+        content_type=content_type,
+        file_size=len(content),
+    )
+
+
 def fetch_whatsapp_media_metadata(media_id):
     access_token = os.getenv("ACCESS_TOKEN")
     if not access_token:

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.error import RetryAfter, TelegramError
 
 from app.providers.whatsapp.schedule_policy import (
@@ -14,29 +15,93 @@ from eten_shared.domain.batch_size_nudges import (
 from eten_shared.mcq import (
     QUESTION_TYPE_MCQ,
     QUESTION_TYPE_TF,
+    choice_letters_for_type,
     format_choices_for_display,
 )
 
+MCQ_CALLBACK_PREFIX = "mcq"
+MCQ_BUTTON_LABEL_MAX_CHARS = 60
 
-def assignment_prompt_text(prompt, include_audio_url=True):
+
+def prompt_question_type(prompt):
+    return (getattr(prompt, "question_type", None) or "open").strip().lower()
+
+
+def prompt_is_choice_question(prompt):
+    return (
+        prompt_question_type(prompt) in {QUESTION_TYPE_MCQ, QUESTION_TYPE_TF}
+        and bool(getattr(prompt, "mcq_choices", None))
+    )
+
+
+def mcq_callback_data(assignment_id, choice_index):
+    return f"{MCQ_CALLBACK_PREFIX}:{assignment_id}:{choice_index}"
+
+
+def parse_mcq_callback_data(data):
+    """Return (assignment_id, choice_index) or None when not an MCQ callback."""
+    parts = (data or "").split(":")
+    if len(parts) != 3 or parts[0] != MCQ_CALLBACK_PREFIX:
+        return None
+    assignment_id, raw_index = parts[1], parts[2]
+    if not assignment_id or not raw_index.isdigit():
+        return None
+    choice_index = int(raw_index)
+    if choice_index > 3:
+        return None
+    return assignment_id, choice_index
+
+
+def build_mcq_keyboard(prompt):
+    """Inline keyboard with one labeled button per choice, or None for open
+    questions. Callback data carries the assignment id so stale taps on an
+    older question message can be rejected."""
+    if not prompt_is_choice_question(prompt):
+        return None
+
+    question_type = prompt_question_type(prompt)
+    letters = choice_letters_for_type(question_type)
+    rows = []
+    for index, choice in enumerate(list(prompt.mcq_choices)):
+        if index >= len(letters):
+            break
+        label = f"{letters[index]}. {choice}"
+        if len(label) > MCQ_BUTTON_LABEL_MAX_CHARS:
+            label = label[: MCQ_BUTTON_LABEL_MAX_CHARS - 1] + "…"
+        rows.append(
+            [
+                InlineKeyboardButton(
+                    label,
+                    callback_data=mcq_callback_data(prompt.assignment_id, index),
+                )
+            ]
+        )
+    if not rows:
+        return None
+    return InlineKeyboardMarkup(rows)
+
+
+def assignment_prompt_text(prompt, include_audio_url=True, with_keyboard=False):
     """Build the prompt text. When ``include_audio_url`` is False the raw audio
     link is omitted — used as the caption when the recording is delivered as an
-    actual voice message instead of a link."""
+    actual voice message instead of a link. When ``with_keyboard`` is True the
+    choice instruction mentions the tap buttons (typed replies still work)."""
 
     parts = []
-    if prompt.passage_reference:
-        parts.append(f"Passage: {prompt.passage_reference}")
+    if getattr(prompt, "passage_text", None):
+        parts.append(prompt.passage_text)
 
-    question_type = (getattr(prompt, "question_type", None) or "open").strip().lower()
+    question_type = prompt_question_type(prompt)
     if question_type in {QUESTION_TYPE_MCQ, QUESTION_TYPE_TF} and getattr(prompt, "mcq_choices", None):
+        letters_hint = "A or B" if question_type == QUESTION_TYPE_TF else "A, B, C, or D"
         if prompt.audio_url:
             parts.append("Listen to the audio, then choose your answer:")
             if include_audio_url:
                 parts.append(prompt.audio_url)
-        elif question_type == QUESTION_TYPE_TF:
-            parts.append("Choose your answer (reply A or B):")
+        elif with_keyboard:
+            parts.append("Tap your answer below:")
         else:
-            parts.append("Choose your answer (reply A, B, C, or D):")
+            parts.append(f"Choose your answer (reply {letters_hint}):")
         parts.append(prompt.question_text)
         parts.append(format_choices_for_display(list(prompt.mcq_choices), question_type))
         return "\n\n".join(parts)
@@ -107,17 +172,19 @@ def no_assignment_message(response_recorded):
     return "Thanks for checking in. No questions are available right now."
 
 
-async def send_text(bot, chat_id, text):
+async def send_text(bot, chat_id, text, reply_markup=None):
     try:
-        return await bot.send_message(chat_id=chat_id, text=text)
+        return await bot.send_message(
+            chat_id=chat_id, text=text, reply_markup=reply_markup
+        )
     except RetryAfter as exc:
         import asyncio
 
         await asyncio.sleep(exc.retry_after)
-        return await send_text(bot, chat_id, text)
+        return await send_text(bot, chat_id, text, reply_markup=reply_markup)
 
 
-async def _send_question_voice(bot, chat_id, audio_url, caption):
+async def _send_question_voice(bot, chat_id, audio_url, caption, reply_markup=None):
     """Deliver the question recording as a Telegram voice note.
 
     Telegram voice notes must be OGG/OPUS; if the recording is another format,
@@ -129,23 +196,45 @@ async def _send_question_voice(bot, chat_id, audio_url, caption):
 
     for _ in range(2):
         try:
-            return await bot.send_voice(chat_id=chat_id, voice=audio_url, caption=caption)
+            return await bot.send_voice(
+                chat_id=chat_id,
+                voice=audio_url,
+                caption=caption,
+                reply_markup=reply_markup,
+            )
         except RetryAfter as exc:
             await asyncio.sleep(exc.retry_after)
         except TelegramError:
             break
 
     try:
-        return await bot.send_audio(chat_id=chat_id, audio=audio_url, caption=caption)
+        return await bot.send_audio(
+            chat_id=chat_id,
+            audio=audio_url,
+            caption=caption,
+            reply_markup=reply_markup,
+        )
     except TelegramError:
-        return await send_text(bot, chat_id, f"{caption}\n\n{audio_url}")
+        return await send_text(
+            bot, chat_id, f"{caption}\n\n{audio_url}", reply_markup=reply_markup
+        )
 
 
 async def send_assignment_prompt(bot, chat_id, prompt):
+    keyboard = build_mcq_keyboard(prompt)
     if prompt.audio_url:
-        caption = assignment_prompt_text(prompt, include_audio_url=False)
-        return await _send_question_voice(bot, chat_id, prompt.audio_url, caption)
-    return await send_text(bot, chat_id, assignment_prompt_text(prompt))
+        caption = assignment_prompt_text(
+            prompt, include_audio_url=False, with_keyboard=bool(keyboard)
+        )
+        return await _send_question_voice(
+            bot, chat_id, prompt.audio_url, caption, reply_markup=keyboard
+        )
+    return await send_text(
+        bot,
+        chat_id,
+        assignment_prompt_text(prompt, with_keyboard=bool(keyboard)),
+        reply_markup=keyboard,
+    )
 
 
 async def send_workflow_result(bot, chat_id, workflow_result):

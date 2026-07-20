@@ -9,7 +9,7 @@ From the **repository root** (`.env` lives here):
 ```bash
 pip install -e packages/eten-shared
 pip install -r platform/requirements.txt
-cd frontend && npm run build
+cd platform/frontend && npm run build
 python platform/app.py
 ```
 
@@ -31,4 +31,4 @@ platform/
     utils/
 ```
 
-Shared assets: `packages/eten-shared/`, `supabase/`, `frontend/dist/`.
+Shared assets: `packages/eten-shared/`, `supabase/`, `platform/frontend/dist/`.

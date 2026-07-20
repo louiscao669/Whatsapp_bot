@@ -42,7 +42,7 @@ def run_campaign(csv_path: str, min_delay=8, max_delay=20):
     for i, p in enumerate(participants, 1):
         recipient = p["phone_or_email"].strip()
         message = (
-            f"Hi {p['name']}, this is a message from the [Study Name] research team. "
+            f"Hi {p['name']}, this is a message from the Notre Dame SaNDwich Lab Bible translation research team. "
             f"..."
         )
         ok = send_imessage(recipient, message)

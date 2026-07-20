@@ -1,23 +1,25 @@
-Mixed-defect additivity (tier=1.7b, q_types=both, 80 cells, margin=0.3)
+Mixed-defect additivity (tier=1.7b, q_types=both, 96 cells, margin=0.3)
 
 pair                        doses               I (logits)     SE  n_ch   verdict
-grammar+omission            10% x 10%               +0.702  0.357     8   underpowered
-grammar+omission            10% x 20%               +1.015  0.339     8   SUPERADDITIVE
-grammar+omission            POOLED                  +0.866  0.246         SUPERADDITIVE
+grammar+omission            10% x 10%               -0.003  0.362     8   underpowered
+grammar+omission            10% x 20%               +0.052  0.352     8   underpowered
+grammar+omission            20% x 10%               -0.096  0.352     8   underpowered
+grammar+omission            20% x 20%               -0.030  0.337     8   underpowered
+grammar+omission            POOLED                  -0.020  0.175         underpowered
 
-mistranslation+addition     10% x bad_10%           +1.555  0.341     8   SUPERADDITIVE
-mistranslation+addition     10% x bad_20%           +1.536  0.340     8   SUPERADDITIVE
-mistranslation+addition     20% x bad_10%           +1.614  0.337     8   SUPERADDITIVE
-mistranslation+addition     20% x bad_20%           +1.615  0.335     8   SUPERADDITIVE
-mistranslation+addition     POOLED                  +1.580  0.169         SUPERADDITIVE
+mistranslation+addition     10% x bad_10%           +0.063  0.377     8   underpowered
+mistranslation+addition     10% x bad_20%           -0.037  0.377     8   underpowered
+mistranslation+addition     20% x bad_10%           +0.022  0.352     8   underpowered
+mistranslation+addition     20% x bad_20%           -0.013  0.354     8   underpowered
+mistranslation+addition     POOLED                  +0.009  0.182         underpowered
 
-mistranslation+omission     10% x 10%               +1.841  0.353     8   SUPERADDITIVE
-mistranslation+omission     10% x 20%               +1.845  0.347     8   SUPERADDITIVE
-mistranslation+omission     20% x 10%               +1.741  0.349     8   SUPERADDITIVE
-mistranslation+omission     20% x 20%               +1.855  0.354     8   SUPERADDITIVE
-mistranslation+omission     POOLED                  +1.820  0.175         SUPERADDITIVE
+mistranslation+omission     10% x 10%               +0.080  0.384     8   underpowered
+mistranslation+omission     10% x 20%               +0.638  0.356     8   underpowered
+mistranslation+omission     20% x 10%               +0.008  0.365     8   underpowered
+mistranslation+omission     20% x 20%               -0.235  0.374     8   underpowered
+mistranslation+omission     POOLED                  +0.135  0.185         underpowered
 
-ALL PAIRS                   POOLED                  +1.532  0.109         SUPERADDITIVE
+ALL PAIRS                   POOLED                  +0.039  0.104         ADDITIVE (within margin)
 
 I > 0: superadditive (stacked damage worse than sum) — threshold transfer from singles UNDERSTATES damage.
 I < 0: subadditive (overlap/saturation) — thresholds OVERSTATE damage; consider a saturating combination rule.

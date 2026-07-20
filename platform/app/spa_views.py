@@ -6,7 +6,7 @@ from eten_shared.repo_paths import REPO_ROOT
 
 spa_blueprint = Blueprint("spa", __name__)
 
-FRONTEND_DIST = REPO_ROOT / "frontend" / "dist"
+FRONTEND_DIST = REPO_ROOT / "platform" / "frontend" / "dist"
 
 
 def _spa_index():
@@ -113,7 +113,7 @@ def spa_catch_all(path):
         return _spa_index()
 
     return (
-        "<p>Frontend build not found. Run <code>cd frontend && npm run build</code>.</p>",
+        "<p>Frontend build not found. Run <code>cd platform/frontend && npm run build</code>.</p>",
         503,
         {"Content-Type": "text/html"},
     )

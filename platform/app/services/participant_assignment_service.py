@@ -1,0 +1,204 @@
+"""Admin-selected QA assignments with language-specific passage snapshots."""
+
+import re
+
+from sqlalchemy import select
+
+from eten_shared.domain.qa_eligibility import qa_item_is_assignable
+from eten_shared.models import (
+    Assignment,
+    AssignmentStatus,
+    Participant,
+    ParticipantSession,
+    PassageTranslation,
+    PassageVerse,
+    QAItem,
+    SessionState,
+    new_id,
+    utc_now,
+)
+from app.services.system_languages_service import canonical_language_code
+
+
+class ParticipantAssignmentError(Exception):
+    pass
+
+
+_REFERENCE = re.compile(r"^.+?\s+(?P<chapter>\d+):(?P<verse>\d+)", re.IGNORECASE)
+
+
+def parse_qa_chapter_verse(reference):
+    match = _REFERENCE.match(str(reference or "").strip())
+    if not match:
+        return None
+    return int(match.group("chapter")), int(match.group("verse"))
+
+
+def _translation_options(db, language, chapter, target_verse):
+    translations = db.scalars(
+        select(PassageTranslation)
+        .join(PassageVerse)
+        .where(
+            PassageTranslation.language == language,
+            PassageVerse.chapter_number == chapter,
+            PassageVerse.verse_number == str(target_verse),
+        )
+        .distinct()
+        .order_by(PassageTranslation.name, PassageTranslation.created_at)
+    ).all()
+    return [
+        {
+            "id": translation.id,
+            "name": translation.name,
+            "label": translation.name or "Unnamed translation",
+        }
+        for translation in translations
+    ]
+
+
+def get_assignment_options(db, participant_id):
+    participant = db.get(Participant, participant_id)
+    if not participant:
+        raise ParticipantAssignmentError("Participant not found")
+    language = canonical_language_code(participant.target_language)
+    if not language:
+        raise ParticipantAssignmentError("Participant must have a language before assignment")
+
+    assigned_ids = set(
+        db.scalars(
+            select(Assignment.qa_item_id).where(Assignment.participant_id == participant.id)
+        ).all()
+    )
+    questions = []
+    for qa_item in db.scalars(select(QAItem).order_by(QAItem.passage_reference, QAItem.id)).all():
+        location = parse_qa_chapter_verse(qa_item.passage_reference or qa_item.passage_id)
+        if qa_item.id in assigned_ids or not qa_item_is_assignable(qa_item) or not location:
+            continue
+        chapter, verse = location
+        translations = _translation_options(db, language, chapter, verse)
+        questions.append(
+            {
+                "id": qa_item.id,
+                "passage": qa_item.passage_reference or qa_item.passage_id,
+                "question": qa_item.question_text,
+                "chapter_number": chapter,
+                "verse_number": verse,
+                "translations": translations,
+            }
+        )
+    return {"participant_language": language, "questions": questions}
+
+
+def _passage_window(db, translation_id, chapter, target_verse):
+    verses = db.scalars(
+        select(PassageVerse)
+        .where(
+            PassageVerse.translation_id == translation_id,
+            PassageVerse.chapter_number == chapter,
+        )
+        .order_by(PassageVerse.position)
+    ).all()
+    selected = []
+    for verse in verses:
+        match = re.fullmatch(r"(\d+)[a-z]?", verse.verse_number, re.IGNORECASE)
+        if match and target_verse - 2 <= int(match.group(1)) <= target_verse + 2:
+            selected.append(verse)
+    if not any(verse.verse_number == str(target_verse) for verse in selected):
+        raise ParticipantAssignmentError(
+            f"The selected translation does not contain chapter {chapter}, verse {target_verse}"
+        )
+    return selected
+
+
+def assign_questions_with_passages(db, participant_id, selections):
+    participant = db.get(Participant, participant_id)
+    if not participant:
+        raise ParticipantAssignmentError("Participant not found")
+    if not isinstance(selections, list) or not selections:
+        raise ParticipantAssignmentError("Select at least one question")
+
+    open_assignment = db.scalar(
+        select(Assignment).where(
+            Assignment.participant_id == participant.id,
+            Assignment.status != AssignmentStatus.COMPLETED.value,
+        ).order_by(Assignment.assigned_at, Assignment.id)
+    )
+
+    language = canonical_language_code(participant.target_language)
+    prepared = []
+    seen_questions = set()
+    for selection in selections:
+        qa_item_id = str((selection or {}).get("qa_item_id") or "").strip()
+        translation_id = str((selection or {}).get("translation_id") or "").strip()
+        if not qa_item_id or not translation_id or qa_item_id in seen_questions:
+            raise ParticipantAssignmentError("Each selected question needs one passage translation")
+        seen_questions.add(qa_item_id)
+
+        qa_item = db.get(QAItem, qa_item_id)
+        translation = db.get(PassageTranslation, translation_id)
+        location = parse_qa_chapter_verse(
+            (qa_item.passage_reference or qa_item.passage_id) if qa_item else None
+        )
+        if not qa_item or not qa_item_is_assignable(qa_item) or not location:
+            raise ParticipantAssignmentError("A selected question is unavailable for assignment")
+        if not translation or translation.language != language:
+            raise ParticipantAssignmentError("Passage translation must match participant language")
+        chapter, target_verse = location
+        verses = _passage_window(db, translation.id, chapter, target_verse)
+        prepared.append((qa_item, translation, chapter, verses))
+
+    existing_assignments = db.scalars(
+        select(Assignment)
+        .where(Assignment.participant_id == participant.id)
+        .order_by(Assignment.assigned_at, Assignment.id)
+    ).all()
+    batch_size = max(int(participant.preferred_batch_size or 3), 1)
+    ordered_batch_ids = []
+    for existing in existing_assignments:
+        if existing.batch_id and existing.batch_id not in ordered_batch_ids:
+            ordered_batch_ids.append(existing.batch_id)
+    last_batch_id = ordered_batch_ids[-1] if ordered_batch_ids else None
+    last_batch_count = (
+        sum(1 for assignment in existing_assignments if assignment.batch_id == last_batch_id)
+        if last_batch_id
+        else batch_size
+    )
+    batch_id = last_batch_id if last_batch_count < batch_size else new_id()
+    batch_count = last_batch_count if batch_id == last_batch_id else 0
+
+    assignments = []
+    for qa_item, translation, chapter, verses in prepared:
+        if batch_count >= batch_size:
+            batch_id = new_id()
+            batch_count = 0
+        assignment = Assignment(
+            participant_id=participant.id,
+            qa_item_id=qa_item.id,
+            passage_translation_id=translation.id,
+            passage_chapter_number=chapter,
+            passage_verse_numbers=[verse.verse_number for verse in verses],
+            passage_text="\n".join(f"{verse.verse_number} {verse.text}" for verse in verses),
+            batch_id=batch_id,
+            status=AssignmentStatus.ASSIGNED.value,
+            assigned_at=utc_now(),
+        )
+        db.add(assignment)
+        assignments.append(assignment)
+        batch_count += 1
+    db.flush()
+
+    # An existing open assignment stays current. The new batch is persisted as
+    # assigned and will be available after the participant reaches it.
+    if open_assignment is None:
+        participant_session = db.scalar(
+            select(ParticipantSession).where(ParticipantSession.participant_id == participant.id)
+        )
+        if participant_session is None:
+            participant_session = ParticipantSession(participant_id=participant.id)
+            db.add(participant_session)
+        participant_session.current_assignment_id = assignments[0].id
+        participant_session.current_batch_id = assignments[0].batch_id
+        participant_session.state = SessionState.AWAITING_RESPONSE.value
+        participant_session.last_prompt_sent_at = utc_now()
+    db.flush()
+    return assignments

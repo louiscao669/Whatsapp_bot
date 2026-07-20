@@ -9,6 +9,7 @@ from sqlalchemy.orm import Session
 from eten_shared.database import get_session_factory
 from eten_shared.domain.assignments import (
     AssignmentPrompt,
+    automatic_assignment_enabled,
     build_assignment_prompt,
     complete_current_batch_if_needed,
     create_assignment_for_qa_item,
@@ -32,14 +33,16 @@ from eten_shared.domain.batch_size_nudges import (
     record_batch_size_nudge_sent,
 )
 from eten_shared.domain.streaks import update_streak_for_response
-from eten_shared.question_discovery import select_next_qa_item
 from app.engagement.badges import evaluate_and_award_badges
 from app.engagement.currency import (
     award_batch_completion_currency,
     award_response_currency,
 )
 from app.providers.whatsapp.schedule_policy import create_assignment_reminders
-from eten_shared.media_storage import store_whatsapp_audio
+from eten_shared.media_storage import (
+    store_provider_audio_bytes,
+    store_whatsapp_audio,
+)
 from eten_shared.keyword_matching import (
     keyword_matches_in_response,
     normalize_response_text,
@@ -49,6 +52,7 @@ from eten_shared.qa_keywords import (
     get_language_keywords,
     rubric_from_qa_item,
 )
+from eten_shared.question_discovery import select_next_qa_item
 from eten_shared.recordings import (
     has_question_recording_for_participant,
     participant_language_code,
@@ -60,7 +64,10 @@ from eten_shared.mcq import (
 )
 from eten_shared.domain.qa_eligibility import qa_item_is_assignable
 from eten_shared.transcription import (
+    TranscriptionResult,
+    get_placeholder_transcript_text,
     is_placeholder_transcript,
+    transcribe_audio_bytes,
     transcribe_whatsapp_audio,
 )
 from eten_shared.models import (
@@ -245,9 +252,13 @@ def create_assignment_prompt(db: Session, participant, participant_session):
             incomplete.started_at = incomplete.started_at or utc_now()
             return prompt, False, completed_batch_size
 
-    qa_item = select_next_qa_item(
-        db, participant
-    )
+    if not automatic_assignment_enabled():
+        participant_session.current_batch_id = None
+        participant_session.current_assignment_id = None
+        participant_session.state = SessionState.IDLE.value
+        return None, False, completed_batch_size
+
+    qa_item = select_next_qa_item(db, participant)
     if qa_item is None:
         participant_session.current_batch_id = None
         participant_session.state = SessionState.IDLE.value
@@ -738,6 +749,137 @@ def record_telegram_text_message(
         display_name=display_name,
         message_id=message_id,
         message_text=message_text,
+        record_response=record_response,
+    )
+
+
+def record_telegram_choice_answer(
+    chat_id,
+    display_name,
+    message_id,
+    assignment_id,
+    choice_index,
+):
+    """Record an MCQ/TF answer from an inline-keyboard tap.
+
+    Returns None when the tapped button belongs to an assignment that is no
+    longer the participant's current one (stale message / already answered);
+    otherwise routes ``mcq_<index>`` through the normal choice-scoring chain
+    (parse_mcq_response_letter already understands that format).
+    """
+    participant = get_participant_by_provider_contact("telegram", str(chat_id))
+    if participant is None:
+        raise ValueError(
+            f"No active telegram contact found for external_user_id={chat_id}"
+        )
+
+    session_factory = get_session_factory()
+    with session_factory() as db:
+        merged = db.merge(participant)
+        participant_session = get_or_create_participant_session(db, merged)
+        current_assignment_id = participant_session.current_assignment_id
+        db.commit()
+
+    if current_assignment_id != assignment_id:
+        return None
+
+    return _record_provider_answer_for_participant(
+        participant=participant,
+        provider="telegram",
+        display_name=display_name,
+        message_id=message_id,
+        message_type=ResponseType.TEXT.value,
+        message_metadata={
+            "provider": "telegram",
+            "external_user_id": str(chat_id),
+            "input_method": "inline_keyboard",
+            "assignment_id": assignment_id,
+            "choice_index": choice_index,
+        },
+        response_text=f"mcq_{choice_index}",
+    )
+
+
+def record_telegram_voice_message(
+    chat_id,
+    display_name,
+    message_id,
+    file_id,
+    audio_bytes,
+    *,
+    file_unique_id=None,
+    mime_type=None,
+    duration_seconds=None,
+    record_response=True,
+):
+    """Record a Telegram voice/audio answer through the same
+    store → transcribe → keyword-score chain as WhatsApp audio answers.
+
+    The caller (bot handler) has already downloaded the voice file from the
+    Telegram Bot API into ``audio_bytes``.
+    """
+    participant = get_participant_by_provider_contact("telegram", str(chat_id))
+    if participant is None:
+        raise ValueError(
+            f"No active telegram contact found for external_user_id={chat_id}"
+        )
+
+    storage_media_id = file_unique_id or file_id
+    stored_media = None
+    try:
+        stored_media = store_provider_audio_bytes(
+            audio_bytes,
+            media_id=storage_media_id,
+            mime_type=mime_type or "audio/ogg",
+            provider="telegram",
+        )
+    except Exception:
+        logging.exception(
+            "Failed to store Telegram voice media %s", storage_media_id
+        )
+
+    stored_media_url = stored_media.storage_uri if stored_media else None
+    stored_content_type = stored_media.content_type if stored_media else mime_type
+
+    try:
+        transcription = transcribe_audio_bytes(
+            audio_bytes,
+            content_type=stored_content_type or "audio/ogg",
+            object_path=stored_media.object_path if stored_media else "",
+            language_hint=participant.target_language,
+        )
+    except Exception:
+        logging.exception(
+            "Transcription failed for Telegram voice media %s", storage_media_id
+        )
+        transcription = TranscriptionResult(
+            text=get_placeholder_transcript_text(),
+            provider="placeholder",
+        )
+
+    return _record_provider_answer_for_participant(
+        participant=participant,
+        provider="telegram",
+        display_name=display_name,
+        message_id=message_id,
+        message_type=ResponseType.AUDIO.value,
+        message_metadata={
+            "provider": "telegram",
+            "external_user_id": str(chat_id),
+            "media_id": file_id,
+            "file_unique_id": file_unique_id,
+            "mime_type": mime_type,
+            "duration_seconds": duration_seconds,
+            "media_url": stored_media_url,
+            "storage_bucket": stored_media.bucket if stored_media else None,
+            "storage_object_path": stored_media.object_path if stored_media else None,
+            "storage_file_size": stored_media.file_size if stored_media else None,
+            "transcription_provider": transcription.provider,
+            "transcription_confidence": transcription.confidence,
+        },
+        media_id=file_id,
+        media_url=stored_media_url,
+        transcript_text=transcription.text,
         record_response=record_response,
     )
 

@@ -12,8 +12,10 @@ from eten_shared.domain.batch_schedules import (
     cancel_pending_next_batch_schedules,
 )
 from eten_shared.domain.assignments import (
+    automatic_assignment_enabled,
     complete_current_batch_if_needed,
     create_assignment_for_qa_item,
+    get_incomplete_assignment,
     get_or_create_participant_session,
     record_participant_event,
     try_complete_assignment,
@@ -239,6 +241,8 @@ def _serialize_dashboard_question(
         "chapter": chapter_number,
         "chapter_label": f"Chapter {chapter_number}" if chapter_number else None,
         "passage_reference": qa_item.passage_reference,
+        "passage_text": assignment.passage_text or qa_item.passage_text,
+        "passage_verse_numbers": list(assignment.passage_verse_numbers or []),
         "question": qa_item.question_text,
         "question_type": (qa_item.question_type or "open").strip().lower(),
         "mcq_choices": list(qa_item.mcq_choices or []),
@@ -490,19 +494,33 @@ def _assign_dashboard_next_batch(db, participant, *, source, reminder=None):
     participant_session.current_batch_id = None
     participant_session.state = SessionState.IDLE.value
 
-    qa_item = _select_next_dashboard_qa_item(db, participant)
-    if not qa_item:
-        raise DashboardAnswerError("No eligible question is available for a new batch")
+    assignment = get_incomplete_assignment(db, participant)
+    if assignment:
+        qa_item = db.get(QAItem, assignment.qa_item_id)
+        if not qa_item:
+            raise DashboardAnswerError("Queued question is no longer available")
+        participant_session.current_assignment_id = assignment.id
+        participant_session.current_batch_id = assignment.batch_id
+        participant_session.state = SessionState.AWAITING_RESPONSE.value
+        participant_session.last_prompt_sent_at = utc_now()
+        newly_assigned = False
+    else:
+        if not automatic_assignment_enabled():
+            raise DashboardAnswerError("Automatic assignment is currently disabled")
+        qa_item = _select_next_dashboard_qa_item(db, participant)
+        if not qa_item:
+            raise DashboardAnswerError("No eligible question is available for a new batch")
 
-    prompt = create_assignment_for_qa_item(
-        db,
-        participant,
-        participant_session,
-        qa_item,
-        completed_batch_size=0,
-        assignment_source=source,
-    )
-    assignment = db.get(Assignment, prompt.assignment_id)
+        prompt = create_assignment_for_qa_item(
+            db,
+            participant,
+            participant_session,
+            qa_item,
+            completed_batch_size=0,
+            assignment_source=source,
+        )
+        assignment = db.get(Assignment, prompt.assignment_id)
+        newly_assigned = True
     if reminder:
         reminder.status = ReminderStatus.SENT.value
         reminder.sent_at = utc_now()
@@ -518,7 +536,7 @@ def _assign_dashboard_next_batch(db, participant, *, source, reminder=None):
                 "batch_id": assignment.batch_id,
                 "reminder_id": reminder.id if reminder else None,
                 "delivery": source,
-                "assigned": True,
+                "assigned": newly_assigned,
             },
         )
     )
@@ -1122,8 +1140,36 @@ def submit_dashboard_answer(db, participant_id: str, assignment_id: str, respons
         )
     else:
         participant_session.current_batch_id = assignment.batch_id
-        next_qa_item = _select_next_dashboard_qa_item(db, participant)
-        if next_qa_item:
+        next_assignment = db.scalar(
+            select(Assignment)
+            .where(
+                Assignment.participant_id == participant.id,
+                Assignment.batch_id == participant_session.current_batch_id,
+                Assignment.status == AssignmentStatus.ASSIGNED.value,
+            )
+            .order_by(Assignment.assigned_at, Assignment.id)
+        )
+        if next_assignment:
+            next_qa_item = db.get(QAItem, next_assignment.qa_item_id)
+            if next_qa_item:
+                participant_session.current_assignment_id = next_assignment.id
+                participant_session.state = SessionState.AWAITING_RESPONSE.value
+                participant_session.last_prompt_sent_at = utc_now()
+                next_assignment_id = next_assignment.id
+                next_question = _serialize_dashboard_question(
+                    db,
+                    participant,
+                    next_assignment,
+                    next_qa_item,
+                    question_index=completed_batch_size,
+                )
+        else:
+            next_qa_item = (
+                _select_next_dashboard_qa_item(db, participant)
+                if automatic_assignment_enabled()
+                else None
+            )
+        if not next_assignment and next_qa_item:
             next_prompt = create_assignment_for_qa_item(
                 db,
                 participant,
@@ -1142,7 +1188,7 @@ def submit_dashboard_answer(db, participant_id: str, assignment_id: str, respons
                     next_qa_item,
                     question_index=completed_batch_size,
                 )
-        else:
+        elif not next_assignment:
             participant_session.state = SessionState.IDLE.value
 
     _enqueue_outbox_notification(

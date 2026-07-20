@@ -1,0 +1,5 @@
+### [qwen1.7b] pass 1: answer cells with no scores yet
+  -> grammar20_omission  chapters: 4 5 6 7 8
+== [qwen1.7b] luke4 mixed/grammar20_omission (N=22): 10% 20%
++ python3 evaluation/scripts/answer_score_subset_in_place.py 22 --allow-fewer --chapters 4 --artifact-root-template evaluation/outputs/luke{chapter}/1.7b/mixed/grammar20_omission --methods 10% 20% --answer-provider ollama --answer-model qwen3:1.7b --ollama-no-think --answer-verse-window 2 --summary-json evaluation/outputs/reports/mixed_runs_qwen1.7b_grammar20_omission_luke4.json
+run subset: Luke 4 evaluation/outputs/luke4/1.7b/mixed/grammar20_omission/10%
