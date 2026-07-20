@@ -20,6 +20,7 @@ from app.providers.telegram.config import (
     telegram_bot_token,
 )
 from app.engagement.dashboard_nudge import dashboard_link_reply, is_dashboard_command
+from app.engagement.outbox import start_outbox_poller
 from app.engagement.reminders import start_reminder_scheduler
 from app.messaging.workflow import (
     record_telegram_choice_answer,
@@ -267,6 +268,10 @@ def build_application():
 
 def main():
     start_reminder_scheduler()
+    # Drain cross-surface pushes (new assignments, dashboard-answer sync) on the
+    # Telegram deployment too — otherwise the outbox only runs in the WhatsApp
+    # Flask app and Telegram participants never receive proactive questions.
+    start_outbox_poller()
     build_application().run_polling()
 
 

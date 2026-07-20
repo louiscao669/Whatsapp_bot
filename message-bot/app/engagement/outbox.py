@@ -34,6 +34,11 @@ from app.providers.delivery import (
 from app.providers.whatsapp.schedule_policy import is_within_customer_service_window
 
 DASHBOARD_ANSWER_SYNCED_TYPE = "dashboard_answer_synced"
+NEW_ASSIGNMENT_ASSIGNED_TYPE = "new_assignment_assigned"
+KNOWN_NOTIFICATION_TYPES = (
+    DASHBOARD_ANSWER_SYNCED_TYPE,
+    NEW_ASSIGNMENT_ASSIGNED_TYPE,
+)
 
 _outbox_started = False
 _outbox_lock = threading.Lock()
@@ -89,6 +94,23 @@ def _dashboard_synced_message(payload):
     return "Your answer was recorded via the dashboard."
 
 
+def _new_assignment_message(payload):
+    count = payload.get("assigned_count")
+    if isinstance(count, int) and count > 1:
+        return f"You have {count} new questions to answer:"
+    return "You have a new question to answer:"
+
+
+def _lead_message(notification_type, payload):
+    """The text sent ahead of the delivered question, per notification type."""
+
+    if notification_type == DASHBOARD_ANSWER_SYNCED_TYPE:
+        return _dashboard_synced_message(payload)
+    if notification_type == NEW_ASSIGNMENT_ASSIGNED_TYPE:
+        return _new_assignment_message(payload)
+    return None
+
+
 def process_pending_outbox(limit=50):
     """Send pending outbox notifications. Returns the number processed."""
 
@@ -115,7 +137,7 @@ def process_pending_outbox(limit=50):
                     _cancel(notification, "Participant opted out")
                     continue
 
-                if notification.notification_type != DASHBOARD_ANSWER_SYNCED_TYPE:
+                if notification.notification_type not in KNOWN_NOTIFICATION_TYPES:
                     _cancel(
                         notification,
                         f"Unknown notification type {notification.notification_type!r}",
@@ -132,17 +154,28 @@ def process_pending_outbox(limit=50):
                     )
                     continue
 
+                open_assignment = _current_open_assignment(
+                    db, participant, participant_session
+                )
+                # A new-assignment push only makes sense if there is still a
+                # question to deliver (the participant may have already answered
+                # it on another surface before the poller ran).
+                if (
+                    notification.notification_type == NEW_ASSIGNMENT_ASSIGNED_TYPE
+                    and open_assignment is None
+                ):
+                    _cancel(notification, "No open assignment to deliver")
+                    continue
+
                 payload = notification.payload or {}
                 try:
-                    send_text_message(
-                        db, participant, _dashboard_synced_message(payload)
+                    lead_message = _lead_message(
+                        notification.notification_type, payload
                     )
-                    # Keep the chat surface in step: deliver the participant's
-                    # currently open question (created by the dashboard flow),
-                    # if any, so they can continue on either surface.
-                    open_assignment = _current_open_assignment(
-                        db, participant, participant_session
-                    )
+                    if lead_message:
+                        send_text_message(db, participant, lead_message)
+                    # Deliver the participant's currently open question so they can
+                    # answer on either surface without messaging the bot first.
                     delivered_assignment_id = None
                     if open_assignment:
                         qa_item = open_assignment.qa_item or db.get(

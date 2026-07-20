@@ -8,6 +8,8 @@ from eten_shared.domain.qa_eligibility import qa_item_is_assignable
 from eten_shared.models import (
     Assignment,
     AssignmentStatus,
+    OutboxNotification,
+    OutboxStatus,
     Participant,
     ParticipantSession,
     PassageTranslation,
@@ -22,6 +24,44 @@ from app.services.system_languages_service import canonical_language_code
 
 class ParticipantAssignmentError(Exception):
     pass
+
+
+# Cross-surface push: enqueued here, drained by the message-bot outbox poller,
+# which delivers the freshly assigned question over the participant's messenger
+# (Telegram/WhatsApp) so they don't have to message the bot first.
+NEW_ASSIGNMENT_ASSIGNED_NOTIFICATION = "new_assignment_assigned"
+
+
+def _enqueue_new_assignment_push(db, participant, assignment, assigned_count):
+    """Queue a messenger push for a newly assigned (now-current) question.
+
+    Supersedes any still-pending push of the same type for this participant so
+    repeated admin assignments collapse into a single delivery.
+    """
+
+    stale = db.scalars(
+        select(OutboxNotification).where(
+            OutboxNotification.participant_id == participant.id,
+            OutboxNotification.notification_type == NEW_ASSIGNMENT_ASSIGNED_NOTIFICATION,
+            OutboxNotification.status == OutboxStatus.PENDING.value,
+        )
+    ).all()
+    for notification in stale:
+        notification.status = OutboxStatus.SUPERSEDED.value
+        notification.failure_reason = "Superseded by a newer assignment"
+
+    db.add(
+        OutboxNotification(
+            participant_id=participant.id,
+            notification_type=NEW_ASSIGNMENT_ASSIGNED_NOTIFICATION,
+            payload={
+                "assignment_id": assignment.id,
+                "batch_id": assignment.batch_id,
+                "assigned_count": assigned_count,
+            },
+            status=OutboxStatus.PENDING.value,
+        )
+    )
 
 
 _REFERENCE = re.compile(r"^.+?\s+(?P<chapter>\d+):(?P<verse>\d+)", re.IGNORECASE)
@@ -211,5 +251,8 @@ def assign_questions_with_passages(db, participant_id, selections):
         participant_session.current_batch_id = assignments[0].batch_id
         participant_session.state = SessionState.AWAITING_RESPONSE.value
         participant_session.last_prompt_sent_at = utc_now()
+        # These questions are immediately current, so push the first one to the
+        # participant's messenger instead of waiting for them to say hello.
+        _enqueue_new_assignment_push(db, participant, assignments[0], len(assignments))
     db.flush()
     return assignments

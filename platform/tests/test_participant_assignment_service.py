@@ -10,9 +10,15 @@ from app.services.participant_assignment_service import (
     parse_qa_chapter_verse,
     qa_reference_sort_key,
 )
+from app.services.participant_assignment_service import (
+    NEW_ASSIGNMENT_ASSIGNED_NOTIFICATION,
+)
 from eten_shared.models import (
     Assignment,
+    AssignmentStatus,
     Base,
+    OutboxNotification,
+    OutboxStatus,
     Participant,
     ParticipantSession,
     PassageTranslation,
@@ -135,6 +141,134 @@ class ParticipantAssignmentServiceTests(unittest.TestCase):
 
             stored = db.scalar(select(Assignment).where(Assignment.id == assignment.id))
             self.assertIsNotNone(stored)
+
+    def _seed_one_translated_question(self, db, participant):
+        qa_item = QAItem(
+            passage_id="luke-2-4",
+            passage_reference="Luke 2:4",
+            question_text="Question?",
+            expected_answer="Answer",
+        )
+        translation = PassageTranslation(language="cmn", name="Method X")
+        db.add_all([qa_item, translation])
+        db.flush()
+        db.add_all(
+            PassageVerse(
+                translation_id=translation.id,
+                chapter_number=2,
+                verse_number=str(number),
+                position=number,
+                text=f"Verse {number}",
+            )
+            for number in range(1, 8)
+        )
+        db.flush()
+        return qa_item, translation
+
+    def test_enqueues_outbox_push_when_new_batch_becomes_current(self):
+        with Session(self.engine) as db:
+            participant = Participant(target_language="cmn", display_name="Tester")
+            db.add(participant)
+            db.flush()
+            qa_item, translation = self._seed_one_translated_question(db, participant)
+
+            assignments = assign_questions_with_passages(
+                db,
+                participant.id,
+                [{"qa_item_id": qa_item.id, "translation_id": translation.id}],
+            )
+
+            pending = db.scalars(
+                select(OutboxNotification).where(
+                    OutboxNotification.participant_id == participant.id,
+                    OutboxNotification.status == OutboxStatus.PENDING.value,
+                )
+            ).all()
+            self.assertEqual(len(pending), 1)
+            self.assertEqual(
+                pending[0].notification_type, NEW_ASSIGNMENT_ASSIGNED_NOTIFICATION
+            )
+            self.assertEqual(pending[0].payload["assignment_id"], assignments[0].id)
+            self.assertEqual(pending[0].payload["assigned_count"], 1)
+
+    def test_second_assignment_supersedes_stale_push(self):
+        with Session(self.engine) as db:
+            participant = Participant(target_language="cmn", display_name="Tester")
+            db.add(participant)
+            db.flush()
+            qa_item, translation = self._seed_one_translated_question(db, participant)
+            extra = QAItem(
+                passage_id="luke-2-5",
+                passage_reference="Luke 2:5",
+                question_text="Question 2?",
+                expected_answer="Answer 2",
+            )
+            db.add(extra)
+            db.flush()
+
+            first = assign_questions_with_passages(
+                db,
+                participant.id,
+                [{"qa_item_id": qa_item.id, "translation_id": translation.id}],
+            )
+            # Complete the first so the next assignment becomes current again and
+            # re-enqueues; the still-pending first push should be superseded so
+            # only one pending row remains.
+            first[0].status = AssignmentStatus.COMPLETED.value
+            db.flush()
+            assign_questions_with_passages(
+                db,
+                participant.id,
+                [{"qa_item_id": extra.id, "translation_id": translation.id}],
+            )
+
+            rows = db.scalars(
+                select(OutboxNotification).where(
+                    OutboxNotification.participant_id == participant.id
+                )
+            ).all()
+            pending = [r for r in rows if r.status == OutboxStatus.PENDING.value]
+            superseded = [r for r in rows if r.status == OutboxStatus.SUPERSEDED.value]
+            self.assertEqual(len(pending), 1)
+            self.assertEqual(len(superseded), 1)
+
+    def test_no_push_when_new_batch_is_queued_behind_open_assignment(self):
+        with Session(self.engine) as db:
+            participant = Participant(
+                target_language="cmn", display_name="Tester", preferred_batch_size=1
+            )
+            db.add(participant)
+            db.flush()
+            qa_item, translation = self._seed_one_translated_question(db, participant)
+            extra = QAItem(
+                passage_id="luke-2-5",
+                passage_reference="Luke 2:5",
+                question_text="Question 2?",
+                expected_answer="Answer 2",
+            )
+            db.add(extra)
+            db.flush()
+
+            # First assignment becomes current (1 push). It stays open (never
+            # completed), so a second assignment queues behind it: no new push.
+            assign_questions_with_passages(
+                db,
+                participant.id,
+                [{"qa_item_id": qa_item.id, "translation_id": translation.id}],
+            )
+            assign_questions_with_passages(
+                db,
+                participant.id,
+                [{"qa_item_id": extra.id, "translation_id": translation.id}],
+            )
+
+            pending = db.scalars(
+                select(OutboxNotification).where(
+                    OutboxNotification.participant_id == participant.id,
+                    OutboxNotification.status == OutboxStatus.PENDING.value,
+                )
+            ).all()
+            self.assertEqual(len(pending), 1)
 
 
 if __name__ == "__main__":

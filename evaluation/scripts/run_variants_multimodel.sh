@@ -133,6 +133,7 @@ print(len(recs))")
       # shellcheck disable=SC2086
       run python3 evaluation/scripts/answer_score_subset_in_place.py "$N" \
           --chapters "$CH" \
+          --allow-fewer \
           --artifact-root-template "evaluation/outputs/luke{chapter}/${TIER}/${DEFECT}" \
           --methods $LEVELS \
           --answer-provider ollama \
