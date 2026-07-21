@@ -516,6 +516,7 @@ class ExperimentPassage(Base):
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
     chapter: Mapped[int] = mapped_column(Integer, nullable=False)
     condition: Mapped[str] = mapped_column(String(64), nullable=False)
+    name: Mapped[Optional[str]] = mapped_column(String(128))
     language: Mapped[str] = mapped_column(String(32), nullable=False)
     passage_reference: Mapped[Optional[str]] = mapped_column(String(255))
     passage_text: Mapped[str] = mapped_column(Text, nullable=False)

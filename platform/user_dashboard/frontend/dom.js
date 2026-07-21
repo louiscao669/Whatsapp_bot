@@ -45,20 +45,67 @@ export function showModalContent(title, children = []) {
   document.querySelector("#actionModalClose").focus();
 }
 
+export function showConfirm({
+  title = "Please confirm",
+  message,
+  confirmLabel = "Confirm",
+  cancelLabel = "Cancel",
+  onConfirm,
+  onCancel
+} = {}) {
+  const modal = document.querySelector("#actionModal");
+  const closeBtn = document.querySelector("#actionModalClose");
+  document.querySelector("#actionModalTitle").textContent = title;
+
+  const close = () => {
+    modal.hidden = true;
+    if (closeBtn) closeBtn.hidden = false;
+  };
+
+  const confirmBtn = el("button", {
+    type: "button",
+    className: "modal-btn modal-btn-confirm",
+    text: confirmLabel,
+    onclick: () => {
+      close();
+      if (typeof onConfirm === "function") onConfirm();
+    }
+  });
+  const cancelBtn = el("button", {
+    type: "button",
+    className: "modal-btn modal-btn-cancel",
+    text: cancelLabel,
+    onclick: () => {
+      close();
+      if (typeof onCancel === "function") onCancel();
+    }
+  });
+
+  document.querySelector("#actionModalMessage").replaceChildren(
+    el("p", { text: message }),
+    el("div", { className: "modal-actions" }, [cancelBtn, confirmBtn])
+  );
+  if (closeBtn) closeBtn.hidden = true;
+  modal.hidden = false;
+  confirmBtn.focus();
+}
+
 export function bindModal() {
   const modal = document.querySelector("#actionModal");
   const close = document.querySelector("#actionModalClose");
-  close.addEventListener("click", () => {
+  const dismiss = () => {
     modal.hidden = true;
-  });
+    if (close) close.hidden = false;
+  };
+  close.addEventListener("click", dismiss);
   modal.addEventListener("click", (event) => {
     if (event.target === modal) {
-      modal.hidden = true;
+      dismiss();
     }
   });
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape" && !modal.hidden) {
-      modal.hidden = true;
+      dismiss();
     }
   });
 }

@@ -8,19 +8,6 @@ export function renderShop(payload, state, actions) {
   const decorations = items.filter((item) => item.item_type === "cosmetic");
 
   return el("section", { className: "store-page" }, [
-    el("div", { className: "shop-hero" }, [
-      el("div", { className: "shop-scene", "aria-hidden": "true" }, [
-        merch("merch1", "one"),
-        merch("merch2", "two"),
-        el("img", {
-          className: "shop-building",
-          src: "/user_dashboard/assets/shop.svg",
-          alt: ""
-        }),
-        merch("merch3", "three"),
-        merch("merch4", "four")
-      ])
-    ]),
     el("section", { className: "store-section" }, [
       el("h2", { className: "store-section-label", text: "Tools" }),
       ...toolRows(tools, payload, actions)
@@ -31,14 +18,6 @@ export function renderShop(payload, state, actions) {
     ]),
     el("p", { id: "shopStatus", className: "status-line", text: state.shopMessage || "" })
   ]);
-}
-
-function merch(name, position) {
-  return el("img", {
-    className: `shop-merch shop-merch-${position}`,
-    src: `/user_dashboard/assets/${name}.svg`,
-    alt: ""
-  });
 }
 
 function toolRows(items, payload, actions) {

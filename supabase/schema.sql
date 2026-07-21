@@ -168,6 +168,7 @@ create table if not exists experiment_passages (
     id text primary key default gen_random_uuid()::text,
     chapter integer not null,
     condition text not null,
+    name text,
     language text not null,
     passage_reference text,
     passage_text text not null,

@@ -12,12 +12,17 @@ create table if not exists experiment_passages (
     id text primary key default gen_random_uuid()::text,
     chapter integer not null,
     condition text not null,
+    name text,
     language text not null,
     passage_reference text,
     passage_text text not null,
     created_at timestamptz not null default now(),
     constraint uq_experiment_passage_chapter_condition_language unique (chapter, condition, language)
 );
+
+-- Add the human-readable name column to an already-created table (no-op on fresh create).
+alter table experiment_passages
+    add column if not exists name text;
 
 -- 2. Plan cells: participant x chapter -> condition + the variant passage to show.
 create table if not exists experiment_plan_cells (

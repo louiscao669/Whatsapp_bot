@@ -42,15 +42,15 @@ use_message_bot()
 
 from eten_shared.models import ExperimentPassage, QAItem  # noqa: E402
 
-# (condition key -> passage_id-free label, relative dir under the answer-model folder)
+# (condition key, relative dir under the answer-model folder, human-readable name)
 CONDITIONS = [
-    ("clean", "omission/0%"),
-    ("omission10", "omission/10%"),
-    ("omission20", "omission/20%"),
-    ("omission30", "omission/30%"),
-    ("mistranslation20", "mistranslation/20%"),
-    ("grammar30", "grammar/30%"),
-    ("wbw", "google_word_by_word"),
+    ("clean", "omission/0%", "Clean anchor"),
+    ("omission10", "omission/10%", "Omission 10%"),
+    ("omission20", "omission/20%", "Omission 20%"),
+    ("omission30", "omission/30%", "Omission 30%"),
+    ("mistranslation20", "mistranslation/20%", "Mistranslation 20%"),
+    ("grammar30", "grammar/30%", "Grammar 30%"),
+    ("wbw", "google_word_by_word", "Word-by-word (Google)"),
 ]
 CHAPTERS = range(1, 9)
 ANSWER_MODELS = ["1.7b", "1.5b", "llama 1b", "llama 3b"]  # search order; target files identical
@@ -181,12 +181,12 @@ def build_plan(eval_root: Path, mcq_fraction: float, seed: int):
             n_mcq += qtype == "mcq"
             n_open += qtype == "open"
         pcount = 0
-        for cond, rel in CONDITIONS:
+        for cond, rel, name in CONDITIONS:
             text, ref = load_passage(eval_root, ch, rel)
             if text is None:
                 summary.append(f"  ! Luke {ch} {cond}: MISSING passage")
                 continue
-            passage_rows.append(dict(chapter=ch, condition=cond, language=LANGUAGE,
+            passage_rows.append(dict(chapter=ch, condition=cond, name=name, language=LANGUAGE,
                                      passage_reference=ref, passage_text=text))
             pcount += 1
         summary.append(f"  Luke {ch}: {len(types):2d} QA ({n_mcq} mcq / {n_open} open), {pcount} passages")

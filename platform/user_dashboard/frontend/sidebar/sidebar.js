@@ -1,4 +1,6 @@
-import { el } from "../dom.js";
+import { el, showConfirm } from "../dom.js";
+
+const PROFILE_PHOTO_CHANGE_COST = 5;
 
 export const pages = [
   { id: "journey", label: "Journey", iconUrl: "/user_dashboard/assets/journey.svg" },
@@ -36,7 +38,19 @@ export function renderSidebar({ payload, activePage, onNavigate, onPhotoSelected
       event.target.value = "";
     }
   });
-  const photoControl = el("label", { className: "profile-photo-control", for: "profilePhotoInput" }, [
+  const photoControl = el("button", {
+    type: "button",
+    className: "profile-photo-control",
+    onclick: () => {
+      showConfirm({
+        title: "Change photo",
+        message: `Changing photo costs ${PROFILE_PHOTO_CHANGE_COST} diamonds.`,
+        confirmLabel: "Confirm",
+        cancelLabel: "Cancel",
+        onConfirm: () => photoInput.click()
+      });
+    }
+  }, [
     photoWrap,
     el("span", { text: "Change photo" }),
     photoInput
