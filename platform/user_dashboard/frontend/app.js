@@ -440,6 +440,35 @@ function showChestRewardModal(amount) {
   ]);
 }
 
+// --- Engaged dwell-time heartbeat -------------------------------------------
+// The dashboard is the only surface where we can observe time-on-surface, so
+// we accumulate engaged seconds server-side: a heartbeat every 15s while the
+// tab is visible. The backend caps gaps, so a backgrounded/closed tab does not
+// inflate dwell. One session_key per page load.
+const HEARTBEAT_INTERVAL_MS = 15000;
+const dashboardSessionKey = `sess-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+
+function sendHeartbeat() {
+  if (!state.participantId || document.visibilityState !== "visible") {
+    return;
+  }
+  postRawJson(state.participantId, "/heartbeat", {
+    session_key: dashboardSessionKey,
+    active: true
+  }).catch(() => {});
+}
+
+function startHeartbeat() {
+  if (!state.participantId) {
+    return;
+  }
+  sendHeartbeat();
+  window.setInterval(sendHeartbeat, HEARTBEAT_INTERVAL_MS);
+  // Beat immediately when the participant returns to the tab so short visits
+  // between the interval ticks are still recorded.
+  document.addEventListener("visibilitychange", sendHeartbeat);
+}
+
 async function boot() {
   bindModal();
   if (!state.participantId) {
@@ -461,6 +490,7 @@ async function boot() {
     showModal(`Could not load dashboard: ${error.message}`, "Dashboard error");
   }
   render();
+  startHeartbeat();
 }
 
 boot();

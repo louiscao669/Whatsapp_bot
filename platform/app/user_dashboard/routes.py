@@ -22,6 +22,7 @@ from app.user_dashboard.service import (
     claim_batch_chest_reward,
     load_profile_photo,
     mark_dashboard_question_viewed,
+    record_dashboard_heartbeat,
     purchase_store_item,
     set_cosmetic_equipped,
     set_user_streak_pause,
@@ -375,6 +376,33 @@ def user_dashboard_question_viewed(participant_id):
         message = str(exc)
         status = 404 if message in {"Participant not found", "Assignment not found"} else 400
         return jsonify({"error": "question_viewed_error", "message": message}), status
+
+    return jsonify({"ok": True, **payload})
+
+
+@user_dashboard_blueprint.route(
+    "/user-dashboard/api/<participant_id>/heartbeat",
+    methods=["POST", "OPTIONS"],
+)
+def user_dashboard_heartbeat(participant_id):
+    if request.method == "OPTIONS":
+        return _cors_response(jsonify({"ok": True}))
+
+    body = request.get_json(silent=True) or {}
+    session_factory = get_session_factory()
+    try:
+        with session_factory() as db:
+            payload = record_dashboard_heartbeat(
+                db,
+                participant_id,
+                body.get("session_key"),
+                active=bool(body.get("active", True)),
+            )
+            db.commit()
+    except DashboardAnswerError as exc:
+        message = str(exc)
+        status = 404 if message == "Participant not found" else 400
+        return jsonify({"error": "heartbeat_error", "message": message}), status
 
     return jsonify({"ok": True, **payload})
 

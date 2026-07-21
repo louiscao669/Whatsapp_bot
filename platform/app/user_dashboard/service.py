@@ -34,6 +34,7 @@ from eten_shared.media_storage import (
 from eten_shared.models import (
     Assignment,
     AssignmentStatus,
+    DashboardEngagementSession,
     OutboxNotification,
     OutboxStatus,
     Participant,
@@ -521,6 +522,11 @@ def _assign_dashboard_next_batch(db, participant, *, source, reminder=None):
         )
         assignment = db.get(Assignment, prompt.assignment_id)
         newly_assigned = True
+    # The question is now available on the dashboard. Stamp delivery here —
+    # this is EARLIER than started_at (set when the participant opens the
+    # question card, see mark_dashboard_question_viewed), so the gap
+    # delivered_at -> started_at measures dashboard wait time.
+    assignment.delivered_at = assignment.delivered_at or utc_now()
     if reminder:
         reminder.status = ReminderStatus.SENT.value
         reminder.sent_at = utc_now()
@@ -956,7 +962,12 @@ def mark_dashboard_question_viewed(db, participant_id: str, assignment_id: str):
         assignment.status != AssignmentStatus.COMPLETED.value
         and assignment.started_at is None
     ):
-        assignment.started_at = utc_now()
+        now = utc_now()
+        # Fallback: if the question was never marked delivered (e.g. it was
+        # created and opened without going through the batch-delivery path),
+        # treat this first render as the delivery moment too.
+        assignment.delivered_at = assignment.delivered_at or now
+        assignment.started_at = now
         started_now = True
 
     record_participant_event(
@@ -976,6 +987,72 @@ def mark_dashboard_question_viewed(db, participant_id: str, assignment_id: str):
         "assignment_id": assignment.id,
         "started_at": _iso_datetime(assignment.started_at),
         "started_clock": started_now,
+    }
+
+
+# Client posts a heartbeat on this cadence while the dashboard tab is visible.
+DASHBOARD_HEARTBEAT_INTERVAL_SECONDS = 15
+# A gap larger than this means the tab was backgrounded/closed between beats, so
+# the intervening time is NOT counted as engaged dwell (prevents inflation).
+DASHBOARD_HEARTBEAT_MAX_GAP_SECONDS = 3 * DASHBOARD_HEARTBEAT_INTERVAL_SECONDS
+
+
+def _as_utc(value):
+    if value is None:
+        return None
+    if value.tzinfo is None:
+        return value.replace(tzinfo=timezone.utc)
+    return value
+
+
+def record_dashboard_heartbeat(db, participant_id: str, session_key: str, *, active: bool = True):
+    """Accumulate engaged dwell time for one dashboard browser session.
+
+    Idempotent-ish upsert keyed by (participant_id, session_key). Each call
+    advances ``active_seconds`` by the elapsed time since the previous
+    heartbeat, but only when the page reported itself active and the gap is
+    within ``DASHBOARD_HEARTBEAT_MAX_GAP_SECONDS`` (so an idle/hidden tab that
+    resumes does not book the away-time as engagement). Dashboard-only; there is
+    no messenger equivalent.
+    """
+
+    session_key = (session_key or "").strip()
+    if not session_key:
+        raise DashboardAnswerError("Session key is required")
+
+    participant = _participant_by_id(db, participant_id)
+    if not participant:
+        raise DashboardAnswerError("Participant not found")
+
+    now = utc_now()
+    session = db.scalars(
+        select(DashboardEngagementSession).where(
+            DashboardEngagementSession.participant_id == participant.id,
+            DashboardEngagementSession.session_key == session_key,
+        )
+    ).first()
+
+    if session is None:
+        session = DashboardEngagementSession(
+            participant_id=participant.id,
+            session_key=session_key,
+            started_at=now,
+            last_heartbeat_at=now,
+            active_seconds=0,
+            heartbeat_count=1,
+        )
+        db.add(session)
+    else:
+        delta = (now - _as_utc(session.last_heartbeat_at)).total_seconds()
+        if active and 0 < delta <= DASHBOARD_HEARTBEAT_MAX_GAP_SECONDS:
+            session.active_seconds = int(session.active_seconds + round(delta))
+        session.last_heartbeat_at = now
+        session.heartbeat_count = (session.heartbeat_count or 0) + 1
+
+    return {
+        "session_key": session_key,
+        "active_seconds": session.active_seconds,
+        "heartbeat_count": session.heartbeat_count,
     }
 
 

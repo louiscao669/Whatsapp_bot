@@ -462,10 +462,21 @@ class Assignment(Base):
     assigned_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=utc_now, nullable=False
     )
+    # When the question was actually presented / made available to the
+    # participant. On the messenger this is the push (== started_at, since a
+    # bot gets no "opened" signal); on the dashboard this is stamped when the
+    # batch is delivered, which is EARLIER than started_at (the card being
+    # opened). Lets analysis separate wait time (delivered->started) from
+    # engaged time (started->completed) and gives a uniform delivered->completed
+    # per-item latency across surfaces.
+    delivered_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
     started_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
     completed_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
     due_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
     attempt_count: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    experiment_cell_id: Mapped[Optional[str]] = mapped_column(
+        ForeignKey("experiment_plan_cells.id", ondelete="SET NULL"), index=True
+    )
 
     participant: Mapped["Participant"] = relationship(back_populates="assignments")
     qa_item: Mapped["QAItem"] = relationship(back_populates="assignments")
@@ -477,6 +488,94 @@ class Assignment(Base):
         back_populates="assignment",
         cascade="all, delete-orphan",
         passive_deletes=True,
+    )
+    experiment_cell: Mapped[Optional["ExperimentPlanCell"]] = relationship(
+        back_populates="assignments"
+    )
+
+
+class ExperimentPassage(Base):
+    """One variant passage of a designed experiment: the (chapter x condition)
+    text a participant reads. Shared across participants (56 rows for the pilot:
+    7 conditions x 8 chapters). The QA is imported once per chapter as QAItems;
+    only the passage varies per condition, so it lives here rather than on the
+    QAItem. The selector copies ``passage_text`` onto ``Assignment.passage_text``
+    at assignment time. See DESIGNED_ASSIGNMENT_EXTENSION_2026-07-20.md.
+    """
+
+    __tablename__ = "experiment_passages"
+    __table_args__ = (
+        UniqueConstraint(
+            "chapter",
+            "condition",
+            "language",
+            name="uq_experiment_passage_chapter_condition_language",
+        ),
+    )
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    chapter: Mapped[int] = mapped_column(Integer, nullable=False)
+    condition: Mapped[str] = mapped_column(String(64), nullable=False)
+    language: Mapped[str] = mapped_column(String(32), nullable=False)
+    passage_reference: Mapped[Optional[str]] = mapped_column(String(255))
+    passage_text: Mapped[str] = mapped_column(Text, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utc_now, nullable=False
+    )
+
+    plan_cells: Mapped[List["ExperimentPlanCell"]] = relationship(
+        back_populates="experiment_passage"
+    )
+
+
+class ExperimentPlanCell(Base):
+    """One Latin-square cell of a designed experiment: a participant's assigned
+    condition for a single chapter. ``chapter`` selects the per-chapter QAItem
+    pool; ``experiment_passage_id`` points at the variant passage the
+    participant reads for this condition.
+
+    Written once at provisioning by the plan builder; ``status`` is the only
+    field the selector mutates (pending -> active -> done). Each answered
+    Assignment points back here via ``Assignment.experiment_cell_id`` so the
+    response export can bucket answers by condition. Null FK = a non-experiment
+    (production coverage-path) assignment. See
+    DESIGNED_ASSIGNMENT_EXTENSION_2026-07-20.md.
+    """
+
+    __tablename__ = "experiment_plan_cells"
+    __table_args__ = (
+        UniqueConstraint(
+            "participant_id",
+            "chapter",
+            name="uq_experiment_plan_participant_chapter",
+        ),
+        UniqueConstraint(
+            "participant_id",
+            "sequence_index",
+            name="uq_experiment_plan_participant_sequence",
+        ),
+    )
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    participant_id: Mapped[str] = mapped_column(
+        ForeignKey("participants.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    chapter: Mapped[int] = mapped_column(Integer, nullable=False)
+    condition: Mapped[str] = mapped_column(String(64), nullable=False)
+    experiment_passage_id: Mapped[Optional[str]] = mapped_column(
+        ForeignKey("experiment_passages.id", ondelete="SET NULL"), index=True
+    )
+    sequence_index: Mapped[int] = mapped_column(Integer, nullable=False)
+    status: Mapped[str] = mapped_column(String(16), default="pending", nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utc_now, nullable=False
+    )
+
+    experiment_passage: Mapped[Optional["ExperimentPassage"]] = relationship(
+        back_populates="plan_cells"
+    )
+    assignments: Mapped[List["Assignment"]] = relationship(
+        back_populates="experiment_cell"
     )
 
 
@@ -545,6 +644,48 @@ class ParticipantEvent(Base):
     )
 
     participant: Mapped["Participant"] = relationship(back_populates="events")
+
+
+class DashboardEngagementSession(Base):
+    """Accumulated engaged (dwell) time on the participant dashboard.
+
+    The dashboard front-end posts a heartbeat every ~15s while the page is
+    visible. Each heartbeat advances ``active_seconds`` by the elapsed time
+    since the previous heartbeat, capped so a backgrounded/closed tab cannot
+    inflate dwell. One row per browser session (``session_key``). This is a
+    dashboard-only metric: the messenger surfaces (Telegram/WhatsApp) expose no
+    presence or dwell signal to a bot, so time-on-surface cannot be measured
+    there and must not be compared cross-surface (use per-item latency and
+    return-latency-after-nudge for the symmetric comparison instead).
+    """
+
+    __tablename__ = "dashboard_engagement_sessions"
+    __table_args__ = (
+        UniqueConstraint(
+            "participant_id",
+            "session_key",
+            name="uq_dashboard_engagement_participant_session",
+        ),
+    )
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    participant_id: Mapped[str] = mapped_column(
+        ForeignKey("participants.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    session_key: Mapped[str] = mapped_column(String(64), nullable=False)
+    started_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utc_now, nullable=False
+    )
+    last_heartbeat_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utc_now, nullable=False
+    )
+    active_seconds: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    heartbeat_count: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utc_now, nullable=False
+    )
+
+    participant: Mapped["Participant"] = relationship()
 
 
 class OutboxNotification(Base):

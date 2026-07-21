@@ -164,6 +164,30 @@ create table if not exists system_languages (
     updated_at timestamptz not null default now()
 );
 
+create table if not exists experiment_passages (
+    id text primary key default gen_random_uuid()::text,
+    chapter integer not null,
+    condition text not null,
+    language text not null,
+    passage_reference text,
+    passage_text text not null,
+    created_at timestamptz not null default now(),
+    constraint uq_experiment_passage_chapter_condition_language unique (chapter, condition, language)
+);
+
+create table if not exists experiment_plan_cells (
+    id text primary key default gen_random_uuid()::text,
+    participant_id text not null references participants(id) on delete cascade,
+    chapter integer not null,
+    condition text not null,
+    experiment_passage_id text references experiment_passages(id) on delete set null,
+    sequence_index integer not null,
+    status text not null default 'pending',
+    created_at timestamptz not null default now(),
+    constraint uq_experiment_plan_participant_chapter unique (participant_id, chapter),
+    constraint uq_experiment_plan_participant_sequence unique (participant_id, sequence_index)
+);
+
 create table if not exists assignments (
     id text primary key default gen_random_uuid()::text,
     participant_id text not null references participants(id) on delete cascade,
@@ -171,10 +195,12 @@ create table if not exists assignments (
     batch_id text,
     status text not null default 'assigned',
     assigned_at timestamptz not null default now(),
+    delivered_at timestamptz,
     started_at timestamptz,
     completed_at timestamptz,
     due_at timestamptz,
     attempt_count integer not null default 0,
+    experiment_cell_id text references experiment_plan_cells(id) on delete set null,
     constraint uq_assignments_participant_qa_item unique (participant_id, qa_item_id)
 );
 
@@ -211,6 +237,22 @@ create table if not exists participant_events (
     metadata jsonb not null default '{}'::jsonb,
     created_at timestamptz not null default now()
 );
+
+create table if not exists dashboard_engagement_sessions (
+    id text primary key default gen_random_uuid()::text,
+    participant_id text not null references participants(id) on delete cascade,
+    session_key text not null,
+    started_at timestamptz not null default now(),
+    last_heartbeat_at timestamptz not null default now(),
+    active_seconds integer not null default 0,
+    heartbeat_count integer not null default 0,
+    created_at timestamptz not null default now(),
+    constraint uq_dashboard_engagement_participant_session
+        unique (participant_id, session_key)
+);
+
+create index if not exists idx_dashboard_engagement_participant_id
+    on dashboard_engagement_sessions(participant_id);
 
 create table if not exists outbox_notifications (
     id text primary key default gen_random_uuid()::text,
@@ -329,6 +371,9 @@ create index if not exists idx_qa_item_keyword_recordings_qa_item
 create index if not exists idx_system_languages_code on system_languages(code);
 create index if not exists idx_assignments_batch_id on assignments(batch_id);
 create index if not exists idx_assignments_status on assignments(status);
+create index if not exists idx_assignments_experiment_cell_id on assignments(experiment_cell_id);
+create index if not exists idx_experiment_plan_cells_participant_id on experiment_plan_cells(participant_id);
+create index if not exists idx_experiment_plan_cells_passage_id on experiment_plan_cells(experiment_passage_id);
 create index if not exists idx_participant_responses_is_correct on participant_responses(is_correct);
 create index if not exists idx_participant_responses_review_status on participant_responses(review_status);
 create index if not exists idx_participant_responses_source_channel on participant_responses(source_channel);

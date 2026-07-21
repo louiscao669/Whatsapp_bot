@@ -247,9 +247,12 @@ def create_assignment_prompt(db: Session, participant, participant_session):
             db, participant, participant_session, incomplete
         )
         if prompt:
-            # Question is about to be delivered on the messenger: start the
-            # time-on-task clock (kept if already started on another surface).
-            incomplete.started_at = incomplete.started_at or utc_now()
+            # Question is about to be delivered on the messenger: stamp the
+            # delivery moment and start the time-on-task clock (both kept if
+            # already set on another surface). On the messenger there is no
+            # separate "opened" signal, so delivered_at == started_at here.
+            incomplete.delivered_at = incomplete.delivered_at or utc_now()
+            incomplete.started_at = incomplete.started_at or incomplete.delivered_at
             return prompt, False, completed_batch_size
 
     if not automatic_assignment_enabled():
@@ -273,10 +276,14 @@ def create_assignment_prompt(db: Session, participant, participant_session):
         assignment_source="auto",
     )
     if prompt:
-        # Delivered immediately over the messenger: start the clock.
+        # Delivered immediately over the messenger: stamp delivery + start the
+        # clock (delivered_at == started_at on the messenger; no "opened" event).
         new_assignment = db.get(Assignment, prompt.assignment_id)
         if new_assignment:
-            new_assignment.started_at = new_assignment.started_at or utc_now()
+            new_assignment.delivered_at = new_assignment.delivered_at or utc_now()
+            new_assignment.started_at = (
+                new_assignment.started_at or new_assignment.delivered_at
+            )
     return prompt, False, completed_batch_size
 
 

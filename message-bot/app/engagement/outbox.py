@@ -186,8 +186,14 @@ def process_pending_outbox(limit=50):
                                 db, open_assignment, qa_item, participant
                             )
                             send_provider_assignment_prompt(db, participant, prompt)
+                            # Proactive messenger delivery: stamp delivery + the
+                            # time-on-task clock (delivered_at == started_at on
+                            # the messenger; a bot gets no "opened" signal).
+                            open_assignment.delivered_at = (
+                                open_assignment.delivered_at or utc_now()
+                            )
                             open_assignment.started_at = (
-                                open_assignment.started_at or utc_now()
+                                open_assignment.started_at or open_assignment.delivered_at
                             )
                             delivered_assignment_id = open_assignment.id
                 except Exception as exc:  # delivery errors: retry next tick

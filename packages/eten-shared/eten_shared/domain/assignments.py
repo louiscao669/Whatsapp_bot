@@ -260,6 +260,7 @@ def create_assignment_for_qa_item(
     qa_item,
     completed_batch_size=0,
     assignment_source="auto",
+    experiment_cell_id=None,
 ):
     batch_id = participant_session.current_batch_id or new_id()
     assignment = Assignment(
@@ -268,6 +269,7 @@ def create_assignment_for_qa_item(
         batch_id=batch_id,
         status=AssignmentStatus.ASSIGNED.value,
         assigned_at=utc_now(),
+        experiment_cell_id=experiment_cell_id,
     )
     db.add(assignment)
     db.flush()
@@ -290,6 +292,7 @@ def create_assignment_for_qa_item(
             "preferred_batch_size": get_preferred_batch_size(participant),
             "distribution_metrics": get_qa_item_distribution_metrics(db, qa_item),
             "assignment_source": assignment_source,
+            "experiment_cell_id": experiment_cell_id,
         },
     )
 
