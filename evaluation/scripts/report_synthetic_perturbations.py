@@ -119,19 +119,24 @@ def discover_chapters(root: Path) -> list[int]:
     return sorted(chapters)
 
 
-def experiment_chapters(root: Path, experiment: str, requested: list[int]) -> list[int]:
+def experiment_chapters(
+    root: Path, experiment: str, requested: list[int], model_subdir: str = "1.7b"
+) -> list[int]:
     chapters = []
     for chapter in requested:
-        if experiment_dir(root, chapter, experiment).is_dir():
+        if experiment_dir(root, chapter, experiment, model_subdir).is_dir():
             chapters.append(chapter)
     return chapters
 
 
-def experiment_dir(root: Path, chapter: int, experiment: str) -> Path:
+def experiment_dir(
+    root: Path, chapter: int, experiment: str, model_subdir: str = "1.7b"
+) -> Path:
     chapter_dir = root / f"luke{chapter}"
-    nested = chapter_dir / "1.7b" / experiment
-    if nested.is_dir():
-        return nested
+    if model_subdir:
+        nested = chapter_dir / model_subdir / experiment
+        if nested.is_dir():
+            return nested
     direct = chapter_dir / experiment
     if direct.is_dir():
         return direct
@@ -241,6 +246,7 @@ def collect_variant(
     chapters: list[int],
     score_file: str,
     blank: bool,
+    model_subdir: str = "1.7b",
 ) -> dict:
     if blank:
         return {
@@ -265,7 +271,7 @@ def collect_variant(
     missing = []
     actual_rates = []
     for chapter in chapters:
-        variant_dir = experiment_dir(root, chapter, experiment) / variant
+        variant_dir = experiment_dir(root, chapter, experiment, model_subdir) / variant
         path = variant_dir / score_file
         if path.exists():
             metrics = score_metrics(path)
@@ -339,12 +345,13 @@ def collect_report(
     experiments: list[str],
     score_file: str,
     blank_experiments: set[str],
+    model_subdir: str = "1.7b",
 ) -> tuple[list[dict], dict[str, list[int]]]:
     rows = []
     chapter_map = {}
     for experiment in experiments:
         config = EXPERIMENTS[experiment]
-        exp_chapters = experiment_chapters(root, experiment, chapters)
+        exp_chapters = experiment_chapters(root, experiment, chapters, model_subdir)
         chapter_map[experiment] = exp_chapters
         for variant in config["variants"]:
             rows.append(
@@ -355,6 +362,7 @@ def collect_report(
                     chapters=exp_chapters,
                     score_file=score_file,
                     blank=experiment in blank_experiments,
+                    model_subdir=model_subdir,
                 )
             )
     return rows, chapter_map
@@ -541,6 +549,15 @@ def parse_args() -> argparse.Namespace:
         default=list(EXPERIMENTS),
     )
     parser.add_argument("--score-file", default=DEFAULT_SCORE_FILE)
+    parser.add_argument(
+        "--model-subdir",
+        default="1.7b",
+        help=(
+            "Answer-model subdirectory under each luke<ch>/ folder "
+            "(e.g. '1.7b', '1.5b', 'llama 1b'). Empty string reads the "
+            "legacy flat layout with no model subdir."
+        ),
+    )
     parser.add_argument("--out", type=Path, default=DEFAULT_REPORT)
     parser.add_argument("--csv", type=Path, default=DEFAULT_CSV)
     parser.add_argument(
@@ -562,6 +579,7 @@ def main() -> int:
         experiments=args.experiments,
         score_file=args.score_file,
         blank_experiments=set(args.blank_experiments),
+        model_subdir=args.model_subdir,
     )
     write_markdown(
         args.out,

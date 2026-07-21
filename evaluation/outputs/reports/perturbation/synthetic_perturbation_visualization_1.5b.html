@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Synthetic Perturbation Visualization</title>
+  <style>
+    :root {
+      --ink: #202124;
+      --muted: #64748b;
+      --line: #d8dee8;
+      --panel: #f7f8fb;
+      --blue: #1f5fbf;
+      --green: #2f855a;
+      --amber: #b7791f;
+      --red: #b42318;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: #fff;
+      font: 14px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 28px 24px 48px;
+    }
+    h1, h2, h3 { margin: 0; letter-spacing: 0; }
+    h1 { font-size: 28px; }
+    h2 { font-size: 20px; }
+    p { margin: 6px 0 0; color: var(--muted); }
+    .definitions {
+      margin: 8px 0 0;
+      padding-left: 18px;
+      color: var(--muted);
+      max-width: 760px;
+    }
+    .definitions li { margin: 3px 0; }
+    .definitions strong { color: var(--ink); }
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 18px 0;
+    }
+    nav a {
+      color: var(--blue);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 5px 8px;
+      text-decoration: none;
+      background: #fff;
+    }
+    .summary, .experiment {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      padding: 16px;
+      margin: 18px 0;
+    }
+    .summary ul {
+      margin: 10px 0 0;
+      padding-left: 20px;
+    }
+    .summary li { margin: 6px 0; }
+    .section-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .chapters {
+      color: var(--muted);
+      white-space: nowrap;
+      font-size: 13px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 4px 7px;
+      background: #fff;
+    }
+    .charts {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .chart {
+      min-width: 0;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 10px;
+    }
+    .chart-title {
+      font-weight: 650;
+      margin-bottom: 4px;
+    }
+    svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .grid { stroke: #e6eaf0; stroke-width: 1; }
+    .axis-line { stroke: #9aa4b2; stroke-width: 1; }
+    .axis { fill: #667085; font-size: 11px; }
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .legend i {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      display: inline-block;
+    }
+    .empty {
+      color: var(--muted);
+      border: 1px dashed var(--line);
+      border-radius: 6px;
+      padding: 24px;
+      background: #fff;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      overflow: hidden;
+      border-radius: 8px;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 7px 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: #eef1f5;
+      font-weight: 650;
+    }
+    .status {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 2px 7px;
+      font-size: 12px;
+      background: #e8eef8;
+      color: var(--blue);
+    }
+    .status.complete { background: #e2f4e8; color: var(--green); }
+    .status.partial { background: #fff5d6; color: var(--amber); }
+    .status.missing, .status.tbd { background: #f1f5f9; color: var(--muted); }
+    .data-note {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 16px;
+    }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Synthetic Perturbation Visualization</h1>
+  <p>Score file: <code>scores_target_llama.json</code>. This HTML reads the currently available scored outputs; blank experiments can be filled by rerunning the script after those scores exist.</p>
+  <nav><a href="#addition">addition</a><a href="#omission">omission</a><a href="#mistranslation">mistranslation</a><a href="#grammar">grammar</a><a href="#local_inconsistency-style">local style inconsistency</a><a href="#awkward">awkward</a></nav>
+  <section class="summary">
+    <h2>High-Level Notes</h2>
+    <ul><li>`addition` baseline combined score is 0.758; lowest scored variant is `adversarial_30%` at 0.674 (-0.083 vs baseline).</li><li>`omission` baseline combined score is 0.745; lowest scored variant is `30%` at 0.641 (-0.104 vs baseline).</li><li>`mistranslation` baseline combined score is 0.766; lowest scored variant is `30%` at 0.609 (-0.156 vs baseline).</li><li>`grammar` baseline combined score is 0.740; lowest scored variant is `15%` at 0.729 (-0.010 vs baseline).</li><li>`inconsistency` has no scored variants yet.</li><li>`local_inconsistency` has scored variants; best observed combined score is `style_5%` at 0.742.</li><li>`awkward` baseline combined score is 0.747; lowest scored variant is `20%` at 0.727 (-0.021 vs baseline).</li></ul>
+  </section>
+  
+<section class="experiment" id="addition">
+  <div class="section-head">
+    <div>
+      <h2>addition</h2>
+      <p>MQM Accuracy &gt; Addition: neutral, bad, or MCQ-adversarial inserted clauses.</p>
+      
+      <ul class="definitions">
+        <li><strong>neutral</strong>: plausible but mostly irrelevant extra information.</li>
+        <li><strong>bad</strong>: noisy or incorrect additions that are not directly MCQ distractors.</li>
+        <li><strong>adversarial</strong>: misleading additions derived from wrong MCQ options and inserted near the referenced verse when possible.</li>
+      </ul>
+
+    </div>
+    <span class="chapters">Chapters: 1,2,3,4,5,6,7,8</span>
+  </div>
+  <div class="charts">
+<div class="chart">
+  <div class="chart-title">Combined Score</div>
+  <svg viewBox="0 0 780 250" role="img" aria-label="Combined Score">
+    <rect x="54" y="24" width="706" height="184" fill="#fff"/>
+    <line x1="54.0" y1="24" x2="54.0" y2="208" class="grid"/><text x="54.0" y="235" class="axis" text-anchor="middle">0%</text><line x1="171.7" y1="24" x2="171.7" y2="208" class="grid"/><text x="171.7" y="235" class="axis" text-anchor="middle">5%</text><line x1="289.3" y1="24" x2="289.3" y2="208" class="grid"/><text x="289.3" y="235" class="axis" text-anchor="middle">10%</text><line x1="407.0" y1="24" x2="407.0" y2="208" class="grid"/><text x="407.0" y="235" class="axis" text-anchor="middle">15%</text><line x1="524.7" y1="24" x2="524.7" y2="208" class="grid"/><text x="524.7" y="235" class="axis" text-anchor="middle">20%</text><line x1="642.3" y1="24" x2="642.3" y2="208" class="grid"/><text x="642.3" y="235" class="axis" text-anchor="middle">25%</text><line x1="760.0" y1="24" x2="760.0" y2="208" class="grid"/><text x="760.0" y="235" class="axis" text-anchor="middle">30%</text><line x1="54" y1="137.2" x2="760" y2="137.2" class="grid"/><text x="46" y="141.2" class="axis" text-anchor="end">0.7</text><line x1="54" y1="43.5" x2="760" y2="43.5" class="grid"/><text x="46" y="47.5" class="axis" text-anchor="end">0.8</text>
+    <line x1="54" y1="208" x2="760" y2="208" class="axis-line"/>
+    <line x1="54" y1="24" x2="54" y2="208" class="axis-line"/>
+    <path d="M 54.0 83.1 L 171.7 100.1 L 289.3 129.4 L 407.0 127.0 L 524.7 148.9 L 760.0 161.1" fill="none" stroke="#c2410c" stroke-width="2.5"/><circle cx="54.0" cy="83.1" r="4.5" fill="#c2410c"><title>0%: 0.758</title></circle><circle cx="171.7" cy="100.1" r="4.5" fill="#c2410c"><title>adversarial_5%: 0.740</title></circle><circle cx="289.3" cy="129.4" r="4.5" fill="#c2410c"><title>adversarial_10%: 0.708</title></circle><circle cx="407.0" cy="127.0" r="4.5" fill="#c2410c"><title>adversarial_15%: 0.711</title></circle><circle cx="524.7" cy="148.9" r="4.5" fill="#c2410c"><title>adversarial_20%: 0.688</title></circle><circle cx="760.0" cy="161.1" r="4.5" fill="#c2410c"><title>adversarial_30%: 0.674</title></circle><path d="M 54.0 83.1 L 171.7 83.1 L 289.3 92.8 L 407.0 109.9 L 524.7 105.0 L 760.0 117.2" fill="none" stroke="#b83280" stroke-width="2.5"/><circle cx="54.0" cy="83.1" r="4.5" fill="#b83280"><title>0%: 0.758</title></circle><circle cx="171.7" cy="83.1" r="4.5" fill="#b83280"><title>bad_5%: 0.758</title></circle><circle cx="289.3" cy="92.8" r="4.5" fill="#b83280"><title>bad_10%: 0.747</title></circle><circle cx="407.0" cy="109.9" r="4.5" fill="#b83280"><title>bad_15%: 0.729</title></circle><circle cx="524.7" cy="105.0" r="4.5" fill="#b83280"><title>bad_20%: 0.734</title></circle><circle cx="760.0" cy="117.2" r="4.5" fill="#b83280"><title>bad_30%: 0.721</title></circle><path d="M 54.0 83.1 L 171.7 80.6 L 289.3 90.4 L 407.0 70.9 L 524.7 85.5 L 760.0 85.5" fill="none" stroke="#1f5fbf" stroke-width="2.5"/><circle cx="54.0" cy="83.1" r="4.5" fill="#1f5fbf"><title>0%: 0.758</title></circle><circle cx="171.7" cy="80.6" r="4.5" fill="#1f5fbf"><title>neutral_5%: 0.760</title></circle><circle cx="289.3" cy="90.4" r="4.5" fill="#1f5fbf"><title>neutral_10%: 0.750</title></circle><circle cx="407.0" cy="70.9" r="4.5" fill="#1f5fbf"><title>neutral_15%: 0.771</title></circle><circle cx="524.7" cy="85.5" r="4.5" fill="#1f5fbf"><title>neutral_20%: 0.755</title></circle><circle cx="760.0" cy="85.5" r="4.5" fill="#1f5fbf"><title>neutral_30%: 0.755</title></circle>
+  </svg>
+  <div class="legend"><span><i style="background:#c2410c"></i>adversarial</span><span><i style="background:#b83280"></i>bad</span><span><i style="background:#1f5fbf"></i>neutral</span></div>
+</div>
+
+
+<div class="chart">
+  <div class="chart-title">MCQ Accuracy</div>
+  <svg viewBox="0 0 780 250" role="img" aria-label="MCQ Accuracy">
+    <rect x="54" y="24" width="706" height="184" fill="#fff"/>
+    <line x1="54.0" y1="24" x2="54.0" y2="208" class="grid"/><text x="54.0" y="235" class="axis" text-anchor="middle">0%</text><line x1="171.7" y1="24" x2="171.7" y2="208" class="grid"/><text x="171.7" y="235" class="axis" text-anchor="middle">5%</text><line x1="289.3" y1="24" x2="289.3" y2="208" class="grid"/><text x="289.3" y="235" class="axis" text-anchor="middle">10%</text><line x1="407.0" y1="24" x2="407.0" y2="208" class="grid"/><text x="407.0" y="235" class="axis" text-anchor="middle">15%</text><line x1="524.7" y1="24" x2="524.7" y2="208" class="grid"/><text x="524.7" y="235" class="axis" text-anchor="middle">20%</text><line x1="642.3" y1="24" x2="642.3" y2="208" class="grid"/><text x="642.3" y="235" class="axis" text-anchor="middle">25%</text><line x1="760.0" y1="24" x2="760.0" y2="208" class="grid"/><text x="760.0" y="235" class="axis" text-anchor="middle">30%</text><line x1="54" y1="196.9" x2="760" y2="196.9" class="grid"/><text x="46" y="200.9" class="axis" text-anchor="end">0.7</text><line x1="54" y1="90.5" x2="760" y2="90.5" class="grid"/><text x="46" y="94.5" class="axis" text-anchor="end">0.8</text>
+    <line x1="54" y1="208" x2="760" y2="208" class="axis-line"/>
+    <line x1="54" y1="24" x2="54" y2="208" class="axis-line"/>
+    <path d="M 54.0 132.6 L 171.7 121.5 L 289.3 132.6 L 407.0 121.5 L 524.7 143.7 L 760.0 154.8" fill="none" stroke="#c2410c" stroke-width="2.5"/><circle cx="54.0" cy="132.6" r="4.5" fill="#c2410c"><title>0%: 0.760</title></circle><circle cx="171.7" cy="121.5" r="4.5" fill="#c2410c"><title>adversarial_5%: 0.771</title></circle><circle cx="289.3" cy="132.6" r="4.5" fill="#c2410c"><title>adversarial_10%: 0.760</title></circle><circle cx="407.0" cy="121.5" r="4.5" fill="#c2410c"><title>adversarial_15%: 0.771</title></circle><circle cx="524.7" cy="143.7" r="4.5" fill="#c2410c"><title>adversarial_20%: 0.750</title></circle><circle cx="760.0" cy="154.8" r="4.5" fill="#c2410c"><title>adversarial_30%: 0.740</title></circle><path d="M 54.0 132.6 L 171.7 110.5 L 289.3 99.4 L 407.0 110.5 L 524.7 99.4 L 760.0 99.4" fill="none" stroke="#b83280" stroke-width="2.5"/><circle cx="54.0" cy="132.6" r="4.5" fill="#b83280"><title>0%: 0.760</title></circle><circle cx="171.7" cy="110.5" r="4.5" fill="#b83280"><title>bad_5%: 0.781</title></circle><circle cx="289.3" cy="99.4" r="4.5" fill="#b83280"><title>bad_10%: 0.792</title></circle><circle cx="407.0" cy="110.5" r="4.5" fill="#b83280"><title>bad_15%: 0.781</title></circle><circle cx="524.7" cy="99.4" r="4.5" fill="#b83280"><title>bad_20%: 0.792</title></circle><circle cx="760.0" cy="99.4" r="4.5" fill="#b83280"><title>bad_30%: 0.792</title></circle><path d="M 54.0 132.6 L 171.7 121.5 L 289.3 110.5 L 407.0 99.4 L 524.7 99.4 L 760.0 77.2" fill="none" stroke="#1f5fbf" stroke-width="2.5"/><circle cx="54.0" cy="132.6" r="4.5" fill="#1f5fbf"><title>0%: 0.760</title></circle><circle cx="171.7" cy="121.5" r="4.5" fill="#1f5fbf"><title>neutral_5%: 0.771</title></circle><circle cx="289.3" cy="110.5" r="4.5" fill="#1f5fbf"><title>neutral_10%: 0.781</title></circle><circle cx="407.0" cy="99.4" r="4.5" fill="#1f5fbf"><title>neutral_15%: 0.792</title></circle><circle cx="524.7" cy="99.4" r="4.5" fill="#1f5fbf"><title>neutral_20%: 0.792</title></circle><circle cx="760.0" cy="77.2" r="4.5" fill="#1f5fbf"><title>neutral_30%: 0.812</title></circle>
+  </svg>
+  <div class="legend"><span><i style="background:#c2410c"></i>adversarial</span><span><i style="background:#b83280"></i>bad</span><span><i style="background:#1f5fbf"></i>neutral</span></div>
+</div>
+
+
+<div class="chart">
+  <div class="chart-title">Open LLM Score</div>
+  <svg viewBox="0 0 780 250" role="img" aria-label="Open LLM Score">
+    <rect x="54" y="24" width="706" height="184" fill="#fff"/>
+    <line x1="54.0" y1="24" x2="54.0" y2="208" class="grid"/><text x="54.0" y="235" class="axis" text-anchor="middle">0%</text><line x1="171.7" y1="24" x2="171.7" y2="208" class="grid"/><text x="171.7" y="235" class="axis" text-anchor="middle">5%</text><line x1="289.3" y1="24" x2="289.3" y2="208" class="grid"/><text x="289.3" y="235" class="axis" text-anchor="middle">10%</text><line x1="407.0" y1="24" x2="407.0" y2="208" class="grid"/><text x="407.0" y="235" class="axis" text-anchor="middle">15%</text><line x1="524.7" y1="24" x2="524.7" y2="208" class="grid"/><text x="524.7" y="235" class="axis" text-anchor="middle">20%</text><line x1="642.3" y1="24" x2="642.3" y2="208" class="grid"/><text x="642.3" y="235" class="axis" text-anchor="middle">25%</text><line x1="760.0" y1="24" x2="760.0" y2="208" class="grid"/><text x="760.0" y="235" class="axis" text-anchor="middle">30%</text><line x1="54" y1="177.6" x2="760" y2="177.6" class="grid"/><text x="46" y="181.6" class="axis" text-anchor="end">0.6</text><line x1="54" y1="102.7" x2="760" y2="102.7" class="grid"/><text x="46" y="106.7" class="axis" text-anchor="end">0.7</text><line x1="54" y1="27.9" x2="760" y2="27.9" class="grid"/><text x="46" y="31.9" class="axis" text-anchor="end">0.8</text>
+    <line x1="54" y1="208" x2="760" y2="208" class="axis-line"/>
+    <line x1="54" y1="24" x2="54" y2="208" class="axis-line"/>
+    <path d="M 54.0 61.4 L 171.7 96.5 L 289.3 135.5 L 407.0 139.4 L 524.7 158.9 L 760.0 170.6" fill="none" stroke="#c2410c" stroke-width="2.5"/><circle cx="54.0" cy="61.4" r="4.5" fill="#c2410c"><title>0%: 0.755</title></circle><circle cx="171.7" cy="96.5" r="4.5" fill="#c2410c"><title>adversarial_5%: 0.708</title></circle><circle cx="289.3" cy="135.5" r="4.5" fill="#c2410c"><title>adversarial_10%: 0.656</title></circle><circle cx="407.0" cy="139.4" r="4.5" fill="#c2410c"><title>adversarial_15%: 0.651</title></circle><circle cx="524.7" cy="158.9" r="4.5" fill="#c2410c"><title>adversarial_20%: 0.625</title></circle><circle cx="760.0" cy="170.6" r="4.5" fill="#c2410c"><title>adversarial_30%: 0.609</title></circle><path d="M 54.0 61.4 L 171.7 77.0 L 289.3 100.4 L 407.0 119.9 L 524.7 119.9 L 760.0 139.4" fill="none" stroke="#b83280" stroke-width="2.5"/><circle cx="54.0" cy="61.4" r="4.5" fill="#b83280"><title>0%: 0.755</title></circle><circle cx="171.7" cy="77.0" r="4.5" fill="#b83280"><title>bad_5%: 0.734</title></circle><circle cx="289.3" cy="100.4" r="4.5" fill="#b83280"><title>bad_10%: 0.703</title></circle><circle cx="407.0" cy="119.9" r="4.5" fill="#b83280"><title>bad_15%: 0.677</title></circle><circle cx="524.7" cy="119.9" r="4.5" fill="#b83280"><title>bad_20%: 0.677</title></circle><circle cx="760.0" cy="139.4" r="4.5" fill="#b83280"><title>bad_30%: 0.651</title></circle><path d="M 54.0 61.4 L 171.7 65.3 L 289.3 88.7 L 407.0 65.3 L 524.7 88.7 L 760.0 104.3" fill="none" stroke="#1f5fbf" stroke-width="2.5"/><circle cx="54.0" cy="61.4" r="4.5" fill="#1f5fbf"><title>0%: 0.755</title></circle><circle cx="171.7" cy="65.3" r="4.5" fill="#1f5fbf"><title>neutral_5%: 0.750</title></circle><circle cx="289.3" cy="88.7" r="4.5" fill="#1f5fbf"><title>neutral_10%: 0.719</title></circle><circle cx="407.0" cy="65.3" r="4.5" fill="#1f5fbf"><title>neutral_15%: 0.750</title></circle><circle cx="524.7" cy="88.7" r="4.5" fill="#1f5fbf"><title>neutral_20%: 0.719</title></circle><circle cx="760.0" cy="104.3" r="4.5" fill="#1f5fbf"><title>neutral_30%: 0.698</title></circle>
+  </svg>
+  <div class="legend"><span><i style="background:#c2410c"></i>adversarial</span><span><i style="background:#b83280"></i>bad</span><span><i style="background:#1f5fbf"></i>neutral</span></div>
+</div>
+
+<div class="empty">No scored data yet.</div>
+<div class="empty">No scored data yet.</div>
+<div class="empty">No scored data yet.</div></div>
+  <table>
+<thead><tr><th>Variant</th><th>Status</th><th>Chapters</th><th>Actual</th><th>Combined</th><th>MCQ</th><th>Open</th><th>Confidence</th><th>Insufficient</th><th>Evidence</th><th>Errors</th></tr></thead>
+<tbody>
+<tr><td>adversarial_5%</td><td><span class="status complete">complete</span></td><td>1,2,3,4,5,6,7,8</td><td></td><td>0.740</td><td>77.1%</td><td>0.708</td><td></td><td></td><td></td><td>0</td></tr>
+<tr><td>adversarial_10%</td><td><span class="status complete">complete</span></td><td>1,2,3,4,5,6,7,8</td><td></td><td>0.708</td><td>76.0%</td><td>0.656</td><td></td><td></td><td></td><td>0</td></tr>
+<tr><td>adversarial_15%</td><td><span class="status complete">complete</span></td><td>1,2,3,4,5,6,7,8</td><td></td><td>0.711</td><td>77.1%</td><td>0.651</td><td></td><td></td><td></td><td>0</td></tr>
+<tr><td>adversarial_20%</td><td><span class="status complete">complete</span></td><td>1,2,3,4,5,6,7,8</td><td></td><td>0.688</td><td>75.0%</td><td>0.625</td><td></td><td></td><td></td><td>0</td></tr>
+<tr><td>adversarial_30%</td><td><span class="status complete">complete</span></td><td>1,2,3,4,5,6,7,8</td><td></td><td>0.674</td><td>74.0%</td><td>0.609</td><td></td><td></td><td></td><td>0</td></tr>
+<tr><td>bad_5%</td><td><span class="status complete">complete</span></td><td>1,2,3,4,5,6,7,8</td><td></td><td>0.758</td><td>78.1%</td><td>0.734</td><td></td><td></td><td></td><td>0</td></tr>
+<tr><td>bad_10%</td><td><span class="status complete">complete</span></td><td>1,2,3,4,5,6,7,8</td><td></td><td>0.747</td><td>79.2%</td><td>0.703</td><td></td><td></td><td></td><td>0</td></tr>
+<tr><td>bad_15%</td><td><span class="status complete">complete</span></td><td>1,2,3,4,5,6,7,8</td><td></td><td>0.729</td><td>78.1%</td><td>0.677</td><td></td><td></td><td></td><td>0</td></tr>
+<tr><td>bad_20%</td><td><span class="status complete">complete</span></td><td>1,2,3,4,5,6,7,8</td><td></td><td>0.734</td><td>79.2%</td><td>0.677</td><td></td><td></td><td></td><td>0</td></tr>
+<tr><td>bad_30%</td><td><span class="status complete">complete</span></td><td>1,2,3,4,5,6,7,8</td><td></td><td>0.721</td><td>79.2%</td><td>0.651</td><td></td><td></td><td></td><td>0</td></tr>
+<tr><td>0%</td><td><span class="status complete">complete</span></td><td>1,2,3,4,5,6,7,8</td><td></td><td>0.758</td><td>76.0%</td><td>0.755</td><td></td><td></td><td></td><td>0</td></tr>
+<tr><td>neutral_5%</td><td><span class="status complete">complete</span></td><td>1,2,3,4,5,6,7,8</td><td></td><td>0.760</td><td>77.1%</td><td>0.750</td><td></td><td></td><td></td><td>0</td></tr>
+<tr><td>neutral_10%</td><td><span class="status complete">complete</span></td><td>1,2,3,4,5,6,7,8</td><td></td><td>0.750</td><td>78.1%</td><td>0.719</td><td></td><td></td><td></td><td>0</td></tr>
+<tr><td>neutral_15%</td><td><span class="status complete">complete</span></td><td>1,2,3,4,5,6,7,8</td><td></td><td>0.771</td><td>79.2%</td><td>0.750</td><td></td><td></td><td></td><td>0</td></tr>
+<tr><td>neutral_20%</td><td><span class="status complete">complete</span></td><td>1,2,3,4,5,6,7,8</td><td></td><td>0.755</td><td>79.2%</td><td>0.719</td><td></td><td></td><td></td><td>0</td></tr>
+<tr><td>neutral_30%</td><td><span class="status complete">complete</span></td><td>1,2,3,4,5,6,7,8</td><td></td><td>0.755</td><td>81.2%</td><td>0.698</td><td></td><td></td><td></td><td>0</td></tr>
+</tbody>
+</table>
+</section>
+
+<section class="experiment" id="omission">
+  <div class="section-head">
+    <div>
+      <h2>omission</h2>
+      <p>MQM Accuracy &gt; Omission: clause-level removals.</p>
+      
+    </div>
+    <span class="chapters">Chapters: 1,2,3,4,5,6,7,8</span>
+  </div>
+  <div class="charts">
+<div class="chart">
+  <div class="chart-title">Combined Score</div>
+  <svg viewBox="0 0 780 250" role="img" aria-label="Combined Score">
+    <rect x="54" y="24" width="706" height="184" fill="#fff"/>
+    <line x1="54.0" y1="24" x2="54.0" y2="208" class="grid"/><text x="54.0" y="235" class="axis" text-anchor="middle">0%</text><line x1="171.7" y1="24" x2="171.7" y2="208" class="grid"/><text x="171.7" y="235" class="axis" text-anchor="middle">5%</text><line x1="289.3" y1="24" x2="289.3" y2="208" class="grid"/><text x="289.3" y="235" class="axis" text-anchor="middle">10%</text><line x1="407.0" y1="24" x2="407.0" y2="208" class="grid"/><text x="407.0" y="235" class="axis" text-anchor="middle">15%</text><line x1="524.7" y1="24" x2="524.7" y2="208" class="grid"/><text x="524.7" y="235" class="axis" text-anchor="middle">20%</text><line x1="642.3" y1="24" x2="642.3" y2="208" class="grid"/><text x="642.3" y="235" class="axis" text-anchor="middle">25%</text><line x1="760.0" y1="24" x2="760.0" y2="208" class="grid"/><text x="760.0" y="235" class="axis" text-anchor="middle">30%</text><line x1="54" y1="199.9" x2="760" y2="199.9" class="grid"/><text x="46" y="203.9" class="axis" text-anchor="end">0.6</text><line x1="54" y1="113.1" x2="760" y2="113.1" class="grid"/><text x="46" y="117.1" class="axis" text-anchor="end">0.7</text><line x1="54" y1="26.3" x2="760" y2="26.3" class="grid"/><text x="46" y="30.3" class="axis" text-anchor="end">0.8</text>
+    <line x1="54" y1="208" x2="760" y2="208" class="axis-line"/>
+    <line x1="54" y1="24" x2="54" y2="208" class="axis-line"/>
+    <path d="M 54.0 74.2 L 171.7 74.2 L 289.3 67.4 L 407.0 112.6 L 524.7 101.3 L 760.0 164.6" fill="none" stroke="#1f5fbf" stroke-width="2.5"/><circle cx="54.0" cy="74.2" r="4.5" fill="#1f5fbf"><title>0%: 0.745</title></circle><circle cx="171.7" cy="74.2" r="4.5" fill="#1f5fbf"><title>5%: 0.745</title></circle><circle cx="289.3" cy="67.4" r="4.5" fill="#1f5fbf"><title>10%: 0.753</title></circle><circle cx="407.0" cy="112.6" r="4.5" fill="#1f5fbf"><title>15%: 0.701</title></circle><circle cx="524.7" cy="101.3" r="4.5" fill="#1f5fbf"><title>20%: 0.714</title></circle><circle cx="760.0" cy="164.6" r="4.5" fill="#1f5fbf"><title>30%: 0.641</title></circle>
+  </svg>
+  <div class="legend"><span><i style="background:#1f5fbf"></i>single</span></div>
+</div>
+
+
+<div class="chart">
+  <div class="chart-title">MCQ Accuracy</div>
+  <svg viewBox="0 0 780 250" role="img" aria-label="MCQ Accuracy">
+    <rect x="54" y="24" width="706" height="184" fill="#fff"/>
+    <line x1="54.0" y1="24" x2="54.0" y2="208" class="grid"/><text x="54.0" y="235" class="axis" text-anchor="middle">0%</text><line x1="171.7" y1="24" x2="171.7" y2="208" class="grid"/><text x="171.7" y="235" class="axis" text-anchor="middle">5%</text><line x1="289.3" y1="24" x2="289.3" y2="208" class="grid"/><text x="289.3" y="235" class="axis" text-anchor="middle">10%</text><line x1="407.0" y1="24" x2="407.0" y2="208" class="grid"/><text x="407.0" y="235" class="axis" text-anchor="middle">15%</text><line x1="524.7" y1="24" x2="524.7" y2="208" class="grid"/><text x="524.7" y="235" class="axis" text-anchor="middle">20%</text><line x1="642.3" y1="24" x2="642.3" y2="208" class="grid"/><text x="642.3" y="235" class="axis" text-anchor="middle">25%</text><line x1="760.0" y1="24" x2="760.0" y2="208" class="grid"/><text x="760.0" y="235" class="axis" text-anchor="middle">30%</text><line x1="54" y1="188.2" x2="760" y2="188.2" class="grid"/><text x="46" y="192.2" class="axis" text-anchor="end">0.7</text><line x1="54" y1="93.2" x2="760" y2="93.2" class="grid"/><text x="46" y="97.2" class="axis" text-anchor="end">0.8</text>
+    <line x1="54" y1="208" x2="760" y2="208" class="axis-line"/>
+    <line x1="54" y1="24" x2="54" y2="208" class="axis-line"/>
+    <path d="M 54.0 130.8 L 171.7 91.3 L 289.3 71.5 L 407.0 111.1 L 524.7 101.2 L 760.0 160.5" fill="none" stroke="#1f5fbf" stroke-width="2.5"/><circle cx="54.0" cy="130.8" r="4.5" fill="#1f5fbf"><title>0%: 0.760</title></circle><circle cx="171.7" cy="91.3" r="4.5" fill="#1f5fbf"><title>5%: 0.802</title></circle><circle cx="289.3" cy="71.5" r="4.5" fill="#1f5fbf"><title>10%: 0.823</title></circle><circle cx="407.0" cy="111.1" r="4.5" fill="#1f5fbf"><title>15%: 0.781</title></circle><circle cx="524.7" cy="101.2" r="4.5" fill="#1f5fbf"><title>20%: 0.792</title></circle><circle cx="760.0" cy="160.5" r="4.5" fill="#1f5fbf"><title>30%: 0.729</title></circle>
+  </svg>
+  <div class="legend"><span><i style="background:#1f5fbf"></i>single</span></div>
+</div>
+
+
+<div class="chart">
+  <div class="chart-title">Open LLM Score</div>
+  <svg viewBox="0 0 780 250" role="img" aria-label="Open LLM Score">
+    <rect x="54" y="24" width="706" height="184" fill="#fff"/>
+    <line x1="54.0" y1="24" x2="54.0" y2="208" class="grid"/><text x="54.0" y="235" class="axis" text-anchor="middle">0%</text><line x1="171.7" y1="24" x2="171.7" y2="208" class="grid"/><text x="171.7" y="235" class="axis" text-anchor="middle">5%</text><line x1="289.3" y1="24" x2="289.3" y2="208" class="grid"/><text x="289.3" y="235" class="axis" text-anchor="middle">10%</text><line x1="407.0" y1="24" x2="407.0" y2="208" class="grid"/><text x="407.0" y="235" class="axis" text-anchor="middle">15%</text><line x1="524.7" y1="24" x2="524.7" y2="208" class="grid"/><text x="524.7" y="235" class="axis" text-anchor="middle">20%</text><line x1="642.3" y1="24" x2="642.3" y2="208" class="grid"/><text x="642.3" y="235" class="axis" text-anchor="middle">25%</text><line x1="760.0" y1="24" x2="760.0" y2="208" class="grid"/><text x="760.0" y="235" class="axis" text-anchor="middle">30%</text><line x1="54" y1="143.0" x2="760" y2="143.0" class="grid"/><text x="46" y="147.0" class="axis" text-anchor="end">0.6</text><line x1="54" y1="76.6" x2="760" y2="76.6" class="grid"/><text x="46" y="80.6" class="axis" text-anchor="end">0.7</text>
+    <line x1="54" y1="208" x2="760" y2="208" class="axis-line"/>
+    <line x1="54" y1="24" x2="54" y2="208" class="axis-line"/>
+    <path d="M 54.0 57.2 L 171.7 84.9 L 289.3 88.3 L 407.0 129.8 L 524.7 119.5 L 760.0 174.8" fill="none" stroke="#1f5fbf" stroke-width="2.5"/><circle cx="54.0" cy="57.2" r="4.5" fill="#1f5fbf"><title>0%: 0.729</title></circle><circle cx="171.7" cy="84.9" r="4.5" fill="#1f5fbf"><title>5%: 0.688</title></circle><circle cx="289.3" cy="88.3" r="4.5" fill="#1f5fbf"><title>10%: 0.682</title></circle><circle cx="407.0" cy="129.8" r="4.5" fill="#1f5fbf"><title>15%: 0.620</title></circle><circle cx="524.7" cy="119.5" r="4.5" fill="#1f5fbf"><title>20%: 0.635</title></circle><circle cx="760.0" cy="174.8" r="4.5" fill="#1f5fbf"><title>30%: 0.552</title></circle>
+  </svg>
+  <div class="legend"><span><i style="background:#1f5fbf"></i>single</span></div>
+</div>
+
+<div class="empty">No scored data yet.</div>
+<div class="empty">No scored data yet.</div>
+<div class="empty">No scored data yet.</div></div>
+  <table>
+<thead><tr><th>Variant</th><th>Status</th><th>Chapters</th><th>Actual</th><th>Combined</th><th>MCQ</th><th>Open</th><th>Confidence</th><th>Insufficient</th><th>Evidence</th><th>Errors</th></tr></thead>
+<tbody>
+<tr><td>0%</td><td><span class="status complete">complete</span></td><td>1,2,3,4,5,6,7,8</td><td></td><td>0.745</td><td>76.0%</td><td>0.729</td><td></td><td></td><td></td><td>0</td></tr>
+<tr><td>5%</td><td><span class="status complete">complete</span></td><td>1,2,3,4,5,6,7,8</td><td></td><td>0.745</td><td>80.2%</td><td>0.688</td><td></td><td></td><td></td><td>0</td></tr>
+<tr><td>10%</td><td><span class="status complete">complete</span></td><td>1,2,3,4,5,6,7,8</td><td></td><td>0.753</td><td>82.3%</td><td>0.682</td><td></td><td></td><td></td><td>0</td></tr>
+<tr><td>15%</td><td><span class="status complete">complete</span></td><td>1,2,3,4,5,6,7,8</td><td></td><td>0.701</td><td>78.1%</td><td>0.620</td><td></td><td></td><td></td><td>0</td></tr>
+<tr><td>20%</td><td><span class="status complete">complete</span></td><td>1,2,3,4,5,6,7,8</td><td></td><td>0.714</td><td>79.2%</td><td>0.635</td><td></td><td></td><td></td><td>0</td></tr>
+<tr><td>30%</td><td><span class="status complete">complete</span></td><td>1,2,3,4,5,6,7,8</td><td></td><td>0.641</td><td>72.9%</td><td>0.552</td><td></td><td></td><td></td><td>0</td></tr>
+</tbody>
+</table>
+</section>
+
+<section class="experiment" id="mistranslation">
+  <div class="section-head">
+    <div>
+      <h2>mistranslation</h2>
+      <p>MQM Accuracy &gt; Mistranslation: same-role phrase substitutions.</p>
+      
+    </div>
+    <span class="chapters">Chapters: 1,2,3,4,5,6,7,8</span>
+  </div>
+  <div class="charts">
+<div class="chart">
+  <div class="chart-title">Combined Score</div>
+  <svg viewBox="0 0 780 250" role="img" aria-label="Combined Score">
+    <rect x="54" y="24" width="706" height="184" fill="#fff"/>
+    <line x1="54.0" y1="24" x2="54.0" y2="208" class="grid"/><text x="54.0" y="235" class="axis" text-anchor="middle">0%</text><line x1="171.7" y1="24" x2="171.7" y2="208" class="grid"/><text x="171.7" y="235" class="axis" text-anchor="middle">5%</text><line x1="289.3" y1="24" x2="289.3" y2="208" class="grid"/><text x="289.3" y="235" class="axis" text-anchor="middle">10%</text><line x1="407.0" y1="24" x2="407.0" y2="208" class="grid"/><text x="407.0" y="235" class="axis" text-anchor="middle">15%</text><line x1="524.7" y1="24" x2="524.7" y2="208" class="grid"/><text x="524.7" y="235" class="axis" text-anchor="middle">20%</text><line x1="642.3" y1="24" x2="642.3" y2="208" class="grid"/><text x="642.3" y="235" class="axis" text-anchor="middle">25%</text><line x1="760.0" y1="24" x2="760.0" y2="208" class="grid"/><text x="760.0" y="235" class="axis" text-anchor="middle">30%</text><line x1="54" y1="178.8" x2="760" y2="178.8" class="grid"/><text x="46" y="182.8" class="axis" text-anchor="end">0.6</text><line x1="54" y1="107.0" x2="760" y2="107.0" class="grid"/><text x="46" y="111.0" class="axis" text-anchor="end">0.7</text><line x1="54" y1="35.2" x2="760" y2="35.2" class="grid"/><text x="46" y="39.2" class="axis" text-anchor="end">0.8</text>
+    <line x1="54" y1="208" x2="760" y2="208" class="axis-line"/>
+    <line x1="54" y1="24" x2="54" y2="208" class="axis-line"/>
+    <path d="M 54.0 59.9 L 171.7 80.5 L 289.3 119.7 L 407.0 127.2 L 524.7 142.2 L 760.0 172.1" fill="none" stroke="#1f5fbf" stroke-width="2.5"/><circle cx="54.0" cy="59.9" r="4.5" fill="#1f5fbf"><title>0%: 0.766</title></circle><circle cx="171.7" cy="80.5" r="4.5" fill="#1f5fbf"><title>5%: 0.737</title></circle><circle cx="289.3" cy="119.7" r="4.5" fill="#1f5fbf"><title>10%: 0.682</title></circle><circle cx="407.0" cy="127.2" r="4.5" fill="#1f5fbf"><title>15%: 0.672</title></circle><circle cx="524.7" cy="142.2" r="4.5" fill="#1f5fbf"><title>20%: 0.651</title></circle><circle cx="760.0" cy="172.1" r="4.5" fill="#1f5fbf"><title>30%: 0.609</title></circle>
+  </svg>
+  <div class="legend"><span><i style="background:#1f5fbf"></i>single</span></div>
+</div>
+
+
+<div class="chart">
+  <div class="chart-title">MCQ Accuracy</div>
+  <svg viewBox="0 0 780 250" role="img" aria-label="MCQ Accuracy">
+    <rect x="54" y="24" width="706" height="184" fill="#fff"/>
+    <line x1="54.0" y1="24" x2="54.0" y2="208" class="grid"/><text x="54.0" y="235" class="axis" text-anchor="middle">0%</text><line x1="171.7" y1="24" x2="171.7" y2="208" class="grid"/><text x="171.7" y="235" class="axis" text-anchor="middle">5%</text><line x1="289.3" y1="24" x2="289.3" y2="208" class="grid"/><text x="289.3" y="235" class="axis" text-anchor="middle">10%</text><line x1="407.0" y1="24" x2="407.0" y2="208" class="grid"/><text x="407.0" y="235" class="axis" text-anchor="middle">15%</text><line x1="524.7" y1="24" x2="524.7" y2="208" class="grid"/><text x="524.7" y="235" class="axis" text-anchor="middle">20%</text><line x1="642.3" y1="24" x2="642.3" y2="208" class="grid"/><text x="642.3" y="235" class="axis" text-anchor="middle">25%</text><line x1="760.0" y1="24" x2="760.0" y2="208" class="grid"/><text x="760.0" y="235" class="axis" text-anchor="middle">30%</text><line x1="54" y1="134.8" x2="760" y2="134.8" class="grid"/><text x="46" y="138.8" class="axis" text-anchor="end">0.7</text><line x1="54" y1="34.5" x2="760" y2="34.5" class="grid"/><text x="46" y="38.5" class="axis" text-anchor="end">0.8</text>
+    <line x1="54" y1="208" x2="760" y2="208" class="axis-line"/>
+    <line x1="54" y1="24" x2="54" y2="208" class="axis-line"/>
+    <path d="M 54.0 74.2 L 171.7 74.2 L 289.3 126.5 L 407.0 126.5 L 524.7 126.5 L 760.0 157.8" fill="none" stroke="#1f5fbf" stroke-width="2.5"/><circle cx="54.0" cy="74.2" r="4.5" fill="#1f5fbf"><title>0%: 0.760</title></circle><circle cx="171.7" cy="74.2" r="4.5" fill="#1f5fbf"><title>5%: 0.760</title></circle><circle cx="289.3" cy="126.5" r="4.5" fill="#1f5fbf"><title>10%: 0.708</title></circle><circle cx="407.0" cy="126.5" r="4.5" fill="#1f5fbf"><title>15%: 0.708</title></circle><circle cx="524.7" cy="126.5" r="4.5" fill="#1f5fbf"><title>20%: 0.708</title></circle><circle cx="760.0" cy="157.8" r="4.5" fill="#1f5fbf"><title>30%: 0.677</title></circle>
+  </svg>
+  <div class="legend"><span><i style="background:#1f5fbf"></i>single</span></div>
+</div>
+
+
+<div class="chart">
+  <div class="chart-title">Open LLM Score</div>
+  <svg viewBox="0 0 780 250" role="img" aria-label="Open LLM Score">
+    <rect x="54" y="24" width="706" height="184" fill="#fff"/>
+    <line x1="54.0" y1="24" x2="54.0" y2="208" class="grid"/><text x="54.0" y="235" class="axis" text-anchor="middle">0%</text><line x1="171.7" y1="24" x2="171.7" y2="208" class="grid"/><text x="171.7" y="235" class="axis" text-anchor="middle">5%</text><line x1="289.3" y1="24" x2="289.3" y2="208" class="grid"/><text x="289.3" y="235" class="axis" text-anchor="middle">10%</text><line x1="407.0" y1="24" x2="407.0" y2="208" class="grid"/><text x="407.0" y="235" class="axis" text-anchor="middle">15%</text><line x1="524.7" y1="24" x2="524.7" y2="208" class="grid"/><text x="524.7" y="235" class="axis" text-anchor="middle">20%</text><line x1="642.3" y1="24" x2="642.3" y2="208" class="grid"/><text x="642.3" y="235" class="axis" text-anchor="middle">25%</text><line x1="760.0" y1="24" x2="760.0" y2="208" class="grid"/><text x="760.0" y="235" class="axis" text-anchor="middle">30%</text><line x1="54" y1="203.3" x2="760" y2="203.3" class="grid"/><text x="46" y="207.3" class="axis" text-anchor="end">0.5</text><line x1="54" y1="147.4" x2="760" y2="147.4" class="grid"/><text x="46" y="151.4" class="axis" text-anchor="end">0.6</text><line x1="54" y1="91.5" x2="760" y2="91.5" class="grid"/><text x="46" y="95.5" class="axis" text-anchor="end">0.7</text><line x1="54" y1="35.6" x2="760" y2="35.6" class="grid"/><text x="46" y="39.6" class="axis" text-anchor="end">0.8</text>
+    <line x1="54" y1="208" x2="760" y2="208" class="axis-line"/>
+    <line x1="54" y1="24" x2="54" y2="208" class="axis-line"/>
+    <path d="M 54.0 51.9 L 171.7 84.0 L 289.3 116.0 L 407.0 127.6 L 524.7 150.9 L 760.0 180.1" fill="none" stroke="#1f5fbf" stroke-width="2.5"/><circle cx="54.0" cy="51.9" r="4.5" fill="#1f5fbf"><title>0%: 0.771</title></circle><circle cx="171.7" cy="84.0" r="4.5" fill="#1f5fbf"><title>5%: 0.714</title></circle><circle cx="289.3" cy="116.0" r="4.5" fill="#1f5fbf"><title>10%: 0.656</title></circle><circle cx="407.0" cy="127.6" r="4.5" fill="#1f5fbf"><title>15%: 0.635</title></circle><circle cx="524.7" cy="150.9" r="4.5" fill="#1f5fbf"><title>20%: 0.594</title></circle><circle cx="760.0" cy="180.1" r="4.5" fill="#1f5fbf"><title>30%: 0.542</title></circle>
+  </svg>
+  <div class="legend"><span><i style="background:#1f5fbf"></i>single</span></div>
+</div>
+
+<div class="empty">No scored data yet.</div>
+<div class="empty">No scored data yet.</div>
+<div class="empty">No scored data yet.</div></div>
+  <table>
+<thead><tr><th>Variant</th><th>Status</th><th>Chapters</th><th>Actual</th><th>Combined</th><th>MCQ</th><th>Open</th><th>Confidence</th><th>Insufficient</th><th>Evidence</th><th>Errors</th></tr></thead>
+<tbody>
+<tr><td>0%</td><td><span class="status complete">complete</span></td><td>1,2,3,4,5,6,7,8</td><td></td><td>0.766</td><td>76.0%</td><td>0.771</td><td></td><td></td><td></td><td>0</td></tr>
+<tr><td>5%</td><td><span class="status complete">complete</span></td><td>1,2,3,4,5,6,7,8</td><td></td><td>0.737</td><td>76.0%</td><td>0.714</td><td></td><td></td><td></td><td>0</td></tr>
+<tr><td>10%</td><td><span class="status complete">complete</span></td><td>1,2,3,4,5,6,7,8</td><td></td><td>0.682</td><td>70.8%</td><td>0.656</td><td></td><td></td><td></td><td>0</td></tr>
+<tr><td>15%</td><td><span class="status complete">complete</span></td><td>1,2,3,4,5,6,7,8</td><td></td><td>0.672</td><td>70.8%</td><td>0.635</td><td></td><td></td><td></td><td>0</td></tr>
+<tr><td>20%</td><td><span class="status complete">complete</span></td><td>1,2,3,4,5,6,7,8</td><td></td><td>0.651</td><td>70.8%</td><td>0.594</td><td></td><td></td><td></td><td>0</td></tr>
+<tr><td>30%</td><td><span class="status complete">complete</span></td><td>1,2,3,4,5,6,7,8</td><td></td><td>0.609</td><td>67.7%</td><td>0.542</td><td></td><td></td><td></td><td>0</td></tr>
+</tbody>
+</table>
+</section>
+
+<section class="experiment" id="grammar">
+  <div class="section-head">
+    <div>
+      <h2>grammar</h2>
+      <p>MQM Fluency &gt; Grammar: rule-based grammar degradation.</p>
+      
+    </div>
+    <span class="chapters">Chapters: 1,2,3,4,5,6,7,8</span>
+  </div>
+  <div class="charts">
+<div class="chart">
+  <div class="chart-title">Combined Score</div>
+  <svg viewBox="0 0 780 250" role="img" aria-label="Combined Score">
+    <rect x="54" y="24" width="706" height="184" fill="#fff"/>
+    <line x1="54.0" y1="24" x2="54.0" y2="208" class="grid"/><text x="54.0" y="235" class="axis" text-anchor="middle">0%</text><line x1="171.7" y1="24" x2="171.7" y2="208" class="grid"/><text x="171.7" y="235" class="axis" text-anchor="middle">5%</text><line x1="289.3" y1="24" x2="289.3" y2="208" class="grid"/><text x="289.3" y="235" class="axis" text-anchor="middle">10%</text><line x1="407.0" y1="24" x2="407.0" y2="208" class="grid"/><text x="407.0" y="235" class="axis" text-anchor="middle">15%</text><line x1="524.7" y1="24" x2="524.7" y2="208" class="grid"/><text x="524.7" y="235" class="axis" text-anchor="middle">20%</text><line x1="642.3" y1="24" x2="642.3" y2="208" class="grid"/><text x="642.3" y="235" class="axis" text-anchor="middle">25%</text><line x1="760.0" y1="24" x2="760.0" y2="208" class="grid"/><text x="760.0" y="235" class="axis" text-anchor="middle">30%</text><line x1="54" y1="177.6" x2="760" y2="177.6" class="grid"/><text x="46" y="181.6" class="axis" text-anchor="end">0.7</text><line x1="54" y1="31.6" x2="760" y2="31.6" class="grid"/><text x="46" y="35.6" class="axis" text-anchor="end">0.8</text>
+    <line x1="54" y1="208" x2="760" y2="208" class="axis-line"/>
+    <line x1="54" y1="24" x2="54" y2="208" class="axis-line"/>
+    <path d="M 54.0 119.8 L 171.7 97.0 L 289.3 108.4 L 407.0 135.0 L 524.7 127.4 L 760.0 123.6" fill="none" stroke="#1f5fbf" stroke-width="2.5"/><circle cx="54.0" cy="119.8" r="4.5" fill="#1f5fbf"><title>0%: 0.740</title></circle><circle cx="171.7" cy="97.0" r="4.5" fill="#1f5fbf"><title>5%: 0.755</title></circle><circle cx="289.3" cy="108.4" r="4.5" fill="#1f5fbf"><title>10%: 0.747</title></circle><circle cx="407.0" cy="135.0" r="4.5" fill="#1f5fbf"><title>15%: 0.729</title></circle><circle cx="524.7" cy="127.4" r="4.5" fill="#1f5fbf"><title>20%: 0.734</title></circle><circle cx="760.0" cy="123.6" r="4.5" fill="#1f5fbf"><title>30%: 0.737</title></circle>
+  </svg>
+  <div class="legend"><span><i style="background:#1f5fbf"></i>single</span></div>
+</div>
+
+
+<div class="chart">
+  <div class="chart-title">MCQ Accuracy</div>
+  <svg viewBox="0 0 780 250" role="img" aria-label="MCQ Accuracy">
+    <rect x="54" y="24" width="706" height="184" fill="#fff"/>
+    <line x1="54.0" y1="24" x2="54.0" y2="208" class="grid"/><text x="54.0" y="235" class="axis" text-anchor="middle">0%</text><line x1="171.7" y1="24" x2="171.7" y2="208" class="grid"/><text x="171.7" y="235" class="axis" text-anchor="middle">5%</text><line x1="289.3" y1="24" x2="289.3" y2="208" class="grid"/><text x="289.3" y="235" class="axis" text-anchor="middle">10%</text><line x1="407.0" y1="24" x2="407.0" y2="208" class="grid"/><text x="407.0" y="235" class="axis" text-anchor="middle">15%</text><line x1="524.7" y1="24" x2="524.7" y2="208" class="grid"/><text x="524.7" y="235" class="axis" text-anchor="middle">20%</text><line x1="642.3" y1="24" x2="642.3" y2="208" class="grid"/><text x="642.3" y="235" class="axis" text-anchor="middle">25%</text><line x1="760.0" y1="24" x2="760.0" y2="208" class="grid"/><text x="760.0" y="235" class="axis" text-anchor="middle">30%</text><line x1="54" y1="106.6" x2="760" y2="106.6" class="grid"/><text x="46" y="110.6" class="axis" text-anchor="end">0.8</text>
+    <line x1="54" y1="208" x2="760" y2="208" class="axis-line"/>
+    <line x1="54" y1="24" x2="54" y2="208" class="axis-line"/>
+    <path d="M 54.0 151.4 L 171.7 139.6 L 289.3 127.8 L 407.0 139.6 L 524.7 139.6 L 760.0 80.6" fill="none" stroke="#1f5fbf" stroke-width="2.5"/><circle cx="54.0" cy="151.4" r="4.5" fill="#1f5fbf"><title>0%: 0.760</title></circle><circle cx="171.7" cy="139.6" r="4.5" fill="#1f5fbf"><title>5%: 0.771</title></circle><circle cx="289.3" cy="127.8" r="4.5" fill="#1f5fbf"><title>10%: 0.781</title></circle><circle cx="407.0" cy="139.6" r="4.5" fill="#1f5fbf"><title>15%: 0.771</title></circle><circle cx="524.7" cy="139.6" r="4.5" fill="#1f5fbf"><title>20%: 0.771</title></circle><circle cx="760.0" cy="80.6" r="4.5" fill="#1f5fbf"><title>30%: 0.823</title></circle>
+  </svg>
+  <div class="legend"><span><i style="background:#1f5fbf"></i>single</span></div>
+</div>
+
+
+<div class="chart">
+  <div class="chart-title">Open LLM Score</div>
+  <svg viewBox="0 0 780 250" role="img" aria-label="Open LLM Score">
+    <rect x="54" y="24" width="706" height="184" fill="#fff"/>
+    <line x1="54.0" y1="24" x2="54.0" y2="208" class="grid"/><text x="54.0" y="235" class="axis" text-anchor="middle">0%</text><line x1="171.7" y1="24" x2="171.7" y2="208" class="grid"/><text x="171.7" y="235" class="axis" text-anchor="middle">5%</text><line x1="289.3" y1="24" x2="289.3" y2="208" class="grid"/><text x="289.3" y="235" class="axis" text-anchor="middle">10%</text><line x1="407.0" y1="24" x2="407.0" y2="208" class="grid"/><text x="407.0" y="235" class="axis" text-anchor="middle">15%</text><line x1="524.7" y1="24" x2="524.7" y2="208" class="grid"/><text x="524.7" y="235" class="axis" text-anchor="middle">20%</text><line x1="642.3" y1="24" x2="642.3" y2="208" class="grid"/><text x="642.3" y="235" class="axis" text-anchor="middle">25%</text><line x1="760.0" y1="24" x2="760.0" y2="208" class="grid"/><text x="760.0" y="235" class="axis" text-anchor="middle">30%</text><line x1="54" y1="111.4" x2="760" y2="111.4" class="grid"/><text x="46" y="115.4" class="axis" text-anchor="end">0.7</text>
+    <line x1="54" y1="208" x2="760" y2="208" class="axis-line"/>
+    <line x1="54" y1="24" x2="54" y2="208" class="axis-line"/>
+    <path d="M 54.0 93.1 L 171.7 72.8 L 289.3 98.2 L 407.0 123.6 L 524.7 113.5 L 760.0 159.2" fill="none" stroke="#1f5fbf" stroke-width="2.5"/><circle cx="54.0" cy="93.1" r="4.5" fill="#1f5fbf"><title>0%: 0.719</title></circle><circle cx="171.7" cy="72.8" r="4.5" fill="#1f5fbf"><title>5%: 0.740</title></circle><circle cx="289.3" cy="98.2" r="4.5" fill="#1f5fbf"><title>10%: 0.714</title></circle><circle cx="407.0" cy="123.6" r="4.5" fill="#1f5fbf"><title>15%: 0.688</title></circle><circle cx="524.7" cy="113.5" r="4.5" fill="#1f5fbf"><title>20%: 0.698</title></circle><circle cx="760.0" cy="159.2" r="4.5" fill="#1f5fbf"><title>30%: 0.651</title></circle>
+  </svg>
+  <div class="legend"><span><i style="background:#1f5fbf"></i>single</span></div>
+</div>
+
+<div class="empty">No scored data yet.</div>
+<div class="empty">No scored data yet.</div>
+<div class="empty">No scored data yet.</div></div>
+  <table>
+<thead><tr><th>Variant</th><th>Status</th><th>Chapters</th><th>Actual</th><th>Combined</th><th>MCQ</th><th>Open</th><th>Confidence</th><th>Insufficient</th><th>Evidence</th><th>Errors</th></tr></thead>
+<tbody>
+<tr><td>0%</td><td><span class="status complete">complete</span></td><td>1,2,3,4,5,6,7,8</td><td></td><td>0.740</td><td>76.0%</td><td>0.719</td><td></td><td></td><td></td><td>0</td></tr>
+<tr><td>5%</td><td><span class="status complete">complete</span></td><td>1,2,3,4,5,6,7,8</td><td></td><td>0.755</td><td>77.1%</td><td>0.740</td><td></td><td></td><td></td><td>0</td></tr>
+<tr><td>10%</td><td><span class="status complete">complete</span></td><td>1,2,3,4,5,6,7,8</td><td></td><td>0.747</td><td>78.1%</td><td>0.714</td><td></td><td></td><td></td><td>0</td></tr>
+<tr><td>15%</td><td><span class="status complete">complete</span></td><td>1,2,3,4,5,6,7,8</td><td></td><td>0.729</td><td>77.1%</td><td>0.688</td><td></td><td></td><td></td><td>0</td></tr>
+<tr><td>20%</td><td><span class="status complete">complete</span></td><td>1,2,3,4,5,6,7,8</td><td></td><td>0.734</td><td>77.1%</td><td>0.698</td><td></td><td></td><td></td><td>0</td></tr>
+<tr><td>30%</td><td><span class="status complete">complete</span></td><td>1,2,3,4,5,6,7,8</td><td></td><td>0.737</td><td>82.3%</td><td>0.651</td><td></td><td></td><td></td><td>0</td></tr>
+</tbody>
+</table>
+</section>
+
+<section class="experiment" id="local_inconsistency-style">
+  <div class="section-head">
+    <div>
+      <h2>local style inconsistency</h2>
+      <p>MQM Inconsistency &gt; Question-local Style/register: inconsistent formality, tone, or wording style.</p>
+      
+    </div>
+    <span class="chapters">Chapters: 1,2,3,4,5,6,7,8</span>
+  </div>
+  <div class="charts">
+<div class="chart">
+  <div class="chart-title">Combined Score</div>
+  <svg viewBox="0 0 780 250" role="img" aria-label="Combined Score">
+    <rect x="54" y="24" width="706" height="184" fill="#fff"/>
+    <line x1="54.0" y1="24" x2="54.0" y2="208" class="grid"/><text x="54.0" y="235" class="axis" text-anchor="middle">0%</text><line x1="230.5" y1="24" x2="230.5" y2="208" class="grid"/><text x="230.5" y="235" class="axis" text-anchor="middle">5%</text><line x1="407.0" y1="24" x2="407.0" y2="208" class="grid"/><text x="407.0" y="235" class="axis" text-anchor="middle">10%</text><line x1="583.5" y1="24" x2="583.5" y2="208" class="grid"/><text x="583.5" y="235" class="axis" text-anchor="middle">15%</text><line x1="760.0" y1="24" x2="760.0" y2="208" class="grid"/><text x="760.0" y="235" class="axis" text-anchor="middle">20%</text><line x1="54" y1="167.5" x2="760" y2="167.5" class="grid"/><text x="46" y="171.5" class="axis" text-anchor="end">0.7</text>
+    <line x1="54" y1="208" x2="760" y2="208" class="axis-line"/>
+    <line x1="54" y1="24" x2="54" y2="208" class="axis-line"/>
+    <path d="M 230.5 101.8 L 407.0 114.0 L 583.5 109.9 L 760.0 130.2" fill="none" stroke="#2c7a7b" stroke-width="2.5"/><circle cx="230.5" cy="101.8" r="4.5" fill="#2c7a7b"><title>style_5%: 0.742</title></circle><circle cx="407.0" cy="114.0" r="4.5" fill="#2c7a7b"><title>style_10%: 0.734</title></circle><circle cx="583.5" cy="109.9" r="4.5" fill="#2c7a7b"><title>style_15%: 0.737</title></circle><circle cx="760.0" cy="130.2" r="4.5" fill="#2c7a7b"><title>style_20%: 0.724</title></circle>
+  </svg>
+  <div class="legend"><span><i style="background:#2c7a7b"></i>style</span></div>
+</div>
+
+
+<div class="chart">
+  <div class="chart-title">MCQ Accuracy</div>
+  <svg viewBox="0 0 780 250" role="img" aria-label="MCQ Accuracy">
+    <rect x="54" y="24" width="706" height="184" fill="#fff"/>
+    <line x1="54.0" y1="24" x2="54.0" y2="208" class="grid"/><text x="54.0" y="235" class="axis" text-anchor="middle">0%</text><line x1="230.5" y1="24" x2="230.5" y2="208" class="grid"/><text x="230.5" y="235" class="axis" text-anchor="middle">5%</text><line x1="407.0" y1="24" x2="407.0" y2="208" class="grid"/><text x="407.0" y="235" class="axis" text-anchor="middle">10%</text><line x1="583.5" y1="24" x2="583.5" y2="208" class="grid"/><text x="583.5" y="235" class="axis" text-anchor="middle">15%</text><line x1="760.0" y1="24" x2="760.0" y2="208" class="grid"/><text x="760.0" y="235" class="axis" text-anchor="middle">20%</text><line x1="54" y1="176.3" x2="760" y2="176.3" class="grid"/><text x="46" y="180.3" class="axis" text-anchor="end">0.7</text><line x1="54" y1="24.0" x2="760" y2="24.0" class="grid"/><text x="46" y="28.0" class="axis" text-anchor="end">0.8</text>
+    <line x1="54" y1="208" x2="760" y2="208" class="axis-line"/>
+    <line x1="54" y1="24" x2="54" y2="208" class="axis-line"/>
+    <path d="M 230.5 116.0 L 407.0 116.0 L 583.5 100.1 L 760.0 131.9" fill="none" stroke="#2c7a7b" stroke-width="2.5"/><circle cx="230.5" cy="116.0" r="4.5" fill="#2c7a7b"><title>style_5%: 0.740</title></circle><circle cx="407.0" cy="116.0" r="4.5" fill="#2c7a7b"><title>style_10%: 0.740</title></circle><circle cx="583.5" cy="100.1" r="4.5" fill="#2c7a7b"><title>style_15%: 0.750</title></circle><circle cx="760.0" cy="131.9" r="4.5" fill="#2c7a7b"><title>style_20%: 0.729</title></circle>
+  </svg>
+  <div class="legend"><span><i style="background:#2c7a7b"></i>style</span></div>
+</div>
+
+
+<div class="chart">
+  <div class="chart-title">Open LLM Score</div>
+  <svg viewBox="0 0 780 250" role="img" aria-label="Open LLM Score">
+    <rect x="54" y="24" width="706" height="184" fill="#fff"/>
+    <line x1="54.0" y1="24" x2="54.0" y2="208" class="grid"/><text x="54.0" y="235" class="axis" text-anchor="middle">0%</text><line x1="230.5" y1="24" x2="230.5" y2="208" class="grid"/><text x="230.5" y="235" class="axis" text-anchor="middle">5%</text><line x1="407.0" y1="24" x2="407.0" y2="208" class="grid"/><text x="407.0" y="235" class="axis" text-anchor="middle">10%</text><line x1="583.5" y1="24" x2="583.5" y2="208" class="grid"/><text x="583.5" y="235" class="axis" text-anchor="middle">15%</text><line x1="760.0" y1="24" x2="760.0" y2="208" class="grid"/><text x="760.0" y="235" class="axis" text-anchor="middle">20%</text><line x1="54" y1="162.4" x2="760" y2="162.4" class="grid"/><text x="46" y="166.4" class="axis" text-anchor="end">0.7</text>
+    <line x1="54" y1="208" x2="760" y2="208" class="axis-line"/>
+    <line x1="54" y1="24" x2="54" y2="208" class="axis-line"/>
+    <path d="M 230.5 97.0 L 407.0 119.8 L 583.5 127.4 L 760.0 135.0" fill="none" stroke="#2c7a7b" stroke-width="2.5"/><circle cx="230.5" cy="97.0" r="4.5" fill="#2c7a7b"><title>style_5%: 0.745</title></circle><circle cx="407.0" cy="119.8" r="4.5" fill="#2c7a7b"><title>style_10%: 0.729</title></circle><circle cx="583.5" cy="127.4" r="4.5" fill="#2c7a7b"><title>style_15%: 0.724</title></circle><circle cx="760.0" cy="135.0" r="4.5" fill="#2c7a7b"><title>style_20%: 0.719</title></circle>
+  </svg>
+  <div class="legend"><span><i style="background:#2c7a7b"></i>style</span></div>
+</div>
+
+<div class="empty">No scored data yet.</div>
+<div class="empty">No scored data yet.</div>
+<div class="empty">No scored data yet.</div></div>
+  <table>
+<thead><tr><th>Variant</th><th>Status</th><th>Chapters</th><th>Actual</th><th>Combined</th><th>MCQ</th><th>Open</th><th>Confidence</th><th>Insufficient</th><th>Evidence</th><th>Errors</th></tr></thead>
+<tbody>
+<tr><td>style_5%</td><td><span class="status complete">complete</span></td><td>1,2,3,4,5,6,7,8</td><td>5.9%</td><td>0.742</td><td>74.0%</td><td>0.745</td><td></td><td></td><td></td><td>0</td></tr>
+<tr><td>style_10%</td><td><span class="status complete">complete</span></td><td>1,2,3,4,5,6,7,8</td><td>7.4%</td><td>0.734</td><td>74.0%</td><td>0.729</td><td></td><td></td><td></td><td>0</td></tr>
+<tr><td>style_15%</td><td><span class="status complete">complete</span></td><td>1,2,3,4,5,6,7,8</td><td>8.7%</td><td>0.737</td><td>75.0%</td><td>0.724</td><td></td><td></td><td></td><td>0</td></tr>
+<tr><td>style_20%</td><td><span class="status complete">complete</span></td><td>1,2,3,4,5,6,7,8</td><td>9.6%</td><td>0.724</td><td>72.9%</td><td>0.719</td><td></td><td></td><td></td><td>0</td></tr>
+</tbody>
+</table>
+</section>
+
+<section class="experiment" id="awkward">
+  <div class="section-head">
+    <div>
+      <h2>awkward</h2>
+      <p>MQM Style &gt; Awkward: literalized/source-like phrasing replacements.</p>
+      
+    </div>
+    <span class="chapters">Chapters: 1,2,3,4,5,6,7,8</span>
+  </div>
+  <div class="charts">
+<div class="chart">
+  <div class="chart-title">Combined Score</div>
+  <svg viewBox="0 0 780 250" role="img" aria-label="Combined Score">
+    <rect x="54" y="24" width="706" height="184" fill="#fff"/>
+    <line x1="54.0" y1="24" x2="54.0" y2="208" class="grid"/><text x="54.0" y="235" class="axis" text-anchor="middle">0%</text><line x1="171.7" y1="24" x2="171.7" y2="208" class="grid"/><text x="171.7" y="235" class="axis" text-anchor="middle">5%</text><line x1="289.3" y1="24" x2="289.3" y2="208" class="grid"/><text x="289.3" y="235" class="axis" text-anchor="middle">10%</text><line x1="407.0" y1="24" x2="407.0" y2="208" class="grid"/><text x="407.0" y="235" class="axis" text-anchor="middle">15%</text><line x1="524.7" y1="24" x2="524.7" y2="208" class="grid"/><text x="524.7" y="235" class="axis" text-anchor="middle">20%</text><line x1="642.3" y1="24" x2="642.3" y2="208" class="grid"/><text x="642.3" y="235" class="axis" text-anchor="middle">25%</text><line x1="760.0" y1="24" x2="760.0" y2="208" class="grid"/><text x="760.0" y="235" class="axis" text-anchor="middle">30%</text><line x1="54" y1="175.8" x2="760" y2="175.8" class="grid"/><text x="46" y="179.8" class="axis" text-anchor="end">0.7</text><line x1="54" y1="38.3" x2="760" y2="38.3" class="grid"/><text x="46" y="42.3" class="axis" text-anchor="end">0.8</text>
+    <line x1="54" y1="208" x2="760" y2="208" class="axis-line"/>
+    <line x1="54" y1="24" x2="54" y2="208" class="axis-line"/>
+    <path d="M 54.0 110.6 L 171.7 92.7 L 289.3 96.3 L 407.0 132.1 L 524.7 139.3 L 760.0 114.2" fill="none" stroke="#1f5fbf" stroke-width="2.5"/><circle cx="54.0" cy="110.6" r="4.5" fill="#1f5fbf"><title>0%: 0.747</title></circle><circle cx="171.7" cy="92.7" r="4.5" fill="#1f5fbf"><title>5%: 0.760</title></circle><circle cx="289.3" cy="96.3" r="4.5" fill="#1f5fbf"><title>10%: 0.758</title></circle><circle cx="407.0" cy="132.1" r="4.5" fill="#1f5fbf"><title>15%: 0.732</title></circle><circle cx="524.7" cy="139.3" r="4.5" fill="#1f5fbf"><title>20%: 0.727</title></circle><circle cx="760.0" cy="114.2" r="4.5" fill="#1f5fbf"><title>30%: 0.745</title></circle>
+  </svg>
+  <div class="legend"><span><i style="background:#1f5fbf"></i>single</span></div>
+</div>
+
+
+<div class="chart">
+  <div class="chart-title">MCQ Accuracy</div>
+  <svg viewBox="0 0 780 250" role="img" aria-label="MCQ Accuracy">
+    <rect x="54" y="24" width="706" height="184" fill="#fff"/>
+    <line x1="54.0" y1="24" x2="54.0" y2="208" class="grid"/><text x="54.0" y="235" class="axis" text-anchor="middle">0%</text><line x1="171.7" y1="24" x2="171.7" y2="208" class="grid"/><text x="171.7" y="235" class="axis" text-anchor="middle">5%</text><line x1="289.3" y1="24" x2="289.3" y2="208" class="grid"/><text x="289.3" y="235" class="axis" text-anchor="middle">10%</text><line x1="407.0" y1="24" x2="407.0" y2="208" class="grid"/><text x="407.0" y="235" class="axis" text-anchor="middle">15%</text><line x1="524.7" y1="24" x2="524.7" y2="208" class="grid"/><text x="524.7" y="235" class="axis" text-anchor="middle">20%</text><line x1="642.3" y1="24" x2="642.3" y2="208" class="grid"/><text x="642.3" y="235" class="axis" text-anchor="middle">25%</text><line x1="760.0" y1="24" x2="760.0" y2="208" class="grid"/><text x="760.0" y="235" class="axis" text-anchor="middle">30%</text><line x1="54" y1="208.0" x2="760" y2="208.0" class="grid"/><text x="46" y="212.0" class="axis" text-anchor="end">0.7</text><line x1="54" y1="67.8" x2="760" y2="67.8" class="grid"/><text x="46" y="71.8" class="axis" text-anchor="end">0.8</text>
+    <line x1="54" y1="208" x2="760" y2="208" class="axis-line"/>
+    <line x1="54" y1="24" x2="54" y2="208" class="axis-line"/>
+    <path d="M 54.0 123.3 L 171.7 108.7 L 289.3 137.9 L 407.0 108.7 L 524.7 123.3 L 760.0 94.1" fill="none" stroke="#1f5fbf" stroke-width="2.5"/><circle cx="54.0" cy="123.3" r="4.5" fill="#1f5fbf"><title>0%: 0.760</title></circle><circle cx="171.7" cy="108.7" r="4.5" fill="#1f5fbf"><title>5%: 0.771</title></circle><circle cx="289.3" cy="137.9" r="4.5" fill="#1f5fbf"><title>10%: 0.750</title></circle><circle cx="407.0" cy="108.7" r="4.5" fill="#1f5fbf"><title>15%: 0.771</title></circle><circle cx="524.7" cy="123.3" r="4.5" fill="#1f5fbf"><title>20%: 0.760</title></circle><circle cx="760.0" cy="94.1" r="4.5" fill="#1f5fbf"><title>30%: 0.781</title></circle>
+  </svg>
+  <div class="legend"><span><i style="background:#1f5fbf"></i>single</span></div>
+</div>
+
+
+<div class="chart">
+  <div class="chart-title">Open LLM Score</div>
+  <svg viewBox="0 0 780 250" role="img" aria-label="Open LLM Score">
+    <rect x="54" y="24" width="706" height="184" fill="#fff"/>
+    <line x1="54.0" y1="24" x2="54.0" y2="208" class="grid"/><text x="54.0" y="235" class="axis" text-anchor="middle">0%</text><line x1="171.7" y1="24" x2="171.7" y2="208" class="grid"/><text x="171.7" y="235" class="axis" text-anchor="middle">5%</text><line x1="289.3" y1="24" x2="289.3" y2="208" class="grid"/><text x="289.3" y="235" class="axis" text-anchor="middle">10%</text><line x1="407.0" y1="24" x2="407.0" y2="208" class="grid"/><text x="407.0" y="235" class="axis" text-anchor="middle">15%</text><line x1="524.7" y1="24" x2="524.7" y2="208" class="grid"/><text x="524.7" y="235" class="axis" text-anchor="middle">20%</text><line x1="642.3" y1="24" x2="642.3" y2="208" class="grid"/><text x="642.3" y="235" class="axis" text-anchor="middle">25%</text><line x1="760.0" y1="24" x2="760.0" y2="208" class="grid"/><text x="760.0" y="235" class="axis" text-anchor="middle">30%</text><line x1="54" y1="147.0" x2="760" y2="147.0" class="grid"/><text x="46" y="151.0" class="axis" text-anchor="end">0.7</text><line x1="54" y1="40.6" x2="760" y2="40.6" class="grid"/><text x="46" y="44.6" class="axis" text-anchor="end">0.8</text>
+    <line x1="54" y1="208" x2="760" y2="208" class="axis-line"/>
+    <line x1="54" y1="24" x2="54" y2="208" class="axis-line"/>
+    <path d="M 54.0 110.5 L 171.7 93.8 L 289.3 77.2 L 407.0 154.8 L 524.7 154.8 L 760.0 138.2" fill="none" stroke="#1f5fbf" stroke-width="2.5"/><circle cx="54.0" cy="110.5" r="4.5" fill="#1f5fbf"><title>0%: 0.734</title></circle><circle cx="171.7" cy="93.8" r="4.5" fill="#1f5fbf"><title>5%: 0.750</title></circle><circle cx="289.3" cy="77.2" r="4.5" fill="#1f5fbf"><title>10%: 0.766</title></circle><circle cx="407.0" cy="154.8" r="4.5" fill="#1f5fbf"><title>15%: 0.693</title></circle><circle cx="524.7" cy="154.8" r="4.5" fill="#1f5fbf"><title>20%: 0.693</title></circle><circle cx="760.0" cy="138.2" r="4.5" fill="#1f5fbf"><title>30%: 0.708</title></circle>
+  </svg>
+  <div class="legend"><span><i style="background:#1f5fbf"></i>single</span></div>
+</div>
+
+<div class="empty">No scored data yet.</div>
+<div class="empty">No scored data yet.</div>
+<div class="empty">No scored data yet.</div></div>
+  <table>
+<thead><tr><th>Variant</th><th>Status</th><th>Chapters</th><th>Actual</th><th>Combined</th><th>MCQ</th><th>Open</th><th>Confidence</th><th>Insufficient</th><th>Evidence</th><th>Errors</th></tr></thead>
+<tbody>
+<tr><td>0%</td><td><span class="status complete">complete</span></td><td>1,2,3,4,5,6,7,8</td><td></td><td>0.747</td><td>76.0%</td><td>0.734</td><td></td><td></td><td></td><td>0</td></tr>
+<tr><td>5%</td><td><span class="status complete">complete</span></td><td>1,2,3,4,5,6,7,8</td><td></td><td>0.760</td><td>77.1%</td><td>0.750</td><td></td><td></td><td></td><td>0</td></tr>
+<tr><td>10%</td><td><span class="status complete">complete</span></td><td>1,2,3,4,5,6,7,8</td><td></td><td>0.758</td><td>75.0%</td><td>0.766</td><td></td><td></td><td></td><td>0</td></tr>
+<tr><td>15%</td><td><span class="status complete">complete</span></td><td>1,2,3,4,5,6,7,8</td><td></td><td>0.732</td><td>77.1%</td><td>0.693</td><td></td><td></td><td></td><td>0</td></tr>
+<tr><td>20%</td><td><span class="status complete">complete</span></td><td>1,2,3,4,5,6,7,8</td><td></td><td>0.727</td><td>76.0%</td><td>0.693</td><td></td><td></td><td></td><td>0</td></tr>
+<tr><td>30%</td><td><span class="status complete">complete</span></td><td>1,2,3,4,5,6,7,8</td><td></td><td>0.745</td><td>78.1%</td><td>0.708</td><td></td><td></td><td></td><td>0</td></tr>
+</tbody>
+</table>
+</section>
+
+  <p class="data-note">Raw aggregated rows are embedded in this file as JSON for inspection.</p>
+  <script type="application/json" id="synthetic-perturbation-data">[{&quot;experiment&quot;: &quot;addition&quot;, &quot;variant&quot;: &quot;0%&quot;, &quot;status&quot;: &quot;complete&quot;, &quot;chapters_scored&quot;: &quot;1,2,3,4,5,6,7,8&quot;, &quot;chapter_count&quot;: 8, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: null, &quot;combined_score&quot;: 0.7578125, &quot;mcq_accuracy&quot;: 0.7604166666666666, &quot;open_llm_score_mean&quot;: 0.7552083333333334, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: 0, &quot;total_items&quot;: 192}, {&quot;experiment&quot;: &quot;addition&quot;, &quot;variant&quot;: &quot;neutral_5%&quot;, &quot;status&quot;: &quot;complete&quot;, &quot;chapters_scored&quot;: &quot;1,2,3,4,5,6,7,8&quot;, &quot;chapter_count&quot;: 8, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: null, &quot;combined_score&quot;: 0.7604166666666666, &quot;mcq_accuracy&quot;: 0.7708333333333334, &quot;open_llm_score_mean&quot;: 0.75, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: 0, &quot;total_items&quot;: 192}, {&quot;experiment&quot;: &quot;addition&quot;, &quot;variant&quot;: &quot;bad_5%&quot;, &quot;status&quot;: &quot;complete&quot;, &quot;chapters_scored&quot;: &quot;1,2,3,4,5,6,7,8&quot;, &quot;chapter_count&quot;: 8, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: null, &quot;combined_score&quot;: 0.7578125, &quot;mcq_accuracy&quot;: 0.78125, &quot;open_llm_score_mean&quot;: 0.734375, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: 0, &quot;total_items&quot;: 192}, {&quot;experiment&quot;: &quot;addition&quot;, &quot;variant&quot;: &quot;adversarial_5%&quot;, &quot;status&quot;: &quot;complete&quot;, &quot;chapters_scored&quot;: &quot;1,2,3,4,5,6,7,8&quot;, &quot;chapter_count&quot;: 8, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: null, &quot;combined_score&quot;: 0.7395833333333334, &quot;mcq_accuracy&quot;: 0.7708333333333334, &quot;open_llm_score_mean&quot;: 0.7083333333333334, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: 0, &quot;total_items&quot;: 192}, {&quot;experiment&quot;: &quot;addition&quot;, &quot;variant&quot;: &quot;neutral_10%&quot;, &quot;status&quot;: &quot;complete&quot;, &quot;chapters_scored&quot;: &quot;1,2,3,4,5,6,7,8&quot;, &quot;chapter_count&quot;: 8, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: null, &quot;combined_score&quot;: 0.75, &quot;mcq_accuracy&quot;: 0.78125, &quot;open_llm_score_mean&quot;: 0.71875, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: 0, &quot;total_items&quot;: 192}, {&quot;experiment&quot;: &quot;addition&quot;, &quot;variant&quot;: &quot;bad_10%&quot;, &quot;status&quot;: &quot;complete&quot;, &quot;chapters_scored&quot;: &quot;1,2,3,4,5,6,7,8&quot;, &quot;chapter_count&quot;: 8, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: null, &quot;combined_score&quot;: 0.7473958333333334, &quot;mcq_accuracy&quot;: 0.7916666666666666, &quot;open_llm_score_mean&quot;: 0.703125, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: 0, &quot;total_items&quot;: 192}, {&quot;experiment&quot;: &quot;addition&quot;, &quot;variant&quot;: &quot;adversarial_10%&quot;, &quot;status&quot;: &quot;complete&quot;, &quot;chapters_scored&quot;: &quot;1,2,3,4,5,6,7,8&quot;, &quot;chapter_count&quot;: 8, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: null, &quot;combined_score&quot;: 0.7083333333333334, &quot;mcq_accuracy&quot;: 0.7604166666666666, &quot;open_llm_score_mean&quot;: 0.65625, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: 0, &quot;total_items&quot;: 192}, {&quot;experiment&quot;: &quot;addition&quot;, &quot;variant&quot;: &quot;neutral_15%&quot;, &quot;status&quot;: &quot;complete&quot;, &quot;chapters_scored&quot;: &quot;1,2,3,4,5,6,7,8&quot;, &quot;chapter_count&quot;: 8, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: null, &quot;combined_score&quot;: 0.7708333333333334, &quot;mcq_accuracy&quot;: 0.7916666666666666, &quot;open_llm_score_mean&quot;: 0.75, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: 0, &quot;total_items&quot;: 192}, {&quot;experiment&quot;: &quot;addition&quot;, &quot;variant&quot;: &quot;bad_15%&quot;, &quot;status&quot;: &quot;complete&quot;, &quot;chapters_scored&quot;: &quot;1,2,3,4,5,6,7,8&quot;, &quot;chapter_count&quot;: 8, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: null, &quot;combined_score&quot;: 0.7291666666666666, &quot;mcq_accuracy&quot;: 0.78125, &quot;open_llm_score_mean&quot;: 0.6770833333333334, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: 0, &quot;total_items&quot;: 192}, {&quot;experiment&quot;: &quot;addition&quot;, &quot;variant&quot;: &quot;adversarial_15%&quot;, &quot;status&quot;: &quot;complete&quot;, &quot;chapters_scored&quot;: &quot;1,2,3,4,5,6,7,8&quot;, &quot;chapter_count&quot;: 8, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: null, &quot;combined_score&quot;: 0.7109375, &quot;mcq_accuracy&quot;: 0.7708333333333334, &quot;open_llm_score_mean&quot;: 0.6510416666666666, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: 0, &quot;total_items&quot;: 192}, {&quot;experiment&quot;: &quot;addition&quot;, &quot;variant&quot;: &quot;neutral_20%&quot;, &quot;status&quot;: &quot;complete&quot;, &quot;chapters_scored&quot;: &quot;1,2,3,4,5,6,7,8&quot;, &quot;chapter_count&quot;: 8, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: null, &quot;combined_score&quot;: 0.7552083333333334, &quot;mcq_accuracy&quot;: 0.7916666666666666, &quot;open_llm_score_mean&quot;: 0.71875, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: 0, &quot;total_items&quot;: 192}, {&quot;experiment&quot;: &quot;addition&quot;, &quot;variant&quot;: &quot;bad_20%&quot;, &quot;status&quot;: &quot;complete&quot;, &quot;chapters_scored&quot;: &quot;1,2,3,4,5,6,7,8&quot;, &quot;chapter_count&quot;: 8, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: null, &quot;combined_score&quot;: 0.734375, &quot;mcq_accuracy&quot;: 0.7916666666666666, &quot;open_llm_score_mean&quot;: 0.6770833333333334, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: 0, &quot;total_items&quot;: 192}, {&quot;experiment&quot;: &quot;addition&quot;, &quot;variant&quot;: &quot;adversarial_20%&quot;, &quot;status&quot;: &quot;complete&quot;, &quot;chapters_scored&quot;: &quot;1,2,3,4,5,6,7,8&quot;, &quot;chapter_count&quot;: 8, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: null, &quot;combined_score&quot;: 0.6875, &quot;mcq_accuracy&quot;: 0.75, &quot;open_llm_score_mean&quot;: 0.625, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: 0, &quot;total_items&quot;: 192}, {&quot;experiment&quot;: &quot;addition&quot;, &quot;variant&quot;: &quot;neutral_30%&quot;, &quot;status&quot;: &quot;complete&quot;, &quot;chapters_scored&quot;: &quot;1,2,3,4,5,6,7,8&quot;, &quot;chapter_count&quot;: 8, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: null, &quot;combined_score&quot;: 0.7552083333333334, &quot;mcq_accuracy&quot;: 0.8125, &quot;open_llm_score_mean&quot;: 0.6979166666666666, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: 0, &quot;total_items&quot;: 192}, {&quot;experiment&quot;: &quot;addition&quot;, &quot;variant&quot;: &quot;bad_30%&quot;, &quot;status&quot;: &quot;complete&quot;, &quot;chapters_scored&quot;: &quot;1,2,3,4,5,6,7,8&quot;, &quot;chapter_count&quot;: 8, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: null, &quot;combined_score&quot;: 0.7213541666666666, &quot;mcq_accuracy&quot;: 0.7916666666666666, &quot;open_llm_score_mean&quot;: 0.6510416666666666, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: 0, &quot;total_items&quot;: 192}, {&quot;experiment&quot;: &quot;addition&quot;, &quot;variant&quot;: &quot;adversarial_30%&quot;, &quot;status&quot;: &quot;complete&quot;, &quot;chapters_scored&quot;: &quot;1,2,3,4,5,6,7,8&quot;, &quot;chapter_count&quot;: 8, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: null, &quot;combined_score&quot;: 0.6744791666666666, &quot;mcq_accuracy&quot;: 0.7395833333333334, &quot;open_llm_score_mean&quot;: 0.609375, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: 0, &quot;total_items&quot;: 192}, {&quot;experiment&quot;: &quot;omission&quot;, &quot;variant&quot;: &quot;0%&quot;, &quot;status&quot;: &quot;complete&quot;, &quot;chapters_scored&quot;: &quot;1,2,3,4,5,6,7,8&quot;, &quot;chapter_count&quot;: 8, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: null, &quot;combined_score&quot;: 0.7447916666666666, &quot;mcq_accuracy&quot;: 0.7604166666666666, &quot;open_llm_score_mean&quot;: 0.7291666666666666, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: 0, &quot;total_items&quot;: 192}, {&quot;experiment&quot;: &quot;omission&quot;, &quot;variant&quot;: &quot;5%&quot;, &quot;status&quot;: &quot;complete&quot;, &quot;chapters_scored&quot;: &quot;1,2,3,4,5,6,7,8&quot;, &quot;chapter_count&quot;: 8, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: null, &quot;combined_score&quot;: 0.7447916666666666, &quot;mcq_accuracy&quot;: 0.8020833333333334, &quot;open_llm_score_mean&quot;: 0.6875, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: 0, &quot;total_items&quot;: 192}, {&quot;experiment&quot;: &quot;omission&quot;, &quot;variant&quot;: &quot;10%&quot;, &quot;status&quot;: &quot;complete&quot;, &quot;chapters_scored&quot;: &quot;1,2,3,4,5,6,7,8&quot;, &quot;chapter_count&quot;: 8, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: null, &quot;combined_score&quot;: 0.7526041666666666, &quot;mcq_accuracy&quot;: 0.8229166666666666, &quot;open_llm_score_mean&quot;: 0.6822916666666666, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: 0, &quot;total_items&quot;: 192}, {&quot;experiment&quot;: &quot;omission&quot;, &quot;variant&quot;: &quot;15%&quot;, &quot;status&quot;: &quot;complete&quot;, &quot;chapters_scored&quot;: &quot;1,2,3,4,5,6,7,8&quot;, &quot;chapter_count&quot;: 8, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: null, &quot;combined_score&quot;: 0.7005208333333334, &quot;mcq_accuracy&quot;: 0.78125, &quot;open_llm_score_mean&quot;: 0.6197916666666666, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: 0, &quot;total_items&quot;: 192}, {&quot;experiment&quot;: &quot;omission&quot;, &quot;variant&quot;: &quot;20%&quot;, &quot;status&quot;: &quot;complete&quot;, &quot;chapters_scored&quot;: &quot;1,2,3,4,5,6,7,8&quot;, &quot;chapter_count&quot;: 8, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: null, &quot;combined_score&quot;: 0.7135416666666666, &quot;mcq_accuracy&quot;: 0.7916666666666666, &quot;open_llm_score_mean&quot;: 0.6354166666666666, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: 0, &quot;total_items&quot;: 192}, {&quot;experiment&quot;: &quot;omission&quot;, &quot;variant&quot;: &quot;30%&quot;, &quot;status&quot;: &quot;complete&quot;, &quot;chapters_scored&quot;: &quot;1,2,3,4,5,6,7,8&quot;, &quot;chapter_count&quot;: 8, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: null, &quot;combined_score&quot;: 0.640625, &quot;mcq_accuracy&quot;: 0.7291666666666666, &quot;open_llm_score_mean&quot;: 0.5520833333333334, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: 0, &quot;total_items&quot;: 192}, {&quot;experiment&quot;: &quot;mistranslation&quot;, &quot;variant&quot;: &quot;0%&quot;, &quot;status&quot;: &quot;complete&quot;, &quot;chapters_scored&quot;: &quot;1,2,3,4,5,6,7,8&quot;, &quot;chapter_count&quot;: 8, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: null, &quot;combined_score&quot;: 0.765625, &quot;mcq_accuracy&quot;: 0.7604166666666666, &quot;open_llm_score_mean&quot;: 0.7708333333333334, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: 0, &quot;total_items&quot;: 192}, {&quot;experiment&quot;: &quot;mistranslation&quot;, &quot;variant&quot;: &quot;5%&quot;, &quot;status&quot;: &quot;complete&quot;, &quot;chapters_scored&quot;: &quot;1,2,3,4,5,6,7,8&quot;, &quot;chapter_count&quot;: 8, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: null, &quot;combined_score&quot;: 0.7369791666666666, &quot;mcq_accuracy&quot;: 0.7604166666666666, &quot;open_llm_score_mean&quot;: 0.7135416666666666, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: 0, &quot;total_items&quot;: 192}, {&quot;experiment&quot;: &quot;mistranslation&quot;, &quot;variant&quot;: &quot;10%&quot;, &quot;status&quot;: &quot;complete&quot;, &quot;chapters_scored&quot;: &quot;1,2,3,4,5,6,7,8&quot;, &quot;chapter_count&quot;: 8, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: null, &quot;combined_score&quot;: 0.6822916666666666, &quot;mcq_accuracy&quot;: 0.7083333333333334, &quot;open_llm_score_mean&quot;: 0.65625, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: 0, &quot;total_items&quot;: 192}, {&quot;experiment&quot;: &quot;mistranslation&quot;, &quot;variant&quot;: &quot;15%&quot;, &quot;status&quot;: &quot;complete&quot;, &quot;chapters_scored&quot;: &quot;1,2,3,4,5,6,7,8&quot;, &quot;chapter_count&quot;: 8, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: null, &quot;combined_score&quot;: 0.671875, &quot;mcq_accuracy&quot;: 0.7083333333333334, &quot;open_llm_score_mean&quot;: 0.6354166666666666, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: 0, &quot;total_items&quot;: 192}, {&quot;experiment&quot;: &quot;mistranslation&quot;, &quot;variant&quot;: &quot;20%&quot;, &quot;status&quot;: &quot;complete&quot;, &quot;chapters_scored&quot;: &quot;1,2,3,4,5,6,7,8&quot;, &quot;chapter_count&quot;: 8, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: null, &quot;combined_score&quot;: 0.6510416666666666, &quot;mcq_accuracy&quot;: 0.7083333333333334, &quot;open_llm_score_mean&quot;: 0.59375, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: 0, &quot;total_items&quot;: 192}, {&quot;experiment&quot;: &quot;mistranslation&quot;, &quot;variant&quot;: &quot;30%&quot;, &quot;status&quot;: &quot;complete&quot;, &quot;chapters_scored&quot;: &quot;1,2,3,4,5,6,7,8&quot;, &quot;chapter_count&quot;: 8, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: null, &quot;combined_score&quot;: 0.609375, &quot;mcq_accuracy&quot;: 0.6770833333333334, &quot;open_llm_score_mean&quot;: 0.5416666666666666, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: 0, &quot;total_items&quot;: 192}, {&quot;experiment&quot;: &quot;grammar&quot;, &quot;variant&quot;: &quot;0%&quot;, &quot;status&quot;: &quot;complete&quot;, &quot;chapters_scored&quot;: &quot;1,2,3,4,5,6,7,8&quot;, &quot;chapter_count&quot;: 8, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: null, &quot;combined_score&quot;: 0.7395833333333334, &quot;mcq_accuracy&quot;: 0.7604166666666666, &quot;open_llm_score_mean&quot;: 0.71875, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: 0, &quot;total_items&quot;: 192}, {&quot;experiment&quot;: &quot;grammar&quot;, &quot;variant&quot;: &quot;5%&quot;, &quot;status&quot;: &quot;complete&quot;, &quot;chapters_scored&quot;: &quot;1,2,3,4,5,6,7,8&quot;, &quot;chapter_count&quot;: 8, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: null, &quot;combined_score&quot;: 0.7552083333333334, &quot;mcq_accuracy&quot;: 0.7708333333333334, &quot;open_llm_score_mean&quot;: 0.7395833333333334, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: 0, &quot;total_items&quot;: 192}, {&quot;experiment&quot;: &quot;grammar&quot;, &quot;variant&quot;: &quot;10%&quot;, &quot;status&quot;: &quot;complete&quot;, &quot;chapters_scored&quot;: &quot;1,2,3,4,5,6,7,8&quot;, &quot;chapter_count&quot;: 8, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: null, &quot;combined_score&quot;: 0.7473958333333334, &quot;mcq_accuracy&quot;: 0.78125, &quot;open_llm_score_mean&quot;: 0.7135416666666666, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: 0, &quot;total_items&quot;: 192}, {&quot;experiment&quot;: &quot;grammar&quot;, &quot;variant&quot;: &quot;15%&quot;, &quot;status&quot;: &quot;complete&quot;, &quot;chapters_scored&quot;: &quot;1,2,3,4,5,6,7,8&quot;, &quot;chapter_count&quot;: 8, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: null, &quot;combined_score&quot;: 0.7291666666666666, &quot;mcq_accuracy&quot;: 0.7708333333333334, &quot;open_llm_score_mean&quot;: 0.6875, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: 0, &quot;total_items&quot;: 192}, {&quot;experiment&quot;: &quot;grammar&quot;, &quot;variant&quot;: &quot;20%&quot;, &quot;status&quot;: &quot;complete&quot;, &quot;chapters_scored&quot;: &quot;1,2,3,4,5,6,7,8&quot;, &quot;chapter_count&quot;: 8, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: null, &quot;combined_score&quot;: 0.734375, &quot;mcq_accuracy&quot;: 0.7708333333333334, &quot;open_llm_score_mean&quot;: 0.6979166666666666, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: 0, &quot;total_items&quot;: 192}, {&quot;experiment&quot;: &quot;grammar&quot;, &quot;variant&quot;: &quot;30%&quot;, &quot;status&quot;: &quot;complete&quot;, &quot;chapters_scored&quot;: &quot;1,2,3,4,5,6,7,8&quot;, &quot;chapter_count&quot;: 8, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: null, &quot;combined_score&quot;: 0.7369791666666666, &quot;mcq_accuracy&quot;: 0.8229166666666666, &quot;open_llm_score_mean&quot;: 0.6510416666666666, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: 0, &quot;total_items&quot;: 192}, {&quot;experiment&quot;: &quot;inconsistency&quot;, &quot;variant&quot;: &quot;0%&quot;, &quot;status&quot;: &quot;missing&quot;, &quot;chapters_scored&quot;: &quot;&quot;, &quot;chapter_count&quot;: 0, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: null, &quot;combined_score&quot;: null, &quot;mcq_accuracy&quot;: null, &quot;open_llm_score_mean&quot;: null, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: null, &quot;total_items&quot;: null}, {&quot;experiment&quot;: &quot;inconsistency&quot;, &quot;variant&quot;: &quot;name_5%&quot;, &quot;status&quot;: &quot;missing&quot;, &quot;chapters_scored&quot;: &quot;&quot;, &quot;chapter_count&quot;: 0, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: null, &quot;combined_score&quot;: null, &quot;mcq_accuracy&quot;: null, &quot;open_llm_score_mean&quot;: null, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: null, &quot;total_items&quot;: null}, {&quot;experiment&quot;: &quot;inconsistency&quot;, &quot;variant&quot;: &quot;style_5%&quot;, &quot;status&quot;: &quot;missing&quot;, &quot;chapters_scored&quot;: &quot;&quot;, &quot;chapter_count&quot;: 0, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: null, &quot;combined_score&quot;: null, &quot;mcq_accuracy&quot;: null, &quot;open_llm_score_mean&quot;: null, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: null, &quot;total_items&quot;: null}, {&quot;experiment&quot;: &quot;inconsistency&quot;, &quot;variant&quot;: &quot;name_10%&quot;, &quot;status&quot;: &quot;missing&quot;, &quot;chapters_scored&quot;: &quot;&quot;, &quot;chapter_count&quot;: 0, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: null, &quot;combined_score&quot;: null, &quot;mcq_accuracy&quot;: null, &quot;open_llm_score_mean&quot;: null, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: null, &quot;total_items&quot;: null}, {&quot;experiment&quot;: &quot;inconsistency&quot;, &quot;variant&quot;: &quot;style_10%&quot;, &quot;status&quot;: &quot;missing&quot;, &quot;chapters_scored&quot;: &quot;&quot;, &quot;chapter_count&quot;: 0, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: null, &quot;combined_score&quot;: null, &quot;mcq_accuracy&quot;: null, &quot;open_llm_score_mean&quot;: null, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: null, &quot;total_items&quot;: null}, {&quot;experiment&quot;: &quot;inconsistency&quot;, &quot;variant&quot;: &quot;name_15%&quot;, &quot;status&quot;: &quot;missing&quot;, &quot;chapters_scored&quot;: &quot;&quot;, &quot;chapter_count&quot;: 0, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: null, &quot;combined_score&quot;: null, &quot;mcq_accuracy&quot;: null, &quot;open_llm_score_mean&quot;: null, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: null, &quot;total_items&quot;: null}, {&quot;experiment&quot;: &quot;inconsistency&quot;, &quot;variant&quot;: &quot;style_15%&quot;, &quot;status&quot;: &quot;missing&quot;, &quot;chapters_scored&quot;: &quot;&quot;, &quot;chapter_count&quot;: 0, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: null, &quot;combined_score&quot;: null, &quot;mcq_accuracy&quot;: null, &quot;open_llm_score_mean&quot;: null, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: null, &quot;total_items&quot;: null}, {&quot;experiment&quot;: &quot;inconsistency&quot;, &quot;variant&quot;: &quot;name_20%&quot;, &quot;status&quot;: &quot;missing&quot;, &quot;chapters_scored&quot;: &quot;&quot;, &quot;chapter_count&quot;: 0, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: null, &quot;combined_score&quot;: null, &quot;mcq_accuracy&quot;: null, &quot;open_llm_score_mean&quot;: null, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: null, &quot;total_items&quot;: null}, {&quot;experiment&quot;: &quot;inconsistency&quot;, &quot;variant&quot;: &quot;style_20%&quot;, &quot;status&quot;: &quot;missing&quot;, &quot;chapters_scored&quot;: &quot;&quot;, &quot;chapter_count&quot;: 0, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: null, &quot;combined_score&quot;: null, &quot;mcq_accuracy&quot;: null, &quot;open_llm_score_mean&quot;: null, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: null, &quot;total_items&quot;: null}, {&quot;experiment&quot;: &quot;local_inconsistency&quot;, &quot;variant&quot;: &quot;style_5%&quot;, &quot;status&quot;: &quot;complete&quot;, &quot;chapters_scored&quot;: &quot;1,2,3,4,5,6,7,8&quot;, &quot;chapter_count&quot;: 8, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: 0.05876839614260174, &quot;combined_score&quot;: 0.7421875, &quot;mcq_accuracy&quot;: 0.7395833333333334, &quot;open_llm_score_mean&quot;: 0.7447916666666666, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: 0, &quot;total_items&quot;: 192}, {&quot;experiment&quot;: &quot;local_inconsistency&quot;, &quot;variant&quot;: &quot;style_10%&quot;, &quot;status&quot;: &quot;complete&quot;, &quot;chapters_scored&quot;: &quot;1,2,3,4,5,6,7,8&quot;, &quot;chapter_count&quot;: 8, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: 0.07425170553659086, &quot;combined_score&quot;: 0.734375, &quot;mcq_accuracy&quot;: 0.7395833333333334, &quot;open_llm_score_mean&quot;: 0.7291666666666666, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: 0, &quot;total_items&quot;: 192}, {&quot;experiment&quot;: &quot;local_inconsistency&quot;, &quot;variant&quot;: &quot;style_15%&quot;, &quot;status&quot;: &quot;complete&quot;, &quot;chapters_scored&quot;: &quot;1,2,3,4,5,6,7,8&quot;, &quot;chapter_count&quot;: 8, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: 0.08706730353184462, &quot;combined_score&quot;: 0.7369791666666666, &quot;mcq_accuracy&quot;: 0.75, &quot;open_llm_score_mean&quot;: 0.7239583333333334, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: 0, &quot;total_items&quot;: 192}, {&quot;experiment&quot;: &quot;local_inconsistency&quot;, &quot;variant&quot;: &quot;style_20%&quot;, &quot;status&quot;: &quot;complete&quot;, &quot;chapters_scored&quot;: &quot;1,2,3,4,5,6,7,8&quot;, &quot;chapter_count&quot;: 8, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: 0.09559600458380298, &quot;combined_score&quot;: 0.7239583333333334, &quot;mcq_accuracy&quot;: 0.7291666666666666, &quot;open_llm_score_mean&quot;: 0.71875, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: 0, &quot;total_items&quot;: 192}, {&quot;experiment&quot;: &quot;awkward&quot;, &quot;variant&quot;: &quot;0%&quot;, &quot;status&quot;: &quot;complete&quot;, &quot;chapters_scored&quot;: &quot;1,2,3,4,5,6,7,8&quot;, &quot;chapter_count&quot;: 8, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: null, &quot;combined_score&quot;: 0.7473958333333334, &quot;mcq_accuracy&quot;: 0.7604166666666666, &quot;open_llm_score_mean&quot;: 0.734375, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: 0, &quot;total_items&quot;: 192}, {&quot;experiment&quot;: &quot;awkward&quot;, &quot;variant&quot;: &quot;5%&quot;, &quot;status&quot;: &quot;complete&quot;, &quot;chapters_scored&quot;: &quot;1,2,3,4,5,6,7,8&quot;, &quot;chapter_count&quot;: 8, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: null, &quot;combined_score&quot;: 0.7604166666666666, &quot;mcq_accuracy&quot;: 0.7708333333333334, &quot;open_llm_score_mean&quot;: 0.75, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: 0, &quot;total_items&quot;: 192}, {&quot;experiment&quot;: &quot;awkward&quot;, &quot;variant&quot;: &quot;10%&quot;, &quot;status&quot;: &quot;complete&quot;, &quot;chapters_scored&quot;: &quot;1,2,3,4,5,6,7,8&quot;, &quot;chapter_count&quot;: 8, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: null, &quot;combined_score&quot;: 0.7578125, &quot;mcq_accuracy&quot;: 0.75, &quot;open_llm_score_mean&quot;: 0.765625, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: 0, &quot;total_items&quot;: 192}, {&quot;experiment&quot;: &quot;awkward&quot;, &quot;variant&quot;: &quot;15%&quot;, &quot;status&quot;: &quot;complete&quot;, &quot;chapters_scored&quot;: &quot;1,2,3,4,5,6,7,8&quot;, &quot;chapter_count&quot;: 8, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: null, &quot;combined_score&quot;: 0.7317708333333334, &quot;mcq_accuracy&quot;: 0.7708333333333334, &quot;open_llm_score_mean&quot;: 0.6927083333333334, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: 0, &quot;total_items&quot;: 192}, {&quot;experiment&quot;: &quot;awkward&quot;, &quot;variant&quot;: &quot;20%&quot;, &quot;status&quot;: &quot;complete&quot;, &quot;chapters_scored&quot;: &quot;1,2,3,4,5,6,7,8&quot;, &quot;chapter_count&quot;: 8, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: null, &quot;combined_score&quot;: 0.7265625, &quot;mcq_accuracy&quot;: 0.7604166666666666, &quot;open_llm_score_mean&quot;: 0.6927083333333334, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: 0, &quot;total_items&quot;: 192}, {&quot;experiment&quot;: &quot;awkward&quot;, &quot;variant&quot;: &quot;30%&quot;, &quot;status&quot;: &quot;complete&quot;, &quot;chapters_scored&quot;: &quot;1,2,3,4,5,6,7,8&quot;, &quot;chapter_count&quot;: 8, &quot;missing_count&quot;: 0, &quot;actual_rate_mean&quot;: null, &quot;combined_score&quot;: 0.7447916666666666, &quot;mcq_accuracy&quot;: 0.78125, &quot;open_llm_score_mean&quot;: 0.7083333333333334, &quot;answer_confidence_mean&quot;: null, &quot;insufficient_information_rate&quot;: null, &quot;evidence_supported_rate&quot;: null, &quot;generation_errors&quot;: 0, &quot;total_items&quot;: 192}]</script>
+</main>
+</body>
+</html>

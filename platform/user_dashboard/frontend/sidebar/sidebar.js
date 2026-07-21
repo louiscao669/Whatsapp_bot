@@ -32,24 +32,23 @@ export function renderSidebar({ payload, activePage, onNavigate, onPhotoSelected
     accept: "image/*",
     onchange: (event) => {
       const file = event.target.files?.[0];
-      if (file) {
-        onPhotoSelected(file);
-      }
       event.target.value = "";
-    }
-  });
-  const photoControl = el("button", {
-    type: "button",
-    className: "profile-photo-control",
-    onclick: () => {
+      if (!file) {
+        return;
+      }
       showConfirm({
         title: "Change photo",
         message: `Changing photo costs ${PROFILE_PHOTO_CHANGE_COST} diamonds.`,
         confirmLabel: "Confirm",
         cancelLabel: "Cancel",
-        onConfirm: () => photoInput.click()
+        onConfirm: () => onPhotoSelected(file)
       });
     }
+  });
+  const photoControl = el("button", {
+    type: "button",
+    className: "profile-photo-control",
+    onclick: () => photoInput.click()
   }, [
     photoWrap,
     el("span", { text: "Change photo" }),

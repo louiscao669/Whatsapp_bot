@@ -579,6 +579,15 @@ def parse_args() -> argparse.Namespace:
         default=list(EXPERIMENTS),
     )
     parser.add_argument("--score-file", default=DEFAULT_SCORE_FILE)
+    parser.add_argument(
+        "--model-subdir",
+        default="1.7b",
+        help=(
+            "Answer-model subdirectory under each luke<ch>/ folder "
+            "(e.g. '1.7b', '1.5b', 'llama 1b'). Empty string reads the "
+            "legacy flat layout with no model subdir."
+        ),
+    )
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     parser.add_argument(
         "--blank-experiments",
@@ -598,6 +607,7 @@ def main() -> int:
         experiments=args.experiments,
         score_file=args.score_file,
         blank_experiments=set(args.blank_experiments),
+        model_subdir=args.model_subdir,
     )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(
