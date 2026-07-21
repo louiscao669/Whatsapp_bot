@@ -3,7 +3,7 @@
 SPA_NAV_PAGES = [
     {"label": "Analytics", "path": "/analytics", "roles": ("admin",)},
     {"label": "QA Items", "path": "/qa-items/list", "roles": ("admin",)},
-    {"label": "Review", "path": "/review-response", "roles": ("expert",)},
+    {"label": "Review", "path": "/review-response", "roles": ("admin", "expert")},
     {"label": "Participants", "path": "/participants", "roles": ("admin",)},
     {"label": "Export", "path": "/export/responses", "roles": ("admin",)},
 ]

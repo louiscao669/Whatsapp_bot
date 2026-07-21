@@ -16,7 +16,7 @@ def _json_body():
 
 
 @review_response_blueprint.route("", methods=["GET"])
-@require_roles("expert")
+@require_roles("admin", "expert")
 def list_review_responses():
     language = (request.args.get("language") or "").strip()
     session_factory = get_session_factory()
@@ -27,7 +27,7 @@ def list_review_responses():
 
 
 @review_response_blueprint.route("/<response_id>/decision", methods=["POST"])
-@require_roles("expert")
+@require_roles("admin", "expert")
 def post_review_response_decision(response_id):
     body = _json_body()
     decision = (body.get("decision") or "").strip().lower()

@@ -29,7 +29,7 @@ def _mutation_error(exc, *, status=400):
 
 
 @review_qa_blueprint.route("", methods=["GET"])
-@require_roles("expert")
+@require_roles("admin", "expert")
 def list_review_qa():
     tab = (request.args.get("tab") or "unreviewed").strip().lower()
     session_factory = get_session_factory()
@@ -39,7 +39,7 @@ def list_review_qa():
 
 
 @review_qa_blueprint.route("/bulk", methods=["POST"])
-@require_roles("expert")
+@require_roles("admin", "expert")
 def bulk_review_qa():
     body = _json_body()
     action = (body.get("action") or "").strip().lower()
@@ -57,7 +57,7 @@ def bulk_review_qa():
 
 
 @review_qa_blueprint.route("/<qa_item_id>", methods=["PATCH"])
-@require_roles("expert")
+@require_roles("admin", "expert")
 def patch_review_qa_item(qa_item_id):
     body = _json_body()
     session_factory = get_session_factory()
@@ -80,7 +80,7 @@ def patch_review_qa_item(qa_item_id):
 
 
 @review_qa_blueprint.route("/<qa_item_id>/mark-reviewed", methods=["POST"])
-@require_roles("expert")
+@require_roles("admin", "expert")
 def post_mark_reviewed(qa_item_id):
     session_factory = get_session_factory()
     try:
@@ -95,7 +95,7 @@ def post_mark_reviewed(qa_item_id):
 
 
 @review_qa_blueprint.route("/<qa_item_id>/return-unreviewed", methods=["POST"])
-@require_roles("expert")
+@require_roles("admin", "expert")
 def post_return_unreviewed(qa_item_id):
     session_factory = get_session_factory()
     try:
@@ -109,7 +109,7 @@ def post_return_unreviewed(qa_item_id):
 
 
 @review_qa_blueprint.route("/<qa_item_id>/revert", methods=["POST"])
-@require_roles("expert")
+@require_roles("admin", "expert")
 def post_revert(qa_item_id):
     session_factory = get_session_factory()
     try:
@@ -123,7 +123,7 @@ def post_revert(qa_item_id):
 
 
 @review_qa_blueprint.route("/<qa_item_id>/remove", methods=["POST"])
-@require_roles("expert")
+@require_roles("admin", "expert")
 def post_remove(qa_item_id):
     session_factory = get_session_factory()
     try:
@@ -137,7 +137,7 @@ def post_remove(qa_item_id):
 
 
 @review_qa_blueprint.route("/<qa_item_id>/restore", methods=["POST"])
-@require_roles("expert")
+@require_roles("admin", "expert")
 def post_restore(qa_item_id):
     session_factory = get_session_factory()
     try:

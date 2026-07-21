@@ -59,7 +59,7 @@ function App() {
             </Route>
             <Route
               element={
-                <RequireAuth roles={['expert']}>
+                <RequireAuth roles={['admin', 'expert']}>
                   <ReviewWorkbenchLayout />
                 </RequireAuth>
               }

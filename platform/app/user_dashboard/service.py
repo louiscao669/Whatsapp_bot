@@ -34,6 +34,8 @@ from eten_shared.media_storage import (
 from eten_shared.models import (
     Assignment,
     AssignmentStatus,
+    CommunityTeam,
+    CommunityTeamMember,
     DashboardEngagementSession,
     OutboxNotification,
     OutboxStatus,
@@ -80,6 +82,7 @@ from user_dashboard.backend import compose_dashboard_view_model
 
 
 LEADERBOARD_LIMIT = 10
+TEAM_MAX_MEMBERS = 4
 MAX_PROFILE_PHOTO_BYTES = 5 * 1024 * 1024
 PROFILE_PHOTO_CHANGE_COST = 5
 CHEST_REWARD_MIN = 2
@@ -160,6 +163,10 @@ class ChestRewardError(Exception):
 
 
 class DashboardAnswerError(Exception):
+    pass
+
+
+class CommunityTeamError(Exception):
     pass
 
 
@@ -1362,6 +1369,166 @@ def update_profile_photo(db, participant_id: str, content: bytes, content_type: 
     return get_user_dashboard_payload(db, participant_id)
 
 
+def _normalized_team_name(name):
+    value = " ".join(str(name or "").split())
+    if not value:
+        raise CommunityTeamError("Team name is required")
+    if len(value) > 64:
+        raise CommunityTeamError("Team name must be 64 characters or fewer")
+    return value
+
+
+def _participant_team_membership(db, participant_id):
+    return db.scalar(
+        select(CommunityTeamMember).where(
+            CommunityTeamMember.participant_id == participant_id
+        )
+    )
+
+
+def create_community_team(db, participant_id, name):
+    participant = _participant_by_id(db, participant_id)
+    if not participant:
+        raise CommunityTeamError("Participant not found")
+    if _participant_team_membership(db, participant.id):
+        raise CommunityTeamError("You are already on a team")
+    name = _normalized_team_name(name)
+    existing = db.scalar(
+        select(CommunityTeam).where(func.lower(CommunityTeam.name) == name.lower())
+    )
+    if existing:
+        raise CommunityTeamError("A team with that name already exists")
+
+    team = CommunityTeam(
+        name=name,
+        creator_participant_id=participant.id,
+        target_language=participant.target_language,
+    )
+    db.add(team)
+    db.flush()
+    db.add(CommunityTeamMember(team_id=team.id, participant_id=participant.id))
+    db.flush()
+    return get_user_dashboard_payload(db, participant.id)
+
+
+def join_community_team(db, participant_id, team_id):
+    participant = _participant_by_id(db, participant_id)
+    if not participant:
+        raise CommunityTeamError("Participant not found")
+    if _participant_team_membership(db, participant.id):
+        raise CommunityTeamError("You are already on a team")
+    team = db.scalar(
+        select(CommunityTeam).where(CommunityTeam.id == str(team_id or "")).with_for_update()
+    )
+    if not team:
+        raise CommunityTeamError("Team not found")
+    if team.target_language != participant.target_language:
+        raise CommunityTeamError("You can only join a team in your language community")
+    member_count = db.scalar(
+        select(func.count(CommunityTeamMember.id)).where(
+            CommunityTeamMember.team_id == team.id
+        )
+    )
+    if int(member_count or 0) >= TEAM_MAX_MEMBERS:
+        raise CommunityTeamError("This team already has 4 members")
+    db.add(CommunityTeamMember(team_id=team.id, participant_id=participant.id))
+    db.flush()
+    return get_user_dashboard_payload(db, participant.id)
+
+
+def rename_community_team(db, participant_id, team_id, name):
+    team = db.scalar(select(CommunityTeam).where(CommunityTeam.id == str(team_id or "")))
+    if not team:
+        raise CommunityTeamError("Team not found")
+    if team.creator_participant_id != participant_id:
+        raise CommunityTeamError("Only the team creator can change its name")
+    name = _normalized_team_name(name)
+    existing = db.scalar(
+        select(CommunityTeam).where(
+            func.lower(CommunityTeam.name) == name.lower(),
+            CommunityTeam.id != team.id,
+        )
+    )
+    if existing:
+        raise CommunityTeamError("A team with that name already exists")
+    team.name = name
+    team.updated_at = datetime.now(timezone.utc)
+    db.flush()
+    return get_user_dashboard_payload(db, participant_id)
+
+
+def get_language_team_leaderboard(db, participant, week_start, week_end):
+    teams = db.scalars(
+        select(CommunityTeam)
+        .where(CommunityTeam.target_language == participant.target_language)
+        .order_by(CommunityTeam.created_at.asc())
+    ).all()
+    if not teams:
+        return []
+    team_ids = [team.id for team in teams]
+    memberships = db.execute(
+        select(CommunityTeamMember, Participant)
+        .join(Participant, Participant.id == CommunityTeamMember.participant_id)
+        .where(CommunityTeamMember.team_id.in_(team_ids))
+        .order_by(CommunityTeamMember.joined_at.asc())
+    ).all()
+    member_ids = [member.participant_id for member, _ in memberships]
+    scores = {}
+    if member_ids:
+        scores = {
+            participant_id: int(score or 0)
+            for participant_id, score in db.execute(
+                select(
+                    ParticipantCurrencyEvent.participant_id,
+                    func.coalesce(func.sum(ParticipantCurrencyEvent.amount), 0),
+                )
+                .where(
+                    ParticipantCurrencyEvent.participant_id.in_(member_ids),
+                    ParticipantCurrencyEvent.created_at >= week_start,
+                    ParticipantCurrencyEvent.created_at < week_end,
+                    ParticipantCurrencyEvent.amount > 0,
+                )
+                .group_by(ParticipantCurrencyEvent.participant_id)
+            ).all()
+        }
+    members_by_team = {team_id: [] for team_id in team_ids}
+    for membership, member_participant in memberships:
+        members_by_team[membership.team_id].append(
+            {
+                "participant_id": member_participant.id,
+                "display_name": _display_name_for_leaderboard(member_participant, 0),
+            }
+        )
+    rows = [
+        {
+            "team_id": team.id,
+            "display_name": team.name,
+            "weekly_earned": sum(
+                scores.get(member["participant_id"], 0)
+                for member in members_by_team[team.id]
+            ),
+            "members": members_by_team[team.id],
+            "member_ids": [member["participant_id"] for member in members_by_team[team.id]],
+            "member_count": len(members_by_team[team.id]),
+            "is_current_user": any(
+                member["participant_id"] == participant.id
+                for member in members_by_team[team.id]
+            ),
+            "is_creator": team.creator_participant_id == participant.id,
+        }
+        for team in teams
+    ]
+    rows.sort(key=lambda row: (-row["weekly_earned"], row["display_name"].lower()))
+    previous_score = None
+    rank = 0
+    for index, row in enumerate(rows, start=1):
+        if previous_score is None or row["weekly_earned"] < previous_score:
+            rank = index
+        row["rank"] = rank
+        previous_score = row["weekly_earned"]
+    return rows
+
+
 def get_language_weekly_leaderboard(db, participant, limit=LEADERBOARD_LIMIT):
     language = _language_code(participant)
     week_start, week_end = _week_bounds()
@@ -1426,6 +1593,7 @@ def get_language_weekly_leaderboard(db, participant, limit=LEADERBOARD_LIMIT):
         "limit": limit,
         "current_user": current_user_row,
         "rows": leaderboard_rows,
+        "teams": get_language_team_leaderboard(db, participant, week_start, week_end),
     }
 
 

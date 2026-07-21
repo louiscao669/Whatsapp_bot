@@ -14,7 +14,7 @@ export function renderCommunity(payload, state, actions) {
       tabButton("team", "Team", activeTab, actions.setCommunityTab)
     ]),
     activeTab === "team"
-      ? renderTeamControls()
+      ? renderTeamControls(rows, actions)
       : null,
     renderPodium(rows, activeTab),
     renderLeaderboard(rows, activeTab, participantId)
@@ -30,20 +30,55 @@ function tabButton(id, label, activeTab, onSelect) {
   });
 }
 
-function renderTeamControls() {
+function renderTeamControls(rows, actions) {
+  const currentTeam = rows.find((row) => row.is_current_user);
+  const joinable = rows.filter((row) => !row.is_current_user && Number(row.member_count || 0) < 4);
+  const teamSelect = el("select", {
+    className: "search-input",
+    disabled: currentTeam || !joinable.length
+  }, joinable.map((row) => el("option", {
+    value: row.team_id,
+    text: `${row.display_name} (${row.member_count || 0}/4)`
+  })));
   return el("div", { className: "team-controls" }, [
     el("div", { className: "team-search-wrap" }, [
-      el("input", {
-        className: "search-input",
-        type: "search",
-        placeholder: "Search teams..."
-      })
+      currentTeam
+        ? el("div", { className: "team-membership", text: `Your team: ${currentTeam.display_name} (${currentTeam.member_count}/4)` })
+        : teamSelect
     ]),
     el("div", { className: "community-actions" }, [
-      el("button", { type: "button", className: "btn-join", text: "Join team" }),
-      el("button", { type: "button", className: "btn-create", text: "Create team" })
+      !currentTeam ? el("button", {
+        type: "button",
+        className: "btn-join",
+        disabled: !joinable.length,
+        text: joinable.length ? "Join selected team" : "No open teams",
+        onclick: () => teamSelect.value && actions.joinTeam(teamSelect.value)
+      }) : null,
+      !currentTeam ? el("button", {
+        type: "button",
+        className: "btn-create",
+        text: "Create team",
+        onclick: () => requestTeamName("Create team", "", actions.createTeam)
+      }) : null,
+      currentTeam?.is_creator ? el("button", {
+        type: "button",
+        className: "btn-create",
+        text: "Change team name",
+        onclick: () => requestTeamName(
+          "Change team name",
+          currentTeam.display_name,
+          (name) => actions.renameTeam(currentTeam.team_id, name)
+        )
+      }) : null
     ])
   ]);
+}
+
+function requestTeamName(title, value, onSubmit) {
+  const name = window.prompt(title, value);
+  if (name !== null && name.trim()) {
+    onSubmit(name.trim());
+  }
 }
 
 function renderPodium(rows, type) {
@@ -115,8 +150,8 @@ function score(row) {
 
 function rowSub(row, type) {
   if (type === "team") {
-    const count = Array.isArray(row.members) ? row.members.length : 0;
-    return count ? `${count} members` : "Team contribution";
+    const count = Number(row.member_count || (Array.isArray(row.members) ? row.members.length : 0));
+    return `${count}/4 members`;
   }
   return "Weekly contribution";
 }
@@ -137,8 +172,8 @@ function isCurrentRow(row, participantId) {
   if (row.is_current_user) {
     return true;
   }
-  if (participantId && Array.isArray(row.members)) {
-    return row.members.includes(participantId);
+  if (participantId && Array.isArray(row.member_ids)) {
+    return row.member_ids.includes(participantId);
   }
   return false;
 }

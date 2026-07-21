@@ -206,6 +206,41 @@ class ParticipantProviderContact(Base):
     participant: Mapped["Participant"] = relationship(back_populates="provider_contacts")
 
 
+class CommunityTeam(Base):
+    __tablename__ = "community_teams"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    name: Mapped[str] = mapped_column(String(64), nullable=False, unique=True)
+    creator_participant_id: Mapped[str] = mapped_column(
+        ForeignKey("participants.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    target_language: Mapped[Optional[str]] = mapped_column(String(64), index=True)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utc_now, nullable=False
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utc_now, onupdate=utc_now, nullable=False
+    )
+
+
+class CommunityTeamMember(Base):
+    __tablename__ = "community_team_members"
+    __table_args__ = (
+        UniqueConstraint("participant_id", name="uq_community_team_members_participant"),
+    )
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    team_id: Mapped[str] = mapped_column(
+        ForeignKey("community_teams.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    participant_id: Mapped[str] = mapped_column(
+        ForeignKey("participants.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    joined_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utc_now, nullable=False
+    )
+
+
 class PassageTranslation(Base):
     __tablename__ = "passage_translations"
 

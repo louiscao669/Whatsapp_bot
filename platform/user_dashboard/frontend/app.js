@@ -49,6 +49,9 @@ function render() {
     navigate,
     startDailyChallenge,
     setCommunityTab,
+    createTeam,
+    joinTeam,
+    renameTeam,
     setJourneyChapter,
     clearJourneyChapter,
     openQuestion,
@@ -155,6 +158,18 @@ function closeQuestion() {
 function setCommunityTab(tab) {
   state.communityTab = tab;
   render();
+}
+
+async function createTeam(name) {
+  await refreshMutation(() => postJson(state.participantId, "/teams", { name }));
+}
+
+async function joinTeam(teamId) {
+  await refreshMutation(() => postJson(state.participantId, `/teams/${encodeURIComponent(teamId)}/join`, {}));
+}
+
+async function renameTeam(teamId, name) {
+  await refreshMutation(() => postJson(state.participantId, `/teams/${encodeURIComponent(teamId)}/name`, { name }));
 }
 
 async function refreshMutation(mutation) {

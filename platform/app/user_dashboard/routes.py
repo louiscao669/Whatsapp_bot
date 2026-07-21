@@ -12,6 +12,7 @@ from app.services.admin_media_service import (
 )
 from app.user_dashboard.service import (
     ChestRewardError,
+    CommunityTeamError,
     CosmeticUpdateError,
     DashboardAnswerError,
     ProfilePhotoUploadError,
@@ -20,9 +21,12 @@ from app.user_dashboard.service import (
     StreakPauseUpdateError,
     get_user_dashboard_payload,
     claim_batch_chest_reward,
+    create_community_team,
+    join_community_team,
     load_profile_photo,
     mark_dashboard_question_viewed,
     record_dashboard_heartbeat,
+    rename_community_team,
     purchase_store_item,
     set_cosmetic_equipped,
     set_user_streak_pause,
@@ -68,6 +72,56 @@ def get_user_dashboard(participant_id):
         return jsonify({"error": "not_found", "message": "Participant not found"}), 404
 
     return jsonify(payload)
+
+
+@user_dashboard_blueprint.route(
+    "/user-dashboard/api/<participant_id>/teams", methods=["POST", "OPTIONS"]
+)
+def create_user_dashboard_team(participant_id):
+    if request.method == "OPTIONS":
+        return _cors_response(jsonify({"ok": True}))
+    body = request.get_json(silent=True) or {}
+    try:
+        with get_session_factory()() as db:
+            payload = create_community_team(db, participant_id, body.get("name"))
+            db.commit()
+    except CommunityTeamError as exc:
+        status = 404 if str(exc) == "Participant not found" else 400
+        return jsonify({"error": "team_error", "message": str(exc)}), status
+    return jsonify({"ok": True, **payload})
+
+
+@user_dashboard_blueprint.route(
+    "/user-dashboard/api/<participant_id>/teams/<team_id>/join", methods=["POST", "OPTIONS"]
+)
+def join_user_dashboard_team(participant_id, team_id):
+    if request.method == "OPTIONS":
+        return _cors_response(jsonify({"ok": True}))
+    try:
+        with get_session_factory()() as db:
+            payload = join_community_team(db, participant_id, team_id)
+            db.commit()
+    except CommunityTeamError as exc:
+        status = 404 if str(exc) in {"Participant not found", "Team not found"} else 400
+        return jsonify({"error": "team_error", "message": str(exc)}), status
+    return jsonify({"ok": True, **payload})
+
+
+@user_dashboard_blueprint.route(
+    "/user-dashboard/api/<participant_id>/teams/<team_id>/name", methods=["POST", "OPTIONS"]
+)
+def rename_user_dashboard_team(participant_id, team_id):
+    if request.method == "OPTIONS":
+        return _cors_response(jsonify({"ok": True}))
+    body = request.get_json(silent=True) or {}
+    try:
+        with get_session_factory()() as db:
+            payload = rename_community_team(db, participant_id, team_id, body.get("name"))
+            db.commit()
+    except CommunityTeamError as exc:
+        status = 404 if str(exc) == "Team not found" else 400
+        return jsonify({"error": "team_error", "message": str(exc)}), status
+    return jsonify({"ok": True, **payload})
 
 
 @user_dashboard_blueprint.route(

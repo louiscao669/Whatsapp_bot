@@ -21,7 +21,7 @@ def _uploader_label():
 
 
 @record_blueprint.route("", methods=["GET"])
-@require_roles("expert")
+@require_roles("admin", "expert")
 def list_record_dashboard():
     language = (request.args.get("language") or "").strip()
     session_factory = get_session_factory()
@@ -32,7 +32,7 @@ def list_record_dashboard():
 
 
 @record_blueprint.route("/upload", methods=["POST"])
-@require_roles("expert")
+@require_roles("admin", "expert")
 def upload_record_audio():
     qa_item_id = (request.form.get("qa_item_id") or "").strip()
     recording_type = (request.form.get("recording_type") or "").strip().lower()
@@ -82,7 +82,7 @@ def upload_record_audio():
 
 
 @record_blueprint.route("/recordings/<recording_id>", methods=["DELETE"])
-@require_roles("expert")
+@require_roles("admin", "expert")
 def delete_record_audio(recording_id):
     session_factory = get_session_factory()
     try:
