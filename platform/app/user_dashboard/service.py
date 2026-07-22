@@ -15,6 +15,7 @@ from eten_shared.domain.assignments import (
     automatic_assignment_enabled,
     complete_current_batch_if_needed,
     create_assignment_for_qa_item,
+    experiment_assignment_enabled,
     get_incomplete_assignment,
     get_or_create_participant_session,
     record_participant_event,
@@ -45,6 +46,7 @@ from eten_shared.models import (
     ParticipantEvent,
     ParticipantResponse,
     ParticipantWallet,
+    ExperimentPassage,
     QAItem,
     QAItemRecording,
     Reminder,
@@ -61,7 +63,11 @@ from eten_shared.mcq import (
     is_choice_scored_item,
 )
 from eten_shared.qa_keywords import get_language_keywords
-from eten_shared.question_discovery import select_next_qa_item
+from eten_shared.question_discovery import (
+    experiment_batch_should_reset,
+    select_next_experiment_cell_item,
+    select_next_qa_item,
+)
 from eten_shared.recordings import (
     get_latest_question_recording,
     participant_language_code,
@@ -370,9 +376,15 @@ def _award_dashboard_currency(
 
 
 def _select_next_dashboard_qa_item(db, participant):
+    """Return ``(qa_item, cell)``. In designed-assignment (pilot) mode the item comes
+    from the participant's plan and ``cell`` is the ``ExperimentPlanCell``; otherwise
+    ``cell`` is None (coverage / fallback path)."""
+    if experiment_assignment_enabled():
+        return select_next_experiment_cell_item(db, participant)
+
     qa_item = select_next_qa_item(db, participant)
     if qa_item:
-        return qa_item
+        return qa_item, None
 
     assigned_qa_item_ids = set(
         db.scalars(
@@ -393,7 +405,22 @@ def _select_next_dashboard_qa_item(db, participant):
         ).all()
         if row.id not in assigned_qa_item_ids and qa_item_is_assignable(row)
     ]
-    return candidates[0] if candidates else None
+    return (candidates[0] if candidates else None), None
+
+
+def _experiment_assignment_kwargs(db, participant_session, cell):
+    """create_assignment_for_qa_item kwargs for a designed-assignment cell (empty for
+    the production path). Clears the batch at a cell boundary so a batch never mixes
+    conditions, and stamps the cell + its variant passage text."""
+    if cell is None:
+        return {}
+    if experiment_batch_should_reset(db, participant_session.current_batch_id, cell):
+        participant_session.current_batch_id = None
+    variant_text = None
+    if cell.experiment_passage_id:
+        experiment_passage = db.get(ExperimentPassage, cell.experiment_passage_id)
+        variant_text = experiment_passage.passage_text if experiment_passage else None
+    return {"experiment_cell_id": cell.id, "passage_text": variant_text}
 
 
 def _next_batch_hour():
@@ -513,9 +540,9 @@ def _assign_dashboard_next_batch(db, participant, *, source, reminder=None):
         participant_session.last_prompt_sent_at = utc_now()
         newly_assigned = False
     else:
-        if not automatic_assignment_enabled():
+        if not (automatic_assignment_enabled() or experiment_assignment_enabled()):
             raise DashboardAnswerError("Automatic assignment is currently disabled")
-        qa_item = _select_next_dashboard_qa_item(db, participant)
+        qa_item, cell = _select_next_dashboard_qa_item(db, participant)
         if not qa_item:
             raise DashboardAnswerError("No eligible question is available for a new batch")
 
@@ -526,6 +553,7 @@ def _assign_dashboard_next_batch(db, participant, *, source, reminder=None):
             qa_item,
             completed_batch_size=0,
             assignment_source=source,
+            **_experiment_assignment_kwargs(db, participant_session, cell),
         )
         assignment = db.get(Assignment, prompt.assignment_id)
         newly_assigned = True
@@ -1248,10 +1276,10 @@ def submit_dashboard_answer(db, participant_id: str, assignment_id: str, respons
                     question_index=completed_batch_size,
                 )
         else:
-            next_qa_item = (
+            next_qa_item, next_cell = (
                 _select_next_dashboard_qa_item(db, participant)
-                if automatic_assignment_enabled()
-                else None
+                if (automatic_assignment_enabled() or experiment_assignment_enabled())
+                else (None, None)
             )
         if not next_assignment and next_qa_item:
             next_prompt = create_assignment_for_qa_item(
@@ -1261,6 +1289,7 @@ def submit_dashboard_answer(db, participant_id: str, assignment_id: str, respons
                 next_qa_item,
                 completed_batch_size=completed_batch_size,
                 assignment_source="user_dashboard",
+                **_experiment_assignment_kwargs(db, participant_session, next_cell),
             )
             next_assignment_id = next_prompt.assignment_id if next_prompt else None
             if next_assignment_id:
@@ -1882,5 +1911,58 @@ def get_user_dashboard_payload(db, participant_id: str, event_limit: int = 100):
         "cosmetics": {
             "equipped": get_equipped_cosmetics(participant),
         },
+        "settings": {
+            "language": (participant.dashboard_preferences or {}).get("language", "en"),
+            "batch_size": max(int(participant.preferred_batch_size or 3), 1),
+        },
         **view_model,
     }
+
+
+SUPPORTED_DASHBOARD_LANGUAGES = ("en", "zh")
+
+
+class DashboardSettingsError(Exception):
+    pass
+
+
+def update_dashboard_settings(db, participant_id: str, *, language=None, batch_size=None):
+    """Persist the participant's dashboard language and/or preferred batch size,
+    then return the fresh dashboard payload."""
+    from eten_shared.domain.batch_size_nudges import clamp_batch_size
+
+    participant = _participant_by_id(db, participant_id)
+    if not participant:
+        raise DashboardSettingsError("Participant not found")
+
+    changed = {}
+    if language is not None:
+        lang = str(language).strip().lower()
+        if lang not in SUPPORTED_DASHBOARD_LANGUAGES:
+            raise DashboardSettingsError("Unsupported language")
+        preferences = dict(participant.dashboard_preferences or {})
+        preferences["language"] = lang
+        participant.dashboard_preferences = preferences
+        changed["language"] = lang
+
+    if batch_size is not None:
+        try:
+            size = clamp_batch_size(int(batch_size))
+        except (TypeError, ValueError) as exc:
+            raise DashboardSettingsError("Batch size must be a whole number") from exc
+        participant.preferred_batch_size = size
+        changed["batch_size"] = size
+
+    if changed:
+        participant.updated_at = datetime.now(timezone.utc)
+        db.add(
+            ParticipantEvent(
+                participant_id=participant.id,
+                event_type="dashboard_settings_updated",
+                source="user_dashboard",
+                event_metadata=changed,
+            )
+        )
+        db.flush()
+
+    return get_user_dashboard_payload(db, participant_id)

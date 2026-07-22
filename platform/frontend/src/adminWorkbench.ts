@@ -1,6 +1,11 @@
 export const ADMIN_MAIN_TABS = [
   { label: 'Analytics', path: '/analytics', prefix: '/analytics' },
   { label: 'Passages', path: '/passages', prefix: '/passages' },
+  {
+    label: 'Experiment passages',
+    path: '/experiment-passages',
+    prefix: '/experiment-passages',
+  },
   { label: 'Questions', path: '/qa-items/list', prefix: '/qa-items' },
   { label: 'Participants', path: '/participants', prefix: '/participants' },
 ] as const

@@ -4,6 +4,7 @@ from flask import Blueprint, jsonify
 
 from app.api.analytics import analytics_blueprint
 from app.api.auth import auth_blueprint
+from app.api.experiment_passages import experiment_passages_blueprint
 from app.api.exports import exports_blueprint
 from app.api.media import media_blueprint
 from app.api.participants import participants_blueprint
@@ -25,6 +26,7 @@ api_blueprint.register_blueprint(record_blueprint, url_prefix="/record")
 api_blueprint.register_blueprint(analytics_blueprint, url_prefix="/analytics")
 api_blueprint.register_blueprint(participants_blueprint, url_prefix="/participants")
 api_blueprint.register_blueprint(passages_blueprint, url_prefix="/passages")
+api_blueprint.register_blueprint(experiment_passages_blueprint, url_prefix="/experiment-passages")
 api_blueprint.register_blueprint(system_languages_blueprint, url_prefix="/system-languages")
 api_blueprint.register_blueprint(exports_blueprint, url_prefix="/export")
 

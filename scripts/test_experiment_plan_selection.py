@@ -21,9 +21,13 @@ from sqlalchemy import create_engine, select
 from sqlalchemy.orm import Session
 
 from eten_shared.models import (
-    Assignment, Base, ExperimentPassage, ExperimentPlanCell, Participant, QAItem,
+    Assignment, Base, ExperimentPassage, ExperimentPlanCell, Participant,
+    ParticipantSession, QAItem,
 )
-from eten_shared.question_discovery import select_next_experiment_cell_item
+from eten_shared.domain.assignments import create_assignment_for_qa_item
+from eten_shared.question_discovery import (
+    experiment_batch_should_reset, select_next_experiment_cell_item,
+)
 from build_experiment_plan import SLOTS, CHAPTERS, build_cells
 
 CONDS = ["clean", "omission10", "omission20", "omission30",
@@ -153,6 +157,49 @@ def main():
             ExperimentPlanCell.participant_id == "p01")).all()
         check("other participants' cells remain 'pending' (isolation)",
               all(c.status == "pending" for c in p01_cells))
+
+        # 5. Caller wiring: batch-boundary helper + passage stamping (mirrors the
+        #    workflow/dashboard experiment branch) for a fresh participant p01.
+        p01 = db.get(Participant, "p01")
+        sess = ParticipantSession(participant_id="p01", state="idle")
+        db.add(sess); db.commit()
+        p01_plan = db.scalars(select(ExperimentPlanCell).where(
+            ExperimentPlanCell.participant_id == "p01").order_by(
+            ExperimentPlanCell.sequence_index)).all()
+
+        # empty batch never resets
+        check("batch-reset: empty batch -> no reset", experiment_batch_should_reset(db, None, p01_plan[0]) is False)
+
+        # drive two chapters via the same branch logic the callers use
+        batch_ids, stamped = [], []
+        for _ in range(200):
+            item, cell = select_next_experiment_cell_item(db, p01)
+            if item is None:
+                break
+            if experiment_batch_should_reset(db, sess.current_batch_id, cell):
+                sess.current_batch_id = None
+            variant = db.get(ExperimentPassage, cell.experiment_passage_id)
+            prompt = create_assignment_for_qa_item(
+                db, p01, sess, item, assignment_source="experiment",
+                experiment_cell_id=cell.id, passage_text=variant.passage_text,
+            )
+            a = db.get(Assignment, prompt.assignment_id)
+            a.status = "completed"
+            batch_ids.append((cell.chapter, cell.condition, a.batch_id))
+            stamped.append((a.experiment_cell_id == cell.id,
+                            a.passage_text == variant.passage_text))
+            db.commit()
+
+        check("every experiment assignment stamped experiment_cell_id + variant passage_text",
+              stamped and all(all(s) for s in stamped))
+        # one batch_id per (chapter,condition) cell; distinct across chapters
+        by_cell = {}
+        for ch, cond, bid in batch_ids:
+            by_cell.setdefault((ch, cond), set()).add(bid)
+        one_batch_per_cell = all(len(v) == 1 for v in by_cell.values())
+        distinct_across_cells = len({next(iter(v)) for v in by_cell.values()}) == len(by_cell)
+        check("batch never mixes conditions: one batch_id per cell", one_batch_per_cell)
+        check("batch resets at cell boundary: distinct batch_id per cell", distinct_across_cells)
 
     print("\n" + ("ALL TESTS PASSED" if not fails else f"FAILED: {fails}"))
     return 1 if fails else 0

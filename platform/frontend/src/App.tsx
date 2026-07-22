@@ -7,6 +7,8 @@ import { AdminWorkbenchLayout } from './components/AdminWorkbenchLayout'
 import { ReviewWorkbenchLayout } from './components/ReviewWorkbenchLayout'
 import { HomeRedirect } from './components/HomeRedirect'
 import { AnalyticsPage } from './pages/AnalyticsPage'
+import { ExperimentPassageDetailPage } from './pages/ExperimentPassageDetailPage'
+import { ExperimentPassagesListPage } from './pages/ExperimentPassagesListPage'
 import { ExportAudioPage } from './pages/ExportAudioPage'
 import { ExportFlaggedPage } from './pages/ExportFlaggedPage'
 import { ExportResponsesPage } from './pages/ExportResponsesPage'
@@ -45,6 +47,8 @@ function App() {
             >
               <Route path="analytics" element={<AnalyticsPage />} />
               <Route path="passages" element={<PassagesListPage />} />
+              <Route path="experiment-passages" element={<ExperimentPassagesListPage />} />
+              <Route path="experiment-passages/:passageId" element={<ExperimentPassageDetailPage />} />
               <Route path="qa-items" element={<Navigate to="/qa-items/list" replace />} />
               <Route path="qa-items/add" element={<Navigate to="/qa-items/list" replace />} />
               <Route path="qa-items/add-passages" element={<Navigate to="/passages" replace />} />

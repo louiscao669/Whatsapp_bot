@@ -15,6 +15,7 @@ from app.user_dashboard.service import (
     CommunityTeamError,
     CosmeticUpdateError,
     DashboardAnswerError,
+    DashboardSettingsError,
     ProfilePhotoUploadError,
     ProfilePhotoNotFoundError,
     StorePurchaseError,
@@ -34,6 +35,7 @@ from app.user_dashboard.service import (
     set_user_streak_pause,
     start_dashboard_new_batch,
     submit_dashboard_answer,
+    update_dashboard_settings,
     update_profile_photo,
 )
 
@@ -296,6 +298,33 @@ def start_user_dashboard_batch(participant_id):
         return jsonify({"error": "start_batch_error", "message": message}), status
 
     return jsonify({"ok": True, **payload})
+
+
+@user_dashboard_blueprint.route(
+    "/user-dashboard/api/<participant_id>/settings",
+    methods=["POST", "OPTIONS"],
+)
+def update_user_dashboard_settings(participant_id):
+    if request.method == "OPTIONS":
+        return _cors_response(jsonify({"ok": True}))
+
+    body = request.get_json(silent=True) or {}
+    session_factory = get_session_factory()
+    try:
+        with session_factory() as db:
+            payload = update_dashboard_settings(
+                db,
+                participant_id,
+                language=body.get("language"),
+                batch_size=body.get("batch_size"),
+            )
+            db.commit()
+    except DashboardSettingsError as exc:
+        message = str(exc)
+        status = 404 if message == "Participant not found" else 400
+        return jsonify({"error": "settings_error", "message": message}), status
+
+    return jsonify({"ok": True, **(payload or {})})
 
 
 @user_dashboard_blueprint.route(
