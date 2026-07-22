@@ -69,6 +69,18 @@ function renderTeamControls(rows, actions) {
           currentTeam.display_name,
           (name) => actions.renameTeam(currentTeam.team_id, name)
         )
+      }) : null,
+      currentTeam?.is_creator ? el("button", {
+        type: "button",
+        className: "btn-team-danger",
+        text: "Remove team",
+        onclick: () => actions.removeTeam(currentTeam.team_id, currentTeam.display_name)
+      }) : null,
+      currentTeam && !currentTeam.is_creator ? el("button", {
+        type: "button",
+        className: "btn-team-danger",
+        text: "Leave team",
+        onclick: () => actions.leaveTeam(currentTeam.team_id, currentTeam.display_name)
       }) : null
     ])
   ]);

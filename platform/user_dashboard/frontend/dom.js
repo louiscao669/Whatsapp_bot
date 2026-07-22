@@ -25,8 +25,9 @@ export function el(tag, options = {}, children = []) {
 }
 
 export function setActiveBodyCosmetics(payload) {
-  const equipped = payload.cosmetics?.equipped || {};
-  document.body.classList.toggle("dashboard-bg-sunrise", equipped.dashboard_background === "dashboard_background_sunrise");
+  // Keep the dashboard on one consistent light theme at every time of day.
+  // Profile cosmetics are rendered by their components and remain enabled.
+  document.body.classList.remove("dashboard-bg-sunrise");
 }
 
 export function showModal(message, title = "Action unavailable") {

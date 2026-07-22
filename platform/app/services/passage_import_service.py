@@ -42,7 +42,9 @@ def _normalize_verse_spacing(text: str) -> str:
     return "".join(parts)
 
 
-def parse_numbered_verses(source_text: str) -> list[ParsedVerse]:
+def parse_numbered_verses(
+    source_text: str, *, allow_duplicate_numbers: bool = False
+) -> list[ParsedVerse]:
     """Split numbered verses, including multiple verses on the same line."""
     if not (source_text or "").strip():
         raise PassageImportError("Translation text is required")
@@ -88,15 +90,34 @@ def parse_numbered_verses(source_text: str) -> list[ParsedVerse]:
     ]
 
     seen = set()
+    occurrences: dict[str, int] = {}
+    unique_verses = []
     for verse in verses:
         if verse.number in seen:
-            raise PassageImportError(f"Verse number {verse.number} appears more than once")
+            if not allow_duplicate_numbers:
+                raise PassageImportError(f"Verse number {verse.number} appears more than once")
+            occurrences[verse.number] += 1
+            unique_verses.append(
+                ParsedVerse(
+                    number=f"{verse.number}-{occurrences[verse.number]}",
+                    text=verse.text,
+                )
+            )
+            continue
         seen.add(verse.number)
-    return verses
+        occurrences[verse.number] = 1
+        unique_verses.append(verse)
+    return unique_verses
 
 
 def import_passage_translation(
-    db, *, source_text: str, language: str, chapter_number, name=None
+    db,
+    *,
+    source_text: str,
+    language: str,
+    chapter_number,
+    name=None,
+    allow_duplicate_verse_numbers: bool = False,
 ):
     normalized_language = canonical_language_code(language)
     if not normalized_language:
@@ -116,7 +137,9 @@ def import_passage_translation(
     if normalized_name and len(normalized_name) > 255:
         raise PassageImportError("Translation name must be 255 characters or fewer")
 
-    verses = parse_numbered_verses(source_text)
+    verses = parse_numbered_verses(
+        source_text, allow_duplicate_numbers=allow_duplicate_verse_numbers
+    )
     name_filter = (
         PassageTranslation.name == normalized_name
         if normalized_name is not None
@@ -145,7 +168,7 @@ def import_passage_translation(
                 select(PassageVerse).where(
                     PassageVerse.translation_id == translation.id,
                     PassageVerse.chapter_number == normalized_chapter_number,
-                )
+                ).order_by(PassageVerse.position)
             ).all()
         )
 
@@ -167,18 +190,21 @@ def import_passage_translation(
 
     # Temporarily move existing positions out of the positive range so merged
     # verses can be reordered without violating the unique-position constraint.
+    previous_positions = {stored.id: stored.position for stored in existing_verses}
     for offset, stored in enumerate(existing_verses, start=1):
         stored.position = -offset
     if existing_verses:
         db.flush()
 
-    def verse_sort_key(stored):
-        match = re.fullmatch(r"(\d+)([a-z]?)", stored.verse_number, re.IGNORECASE)
-        if match:
-            return (int(match.group(1)), match.group(2).lower())
-        return (10**9, stored.verse_number.lower())
-
-    for position, stored in enumerate(sorted(by_number.values(), key=verse_sort_key), start=1):
+    # Preserve the source order. Any verses omitted by a partial reimport remain
+    # afterward in their previous order, matching the existing merge behavior.
+    parsed_numbers = [verse.number for verse in verses]
+    remaining = sorted(
+        (stored for number, stored in by_number.items() if number not in parsed_numbers),
+        key=lambda stored: previous_positions.get(stored.id, 10**9),
+    )
+    ordered = [by_number[number] for number in parsed_numbers] + remaining
+    for position, stored in enumerate(ordered, start=1):
         stored.position = position
 
     upsert_system_language(db, normalized_language, source="manual")

@@ -362,58 +362,70 @@ def response_value_continuous(item: dict, q_type: str):
     return None if v is None else float(min(1.0, max(0.0, v)))
 
 
-def assemble_rows_defect(args):
-    """Walk <eval_root>/luke<ch>/<defect>/<level>/scores_target_llama.json. Returns
-    response rows tagged with a defect sub-type; the shared 0% baseline is replicated
-    into each sub-family so every ladder has its clean anchor."""
+def assemble_rows_defect(args, theta_by_qtype=None):
+    """Walk <eval_root>/luke<ch>/<model>/<defect>/<level>/scores_target_llama.json for
+    every model in args.models. Returns response rows tagged with defect sub-type, the
+    answering model, and that model's anchor ability theta (per q_type). The shared 0%
+    baseline is replicated into each sub-family so every ladder has its clean anchor.
+
+    Legacy layout (no <model> dir) is still honored when a model dir is absent, so a
+    single-model run reproduces the historical 1.7b-only numbers exactly.
+    """
+    theta_by_qtype = theta_by_qtype or {"open": {}, "mcq": {}}
     rows = []
     skipped_null = no_scores = 0
     eval_root = Path(args.eval_root)
     for ch in args.chapters:
-        for defect in args.defects:
-            chapter_dir = eval_root / f"luke{ch}"
-            nested = chapter_dir / "1.7b" / defect
-            direct = chapter_dir / defect
-            ddir = nested if nested.is_dir() else direct
-            if not ddir.is_dir():
-                continue
-            levels = {}
-            for p in ddir.iterdir():
-                if not p.is_dir():
+        for model in args.models:
+            th_open = theta_by_qtype.get("open", {}).get(model)
+            th_mcq = theta_by_qtype.get("mcq", {}).get(model)
+            for defect in args.defects:
+                chapter_dir = eval_root / f"luke{ch}"
+                nested = chapter_dir / model / defect
+                direct = chapter_dir / defect
+                ddir = nested if nested.is_dir() else direct
+                if not ddir.is_dir():
                     continue
-                parsed = parse_dose(p.name)
-                if parsed is not None:
-                    levels[p.name] = parsed
-            fams = sorted({fam for fam, _ in levels.values() if fam})
-            for lvl, (fam, d) in levels.items():
-                fp = ddir / lvl / SCORE_FILE
-                if not fp.exists():
-                    no_scores += 1
-                    continue
-                data = json.loads(fp.read_text())
-                # sub-types this level's rows belong to
-                if fam:
-                    subtypes = [f"{defect}:{fam}"]
-                elif fams:                       # 0% baseline -> every family
-                    subtypes = [f"{defect}:{f}" for f in fams]
-                else:                            # defect has no sub-families
-                    subtypes = [defect]
-                for it in data.get("items", []):
-                    qt = it.get("q_type")
-                    if qt not in args.qtypes:
+                levels = {}
+                for p in ddir.iterdir():
+                    if not p.is_dir():
                         continue
-                    y = response_value_continuous(it, qt)
-                    if y is None:
-                        skipped_null += 1
+                    parsed = parse_dose(p.name)
+                    if parsed is not None:
+                        levels[p.name] = parsed
+                fams = sorted({fam for fam, _ in levels.values() if fam})
+                for lvl, (fam, d) in levels.items():
+                    fp = ddir / lvl / SCORE_FILE
+                    if not fp.exists():
+                        no_scores += 1
                         continue
-                    for sub in subtypes:
-                        rows.append({
-                            "defect": sub, "base_defect": defect,
-                            "family": fam if fam else "",
-                            "key": item_key(ch, it.get("item_index"), qt),
-                            "id": it.get("id"), "chapter": ch, "q_type": qt,
-                            "d": d, "q_raw": -d, "y": float(y),
-                        })
+                    data = json.loads(fp.read_text())
+                    # sub-types this level's rows belong to
+                    if fam:
+                        subtypes = [f"{defect}:{fam}"]
+                    elif fams:                       # 0% baseline -> every family
+                        subtypes = [f"{defect}:{f}" for f in fams]
+                    else:                            # defect has no sub-families
+                        subtypes = [defect]
+                    for it in data.get("items", []):
+                        qt = it.get("q_type")
+                        if qt not in args.qtypes:
+                            continue
+                        y = response_value_continuous(it, qt)
+                        if y is None:
+                            skipped_null += 1
+                            continue
+                        theta = th_mcq if qt == "mcq" else th_open
+                        for sub in subtypes:
+                            rows.append({
+                                "defect": sub, "base_defect": defect,
+                                "family": fam if fam else "",
+                                "key": item_key(ch, it.get("item_index"), qt),
+                                "id": it.get("id"), "chapter": ch, "q_type": qt,
+                                "model": model,
+                                "theta": (float(theta) if theta is not None else None),
+                                "d": d, "q_raw": -d, "y": float(y),
+                            })
     return rows, {"levels_without_scores": no_scores, "skipped_null_y": skipped_null}
 
 
@@ -425,27 +437,33 @@ def fit_defect_axis(rows, args):
     prec_s, prec_c = 1.0 / args.sigma_s ** 2, 1.0 / args.sigma_c ** 2
     by_defect = defaultdict(list)
     for r in rows:
-        by_defect[r["defect"]].append(r)
+        by_defect[(r["defect"], r["model"])].append(r)
 
     results, defect_meta = [], {}
-    for defect, drs in sorted(by_defect.items()):
+    for (defect, model), drs in sorted(by_defect.items()):
+        cell = f"{defect}|{model}"
         q = np.array([r["q_raw"] for r in drs], dtype=float)
         q_sd = float(q.std())
         if q_sd < 1e-9:
-            defect_meta[defect] = {"skipped": "no dose spread", "n_rows": len(drs)}
+            defect_meta[cell] = {"defect": defect, "model": model,
+                                 "skipped": "no dose spread", "n_rows": len(drs)}
             continue
         q_mean = float(q.mean())
         for r in drs:
             r["qz"] = (r["q_raw"] - q_mean) / q_sd
 
+        thetas = [r["theta"] for r in drs if r["theta"] is not None]
+        theta_cell = float(np.mean(thetas)) if thetas else None
         yv = np.array([r["y"] for r in drs])
         qz = np.array([r["qz"] for r in drs])
         Xg = np.column_stack([np.ones(len(drs)), qz])
-        gcoef, _, _ = fit_penalized_logistic(
+        gcoef, gse, _ = fit_penalized_logistic(
             Xg, np.zeros(len(drs)), yv, np.zeros(2), np.array([1e-3, 1e-3]))
         c0, beta = float(gcoef[0]), float(gcoef[1])
-        defect_meta[defect] = {
-            "beta_z": round(beta, 4), "beta_per_dose": round(beta / q_sd, 4),
+        defect_meta[cell] = {
+            "defect": defect, "model": model, "theta": theta_cell,
+            "beta_z": round(beta, 4), "se_beta_z": round(float(gse[1]), 4),
+            "beta_per_dose": round(beta / q_sd, 4),
             "q_sd_raw": round(q_sd, 5), "n_rows": len(drs),
             "n_items": len({r["key"] for r in drs}),
         }
@@ -466,6 +484,8 @@ def fit_defect_axis(rows, args):
             results.append({
                 "item_key": key, "id": rs[0]["id"], "defect": defect,
                 "base_defect": rs[0]["base_defect"], "family": rs[0]["family"],
+                "model": model, "theta": (round(theta_cell, 4)
+                                          if theta_cell is not None else ""),
                 "q_type": rs[0]["q_type"], "chapter": rs[0]["chapter"],
                 "n_obs": n, "n_levels": len({r["d"] for r in rs}),
                 "dose_spread": round(spread_raw, 3), "y_var": round(y_var, 5),
@@ -476,10 +496,11 @@ def fit_defect_axis(rows, args):
             })
     meta = {
         "axis": "defect", "y": "continuous (mcq direct_correct / open llm_score)",
-        "q": "q = -dose, z-scored within each defect sub-type",
+        "q": "q = -dose, z-scored within each (defect sub-type, model) cell",
+        "models": args.models,
         "sigma_s": args.sigma_s, "sigma_c": args.sigma_c,
         "n_rows": len(rows), "n_item_defect_cells": len(results),
-        "per_defect": defect_meta,
+        "per_defect_model": defect_meta,
     }
     return results, meta
 
@@ -487,8 +508,12 @@ def fit_defect_axis(rows, args):
 def run_defect_axis(args):
     args.chapters = ([int(c) for c in args.chapters.split(",") if c.strip()]
                      if args.chapters.strip() else list(range(1, 9)))
-    print(f"[fit:defect] chapters={args.chapters} defects={args.defects} qtypes={args.qtypes}")
-    rows, cov = assemble_rows_defect(args)
+    theta_open, _ = load_anchor(Path(args.anchor_open))
+    theta_mcq, _ = load_anchor(Path(args.anchor_mcq))
+    theta_by_qtype = {"open": theta_open, "mcq": theta_mcq}
+    print(f"[fit:defect] chapters={args.chapters} models={args.models} "
+          f"defects={args.defects} qtypes={args.qtypes}")
+    rows, cov = assemble_rows_defect(args, theta_by_qtype)
     if not rows:
         raise SystemExit("No variant responses assembled -- check eval-root / defect names.")
     print(f"[fit:defect] assembled {len(rows)} responses "
@@ -498,24 +523,50 @@ def run_defect_axis(args):
 
     out = Path(args.out_defect)
     out.parent.mkdir(parents=True, exist_ok=True)
-    fields = ["item_key", "id", "defect", "base_defect", "family", "q_type", "chapter",
-              "n_obs", "n_levels", "dose_spread", "y_var", "s_i", "se_s_i",
-              "s_per_dose", "c_i", "converged", "q_var_ok"]
+    fields = ["item_key", "id", "defect", "base_defect", "family", "model", "theta",
+              "q_type", "chapter", "n_obs", "n_levels", "dose_spread", "y_var",
+              "s_i", "se_s_i", "s_per_dose", "c_i", "converged", "q_var_ok"]
     with out.open("w", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=fields)
         w.writeheader()
-        for r in sorted(results, key=lambda d: (d["base_defect"], -d["s_i"])):
+        for r in sorted(results, key=lambda d: (d["base_defect"], d["model"], -d["s_i"])):
             w.writerow(r)
     out.with_name(out.stem + ".meta.json").write_text(json.dumps(meta, indent=2))
+
+    # Group-level lambda_g,m table (one row per defect sub-type x model) = the P1 input.
+    lam = out.with_name("lambda_by_defect_model.csv")
+    lam_fields = ["defect", "base_defect", "model", "theta", "beta_z", "se_beta_z",
+                  "beta_per_dose", "q_sd_raw", "n_items", "n_rows"]
+    lam_rows = []
+    for cell, m in meta["per_defect_model"].items():
+        if "beta_z" not in m:
+            continue
+        base = m["defect"].split(":", 1)[0]
+        lam_rows.append({"defect": m["defect"], "base_defect": base, "model": m["model"],
+                         "theta": m.get("theta"), "beta_z": m["beta_z"],
+                         "se_beta_z": m.get("se_beta_z"), "beta_per_dose": m["beta_per_dose"],
+                         "q_sd_raw": m["q_sd_raw"], "n_items": m["n_items"],
+                         "n_rows": m["n_rows"]})
+    with lam.open("w", newline="") as fh:
+        w = csv.DictWriter(fh, fieldnames=lam_fields)
+        w.writeheader()
+        for r in sorted(lam_rows, key=lambda d: (d["defect"], d["model"])):
+            w.writerow(r)
+
     print(f"[fit:defect] wrote {len(results)} item-defect cells -> {out}")
-    print("[fit:defect] per-defect global slope (beta_z, higher = more dose-sensitive):")
-    for d, m in sorted(meta["per_defect"].items(),
-                       key=lambda kv: -kv[1].get("beta_z", -9)):
+    print(f"[fit:defect] wrote {len(lam_rows)} (defect x model) slopes -> {lam}")
+    print("[fit:defect] per (defect, model) global slope (beta_z, higher = more dose-sensitive):")
+    for cell, m in sorted(meta["per_defect_model"].items(),
+                          key=lambda kv: (kv[1].get("defect", ""),
+                                          kv[1].get("theta", 0.0) or 0.0)):
         if "beta_z" in m:
-            print(f"    {d:28} beta_z={m['beta_z']:+.3f}  "
-                  f"n_items={m['n_items']}  n_rows={m['n_rows']}")
+            th = m.get("theta")
+            th_s = f"{th:+.2f}" if th is not None else "  NA"
+            print(f"    {m['defect']:22} {m['model']:9} theta={th_s} "
+                  f"beta_z={m['beta_z']:+.3f} n_items={m['n_items']} n_rows={m['n_rows']}")
         else:
-            print(f"    {d:28} SKIPPED ({m.get('skipped')})")
+            print(f"    {m.get('defect',cell):22} {m.get('model',''):9} SKIPPED "
+                  f"({m.get('skipped')})")
     return 0
 
 

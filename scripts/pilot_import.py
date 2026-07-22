@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Import the human-pilot QA and the 56 variant passages into the platform DB.
 
-Two things get uploaded:
+Three things get uploaded:
 
   * QA  -> one QAItem per (chapter, question), passage_id = "luke{ch}".
            question_type is CHAPTER-LEVEL: chosen once per chapter by a ~75%
@@ -13,6 +13,11 @@ Two things get uploaded:
   * Passage -> one ExperimentPassage per (chapter, condition). The QA is shared
            across a chapter's 7 conditions (the qa_target file is byte-identical
            across variants), so only the passage varies per cell.
+
+  * Admin passage -> the same variants are parsed into numbered verses and
+           synced to PassageTranslation / PassageVerse so they are visible on
+           the platform's Passages page. The human-readable condition name is
+           used as the translation name.
 
 The Chinese (decanonicalized) QA target file is identical across a chapter's
 variants, so it is read once per chapter from the clean (omission/0%) dir.
@@ -36,11 +41,12 @@ import json
 import sys
 from pathlib import Path
 
-from _bootstrap import use_message_bot
+from _bootstrap import use_platform
 
-use_message_bot()
+use_platform()
 
 from eten_shared.models import ExperimentPassage, QAItem  # noqa: E402
+from app.services.passage_import_service import import_passage_translation  # noqa: E402
 
 # (condition key, relative dir under the answer-model folder, human-readable name)
 CONDITIONS = [
@@ -68,6 +74,20 @@ def _variant_dir(eval_root: Path, chapter: int, rel: str):
     return None
 
 
+# Prefer the pseudonymized (natural-name) files produced by
+# apply_pseudonym_remap.py; fall back to the raw decanonicalized (token) files.
+_warned = set()
+
+def _pick(d: Path, pseudo: str, decanon: str) -> Path:
+    if (d / pseudo).exists():
+        return d / pseudo
+    if decanon not in _warned:
+        print(f"  [warn] {pseudo} not found -> using {decanon} (token names). "
+              f"Run apply_pseudonym_remap.py for the natural-name version.")
+        _warned.add(decanon)
+    return d / decanon
+
+
 def _base_id(passage_id: str) -> str:
     """'uw-174365-open' / 'uw-174365-mcq' -> 'uw-174365'."""
     for suffix in ("-open", "-mcq"):
@@ -81,7 +101,8 @@ def load_chapter_qa(eval_root: Path, chapter: int) -> dict:
     d = _variant_dir(eval_root, chapter, "omission/0%")
     if d is None:
         raise FileNotFoundError(f"no clean-variant dir for Luke {chapter}")
-    recs = json.loads((d / "qa_target_decanonicalized.json").read_text(encoding="utf-8"))
+    recs = json.loads(_pick(d, "qa_target_pseudonymized.json",
+                            "qa_target_decanonicalized.json").read_text(encoding="utf-8"))
     by_id: dict = {}
     for r in recs:
         bid = _base_id(r["passage_id"])
@@ -94,10 +115,11 @@ def load_passage(eval_root: Path, chapter: int, rel: str):
     d = _variant_dir(eval_root, chapter, rel)
     if d is None:
         return None, None
-    text = (d / "passage_target_decanonicalized.txt").read_text(encoding="utf-8").strip()
+    text = _pick(d, "passage_target_pseudonymized.txt",
+                 "passage_target_decanonicalized.txt").read_text(encoding="utf-8").strip()
     # first record's reference gives a human-readable chapter label
     ref = None
-    qa = d / "qa_target_decanonicalized.json"
+    qa = _pick(d, "qa_target_pseudonymized.json", "qa_target_decanonicalized.json")
     if qa.exists():
         recs = json.loads(qa.read_text(encoding="utf-8"))
         if recs:
@@ -201,7 +223,20 @@ def upload(database_url, qa_rows, passage_rows):
     from eten_shared.database import get_session_factory
 
     factory = get_session_factory(database_url)
-    created = {"qa": 0, "qa_skip": 0, "passage": 0, "passage_skip": 0}
+    created = {
+        "qa": 0,
+        "qa_skip": 0,
+        "passage": 0,
+        "passage_skip": 0,
+        "passage_error": None,
+        "admin_passage": 0,
+        "admin_verse": 0,
+        "admin_passage_error": None,
+    }
+
+    # QA items and passages are committed in SEPARATE transactions so a passage
+    # failure (e.g. experiment_passages table/column missing) surfaces clearly
+    # and does not silently roll back the QA import.
     with factory() as db:
         for item in qa_rows:
             exists = db.scalar(
@@ -215,20 +250,49 @@ def upload(database_url, qa_rows, passage_rows):
                 continue
             db.add(item)
             created["qa"] += 1
-        for p in passage_rows:
-            exists = db.scalar(
-                select(ExperimentPassage).where(
-                    ExperimentPassage.chapter == p["chapter"],
-                    ExperimentPassage.condition == p["condition"],
-                    ExperimentPassage.language == p["language"],
-                )
-            )
-            if exists:
-                created["passage_skip"] += 1
-                continue
-            db.add(ExperimentPassage(**p))
-            created["passage"] += 1
         db.commit()
+
+    try:
+        with factory() as db:
+            for p in passage_rows:
+                exists = db.scalar(
+                    select(ExperimentPassage).where(
+                        ExperimentPassage.chapter == p["chapter"],
+                        ExperimentPassage.condition == p["condition"],
+                        ExperimentPassage.language == p["language"],
+                    )
+                )
+                if exists:
+                    created["passage_skip"] += 1
+                    continue
+                db.add(ExperimentPassage(**p))
+                created["passage"] += 1
+            db.commit()
+    except Exception as exc:  # noqa: BLE001 - surface the real cause to the user
+        created["passage"] = 0
+        created["passage_error"] = f"{type(exc).__name__}: {exc}"
+
+    # Keep the admin passage catalogue in sync independently. This intentionally
+    # runs even when every ExperimentPassage already exists, so an older pilot
+    # import can be repaired simply by rerunning this command.
+    try:
+        with factory() as db:
+            for p in passage_rows:
+                _, verses = import_passage_translation(
+                    db,
+                    source_text=p["passage_text"],
+                    language=p["language"],
+                    chapter_number=p["chapter"],
+                    name=p["name"],
+                    allow_duplicate_verse_numbers=True,
+                )
+                created["admin_passage"] += 1
+                created["admin_verse"] += len(verses)
+            db.commit()
+    except Exception as exc:  # noqa: BLE001 - preserve the other import transactions
+        created["admin_passage"] = 0
+        created["admin_verse"] = 0
+        created["admin_passage_error"] = f"{type(exc).__name__}: {exc}"
     return created
 
 
@@ -258,6 +322,20 @@ def main():
     result = upload(args.database_url, qa_rows, passage_rows)
     print(f"\nUploaded: {result['qa']} QA items ({result['qa_skip']} already present), "
           f"{result['passage']} passages ({result['passage_skip']} already present).")
+    if result.get("passage_error"):
+        print(f"\n*** PASSAGE IMPORT FAILED: {result['passage_error']}\n"
+              f"    Likely the experiment_passages table or its 'name' column is missing.\n"
+              f"    Re-run supabase/migrations/experiment_plan_cells.sql, then re-run this import.")
+    print(
+        f"Admin passages synced: {result['admin_passage']} chapter variants, "
+        f"{result['admin_verse']} verses."
+    )
+    if result.get("admin_passage_error"):
+        print(
+            f"\n*** ADMIN PASSAGE IMPORT FAILED: {result['admin_passage_error']}\n"
+            "    QA items and experiment passages were not rolled back. Fix the "
+            "reported issue and rerun this import."
+        )
 
 
 if __name__ == "__main__":

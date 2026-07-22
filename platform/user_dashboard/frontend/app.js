@@ -1,7 +1,7 @@
 import { renderAchievements } from "./achievements/achievements.js";
 import { renderCommunity } from "./community/community.js";
 import { renderContribution } from "./contribution/contribution.js";
-import { bindModal, el, setActiveBodyCosmetics, showModal, showModalContent } from "./dom.js";
+import { bindModal, el, setActiveBodyCosmetics, showConfirm, showModal, showModalContent } from "./dom.js";
 import { renderJourney } from "./journey/journey.js";
 import { renderRightRail } from "./rightRail.js";
 import { renderShop } from "./shop/shop.js";
@@ -52,6 +52,8 @@ function render() {
     createTeam,
     joinTeam,
     renameTeam,
+    leaveTeam,
+    removeTeam,
     setJourneyChapter,
     clearJourneyChapter,
     openQuestion,
@@ -170,6 +172,32 @@ async function joinTeam(teamId) {
 
 async function renameTeam(teamId, name) {
   await refreshMutation(() => postJson(state.participantId, `/teams/${encodeURIComponent(teamId)}/name`, { name }));
+}
+
+function leaveTeam(teamId, teamName) {
+  showConfirm({
+    title: "Leave team?",
+    message: `You will leave ${teamName}. You can join another team afterward.`,
+    confirmLabel: "Leave team",
+    onConfirm: () => refreshMutation(() => postJson(
+      state.participantId,
+      `/teams/${encodeURIComponent(teamId)}/leave`,
+      {}
+    ))
+  });
+}
+
+function removeTeam(teamId, teamName) {
+  showConfirm({
+    title: "Remove team?",
+    message: `${teamName} will be permanently removed and all members will leave the team.`,
+    confirmLabel: "Remove team",
+    onConfirm: () => refreshMutation(() => postJson(
+      state.participantId,
+      `/teams/${encodeURIComponent(teamId)}/remove`,
+      {}
+    ))
+  });
 }
 
 async function refreshMutation(mutation) {

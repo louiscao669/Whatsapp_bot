@@ -76,6 +76,14 @@ class ParseNumberedVersesTests(unittest.TestCase):
         with self.assertRaisesRegex(PassageImportError, "appears more than once"):
             parse_numbered_verses("1 First\n1 Duplicate")
 
+    def test_can_label_duplicate_numbers_for_multi_section_pilot_passages(self):
+        verses = parse_numbered_verses(
+            "1 First section\n2 Next\n1 Second section",
+            allow_duplicate_numbers=True,
+        )
+
+        self.assertEqual([verse.number for verse in verses], ["1", "2", "1-2"])
+
 
 class ImportPassageTranslationTests(unittest.TestCase):
     def test_requires_positive_integer_chapter_number(self):

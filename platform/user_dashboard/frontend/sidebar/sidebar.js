@@ -13,9 +13,16 @@ export const pages = [
 export function renderSidebar({ payload, activePage, onNavigate, onPhotoSelected }) {
   const participant = payload.participant || {};
   const equipped = payload.cosmetics?.equipped || {};
+  const hasGoldFrame = equipped.profile_frame === "profile_frame_gold";
   const photoWrap = el("span", {
-    className: `profile-photo-wrap ${equipped.profile_frame === "profile_frame_gold" ? "gold-frame" : ""}`
+    className: `profile-photo-wrap ${hasGoldFrame ? "gold-frame" : ""}`
   }, [
+    hasGoldFrame ? el("img", {
+      className: "profile-frame-crown",
+      src: "/user_dashboard/assets/crown.svg",
+      alt: "",
+      "aria-hidden": "true"
+    }) : null,
     el("img", {
       id: "profilePhoto",
       className: "profile-photo",

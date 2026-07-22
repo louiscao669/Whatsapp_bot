@@ -5,7 +5,7 @@ import os
 import random
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
-from sqlalchemy import distinct, func, select
+from sqlalchemy import delete, distinct, func, select
 
 from eten_shared.domain.batch_schedules import (
     BATCH_NEXT_ASSIGNMENT_TYPE,
@@ -1453,6 +1453,39 @@ def rename_community_team(db, participant_id, team_id, name):
         raise CommunityTeamError("A team with that name already exists")
     team.name = name
     team.updated_at = datetime.now(timezone.utc)
+    db.flush()
+    return get_user_dashboard_payload(db, participant_id)
+
+
+def leave_community_team(db, participant_id, team_id):
+    membership = db.scalar(
+        select(CommunityTeamMember).where(
+            CommunityTeamMember.team_id == str(team_id or ""),
+            CommunityTeamMember.participant_id == participant_id,
+        )
+    )
+    if not membership:
+        raise CommunityTeamError("You are not a member of this team")
+    team = db.scalar(select(CommunityTeam).where(CommunityTeam.id == membership.team_id))
+    if team and team.creator_participant_id == participant_id:
+        raise CommunityTeamError("Team creators must remove the team instead of leaving it")
+    db.delete(membership)
+    db.flush()
+    return get_user_dashboard_payload(db, participant_id)
+
+
+def remove_community_team(db, participant_id, team_id):
+    team = db.scalar(select(CommunityTeam).where(CommunityTeam.id == str(team_id or "")))
+    if not team:
+        raise CommunityTeamError("Team not found")
+    if team.creator_participant_id != participant_id:
+        raise CommunityTeamError("Only the team creator can remove the team")
+    # Explicit deletion keeps this operation correct in SQLite tests as well as
+    # PostgreSQL, where the foreign key also cascades team membership deletion.
+    db.execute(
+        delete(CommunityTeamMember).where(CommunityTeamMember.team_id == team.id)
+    )
+    db.delete(team)
     db.flush()
     return get_user_dashboard_payload(db, participant_id)
 

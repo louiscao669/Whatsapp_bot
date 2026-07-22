@@ -23,10 +23,12 @@ from app.user_dashboard.service import (
     claim_batch_chest_reward,
     create_community_team,
     join_community_team,
+    leave_community_team,
     load_profile_photo,
     mark_dashboard_question_viewed,
     record_dashboard_heartbeat,
     rename_community_team,
+    remove_community_team,
     purchase_store_item,
     set_cosmetic_equipped,
     set_user_streak_pause,
@@ -117,6 +119,37 @@ def rename_user_dashboard_team(participant_id, team_id):
     try:
         with get_session_factory()() as db:
             payload = rename_community_team(db, participant_id, team_id, body.get("name"))
+            db.commit()
+    except CommunityTeamError as exc:
+        status = 404 if str(exc) == "Team not found" else 400
+        return jsonify({"error": "team_error", "message": str(exc)}), status
+    return jsonify({"ok": True, **payload})
+
+
+@user_dashboard_blueprint.route(
+    "/user-dashboard/api/<participant_id>/teams/<team_id>/leave", methods=["POST", "OPTIONS"]
+)
+def leave_user_dashboard_team(participant_id, team_id):
+    if request.method == "OPTIONS":
+        return _cors_response(jsonify({"ok": True}))
+    try:
+        with get_session_factory()() as db:
+            payload = leave_community_team(db, participant_id, team_id)
+            db.commit()
+    except CommunityTeamError as exc:
+        return jsonify({"error": "team_error", "message": str(exc)}), 400
+    return jsonify({"ok": True, **payload})
+
+
+@user_dashboard_blueprint.route(
+    "/user-dashboard/api/<participant_id>/teams/<team_id>/remove", methods=["POST", "OPTIONS"]
+)
+def remove_user_dashboard_team(participant_id, team_id):
+    if request.method == "OPTIONS":
+        return _cors_response(jsonify({"ok": True}))
+    try:
+        with get_session_factory()() as db:
+            payload = remove_community_team(db, participant_id, team_id)
             db.commit()
     except CommunityTeamError as exc:
         status = 404 if str(exc) == "Team not found" else 400
