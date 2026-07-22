@@ -1,3 +1,5 @@
+import { translateText } from "./i18n.js";
+
 export function el(tag, options = {}, children = []) {
   const svgTags = new Set(["svg", "path", "circle", "rect", "line", "polyline", "polygon", "g"]);
   const node = svgTags.has(tag)
@@ -11,13 +13,16 @@ export function el(tag, options = {}, children = []) {
         node.className = value;
       }
     } else if (key === "text") {
-      node.textContent = value;
+      node.textContent = translateText(value);
     } else if (key === "html") {
       node.innerHTML = value;
     } else if (key.startsWith("on") && typeof value === "function") {
       node.addEventListener(key.slice(2).toLowerCase(), value);
     } else if (value !== false && value !== null && value !== undefined) {
-      node.setAttribute(key, value === true ? "" : value);
+      const translatedValue = ["title", "placeholder", "aria-label"].includes(key)
+        ? translateText(value)
+        : value;
+      node.setAttribute(key, translatedValue === true ? "" : translatedValue);
     }
   }
   node.append(...children.filter(Boolean));
@@ -31,7 +36,7 @@ export function setActiveBodyCosmetics(payload) {
 }
 
 export function showModal(message, title = "Action unavailable") {
-  document.querySelector("#actionModalTitle").textContent = title;
+  document.querySelector("#actionModalTitle").textContent = translateText(title);
   document.querySelector("#actionModalMessage").replaceChildren(
     el("p", { text: message })
   );
@@ -40,7 +45,7 @@ export function showModal(message, title = "Action unavailable") {
 }
 
 export function showModalContent(title, children = []) {
-  document.querySelector("#actionModalTitle").textContent = title;
+  document.querySelector("#actionModalTitle").textContent = translateText(title);
   document.querySelector("#actionModalMessage").replaceChildren(...children.filter(Boolean));
   document.querySelector("#actionModal").hidden = false;
   document.querySelector("#actionModalClose").focus();
@@ -56,7 +61,7 @@ export function showConfirm({
 } = {}) {
   const modal = document.querySelector("#actionModal");
   const closeBtn = document.querySelector("#actionModalClose");
-  document.querySelector("#actionModalTitle").textContent = title;
+  document.querySelector("#actionModalTitle").textContent = translateText(title);
 
   const close = () => {
     modal.hidden = true;

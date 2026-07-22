@@ -12,6 +12,10 @@ export const sampleDashboard = {
   },
   xp_points: 0,
   lives: 0,
+  settings: {
+    language: "en",
+    batch_size: 3
+  },
   history_summary: {
     total_questions_answered: 12,
     total_batches_answered: 4,
@@ -155,6 +159,7 @@ export function normalizeDashboard(payload) {
     streak: { ...sampleDashboard.streak, ...(payload.streak || {}) },
     store: { ...sampleDashboard.store, ...(payload.store || {}) },
     cosmetics: { ...sampleDashboard.cosmetics, ...(payload.cosmetics || {}) },
+    settings: { ...sampleDashboard.settings, ...(payload.settings || {}) },
     journey: { ...sampleDashboard.journey, ...(payload.journey || {}) }
   };
 }

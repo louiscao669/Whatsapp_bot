@@ -1,4 +1,5 @@
 import { el } from "../dom.js";
+import { translateText } from "../i18n.js";
 
 export function renderCommunity(payload, state, actions) {
   const leaderboard = payload.leaderboard || {};
@@ -87,7 +88,7 @@ function renderTeamControls(rows, actions) {
 }
 
 function requestTeamName(title, value, onSubmit) {
-  const name = window.prompt(title, value);
+  const name = window.prompt(translateText(title), value);
   if (name !== null && name.trim()) {
     onSubmit(name.trim());
   }

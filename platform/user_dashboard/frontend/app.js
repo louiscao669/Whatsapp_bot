@@ -3,7 +3,9 @@ import { renderCommunity } from "./community/community.js";
 import { renderContribution } from "./contribution/contribution.js";
 import { bindModal, el, setActiveBodyCosmetics, showConfirm, showModal, showModalContent } from "./dom.js";
 import { renderJourney } from "./journey/journey.js";
+import { setLanguage, translateTree } from "./i18n.js";
 import { renderRightRail } from "./rightRail.js";
+import { renderSettings } from "./settings/settings.js";
 import { renderShop } from "./shop/shop.js";
 import { renderSidebar } from "./sidebar/sidebar.js";
 import {
@@ -28,6 +30,9 @@ const state = {
   startingBatch: false,
   claimingBatchRewardId: null,
   communityTab: "individual",
+  settingsOpen: false,
+  settingsDraft: null,
+  savingSettings: false,
   shopMessage: "",
   payload: normalizeDashboard(sampleDashboard)
 };
@@ -44,6 +49,10 @@ const pageRenderers = {
 };
 
 function render() {
+  const selectedLanguage = state.settingsOpen
+    ? state.settingsDraft?.language
+    : state.payload.settings?.language;
+  setLanguage(selectedLanguage || "en");
   setActiveBodyCosmetics(state.payload);
   const actions = {
     navigate,
@@ -67,9 +76,16 @@ function render() {
     purchase,
     setCosmetic,
     setStreakPause,
-    uploadPhoto
+    uploadPhoto,
+    openSettings,
+    closeSettings,
+    setSettingsLanguage,
+    adjustBatchSize,
+    saveSettings
   };
-  const renderer = pageRenderers[state.activePage] || renderJourney;
+  const renderer = state.settingsOpen
+    ? () => renderSettings(state, actions)
+    : pageRenderers[state.activePage] || renderJourney;
   app.replaceChildren(
     el("div", { className: "dashboard-shell" }, [
       renderSidebar({
@@ -79,11 +95,77 @@ function render() {
         onPhotoSelected: uploadPhoto
       }),
       el("section", { className: "main-pane" }, [
+        !state.settingsOpen ? el("div", { className: "dashboard-top-actions" }, [
+          el("button", {
+            type: "button",
+            className: "settings-trigger",
+            "aria-label": "Settings",
+            title: "Settings",
+            text: "⚙",
+            onclick: openSettings
+          })
+        ]) : null,
         renderer(state.payload, state, actions)
       ]),
       renderRightRail(state.payload, actions)
     ])
   );
+  translateTree(app);
+}
+
+function openSettings() {
+  const settings = state.payload.settings || {};
+  state.settingsDraft = {
+    language: settings.language === "zh" ? "zh" : "en",
+    batch_size: Math.min(10, Math.max(1, Number(settings.batch_size || 3)))
+  };
+  state.settingsOpen = true;
+  render();
+}
+
+function closeSettings() {
+  state.settingsOpen = false;
+  state.settingsDraft = null;
+  state.savingSettings = false;
+  render();
+}
+
+function setSettingsLanguage(language) {
+  state.settingsDraft = {
+    ...(state.settingsDraft || {}),
+    language: language === "zh" ? "zh" : "en"
+  };
+  render();
+}
+
+function adjustBatchSize(delta) {
+  const current = Number(state.settingsDraft?.batch_size || 3);
+  state.settingsDraft = {
+    ...(state.settingsDraft || {}),
+    batch_size: Math.min(10, Math.max(1, current + Number(delta || 0)))
+  };
+  render();
+}
+
+async function saveSettings() {
+  if (!state.participantId || !state.settingsDraft || state.savingSettings) return;
+  state.savingSettings = true;
+  render();
+  try {
+    state.payload = await postJson(state.participantId, "/settings", {
+      language: state.settingsDraft.language,
+      batch_size: state.settingsDraft.batch_size
+    });
+    rememberDashboard();
+    state.settingsOpen = false;
+    state.settingsDraft = null;
+    state.savingSettings = false;
+    render();
+  } catch (error) {
+    state.savingSettings = false;
+    render();
+    showModal(error.message);
+  }
 }
 
 function navigate(pageId) {
