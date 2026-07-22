@@ -82,7 +82,7 @@ const ZH = {
   "Keep the streak alive": "保持连续记录",
   "Unlock by progressing": "通过推进进度解锁",
   "Activity Log": "活动记录",
-  "Luke": "路加福音",
+  "Luke": "福音书",
   "Daily streak": "每日连续记录",
   "This month": "本月",
   "Weekly streak": "每周连续记录",
@@ -123,11 +123,14 @@ const ZH = {
   "Need Diamonds": "钻石不足",
   "Streak Freeze": "连续记录冻结",
   "Extra Heart": "额外爱心",
+  "Extra Life": "额外生命",
   "Sunrise Background": "日出背景",
   "Gold Profile Frame": "金色头像框",
   "Protects your streak for one missed day.": "在错过一天时保护你的连续记录。",
   "A saved recovery chance for future retry mechanics.": "保存一次恢复机会，供以后重试使用。",
   "Changes your dashboard background to a warm sunrise color.": "将仪表板背景改为温暖的日出色调。",
+  "Adds a gold frame to your dashboard profile.": "为你的仪表板头像添加金色边框。",
+  "Answer today's question batch to keep your streak active.": "完成今天的问题批次以保持连续记录。",
   "Action unavailable": "操作不可用",
   "Please confirm": "请确认",
   "Confirm": "确认",
@@ -196,7 +199,7 @@ const ZH = {
 };
 
 const PATTERNS = [
-  [/^Luke (\d+)$/, "路加福音 $1"],
+  [/^Luke (\d+)$/, "福音书 $1"],
   [/^Batch (\d+)$/, "批次 $1"],
   [/^Question (\d+)$/, "问题 $1"],
   [/^(\d+)\/4 members$/, "$1/4 名成员"],
@@ -214,7 +217,7 @@ const PATTERNS = [
   [/^Changing photo costs (\d+) diamonds\.$/, "更换头像需要 $1 颗钻石。"],
   [/^Paused for up to (\d+) days\.$/, "最多暂停 $1 天。"],
   [/^(\d+) streak freezes? available\.$/, "有 $1 个连续记录冻结可用。"],
-  [/^Luke (\d+): (\d+) answers$/, "路加福音 $1：$2 个回答"]
+  [/^Luke (\d+): (\d+) answers$/, "福音书 $1：$2 个回答"]
   ,[/^Chapter (\d+)$/, "第 $1 章"]
   ,[/^(\d+) day streak calendar$/, "$1 天连续记录日历"]
   ,[/^Streak day (\d+)$/, "连续记录第 $1 天"]

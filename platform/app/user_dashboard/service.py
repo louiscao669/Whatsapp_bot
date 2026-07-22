@@ -1,6 +1,7 @@
 """Participant wallet, store, and cosmetic helpers for the user dashboard."""
 
 from datetime import datetime, timedelta, timezone
+import hashlib
 import os
 import random
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
@@ -679,9 +680,14 @@ def _participant_by_id(db, participant_id):
 
 
 def _profile_photo_url(participant_id, participant):
-    if not (participant.profile_photo_uri or "").strip():
+    storage_uri = (participant.profile_photo_uri or "").strip()
+    if not storage_uri:
         return None
-    version = int((participant.updated_at or participant.created_at).timestamp())
+    # Settings and other participant changes also update ``updated_at``. Using
+    # it here made an unchanged photo appear to have a new URL after switching
+    # dashboard language. The storage URI changes whenever a new photo is
+    # uploaded, so it is the correct stable cache-busting source.
+    version = hashlib.sha256(storage_uri.encode("utf-8")).hexdigest()[:12]
     return f"/user-dashboard/api/{participant_id}/profile-photo?v={version}"
 
 

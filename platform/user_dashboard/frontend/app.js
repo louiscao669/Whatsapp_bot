@@ -95,16 +95,6 @@ function render() {
         onPhotoSelected: uploadPhoto
       }),
       el("section", { className: "main-pane" }, [
-        !state.settingsOpen ? el("div", { className: "dashboard-top-actions" }, [
-          el("button", {
-            type: "button",
-            className: "settings-trigger",
-            "aria-label": "Settings",
-            title: "Settings",
-            text: "⚙",
-            onclick: openSettings
-          })
-        ]) : null,
         renderer(state.payload, state, actions)
       ]),
       renderRightRail(state.payload, actions)
@@ -157,6 +147,7 @@ async function saveSettings() {
       batch_size: state.settingsDraft.batch_size
     });
     rememberDashboard();
+    rememberProfilePhoto();
     state.settingsOpen = false;
     state.settingsDraft = null;
     state.savingSettings = false;

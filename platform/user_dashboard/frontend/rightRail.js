@@ -10,6 +10,14 @@ export function renderRightRail(payload, actions = {}) {
 
   return el("aside", { className: "right-rail" }, [
     el("div", { className: "wallet-row", "aria-label": "Wallet totals" }, [
+      el("button", {
+        type: "button",
+        className: "settings-trigger wallet-settings-trigger",
+        "aria-label": "Settings",
+        title: "Settings",
+        text: "⚙",
+        onclick: () => actions.openSettings?.()
+      }),
       walletStat("/user_dashboard/assets/points.svg", xp, "points", true),
       walletStat("/user_dashboard/assets/diamond.svg", balance, "diamond", true),
       walletStat("/user_dashboard/assets/heart.svg", lives, "heart", true)
