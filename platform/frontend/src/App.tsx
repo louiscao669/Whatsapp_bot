@@ -16,6 +16,7 @@ import { LoginPage } from './pages/LoginPage'
 import { ParticipantDetailPage } from './pages/ParticipantDetailPage'
 import { ParticipantsPage } from './pages/ParticipantsPage'
 import { PassagesListPage } from './pages/PassagesListPage'
+import { PassageDetailPage } from './pages/PassageDetailPage'
 import { QaItemDetailPage } from './pages/QaItemDetailPage'
 import { QaItemsListPage } from './pages/QaItemsListPage'
 import { RecordPage } from './pages/RecordPage'
@@ -47,6 +48,10 @@ function App() {
             >
               <Route path="analytics" element={<AnalyticsPage />} />
               <Route path="passages" element={<PassagesListPage />} />
+              <Route
+                path="passages/:translationId/:chapterNumber"
+                element={<PassageDetailPage />}
+              />
               <Route path="experiment-passages" element={<ExperimentPassagesListPage />} />
               <Route path="experiment-passages/:passageId" element={<ExperimentPassageDetailPage />} />
               <Route path="qa-items" element={<Navigate to="/qa-items/list" replace />} />

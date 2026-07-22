@@ -1,9 +1,11 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState, type KeyboardEvent } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { ApiError } from '../api/client'
 import { fetchPassageItems, type PassageItem } from '../api/passages'
 import { PassageImportPanel } from '../components/PassageImportPanel'
 
 export function PassagesListPage() {
+  const navigate = useNavigate()
   const [items, setItems] = useState<PassageItem[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -23,6 +25,17 @@ export function PassagesListPage() {
   useEffect(() => {
     loadItems()
   }, [loadItems])
+
+  function open(item: PassageItem) {
+    navigate(`/passages/${encodeURIComponent(item.id)}/${item.chapter_number}`)
+  }
+
+  function handleRowKeyDown(event: KeyboardEvent<HTMLTableRowElement>, item: PassageItem) {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault()
+      open(item)
+    }
+  }
 
   if (loading) return <p className="loading-message">Loading passages…</p>
 
@@ -70,7 +83,15 @@ export function PassagesListPage() {
             </thead>
             <tbody>
               {items.map((item) => (
-                <tr key={`${item.id}-${item.chapter_number}`}>
+                <tr
+                  key={`${item.id}-${item.chapter_number}`}
+                  className="data-table-row-clickable"
+                  tabIndex={0}
+                  role="link"
+                  aria-label={`Open ${item.translation_name ?? 'unnamed translation'}, chapter ${item.chapter_number}`}
+                  onClick={() => open(item)}
+                  onKeyDown={(event) => handleRowKeyDown(event, item)}
+                >
                   <td>{item.language}</td>
                   <td>{item.translation_name ?? 'Unnamed'}</td>
                   <td>{item.chapter_number}</td>

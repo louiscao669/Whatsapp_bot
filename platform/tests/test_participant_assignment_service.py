@@ -35,6 +35,8 @@ class ParticipantAssignmentServiceTests(unittest.TestCase):
 
     def test_parses_qa_reference(self):
         self.assertEqual(parse_qa_chapter_verse("Luke 2:4"), (2, 4))
+        self.assertEqual(parse_qa_chapter_verse("2:4"), (2, 4))
+        self.assertEqual(parse_qa_chapter_verse("1:35(#2)"), (1, 35))
         self.assertIsNone(parse_qa_chapter_verse("Unknown passage"))
 
     def test_sorts_qa_references_by_numeric_chapter_and_verse(self):

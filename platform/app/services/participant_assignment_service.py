@@ -64,7 +64,13 @@ def _enqueue_new_assignment_push(db, participant, assignment, assigned_count):
     )
 
 
-_REFERENCE = re.compile(r"^.+?\s+(?P<chapter>\d+):(?P<verse>\d+)", re.IGNORECASE)
+# Accept both admin-authored references ("Luke 1:4") and pipeline references
+# ("1:4" / "1:35(#2)"). QAItems are shared by regular and experiment flows,
+# so a missing book prefix must not make an otherwise compatible verse vanish
+# from the manual assignment screen.
+_REFERENCE = re.compile(
+    r"^(?:.+?\s+)?(?P<chapter>\d+):(?P<verse>\d+)", re.IGNORECASE
+)
 
 
 def parse_qa_chapter_verse(reference):
