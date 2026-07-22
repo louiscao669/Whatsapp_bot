@@ -13,6 +13,7 @@ from eten_shared.domain.assignments import (
     build_assignment_prompt,
     complete_current_batch_if_needed,
     create_assignment_for_qa_item,
+    experiment_assignment_enabled,
     get_incomplete_assignment,
     get_or_create_participant_session,
     get_preferred_batch_size,
@@ -52,7 +53,11 @@ from eten_shared.qa_keywords import (
     get_language_keywords,
     rubric_from_qa_item,
 )
-from eten_shared.question_discovery import select_next_qa_item
+from eten_shared.question_discovery import (
+    experiment_batch_should_reset,
+    select_next_experiment_cell_item,
+    select_next_qa_item,
+)
 from eten_shared.recordings import (
     has_question_recording_for_participant,
     participant_language_code,
@@ -73,6 +78,7 @@ from eten_shared.transcription import (
 from eten_shared.models import (
     Assignment,
     AssignmentStatus,
+    ExperimentPassage,
     ParticipantEvent,
     ParticipantProviderContact,
     ParticipantResponse,
@@ -255,26 +261,53 @@ def create_assignment_prompt(db: Session, participant, participant_session):
             incomplete.started_at = incomplete.started_at or incomplete.delivered_at
             return prompt, False, completed_batch_size
 
-    if not automatic_assignment_enabled():
+    if experiment_assignment_enabled():
+        # Designed (Latin-square) assignment for the human pilot. Serve strictly
+        # from the participant's plan cell; keep one condition per batch and show
+        # that condition's variant passage.
+        qa_item, cell = select_next_experiment_cell_item(db, participant)
+        if qa_item is None:
+            participant_session.current_batch_id = None
+            participant_session.current_assignment_id = None
+            participant_session.state = SessionState.IDLE.value
+            return None, False, completed_batch_size
+        if experiment_batch_should_reset(db, participant_session.current_batch_id, cell):
+            participant_session.current_batch_id = None
+        variant_text = None
+        if cell.experiment_passage_id:
+            experiment_passage = db.get(ExperimentPassage, cell.experiment_passage_id)
+            variant_text = experiment_passage.passage_text if experiment_passage else None
+        prompt = create_assignment_for_qa_item(
+            db,
+            participant,
+            participant_session,
+            qa_item,
+            completed_batch_size=completed_batch_size,
+            assignment_source="experiment",
+            experiment_cell_id=cell.id,
+            passage_text=variant_text,
+        )
+    elif automatic_assignment_enabled():
+        qa_item = select_next_qa_item(db, participant)
+        if qa_item is None:
+            participant_session.current_batch_id = None
+            participant_session.state = SessionState.IDLE.value
+            return None, False, completed_batch_size
+
+        prompt = create_assignment_for_qa_item(
+            db,
+            participant,
+            participant_session,
+            qa_item,
+            completed_batch_size=completed_batch_size,
+            assignment_source="auto",
+        )
+    else:
         participant_session.current_batch_id = None
         participant_session.current_assignment_id = None
         participant_session.state = SessionState.IDLE.value
         return None, False, completed_batch_size
 
-    qa_item = select_next_qa_item(db, participant)
-    if qa_item is None:
-        participant_session.current_batch_id = None
-        participant_session.state = SessionState.IDLE.value
-        return None, False, completed_batch_size
-
-    prompt = create_assignment_for_qa_item(
-        db,
-        participant,
-        participant_session,
-        qa_item,
-        completed_batch_size=completed_batch_size,
-        assignment_source="auto",
-    )
     if prompt:
         # Delivered immediately over the messenger: stamp delivery + start the
         # clock (delivered_at == started_at on the messenger; no "opened" event).

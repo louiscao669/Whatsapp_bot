@@ -13,6 +13,29 @@ export function fetchPassageItems() {
   return apiFetch<{ items: PassageItem[] }>('/api/v1/passages')
 }
 
+export type PassageVerseDetail = {
+  verse_number: string
+  position: number
+  text: string
+}
+
+export type PassageDetail = {
+  id: string
+  language: string
+  translation_name: string | null
+  chapter_number: number
+  created_at: string | null
+  updated_at: string | null
+  verse_count: number
+  verses: PassageVerseDetail[]
+}
+
+export function fetchPassageDetail(id: string, chapterNumber: number) {
+  return apiFetch<PassageDetail>(
+    `/api/v1/passages/${encodeURIComponent(id)}/${chapterNumber}`,
+  )
+}
+
 export function fetchPassageTranslationNames(language?: string) {
   const query = language ? `?language=${encodeURIComponent(language)}` : ''
   return apiFetch<{ names: string[] }>(`/api/v1/passages/translation-names${query}`)

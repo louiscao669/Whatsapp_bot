@@ -4,7 +4,7 @@ from sqlalchemy import select
 from eten_shared.database import get_session_factory
 from app.services.admin_session_service import require_roles
 from app.services.passage_import_service import PassageImportError, import_passage_translation
-from app.services.passage_list_service import list_passage_items
+from app.services.passage_list_service import get_passage_detail, list_passage_items
 from app.services.system_languages_service import canonical_language_code
 from eten_shared.models import PassageTranslation
 
@@ -19,6 +19,17 @@ def passage_items_endpoint():
     with session_factory() as db:
         items = list_passage_items(db)
     return jsonify({"items": items})
+
+
+@passages_blueprint.route("/<translation_id>/<int:chapter_number>", methods=["GET"])
+@require_roles("admin")
+def passage_detail_endpoint(translation_id, chapter_number):
+    session_factory = get_session_factory()
+    with session_factory() as db:
+        detail = get_passage_detail(db, translation_id, chapter_number)
+    if detail is None:
+        return jsonify({"error": "not_found", "message": "Passage not found"}), 404
+    return jsonify(detail)
 
 
 @passages_blueprint.route("/translation-names", methods=["GET"])

@@ -69,6 +69,22 @@ def automatic_assignment_enabled() -> bool:
     }
 
 
+def experiment_assignment_enabled() -> bool:
+    """Return whether DESIGNED (Latin-square) assignment is enabled for this deployment.
+
+    Opt-in flag for the human pilot only; when true, callers should route through
+    ``question_discovery.experiment_selection.select_next_experiment_cell_item`` instead
+    of the coverage-optimizing ``select_next_qa_item``. Defaults off so the production
+    coverage path is unaffected. See DESIGNED_ASSIGNMENT_EXTENSION_2026-07-20.md §6.
+    """
+    return os.getenv("ENABLE_EXPERIMENT_ASSIGNMENT", "false").strip().lower() in {
+        "1",
+        "true",
+        "yes",
+        "on",
+    }
+
+
 def try_complete_assignment(db: Session, assignment) -> bool:
     """Atomically mark an assignment completed; first commit wins.
 
@@ -261,6 +277,7 @@ def create_assignment_for_qa_item(
     completed_batch_size=0,
     assignment_source="auto",
     experiment_cell_id=None,
+    passage_text=None,
 ):
     batch_id = participant_session.current_batch_id or new_id()
     assignment = Assignment(
@@ -270,6 +287,10 @@ def create_assignment_for_qa_item(
         status=AssignmentStatus.ASSIGNED.value,
         assigned_at=utc_now(),
         experiment_cell_id=experiment_cell_id,
+        # Designed assignment: the participant must read the CONDITION's variant
+        # passage, not the shared QAItem text. build_assignment_prompt prefers
+        # assignment.passage_text, so stamp it here. None => production behavior.
+        passage_text=passage_text,
     )
     db.add(assignment)
     db.flush()
