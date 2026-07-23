@@ -7,12 +7,18 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
 from eten_shared.database import get_session_factory
+from eten_shared.answer_llm_scoring import (
+    AnswerLLMScoringError,
+    llm_answer_scoring_enabled,
+    score_open_answer_binary,
+)
 from eten_shared.domain.assignments import (
     AssignmentPrompt,
     automatic_assignment_enabled,
     build_assignment_prompt,
     complete_current_batch_if_needed,
     create_assignment_for_qa_item,
+    experiment_passage_assignment_kwargs,
     experiment_assignment_enabled,
     get_incomplete_assignment,
     get_or_create_participant_session,
@@ -273,10 +279,13 @@ def create_assignment_prompt(db: Session, participant, participant_session):
             return None, False, completed_batch_size
         if experiment_batch_should_reset(db, participant_session.current_batch_id, cell):
             participant_session.current_batch_id = None
-        variant_text = None
+        passage_kwargs = {}
         if cell.experiment_passage_id:
             experiment_passage = db.get(ExperimentPassage, cell.experiment_passage_id)
-            variant_text = experiment_passage.passage_text if experiment_passage else None
+            if experiment_passage:
+                passage_kwargs = experiment_passage_assignment_kwargs(
+                    db, experiment_passage, qa_item
+                )
         prompt = create_assignment_for_qa_item(
             db,
             participant,
@@ -285,7 +294,7 @@ def create_assignment_prompt(db: Session, participant, participant_session):
             completed_batch_size=completed_batch_size,
             assignment_source="experiment",
             experiment_cell_id=cell.id,
-            passage_text=variant_text,
+            **passage_kwargs,
         )
     elif automatic_assignment_enabled():
         qa_item = select_next_qa_item(db, participant)
@@ -365,6 +374,8 @@ def save_response_for_current_assignment(
     keyword_scoring = None
     mcq_scoring = None
     choice_answer_correct = None
+    backtranslated_text = None
+    scoring_metadata = {}
     if is_choice_scored_item(qa_item):
         normalized_text = None
         correctness_score = None
@@ -408,6 +419,39 @@ def save_response_for_current_assignment(
                 flag_reason,
             ) = score_text_response_for_participant(db, qa_item, participant, analysis_text)
 
+        if llm_answer_scoring_enabled() and not unusable_audio_transcript:
+            try:
+                llm_result = score_open_answer_binary(
+                    question=qa_item.question_text,
+                    original_question=qa_item.original_question_text,
+                    participant_answer=analysis_text,
+                    expected_answer=qa_item.expected_answer,
+                    original_expected_answer=qa_item.original_expected_answer,
+                    language=participant.target_language,
+                )
+                correctness_score = llm_result.score
+                needs_expert_review = False
+                flag_reason = None
+                matched_keywords = []
+                missing_keywords = []
+                backtranslated_text = llm_result.backtranslated_answer
+                scoring_metadata = {
+                    "method": "backtranslation_binary_llm",
+                    "label": llm_result.label,
+                    "expected_answer_english": llm_result.expected_answer_english,
+                    "rationale": llm_result.rationale,
+                    "core_claim_expected": llm_result.core_claim_expected,
+                    "core_claim_found": llm_result.core_claim_found,
+                }
+            except AnswerLLMScoringError as exc:
+                correctness_score = None
+                needs_expert_review = True
+                flag_reason = f"Pending expert review: LLM scoring failed ({exc})."
+                scoring_metadata = {
+                    "method": "backtranslation_binary_llm",
+                    "error": str(exc),
+                }
+
     if is_choice_scored_item(qa_item):
         is_correct_label = "yes (auto)" if choice_answer_correct else "no (auto)"
     elif needs_expert_review:
@@ -437,6 +481,8 @@ def save_response_for_current_assignment(
         media_url=stored_media_url,
         transcript_text=stored_transcript,
         normalized_text=normalized_text,
+        backtranslated_text=backtranslated_text,
+        scoring_metadata=scoring_metadata,
         correctness_score=correctness_score,
         matched_keywords=matched_keywords,
         missing_keywords=missing_keywords,

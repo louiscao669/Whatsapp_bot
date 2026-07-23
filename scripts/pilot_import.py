@@ -22,7 +22,7 @@ Three things get uploaded:
 The Chinese (decanonicalized) QA target file is identical across a chapter's
 variants, so it is read once per chapter from the clean (omission/0%) dir.
 
-Idempotent: re-running skips QA items and passages that already exist.
+Idempotent: re-running skips existing QA items and refreshes existing passages.
 
 Usage:
   # dry run -- no DB, prints the plan + quota per chapter
@@ -45,8 +45,11 @@ from _bootstrap import use_platform
 
 use_platform()
 
-from eten_shared.models import ExperimentPassage, QAItem  # noqa: E402
-from app.services.passage_import_service import import_passage_translation  # noqa: E402
+from eten_shared.models import ExperimentPassage, ExperimentPassageVerse, QAItem  # noqa: E402
+from app.services.passage_import_service import (  # noqa: E402
+    import_passage_translation,
+    parse_numbered_verses,
+)
 
 # (condition key, relative dir under the answer-model folder, human-readable name)
 CONDITIONS = [
@@ -218,7 +221,7 @@ def build_plan(eval_root: Path, mcq_fraction: float, seed: int):
 # ---------------------------------------------------------------------- upload
 
 def upload(database_url, qa_rows, passage_rows):
-    from sqlalchemy import select
+    from sqlalchemy import delete, select
 
     from eten_shared.database import get_session_factory
 
@@ -228,6 +231,7 @@ def upload(database_url, qa_rows, passage_rows):
         "qa_skip": 0,
         "passage": 0,
         "passage_skip": 0,
+        "experiment_verse": 0,
         "passage_error": None,
         "admin_passage": 0,
         "admin_verse": 0,
@@ -263,10 +267,39 @@ def upload(database_url, qa_rows, passage_rows):
                     )
                 )
                 if exists:
+                    exists.name = p["name"]
+                    exists.passage_reference = p["passage_reference"]
+                    exists.passage_text = p["passage_text"]
                     created["passage_skip"] += 1
-                    continue
-                db.add(ExperimentPassage(**p))
-                created["passage"] += 1
+                    experiment_passage = exists
+                else:
+                    experiment_passage = ExperimentPassage(**p)
+                    db.add(experiment_passage)
+                    db.flush()
+                    created["passage"] += 1
+
+                parsed_verses = parse_numbered_verses(
+                    p["passage_text"], allow_duplicate_numbers=True
+                )
+                db.execute(
+                    delete(ExperimentPassageVerse).where(
+                        ExperimentPassageVerse.experiment_passage_id
+                        == experiment_passage.id
+                    )
+                )
+                db.flush()
+                db.add_all(
+                    [
+                        ExperimentPassageVerse(
+                            experiment_passage_id=experiment_passage.id,
+                            verse_number=verse.number,
+                            position=position,
+                            text=verse.text,
+                        )
+                        for position, verse in enumerate(parsed_verses, start=1)
+                    ]
+                )
+                created["experiment_verse"] += len(parsed_verses)
             db.commit()
     except Exception as exc:  # noqa: BLE001 - surface the real cause to the user
         created["passage"] = 0
@@ -328,7 +361,8 @@ def main():
               f"    Re-run supabase/migrations/experiment_plan_cells.sql, then re-run this import.")
     print(
         f"Admin passages synced: {result['admin_passage']} chapter variants, "
-        f"{result['admin_verse']} verses."
+        f"{result['admin_verse']} verses. Experiment passages contain "
+        f"{result['experiment_verse']} verse rows."
     )
     if result.get("admin_passage_error"):
         print(

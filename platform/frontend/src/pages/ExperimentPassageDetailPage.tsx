@@ -80,13 +80,24 @@ export function ExperimentPassageDetailPage() {
               <dd>{detail.char_count}</dd>
             </div>
             <div>
+              <dt>Verses</dt>
+              <dd>{detail.verse_count}</dd>
+            </div>
+            <div>
               <dt>Created</dt>
               <dd>{formatTimestamp(detail.created_at)}</dd>
             </div>
           </dl>
 
           <h3>Passage text</h3>
-          <pre className="passage-text-block">{detail.passage_text}</pre>
+          <div className="passage-verse-list">
+            {detail.verses.map((verse) => (
+              <p key={`${verse.position}-${verse.verse_number}`} className="passage-verse-row">
+                <strong>{verse.verse_number}</strong>
+                <span>{verse.text}</span>
+              </p>
+            ))}
+          </div>
         </>
       ) : null}
     </section>

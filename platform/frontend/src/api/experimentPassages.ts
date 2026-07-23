@@ -8,11 +8,13 @@ export type ExperimentPassageRow = {
   language: string
   passage_reference: string | null
   char_count: number
+  verse_count: number
 }
 
 export type ExperimentPassageDetail = ExperimentPassageRow & {
   passage_text: string
   created_at: string | null
+  verses: Array<{ verse_number: string; position: number; text: string }>
 }
 
 export function fetchExperimentPassages() {

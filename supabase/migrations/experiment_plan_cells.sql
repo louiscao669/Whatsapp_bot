@@ -23,6 +23,19 @@ create table if not exists experiment_passages (
 -- Add the human-readable name column to an already-created table (no-op on fresh create).
 alter table experiment_passages
     add column if not exists name text;
+create table if not exists experiment_passage_verses (
+    id text primary key default gen_random_uuid()::text,
+    experiment_passage_id text not null references experiment_passages(id) on delete cascade,
+    verse_number text not null,
+    position integer not null,
+    text text not null,
+    created_at timestamptz not null default now(),
+    constraint uq_experiment_passage_verses_number unique (experiment_passage_id, verse_number),
+    constraint uq_experiment_passage_verses_position unique (experiment_passage_id, position)
+);
+
+create index if not exists idx_experiment_passage_verses_passage_id
+    on experiment_passage_verses(experiment_passage_id);
 
 -- 2. Plan cells: participant x chapter -> condition + the variant passage to show.
 create table if not exists experiment_plan_cells (

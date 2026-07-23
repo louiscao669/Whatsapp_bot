@@ -1,8 +1,7 @@
 """Experiment passage (pilot condition variant) list + detail for the admin UI.
 
-These are the whole-passage variants written by ``pilot_import.py`` into the
-``experiment_passages`` table -- distinct from ``passage_translations`` (which is
-verse-segmented). One row per (chapter x condition), holding the full text.
+These condition-specific variants are written by ``pilot_import.py`` into
+``experiment_passages`` with owned ``experiment_passage_verses`` children.
 """
 
 from sqlalchemy import select
@@ -19,6 +18,7 @@ def _summary(row: ExperimentPassage) -> dict:
         "language": row.language,
         "passage_reference": row.passage_reference,
         "char_count": len(row.passage_text or ""),
+        "verse_count": len(row.verses),
     }
 
 
@@ -40,5 +40,13 @@ def get_experiment_passage(db, passage_id: str):
     return {
         **_summary(row),
         "passage_text": row.passage_text,
+        "verses": [
+            {
+                "verse_number": verse.verse_number,
+                "position": verse.position,
+                "text": verse.text,
+            }
+            for verse in row.verses
+        ],
         "created_at": row.created_at.isoformat() if row.created_at else None,
     }

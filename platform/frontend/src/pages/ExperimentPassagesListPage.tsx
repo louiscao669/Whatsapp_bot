@@ -63,6 +63,7 @@ export function ExperimentPassagesListPage() {
                 <th>Language</th>
                 <th>Reference</th>
                 <th>Characters</th>
+                <th>Verses</th>
               </tr>
             </thead>
             <tbody>
@@ -82,6 +83,7 @@ export function ExperimentPassagesListPage() {
                   <td>{item.language}</td>
                   <td>{item.passage_reference ?? '—'}</td>
                   <td>{item.char_count}</td>
+                  <td>{item.verse_count}</td>
                 </tr>
               ))}
             </tbody>

@@ -1,6 +1,7 @@
 """Participant assignment DB logic shared by the message bot and platform."""
 
 import os
+import re
 from dataclasses import dataclass
 from typing import Optional
 
@@ -14,6 +15,7 @@ from eten_shared.question_discovery import get_qa_item_distribution_metrics
 from eten_shared.models import (
     Assignment,
     AssignmentStatus,
+    ExperimentPassageVerse,
     Participant,
     ParticipantEvent,
     ParticipantSession,
@@ -153,6 +155,59 @@ def get_incomplete_assignment(db: Session, participant, batch_id=None):
 
 PASSAGE_CONTEXT_WINDOW = 2
 
+_QA_VERSE_REFERENCE = re.compile(
+    r"^(?:.+?\s+)?(?P<chapter>\d+):(?P<verse>\d+)(?:\(#(?P<occurrence>\d+)\))?",
+    re.IGNORECASE,
+)
+
+
+def experiment_passage_assignment_kwargs(db: Session, experiment_passage, qa_item):
+    """Build the verse linkage for one designed-experiment assignment.
+
+    The QA reference identifies the target verse within the condition-specific
+    ExperimentPassageVerse rows. The assignment stores that verse and a small
+    context snapshot. Older experiment rows without verse children safely fall
+    back to their whole-passage snapshot.
+    """
+
+    fallback = {"passage_text": experiment_passage.passage_text}
+    match = _QA_VERSE_REFERENCE.match(
+        str(qa_item.passage_reference or qa_item.passage_id or "").strip()
+    )
+    if not match:
+        return fallback
+
+    chapter = int(match.group("chapter"))
+    verse_number = match.group("verse")
+    occurrence = int(match.group("occurrence") or 1)
+    stored_number = verse_number if occurrence == 1 else f"{verse_number}-{occurrence}"
+    target = db.scalar(
+        select(ExperimentPassageVerse).where(
+            ExperimentPassageVerse.experiment_passage_id == experiment_passage.id,
+            ExperimentPassageVerse.verse_number == stored_number,
+        )
+    )
+    if target is None:
+        return fallback
+
+    verses = db.scalars(
+        select(ExperimentPassageVerse)
+        .where(
+            ExperimentPassageVerse.experiment_passage_id == experiment_passage.id,
+            ExperimentPassageVerse.position >= target.position - PASSAGE_CONTEXT_WINDOW,
+            ExperimentPassageVerse.position <= target.position + PASSAGE_CONTEXT_WINDOW,
+        )
+        .order_by(ExperimentPassageVerse.position)
+    ).all()
+
+    return {
+        "passage_chapter_number": chapter,
+        "passage_verse_numbers": [target.verse_number],
+        "passage_text": " ".join(
+            verse.text.strip() for verse in verses if verse.text and verse.text.strip()
+        ),
+    }
+
 
 def surrounding_passage_text(db: Session, assignment, window: int = PASSAGE_CONTEXT_WINDOW):
     """Return the assigned verse(s) plus ``window`` verses of context on each
@@ -278,6 +333,9 @@ def create_assignment_for_qa_item(
     assignment_source="auto",
     experiment_cell_id=None,
     passage_text=None,
+    passage_translation_id=None,
+    passage_chapter_number=None,
+    passage_verse_numbers=None,
 ):
     batch_id = participant_session.current_batch_id or new_id()
     assignment = Assignment(
@@ -287,6 +345,9 @@ def create_assignment_for_qa_item(
         status=AssignmentStatus.ASSIGNED.value,
         assigned_at=utc_now(),
         experiment_cell_id=experiment_cell_id,
+        passage_translation_id=passage_translation_id,
+        passage_chapter_number=passage_chapter_number,
+        passage_verse_numbers=list(passage_verse_numbers or []),
         # Designed assignment: the participant must read the CONDITION's variant
         # passage, not the shared QAItem text. build_assignment_prompt prefers
         # assignment.passage_text, so stamp it here. None => production behavior.

@@ -8,6 +8,12 @@ from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from sqlalchemy import delete, distinct, func, select
 
+from eten_shared.answer_llm_scoring import (
+    AnswerLLMScoringError,
+    llm_answer_scoring_enabled,
+    score_open_answer_binary,
+)
+
 from eten_shared.domain.batch_schedules import (
     BATCH_NEXT_ASSIGNMENT_TYPE,
     cancel_pending_next_batch_schedules,
@@ -16,10 +22,12 @@ from eten_shared.domain.assignments import (
     automatic_assignment_enabled,
     complete_current_batch_if_needed,
     create_assignment_for_qa_item,
+    experiment_passage_assignment_kwargs,
     experiment_assignment_enabled,
     get_incomplete_assignment,
     get_or_create_participant_session,
     record_participant_event,
+    surrounding_passage_text,
     try_complete_assignment,
 )
 from eten_shared.domain.qa_eligibility import qa_item_is_assignable
@@ -256,7 +264,9 @@ def _serialize_dashboard_question(
         "chapter": chapter_number,
         "chapter_label": f"Chapter {chapter_number}" if chapter_number else None,
         "passage_reference": qa_item.passage_reference,
-        "passage_text": assignment.passage_text or qa_item.passage_text,
+        "passage_text": surrounding_passage_text(db, assignment)
+        or assignment.passage_text
+        or qa_item.passage_text,
         "passage_verse_numbers": list(assignment.passage_verse_numbers or []),
         "question": qa_item.question_text,
         "question_type": (qa_item.question_type or "open").strip().lower(),
@@ -409,7 +419,7 @@ def _select_next_dashboard_qa_item(db, participant):
     return (candidates[0] if candidates else None), None
 
 
-def _experiment_assignment_kwargs(db, participant_session, cell):
+def _experiment_assignment_kwargs(db, participant_session, cell, qa_item):
     """create_assignment_for_qa_item kwargs for a designed-assignment cell (empty for
     the production path). Clears the batch at a cell boundary so a batch never mixes
     conditions, and stamps the cell + its variant passage text."""
@@ -417,11 +427,14 @@ def _experiment_assignment_kwargs(db, participant_session, cell):
         return {}
     if experiment_batch_should_reset(db, participant_session.current_batch_id, cell):
         participant_session.current_batch_id = None
-    variant_text = None
+    result = {"experiment_cell_id": cell.id}
     if cell.experiment_passage_id:
         experiment_passage = db.get(ExperimentPassage, cell.experiment_passage_id)
-        variant_text = experiment_passage.passage_text if experiment_passage else None
-    return {"experiment_cell_id": cell.id, "passage_text": variant_text}
+        if experiment_passage:
+            result.update(
+                experiment_passage_assignment_kwargs(db, experiment_passage, qa_item)
+            )
+    return result
 
 
 def _next_batch_hour():
@@ -554,7 +567,7 @@ def _assign_dashboard_next_batch(db, participant, *, source, reminder=None):
             qa_item,
             completed_batch_size=0,
             assignment_source=source,
-            **_experiment_assignment_kwargs(db, participant_session, cell),
+            **_experiment_assignment_kwargs(db, participant_session, cell, qa_item),
         )
         assignment = db.get(Assignment, prompt.assignment_id)
         newly_assigned = True
@@ -1136,6 +1149,8 @@ def submit_dashboard_answer(db, participant_id: str, assignment_id: str, respons
     flag_reason = None
     needs_expert_review = False
     stored_response_text = answer_text
+    backtranslated_text = None
+    scoring_metadata = {}
 
     if is_choice_scored_item(qa_item):
         choice_correct = choice_response_is_correct(qa_item, answer_text)
@@ -1162,6 +1177,40 @@ def submit_dashboard_answer(db, participant_id: str, assignment_id: str, respons
             if needs_expert_review
             else ReviewStatus.AUTO.value
         )
+        if llm_answer_scoring_enabled():
+            try:
+                llm_result = score_open_answer_binary(
+                    question=qa_item.question_text,
+                    original_question=qa_item.original_question_text,
+                    participant_answer=answer_text,
+                    expected_answer=qa_item.expected_answer,
+                    original_expected_answer=qa_item.original_expected_answer,
+                    language=participant.target_language,
+                )
+                correctness_score = llm_result.score
+                is_correct_label = "yes (auto)" if llm_result.score == 1.0 else "no (auto)"
+                review_status = ReviewStatus.AUTO.value
+                flag_reason = None
+                matched_keywords = []
+                missing_keywords = []
+                backtranslated_text = llm_result.backtranslated_answer
+                scoring_metadata = {
+                    "method": "backtranslation_binary_llm",
+                    "label": llm_result.label,
+                    "expected_answer_english": llm_result.expected_answer_english,
+                    "rationale": llm_result.rationale,
+                    "core_claim_expected": llm_result.core_claim_expected,
+                    "core_claim_found": llm_result.core_claim_found,
+                }
+            except AnswerLLMScoringError as exc:
+                correctness_score = None
+                is_correct_label = "pending"
+                review_status = ReviewStatus.PENDING.value
+                flag_reason = f"Pending expert review: LLM scoring failed ({exc})."
+                scoring_metadata = {
+                    "method": "backtranslation_binary_llm",
+                    "error": str(exc),
+                }
 
     response = ParticipantResponse(
         participant_id=participant.id,
@@ -1170,6 +1219,8 @@ def submit_dashboard_answer(db, participant_id: str, assignment_id: str, respons
         response_type=ResponseType.TEXT.value,
         response_text=stored_response_text,
         normalized_text=normalized_text,
+        backtranslated_text=backtranslated_text,
+        scoring_metadata=scoring_metadata,
         correctness_score=correctness_score,
         matched_keywords=matched_keywords,
         missing_keywords=missing_keywords,
@@ -1295,7 +1346,9 @@ def submit_dashboard_answer(db, participant_id: str, assignment_id: str, respons
                 next_qa_item,
                 completed_batch_size=completed_batch_size,
                 assignment_source="user_dashboard",
-                **_experiment_assignment_kwargs(db, participant_session, next_cell),
+                **_experiment_assignment_kwargs(
+                    db, participant_session, next_cell, next_qa_item
+                ),
             )
             next_assignment_id = next_prompt.assignment_id if next_prompt else None
             if next_assignment_id:

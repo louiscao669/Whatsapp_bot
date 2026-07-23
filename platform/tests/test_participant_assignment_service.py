@@ -21,11 +21,16 @@ from eten_shared.models import (
     OutboxStatus,
     Participant,
     ParticipantSession,
+    ExperimentPassage,
+    ExperimentPassageVerse,
     PassageTranslation,
     PassageVerse,
     QAItem,
 )
-from eten_shared.domain.assignments import automatic_assignment_enabled
+from eten_shared.domain.assignments import (
+    automatic_assignment_enabled,
+    experiment_passage_assignment_kwargs,
+)
 
 
 class ParticipantAssignmentServiceTests(unittest.TestCase):
@@ -38,6 +43,42 @@ class ParticipantAssignmentServiceTests(unittest.TestCase):
         self.assertEqual(parse_qa_chapter_verse("2:4"), (2, 4))
         self.assertEqual(parse_qa_chapter_verse("1:35(#2)"), (1, 35))
         self.assertIsNone(parse_qa_chapter_verse("Unknown passage"))
+
+    def test_experiment_passage_links_qa_to_referenced_verse(self):
+        with Session(self.engine) as db:
+            passage = ExperimentPassage(
+                chapter=2,
+                condition="omission10",
+                language="zh",
+                passage_text="完整章节后备文本",
+            )
+            db.add(passage)
+            db.flush()
+            db.add_all(
+                [
+                    ExperimentPassageVerse(
+                        experiment_passage_id=passage.id,
+                        verse_number=str(number),
+                        position=number,
+                        text=f"第{number}节",
+                    )
+                    for number in range(2, 7)
+                ]
+            )
+            db.flush()
+            qa_item = QAItem(
+                passage_id="luke2",
+                passage_reference="Luke 2:4",
+                question_text="问题",
+            )
+
+            result = experiment_passage_assignment_kwargs(db, passage, qa_item)
+
+            self.assertEqual(result["passage_chapter_number"], 2)
+            self.assertEqual(result["passage_verse_numbers"], ["4"])
+            self.assertEqual(
+                result["passage_text"], "第2节 第3节 第4节 第5节 第6节"
+            )
 
     def test_sorts_qa_references_by_numeric_chapter_and_verse(self):
         items = [

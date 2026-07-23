@@ -534,8 +534,9 @@ class ExperimentPassage(Base):
     text a participant reads. Shared across participants (56 rows for the pilot:
     7 conditions x 8 chapters). The QA is imported once per chapter as QAItems;
     only the passage varies per condition, so it lives here rather than on the
-    QAItem. The selector copies ``passage_text`` onto ``Assignment.passage_text``
-    at assignment time. See DESIGNED_ASSIGNMENT_EXTENSION_2026-07-20.md.
+    QAItem. ``verses`` contains the experiment-specific verse segmentation;
+    ``passage_text`` remains as the source snapshot. See
+    DESIGNED_ASSIGNMENT_EXTENSION_2026-07-20.md.
     """
 
     __tablename__ = "experiment_passages"
@@ -561,6 +562,47 @@ class ExperimentPassage(Base):
 
     plan_cells: Mapped[List["ExperimentPlanCell"]] = relationship(
         back_populates="experiment_passage"
+    )
+    verses: Mapped[List["ExperimentPassageVerse"]] = relationship(
+        back_populates="experiment_passage",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+        order_by="ExperimentPassageVerse.position",
+    )
+
+
+class ExperimentPassageVerse(Base):
+    """One numbered verse belonging to a condition-specific experiment passage."""
+
+    __tablename__ = "experiment_passage_verses"
+    __table_args__ = (
+        UniqueConstraint(
+            "experiment_passage_id",
+            "verse_number",
+            name="uq_experiment_passage_verses_number",
+        ),
+        UniqueConstraint(
+            "experiment_passage_id",
+            "position",
+            name="uq_experiment_passage_verses_position",
+        ),
+    )
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    experiment_passage_id: Mapped[str] = mapped_column(
+        ForeignKey("experiment_passages.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
+    )
+    verse_number: Mapped[str] = mapped_column(String(16), nullable=False)
+    position: Mapped[int] = mapped_column(Integer, nullable=False)
+    text: Mapped[str] = mapped_column(Text, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utc_now, nullable=False
+    )
+
+    experiment_passage: Mapped["ExperimentPassage"] = relationship(
+        back_populates="verses"
     )
 
 
@@ -642,6 +684,8 @@ class ParticipantResponse(Base):
     media_url: Mapped[Optional[str]] = mapped_column(Text)
     transcript_text: Mapped[Optional[str]] = mapped_column(Text)
     normalized_text: Mapped[Optional[str]] = mapped_column(Text)
+    backtranslated_text: Mapped[Optional[str]] = mapped_column(Text)
+    scoring_metadata: Mapped[dict] = mapped_column(JSON, default=dict, nullable=False)
     correctness_score: Mapped[Optional[float]] = mapped_column(Float)
     matched_keywords: Mapped[List[str]] = mapped_column(JSON, default=list, nullable=False)
     missing_keywords: Mapped[List[str]] = mapped_column(JSON, default=list, nullable=False)
