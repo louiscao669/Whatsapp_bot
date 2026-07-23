@@ -4,6 +4,7 @@ from datetime import datetime, timedelta, timezone
 import hashlib
 import os
 import random
+import re
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from sqlalchemy import delete, distinct, func, select
@@ -190,13 +191,15 @@ def _iso_datetime(value):
 
 
 def _luke_chapter_from_reference(passage_reference):
-    reference = str(passage_reference or "")
-    if not reference.lower().startswith("luke "):
-        return None
-    chapter_text = reference.split(" ", 1)[1].split(":", 1)[0].strip()
-    if not chapter_text.isdigit():
-        return None
-    return int(chapter_text)
+    # Admin-authored QA commonly uses "Luke 1:11" while the evaluation/pilot
+    # importer uses "1:11" (and occasionally "1:35(#2)"). Both identify the
+    # same dashboard chapter and must be visible to regular participants.
+    match = re.match(
+        r"^(?:luke\s+)?(?P<chapter>\d+):\d+(?:\(#\d+\))?",
+        str(passage_reference or "").strip(),
+        re.IGNORECASE,
+    )
+    return int(match.group("chapter")) if match else None
 
 
 def _choice_text_for_letter(qa_item, letter):

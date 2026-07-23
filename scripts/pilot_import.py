@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Import the human-pilot QA and the 56 variant passages into the platform DB.
 
-Three things get uploaded:
+Two things get uploaded:
 
   * QA  -> one QAItem per (chapter, question), passage_id = "luke{ch}".
            question_type is CHAPTER-LEVEL: chosen once per chapter by a ~75%
@@ -13,11 +13,6 @@ Three things get uploaded:
   * Passage -> one ExperimentPassage per (chapter, condition). The QA is shared
            across a chapter's 7 conditions (the qa_target file is byte-identical
            across variants), so only the passage varies per cell.
-
-  * Admin passage -> the same variants are parsed into numbered verses and
-           synced to PassageTranslation / PassageVerse so they are visible on
-           the platform's Passages page. The human-readable condition name is
-           used as the translation name.
 
 The Chinese (decanonicalized) QA target file is identical across a chapter's
 variants, so it is read once per chapter from the clean (omission/0%) dir.
@@ -46,10 +41,7 @@ from _bootstrap import use_platform
 use_platform()
 
 from eten_shared.models import ExperimentPassage, ExperimentPassageVerse, QAItem  # noqa: E402
-from app.services.passage_import_service import (  # noqa: E402
-    import_passage_translation,
-    parse_numbered_verses,
-)
+from app.services.passage_import_service import parse_numbered_verses  # noqa: E402
 
 # (condition key, relative dir under the answer-model folder, human-readable name)
 CONDITIONS = [
@@ -233,9 +225,6 @@ def upload(database_url, qa_rows, passage_rows):
         "passage_skip": 0,
         "experiment_verse": 0,
         "passage_error": None,
-        "admin_passage": 0,
-        "admin_verse": 0,
-        "admin_passage_error": None,
     }
 
     # QA items and passages are committed in SEPARATE transactions so a passage
@@ -305,27 +294,6 @@ def upload(database_url, qa_rows, passage_rows):
         created["passage"] = 0
         created["passage_error"] = f"{type(exc).__name__}: {exc}"
 
-    # Keep the admin passage catalogue in sync independently. This intentionally
-    # runs even when every ExperimentPassage already exists, so an older pilot
-    # import can be repaired simply by rerunning this command.
-    try:
-        with factory() as db:
-            for p in passage_rows:
-                _, verses = import_passage_translation(
-                    db,
-                    source_text=p["passage_text"],
-                    language=p["language"],
-                    chapter_number=p["chapter"],
-                    name=p["name"],
-                    allow_duplicate_verse_numbers=True,
-                )
-                created["admin_passage"] += 1
-                created["admin_verse"] += len(verses)
-            db.commit()
-    except Exception as exc:  # noqa: BLE001 - preserve the other import transactions
-        created["admin_passage"] = 0
-        created["admin_verse"] = 0
-        created["admin_passage_error"] = f"{type(exc).__name__}: {exc}"
     return created
 
 
@@ -359,17 +327,7 @@ def main():
         print(f"\n*** PASSAGE IMPORT FAILED: {result['passage_error']}\n"
               f"    Likely the experiment_passages table or its 'name' column is missing.\n"
               f"    Re-run supabase/migrations/experiment_plan_cells.sql, then re-run this import.")
-    print(
-        f"Admin passages synced: {result['admin_passage']} chapter variants, "
-        f"{result['admin_verse']} verses. Experiment passages contain "
-        f"{result['experiment_verse']} verse rows."
-    )
-    if result.get("admin_passage_error"):
-        print(
-            f"\n*** ADMIN PASSAGE IMPORT FAILED: {result['admin_passage_error']}\n"
-            "    QA items and experiment passages were not rolled back. Fix the "
-            "reported issue and rerun this import."
-        )
+    print(f"Experiment passages contain {result['experiment_verse']} verse rows.")
 
 
 if __name__ == "__main__":
