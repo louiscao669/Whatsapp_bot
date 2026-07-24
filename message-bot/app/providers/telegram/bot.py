@@ -52,6 +52,26 @@ logging.basicConfig(
 
 YES_RESPONSES = {"yes", "y", "yeah", "yep", "correct", "i do", "是", "会"}
 NO_RESPONSES = {"no", "n", "nope", "not yet", "不是", "不会"}
+NON_ANSWER_GREETINGS = {
+    "hi",
+    "hello",
+    "hey",
+    "hi there",
+    "hello there",
+    "你好",
+    "您好",
+}
+
+
+def is_non_answer_greeting(message_text):
+    """Return whether text should resume the workflow instead of answering.
+
+    A participant commonly sends a greeting after a bot restart to see whether
+    it is alive. Consuming that greeting as the answer to an open assignment
+    silently completes the question with meaningless response data.
+    """
+
+    return (message_text or "").strip().lower() in NON_ANSWER_GREETINGS
 
 
 def language_question():
@@ -150,7 +170,9 @@ async def unknown_text(update, context):
         display_name=contact.display_name or participant.display_name,
         message_id=contact_input.message_id,
         message_text=message_text,
-        record_response=True,
+        # Greetings are health checks/resume requests, not study answers. The
+        # workflow will re-send the current prompt without completing it.
+        record_response=not is_non_answer_greeting(message_text),
     )
     await send_workflow_result(context.bot, contact.external_user_id, workflow_result)
 
@@ -272,7 +294,11 @@ def main():
     # Telegram deployment too — otherwise the outbox only runs in the WhatsApp
     # Flask app and Telegram participants never receive proactive questions.
     start_outbox_poller()
-    build_application().run_polling()
+    # Telegram retains updates while a polling process is offline. Replaying
+    # those messages on restart can consume several currently assigned
+    # questions in seconds. Drop that backlog; participants can resend a real
+    # answer after the service is available again.
+    build_application().run_polling(drop_pending_updates=True)
 
 
 if __name__ == "__main__":

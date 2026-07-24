@@ -67,12 +67,20 @@ export const sampleDashboard = {
     items: [
       { item_id: "streak_freeze", title: "Streak Freeze", description: "Protects your streak for one missed day.", cost: 8, item_type: "consumable", max_owned: 3 },
       { item_id: "extra_life", title: "Extra Heart", description: "A saved recovery chance for future retry mechanics.", cost: 12, item_type: "consumable", max_owned: 3 },
-      { item_id: "dashboard_background_sunrise", title: "Sunrise Background", description: "Changes your dashboard background to a warm sunrise color.", cost: 8, item_type: "cosmetic", max_owned: 1 }
+      { item_id: "dashboard_background_sunrise", title: "Sunrise Background", description: "Changes your dashboard background to a warm sunrise color.", cost: 8, item_type: "cosmetic", max_owned: 1 },
+      { item_id: "profile_frame_gold", title: "Gold Profile Frame", description: "Adds a gold frame to your dashboard profile.", cost: 10, item_type: "cosmetic", max_owned: 1 },
+      { item_id: "dashboard_background_night_sky", title: "Night Sky Background", description: "Gives your dashboard a deep purple starry theme.", cost: 15, item_type: "cosmetic", max_owned: 1 },
+      { item_id: "profile_frame_ocean", title: "Ocean Profile Ring", description: "Adds a cool blue ring around your profile photo.", cost: 10, item_type: "cosmetic", max_owned: 1 },
+      { item_id: "profile_frame_emerald_square", title: "Emerald Square Frame", description: "Displays your profile photo in a bright emerald frame.", cost: 12, item_type: "cosmetic", max_owned: 1 }
     ],
     inventory: {
       streak_freeze: { owned: 1, max_owned: 3 },
       extra_life: { owned: 0, max_owned: 3 },
-      dashboard_background_sunrise: { owned: 0, max_owned: 1 }
+      dashboard_background_sunrise: { owned: 0, max_owned: 1 },
+      profile_frame_gold: { owned: 0, max_owned: 1 },
+      dashboard_background_night_sky: { owned: 0, max_owned: 1 },
+      profile_frame_ocean: { owned: 0, max_owned: 1 },
+      profile_frame_emerald_square: { owned: 0, max_owned: 1 }
     }
   },
   cosmetics: {

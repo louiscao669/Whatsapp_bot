@@ -30,9 +30,13 @@ export function el(tag, options = {}, children = []) {
 }
 
 export function setActiveBodyCosmetics(payload) {
-  // Keep the dashboard on one consistent light theme at every time of day.
-  // Profile cosmetics are rendered by their components and remain enabled.
-  document.body.classList.remove("dashboard-bg-sunrise");
+  const background = payload.cosmetics?.equipped?.dashboard_background;
+  document.body.classList.remove("dashboard-bg-sunrise", "dashboard-bg-night-sky");
+  if (background === "dashboard_background_sunrise") {
+    document.body.classList.add("dashboard-bg-sunrise");
+  } else if (background === "dashboard_background_night_sky") {
+    document.body.classList.add("dashboard-bg-night-sky");
+  }
 }
 
 export function showModal(message, title = "Action unavailable") {

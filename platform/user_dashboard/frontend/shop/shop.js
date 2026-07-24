@@ -170,6 +170,25 @@ function itemStyle(itemId) {
       previewClass: "preview-gold",
       previewIcon: "/user_dashboard/assets/crown.svg",
       previewText: ""
+    },
+    dashboard_background_night_sky: {
+      icon: "/user_dashboard/assets/star.svg",
+      iconClass: "item-icon-night",
+      previewClass: "preview-night",
+      previewIcon: "/user_dashboard/assets/star.svg",
+      previewText: ""
+    },
+    profile_frame_ocean: {
+      icon: "/user_dashboard/assets/diamond.svg",
+      iconClass: "item-icon-ocean",
+      previewClass: "preview-ocean",
+      previewText: "Ring"
+    },
+    profile_frame_emerald_square: {
+      icon: "/user_dashboard/assets/checkmark.svg",
+      iconClass: "item-icon-emerald",
+      previewClass: "preview-emerald-square",
+      previewText: "Square"
     }
   };
   return styles[itemId] || {
@@ -181,10 +200,10 @@ function itemStyle(itemId) {
 }
 
 function cosmeticSlotForItem(itemId) {
-  if (itemId === "profile_frame_gold") {
+  if (["profile_frame_gold", "profile_frame_ocean", "profile_frame_emerald_square"].includes(itemId)) {
     return "profile_frame";
   }
-  if (itemId === "dashboard_background_sunrise") {
+  if (["dashboard_background_sunrise", "dashboard_background_night_sky"].includes(itemId)) {
     return "dashboard_background";
   }
   return null;

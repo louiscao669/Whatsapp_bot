@@ -147,10 +147,37 @@ STORE_ITEMS = {
         "item_type": "consumable",
         "max_owned": 3,
     },
+    "dashboard_background_night_sky": {
+        "item_id": "dashboard_background_night_sky",
+        "title": "Night Sky Background",
+        "description": "Gives your dashboard a deep purple starry theme.",
+        "cost": 15,
+        "item_type": "cosmetic",
+        "max_owned": 1,
+    },
+    "profile_frame_ocean": {
+        "item_id": "profile_frame_ocean",
+        "title": "Ocean Profile Ring",
+        "description": "Adds a cool blue ring around your profile photo.",
+        "cost": 10,
+        "item_type": "cosmetic",
+        "max_owned": 1,
+    },
+    "profile_frame_emerald_square": {
+        "item_id": "profile_frame_emerald_square",
+        "title": "Emerald Square Frame",
+        "description": "Displays your profile photo in a bright emerald frame.",
+        "cost": 12,
+        "item_type": "cosmetic",
+        "max_owned": 1,
+    },
 }
 COSMETIC_SLOTS = {
     "profile_frame_gold": "profile_frame",
+    "profile_frame_ocean": "profile_frame",
+    "profile_frame_emerald_square": "profile_frame",
     "dashboard_background_sunrise": "dashboard_background",
+    "dashboard_background_night_sky": "dashboard_background",
 }
 
 
