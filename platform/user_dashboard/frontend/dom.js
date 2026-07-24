@@ -31,11 +31,19 @@ export function el(tag, options = {}, children = []) {
 
 export function setActiveBodyCosmetics(payload) {
   const background = payload.cosmetics?.equipped?.dashboard_background;
-  document.body.classList.remove("dashboard-bg-sunrise", "dashboard-bg-night-sky");
+  const profileFrame = payload.cosmetics?.equipped?.profile_frame;
+  document.body.classList.remove(
+    "dashboard-bg-sunrise",
+    "dashboard-bg-night-sky",
+    "dashboard-frame-ocean"
+  );
   if (background === "dashboard_background_sunrise") {
     document.body.classList.add("dashboard-bg-sunrise");
   } else if (background === "dashboard_background_night_sky") {
     document.body.classList.add("dashboard-bg-night-sky");
+  }
+  if (profileFrame === "profile_frame_ocean") {
+    document.body.classList.add("dashboard-frame-ocean");
   }
 }
 

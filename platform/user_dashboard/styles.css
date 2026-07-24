@@ -256,6 +256,12 @@ body.dashboard-bg-sunrise .sidebar {
   transform: translateX(2px);
 }
 
+body.dashboard-frame-ocean .nav-button:hover {
+  border-color: #93c5fd;
+  background: #eff6ff;
+  box-shadow: inset 0 0 0 1px rgba(37, 99, 235, 0.12);
+}
+
 .nav-button.active {
   border-color: #86efac;
   background: var(--green-soft);
@@ -423,6 +429,15 @@ body.dashboard-bg-sunrise .main-pane {
     radial-gradient(circle at 50% 0%, rgba(255, 184, 77, 0.16), transparent 34%);
 }
 
+body.dashboard-bg-night-sky .main-pane {
+  background:
+    radial-gradient(circle at 18% 10%, rgba(255, 255, 255, 0.75) 0 1px, transparent 2px),
+    radial-gradient(circle at 84% 28%, rgba(255, 228, 138, 0.65) 0 1px, transparent 2px),
+    linear-gradient(145deg, rgba(49, 34, 82, 0.96), rgba(72, 50, 111, 0.92));
+  background-size: 150px 150px, 210px 210px, auto;
+  color: #f8f5ff;
+}
+
 .right-rail {
   position: sticky;
   top: 0;
@@ -439,6 +454,29 @@ body.dashboard-bg-sunrise .right-rail {
     linear-gradient(180deg, rgba(255, 248, 235, 0.92), rgba(255, 255, 255, 0.66)),
     linear-gradient(135deg, rgba(255, 184, 77, 0.14), rgba(255, 112, 112, 0.08));
   backdrop-filter: blur(8px);
+}
+
+body.dashboard-bg-night-sky .right-rail {
+  background:
+    radial-gradient(circle at 72% 8%, rgba(255, 255, 255, 0.72) 0 1px, transparent 2px),
+    linear-gradient(180deg, rgba(37, 27, 65, 0.97), rgba(61, 42, 94, 0.94));
+  background-size: 170px 170px, auto;
+  color: #f8f5ff;
+}
+
+body.dashboard-bg-night-sky .rail-card,
+body.dashboard-bg-night-sky .chapter-card,
+body.dashboard-bg-night-sky .question-answer-card,
+body.dashboard-bg-night-sky .achievement-hero,
+body.dashboard-bg-night-sky .store-hero,
+body.dashboard-bg-night-sky .contribution-hero,
+body.dashboard-bg-night-sky .community-card,
+body.dashboard-bg-night-sky .question-complete-page,
+body.dashboard-bg-night-sky .tool-card,
+body.dashboard-bg-night-sky .deco-card {
+  background-color: rgba(255, 255, 255, 0.94);
+  border-color: rgba(177, 151, 218, 0.72);
+  color: var(--ink);
 }
 
 body.dashboard-bg-sunrise .rail-card,
