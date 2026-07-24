@@ -179,16 +179,18 @@ function itemStyle(itemId) {
       previewText: ""
     },
     profile_frame_ocean: {
-      icon: "/user_dashboard/assets/diamond.svg",
+      icon: "/user_dashboard/assets/wave.svg",
       iconClass: "item-icon-ocean",
       previewClass: "preview-ocean",
-      previewText: "Ring"
+      previewIcon: "/user_dashboard/assets/wave.svg",
+      previewText: ""
     },
     profile_frame_emerald_square: {
-      icon: "/user_dashboard/assets/checkmark.svg",
+      icon: "/user_dashboard/assets/emerald.svg",
       iconClass: "item-icon-emerald",
       previewClass: "preview-emerald-square",
-      previewText: "Square"
+      previewIcon: "/user_dashboard/assets/emerald.svg",
+      previewText: ""
     }
   };
   return styles[itemId] || {
