@@ -266,7 +266,8 @@ class ParticipantAssignmentServiceTests(unittest.TestCase):
             self.assertEqual(assignment.passage_chapter_number, 2)
             self.assertEqual(len(assignment.passage_verse_numbers), 3)
             self.assertIn("4", assignment.passage_verse_numbers)
-            self.assertIn("4 Verse 4", assignment.passage_text)
+            self.assertIn("Verse 4", assignment.passage_text)
+            self.assertNotIn("4 Verse 4", assignment.passage_text)
 
             queued_qa_items = [
                 QAItem(

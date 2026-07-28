@@ -382,6 +382,27 @@ def surrounding_passage_text(db: Session, assignment, window: int = PASSAGE_CONT
     return " ".join(texts)
 
 
+def assignment_passage_snapshot(assignment):
+    """Return a flowing passage block without stored verse-number prefixes."""
+
+    text = str(getattr(assignment, "passage_text", None) or "").strip()
+    if not text:
+        return None
+    verse_numbers = {
+        str(number).strip()
+        for number in (getattr(assignment, "passage_verse_numbers", None) or [])
+    }
+    cleaned = []
+    for line in text.splitlines():
+        line = line.strip()
+        match = re.match(r"^(\d+)\s+(.+)$", line)
+        if match and match.group(1) in verse_numbers:
+            line = match.group(2).strip()
+        if line:
+            cleaned.append(line)
+    return " ".join(cleaned) or None
+
+
 def build_assignment_prompt(db: Session, assignment, qa_item, participant):
     language = participant_language_code(participant)
     recording = get_latest_question_recording(db, qa_item.id, language)
@@ -394,7 +415,7 @@ def build_assignment_prompt(db: Session, assignment, qa_item, participant):
         passage_reference=qa_item.passage_reference,
         # Prepared chain nodes already contain the exact immutable passage
         # snapshot. Avoid another verse-table query on the answer fast path.
-        passage_text=assignment.passage_text
+        passage_text=assignment_passage_snapshot(assignment)
         or surrounding_passage_text(db, assignment)
         or qa_item.passage_text,
         question_type=qa_item.question_type or "open",

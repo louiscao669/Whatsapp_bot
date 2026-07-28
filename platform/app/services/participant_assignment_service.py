@@ -235,7 +235,7 @@ def assign_questions_with_passages(db, participant_id, selections):
             passage_translation_id=translation.id,
             passage_chapter_number=chapter,
             passage_verse_numbers=[verse.verse_number for verse in verses],
-            passage_text="\n".join(f"{verse.verse_number} {verse.text}" for verse in verses),
+            passage_text=" ".join(verse.text.strip() for verse in verses if verse.text.strip()),
             batch_id=batch_id,
             status=AssignmentStatus.ASSIGNED.value,
             assigned_at=utc_now(),

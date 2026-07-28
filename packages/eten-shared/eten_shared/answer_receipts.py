@@ -50,6 +50,16 @@ def assignment_for_provider_message(db, *, participant_id, provider, provider_me
     )
 
 
+def assignment_has_delivery(db, *, participant_id, assignment_id, provider):
+    return db.scalar(
+        select(AssignmentDelivery.id).where(
+            AssignmentDelivery.participant_id == participant_id,
+            AssignmentDelivery.assignment_id == assignment_id,
+            AssignmentDelivery.provider == provider,
+        )
+    ) is not None
+
+
 def create_answer_receipt(
     db,
     *,

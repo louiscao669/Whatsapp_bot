@@ -26,6 +26,7 @@ from eten_shared.domain.assignments import (
     get_or_create_participant_session,
     record_participant_event,
     surrounding_passage_text,
+    assignment_passage_snapshot,
     try_complete_assignment,
 )
 from eten_shared.domain.qa_eligibility import qa_item_is_assignable
@@ -65,9 +66,11 @@ from eten_shared.models import (
     utc_now,
 )
 from eten_shared.mcq import (
+    choice_letters_for_type,
     choice_response_is_correct,
     choice_response_letter,
     is_choice_scored_item,
+    question_type_value,
 )
 from eten_shared.qa_keywords import get_language_keywords
 from eten_shared.question_discovery import (
@@ -290,8 +293,8 @@ def _serialize_dashboard_question(
         "chapter": chapter_number,
         "chapter_label": f"Chapter {chapter_number}" if chapter_number else None,
         "passage_reference": qa_item.passage_reference,
-        "passage_text": surrounding_passage_text(db, assignment)
-        or assignment.passage_text
+        "passage_text": assignment_passage_snapshot(assignment)
+        or surrounding_passage_text(db, assignment)
         or qa_item.passage_text,
         "question": qa_item.question_text,
         "question_type": (qa_item.question_type or "open").strip().lower(),
@@ -1444,6 +1447,14 @@ def submit_dashboard_answer_receipt(
     assignment = db.get(Assignment, assignment_id)
     if not assignment or assignment.participant_id != participant.id:
         raise DashboardAnswerError("Assignment not found")
+    qa_item = assignment.qa_item or db.get(QAItem, assignment.qa_item_id)
+    if not qa_item:
+        raise DashboardAnswerError("Question not found")
+    if is_choice_scored_item(qa_item):
+        valid_letters = choice_letters_for_type(question_type_value(qa_item))
+        if answer_text.upper() not in valid_letters:
+            letters = ", ".join(valid_letters[:-1]) + f", or {valid_letters[-1]}"
+            raise DashboardAnswerError(f"Wrong answer format. Choose {letters}.")
     try:
         receipt, _created = create_answer_receipt(
             db,

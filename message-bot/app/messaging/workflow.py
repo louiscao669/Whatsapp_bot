@@ -1,4 +1,5 @@
 import logging
+import re
 import threading
 import time
 from dataclasses import dataclass
@@ -12,6 +13,7 @@ from eten_shared.database import get_session_factory
 from eten_shared.answer_llm_scoring import llm_answer_scoring_enabled
 from eten_shared.answer_receipts import (
     assignment_for_provider_message,
+    assignment_has_delivery,
     create_answer_receipt,
 )
 from eten_shared.domain.assignments import (
@@ -72,9 +74,11 @@ from eten_shared.recordings import (
     participant_language_code,
 )
 from eten_shared.mcq import (
+    choice_letters_for_type,
     choice_response_is_correct,
     choice_response_letter,
     is_choice_scored_item,
+    question_type_value,
 )
 from eten_shared.domain.qa_eligibility import qa_item_is_assignable
 from eten_shared.transcription import (
@@ -925,6 +929,23 @@ def record_telegram_text_message(
     )
 
 
+def mcq_answer_format_error(qa_item, raw_answer):
+    """Return participant-facing guidance, or None for a strict valid choice."""
+
+    if not is_choice_scored_item(qa_item):
+        return None
+    valid_letters = choice_letters_for_type(question_type_value(qa_item))
+    answer = (raw_answer or "").strip()
+    callback_match = re.fullmatch(r"mcq_([0-3])", answer, flags=re.IGNORECASE)
+    valid_callback = bool(
+        callback_match and int(callback_match.group(1)) < len(valid_letters)
+    )
+    if valid_callback or answer.upper() in valid_letters:
+        return None
+    letters = ", ".join(valid_letters[:-1]) + f", or {valid_letters[-1]}"
+    return f"Wrong answer format. Reply with {letters}, or tap a choice button."
+
+
 def record_telegram_answer_receipt(
     *,
     chat_id,
@@ -948,19 +969,71 @@ def record_telegram_answer_receipt(
         if not contact:
             raise ValueError("No active Telegram participant")
         participant = contact.participant
-        assignment = db.get(Assignment, assignment_id) if assignment_id else None
-        if assignment is None and question_message_id is not None:
-            assignment = assignment_for_provider_message(
+        mapped_assignment = None
+        if question_message_id is not None:
+            mapped_assignment = assignment_for_provider_message(
                 db,
                 participant_id=participant.id,
                 provider="telegram",
                 provider_message_id=question_message_id,
             )
+        assignment = db.get(Assignment, assignment_id) if assignment_id else mapped_assignment
+        if assignment_id and mapped_assignment and mapped_assignment.id != assignment_id:
+            assignment = None
         if assignment is None:
             participant_session = get_or_create_participant_session(db, participant)
             assignment = db.get(Assignment, participant_session.current_assignment_id)
         if assignment is None or assignment.participant_id != participant.id:
-            raise ValueError("No matching assignment for Telegram answer")
+            return WorkflowResult(
+                participant_id=participant.id,
+                session_id=participant.session.id if participant.session else "",
+                session_state=participant.session.state if participant.session else SessionState.IDLE.value,
+                status_message="No question has been delivered yet. Please wait for the question before answering.",
+                engagement_deferred=True,
+            )
+
+        was_delivered = bool(assignment.delivered_at) or assignment_has_delivery(
+            db,
+            participant_id=participant.id,
+            assignment_id=assignment.id,
+            provider="telegram",
+        )
+        if not was_delivered:
+            return WorkflowResult(
+                participant_id=participant.id,
+                session_id=participant.session.id if participant.session else "",
+                session_state=participant.session.state if participant.session else SessionState.IDLE.value,
+                status_message="No question has been delivered yet. Please wait for the question before answering.",
+                engagement_deferred=True,
+            )
+
+        format_error = mcq_answer_format_error(assignment.qa_item, raw_answer)
+        if format_error:
+                return WorkflowResult(
+                    participant_id=participant.id,
+                    session_id=participant.session.id if participant.session else "",
+                    session_state=participant.session.state if participant.session else SessionState.IDLE.value,
+                    status_message=format_error,
+                    engagement_deferred=True,
+                )
+
+        normalized_answer = " ".join(
+            "".join(
+                character if character.isalnum() else " "
+                for character in (raw_answer or "").casefold()
+            ).split()
+        )
+        if normalized_answer in {
+            "hi", "hello", "hey", "hi there", "hello there", "你好", "您好"
+        }:
+            prompt = build_assignment_prompt(db, assignment, assignment.qa_item, participant)
+            return WorkflowResult(
+                participant_id=participant.id,
+                session_id=participant.session.id if participant.session else "",
+                session_state=participant.session.state if participant.session else SessionState.IDLE.value,
+                prompt=prompt,
+                engagement_deferred=True,
+            )
 
         receipt, created = create_answer_receipt(
             db,

@@ -55,28 +55,6 @@ logging.basicConfig(
 
 YES_RESPONSES = {"yes", "y", "yeah", "yep", "correct", "i do", "是", "会"}
 NO_RESPONSES = {"no", "n", "nope", "not yet", "不是", "不会"}
-NON_ANSWER_GREETINGS = {
-    "hi",
-    "hello",
-    "hey",
-    "hi there",
-    "hello there",
-    "你好",
-    "您好",
-}
-
-
-def is_non_answer_greeting(message_text):
-    """Return whether text should resume the workflow instead of answering.
-
-    A participant commonly sends a greeting after a bot restart to see whether
-    it is alive. Consuming that greeting as the answer to an open assignment
-    silently completes the question with meaningless response data.
-    """
-
-    return (message_text or "").strip().lower() in NON_ANSWER_GREETINGS
-
-
 def language_question():
     return (
         f"Thanks for joining the Notre Dame SaNDwich Lab Bible translation research. Do you speak "
@@ -170,23 +148,14 @@ async def unknown_text(update, context):
             await update.effective_message.reply_text(language_question())
             return
 
-    if is_non_answer_greeting(message_text):
-        workflow_result = record_telegram_text_message(
-            chat_id=contact.external_user_id,
-            display_name=contact.display_name or participant.display_name,
-            message_id=contact_input.message_id,
-            message_text=message_text,
-            record_response=False,
-        )
-    else:
-        reply = getattr(update.effective_message, "reply_to_message", None)
-        workflow_result = record_telegram_answer_receipt(
-            chat_id=contact.external_user_id,
-            display_name=contact.display_name or participant.display_name,
-            update_id=update.update_id,
-            raw_answer=message_text,
-            question_message_id=getattr(reply, "message_id", None),
-        )
+    reply = getattr(update.effective_message, "reply_to_message", None)
+    workflow_result = record_telegram_answer_receipt(
+        chat_id=contact.external_user_id,
+        display_name=contact.display_name or participant.display_name,
+        update_id=update.update_id,
+        raw_answer=message_text,
+        question_message_id=getattr(reply, "message_id", None),
+    )
     await send_workflow_result(context.bot, contact.external_user_id, workflow_result)
 
 

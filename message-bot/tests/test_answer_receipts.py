@@ -4,6 +4,7 @@ from sqlalchemy import create_engine, select
 from sqlalchemy.orm import Session, sessionmaker
 
 from app.messaging.workflow import (
+    mcq_answer_format_error,
     process_pending_answer_receipts,
     record_telegram_answer_receipt,
 )
@@ -18,6 +19,7 @@ from eten_shared.models import (
     ParticipantSession,
     QAItem,
     SessionState,
+    utc_now,
 )
 
 
@@ -40,6 +42,7 @@ def test_receipt_is_minimal_deduplicated_and_projected():
             qa_item_id=first_qa.id,
             batch_id="batch",
             passage_text="Passage one",
+            delivered_at=utc_now(),
         )
         second = Assignment(
             participant_id=participant.id,
@@ -106,3 +109,80 @@ def test_receipt_is_minimal_deduplicated_and_projected():
             )
         )
         assert session.current_assignment_id == second_id
+
+
+def test_greeting_does_not_create_answer_receipt():
+    engine = create_engine("sqlite://")
+    Base.metadata.create_all(engine)
+    factory = sessionmaker(bind=engine, expire_on_commit=False)
+    with Session(engine) as db:
+        participant = Participant(display_name="Tester", target_language="eng")
+        question = QAItem(
+            passage_id="p1", question_text="Question?", expected_answer="Answer"
+        )
+        db.add_all([participant, question])
+        db.flush()
+        assignment = Assignment(
+            participant_id=participant.id,
+            qa_item_id=question.id,
+            batch_id="batch",
+            passage_text="Passage",
+        )
+        db.add(assignment)
+        db.flush()
+        db.add_all([
+            ParticipantProviderContact(
+                participant_id=participant.id,
+                provider="telegram",
+                external_user_id="456",
+            ),
+            ParticipantSession(
+                participant_id=participant.id,
+                current_assignment_id=assignment.id,
+                current_batch_id="batch",
+                state=SessionState.AWAITING_RESPONSE.value,
+            ),
+        ])
+        db.commit()
+        assignment_id = assignment.id
+
+    with patch("app.messaging.workflow.get_session_factory", return_value=factory):
+        premature = record_telegram_answer_receipt(
+            chat_id="456",
+            display_name="Tester",
+            update_id="premature-1",
+            assignment_id=assignment_id,
+            raw_answer="an answer sent too early",
+        )
+        with Session(engine) as db:
+            db.get(Assignment, assignment_id).delivered_at = utc_now()
+            db.commit()
+        result = record_telegram_answer_receipt(
+            chat_id="456",
+            display_name="Tester",
+            update_id="greeting-1",
+            assignment_id=assignment_id,
+            raw_answer="Hi!",
+        )
+
+    assert premature.status_message.startswith("No question has been delivered")
+    assert result.prompt.assignment_id == assignment_id
+    with Session(engine) as db:
+        assert db.scalar(select(AnswerReceipt)) is None
+        assert db.get(Assignment, assignment_id).status == AssignmentStatus.ASSIGNED.value
+
+
+def test_mcq_requires_a_strict_choice_letter_or_callback_value():
+    question = QAItem(
+        passage_id="mcq",
+        question_text="Choose",
+        question_type="mcq",
+        mcq_choices=["One", "Two", "Three", "Four"],
+        mcq_correct_choice="A",
+        expected_answer="One",
+    )
+    assert mcq_answer_format_error(question, "A") is None
+    assert mcq_answer_format_error(question, "d") is None
+    assert mcq_answer_format_error(question, "mcq_2") is None
+    assert mcq_answer_format_error(question, "One") is not None
+    assert mcq_answer_format_error(question, "hello") is not None
