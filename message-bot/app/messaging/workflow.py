@@ -513,12 +513,14 @@ def save_response_for_current_assignment(
 
 def _record_provider_answer_for_participant(
     *,
-    participant,
+    participant=None,
     provider,
     display_name,
     message_id,
     message_type,
     message_metadata,
+    external_user_id=None,
+    expected_assignment_id=None,
     response_text=None,
     media_id=None,
     media_url=None,
@@ -529,11 +531,42 @@ def _record_provider_answer_for_participant(
 
     with session_factory() as db:
         try:
-            participant = db.merge(participant)
-            participant.last_seen_at = utc_now()
+            contact = None
+            if participant is None:
+                contact = db.scalars(
+                    select(ParticipantProviderContact).where(
+                        ParticipantProviderContact.provider == provider,
+                        ParticipantProviderContact.external_user_id
+                        == str(external_user_id),
+                        ParticipantProviderContact.opted_out_at.is_(None),
+                    )
+                ).first()
+                if contact is None:
+                    raise ValueError(
+                        f"No active {provider} contact found for "
+                        f"external_user_id={external_user_id}"
+                    )
+                participant = contact.participant
+            else:
+                participant = db.merge(participant)
+
+            now = utc_now()
+            participant.last_seen_at = now
+            if contact is not None:
+                contact.last_seen_at = now
             if display_name and participant.display_name != display_name:
                 participant.display_name = display_name
             participant_session = get_or_create_participant_session(db, participant)
+            if (
+                expected_assignment_id is not None
+                and participant_session.current_assignment_id
+                != expected_assignment_id
+            ):
+                # A stale inline-keyboard tap must not mutate or commit any
+                # participant state. This check now shares the answer-writing
+                # transaction instead of requiring a separate preflight one.
+                db.rollback()
+                return None
             from app.engagement.batch_continuation import (
                 cancel_pending_next_batch_schedules,
             )
@@ -850,25 +883,10 @@ def record_telegram_choice_answer(
     otherwise routes ``mcq_<index>`` through the normal choice-scoring chain
     (parse_mcq_response_letter already understands that format).
     """
-    participant = get_participant_by_provider_contact("telegram", str(chat_id))
-    if participant is None:
-        raise ValueError(
-            f"No active telegram contact found for external_user_id={chat_id}"
-        )
-
-    session_factory = get_session_factory()
-    with session_factory() as db:
-        merged = db.merge(participant)
-        participant_session = get_or_create_participant_session(db, merged)
-        current_assignment_id = participant_session.current_assignment_id
-        db.commit()
-
-    if current_assignment_id != assignment_id:
-        return None
-
     return _record_provider_answer_for_participant(
-        participant=participant,
         provider="telegram",
+        external_user_id=str(chat_id),
+        expected_assignment_id=assignment_id,
         display_name=display_name,
         message_id=message_id,
         message_type=ResponseType.TEXT.value,

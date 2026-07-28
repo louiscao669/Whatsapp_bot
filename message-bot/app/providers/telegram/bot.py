@@ -240,12 +240,11 @@ async def mcq_button_tap(update, context):
     await query.answer("Submitting…")
 
     contact_input = contact_input_from_update(update)
-    participant, contact, _ = upsert_telegram_contact(contact_input)
 
     try:
         workflow_result = record_telegram_choice_answer(
-            chat_id=contact.external_user_id,
-            display_name=contact.display_name or participant.display_name,
+            chat_id=contact_input.chat_id,
+            display_name=contact_input.display_name,
             message_id=contact_input.message_id,
             assignment_id=assignment_id,
             choice_index=choice_index,
@@ -253,7 +252,7 @@ async def mcq_button_tap(update, context):
     except Exception:
         logging.exception(
             "Failed to record inline-keyboard answer for chat %s assignment %s",
-            contact.external_user_id,
+            contact_input.chat_id,
             assignment_id,
         )
         await context.bot.send_message(
@@ -278,7 +277,7 @@ async def mcq_button_tap(update, context):
         await query.edit_message_reply_markup(reply_markup=None)
     except Exception:
         pass
-    await send_workflow_result(context.bot, contact.external_user_id, workflow_result)
+    await send_workflow_result(context.bot, contact_input.chat_id, workflow_result)
 
 
 def build_application():
