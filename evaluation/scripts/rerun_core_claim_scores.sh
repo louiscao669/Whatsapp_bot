@@ -53,7 +53,6 @@ while IFS= read -r -d '' generated_answers; do
     "$output_json" \
     --judge-model "$OPENAI_JUDGE_MODEL" \
     --translation-model "$OPENAI_TRANSLATION_MODEL" \
-    --skip-embeddings \
     --judge-batch-size "$JUDGE_BATCH_SIZE" \
     --placeholder-standard-answers
 

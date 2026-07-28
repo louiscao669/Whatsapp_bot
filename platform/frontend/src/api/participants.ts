@@ -10,6 +10,7 @@ export type ParticipantAssignmentQuestion = {
   id: string
   passage: string
   question: string
+  question_type: string
   chapter_number: number
   verse_number: number
   translations: AssignmentTranslationOption[]

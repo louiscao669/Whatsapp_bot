@@ -6,19 +6,19 @@
   "generation": {
     "provider": "openai",
     "model": "gpt-4.1-mini",
-    "validated_at_unix": 1783473551
+    "validated_at_unix": 1783473551,
+    "pruned_by_placeholder_guard": {
+      "at_unix": 1785254089,
+      "dropped": 3,
+      "dropped_targets": [
+        "人物乙",
+        "至尊者乙",
+        "统治者乙"
+      ],
+      "reason": "target minted a placeholder token absent from the passage"
+    }
   },
   "replacements": [
-    {
-      "source": "人物己",
-      "target": "人物乙",
-      "category": "entity",
-      "mode": "systematic",
-      "rationale": "systematic substitution of main character entity",
-      "source_content_chars": 3,
-      "target_content_chars": 3,
-      "occurrence_count": 30
-    },
     {
       "source": "鬼",
       "target": "魔鬼",
@@ -28,16 +28,6 @@
       "source_content_chars": 1,
       "target_content_chars": 2,
       "occurrence_count": 12
-    },
-    {
-      "source": "至高者甲",
-      "target": "至尊者乙",
-      "category": "entity",
-      "mode": "systematic",
-      "rationale": "systematic substitution of divine entity",
-      "source_content_chars": 4,
-      "target_content_chars": 4,
-      "occurrence_count": 6
     },
     {
       "source": "门徒",
@@ -245,16 +235,6 @@
       "category": "attribute",
       "mode": "systematic",
       "rationale": "systematic substitution of only daughter attribute",
-      "source_content_chars": 4,
-      "target_content_chars": 4,
-      "occurrence_count": 1
-    },
-    {
-      "source": "统治者甲",
-      "target": "统治者乙",
-      "category": "entity",
-      "mode": "systematic",
-      "rationale": "systematic substitution of ruler entity",
       "source_content_chars": 4,
       "target_content_chars": 4,
       "occurrence_count": 1

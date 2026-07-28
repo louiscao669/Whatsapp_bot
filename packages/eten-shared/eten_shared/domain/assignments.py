@@ -2,6 +2,7 @@
 
 import os
 import re
+import hashlib
 from dataclasses import dataclass
 from typing import Optional
 
@@ -19,12 +20,14 @@ from eten_shared.models import (
     Participant,
     ParticipantEvent,
     ParticipantSession,
+    PassageTranslation,
     PassageVerse,
     QAItem,
     SessionState,
     new_id,
     utc_now,
 )
+from eten_shared.languages import canonical_language_code
 from eten_shared.recordings import (
     get_latest_question_recording,
     participant_language_code,
@@ -154,11 +157,90 @@ def get_incomplete_assignment(db: Session, participant, batch_id=None):
 
 
 PASSAGE_CONTEXT_WINDOW = 2
+PASSAGE_DELIVERY_VERSE_COUNT = 3
+
+# These source references point one verse before the verse containing the
+# answer. Keep the source reference intact for traceability, but constrain the
+# randomized window so both verses are delivered.
+ANSWER_VERSE_OFFSETS = {
+    "uw-174342": 1,
+    "uw-174343": 1,
+    "uw-174344": 1,
+    "uw-174404": 1,
+}
 
 _QA_VERSE_REFERENCE = re.compile(
     r"^(?:.+?\s+)?(?P<chapter>\d+):(?P<verse>\d+)(?:\(#(?P<occurrence>\d+)\))?",
     re.IGNORECASE,
 )
+
+
+def _qa_verse_location(qa_item):
+    match = _QA_VERSE_REFERENCE.match(
+        str(qa_item.passage_reference or qa_item.passage_id or "").strip()
+    )
+    if not match:
+        return None
+    chapter = int(match.group("chapter"))
+    # ``(#2)`` identifies a second QA item for the same source verse; it does
+    # not identify a duplicate PassageVerse row.
+    return chapter, match.group("verse")
+
+
+def _window_random_value(qa_item):
+    stable_key = str(getattr(qa_item, "id", "") or qa_item.passage_reference or "")
+    return int.from_bytes(hashlib.sha256(stable_key.encode("utf-8")).digest()[:8], "big")
+
+
+def _answer_verse_offset(qa_item):
+    item_id = str(getattr(qa_item, "id", "") or "")
+    item_stem = item_id.rsplit("-", 1)[0]
+    return ANSWER_VERSE_OFFSETS.get(item_stem, 0)
+
+
+def select_three_verse_window(verses, qa_item):
+    """Choose a stable pseudo-random three-verse window for one QA item.
+
+    The referenced verse is distributed among the first, middle, and last
+    positions. Known off-by-one source references are restricted to windows
+    that also contain the actual answer verse.
+    """
+
+    verses = list(verses or [])
+    if not verses:
+        return []
+    location = _qa_verse_location(qa_item)
+    if not location:
+        return []
+    _, target_number = location
+    target_index = next(
+        (index for index, verse in enumerate(verses) if verse.verse_number == target_number),
+        None,
+    )
+    if target_index is None:
+        return []
+
+    window_size = min(PASSAGE_DELIVERY_VERSE_COUNT, len(verses))
+    max_start = len(verses) - window_size
+    answer_offset = _answer_verse_offset(qa_item)
+    answer_index = target_index + answer_offset
+    valid_starts = [
+        start
+        for start in range(max_start + 1)
+        if start <= target_index < start + window_size
+        and start <= answer_index < start + window_size
+    ]
+    if not valid_starts:
+        return []
+
+    random_value = _window_random_value(qa_item)
+    if answer_offset:
+        start = valid_starts[random_value % len(valid_starts)]
+    else:
+        desired_position = random_value % window_size
+        desired_start = target_index - desired_position
+        start = min(valid_starts, key=lambda candidate: (abs(candidate - desired_start), candidate))
+    return verses[start : start + window_size]
 
 
 def experiment_passage_assignment_kwargs(db: Session, experiment_passage, qa_item):
@@ -171,16 +253,11 @@ def experiment_passage_assignment_kwargs(db: Session, experiment_passage, qa_ite
     """
 
     fallback = {"passage_text": experiment_passage.passage_text}
-    match = _QA_VERSE_REFERENCE.match(
-        str(qa_item.passage_reference or qa_item.passage_id or "").strip()
-    )
-    if not match:
+    location = _qa_verse_location(qa_item)
+    if not location:
         return fallback
 
-    chapter = int(match.group("chapter"))
-    verse_number = match.group("verse")
-    occurrence = int(match.group("occurrence") or 1)
-    stored_number = verse_number if occurrence == 1 else f"{verse_number}-{occurrence}"
+    chapter, stored_number = location
     target = db.scalar(
         select(ExperimentPassageVerse).where(
             ExperimentPassageVerse.experiment_passage_id == experiment_passage.id,
@@ -190,32 +267,85 @@ def experiment_passage_assignment_kwargs(db: Session, experiment_passage, qa_ite
     if target is None:
         return fallback
 
-    verses = db.scalars(
+    chapter_verses = db.scalars(
         select(ExperimentPassageVerse)
         .where(
             ExperimentPassageVerse.experiment_passage_id == experiment_passage.id,
-            ExperimentPassageVerse.position >= target.position - PASSAGE_CONTEXT_WINDOW,
-            ExperimentPassageVerse.position <= target.position + PASSAGE_CONTEXT_WINDOW,
         )
         .order_by(ExperimentPassageVerse.position)
     ).all()
+    verses = select_three_verse_window(chapter_verses, qa_item)
+    if not verses:
+        return fallback
 
     return {
         "passage_chapter_number": chapter,
-        "passage_verse_numbers": [target.verse_number],
+        "passage_verse_numbers": [verse.verse_number for verse in verses],
         "passage_text": " ".join(
             verse.text.strip() for verse in verses if verse.text and verse.text.strip()
         ),
     }
 
 
-def surrounding_passage_text(db: Session, assignment, window: int = PASSAGE_CONTEXT_WINDOW):
-    """Return the assigned verse(s) plus ``window`` verses of context on each
-    side, joined as one flowing paragraph (no verse numbers or reference).
+def passage_translation_assignment_kwargs(db: Session, translation, qa_item):
+    """Build a randomized three-verse assignment snapshot from a translation."""
 
-    Uses global verse ``position`` ordering, so the window spans a chapter
-    boundary when the target sits near a chapter edge. Returns ``None`` when the
-    verse data is unavailable, so callers can fall back to stored passage text.
+    location = _qa_verse_location(qa_item)
+    if not location:
+        return {}
+    chapter, _ = location
+    chapter_verses = db.scalars(
+        select(PassageVerse)
+        .where(
+            PassageVerse.translation_id == translation.id,
+            PassageVerse.chapter_number == chapter,
+        )
+        .order_by(PassageVerse.position)
+    ).all()
+    verses = select_three_verse_window(chapter_verses, qa_item)
+    if not verses:
+        return {}
+    return {
+        "passage_translation_id": translation.id,
+        "passage_chapter_number": chapter,
+        "passage_verse_numbers": [verse.verse_number for verse in verses],
+        "passage_text": " ".join(
+            verse.text.strip() for verse in verses if verse.text and verse.text.strip()
+        ),
+    }
+
+
+def automatic_passage_assignment_kwargs(db: Session, participant, qa_item):
+    """Resolve the deterministic production translation for an automatic assignment."""
+
+    location = _qa_verse_location(qa_item)
+    language = canonical_language_code(getattr(participant, "target_language", None))
+    if not location or not language:
+        return {}
+    chapter, target_number = location
+    translation = db.scalars(
+        select(PassageTranslation)
+        .join(PassageVerse)
+        .where(
+            PassageTranslation.language == language,
+            PassageVerse.chapter_number == chapter,
+            PassageVerse.verse_number == target_number,
+        )
+        .distinct()
+        .order_by(PassageTranslation.name, PassageTranslation.created_at, PassageTranslation.id)
+    ).first()
+    if not translation:
+        return {}
+    return passage_translation_assignment_kwargs(db, translation, qa_item)
+
+
+def surrounding_passage_text(db: Session, assignment, window: int = PASSAGE_CONTEXT_WINDOW):
+    """Return the assignment's exact passage snapshot as a flowing paragraph.
+
+    New assignments store their randomized three-verse window in
+    ``passage_verse_numbers``. Keeping selection at assignment creation makes
+    Telegram and dashboard rendering identical and preserves historical
+    assignments as delivered. ``window`` remains for caller compatibility.
     """
 
     translation_id = getattr(assignment, "passage_translation_id", None)
@@ -223,23 +353,11 @@ def surrounding_passage_text(db: Session, assignment, window: int = PASSAGE_CONT
     if not translation_id or not verse_numbers:
         return None
 
-    target_positions = db.scalars(
-        select(PassageVerse.position).where(
-            PassageVerse.translation_id == translation_id,
-            PassageVerse.verse_number.in_(verse_numbers),
-        )
-    ).all()
-    if not target_positions:
-        return None
-
-    low = min(target_positions) - window
-    high = max(target_positions) + window
     verses = db.scalars(
         select(PassageVerse)
         .where(
             PassageVerse.translation_id == translation_id,
-            PassageVerse.position >= low,
-            PassageVerse.position <= high,
+            PassageVerse.verse_number.in_(verse_numbers),
         )
         .order_by(PassageVerse.position)
     ).all()
@@ -337,6 +455,18 @@ def create_assignment_for_qa_item(
     passage_chapter_number=None,
     passage_verse_numbers=None,
 ):
+    if (
+        not experiment_cell_id
+        and not passage_text
+        and not passage_translation_id
+        and not passage_verse_numbers
+    ):
+        passage_kwargs = automatic_passage_assignment_kwargs(db, participant, qa_item)
+        passage_text = passage_kwargs.get("passage_text")
+        passage_translation_id = passage_kwargs.get("passage_translation_id")
+        passage_chapter_number = passage_kwargs.get("passage_chapter_number")
+        passage_verse_numbers = passage_kwargs.get("passage_verse_numbers")
+
     batch_id = participant_session.current_batch_id or new_id()
     assignment = Assignment(
         participant_id=participant.id,

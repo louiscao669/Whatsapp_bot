@@ -812,7 +812,7 @@ def method_needs_openai(args: argparse.Namespace, method: str, paths: dict) -> b
         force=args.force,
         force_stage=args.force_score or args.force_backtranslate or args.force_answer,
     ):
-        return not (args.skip_llm and args.skip_embeddings)
+        return not args.skip_llm
     return False
 
 
@@ -1127,12 +1127,10 @@ def run_score_stage(
     scored = score_items(
         generated_items,
         standard_items,
-        embedding_model=args.embedding_model,
         judge_model=args.judge_model,
         translation_model=args.translation_model,
         retries=args.retries,
         skip_llm=args.skip_llm,
-        skip_embeddings=args.skip_embeddings,
         placeholder_standard_answers=True,
         judge_batch_size=args.judge_batch_size,
     )
@@ -1321,11 +1319,6 @@ def parse_args() -> argparse.Namespace:
         help="OpenAI model for semantic judging.",
     )
     parser.add_argument(
-        "--embedding-model",
-        default=os.getenv("OPENAI_EMBEDDING_MODEL", "text-embedding-3-large"),
-        help="OpenAI embedding model for cosine similarity.",
-    )
-    parser.add_argument(
         "--translation-batch-size",
         type=int,
         default=20,
@@ -1377,7 +1370,6 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--retries", type=int, default=2)
     parser.add_argument("--skip-llm", action="store_true")
-    parser.add_argument("--skip-embeddings", action="store_true")
     parser.add_argument(
         "--continue-on-method-error",
         action="store_true",

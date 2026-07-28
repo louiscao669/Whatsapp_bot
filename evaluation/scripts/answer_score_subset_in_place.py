@@ -356,12 +356,10 @@ def answer_score_method_subset(
     scored = score_items(
         backtranslated,
         selected_standard_items,
-        embedding_model=args.embedding_model,
         judge_model=args.judge_model,
         translation_model=args.translation_model,
         retries=args.retries,
         skip_llm=args.skip_llm,
-        skip_embeddings=args.skip_embeddings,
         placeholder_standard_answers=True,
         judge_batch_size=args.judge_batch_size,
     )
@@ -493,10 +491,6 @@ def parse_args() -> argparse.Namespace:
         default=os.getenv("OPENAI_TRANSLATION_MODEL", "gpt-4.1-mini"),
     )
     parser.add_argument(
-        "--embedding-model",
-        default=os.getenv("OPENAI_EMBEDDING_MODEL", "text-embedding-3-large"),
-    )
-    parser.add_argument(
         "--judge-model",
         default=os.getenv("OPENAI_JUDGE_MODEL", "gpt-4.1-mini"),
     )
@@ -504,7 +498,6 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--judge-batch-size", type=int, default=20)
     parser.add_argument("--retries", type=int, default=2)
     parser.add_argument("--skip-llm", action="store_true")
-    parser.add_argument("--skip-embeddings", action="store_true")
     parser.add_argument(
         "--summary-json",
         type=Path,

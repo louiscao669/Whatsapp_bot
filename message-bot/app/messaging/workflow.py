@@ -7,11 +7,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
 from eten_shared.database import get_session_factory
-from eten_shared.answer_llm_scoring import (
-    AnswerLLMScoringError,
-    llm_answer_scoring_enabled,
-    score_open_answer_binary,
-)
+from eten_shared.answer_llm_scoring import llm_answer_scoring_enabled
 from eten_shared.domain.assignments import (
     AssignmentPrompt,
     automatic_assignment_enabled,
@@ -85,6 +81,8 @@ from eten_shared.models import (
     Assignment,
     AssignmentStatus,
     ExperimentPassage,
+    OutboxNotification,
+    OutboxStatus,
     ParticipantEvent,
     ParticipantProviderContact,
     ParticipantResponse,
@@ -420,37 +418,10 @@ def save_response_for_current_assignment(
             ) = score_text_response_for_participant(db, qa_item, participant, analysis_text)
 
         if llm_answer_scoring_enabled() and not unusable_audio_transcript:
-            try:
-                llm_result = score_open_answer_binary(
-                    question=qa_item.question_text,
-                    original_question=qa_item.original_question_text,
-                    participant_answer=analysis_text,
-                    expected_answer=qa_item.expected_answer,
-                    original_expected_answer=qa_item.original_expected_answer,
-                    language=participant.target_language,
-                )
-                correctness_score = llm_result.score
-                needs_expert_review = False
-                flag_reason = None
-                matched_keywords = []
-                missing_keywords = []
-                backtranslated_text = llm_result.backtranslated_answer
-                scoring_metadata = {
-                    "method": "backtranslation_binary_llm",
-                    "label": llm_result.label,
-                    "expected_answer_english": llm_result.expected_answer_english,
-                    "rationale": llm_result.rationale,
-                    "core_claim_expected": llm_result.core_claim_expected,
-                    "core_claim_found": llm_result.core_claim_found,
-                }
-            except AnswerLLMScoringError as exc:
-                correctness_score = None
-                needs_expert_review = True
-                flag_reason = f"Pending expert review: LLM scoring failed ({exc})."
-                scoring_metadata = {
-                    "method": "backtranslation_binary_llm",
-                    "error": str(exc),
-                }
+            correctness_score = None
+            needs_expert_review = True
+            flag_reason = "LLM scoring queued."
+            scoring_metadata = {"method": "backtranslation_binary_llm", "status": "queued"}
 
     if is_choice_scored_item(qa_item):
         is_correct_label = "yes (auto)" if choice_answer_correct else "no (auto)"
@@ -498,6 +469,18 @@ def save_response_for_current_assignment(
         source_channel=provider if provider != "workflow" else None,
     )
     db.add(response)
+    db.flush()
+    if (
+        not is_choice_scored_item(qa_item)
+        and llm_answer_scoring_enabled()
+        and not unusable_audio_transcript
+    ):
+        db.add(OutboxNotification(
+            participant_id=participant.id,
+            notification_type="answer_llm_score_requested",
+            payload={"response_id": response.id},
+            status=OutboxStatus.PENDING.value,
+        ))
 
     # Assignment completion (status/completed_at/attempt_count) already
     # applied atomically by try_complete_assignment above.

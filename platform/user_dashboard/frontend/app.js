@@ -343,16 +343,6 @@ async function submitAnswer(assignmentId, responseText) {
     showModal("Answer the question before submitting.");
     return;
   }
-  state.questionCompletion = {
-    pending: true,
-    submission: {},
-    nextQuestion: null,
-    awards: {},
-    wallet: {}
-  };
-  state.journeyAnswerAssignmentId = null;
-  state.journeyAnswerQuestion = null;
-  render();
   try {
     const payload = await postRawJson(state.participantId, "/answers", {
       assignment_id: assignmentId,
@@ -362,24 +352,20 @@ async function submitAnswer(assignmentId, responseText) {
     rememberDashboard();
     rememberProfilePhoto();
     const submission = payload.answer_submission || {};
-    state.questionCompletion = {
-      pending: false,
-      submission,
-      nextQuestion: payload.next_question || null,
-      awards: payload.awards || {},
-      wallet: payload.wallet || {}
-    };
+    const nextQuestion = payload.next_question || null;
+    state.questionCompletion = null;
+    state.journeyAnswerQuestion = nextQuestion;
+    state.journeyAnswerAssignmentId = nextQuestion?.assignment_id
+      || submission.next_assignment_id
+      || null;
+    if (state.journeyAnswerAssignmentId) {
+      pingQuestionViewed(state.journeyAnswerAssignmentId);
+    }
     render();
+    if (!nextQuestion) {
+      refreshDashboardInBackground();
+    }
   } catch (error) {
-    state.questionCompletion = {
-      pending: false,
-      failed: true,
-      errorMessage: error.message,
-      submission: {},
-      nextQuestion: null,
-      awards: {},
-      wallet: {}
-    };
     render();
     showModal(error.message);
   }

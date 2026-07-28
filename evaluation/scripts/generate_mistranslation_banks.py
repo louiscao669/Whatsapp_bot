@@ -19,6 +19,17 @@ from typing import Any
 
 CONTENT_CHAR_PATTERN = re.compile(r"[\w\u3400-\u9fff]")
 PROTECTED_TOKEN_PATTERN = re.compile(r"__[A-Za-z0-9_]+__")
+
+# Decanonicalization placeholders: a short Chinese stem plus a \u5929\u5e72 suffix or a
+# two-digit index (\u4eba\u7269\u7532, \u81f3\u9ad8\u8005\u7532, \u89d2\u827203, \u7fa4\u4f5305). Stem length is ambiguous -- in
+# "\u5929\u4f7f \u89d2\u827206" a greedy 3-char stem would read "\u4f7f\u89d2\u827206" -- so we anchor on the
+# SUFFIX and test every stem length, treating the token as resolved if any
+# reading is known. Guessing a single stem length produces false positives.
+PLACEHOLDER_SUFFIX_PATTERN = re.compile(r"(?:[\u7532\u4e59\u4e19\u4e01\u620a\u5df1\u5e9a\u8f9b\u58ec\u7678]|\d{2})(?![\u4e00-\u9fff])")
+MAX_STEM_CHARS = 3
+# Ordinary words the suffix scan can otherwise reach (\u5df1 is a \u5929\u5e72 character).
+NON_PLACEHOLDER_WORDS = {"\u81ea\u5df1", "\u77e5\u5df1", "\u5f02\u5df1", "\u5229\u5df1", "\u800c\u5df2"}
+
 VALID_MODES = {"systematic", "contextual"}
 VALID_CATEGORIES = {
     "entity",
@@ -58,6 +69,51 @@ def content_len(text: str) -> int:
 
 def has_protected_token(text: str) -> bool:
     return bool(PROTECTED_TOKEN_PATTERN.search(text or ""))
+
+
+def _token_readings(text: str, match: re.Match) -> list[str]:
+    """Every stem+suffix reading of a placeholder ending at ``match``, short first."""
+    readings = []
+    for n in range(1, MAX_STEM_CHARS + 1):
+        start = match.start() - n
+        if start < 0:
+            break
+        stem = text[start:match.start()]
+        if not all("一" <= c <= "鿿" for c in stem):
+            break
+        readings.append(stem + match.group(0))
+    return readings
+
+
+def unresolved_tokens(text: str, known) -> list[str]:
+    """Placeholder-shaped tokens in ``text`` with no reading present in ``known``.
+
+    ``known`` may be the passage (substring test) or a remap (key test).
+    """
+    bad = set()
+    for m in PLACEHOLDER_SUFFIX_PATTERN.finditer(text or ""):
+        readings = _token_readings(text, m)
+        if not readings:
+            continue
+        if any(r in NON_PLACEHOLDER_WORDS for r in readings):
+            continue
+        if any(r in known for r in readings):
+            continue
+        bad.add(max(readings, key=len))
+    return sorted(bad)
+
+
+def invented_placeholders(target: str, passage: str) -> list[str]:
+    """Placeholder tokens in ``target`` that do not exist in the passage.
+
+    The bank is meant to swap one *existing* entity for another (人物甲 -> 人物乙
+    is fine when both are real characters in the chapter). What it must never do
+    is mint a token the decanonicalizer never issued -- 角色03 -> 角色04,
+    至高者甲 -> 明主甲 -- because the pseudonym remap is built from the chapter's
+    own entity mapping and has no entry for the invented token, so it survives
+    into the participant-facing text as raw scaffolding.
+    """
+    return unresolved_tokens(target, passage)
 
 
 def extract_response_text(response: Any) -> str:
@@ -122,6 +178,12 @@ theological_term, semantic_substitution.
 Rules:
 - source must appear exactly in the passage.
 - source and target must not contain protected placeholders like __PERSON_A__.
+- The passage uses anonymised entity tokens (人物甲, 至高者甲, 角色03, 群体05).
+  NEVER invent a token that is not already in the passage. 角色03 -> 角色04 and
+  至高者甲 -> 明主甲 are FORBIDDEN, because 角色04 and 明主甲 do not exist.
+  To substitute one entity for another, the target token must itself appear
+  somewhere in the passage (人物甲 -> 人物乙 is allowed only if 人物乙 is present).
+  When in doubt, substitute an ordinary Chinese word instead of a token.
 - Do not use punctuation-only, function-word-only, or extremely broad sources.
 - Prefer source phrases with 2-8 Chinese characters when possible.
 - For systematic entries, target should fit all occurrences of source in this
@@ -176,6 +238,8 @@ def normalize_replacement(item: dict, passage: str) -> dict | None:
         return None
     if has_protected_token(source) or has_protected_token(target):
         return None
+    if invented_placeholders(target, passage):
+        return None
     if content_len(source) == 0 or content_len(target) == 0:
         return None
     if content_len(source) > 24 or content_len(target) > 30:
@@ -208,9 +272,13 @@ def validate_bank(data: dict, *, chapter: int, passage: str, model: str) -> dict
 
     replacements = []
     seen = set()
+    minted = []
     for item in raw_replacements:
         if not isinstance(item, dict):
             continue
+        bad = invented_placeholders(str(item.get("target") or ""), passage)
+        if bad:
+            minted.append(f"{item.get('source')} -> {item.get('target')} [{','.join(bad)}]")
         normalized = normalize_replacement(item, passage)
         if not normalized:
             continue
@@ -223,6 +291,15 @@ def validate_bank(data: dict, *, chapter: int, passage: str, model: str) -> dict
             continue
         seen.add(key)
         replacements.append(normalized)
+
+    if minted:
+        print(
+            f"  ch{chapter}: dropped {len(minted)} entry(ies) minting placeholder tokens "
+            f"absent from the passage:",
+            file=sys.stderr,
+        )
+        for row in minted:
+            print(f"    {row}", file=sys.stderr)
 
     if not replacements:
         raise BankGenerationError("No valid replacements survived validation.")

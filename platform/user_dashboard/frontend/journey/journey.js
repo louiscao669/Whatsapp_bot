@@ -231,7 +231,7 @@ function renderQuestionAnswerPage(target, actions) {
         el("button", {
           type: "submit",
           className: "answer-submit-btn",
-          text: "Submit answer"
+          text: "Next question"
         })
       ])
     ])

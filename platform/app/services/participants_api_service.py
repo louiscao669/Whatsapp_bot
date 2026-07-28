@@ -5,7 +5,13 @@ from datetime import timezone
 from sqlalchemy import func, select
 from sqlalchemy.orm import selectinload
 
-from eten_shared.models import Assignment, Participant, ParticipantResponse, ParticipantSession
+from eten_shared.models import (
+    Assignment,
+    AssignmentStatus,
+    Participant,
+    ParticipantResponse,
+    ParticipantSession,
+)
 from eten_shared.mcq import is_choice_scored_item
 from app.services.qa_item_stats_service import (
     format_choice_correctness_label,
@@ -248,6 +254,12 @@ def get_participant_detail(db, participant_id: str):
 
     assigned_questions = []
     for assignment in assignments:
+        # Completed work is represented by ``history`` below.  Keeping it out
+        # of this collection makes the participant detail page reflect the
+        # assignment lifecycle instead of showing completed questions in both
+        # sections.
+        if assignment.status == AssignmentStatus.COMPLETED.value:
+            continue
         qa_item = assignment.qa_item
         if not qa_item:
             continue

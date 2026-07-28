@@ -303,6 +303,8 @@ class QAItem(Base):
     question_type: Mapped[str] = mapped_column(
         String(16), default=QuestionType.OPEN.value, nullable=False
     )
+    form_group_id: Mapped[Optional[str]] = mapped_column(String(128), index=True)
+    automatic_form: Mapped[Optional[str]] = mapped_column(String(16))
     mcq_choices: Mapped[List[str]] = mapped_column(JSON, default=list, nullable=False)
     mcq_correct_choice: Mapped[Optional[str]] = mapped_column(String(1))
     expected_answer: Mapped[str] = mapped_column(Text, nullable=False)

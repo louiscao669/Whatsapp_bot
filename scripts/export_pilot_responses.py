@@ -7,8 +7,8 @@ the eval tree so they can be consumed with no code change:
 
     <eval-root>/outputs/luke{ch}/{subdir}/{defect}/{level}/scores_target_human.json
 
-Condition → (defect, level) mapping mirrors the LLM grid, so e.g. Luke 3 / omission20
-lands in ``luke3/human/omission/20%/`` and is picked up by
+Condition → (defect, level) mapping mirrors the LLM grid, so e.g. Luke 3 / omission30
+lands in ``luke3/human/omission/30%/`` and is picked up by
 ``report_synthetic_perturbations.py --model-subdir human --score-file scores_target_human.json``
 and ``fit_item_sensitivity.py --axis defect --models human``.
 
@@ -66,14 +66,23 @@ from eten_shared.models import (  # noqa: E402
 )
 
 # condition key (experiment_passages.condition / plan cell) -> (defect dir, level dir|None)
+# [CHANGED 2026-07-27b] Two matched adequacy ladders; keys MUST match
+# build_experiment_plan.SLOTS / pilot_import.CONDITIONS. "clean" maps to omission/0%, which is
+# the shared 0% dose for BOTH families — the mistranslation ladder re-uses it as its anchor
+# (there is no mistranslation/0% cell at window=3). Retired keys are kept as aliases so a
+# response collected under the old slate still exports instead of being silently dropped.
 CONDITION_TO_EVAL = {
     "clean": ("omission", "0%"),
-    "omission10": ("omission", "10%"),
-    "omission20": ("omission", "20%"),
+    "omission15": ("omission", "15%"),
     "omission30": ("omission", "30%"),
-    "mistranslation20": ("mistranslation", "20%"),
+    "mistranslation15": ("mistranslation", "15%"),
+    "mistranslation30": ("mistranslation", "30%"),
     "grammar30": ("grammar", "30%"),
     "wbw": ("google_word_by_word", None),
+    # --- retired 07-27b, accepted for backwards compatibility ---
+    "omission10": ("omission", "10%"),
+    "omission20": ("omission", "20%"),
+    "mistranslation20": ("mistranslation", "20%"),
 }
 REVIEWED_STATES = {"auto", "reviewed"}
 

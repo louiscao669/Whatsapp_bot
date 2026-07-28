@@ -9,11 +9,7 @@ from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from sqlalchemy import delete, distinct, func, select
 
-from eten_shared.answer_llm_scoring import (
-    AnswerLLMScoringError,
-    llm_answer_scoring_enabled,
-    score_open_answer_binary,
-)
+from eten_shared.answer_llm_scoring import llm_answer_scoring_enabled
 
 from eten_shared.domain.batch_schedules import (
     BATCH_NEXT_ASSIGNMENT_TYPE,
@@ -288,7 +284,6 @@ def _serialize_dashboard_question(
     chapter_number = _luke_chapter_from_reference(qa_item.passage_reference)
     return {
         "assignment_id": assignment.id,
-        "qa_item_id": qa_item.id,
         "batch_id": assignment.batch_id,
         "question_index": max(int(question_index or 0), 0),
         "chapter": chapter_number,
@@ -297,7 +292,6 @@ def _serialize_dashboard_question(
         "passage_text": surrounding_passage_text(db, assignment)
         or assignment.passage_text
         or qa_item.passage_text,
-        "passage_verse_numbers": list(assignment.passage_verse_numbers or []),
         "question": qa_item.question_text,
         "question_type": (qa_item.question_type or "open").strip().lower(),
         "mcq_choices": list(qa_item.mcq_choices or []),
@@ -444,7 +438,9 @@ def _select_next_dashboard_qa_item(db, participant):
             )
             .order_by(QAItem.review_priority.desc(), QAItem.created_at.asc())
         ).all()
-        if row.id not in assigned_qa_item_ids and qa_item_is_assignable(row)
+        if row.id not in assigned_qa_item_ids
+        and (not row.automatic_form or row.question_type == row.automatic_form)
+        and qa_item_is_assignable(row)
     ]
     return (candidates[0] if candidates else None), None
 
@@ -992,6 +988,7 @@ def claim_batch_chest_reward(db, participant_id: str, batch_id: str):
 
 
 DASHBOARD_ANSWER_SYNCED_NOTIFICATION = "dashboard_answer_synced"
+ANSWER_LLM_SCORE_REQUESTED_NOTIFICATION = "answer_llm_score_requested"
 
 
 def _enqueue_outbox_notification(db, participant, notification_type, payload):
@@ -1001,7 +998,7 @@ def _enqueue_outbox_notification(db, participant, notification_type, payload):
     are superseded so rapid dashboard answering collapses into one push.
     """
 
-    stale = db.scalars(
+    stale = [] if notification_type == ANSWER_LLM_SCORE_REQUESTED_NOTIFICATION else db.scalars(
         select(OutboxNotification).where(
             OutboxNotification.participant_id == participant.id,
             OutboxNotification.notification_type == notification_type,
@@ -1208,39 +1205,11 @@ def submit_dashboard_answer(db, participant_id: str, assignment_id: str, respons
             else ReviewStatus.AUTO.value
         )
         if llm_answer_scoring_enabled():
-            try:
-                llm_result = score_open_answer_binary(
-                    question=qa_item.question_text,
-                    original_question=qa_item.original_question_text,
-                    participant_answer=answer_text,
-                    expected_answer=qa_item.expected_answer,
-                    original_expected_answer=qa_item.original_expected_answer,
-                    language=participant.target_language,
-                )
-                correctness_score = llm_result.score
-                is_correct_label = "yes (auto)" if llm_result.score == 1.0 else "no (auto)"
-                review_status = ReviewStatus.AUTO.value
-                flag_reason = None
-                matched_keywords = []
-                missing_keywords = []
-                backtranslated_text = llm_result.backtranslated_answer
-                scoring_metadata = {
-                    "method": "backtranslation_binary_llm",
-                    "label": llm_result.label,
-                    "expected_answer_english": llm_result.expected_answer_english,
-                    "rationale": llm_result.rationale,
-                    "core_claim_expected": llm_result.core_claim_expected,
-                    "core_claim_found": llm_result.core_claim_found,
-                }
-            except AnswerLLMScoringError as exc:
-                correctness_score = None
-                is_correct_label = "pending"
-                review_status = ReviewStatus.PENDING.value
-                flag_reason = f"Pending expert review: LLM scoring failed ({exc})."
-                scoring_metadata = {
-                    "method": "backtranslation_binary_llm",
-                    "error": str(exc),
-                }
+            correctness_score = None
+            is_correct_label = "pending"
+            review_status = ReviewStatus.PENDING.value
+            flag_reason = "LLM scoring queued."
+            scoring_metadata = {"method": "backtranslation_binary_llm", "status": "queued"}
 
     response = ParticipantResponse(
         participant_id=participant.id,
@@ -1260,6 +1229,12 @@ def submit_dashboard_answer(db, participant_id: str, assignment_id: str, respons
         source_channel=SourceChannel.USER_DASHBOARD.value,
     )
     db.add(response)
+    db.flush()
+    if not is_choice_scored_item(qa_item) and llm_answer_scoring_enabled():
+        _enqueue_outbox_notification(
+            db, participant, ANSWER_LLM_SCORE_REQUESTED_NOTIFICATION,
+            {"response_id": response.id},
+        )
 
     now = utc_now()
     # status/completed_at/attempt_count were set atomically by

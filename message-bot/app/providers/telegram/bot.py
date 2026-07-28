@@ -235,6 +235,10 @@ async def mcq_button_tap(update, context):
         return
     assignment_id, choice_index = parsed
 
+    # Stop Telegram's button spinner immediately. The durable database commit and
+    # next-question delivery continue below.
+    await query.answer("Submitting…")
+
     contact_input = contact_input_from_update(update)
     participant, contact, _ = upsert_telegram_contact(contact_input)
 
@@ -252,21 +256,23 @@ async def mcq_button_tap(update, context):
             contact.external_user_id,
             assignment_id,
         )
-        await query.answer(
-            "Sorry, something went wrong recording your answer. Please try again."
+        await context.bot.send_message(
+            chat_id=query.message.chat_id,
+            text="Sorry, something went wrong recording your answer. Please try again.",
         )
         return
 
     if workflow_result is None:
         # Stale tap: the button belongs to a question that is no longer current.
-        await query.answer("This question was already answered.")
+        await context.bot.send_message(
+            chat_id=query.message.chat_id, text="This question was already answered."
+        )
         try:
             await query.edit_message_reply_markup(reply_markup=None)
         except Exception:
             pass
         return
 
-    await query.answer("Answer recorded.")
     # Remove the buttons so the same question can't be tapped twice.
     try:
         await query.edit_message_reply_markup(reply_markup=None)

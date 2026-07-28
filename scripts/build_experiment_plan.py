@@ -7,10 +7,12 @@ condition that participant sees for that chapter, plus the FK to the variant pas
 (``question_discovery.experiment_selection``) then serves questions strictly from this
 plan when ``ENABLE_EXPERIMENT_ASSIGNMENT`` is set.
 
-Design (HUMAN_PILOT_DESIGN_2026-07-12 §5; DESIGNED_ASSIGNMENT_EXTENSION_2026-07-20 §4):
-  * 8 condition SLOTS = two clean anchors + omission{10,20,30} + mistranslation20 +
+Design (HUMAN_PILOT_DESIGN_2026-07-27 §4/§5; DESIGNED_ASSIGNMENT_EXTENSION_2026-07-20 §4):
+  * 8 condition SLOTS = two clean anchors + omission{15,30} + mistranslation{15,30} +
     grammar30 + wbw. Both anchor slots resolve to the single "clean" passage (they are
-    pooled anchors: one supplies theta-hat, one supplies the re-zeroing baseline).
+    pooled anchors: one supplies theta-hat, one supplies the re-zeroing baseline) and the
+    clean cell is also the 0% dose of BOTH adequacy ladders.
+    [CHANGED 2026-07-27b] was omission{10,20,30} + mistranslation20.
   * condition = SLOTS[(chapter - 1 + block_index) mod 8]  -> a balanced Latin square:
     across each 8-participant block every chapter is paired with every slot exactly once.
   * chapter ORDER is shuffled independently per participant (seeded by participant_id, so
@@ -57,13 +59,17 @@ from eten_shared.models import (  # noqa: E402
 
 # 8 condition slots. Two "clean" anchors (pooled). The strings MUST match
 # experiment_passages.condition written by scripts/pilot_import.py.
+# [CHANGED 2026-07-27b] Two matched adequacy ladders ({15,30}% each) replace the old
+# omission{10,20,30}+mistranslation20 slate: om10 vs om20 were not separable in the window-3
+# grid, and mistranslation had a single dose (no slope). The clean anchors double as the 0%
+# dose for BOTH families. See HUMAN_PILOT_DESIGN_2026-07-27.md §4.
 SLOTS = [
     "clean",            # A1 anchor
     "clean",            # A2 anchor (same passage; pooled)
-    "omission10",
-    "omission20",
+    "omission15",
     "omission30",
-    "mistranslation20",
+    "mistranslation15",
+    "mistranslation30",
     "grammar30",
     "wbw",
 ]

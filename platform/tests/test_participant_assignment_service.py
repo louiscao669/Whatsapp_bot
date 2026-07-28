@@ -29,6 +29,7 @@ from eten_shared.models import (
 )
 from eten_shared.domain.assignments import (
     automatic_assignment_enabled,
+    create_assignment_for_qa_item,
     experiment_passage_assignment_kwargs,
 )
 
@@ -75,10 +76,42 @@ class ParticipantAssignmentServiceTests(unittest.TestCase):
             result = experiment_passage_assignment_kwargs(db, passage, qa_item)
 
             self.assertEqual(result["passage_chapter_number"], 2)
-            self.assertEqual(result["passage_verse_numbers"], ["4"])
-            self.assertEqual(
-                result["passage_text"], "第2节 第3节 第4节 第5节 第6节"
+            self.assertEqual(len(result["passage_verse_numbers"]), 3)
+            self.assertIn("4", result["passage_verse_numbers"])
+            self.assertIn("第4节", result["passage_text"])
+
+    def test_off_by_one_reference_window_contains_actual_answer_verse(self):
+        with Session(self.engine) as db:
+            passage = ExperimentPassage(
+                chapter=1,
+                condition="clean",
+                language="zh",
+                passage_text="完整章节后备文本",
             )
+            db.add(passage)
+            db.flush()
+            db.add_all(
+                ExperimentPassageVerse(
+                    experiment_passage_id=passage.id,
+                    verse_number=str(number),
+                    position=number,
+                    text=f"第{number}节",
+                )
+                for number in range(66, 71)
+            )
+            db.flush()
+            qa_item = QAItem(
+                id="uw-174342-mcq",
+                passage_id="luke1",
+                passage_reference="Luke 1:68",
+                question_text="问题",
+            )
+
+            result = experiment_passage_assignment_kwargs(db, passage, qa_item)
+
+            self.assertEqual(len(result["passage_verse_numbers"]), 3)
+            self.assertIn("68", result["passage_verse_numbers"])
+            self.assertIn("69", result["passage_verse_numbers"])
 
     def test_sorts_qa_references_by_numeric_chapter_and_verse(self):
         items = [
@@ -100,6 +133,45 @@ class ParticipantAssignmentServiceTests(unittest.TestCase):
             self.assertFalse(automatic_assignment_enabled())
         with patch.dict("os.environ", {"ENABLE_AUTOMATIC_ASSIGNMENT": "true"}):
             self.assertTrue(automatic_assignment_enabled())
+
+    def test_automatic_assignment_attaches_three_verse_translation_window(self):
+        with Session(self.engine) as db:
+            participant = Participant(target_language="cmn", display_name="Tester")
+            participant_session = ParticipantSession(participant=participant)
+            qa_item = QAItem(
+                passage_id="luke-2-4",
+                passage_reference="Luke 2:4",
+                question_text="Question?",
+                expected_answer="Answer",
+            )
+            translation = PassageTranslation(language="cmn", name="Method X")
+            db.add_all([participant, participant_session, qa_item, translation])
+            db.flush()
+            db.add_all(
+                PassageVerse(
+                    translation_id=translation.id,
+                    chapter_number=2,
+                    verse_number=str(number),
+                    position=number,
+                    text=f"Verse {number}",
+                )
+                for number in range(1, 8)
+            )
+            db.flush()
+
+            prompt = create_assignment_for_qa_item(
+                db,
+                participant,
+                participant_session,
+                qa_item,
+                assignment_source="auto",
+            )
+            assignment = db.get(Assignment, prompt.assignment_id)
+
+            self.assertEqual(assignment.passage_translation_id, translation.id)
+            self.assertEqual(len(assignment.passage_verse_numbers), 3)
+            self.assertIn("4", assignment.passage_verse_numbers)
+            self.assertIn("Verse 4", prompt.passage_text)
 
     def test_assigns_selected_translation_and_five_verse_window(self):
         with Session(self.engine) as db:
@@ -127,6 +199,7 @@ class ParticipantAssignmentServiceTests(unittest.TestCase):
 
             options = get_assignment_options(db, participant.id)
             self.assertEqual(options["questions"][0]["translations"][0]["name"], "Method X")
+            self.assertEqual(options["questions"][0]["question_type"], "open")
 
             assignments = assign_questions_with_passages(
                 db,
@@ -136,7 +209,8 @@ class ParticipantAssignmentServiceTests(unittest.TestCase):
             assignment = assignments[0]
             self.assertEqual(assignment.passage_translation_id, translation.id)
             self.assertEqual(assignment.passage_chapter_number, 2)
-            self.assertEqual(assignment.passage_verse_numbers, ["2", "3", "4", "5", "6"])
+            self.assertEqual(len(assignment.passage_verse_numbers), 3)
+            self.assertIn("4", assignment.passage_verse_numbers)
             self.assertIn("4 Verse 4", assignment.passage_text)
 
             queued_qa_items = [

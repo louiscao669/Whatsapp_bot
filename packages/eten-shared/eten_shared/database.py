@@ -20,6 +20,15 @@ _CACHED_DATABASE_URL: str | None = None
 def _run_startup_migrations(engine: Engine):
     """Apply lightweight, idempotent compatibility migrations."""
     with engine.begin() as connection:
+        connection.execute(text(
+            "ALTER TABLE qa_items ADD COLUMN IF NOT EXISTS form_group_id varchar(128)"
+        ))
+        connection.execute(text(
+            "ALTER TABLE qa_items ADD COLUMN IF NOT EXISTS automatic_form varchar(16)"
+        ))
+        connection.execute(text(
+            "CREATE INDEX IF NOT EXISTS ix_qa_items_form_group_id ON qa_items (form_group_id)"
+        ))
         has_is_correct = bool(
             connection.execute(
                 text(

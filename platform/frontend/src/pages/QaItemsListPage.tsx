@@ -43,17 +43,14 @@ export function QaItemsListPage() {
     }
   }
 
-  function toggleSelected(itemId: string, checked: boolean) {
-    setSelectedIds((current) => {
-      if (checked) {
-        return current.includes(itemId) ? current : [...current, itemId]
-      }
-      return current.filter((id) => id !== itemId)
-    })
-  }
-
   function toggleSelectAll(checked: boolean) {
     setSelectedIds(checked ? items.map((item) => item.id) : [])
+  }
+
+  function toggleGroup(groupIds: string[], checked: boolean) {
+    setSelectedIds((current) => checked
+      ? Array.from(new Set([...current, ...groupIds]))
+      : current.filter((id) => !groupIds.includes(id)))
   }
 
   function stopRowNavigation(event: MouseEvent) {
@@ -61,6 +58,13 @@ export function QaItemsListPage() {
   }
 
   const allSelected = items.length > 0 && selectedIds.length === items.length
+  const questionGroups = Array.from(items.reduce((groups, item) => {
+    const key = item.form_group_id || `${item.passage}\u0000${item.question}`
+    const group = groups.get(key) || []
+    group.push(item)
+    groups.set(key, group)
+    return groups
+  }, new Map<string, QaItemRow[]>()).values())
 
   if (loading) {
     return <p className="loading-message">Loading QA items…</p>
@@ -123,7 +127,7 @@ export function QaItemsListPage() {
                   </th>
                   <th>Passage</th>
                   <th>Question</th>
-                  <th>Type</th>
+                  <th>Forms</th>
                   <th>Review</th>
                   <th>Responses</th>
                   <th>Flagged</th>
@@ -134,9 +138,13 @@ export function QaItemsListPage() {
                 </tr>
               </thead>
               <tbody>
-                {items.map((item) => (
+                {questionGroups.map((forms) => {
+                  const item = forms.find((form) => form.question_type === form.automatic_form) || forms[0]
+                  const groupIds = forms.map((form) => form.id)
+                  const groupSelected = groupIds.every((id) => selectedIds.includes(id))
+                  return (
                   <tr
-                    key={item.id}
+                    key={item.form_group_id || groupIds.join(':')}
                     className="data-table-row-clickable"
                     tabIndex={0}
                     role="link"
@@ -148,22 +156,37 @@ export function QaItemsListPage() {
                       <input
                         type="checkbox"
                         aria-label={`Select ${item.passage}`}
-                        checked={selectedIds.includes(item.id)}
-                        onChange={(e) => toggleSelected(item.id, e.target.checked)}
+                        checked={groupSelected}
+                        onChange={(e) => toggleGroup(groupIds, e.target.checked)}
                       />
                     </td>
                     <td>{item.passage}</td>
                     <td className="question-cell">{item.question}</td>
-                    <td>{item.question_type}</td>
-                    <td>{item.review_status}</td>
-                    <td>{item.response_count}</td>
-                    <td>{item.flagged_count}</td>
+                    <td onClick={stopRowNavigation}>
+                      <div className="qa-form-list">
+                        {forms.sort((a, b) => a.question_type.localeCompare(b.question_type)).map((form) => (
+                          <button
+                            type="button"
+                            className={`qa-form-chip ${form.question_type === form.automatic_form ? 'automatic' : ''}`}
+                            key={form.id}
+                            onClick={() => openItem(form.id)}
+                          >
+                            {form.question_type.toUpperCase()}
+                            {form.question_type === form.automatic_form ? ' · automatic' : ''}
+                          </button>
+                        ))}
+                      </div>
+                    </td>
+                    <td>{Array.from(new Set(forms.map((form) => form.review_status))).join(' / ')}</td>
+                    <td>{forms.reduce((sum, form) => sum + form.response_count, 0)}</td>
+                    <td>{forms.reduce((sum, form) => sum + form.flagged_count, 0)}</td>
                     <td>{item.average_score ?? '—'}</td>
                     <td>{item.min_responses_required}</td>
                     <td>{item.review_priority}</td>
                     <td>{item.active ? 'Yes' : 'No'}</td>
                   </tr>
-                ))}
+                  )
+                })}
               </tbody>
             </table>
           </div>

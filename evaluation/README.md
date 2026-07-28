@@ -191,7 +191,7 @@ python evaluation/agents/generate_chinese_answers.py \
 Compare evaluator-generated answers against the standard QA answers. MCQ uses
 direct choice comparison. Open generated answers are first back-translated from
 Chinese into English, then scored against the English standard answers with
-embedding cosine similarity and an LLM judge.
+an LLM judge after back-translation.
 
 ```bash
 export OPENAI_API_KEY=...
@@ -208,8 +208,7 @@ python evaluation/scripts/score_generated_answers.py \
   evaluation/outputs/generated_answers_zh_qwen.json \
   evaluation/outputs/qa_zh.json \
   evaluation/outputs/scores_zh_qwen.no_ai.json \
-  --skip-llm \
-  --skip-embeddings
+  --skip-llm
 ```
 
 ## Controlled Mistranslation Variants

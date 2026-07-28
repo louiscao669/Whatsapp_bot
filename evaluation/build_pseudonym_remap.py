@@ -112,6 +112,135 @@ PLACE_SUFFIX = {"地点": "", "地区": "地", "城市": "城", "村庄": "村"}
 def strip_suffix(tok):
     return re.sub(r'[甲乙丙丁戊己庚辛壬癸]$|\d+$', '', tok)
 
+# ------------------------------------------------- defect-bank "minted" tokens
+# The defect banks substitute one entity for another and, when the LLM had no
+# real second entity to point at, invented tokens the decanonicalizer never
+# issued: 角色03 -> 角色04, 至高者甲 -> 明主甲, 职员甲 -> 仆人甲. Those tokens have no
+# entry here, so apply_pseudonym_remap passed them straight through into the
+# participant-facing text (186 occurrences across 22 files, found 2026-07-28).
+#
+# generate_mistranslation_banks.py now rejects such entries at source, but the
+# already-generated banks still contain them, so the remap has to cover them.
+# Each minted token gets a replacement that is READABLE and DISTINCT from the
+# token it was substituted for -- distinct matters, because the substitution IS
+# the mistranslation; mapping 至高者乙 back onto 至高者 would silently repair it.
+PLACEHOLDER_SUFFIX_RE = re.compile(r'(?:[甲乙丙丁戊己庚辛壬癸]|\d{2})$')
+
+MINTED_POOLS = {
+    "角色":     ["长者", "使女", "寡妇", "孩童", "客旅", "门房", "工头", "乳母", "牧人", "账房"],
+    "群体":     ["众人", "会众", "族人", "随从", "乡邻", "商旅", "帮工", "护卫", "行客", "同伙"],
+    "物件":     ["器皿", "布卷", "木匣", "石台", "灯台", "陶瓶", "铜盘", "草席"],
+    "实体":     ["家业", "幼童", "产业", "口粮", "牲畜"],
+    "场所":     ["会所", "院子", "楼房", "客店", "谷仓", "门廊"],
+    "称号":     ["尊号", "名分", "封号", "职衔"],
+    "班次":     ["轮班", "值房", "更次", "队列"],
+    "职员":     ["文士", "守卫", "管家", "税官", "书记"],
+    "材料":     ["油", "面", "盐", "麻", "蜜"],
+    "先知":     ["卜者", "占者", "解梦者", "观兆者"],
+    "使者":     ["信差", "传令", "报信者", "驿卒", "口信人"],
+    "仆人":     ["家仆", "杂役", "门仆"],
+    "祭司":     ["庙祝", "司仪", "掌礼"],
+    "旁观者":   ["看客", "过路人"],
+    "总督":     ["巡抚", "节度"],
+    # deity-adjacent: keep the divine register but make it a DIFFERENT power,
+    # which is what the mistranslation is asserting.
+    "至高者":   ["神明", "上宰", "玄尊"],
+    "尊者":     ["尊长", "上尊"],
+    "主人":     ["王", "君上", "家主"],
+    "明主":     ["明主"],
+    "灵":       ["异灵", "游魂"],
+    # people / places / persons fall through to the generated pools below
+}
+MINTED_PLACE_STEMS = {"地点", "地区", "城市", "村庄"}
+MINTED_PERSON_STEMS = {"人物", "君王", "统治者", "祖先", "先祖", "作者", "收信者"}
+MINTED_PEOPLE_STEMS = {"族群"}
+
+
+def token_stem(tok):
+    return PLACEHOLDER_SUFFIX_RE.sub('', tok)
+
+
+def bank_minted_tokens(ch, known):
+    """Placeholder tokens needing coverage for chapter ``ch``.
+
+    Read from TWO sources, because neither alone is sufficient:
+
+    * the already-generated variant passages -- these are the files that actually
+      leak, and they stay leaky even after the banks are cleaned;
+    * the defect banks (including ``.pre_guard_backup`` copies) -- so a token is
+      still covered if its passage has not been regenerated yet.
+
+    Deriving from the banks alone was wrong: pruning the banks with the new guard
+    deletes the offending entries, which silently removed the remap coverage for
+    passages that still contain the tokens.
+    """
+    from glob import glob as _glob
+    found = set()
+
+    for pat in (f"outputs/luke{ch}/*/*/*/passage_target_decanonicalized.txt",
+                f"outputs/luke{ch}/*/*/passage_target_decanonicalized.txt"):
+        for path in _glob(pat):
+            try:
+                found |= set(_minted_in_text(open(path, encoding="utf-8").read(), known))
+            except Exception:
+                continue
+
+    pats = [f"outputs/luke{ch}/*/_shared/mistranslation_bank_zh.json",
+            f"outputs/luke{ch}/*/_shared/mistranslation_bank_zh.json.pre_guard_backup",
+            f"datasets/chapter_local_inconsistency_banks/inconsistency_bank_luke{ch}.json",
+            f"datasets/chapter_awkward_style_banks/luke{ch}_awkward_style_bank.json"]
+    for pat in pats:
+        for path in _glob(pat):
+            try:
+                data = json.load(open(path, encoding="utf-8"))
+            except Exception:
+                continue
+            rows = data.get("replacements") or data.get("variants") or []
+            for r in rows:
+                if not isinstance(r, dict):
+                    continue
+                text = " ".join(str(r.get(k) or "") for k in ("target", "replacement"))
+                found |= set(_minted_in_text(text, known))
+    return sorted(found)
+
+
+# Stem length is ambiguous: "至尊者乙" reads as 至尊者+乙 or 尊者+乙, and only the
+# second matches a stem this chapter actually uses. apply_pseudonym_remap.py
+# resolves it the same way -- the two MUST agree, or a token gets allocated here
+# under one reading and reported unmapped there under another.
+def _known_stems(known):
+    out = set()
+    for key in known:
+        m = re.fullmatch(r'([一-鿿]{1,3})(?:[甲乙丙丁戊己庚辛壬癸]|\d{2})', key)
+        if m:
+            out.add(m.group(1))
+    return out
+
+
+def _minted_in_text(text, known):
+    stems_known = _known_stems(known)
+    allowed = (set(MINTED_POOLS) | MINTED_PLACE_STEMS
+               | MINTED_PERSON_STEMS | MINTED_PEOPLE_STEMS)
+    out = []
+    for m in re.finditer(r'(?:[甲乙丙丁戊己庚辛壬癸]|\d{2})(?![一-鿿])', text):
+        readings = []
+        for n in range(1, 4):
+            start = m.start() - n
+            if start < 0:
+                break
+            stem = text[start:m.start()]
+            if not all('一' <= c <= '鿿' for c in stem):
+                break
+            readings.append((stem, stem + m.group(0)))
+        if not readings or any(tok in known for _, tok in readings):
+            continue
+        pick = next((tok for stem, tok in readings if stem in stems_known), None)
+        if pick is None:
+            pick = next((tok for stem, tok in readings if stem in allowed), None)
+        if pick and token_stem(pick) in allowed:
+            out.append(pick)
+    return out
+
 # ---------------------------------------------------------------- assign per entity
 def ekey(e):
     al = tuple(sorted(e.get("english_aliases") or []))
@@ -174,6 +303,77 @@ def build_remaps():
                         remap.setdefault(z, rep)
             master.append((ch, e["placeholder"], entity_cat[k], rep, first_alias(e),
                            (e.get("chinese_alias_hints") or [""])[0]))
+
+        # --- cover tokens minted by the defect banks (see MINTED_POOLS above) ---
+        # Every replacement must be unique WITHIN the chapter: two minted tokens
+        # collapsing to the same word would merge two distinct entities, and a
+        # place reusing an existing place's base (塞夫兰地 next to 塞夫兰城) reads
+        # as one location. Track used words and used place-bases separately.
+        used = set(remap.values())
+        used_bases = {re.sub(r'[地城村]$', '', v) for v in remap.values()}
+        name_pool = set(MALE_NAMES) | set(FEMALE_NAMES) | set(PINS.values())
+        place_pool = set(PLACE_BASE)
+
+        def sibling_kind(stem):
+            """How this chapter already renders tokens sharing ``stem``.
+
+            使者乙 -> 维萨 (a personal name), so a minted 使者丙 must also be a name,
+            not a common noun -- otherwise the sentence reads '差遣天使 信差'
+            where a proper name belongs. Inheriting from the sibling beats
+            hand-classifying every stem.
+            """
+            for k, v in remap.items():
+                if token_stem(k) == stem and k != stem:
+                    if v in name_pool:
+                        return "person"
+                    if re.sub(r'[地城村]$', '', v) in place_pool:
+                        return "place"
+            return None
+
+        for tok in bank_minted_tokens(ch, remap):
+            stem = token_stem(tok)
+            kind = sibling_kind(stem)
+            if kind == "person":
+                rep = next((n for n in MALE_NAMES if n not in used), None)
+                if rep is None:
+                    raise SystemExit(f"ch{ch}: name pool exhausted at {tok}")
+                remap[tok] = rep
+                used.add(rep)
+                master.append((ch, tok, "minted", rep, "", ""))
+                continue
+            if kind == "place":
+                base = next((b for b in PLACE_BASE if b not in used_bases), None)
+                if base is None:
+                    raise SystemExit(f"ch{ch}: PLACE_BASE exhausted at {tok}")
+                used_bases.add(base)
+                rep = base + PLACE_SUFFIX.get(stem, "")
+                remap[tok] = rep
+                used.add(rep)
+                master.append((ch, tok, "minted", rep, "", ""))
+                continue
+            if stem in MINTED_POOLS:
+                rep = next((p for p in MINTED_POOLS[stem] if p not in used), None)
+                if rep is None:
+                    raise SystemExit(
+                        f"ch{ch}: MINTED_POOLS['{stem}'] exhausted at {tok}; add more entries"
+                    )
+            elif stem in MINTED_PLACE_STEMS:
+                base = next((b for b in PLACE_BASE if b not in used_bases), None)
+                if base is None:
+                    raise SystemExit(f"ch{ch}: PLACE_BASE exhausted at {tok}")
+                used_bases.add(base)
+                rep = base + PLACE_SUFFIX.get(stem, "")
+            elif stem in MINTED_PEOPLE_STEMS:
+                rep = next((p + "族" for p in PLACE_BASE if p + "族" not in used), None)
+            else:  # person-shaped
+                rep = next((n for n in MALE_NAMES if n not in used), None)
+                if rep is None:
+                    raise SystemExit(f"ch{ch}: name pool exhausted at {tok}")
+            remap[tok] = rep
+            used.add(rep)
+            used_bases.add(re.sub(r'[地城村]$', '', rep))
+            master.append((ch, tok, "minted", rep, "", ""))
+
         remaps[ch] = remap
     return remaps, master
 

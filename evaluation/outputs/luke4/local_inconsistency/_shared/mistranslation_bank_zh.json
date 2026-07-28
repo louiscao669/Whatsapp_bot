@@ -6,29 +6,34 @@
   "generation": {
     "provider": "openai",
     "model": "gpt-4.1-mini",
-    "validated_at_unix": 1783473276
+    "validated_at_unix": 1783473276,
+    "pruned_by_placeholder_guard": {
+      "at_unix": 1785254089,
+      "dropped": 18,
+      "dropped_targets": [
+        "人物乙",
+        "至高者乙",
+        "地点05",
+        "主人乙",
+        "村庄乙",
+        "人物06",
+        "实体02",
+        "先知乙",
+        "地区乙",
+        "族群乙",
+        "人物03",
+        "地点04",
+        "物件02",
+        "场所乙",
+        "城市乙",
+        "有人把先知 人物03 的书卷交给他",
+        "有一个被 实体02 附着的人",
+        "来到 人物06 家"
+      ],
+      "reason": "target minted a placeholder token absent from the passage"
+    }
   },
   "replacements": [
-    {
-      "source": "人物己",
-      "target": "人物乙",
-      "category": "entity",
-      "mode": "systematic",
-      "rationale": "main character name substitution",
-      "source_content_chars": 3,
-      "target_content_chars": 3,
-      "occurrence_count": 15
-    },
-    {
-      "source": "至高者甲",
-      "target": "至高者乙",
-      "category": "entity",
-      "mode": "systematic",
-      "rationale": "divine entity substitution",
-      "source_content_chars": 4,
-      "target_content_chars": 4,
-      "occurrence_count": 7
-    },
     {
       "source": "人物01",
       "target": "人物02",
@@ -38,96 +43,6 @@
       "source_content_chars": 4,
       "target_content_chars": 4,
       "occurrence_count": 5
-    },
-    {
-      "source": "地点03",
-      "target": "地点05",
-      "category": "location",
-      "mode": "systematic",
-      "rationale": "location substitution",
-      "source_content_chars": 4,
-      "target_content_chars": 4,
-      "occurrence_count": 5
-    },
-    {
-      "source": "主人甲",
-      "target": "主人乙",
-      "category": "entity",
-      "mode": "systematic",
-      "rationale": "divine title substitution",
-      "source_content_chars": 3,
-      "target_content_chars": 3,
-      "occurrence_count": 4
-    },
-    {
-      "source": "村庄甲",
-      "target": "村庄乙",
-      "category": "location",
-      "mode": "systematic",
-      "rationale": "village name substitution",
-      "source_content_chars": 3,
-      "target_content_chars": 3,
-      "occurrence_count": 3
-    },
-    {
-      "source": "人物05",
-      "target": "人物06",
-      "category": "entity",
-      "mode": "systematic",
-      "rationale": "person name substitution",
-      "source_content_chars": 4,
-      "target_content_chars": 4,
-      "occurrence_count": 2
-    },
-    {
-      "source": "实体01",
-      "target": "实体02",
-      "category": "entity",
-      "mode": "systematic",
-      "rationale": "spiritual entity substitution",
-      "source_content_chars": 4,
-      "target_content_chars": 4,
-      "occurrence_count": 2
-    },
-    {
-      "source": "先知甲",
-      "target": "先知乙",
-      "category": "role",
-      "mode": "systematic",
-      "rationale": "prophet role substitution",
-      "source_content_chars": 3,
-      "target_content_chars": 3,
-      "occurrence_count": 2
-    },
-    {
-      "source": "地区甲",
-      "target": "地区乙",
-      "category": "location",
-      "mode": "systematic",
-      "rationale": "region name substitution",
-      "source_content_chars": 3,
-      "target_content_chars": 3,
-      "occurrence_count": 2
-    },
-    {
-      "source": "族群甲",
-      "target": "族群乙",
-      "category": "entity",
-      "mode": "systematic",
-      "rationale": "ethnic group substitution",
-      "source_content_chars": 3,
-      "target_content_chars": 3,
-      "occurrence_count": 2
-    },
-    {
-      "source": "人物02",
-      "target": "人物03",
-      "category": "entity",
-      "mode": "systematic",
-      "rationale": "prophet entity substitution",
-      "source_content_chars": 4,
-      "target_content_chars": 4,
-      "occurrence_count": 1
     },
     {
       "source": "人物04",
@@ -140,51 +55,11 @@
       "occurrence_count": 1
     },
     {
-      "source": "地点02",
-      "target": "地点04",
-      "category": "location",
-      "mode": "systematic",
-      "rationale": "location substitution",
-      "source_content_chars": 4,
-      "target_content_chars": 4,
-      "occurrence_count": 1
-    },
-    {
-      "source": "物件01",
-      "target": "物件02",
-      "category": "entity",
-      "mode": "systematic",
-      "rationale": "object substitution",
-      "source_content_chars": 4,
-      "target_content_chars": 4,
-      "occurrence_count": 1
-    },
-    {
       "source": "人物戊",
       "target": "人物己",
       "category": "entity",
       "mode": "systematic",
       "rationale": "person name substitution",
-      "source_content_chars": 3,
-      "target_content_chars": 3,
-      "occurrence_count": 1
-    },
-    {
-      "source": "场所甲",
-      "target": "场所乙",
-      "category": "location",
-      "mode": "systematic",
-      "rationale": "place name substitution",
-      "source_content_chars": 3,
-      "target_content_chars": 3,
-      "occurrence_count": 1
-    },
-    {
-      "source": "城市甲",
-      "target": "城市乙",
-      "category": "location",
-      "mode": "systematic",
-      "rationale": "city name substitution",
       "source_content_chars": 3,
       "target_content_chars": 3,
       "occurrence_count": 1
@@ -265,16 +140,6 @@
       "category": "semantic_substitution",
       "mode": "contextual",
       "rationale": "changed expectation statement",
-      "source_content_chars": 15,
-      "target_content_chars": 15,
-      "occurrence_count": 1
-    },
-    {
-      "source": "有人把先知 人物02 的书卷交给他",
-      "target": "有人把先知 人物03 的书卷交给他",
-      "category": "entity",
-      "mode": "contextual",
-      "rationale": "changed prophet name in local context",
       "source_content_chars": 15,
       "target_content_chars": 15,
       "occurrence_count": 1
@@ -395,16 +260,6 @@
       "category": "action",
       "mode": "contextual",
       "rationale": "changed condition for reward",
-      "source_content_chars": 12,
-      "target_content_chars": 12,
-      "occurrence_count": 1
-    },
-    {
-      "source": "有一个被 实体01 附着的人",
-      "target": "有一个被 实体02 附着的人",
-      "category": "entity",
-      "mode": "contextual",
-      "rationale": "changed demon entity",
       "source_content_chars": 12,
       "target_content_chars": 12,
       "occurrence_count": 1
@@ -735,16 +590,6 @@
       "category": "action",
       "mode": "contextual",
       "rationale": "reversed intent",
-      "source_content_chars": 7,
-      "target_content_chars": 7,
-      "occurrence_count": 1
-    },
-    {
-      "source": "来到 人物05 家",
-      "target": "来到 人物06 家",
-      "category": "entity",
-      "mode": "contextual",
-      "rationale": "changed person visited",
       "source_content_chars": 7,
       "target_content_chars": 7,
       "occurrence_count": 1

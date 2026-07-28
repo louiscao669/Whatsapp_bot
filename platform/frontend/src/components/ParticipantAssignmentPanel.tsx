@@ -77,7 +77,7 @@ export function ParticipantAssignmentPanel({ participantId, onAssigned }: Props)
         <form onSubmit={handleSubmit}>
           <div className="table-wrap">
             <table className="data-table">
-              <thead><tr><th>Select</th><th>QA passage</th><th>Question</th><th>Passage translation</th></tr></thead>
+              <thead><tr><th>Select</th><th>QA passage</th><th>Question</th><th>Type</th><th>Passage translation</th></tr></thead>
               <tbody>{questions.map((question) => {
                 const isSelected = Object.hasOwn(selected, question.id)
                 return <tr key={question.id}>
@@ -87,6 +87,7 @@ export function ParticipantAssignmentPanel({ participantId, onAssigned }: Props)
                     aria-label={`Select ${question.passage}`} /></td>
                   <td>{question.passage}</td>
                   <td className="question-cell">{question.question}</td>
+                  <td>{question.question_type.toUpperCase()}</td>
                   <td>{question.translations.length ? (
                     <select value={selected[question.id] ?? ''} disabled={!isSelected}
                       required={isSelected} onChange={(event) => setSelected((current) => ({

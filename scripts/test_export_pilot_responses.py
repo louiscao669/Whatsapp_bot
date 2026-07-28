@@ -13,9 +13,32 @@ from sqlalchemy.orm import Session
 from eten_shared.models import (
     Assignment, Base, ExperimentPlanCell, Participant, ParticipantResponse, QAItem,
 )
-from export_pilot_responses import assemble, fetch_records
+from export_pilot_responses import assemble, fetch_records, CONDITION_TO_EVAL
 
 fails = []
+
+
+def test_slate_consistency():
+    """[NEW 2026-07-27b] The condition slate is declared in three places that must agree:
+    build_experiment_plan.SLOTS (what gets assigned), pilot_import.CONDITIONS (what gets
+    imported as passages) and export_pilot_responses.CONDITION_TO_EVAL (where responses land).
+    A re-slate that misses one of them silently drops or misroutes a whole condition, so pin
+    it here. pilot_import is read via AST -- importing it needs Flask/platform."""
+    import ast
+    from build_experiment_plan import SLOTS
+
+    src = ast.parse((REPO_ROOT / "scripts" / "pilot_import.py").read_text(encoding="utf-8"))
+    import_conds = None
+    for node in src.body:
+        if isinstance(node, ast.Assign) and any(
+                getattr(t, "id", None) == "CONDITIONS" for t in node.targets):
+            import_conds = [e.elts[0].value for e in node.value.elts]
+    slots = set(SLOTS)
+    check("pilot_import.CONDITIONS parsed", import_conds is not None)
+    check("SLOTS == pilot_import.CONDITIONS (assignment vs import agree)",
+          slots == set(import_conds or []))
+    check("SLOTS subset of CONDITION_TO_EVAL (every assigned condition can export)",
+          slots <= set(CONDITION_TO_EVAL))
 
 
 def check(name, cond):
@@ -55,6 +78,17 @@ def test_assemble():
              transcript_text=None, normalized_text=None, correctness_score=1.0,
              is_correct="correct", review_status="reviewed", matched_keywords=["x"],
              missing_keywords=[], media_id=None, mcq_correct=None),
+        # [NEW 2026-07-27b] the re-slated conditions: omission{15,30} + mistranslation{15,30}
+        *[dict(chapter=ch, condition=cond, participant_slug="P03",
+               qa_item_id=f"q{i}", passage_id=f"luke{ch}", passage_reference=f"Luke {ch}",
+               question_type="open", question_text=f"Q{i}", expected_answer="y",
+               response_id=f"r{i}", response_type="text", response_text="y",
+               transcript_text=None, normalized_text=None, correctness_score=1.0,
+               is_correct="correct", review_status="auto", matched_keywords=["y"],
+               missing_keywords=[], media_id=None, mcq_correct=None)
+          for i, (ch, cond) in enumerate(
+              [(4, "omission15"), (5, "omission30"),
+               (6, "mistranslation15"), (7, "mistranslation30")], start=5)],
     ]
 
     out = assemble(recs, split_by="condition", subdir="human", include_audio_ref=False)
@@ -65,6 +99,16 @@ def test_assemble():
           "outputs/luke1/human/google_word_by_word/scores_target_human.json" in paths)
     check("clean -> luke1/human/omission/0%/",
           "outputs/luke1/human/omission/0%/scores_target_human.json" in paths)
+    # [NEW 2026-07-27b] every re-slated condition must route to its eval-layout cell, and the
+    # clean anchor must serve as the 0% dose for the mistranslation ladder too (there is no
+    # mistranslation/0% cell) -- checked above via clean -> omission/0%.
+    for ch, cond, cell in [(4, "omission15", "omission/15%"), (5, "omission30", "omission/30%"),
+                           (6, "mistranslation15", "mistranslation/15%"),
+                           (7, "mistranslation30", "mistranslation/30%")]:
+        check(f"{cond} -> luke{ch}/human/{cell}/",
+              f"outputs/luke{ch}/human/{cell}/scores_target_human.json" in paths)
+    check("routes to 7 distinct cells (4 re-slated + retired omission20 + wbw + clean)",
+          len(paths) == 7)
 
     cell = out["outputs/luke3/human/omission/20%/scores_target_human.json"]
     s = cell["summary"]
@@ -137,6 +181,8 @@ def main():
     test_assemble()
     print("fetch_records() [sqlite]:")
     test_fetch_records_sqlite()
+    print("slate consistency across the three declaration sites:")
+    test_slate_consistency()
     print("\n" + ("ALL TESTS PASSED" if not fails else f"FAILED: {fails}"))
     return 1 if fails else 0
 

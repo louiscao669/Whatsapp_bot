@@ -125,6 +125,7 @@ def _cell_candidates(db: Session, cell: ExperimentPlanCell, participant) -> List
         item
         for item in items
         if item.id not in assigned_ids
+        and (not item.automatic_form or item.question_type == item.automatic_form)
         and qa_item_is_assignable(item)
         and participant_question_audio_satisfied(db, item.id, participant)
     ]

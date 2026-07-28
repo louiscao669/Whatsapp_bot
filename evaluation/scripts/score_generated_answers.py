@@ -2,15 +2,13 @@
 """Score generated Chinese QA answers against standard answers.
 
 MCQ answers are scored by direct choice comparison. Open answers are scored with
-OpenAI embedding cosine similarity and an LLM judgment after back-translation
-to English.
+an LLM judgment after back-translation to English.
 """
 
 from __future__ import annotations
 
 import argparse
 import json
-import math
 import os
 import re
 import sys
@@ -337,36 +335,19 @@ def normalize_choice(value: Any, choices: Dict[str, str]) -> Optional[str]:
     return None
 
 
-def cosine_similarity(left: List[float], right: List[float]) -> float:
-    numerator = sum(a * b for a, b in zip(left, right))
-    left_norm = math.sqrt(sum(a * a for a in left))
-    right_norm = math.sqrt(sum(b * b for b in right))
-    if not left_norm or not right_norm:
-        return 0.0
-    return numerator / (left_norm * right_norm)
-
-
 def batched(items: List[Any], batch_size: int) -> Iterable[List[Any]]:
     for start in range(0, len(items), batch_size):
         yield items[start : start + batch_size]
 
 
-def get_embedding_client():
+def get_openai_client():
     try:
         from openai import OpenAI
     except ImportError as exc:
-        raise ScoreError("Install the openai package to run embedding/LLM scoring.") from exc
+        raise ScoreError("Install the openai package to run LLM scoring.") from exc
     if not os.getenv("OPENAI_API_KEY"):
-        raise ScoreError("OPENAI_API_KEY is required for embedding/LLM scoring.")
+        raise ScoreError("OPENAI_API_KEY is required for LLM scoring.")
     return OpenAI()
-
-
-def embed_texts(client: Any, model: str, texts: List[str], batch_size: int = 64) -> List[List[float]]:
-    embeddings: List[List[float]] = []
-    for batch in batched(texts, batch_size):
-        response = client.embeddings.create(model=model, input=batch)
-        embeddings.extend([item.embedding for item in response.data])
-    return embeddings
 
 
 def extract_response_text(response: Any) -> str:
@@ -608,7 +589,7 @@ def backtranslate_generated_answers(
             open_rows.append(row)
 
     if open_rows:
-        client = get_embedding_client()
+        client = get_openai_client()
         translate_open_answers_to_english(
             client,
             translation_model,
@@ -777,12 +758,10 @@ def score_items(
     generated_items: List[dict],
     standard_items: List[dict],
     *,
-    embedding_model: str,
     judge_model: str,
     translation_model: str,
     retries: int,
     skip_llm: bool,
-    skip_embeddings: bool,
     placeholder_standard_answers: bool = False,
     judge_batch_size: int = 20,
 ) -> List[dict]:
@@ -834,7 +813,6 @@ def score_items(
                     "correct_choice": correct,
                     "selected_choice": selected,
                     "direct_correct": bool(correct and selected == correct),
-                    "embedding_similarity": None,
                     "llm_label": None,
                     "llm_score": None,
                     "llm_rationale": None,
@@ -849,7 +827,6 @@ def score_items(
             row.update(
                 {
                     "direct_correct": None,
-                    "embedding_similarity": None,
                     "llm_label": None,
                     "llm_score": None,
                     "llm_rationale": None,
@@ -879,8 +856,8 @@ def score_items(
         scored.append(row)
 
     client = None
-    if open_rows and (not skip_embeddings or not skip_llm):
-        client = get_embedding_client()
+    if open_rows and not skip_llm:
+        client = get_openai_client()
         rows_missing_translation = [
             row
             for row in open_rows
@@ -892,19 +869,6 @@ def score_items(
                 translation_model,
                 rows_missing_translation,
                 retries,
-            )
-
-    if open_rows and not skip_embeddings:
-        texts = []
-        for row in open_rows:
-            texts.extend([row["standard_answer"], row["generated_answer_english"]])
-        embeddings = embed_texts(client, embedding_model, texts)
-        for row_index, row in enumerate(open_rows):
-            standard_embedding = embeddings[row_index * 2]
-            generated_embedding = embeddings[(row_index * 2) + 1]
-            row["embedding_similarity"] = cosine_similarity(
-                standard_embedding,
-                generated_embedding,
             )
 
     if open_rows and not skip_llm:
@@ -950,11 +914,6 @@ def score_items(
 def summarize(scored: List[dict]) -> dict:
     mcq = [item for item in scored if item["q_type"] == "mcq"]
     open_items = [item for item in scored if item["q_type"] != "mcq"]
-    similarities = [
-        item["embedding_similarity"]
-        for item in open_items
-        if item.get("embedding_similarity") is not None
-    ]
     llm_scores = [
         item["llm_score"]
         for item in open_items
@@ -1008,9 +967,6 @@ def summarize(scored: List[dict]) -> dict:
         "mcq_count": len(mcq),
         "mcq_correct": sum(1 for item in mcq if item.get("direct_correct")),
         "open_count": len(open_items),
-        "open_embedding_mean": (
-            sum(similarities) / len(similarities) if similarities else None
-        ),
         "open_llm_score_mean": (
             sum(llm_scores) / len(llm_scores) if llm_scores else None
         ),
@@ -1062,10 +1018,6 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("standard_qa_json", type=Path)
     parser.add_argument("output_json", type=Path)
     parser.add_argument(
-        "--embedding-model",
-        default=os.getenv("OPENAI_EMBEDDING_MODEL", "text-embedding-3-large"),
-    )
-    parser.add_argument(
         "--judge-model",
         default=os.getenv("OPENAI_JUDGE_MODEL", "gpt-5.4-mini"),
     )
@@ -1082,7 +1034,6 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--retries", type=int, default=2)
     parser.add_argument("--skip-llm", action="store_true")
-    parser.add_argument("--skip-embeddings", action="store_true")
     parser.add_argument(
         "--placeholder-standard-answers",
         action="store_true",
@@ -1109,12 +1060,10 @@ def main() -> int:
         items = score_items(
             generated,
             standards,
-            embedding_model=args.embedding_model,
             judge_model=args.judge_model,
             translation_model=args.translation_model,
             retries=args.retries,
             skip_llm=args.skip_llm,
-            skip_embeddings=args.skip_embeddings,
             placeholder_standard_answers=args.placeholder_standard_answers,
             judge_batch_size=args.judge_batch_size,
         )

@@ -210,35 +210,39 @@ export function ParticipantDetailPage() {
       </section>
 
       <section className="detail-card">
-        <h3>Questions answered ({detail.history.length})</h3>
-        <div className="table-wrap">
-          <table className="data-table">
-            <thead>
-              <tr>
-                <th>Passage</th>
-                <th>Question</th>
-                <th>Type</th>
-                <th>Expected answer</th>
-                <th>User answer</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {detail.history.map((row) => (
-                <tr key={`${row.qa_item_id}-${row.question}`}>
-                  <td>{row.passage}</td>
-                  <td>
-                    <Link to={`/qa-items/${row.qa_item_id}`}>{row.question}</Link>
-                  </td>
-                  <td>{row.question_type}</td>
-                  <td>{row.expected_answer}</td>
-                  <td>{row.user_answer}</td>
-                  <td>{row.correctness_status}</td>
+        <h3>Questions completed ({detail.history.length})</h3>
+        {detail.history.length === 0 ? (
+          <p>No questions completed.</p>
+        ) : (
+          <div className="table-wrap">
+            <table className="data-table">
+              <thead>
+                <tr>
+                  <th>Passage</th>
+                  <th>Question</th>
+                  <th>Type</th>
+                  <th>Expected answer</th>
+                  <th>User answer</th>
+                  <th>Status</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {detail.history.map((row) => (
+                  <tr key={`${row.qa_item_id}-${row.question}`}>
+                    <td>{row.passage}</td>
+                    <td>
+                      <Link to={`/qa-items/${row.qa_item_id}`}>{row.question}</Link>
+                    </td>
+                    <td>{row.question_type}</td>
+                    <td>{row.expected_answer}</td>
+                    <td>{row.user_answer}</td>
+                    <td>{row.correctness_status}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </section>
     </section>
   )

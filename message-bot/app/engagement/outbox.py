@@ -22,9 +22,11 @@ from eten_shared.models import (
     OutboxNotification,
     OutboxStatus,
     ParticipantEvent,
+    ParticipantResponse,
     QAItem,
     utc_now,
 )
+from eten_shared.answer_llm_scoring import score_open_answer_binary
 from eten_shared.domain.assignments import build_assignment_prompt
 from app.providers.delivery import (
     provider_name_for_participant,
@@ -35,9 +37,11 @@ from app.providers.whatsapp.schedule_policy import is_within_customer_service_wi
 
 DASHBOARD_ANSWER_SYNCED_TYPE = "dashboard_answer_synced"
 NEW_ASSIGNMENT_ASSIGNED_TYPE = "new_assignment_assigned"
+ANSWER_LLM_SCORE_REQUESTED_TYPE = "answer_llm_score_requested"
 KNOWN_NOTIFICATION_TYPES = (
     DASHBOARD_ANSWER_SYNCED_TYPE,
     NEW_ASSIGNMENT_ASSIGNED_TYPE,
+    ANSWER_LLM_SCORE_REQUESTED_TYPE,
 )
 
 _outbox_started = False
@@ -142,6 +146,46 @@ def process_pending_outbox(limit=50):
                         notification,
                         f"Unknown notification type {notification.notification_type!r}",
                     )
+                    continue
+
+                if notification.notification_type == ANSWER_LLM_SCORE_REQUESTED_TYPE:
+                    response = db.get(
+                        ParticipantResponse, (notification.payload or {}).get("response_id")
+                    )
+                    if not response or not response.qa_item:
+                        _cancel(notification, "Response or question no longer exists")
+                        continue
+                    try:
+                        result = score_open_answer_binary(
+                            question=response.qa_item.question_text,
+                            original_question=response.qa_item.original_question_text,
+                            participant_answer=response.transcript_text or response.response_text or "",
+                            expected_answer=response.qa_item.expected_answer,
+                            original_expected_answer=response.qa_item.original_expected_answer,
+                            language=participant.target_language,
+                        )
+                    except Exception as exc:
+                        _mark_failure(notification, str(exc))
+                        continue
+                    response.correctness_score = result.score
+                    response.is_correct = "yes (auto)" if result.score == 1.0 else "no (auto)"
+                    response.review_status = "auto"
+                    response.flag_reason = None
+                    response.matched_keywords = []
+                    response.missing_keywords = []
+                    response.backtranslated_text = result.backtranslated_answer
+                    response.scoring_metadata = {
+                        "method": "backtranslation_binary_llm",
+                        "status": "complete",
+                        "label": result.label,
+                        "expected_answer_english": result.expected_answer_english,
+                        "rationale": result.rationale,
+                        "core_claim_expected": result.core_claim_expected,
+                        "core_claim_found": result.core_claim_found,
+                    }
+                    notification.status = OutboxStatus.SENT.value
+                    notification.sent_at = utc_now()
+                    processed += 1
                     continue
 
                 provider_name = provider_name_for_participant(db, participant)

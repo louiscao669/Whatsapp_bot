@@ -44,6 +44,8 @@ def list_qa_items_with_stats(db):
                 "passage": qa_item.passage_reference or qa_item.passage_id,
                 "question": qa_item.question_text,
                 "question_type": (qa_item.question_type or "open").strip().lower(),
+                "form_group_id": qa_item.form_group_id,
+                "automatic_form": qa_item.automatic_form,
                 "review_status": format_qa_item_review_status_label(qa_item),
                 "review_tab": review_qa_tab_for_item(qa_item),
                 "response_count": response_counts.get(qa_item.id, 0),

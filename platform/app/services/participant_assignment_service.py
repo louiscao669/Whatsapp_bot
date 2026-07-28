@@ -5,6 +5,7 @@ import re
 from sqlalchemy import select
 
 from eten_shared.domain.qa_eligibility import qa_item_is_assignable
+from eten_shared.domain.assignments import select_three_verse_window
 from eten_shared.models import (
     Assignment,
     AssignmentStatus,
@@ -138,6 +139,7 @@ def get_assignment_options(db, participant_id):
                 "id": qa_item.id,
                 "passage": qa_item.passage_reference or qa_item.passage_id,
                 "question": qa_item.question_text,
+                "question_type": (qa_item.question_type or "open").strip().lower(),
                 "chapter_number": chapter,
                 "verse_number": verse,
                 "translations": translations,
@@ -146,7 +148,7 @@ def get_assignment_options(db, participant_id):
     return {"participant_language": language, "questions": questions}
 
 
-def _passage_window(db, translation_id, chapter, target_verse):
+def _passage_window(db, translation_id, chapter, target_verse, qa_item):
     verses = db.scalars(
         select(PassageVerse)
         .where(
@@ -155,12 +157,8 @@ def _passage_window(db, translation_id, chapter, target_verse):
         )
         .order_by(PassageVerse.position)
     ).all()
-    selected = []
-    for verse in verses:
-        match = re.fullmatch(r"(\d+)[a-z]?", verse.verse_number, re.IGNORECASE)
-        if match and target_verse - 2 <= int(match.group(1)) <= target_verse + 2:
-            selected.append(verse)
-    if not any(verse.verse_number == str(target_verse) for verse in selected):
+    selected = select_three_verse_window(verses, qa_item)
+    if not selected:
         raise ParticipantAssignmentError(
             f"The selected translation does not contain chapter {chapter}, verse {target_verse}"
         )
@@ -201,7 +199,7 @@ def assign_questions_with_passages(db, participant_id, selections):
         if not translation or translation.language != language:
             raise ParticipantAssignmentError("Passage translation must match participant language")
         chapter, target_verse = location
-        verses = _passage_window(db, translation.id, chapter, target_verse)
+        verses = _passage_window(db, translation.id, chapter, target_verse, qa_item)
         prepared.append((qa_item, translation, chapter, verses))
 
     existing_assignments = db.scalars(

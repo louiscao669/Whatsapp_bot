@@ -6,19 +6,31 @@
   "generation": {
     "provider": "openai",
     "model": "gpt-4.1-mini",
-    "validated_at_unix": 1783473429
+    "validated_at_unix": 1783473429,
+    "pruned_by_placeholder_guard": {
+      "at_unix": 1785254089,
+      "dropped": 15,
+      "dropped_targets": [
+        "人物乙",
+        "群体04",
+        "群体05",
+        "称号02",
+        "群体06",
+        "至高者乙",
+        "君王乙",
+        "城市乙",
+        "祭司甲",
+        "你们为何称我为‘主人乙, 主人乙’",
+        "凡学成的，必像他的主人乙",
+        "人物01（他称为人物07）",
+        "群体04不能超过主人乙",
+        "整夜 祈求 至高者乙",
+        "地点03"
+      ],
+      "reason": "target minted a placeholder token absent from the passage"
+    }
   },
   "replacements": [
-    {
-      "source": "人物己",
-      "target": "人物乙",
-      "category": "entity",
-      "mode": "systematic",
-      "rationale": "systematic substitution of main character entity",
-      "source_content_chars": 3,
-      "target_content_chars": 3,
-      "occurrence_count": 10
-    },
     {
       "source": "安息日",
       "target": "节期",
@@ -30,56 +42,6 @@
       "occurrence_count": 7
     },
     {
-      "source": "群体02",
-      "target": "群体04",
-      "category": "entity",
-      "mode": "systematic",
-      "rationale": "systematic substitution of group entity",
-      "source_content_chars": 4,
-      "target_content_chars": 4,
-      "occurrence_count": 5
-    },
-    {
-      "source": "群体01",
-      "target": "群体05",
-      "category": "entity",
-      "mode": "systematic",
-      "rationale": "systematic substitution of group entity",
-      "source_content_chars": 4,
-      "target_content_chars": 4,
-      "occurrence_count": 3
-    },
-    {
-      "source": "称号01",
-      "target": "称号02",
-      "category": "term",
-      "mode": "systematic",
-      "rationale": "systematic substitution of title term",
-      "source_content_chars": 4,
-      "target_content_chars": 4,
-      "occurrence_count": 2
-    },
-    {
-      "source": "群体03",
-      "target": "群体06",
-      "category": "entity",
-      "mode": "systematic",
-      "rationale": "systematic substitution of group entity",
-      "source_content_chars": 4,
-      "target_content_chars": 4,
-      "occurrence_count": 2
-    },
-    {
-      "source": "至高者甲",
-      "target": "至高者乙",
-      "category": "theological_term",
-      "mode": "systematic",
-      "rationale": "systematic substitution of divine title",
-      "source_content_chars": 4,
-      "target_content_chars": 4,
-      "occurrence_count": 2
-    },
-    {
       "source": "十二使徒",
       "target": "十二门徒",
       "category": "term",
@@ -87,36 +49,6 @@
       "rationale": "systematic substitution of term for group",
       "source_content_chars": 4,
       "target_content_chars": 4,
-      "occurrence_count": 1
-    },
-    {
-      "source": "君王甲",
-      "target": "君王乙",
-      "category": "entity",
-      "mode": "systematic",
-      "rationale": "systematic substitution of named entity",
-      "source_content_chars": 3,
-      "target_content_chars": 3,
-      "occurrence_count": 1
-    },
-    {
-      "source": "城市甲",
-      "target": "城市乙",
-      "category": "location",
-      "mode": "systematic",
-      "rationale": "systematic substitution of place name",
-      "source_content_chars": 3,
-      "target_content_chars": 3,
-      "occurrence_count": 1
-    },
-    {
-      "source": "职员甲",
-      "target": "祭司甲",
-      "category": "role",
-      "mode": "systematic",
-      "rationale": "systematic substitution of role",
-      "source_content_chars": 3,
-      "target_content_chars": 3,
       "occurrence_count": 1
     },
     {
@@ -180,16 +112,6 @@
       "occurrence_count": 1
     },
     {
-      "source": "你们为什么称呼我‘主人甲, 主人甲’",
-      "target": "你们为何称我为‘主人乙, 主人乙’",
-      "category": "semantic_substitution",
-      "mode": "contextual",
-      "rationale": "contextual substitution of question phrase",
-      "source_content_chars": 14,
-      "target_content_chars": 13,
-      "occurrence_count": 1
-    },
-    {
       "source": "你们若只借给你们愿意偿还的人",
       "target": "你们如果只借给愿意还款的人",
       "category": "semantic_substitution",
@@ -240,16 +162,6 @@
       "occurrence_count": 1
     },
     {
-      "source": "凡学成了的，必像他的主人甲",
-      "target": "凡学成的，必像他的主人乙",
-      "category": "semantic_substitution",
-      "mode": "contextual",
-      "rationale": "contextual substitution of metaphor phrase",
-      "source_content_chars": 12,
-      "target_content_chars": 11,
-      "occurrence_count": 1
-    },
-    {
       "source": "口里所说的，是心里所充满的",
       "target": "口中所出，乃心中所藏",
       "category": "semantic_substitution",
@@ -295,16 +207,6 @@
       "category": "semantic_substitution",
       "mode": "contextual",
       "rationale": "contextual substitution of consequence phrase",
-      "source_content_chars": 11,
-      "target_content_chars": 11,
-      "occurrence_count": 1
-    },
-    {
-      "source": "人物01（他起名人物02）",
-      "target": "人物01（他称为人物07）",
-      "category": "entity",
-      "mode": "contextual",
-      "rationale": "contextual substitution of named entity",
       "source_content_chars": 11,
       "target_content_chars": 11,
       "occurrence_count": 1
@@ -407,16 +309,6 @@
       "rationale": "contextual substitution of metaphor phrase",
       "source_content_chars": 11,
       "target_content_chars": 9,
-      "occurrence_count": 1
-    },
-    {
-      "source": "群体02不能高过主人甲",
-      "target": "群体04不能超过主人乙",
-      "category": "semantic_substitution",
-      "mode": "contextual",
-      "rationale": "contextual substitution of metaphor phrase",
-      "source_content_chars": 11,
-      "target_content_chars": 11,
       "occurrence_count": 1
     },
     {
@@ -587,16 +479,6 @@
       "rationale": "contextual substitution of geographic description",
       "source_content_chars": 9,
       "target_content_chars": 9,
-      "occurrence_count": 1
-    },
-    {
-      "source": "整夜 请求 给 至高者甲",
-      "target": "整夜 祈求 至高者乙",
-      "category": "action",
-      "mode": "contextual",
-      "rationale": "contextual substitution of prayer action",
-      "source_content_chars": 9,
-      "target_content_chars": 8,
       "occurrence_count": 1
     },
     {
@@ -1075,16 +957,6 @@
       "category": "action",
       "mode": "contextual",
       "rationale": "contextual substitution of action phrase",
-      "source_content_chars": 4,
-      "target_content_chars": 4,
-      "occurrence_count": 1
-    },
-    {
-      "source": "地点02",
-      "target": "地点03",
-      "category": "location",
-      "mode": "contextual",
-      "rationale": "contextual substitution of location for local meaning change",
       "source_content_chars": 4,
       "target_content_chars": 4,
       "occurrence_count": 1

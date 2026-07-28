@@ -72,6 +72,7 @@ def select_next_qa_item(db: Session, participant):
         qa_item
         for qa_item in db.scalars(statement).all()
         if qa_item.id not in assigned_qa_item_ids
+        and (not qa_item.automatic_form or qa_item.question_type == qa_item.automatic_form)
         and participant_question_audio_satisfied(db, qa_item.id, participant)
         and qa_item_is_assignable(qa_item)
     ]

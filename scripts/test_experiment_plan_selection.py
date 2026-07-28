@@ -30,8 +30,10 @@ from eten_shared.question_discovery import (
 )
 from build_experiment_plan import SLOTS, CHAPTERS, build_cells
 
-CONDS = ["clean", "omission10", "omission20", "omission30",
-         "mistranslation20", "grammar30", "wbw"]
+# [CHANGED 2026-07-27b] Derive the condition set from SLOTS instead of restating it, so a
+# re-slate of the design cannot silently drift away from what the tests assert against.
+# dict.fromkeys keeps SLOTS order and collapses the two pooled "clean" anchors to one entry.
+CONDS = list(dict.fromkeys(SLOTS))
 fails = []
 
 

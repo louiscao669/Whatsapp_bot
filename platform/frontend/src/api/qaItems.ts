@@ -5,6 +5,8 @@ export type QaItemRow = {
   passage: string
   question: string
   question_type: string
+  form_group_id: string | null
+  automatic_form: string | null
   review_status: string
   review_tab: string
   response_count: number
