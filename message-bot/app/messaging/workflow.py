@@ -132,6 +132,7 @@ class WorkflowResult:
     currency_balance: Optional[int] = None
     status_message: Optional[str] = None
     batch_size_nudge: Optional[object] = None
+    engagement_deferred: bool = False
 
 
 def score_text_response_with_rubric(response_text: str, rubric: KeywordRubric):
@@ -521,6 +522,7 @@ def _record_provider_answer_for_participant(
     message_metadata,
     external_user_id=None,
     expected_assignment_id=None,
+    defer_engagement=False,
     response_text=None,
     media_id=None,
     media_url=None,
@@ -685,35 +687,40 @@ def _record_provider_answer_for_participant(
                     provider=provider,
                 )
             currency_awards = []
-            response_award = award_response_currency(db, participant, response)
-            if response_award:
-                currency_awards.append(response_award)
-            streak_badges = update_streak_for_response(db, participant, response)
+            streak_badges = []
+            if not defer_engagement:
+                response_award = award_response_currency(db, participant, response)
+                if response_award:
+                    currency_awards.append(response_award)
+                streak_badges = update_streak_for_response(db, participant, response)
             (
                 prompt,
                 batch_completed,
                 completed_batch_size,
             ) = create_assignment_prompt(db, participant, participant_session)
-            if prompt:
+            if prompt and not defer_engagement:
                 assignment = db.get(Assignment, prompt.assignment_id)
                 if assignment:
                     create_assignment_reminders(db, assignment, participant)
             if batch_completed:
-                batch_award = award_batch_completion_currency(
-                    db,
-                    participant,
-                    completed_batch_size,
-                )
-                if batch_award:
-                    currency_awards.append(batch_award)
-                batch_size_nudge = recommend_batch_size_nudge(db, participant)
-                if batch_size_nudge:
-                    record_batch_size_nudge_sent(
+                if not defer_engagement:
+                    batch_award = award_batch_completion_currency(
                         db,
                         participant,
-                        batch_size_nudge,
-                        source=provider,
+                        completed_batch_size,
                     )
+                    if batch_award:
+                        currency_awards.append(batch_award)
+                    batch_size_nudge = recommend_batch_size_nudge(db, participant)
+                    if batch_size_nudge:
+                        record_batch_size_nudge_sent(
+                            db,
+                            participant,
+                            batch_size_nudge,
+                            source=provider,
+                        )
+                else:
+                    batch_size_nudge = None
                 # Start the next batch immediately (parity with the dashboard)
                 # instead of scheduling it for tomorrow and asking the
                 # participant to confirm "Start now / Tomorrow".
@@ -728,15 +735,34 @@ def _record_provider_answer_for_participant(
                 if next_prompt:
                     prompt = next_prompt
                     next_assignment = db.get(Assignment, next_prompt.assignment_id)
-                    if next_assignment:
+                    if next_assignment and not defer_engagement:
                         create_assignment_reminders(db, next_assignment, participant)
             else:
                 batch_size_nudge = None
-            awarded_badges = list(streak_badges) + evaluate_and_award_badges(
-                db,
-                participant,
-                batch_completed=batch_completed,
-            )
+            awarded_badges = list(streak_badges)
+            if not defer_engagement:
+                awarded_badges += evaluate_and_award_badges(
+                    db,
+                    participant,
+                    batch_completed=batch_completed,
+                )
+
+            if defer_engagement and response:
+                db.add(
+                    OutboxNotification(
+                        participant_id=participant.id,
+                        notification_type="answer_postprocess_requested",
+                        payload={
+                            "response_id": response.id,
+                            "next_assignment_id": prompt.assignment_id if prompt else None,
+                            "batch_completed": batch_completed,
+                            "completed_batch_size": completed_batch_size,
+                            "completed_count_at_response": participant.completed_count,
+                            "source": provider,
+                        },
+                        status=OutboxStatus.PENDING.value,
+                    )
+                )
 
             db.commit()
 
@@ -762,6 +788,7 @@ def _record_provider_answer_for_participant(
                     currency_awards[-1]["balance_after"] if currency_awards else None
                 ),
                 batch_size_nudge=batch_size_nudge,
+                engagement_deferred=defer_engagement,
             )
         except SQLAlchemyError:
             db.rollback()
@@ -829,6 +856,26 @@ def record_provider_text_message(
     message_text,
     record_response=True,
 ):
+    if provider == "telegram" and record_response:
+        # Telegram text answers use the same single-transaction fast path as
+        # inline MCQs. Initial/resume prompts (record_response=False) retain the
+        # normal engagement setup because no answer latency is involved.
+        return _record_provider_answer_for_participant(
+            provider=provider,
+            external_user_id=str(external_user_id),
+            display_name=display_name,
+            message_id=message_id,
+            message_type=ResponseType.TEXT.value,
+            message_metadata={
+                "provider": provider,
+                "external_user_id": str(external_user_id),
+                "message_text": message_text,
+            },
+            response_text=message_text,
+            record_response=True,
+            defer_engagement=True,
+        )
+
     participant = get_participant_by_provider_contact(provider, external_user_id)
     if participant is None:
         raise ValueError(
@@ -887,6 +934,7 @@ def record_telegram_choice_answer(
         provider="telegram",
         external_user_id=str(chat_id),
         expected_assignment_id=assignment_id,
+        defer_engagement=True,
         display_name=display_name,
         message_id=message_id,
         message_type=ResponseType.TEXT.value,

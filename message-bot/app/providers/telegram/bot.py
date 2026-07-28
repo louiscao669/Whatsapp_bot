@@ -1,3 +1,4 @@
+import asyncio
 import logging
 import sys
 from pathlib import Path
@@ -237,7 +238,7 @@ async def mcq_button_tap(update, context):
 
     # Stop Telegram's button spinner immediately. The durable database commit and
     # next-question delivery continue below.
-    await query.answer("Submitting…")
+    await query.answer()
 
     contact_input = contact_input_from_update(update)
 
@@ -272,12 +273,17 @@ async def mcq_button_tap(update, context):
             pass
         return
 
-    # Remove the buttons so the same question can't be tapped twice.
-    try:
-        await query.edit_message_reply_markup(reply_markup=None)
-    except Exception:
-        pass
+    # Remove the old keyboard concurrently. Delivery of the next question must
+    # not wait for this separate Telegram API request.
+    async def remove_old_keyboard():
+        try:
+            await query.edit_message_reply_markup(reply_markup=None)
+        except Exception:
+            pass
+
+    keyboard_task = asyncio.create_task(remove_old_keyboard())
     await send_workflow_result(context.bot, contact_input.chat_id, workflow_result)
+    await keyboard_task
 
 
 def build_application():

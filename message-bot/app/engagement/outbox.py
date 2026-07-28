@@ -34,14 +34,23 @@ from app.providers.delivery import (
     send_text_message,
 )
 from app.providers.whatsapp.schedule_policy import is_within_customer_service_window
+from app.providers.whatsapp.schedule_policy import create_assignment_reminders
+from app.engagement.badges import evaluate_and_award_badges
+from app.engagement.currency import (
+    award_batch_completion_currency,
+    award_response_currency,
+)
+from eten_shared.domain.streaks import update_streak_for_response
 
 DASHBOARD_ANSWER_SYNCED_TYPE = "dashboard_answer_synced"
 NEW_ASSIGNMENT_ASSIGNED_TYPE = "new_assignment_assigned"
 ANSWER_LLM_SCORE_REQUESTED_TYPE = "answer_llm_score_requested"
+ANSWER_POSTPROCESS_REQUESTED_TYPE = "answer_postprocess_requested"
 KNOWN_NOTIFICATION_TYPES = (
     DASHBOARD_ANSWER_SYNCED_TYPE,
     NEW_ASSIGNMENT_ASSIGNED_TYPE,
     ANSWER_LLM_SCORE_REQUESTED_TYPE,
+    ANSWER_POSTPROCESS_REQUESTED_TYPE,
 )
 
 _outbox_started = False
@@ -183,6 +192,51 @@ def process_pending_outbox(limit=50):
                         "core_claim_expected": result.core_claim_expected,
                         "core_claim_found": result.core_claim_found,
                     }
+                    notification.status = OutboxStatus.SENT.value
+                    notification.sent_at = utc_now()
+                    processed += 1
+                    continue
+
+                if notification.notification_type == ANSWER_POSTPROCESS_REQUESTED_TYPE:
+                    payload = notification.payload or {}
+                    response = db.get(ParticipantResponse, payload.get("response_id"))
+                    if not response:
+                        _cancel(notification, "Response no longer exists")
+                        continue
+
+                    # All operations here are idempotent: currency is keyed to
+                    # the response/batch event, badges are unique per participant,
+                    # and reminder creation skips existing reminder types.
+                    award_response_currency(
+                        db,
+                        participant,
+                        response,
+                        is_first_answer=(
+                            payload.get("completed_count_at_response") == 1
+                        ),
+                    )
+                    update_streak_for_response(db, participant, response)
+                    if payload.get("batch_completed"):
+                        award_batch_completion_currency(
+                            db,
+                            participant,
+                            int(payload.get("completed_batch_size") or 0),
+                            response_id=response.id,
+                        )
+                    evaluate_and_award_badges(
+                        db,
+                        participant,
+                        batch_completed=bool(payload.get("batch_completed")),
+                    )
+
+                    next_assignment_id = payload.get("next_assignment_id")
+                    if next_assignment_id:
+                        next_assignment = db.get(Assignment, next_assignment_id)
+                        if next_assignment:
+                            create_assignment_reminders(
+                                db, next_assignment, participant
+                            )
+
                     notification.status = OutboxStatus.SENT.value
                     notification.sent_at = utc_now()
                     processed += 1

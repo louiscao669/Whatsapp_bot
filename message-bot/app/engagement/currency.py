@@ -106,11 +106,18 @@ def award_currency(
     }
 
 
-def award_response_currency(db: Session, participant, response):
+def award_response_currency(
+    db: Session,
+    participant,
+    response,
+    *,
+    is_first_answer: bool | None = None,
+):
     if response is None:
         return None
 
-    is_first_answer = (participant.completed_count or 0) == 1
+    if is_first_answer is None:
+        is_first_answer = (participant.completed_count or 0) == 1
     amount = FIRST_ANSWER_COMPLETED_COINS if is_first_answer else ANSWER_COMPLETED_COINS
     return award_currency(
         db,
@@ -143,9 +150,18 @@ def latest_batch_completed_event(db: Session, participant_id: str):
     return event
 
 
-def award_batch_completion_currency(db: Session, participant, completed_batch_size: int):
+def award_batch_completion_currency(
+    db: Session,
+    participant,
+    completed_batch_size: int,
+    *,
+    response_id: str | None = None,
+):
     event = latest_batch_completed_event(db, participant.id)
-    source_event_id = event.id if event else None
+    # Deferred Telegram post-processing keys the bonus to the response that
+    # closed the batch. This remains unambiguous even if several batches finish
+    # before the outbox drains; synchronous callers retain the event key.
+    source_event_id = None if response_id else (event.id if event else None)
     metadata = dict(event.event_metadata or {}) if event else {}
     metadata["completed_batch_size"] = completed_batch_size
 
@@ -155,6 +171,7 @@ def award_batch_completion_currency(db: Session, participant, completed_batch_si
         BATCH_COMPLETED_BONUS_COINS,
         reason="batch_completed_bonus",
         source="engagement",
+        response_id=response_id,
         source_event_id=source_event_id,
         metadata=metadata,
     )

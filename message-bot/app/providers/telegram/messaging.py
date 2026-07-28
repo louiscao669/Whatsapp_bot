@@ -245,7 +245,7 @@ async def send_workflow_result(bot, chat_id, workflow_result):
         await send_text(bot, chat_id, workflow_result.status_message)
         return
 
-    if workflow_result.batch_completed:
+    if workflow_result.batch_completed and not workflow_result.engagement_deferred:
         await send_text(
             bot,
             chat_id,
@@ -262,7 +262,7 @@ async def send_workflow_result(bot, chat_id, workflow_result):
         await send_assignment_prompt(bot, chat_id, workflow_result.prompt)
         return
 
-    if workflow_result.batch_completed:
+    if workflow_result.batch_completed and not workflow_result.engagement_deferred:
         return
 
     await send_text(
