@@ -346,7 +346,9 @@ async function submitAnswer(assignmentId, responseText) {
   try {
     const payload = await postRawJson(state.participantId, "/answers", {
       assignment_id: assignmentId,
-      response_text: responseText
+      response_text: responseText,
+      submission_id: globalThis.crypto?.randomUUID?.()
+        || `${Date.now()}-${Math.random().toString(16).slice(2)}`
     });
     applyCompactAnswerResult(payload, assignmentId);
     rememberDashboard();

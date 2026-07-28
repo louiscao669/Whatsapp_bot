@@ -114,3 +114,10 @@ export function assignParticipantQuestions(
     },
   )
 }
+
+export function skipParticipantAssignment(participantId: string, assignmentId: string) {
+  return apiFetch<{ ok: true; message: string }>(
+    `/api/v1/participants/${participantId}/assignments/${assignmentId}`,
+    { method: 'DELETE' },
+  )
+}

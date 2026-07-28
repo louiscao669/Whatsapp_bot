@@ -486,6 +486,9 @@ class Assignment(Base):
     qa_item_id: Mapped[str] = mapped_column(
         ForeignKey("qa_items.id", ondelete="CASCADE"), nullable=False
     )
+    next_assignment_id: Mapped[Optional[str]] = mapped_column(
+        ForeignKey("assignments.id", ondelete="SET NULL"), index=True
+    )
     passage_translation_id: Mapped[Optional[str]] = mapped_column(
         ForeignKey("passage_translations.id", ondelete="SET NULL")
     )
@@ -709,6 +712,67 @@ class ParticipantResponse(Base):
     participant: Mapped["Participant"] = relationship(back_populates="responses")
     qa_item: Mapped["QAItem"] = relationship(back_populates="responses")
     assignment: Mapped[Optional["Assignment"]] = relationship(back_populates="responses")
+
+
+class AssignmentDelivery(Base):
+    __tablename__ = "assignment_deliveries"
+    __table_args__ = (
+        UniqueConstraint(
+            "participant_id", "provider", "provider_message_id",
+            name="uq_assignment_delivery_message",
+        ),
+    )
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    participant_id: Mapped[str] = mapped_column(
+        ForeignKey("participants.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    assignment_id: Mapped[str] = mapped_column(
+        ForeignKey("assignments.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    provider: Mapped[str] = mapped_column(String(32), nullable=False, index=True)
+    provider_message_id: Mapped[str] = mapped_column(String(128), nullable=False)
+    delivered_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utc_now, nullable=False
+    )
+
+
+class AnswerReceipt(Base):
+    __tablename__ = "answer_receipts"
+    __table_args__ = (
+        UniqueConstraint("assignment_id", name="uq_answer_receipts_assignment"),
+        UniqueConstraint(
+            "participant_id", "provider", "provider_update_id",
+            name="uq_answer_receipts_provider_update",
+        ),
+    )
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    participant_id: Mapped[str] = mapped_column(
+        ForeignKey("participants.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    assignment_id: Mapped[str] = mapped_column(
+        ForeignKey("assignments.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    qa_item_id: Mapped[str] = mapped_column(
+        ForeignKey("qa_items.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    provider: Mapped[str] = mapped_column(String(32), nullable=False, index=True)
+    provider_update_id: Mapped[str] = mapped_column(String(128), nullable=False)
+    provider_question_message_id: Mapped[Optional[str]] = mapped_column(String(128))
+    response_type: Mapped[str] = mapped_column(String(32), nullable=False)
+    raw_answer: Mapped[str] = mapped_column(Text, nullable=False)
+    status: Mapped[str] = mapped_column(
+        String(32), default="pending", nullable=False, index=True
+    )
+    response_id: Mapped[Optional[str]] = mapped_column(
+        ForeignKey("participant_responses.id", ondelete="SET NULL"), index=True
+    )
+    failure_reason: Mapped[Optional[str]] = mapped_column(Text)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utc_now, nullable=False
+    )
+    processed_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
 
 
 class ParticipantEvent(Base):

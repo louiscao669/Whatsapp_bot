@@ -10,6 +10,7 @@ from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 from sqlalchemy import delete, distinct, func, select
 
 from eten_shared.answer_llm_scoring import llm_answer_scoring_enabled
+from eten_shared.answer_receipts import create_answer_receipt
 
 from eten_shared.domain.batch_schedules import (
     BATCH_NEXT_ASSIGNMENT_TYPE,
@@ -565,7 +566,7 @@ def _assign_dashboard_next_batch(db, participant, *, source, reminder=None):
         participant.id,
         reason=f"Dashboard next batch started by {source}",
     )
-    participant_session.current_assignment_id = None
+    participant_session.current_assignment_id = assignment.next_assignment_id
     participant_session.current_batch_id = None
     participant_session.state = SessionState.IDLE.value
 
@@ -881,7 +882,9 @@ def purchase_store_item(db, participant_id: str, item_id: str):
     if not participant:
         raise StorePurchaseError("Participant not found")
 
-    wallet = _get_or_create_wallet(db, participant)
+    wallet = db.scalar(
+        select(ParticipantWallet).where(ParticipantWallet.participant_id == participant.id)
+    )
     inventory = get_store_inventory(db, participant.id)
     owned = inventory.get(item["item_id"], {}).get("owned", 0)
     if owned >= item["max_owned"]:
@@ -1314,15 +1317,26 @@ def submit_dashboard_answer(db, participant_id: str, assignment_id: str, respons
         )
     else:
         participant_session.current_batch_id = assignment.batch_id
-        next_assignment = db.scalar(
-            select(Assignment)
-            .where(
-                Assignment.participant_id == participant.id,
-                Assignment.batch_id == participant_session.current_batch_id,
-                Assignment.status == AssignmentStatus.ASSIGNED.value,
-            )
-            .order_by(Assignment.assigned_at, Assignment.id)
+        next_assignment = (
+            db.get(Assignment, assignment.next_assignment_id)
+            if assignment.next_assignment_id
+            else None
         )
+        if not (
+            next_assignment
+            and next_assignment.participant_id == participant.id
+            and next_assignment.batch_id == participant_session.current_batch_id
+            and next_assignment.status == AssignmentStatus.ASSIGNED.value
+        ):
+            next_assignment = db.scalar(
+                select(Assignment)
+                .where(
+                    Assignment.participant_id == participant.id,
+                    Assignment.batch_id == participant_session.current_batch_id,
+                    Assignment.status == AssignmentStatus.ASSIGNED.value,
+                )
+                .order_by(Assignment.assigned_at, Assignment.id)
+            )
         if next_assignment:
             next_qa_item = db.get(QAItem, next_assignment.qa_item_id)
             if next_qa_item:
@@ -1403,6 +1417,72 @@ def submit_dashboard_answer(db, participant_id: str, assignment_id: str, respons
             "answer": response_amount,
             "batch_completed": BATCH_COMPLETED_BONUS_DIAMONDS if batch_completed else 0,
         },
+    }
+
+
+def submit_dashboard_answer_receipt(
+    db,
+    participant_id: str,
+    assignment_id: str,
+    response_text: str,
+    submission_id: str,
+):
+    """Fast dashboard intake: commit the immutable receipt, return cached next."""
+
+    assignment_id = (assignment_id or "").strip()
+    answer_text = (response_text or "").strip()
+    submission_id = (submission_id or "").strip()
+    if not assignment_id:
+        raise DashboardAnswerError("Assignment is required")
+    if not answer_text:
+        raise DashboardAnswerError("Answer is required")
+    if not submission_id:
+        raise DashboardAnswerError("Submission ID is required")
+    participant = _participant_by_id(db, participant_id)
+    if not participant:
+        raise DashboardAnswerError("Participant not found")
+    assignment = db.get(Assignment, assignment_id)
+    if not assignment or assignment.participant_id != participant.id:
+        raise DashboardAnswerError("Assignment not found")
+    try:
+        receipt, _created = create_answer_receipt(
+            db,
+            participant_id=participant.id,
+            assignment=assignment,
+            provider=SourceChannel.USER_DASHBOARD.value,
+            provider_update_id=submission_id,
+            response_type=ResponseType.TEXT.value,
+            raw_answer=answer_text,
+        )
+    except ValueError as exc:
+        raise DashboardAnswerError(str(exc)) from exc
+
+    next_assignment = db.get(Assignment, assignment.next_assignment_id) \
+        if assignment.next_assignment_id else None
+    next_question = None
+    if next_assignment and next_assignment.status == AssignmentStatus.ASSIGNED.value:
+        next_qa_item = next_assignment.qa_item or db.get(QAItem, next_assignment.qa_item_id)
+        if next_qa_item:
+            next_question = _serialize_dashboard_question(
+                db, participant, next_assignment, next_qa_item, question_index=0
+            )
+    wallet = db.scalar(
+        select(ParticipantWallet).where(ParticipantWallet.participant_id == participant.id)
+    )
+    return {
+        "answer_submission": {
+            "assignment_id": assignment.id,
+            "response_id": None,
+            "receipt_id": receipt.id,
+            "batch_id": assignment.batch_id,
+            "batch_completed": False,
+            "completed_batch_size": 0,
+            "next_assignment_id": next_assignment.id if next_assignment else None,
+            "is_correct": "pending",
+        },
+        "next_question": next_question,
+        "wallet": {"balance": wallet.balance if wallet else 0},
+        "awards": {"answer": 0, "batch_completed": 0},
     }
 
 

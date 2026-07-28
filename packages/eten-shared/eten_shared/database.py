@@ -20,6 +20,72 @@ _CACHED_DATABASE_URL: str | None = None
 def _run_startup_migrations(engine: Engine):
     """Apply lightweight, idempotent compatibility migrations."""
     with engine.begin() as connection:
+        connection.execute(text("""
+            CREATE TABLE IF NOT EXISTS assignment_deliveries (
+                id varchar(36) PRIMARY KEY,
+                participant_id varchar(36) NOT NULL REFERENCES participants(id) ON DELETE CASCADE,
+                assignment_id varchar(36) NOT NULL REFERENCES assignments(id) ON DELETE CASCADE,
+                provider varchar(32) NOT NULL,
+                provider_message_id varchar(128) NOT NULL,
+                delivered_at timestamptz NOT NULL DEFAULT now(),
+                CONSTRAINT uq_assignment_delivery_message
+                    UNIQUE (participant_id, provider, provider_message_id)
+            )
+        """))
+        connection.execute(text("""
+            CREATE TABLE IF NOT EXISTS answer_receipts (
+                id varchar(36) PRIMARY KEY,
+                participant_id varchar(36) NOT NULL REFERENCES participants(id) ON DELETE CASCADE,
+                assignment_id varchar(36) NOT NULL REFERENCES assignments(id) ON DELETE CASCADE,
+                qa_item_id varchar(36) NOT NULL REFERENCES qa_items(id) ON DELETE CASCADE,
+                provider varchar(32) NOT NULL,
+                provider_update_id varchar(128) NOT NULL,
+                provider_question_message_id varchar(128),
+                response_type varchar(32) NOT NULL,
+                raw_answer text NOT NULL,
+                status varchar(32) NOT NULL DEFAULT 'pending',
+                response_id varchar(36) REFERENCES participant_responses(id) ON DELETE SET NULL,
+                failure_reason text,
+                created_at timestamptz NOT NULL DEFAULT now(),
+                processed_at timestamptz,
+                CONSTRAINT uq_answer_receipts_assignment UNIQUE (assignment_id),
+                CONSTRAINT uq_answer_receipts_provider_update
+                    UNIQUE (participant_id, provider, provider_update_id)
+            )
+        """))
+        for statement in (
+            "CREATE INDEX IF NOT EXISTS ix_assignment_deliveries_participant_id ON assignment_deliveries(participant_id)",
+            "CREATE INDEX IF NOT EXISTS ix_assignment_deliveries_assignment_id ON assignment_deliveries(assignment_id)",
+            "CREATE INDEX IF NOT EXISTS ix_answer_receipts_status ON answer_receipts(status)",
+            "CREATE INDEX IF NOT EXISTS ix_answer_receipts_participant_id ON answer_receipts(participant_id)",
+            "CREATE INDEX IF NOT EXISTS ix_answer_receipts_assignment_id ON answer_receipts(assignment_id)",
+        ):
+            connection.execute(text(statement))
+        connection.execute(text(
+            "ALTER TABLE assignments ADD COLUMN IF NOT EXISTS "
+            "next_assignment_id varchar(36) REFERENCES assignments(id) ON DELETE SET NULL"
+        ))
+        connection.execute(text(
+            "CREATE INDEX IF NOT EXISTS ix_assignments_next_assignment_id "
+            "ON assignments (next_assignment_id)"
+        ))
+        connection.execute(text(
+            """
+            WITH ordered AS (
+                SELECT id,
+                       lead(id) OVER (
+                           PARTITION BY participant_id ORDER BY assigned_at, id
+                       ) AS next_id
+                FROM assignments
+            )
+            UPDATE assignments AS assignment
+            SET next_assignment_id = ordered.next_id
+            FROM ordered
+            WHERE assignment.id = ordered.id
+              AND assignment.next_assignment_id IS NULL
+              AND ordered.next_id IS NOT NULL
+            """
+        ))
         connection.execute(text(
             "ALTER TABLE qa_items ADD COLUMN IF NOT EXISTS form_group_id varchar(128)"
         ))

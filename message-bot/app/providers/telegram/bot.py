@@ -24,9 +24,10 @@ from app.engagement.dashboard_nudge import dashboard_link_reply, is_dashboard_co
 from app.engagement.outbox import start_outbox_poller
 from app.engagement.reminders import start_reminder_scheduler
 from app.messaging.workflow import (
-    record_telegram_choice_answer,
+    record_telegram_answer_receipt,
     record_telegram_text_message,
     record_telegram_voice_message,
+    start_answer_receipt_processor,
 )
 from app.providers.telegram.messaging import (
     MCQ_CALLBACK_PREFIX,
@@ -41,6 +42,7 @@ from app.providers.telegram.store import (
     contact_input_from_update,
     language_confirmation_status,
     language_is_confirmed,
+    get_telegram_contact,
     opt_out_telegram_contact,
     reject_telegram_default_language,
     upsert_telegram_contact,
@@ -136,7 +138,9 @@ async def dashboard(update, context):
 
 async def unknown_text(update, context):
     contact_input = contact_input_from_update(update)
-    participant, contact, _ = upsert_telegram_contact(contact_input)
+    participant, contact = get_telegram_contact(contact_input.chat_id)
+    if contact is None:
+        participant, contact, _ = upsert_telegram_contact(contact_input)
     message_text = update.effective_message.text or ""
     normalized_text = message_text.strip().lower()
 
@@ -166,15 +170,23 @@ async def unknown_text(update, context):
             await update.effective_message.reply_text(language_question())
             return
 
-    workflow_result = record_telegram_text_message(
-        chat_id=contact.external_user_id,
-        display_name=contact.display_name or participant.display_name,
-        message_id=contact_input.message_id,
-        message_text=message_text,
-        # Greetings are health checks/resume requests, not study answers. The
-        # workflow will re-send the current prompt without completing it.
-        record_response=not is_non_answer_greeting(message_text),
-    )
+    if is_non_answer_greeting(message_text):
+        workflow_result = record_telegram_text_message(
+            chat_id=contact.external_user_id,
+            display_name=contact.display_name or participant.display_name,
+            message_id=contact_input.message_id,
+            message_text=message_text,
+            record_response=False,
+        )
+    else:
+        reply = getattr(update.effective_message, "reply_to_message", None)
+        workflow_result = record_telegram_answer_receipt(
+            chat_id=contact.external_user_id,
+            display_name=contact.display_name or participant.display_name,
+            update_id=update.update_id,
+            raw_answer=message_text,
+            question_message_id=getattr(reply, "message_id", None),
+        )
     await send_workflow_result(context.bot, contact.external_user_id, workflow_result)
 
 
@@ -243,12 +255,13 @@ async def mcq_button_tap(update, context):
     contact_input = contact_input_from_update(update)
 
     try:
-        workflow_result = record_telegram_choice_answer(
+        workflow_result = record_telegram_answer_receipt(
             chat_id=contact_input.chat_id,
             display_name=contact_input.display_name,
-            message_id=contact_input.message_id,
+            update_id=update.update_id,
+            raw_answer=f"mcq_{choice_index}",
             assignment_id=assignment_id,
-            choice_index=choice_index,
+            question_message_id=getattr(query.message, "message_id", None),
         )
     except Exception:
         logging.exception(
@@ -300,6 +313,7 @@ def build_application():
 
 
 def main():
+    start_answer_receipt_processor()
     start_reminder_scheduler()
     # Drain cross-surface pushes (new assignments, dashboard-answer sync) on the
     # Telegram deployment too — otherwise the outbox only runs in the WhatsApp

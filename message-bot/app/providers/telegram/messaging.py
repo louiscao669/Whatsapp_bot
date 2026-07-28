@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+from telegram import ForceReply, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.error import RetryAfter, TelegramError
 
 from app.providers.whatsapp.schedule_policy import (
@@ -18,6 +18,8 @@ from eten_shared.mcq import (
     choice_letters_for_type,
     format_choices_for_display,
 )
+from eten_shared.answer_receipts import record_assignment_delivery
+from eten_shared.database import get_session_factory
 
 MCQ_CALLBACK_PREFIX = "mcq"
 MCQ_BUTTON_LABEL_MAX_CHARS = 60
@@ -222,18 +224,22 @@ async def _send_question_voice(bot, chat_id, audio_url, caption, reply_markup=No
 
 async def send_assignment_prompt(bot, chat_id, prompt):
     keyboard = build_mcq_keyboard(prompt)
+    reply_markup = keyboard or ForceReply(
+        selective=False,
+        input_field_placeholder="Type your answer",
+    )
     if prompt.audio_url:
         caption = assignment_prompt_text(
             prompt, include_audio_url=False, with_keyboard=bool(keyboard)
         )
         return await _send_question_voice(
-            bot, chat_id, prompt.audio_url, caption, reply_markup=keyboard
+            bot, chat_id, prompt.audio_url, caption, reply_markup=reply_markup
         )
     return await send_text(
         bot,
         chat_id,
         assignment_prompt_text(prompt, with_keyboard=bool(keyboard)),
-        reply_markup=keyboard,
+        reply_markup=reply_markup,
     )
 
 
@@ -259,8 +265,20 @@ async def send_workflow_result(bot, chat_id, workflow_result):
             await send_text(bot, chat_id, batch_size_nudge_message(workflow_result.batch_size_nudge))
 
     if workflow_result.prompt:
-        await send_assignment_prompt(bot, chat_id, workflow_result.prompt)
-        return
+        sent = await send_assignment_prompt(bot, chat_id, workflow_result.prompt)
+        message_id = getattr(sent, "message_id", None)
+        if message_id is not None:
+            session_factory = get_session_factory()
+            with session_factory() as db:
+                record_assignment_delivery(
+                    db,
+                    participant_id=workflow_result.participant_id,
+                    assignment_id=workflow_result.prompt.assignment_id,
+                    provider="telegram",
+                    provider_message_id=message_id,
+                )
+                db.commit()
+        return sent
 
     if workflow_result.batch_completed and not workflow_result.engagement_deferred:
         return

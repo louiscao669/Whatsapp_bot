@@ -1,4 +1,6 @@
 import logging
+import threading
+import time
 from dataclasses import dataclass
 from typing import Optional
 
@@ -8,6 +10,10 @@ from sqlalchemy.orm import Session
 
 from eten_shared.database import get_session_factory
 from eten_shared.answer_llm_scoring import llm_answer_scoring_enabled
+from eten_shared.answer_receipts import (
+    assignment_for_provider_message,
+    create_answer_receipt,
+)
 from eten_shared.domain.assignments import (
     AssignmentPrompt,
     automatic_assignment_enabled,
@@ -17,6 +23,7 @@ from eten_shared.domain.assignments import (
     experiment_passage_assignment_kwargs,
     experiment_assignment_enabled,
     get_incomplete_assignment,
+    get_chained_assignment,
     get_or_create_participant_session,
     get_preferred_batch_size,
     record_participant_event as _record_participant_event,
@@ -80,10 +87,12 @@ from eten_shared.transcription import (
 from eten_shared.models import (
     Assignment,
     AssignmentStatus,
+    AnswerReceipt,
     ExperimentPassage,
     OutboxNotification,
     OutboxStatus,
     ParticipantEvent,
+    Participant,
     ParticipantProviderContact,
     ParticipantResponse,
     ParticipantSession,
@@ -250,9 +259,9 @@ def create_assignment_prompt(db: Session, participant, participant_session):
     if batch_completed:
         return None, True, completed_batch_size
 
-    incomplete = get_incomplete_assignment(
-        db, participant, participant_session.current_batch_id
-    )
+    incomplete = get_chained_assignment(
+        db, participant, participant_session.current_assignment_id
+    ) or get_incomplete_assignment(db, participant, participant_session.current_batch_id)
     if incomplete:
         prompt = resume_incomplete_assignment(
             db, participant, participant_session, incomplete
@@ -486,7 +495,7 @@ def save_response_for_current_assignment(
     # Assignment completion (status/completed_at/attempt_count) already
     # applied atomically by try_complete_assignment above.
     participant.completed_count += 1
-    participant_session.current_assignment_id = None
+    participant_session.current_assignment_id = assignment.next_assignment_id
     participant_session.state = SessionState.IDLE.value
 
     record_provider_participant_event(
@@ -916,37 +925,187 @@ def record_telegram_text_message(
     )
 
 
-def record_telegram_choice_answer(
+def record_telegram_answer_receipt(
+    *,
     chat_id,
     display_name,
-    message_id,
-    assignment_id,
-    choice_index,
+    update_id,
+    raw_answer,
+    assignment_id=None,
+    question_message_id=None,
 ):
-    """Record an MCQ/TF answer from an inline-keyboard tap.
+    """Durably accept a Telegram answer and return its prepared successor."""
 
-    Returns None when the tapped button belongs to an assignment that is no
-    longer the participant's current one (stale message / already answered);
-    otherwise routes ``mcq_<index>`` through the normal choice-scoring chain
-    (parse_mcq_response_letter already understands that format).
-    """
-    return _record_provider_answer_for_participant(
-        provider="telegram",
-        external_user_id=str(chat_id),
-        expected_assignment_id=assignment_id,
-        defer_engagement=True,
-        display_name=display_name,
-        message_id=message_id,
-        message_type=ResponseType.TEXT.value,
-        message_metadata={
-            "provider": "telegram",
-            "external_user_id": str(chat_id),
-            "input_method": "inline_keyboard",
-            "assignment_id": assignment_id,
-            "choice_index": choice_index,
-        },
-        response_text=f"mcq_{choice_index}",
-    )
+    session_factory = get_session_factory()
+    with session_factory() as db:
+        contact = db.scalar(
+            select(ParticipantProviderContact).where(
+                ParticipantProviderContact.provider == "telegram",
+                ParticipantProviderContact.external_user_id == str(chat_id),
+                ParticipantProviderContact.opted_out_at.is_(None),
+            )
+        )
+        if not contact:
+            raise ValueError("No active Telegram participant")
+        participant = contact.participant
+        assignment = db.get(Assignment, assignment_id) if assignment_id else None
+        if assignment is None and question_message_id is not None:
+            assignment = assignment_for_provider_message(
+                db,
+                participant_id=participant.id,
+                provider="telegram",
+                provider_message_id=question_message_id,
+            )
+        if assignment is None:
+            participant_session = get_or_create_participant_session(db, participant)
+            assignment = db.get(Assignment, participant_session.current_assignment_id)
+        if assignment is None or assignment.participant_id != participant.id:
+            raise ValueError("No matching assignment for Telegram answer")
+
+        receipt, created = create_answer_receipt(
+            db,
+            participant_id=participant.id,
+            assignment=assignment,
+            provider="telegram",
+            provider_update_id=update_id,
+            provider_question_message_id=question_message_id,
+            response_type=ResponseType.TEXT.value,
+            raw_answer=raw_answer,
+        )
+        prompt = None
+        successor = db.get(Assignment, assignment.next_assignment_id) \
+            if assignment.next_assignment_id else None
+        if created and successor and successor.status == AssignmentStatus.ASSIGNED.value:
+            prompt = build_assignment_prompt(db, successor, successor.qa_item, participant)
+        db.commit()
+        return WorkflowResult(
+            participant_id=participant.id,
+            session_id=participant.session.id if participant.session else "",
+            session_state=participant.session.state if participant.session else SessionState.IDLE.value,
+            response_id=receipt.id,
+            assignment_id=assignment.id,
+            prompt=prompt,
+            engagement_deferred=True,
+            status_message=None if created else "This question was already answered.",
+        )
+
+
+def process_pending_answer_receipts(limit=50):
+    """Project immutable receipts into the existing response lifecycle."""
+
+    session_factory = get_session_factory()
+    processed = 0
+    with session_factory() as db:
+        receipts = db.scalars(
+            select(AnswerReceipt)
+            .where(AnswerReceipt.status == "pending")
+            .order_by(AnswerReceipt.created_at, AnswerReceipt.id)
+            .limit(limit)
+            .with_for_update(skip_locked=True)
+        ).all()
+        for receipt in receipts:
+            assignment = db.get(Assignment, receipt.assignment_id)
+            participant = db.get(Participant, receipt.participant_id)
+            if not assignment or not participant:
+                receipt.status = "failed"
+                receipt.failure_reason = "Assignment or participant no longer exists"
+                continue
+            existing = db.scalar(
+                select(ParticipantResponse).where(
+                    ParticipantResponse.assignment_id == assignment.id
+                )
+            )
+            if existing:
+                receipt.response_id = existing.id
+                receipt.status = "processed"
+                receipt.processed_at = utc_now()
+                processed += 1
+                continue
+
+            participant_session = get_or_create_participant_session(db, participant)
+            participant_session.current_assignment_id = assignment.id
+            participant_session.current_batch_id = assignment.batch_id
+            participant_session.state = SessionState.AWAITING_RESPONSE.value
+            response = save_response_for_current_assignment(
+                db,
+                participant,
+                participant_session,
+                response_text=receipt.raw_answer,
+                response_type=receipt.response_type,
+                provider=receipt.provider,
+            )
+            if response is None:
+                receipt.status = "failed"
+                receipt.failure_reason = "Assignment could not be completed"
+                continue
+
+            batch_completed, completed_batch_size = complete_current_batch_if_needed(
+                db, participant, participant_session
+            )
+            successor = db.get(Assignment, assignment.next_assignment_id) \
+                if assignment.next_assignment_id else None
+            if successor and successor.status == AssignmentStatus.ASSIGNED.value:
+                participant_session.current_assignment_id = successor.id
+                participant_session.current_batch_id = successor.batch_id
+                participant_session.state = SessionState.AWAITING_RESPONSE.value
+            else:
+                participant_session.current_assignment_id = None
+                participant_session.current_batch_id = None
+                participant_session.state = SessionState.IDLE.value
+            db.add(OutboxNotification(
+                participant_id=participant.id,
+                notification_type="answer_postprocess_requested",
+                payload={
+                    "response_id": response.id,
+                    "next_assignment_id": successor.id if successor else None,
+                    "batch_completed": batch_completed,
+                    "completed_batch_size": completed_batch_size,
+                    "completed_count_at_response": participant.completed_count,
+                    "source": receipt.provider,
+                },
+                status=OutboxStatus.PENDING.value,
+            ))
+            if receipt.provider == "user_dashboard":
+                db.add(OutboxNotification(
+                    participant_id=participant.id,
+                    notification_type="dashboard_answer_synced",
+                    payload={
+                        "response_id": response.id,
+                        "assignment_id": assignment.id,
+                        "qa_item_id": assignment.qa_item_id,
+                        "batch_id": assignment.batch_id,
+                        "batch_completed": batch_completed,
+                        "completed_batch_size": completed_batch_size,
+                        "next_assignment_id": successor.id if successor else None,
+                    },
+                    status=OutboxStatus.PENDING.value,
+                ))
+            receipt.response_id = response.id
+            receipt.status = "processed"
+            receipt.processed_at = utc_now()
+            processed += 1
+        db.commit()
+    return processed
+
+
+_receipt_processor_started = False
+
+
+def start_answer_receipt_processor():
+    global _receipt_processor_started
+    if _receipt_processor_started:
+        return
+    _receipt_processor_started = True
+
+    def loop():
+        while True:
+            try:
+                process_pending_answer_receipts()
+            except Exception:
+                logging.exception("Answer receipt processor failed")
+            time.sleep(0.5)
+
+    threading.Thread(target=loop, name="answer-receipts", daemon=True).start()
 
 
 def record_telegram_voice_message(

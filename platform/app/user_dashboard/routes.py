@@ -34,7 +34,7 @@ from app.user_dashboard.service import (
     set_cosmetic_equipped,
     set_user_streak_pause,
     start_dashboard_new_batch,
-    submit_dashboard_answer,
+    submit_dashboard_answer_receipt,
     update_dashboard_settings,
     update_profile_photo,
 )
@@ -264,11 +264,12 @@ def submit_user_dashboard_answer(participant_id):
     session_factory = get_session_factory()
     try:
         with session_factory() as db:
-            payload = submit_dashboard_answer(
+            payload = submit_dashboard_answer_receipt(
                 db,
                 participant_id,
                 body.get("assignment_id"),
                 body.get("response_text"),
+                body.get("submission_id"),
             )
             db.commit()
     except DashboardAnswerError as exc:

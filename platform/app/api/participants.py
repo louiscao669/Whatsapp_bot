@@ -12,6 +12,7 @@ from app.services.participant_assignment_service import (
     ParticipantAssignmentError,
     assign_questions_with_passages,
     get_assignment_options,
+    skip_participant_assignment,
 )
 
 participants_blueprint = Blueprint("api_participants", __name__)
@@ -93,3 +94,19 @@ def create_participant_assignments(participant_id):
             "message": f"Assigned {len(assignments)} question(s)",
         }
     ), 201
+
+
+@participants_blueprint.route(
+    "/<participant_id>/assignments/<assignment_id>", methods=["DELETE"]
+)
+@require_roles("admin")
+def skip_participant_assignment_endpoint(participant_id, assignment_id):
+    session_factory = get_session_factory()
+    try:
+        with session_factory() as db:
+            skip_participant_assignment(db, participant_id, assignment_id)
+            db.commit()
+    except ParticipantAssignmentError as exc:
+        status = 404 if str(exc) in {"Participant not found", "Assignment not found"} else 400
+        return jsonify({"error": "validation_error", "message": str(exc)}), status
+    return jsonify({"ok": True, "message": "Assignment skipped"})

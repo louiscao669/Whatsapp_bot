@@ -59,6 +59,20 @@ def _get_contact(db: Session, chat_id: str) -> ParticipantProviderContact | None
     ).first()
 
 
+def get_telegram_contact(chat_id: str):
+    """Read an existing contact without creating a preliminary write transaction."""
+
+    session_factory = get_session_factory()
+    with session_factory() as db:
+        contact = _get_contact(db, str(chat_id))
+        if contact is None:
+            return None, None
+        participant = contact.participant
+        # Load scalar attributes before detaching on session close.
+        _ = participant.id, participant.display_name
+        return participant, contact
+
+
 def upsert_telegram_contact(contact_input: TelegramContactInput):
     session_factory = get_session_factory()
     now = utc_now()

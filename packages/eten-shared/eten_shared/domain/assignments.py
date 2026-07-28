@@ -156,6 +156,21 @@ def get_incomplete_assignment(db: Session, participant, batch_id=None):
     return db.scalars(statement).first()
 
 
+def get_chained_assignment(db: Session, participant, assignment_id):
+    """Resolve one prepared chain node without scanning the assignment queue."""
+
+    if not assignment_id:
+        return None
+    assignment = db.get(Assignment, assignment_id)
+    if (
+        assignment
+        and assignment.participant_id == participant.id
+        and assignment.status == AssignmentStatus.ASSIGNED.value
+    ):
+        return assignment
+    return None
+
+
 PASSAGE_CONTEXT_WINDOW = 2
 PASSAGE_DELIVERY_VERSE_COUNT = 3
 
@@ -377,8 +392,10 @@ def build_assignment_prompt(db: Session, assignment, qa_item, participant):
         audio_url=audio_url,
         question_text=qa_item.question_text,
         passage_reference=qa_item.passage_reference,
-        passage_text=surrounding_passage_text(db, assignment)
-        or assignment.passage_text
+        # Prepared chain nodes already contain the exact immutable passage
+        # snapshot. Avoid another verse-table query on the answer fast path.
+        passage_text=assignment.passage_text
+        or surrounding_passage_text(db, assignment)
         or qa_item.passage_text,
         question_type=qa_item.question_type or "open",
         mcq_choices=tuple(qa_item.mcq_choices or ()),
@@ -468,7 +485,11 @@ def create_assignment_for_qa_item(
         passage_verse_numbers = passage_kwargs.get("passage_verse_numbers")
 
     batch_id = participant_session.current_batch_id or new_id()
+    previous_assignment = db.get(
+        Assignment, participant_session.current_assignment_id
+    ) if participant_session.current_assignment_id else None
     assignment = Assignment(
+        id=new_id(),
         participant_id=participant.id,
         qa_item_id=qa_item.id,
         batch_id=batch_id,
@@ -485,6 +506,9 @@ def create_assignment_for_qa_item(
     )
     db.add(assignment)
     db.flush()
+
+    if previous_assignment and not previous_assignment.next_assignment_id:
+        previous_assignment.next_assignment_id = assignment.id
 
     participant_session.current_assignment_id = assignment.id
     participant_session.current_batch_id = batch_id

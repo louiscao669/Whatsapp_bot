@@ -7,6 +7,7 @@ from sqlalchemy import select
 
 from eten_shared.domain.identity import PROVIDER_WHATSAPP, provider_external_id
 from eten_shared.models import ParticipantProviderContact
+from eten_shared.answer_receipts import record_assignment_delivery
 
 
 @dataclass(frozen=True)
@@ -50,7 +51,16 @@ def send_assignment_prompt(db, participant, prompt):
         from app.providers.telegram.messaging import send_assignment_prompt as send_telegram_prompt
 
         bot = Bot(token=telegram_bot_token())
-        asyncio.run(send_telegram_prompt(bot, contact.external_user_id, prompt))
+        sent = asyncio.run(send_telegram_prompt(bot, contact.external_user_id, prompt))
+        message_id = getattr(sent, "message_id", None)
+        if message_id is not None:
+            record_assignment_delivery(
+                db,
+                participant_id=participant.id,
+                assignment_id=prompt.assignment_id,
+                provider="telegram",
+                provider_message_id=message_id,
+            )
         return DeliveryResult(provider="telegram")
 
     from app.providers.whatsapp.messaging import send_assignment_prompt as send_whatsapp_prompt

@@ -9,6 +9,7 @@ from app.services.participant_assignment_service import (
     get_assignment_options,
     parse_qa_chapter_verse,
     qa_reference_sort_key,
+    skip_participant_assignment,
 )
 from app.services.participant_assignment_service import (
     NEW_ASSIGNMENT_ASSIGNED_NOTIFICATION,
@@ -134,6 +135,55 @@ class ParticipantAssignmentServiceTests(unittest.TestCase):
         with patch.dict("os.environ", {"ENABLE_AUTOMATIC_ASSIGNMENT": "true"}):
             self.assertTrue(automatic_assignment_enabled())
 
+    def test_skip_splices_chain_and_advances_active_assignment(self):
+        with Session(self.engine) as db:
+            participant = Participant(display_name="Tester")
+            questions = [
+                QAItem(
+                    passage_id=f"p-{index}",
+                    question_text=f"Question {index}",
+                    expected_answer=f"Answer {index}",
+                )
+                for index in range(3)
+            ]
+            db.add_all([participant, *questions])
+            db.flush()
+            assignments = [
+                Assignment(
+                    participant_id=participant.id,
+                    qa_item_id=question.id,
+                    batch_id="batch-1",
+                )
+                for question in questions
+            ]
+            db.add_all(assignments)
+            db.flush()
+            assignments[0].next_assignment_id = assignments[1].id
+            assignments[1].next_assignment_id = assignments[2].id
+            session = ParticipantSession(
+                participant_id=participant.id,
+                current_assignment_id=assignments[0].id,
+                current_batch_id="batch-1",
+                state="awaiting_response",
+            )
+            db.add(session)
+            db.flush()
+
+            skip_participant_assignment(db, participant.id, assignments[1].id)
+            self.assertEqual(assignments[1].status, AssignmentStatus.SKIPPED.value)
+            self.assertEqual(assignments[0].next_assignment_id, assignments[2].id)
+
+            skip_participant_assignment(db, participant.id, assignments[0].id)
+            self.assertEqual(session.current_assignment_id, assignments[2].id)
+            self.assertEqual(session.state, "awaiting_response")
+            push = db.scalar(
+                select(OutboxNotification).where(
+                    OutboxNotification.participant_id == participant.id,
+                    OutboxNotification.status == OutboxStatus.PENDING.value,
+                )
+            )
+            self.assertEqual(push.payload["assignment_id"], assignments[2].id)
+
     def test_automatic_assignment_attaches_three_verse_translation_window(self):
         with Session(self.engine) as db:
             participant = Participant(target_language="cmn", display_name="Tester")
@@ -236,6 +286,11 @@ class ParticipantAssignmentServiceTests(unittest.TestCase):
                 [queued.batch_id for queued in filled_current_batch],
                 [assignment.batch_id, assignment.batch_id],
             )
+            self.assertEqual(assignment.next_assignment_id, filled_current_batch[0].id)
+            self.assertEqual(
+                filled_current_batch[0].next_assignment_id,
+                filled_current_batch[1].id,
+            )
 
             next_batch = assign_questions_with_passages(
                 db,
@@ -247,6 +302,11 @@ class ParticipantAssignmentServiceTests(unittest.TestCase):
             )
             self.assertNotEqual(next_batch[0].batch_id, assignment.batch_id)
             self.assertEqual(next_batch[0].batch_id, next_batch[1].batch_id)
+            self.assertEqual(
+                filled_current_batch[-1].next_assignment_id,
+                next_batch[0].id,
+            )
+            self.assertEqual(next_batch[0].next_assignment_id, next_batch[1].id)
 
             participant_session = db.scalar(
                 select(ParticipantSession).where(

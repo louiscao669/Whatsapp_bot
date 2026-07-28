@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import { ApiError, getCachedApiData } from '../api/client'
 import {
   fetchParticipantDetail,
+  skipParticipantAssignment,
   updateParticipantLanguage,
   type ParticipantDetail,
 } from '../api/participants'
@@ -22,6 +23,7 @@ export function ParticipantDetailPage() {
   const [error, setError] = useState('')
   const [message, setMessage] = useState('')
   const [savingLanguage, setSavingLanguage] = useState(false)
+  const [skippingAssignmentId, setSkippingAssignmentId] = useState('')
 
   useEffect(() => {
     if (!participantId) {
@@ -76,6 +78,22 @@ export function ParticipantDetailPage() {
       setError(err instanceof ApiError ? err.message : 'Could not update language')
     } finally {
       setSavingLanguage(false)
+    }
+  }
+
+  async function handleSkipAssignment(assignmentId: string) {
+    if (!participantId || !window.confirm('Skip this unanswered assignment?')) return
+    setSkippingAssignmentId(assignmentId)
+    setError('')
+    setMessage('')
+    try {
+      const result = await skipParticipantAssignment(participantId, assignmentId)
+      setMessage(result.message)
+      setDetail(await fetchParticipantDetail(participantId))
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : 'Could not skip assignment')
+    } finally {
+      setSkippingAssignmentId('')
     }
   }
 
@@ -187,6 +205,7 @@ export function ParticipantDetailPage() {
                   <th>Batch</th>
                   <th>Status</th>
                   <th>Assigned</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -201,6 +220,18 @@ export function ParticipantDetailPage() {
                     <td>{row.batch_id ?? '—'}</td>
                     <td>{row.status}</td>
                     <td>{row.assigned_at ?? '—'}</td>
+                    <td>
+                      {row.status === 'assigned' || row.status === 'in_progress' ? (
+                        <button
+                          type="button"
+                          className="btn-secondary"
+                          disabled={skippingAssignmentId === row.assignment_id}
+                          onClick={() => handleSkipAssignment(row.assignment_id)}
+                        >
+                          {skippingAssignmentId === row.assignment_id ? 'Skipping…' : 'Skip'}
+                        </button>
+                      ) : '—'}
+                    </td>
                   </tr>
                 ))}
               </tbody>

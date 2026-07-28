@@ -17,6 +17,8 @@ from eten_shared.models import (
     PassageVerse,
     QAItem,
     SessionState,
+    Reminder,
+    ReminderStatus,
     new_id,
     utc_now,
 )
@@ -227,6 +229,7 @@ def assign_questions_with_passages(db, participant_id, selections):
             batch_id = new_id()
             batch_count = 0
         assignment = Assignment(
+            id=new_id(),
             participant_id=participant.id,
             qa_item_id=qa_item.id,
             passage_translation_id=translation.id,
@@ -240,6 +243,12 @@ def assign_questions_with_passages(db, participant_id, selections):
         db.add(assignment)
         assignments.append(assignment)
         batch_count += 1
+
+    chain_tail = existing_assignments[-1] if existing_assignments else None
+    if chain_tail and assignments and not chain_tail.next_assignment_id:
+        chain_tail.next_assignment_id = assignments[0].id
+    for current, following in zip(assignments, assignments[1:]):
+        current.next_assignment_id = following.id
     db.flush()
 
     # An existing open assignment stays current. The new batch is persisted as
@@ -260,3 +269,79 @@ def assign_questions_with_passages(db, participant_id, selections):
         _enqueue_new_assignment_push(db, participant, assignments[0], len(assignments))
     db.flush()
     return assignments
+
+
+def skip_participant_assignment(db, participant_id, assignment_id):
+    """Skip one unanswered chain node and splice its neighbors together."""
+
+    participant = db.get(Participant, participant_id)
+    if not participant:
+        raise ParticipantAssignmentError("Participant not found")
+    assignment = db.get(Assignment, assignment_id)
+    if not assignment or assignment.participant_id != participant.id:
+        raise ParticipantAssignmentError("Assignment not found")
+    if assignment.status == AssignmentStatus.COMPLETED.value:
+        raise ParticipantAssignmentError("Answered assignments cannot be skipped")
+    if assignment.status == AssignmentStatus.SKIPPED.value:
+        return assignment
+
+    successor = db.get(Assignment, assignment.next_assignment_id) \
+        if assignment.next_assignment_id else None
+    while successor and successor.status == AssignmentStatus.SKIPPED.value:
+        successor = db.get(Assignment, successor.next_assignment_id) \
+            if successor.next_assignment_id else None
+    if successor and successor.participant_id != participant.id:
+        successor = None
+
+    predecessors = db.scalars(
+        select(Assignment).where(
+            Assignment.participant_id == participant.id,
+            Assignment.next_assignment_id == assignment.id,
+        )
+    ).all()
+    for predecessor in predecessors:
+        predecessor.next_assignment_id = successor.id if successor else None
+
+    assignment.status = AssignmentStatus.SKIPPED.value
+    assignment.completed_at = utc_now()
+    assignment.next_assignment_id = None
+
+    reminders = db.scalars(
+        select(Reminder).where(
+            Reminder.assignment_id == assignment.id,
+            Reminder.status == ReminderStatus.PENDING.value,
+        )
+    ).all()
+    for reminder in reminders:
+        reminder.status = ReminderStatus.CANCELLED.value
+        reminder.failure_reason = "Assignment skipped by administrator"
+        reminder.updated_at = utc_now()
+
+    pending_notifications = db.scalars(
+        select(OutboxNotification).where(
+            OutboxNotification.participant_id == participant.id,
+            OutboxNotification.status == OutboxStatus.PENDING.value,
+        )
+    ).all()
+    for notification in pending_notifications:
+        payload = notification.payload or {}
+        if payload.get("assignment_id") == assignment.id:
+            notification.status = OutboxStatus.CANCELLED.value
+            notification.failure_reason = "Assignment skipped by administrator"
+
+    participant_session = db.scalar(
+        select(ParticipantSession).where(
+            ParticipantSession.participant_id == participant.id
+        )
+    )
+    if participant_session and participant_session.current_assignment_id == assignment.id:
+        participant_session.current_assignment_id = successor.id if successor else None
+        participant_session.current_batch_id = successor.batch_id if successor else None
+        participant_session.state = (
+            SessionState.AWAITING_RESPONSE.value if successor else SessionState.IDLE.value
+        )
+        if successor:
+            _enqueue_new_assignment_push(db, participant, successor, 1)
+
+    db.flush()
+    return assignment
