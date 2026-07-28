@@ -244,6 +244,11 @@ def assign_questions_with_passages(db, participant_id, selections):
         assignments.append(assignment)
         batch_count += 1
 
+    # Persist every new chain node before any existing/new assignment points
+    # at it. With only scalar FK ids (no ORM relationship), SQLAlchemy may
+    # otherwise emit the tail UPDATE before the target INSERT.
+    db.flush()
+
     chain_tail = existing_assignments[-1] if existing_assignments else None
     if chain_tail and assignments and not chain_tail.next_assignment_id:
         chain_tail.next_assignment_id = assignments[0].id

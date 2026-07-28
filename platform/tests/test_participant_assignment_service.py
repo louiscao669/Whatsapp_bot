@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch
 
-from sqlalchemy import create_engine, select
+from sqlalchemy import create_engine, event, select
 from sqlalchemy.orm import Session
 
 from app.services.participant_assignment_service import (
@@ -38,6 +38,11 @@ from eten_shared.domain.assignments import (
 class ParticipantAssignmentServiceTests(unittest.TestCase):
     def setUp(self):
         self.engine = create_engine("sqlite://")
+        event.listen(
+            self.engine,
+            "connect",
+            lambda connection, _record: connection.execute("PRAGMA foreign_keys=ON"),
+        )
         Base.metadata.create_all(self.engine)
 
     def test_parses_qa_reference(self):
