@@ -35,11 +35,11 @@ def target_files(root, chapters, clean_only):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--rewrites", default="evaluation/mcq_rewrites.json")
+    ap.add_argument("--rewrites", default="evaluation/datasets/mcq/mcq_rewrites.json")
     ap.add_argument("--root", default="evaluation/outputs")
     ap.add_argument("--chapters", type=int, nargs="+", default=list(range(1, 9)))
     ap.add_argument("--clean-only", action="store_true",
-                    help="patch only the delivered omission/0% file per chapter")
+                    help="patch only the delivered omission/0%% file per chapter")
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--restore", action="store_true", help="revert every file from its .bak")
     args = ap.parse_args()

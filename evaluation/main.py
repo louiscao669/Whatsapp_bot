@@ -31,10 +31,11 @@ from evaluation.agents.generate_chinese_answers import (
     generate_answers,
     load_passage,
     load_qa_items,
+    load_verse_windows,
     public_questions,
     write_json as write_generated_json,
 )
-from evaluation.scripts.score_generated_answers import (
+from evaluation.scripts.scoring.score_generated_answers import (
     ScoreError,
     backtranslate_generated_answers,
     extract_items,
@@ -43,7 +44,7 @@ from evaluation.scripts.score_generated_answers import (
     summarize,
     write_json as write_score_json,
 )
-from evaluation.scripts.decanonicalize_chinese_dataset import (
+from evaluation.scripts.data_prep.decanonicalize_chinese_dataset import (
     DEFAULT_ENGLISH_TOKEN_MAPPING,
     DEFAULT_MAPPING,
     PROTECTED_TOKEN_MAPPING,
@@ -52,7 +53,7 @@ from evaluation.scripts.decanonicalize_chinese_dataset import (
     replace_english_terms,
     replace_text,
 )
-from evaluation.scripts.translate_llm_qa_to_chinese import (
+from evaluation.scripts.data_prep.translate_llm_qa_to_chinese import (
     TranslationError,
     extract_response_text,
     load_json as load_translation_json,
@@ -60,7 +61,7 @@ from evaluation.scripts.translate_llm_qa_to_chinese import (
     translate_items,
     write_json as write_translation_json,
 )
-from evaluation.scripts.translation_quality import (
+from evaluation.scripts.scoring.translation_quality import (
     DEFAULT_NLLB_DROPOUT_RATES,
     NLLB_DROPOUT_METHOD_PREFIX,
     TranslationQualityError,
@@ -313,11 +314,122 @@ def load_entity_inventory(path: Path | None) -> dict | None:
     return data
 
 
+def load_pseudonym_glossary(path: Path | None) -> dict[str, str]:
+    """{pseudonym_en: pseudonym_zh} from a name map.
+
+    The map already fixes one target-language rendering per entity. Nothing read
+    that column, so every LLM call transliterated the English pseudonym on its
+    own: the passage came out with 塔杜尔 for "Tadul" while the questions used
+    卢丹 for "Ludan" and left "Lidor" and "Vunir" in Latin script. Questions then
+    named entities the passage never mentions, and MCQ accuracy fell below the
+    chance floor.
+    """
+    if not path:
+        return {}
+    data = json.loads(Path(path).read_text(encoding="utf-8"))
+    glossary = {}
+    for entity in data.get("entities", []):
+        english = str(entity.get("pseudonym_en") or "").strip()
+        chinese = str(entity.get("pseudonym_zh") or "").strip()
+        # Generics are deliberately left untranslated (pseudonym_en == canonical).
+        if english and chinese and english != entity.get("canonical"):
+            glossary[english] = chinese
+    return glossary
+
+
+def enforce_glossary(text: str, glossary: dict[str, str]) -> tuple[str, int]:
+    """Replace any English pseudonym still in Latin script with its target form.
+
+    The prompt-level glossary is advisory; this is the backstop. Longest first so
+    multi-word pseudonyms ("the Sovereign") are consumed before their parts.
+    """
+    if not glossary or not text:
+        return text, 0
+    replaced = 0
+    for english in sorted(glossary, key=len, reverse=True):
+        pattern = re.compile(rf"(?<![A-Za-z]){re.escape(english)}(?![A-Za-z])")
+        text, count = pattern.subn(glossary[english], text)
+        replaced += count
+    return text, replaced
+
+
+def is_qa_item(value: Any) -> bool:
+    return isinstance(value, dict) and "Q" in value and "A" in value
+
+
+def enforce_glossary_in_item(item: dict, glossary: dict[str, str]) -> int:
+    """Rewrite one QA item in place, resolving the overloaded "A" field.
+
+    "A" means three different things in this schema:
+
+      open : {"Q": ..., "A": "English standard answer"}   <- scoring rubric
+      mcq  : {"Q": ..., "A": {"A": ..., "B": ..., ...}}   <- choice container
+                              ^ and these are choice labels
+
+    A generic tree walker cannot tell the open answer from choice A, because by
+    the time it holds the key "A" both look like a string under a dict. Two
+    earlier attempts got this wrong in opposite directions: protecting every
+    "A" left choice A untranslated in every MCQ, and protecting none of them
+    translated the English rubric.
+
+    Dispatching on the value's type at the item level removes the ambiguity --
+    a str "A" is the rubric, a dict "A" is the choices -- and, crucially, means
+    we never recurse into the choice dict holding an ambiguous key.
+    """
+    total = 0
+    for key, value in item.items():
+        if key == "A":
+            if isinstance(value, str):
+                # Open standard answer: the rubric, compared in English. Leave it.
+                continue
+            if isinstance(value, dict):
+                for label, choice in value.items():
+                    if isinstance(choice, str):
+                        value[label], count = enforce_glossary(choice, glossary)
+                        total += count
+                continue
+        if isinstance(value, str):
+            item[key], count = enforce_glossary(value, glossary)
+            total += count
+        else:
+            total += enforce_glossary_in_items(value, glossary)
+    return total
+
+
+def enforce_glossary_in_items(items: Any, glossary: dict[str, str]) -> int:
+    """Walk a translated QA structure in place. Returns the replacement count."""
+    total = 0
+    if is_qa_item(items):
+        return enforce_glossary_in_item(items, glossary)
+    if isinstance(items, list):
+        for index, value in enumerate(items):
+            if isinstance(value, str):
+                items[index], count = enforce_glossary(value, glossary)
+                total += count
+            else:
+                total += enforce_glossary_in_items(value, glossary)
+    elif isinstance(items, dict):
+        for key, value in items.items():
+            if isinstance(value, str):
+                items[key], count = enforce_glossary(value, glossary)
+                total += count
+            else:
+                total += enforce_glossary_in_items(value, glossary)
+    return total
+
+
 def canonicalization_entries(
     extra_mapping: dict[str, str] | None = None,
     entity_inventory: dict | None = None,
+    pre_blinded: bool = False,
 ) -> list[dict]:
-    token_to_placeholder = dict(PROTECTED_TOKEN_MAPPING)
+    # PROTECTED_TOKEN_MAPPING / DEFAULT_ENGLISH_TOKEN_MAPPING / DEFAULT_MAPPING are
+    # the legacy Luke 1-8 blinding tables (Mary, Zechariah, "priest" ->
+    # __WORKER_A__, ...). When the inputs were already blinded before the
+    # pipeline they must not fire: they are a second, inconsistent blinding
+    # layer over text that is already anonymous, and they re-pseudonymize common
+    # nouns the name map deliberately left in plain English.
+    token_to_placeholder = {} if pre_blinded else dict(PROTECTED_TOKEN_MAPPING)
     for entity in (entity_inventory or {}).get("entities", []):
         token = str(entity.get("protected_token") or "").strip()
         placeholder = str(entity.get("placeholder") or "").strip()
@@ -325,16 +437,18 @@ def canonicalization_entries(
             token_to_placeholder[token] = placeholder
 
     english_aliases: dict[str, list[str]] = {}
-    for source, token in DEFAULT_ENGLISH_TOKEN_MAPPING.items():
-        english_aliases.setdefault(token, []).append(source)
+    if not pre_blinded:
+        for source, token in DEFAULT_ENGLISH_TOKEN_MAPPING.items():
+            english_aliases.setdefault(token, []).append(source)
     for entity in (entity_inventory or {}).get("entities", []):
         token = str(entity.get("protected_token") or "").strip()
         for alias in normalized_aliases(entity.get("aliases")):
             english_aliases.setdefault(token, []).append(alias)
 
     chinese_aliases: dict[str, list[str]] = {}
-    for source, placeholder in DEFAULT_MAPPING.items():
-        chinese_aliases.setdefault(placeholder, []).append(source)
+    if not pre_blinded:
+        for source, placeholder in DEFAULT_MAPPING.items():
+            chinese_aliases.setdefault(placeholder, []).append(source)
     for entity in (entity_inventory or {}).get("entities", []):
         placeholder = str(entity.get("placeholder") or "").strip()
         for alias in normalized_aliases(entity.get("chinese_alias_hints")):
@@ -424,7 +538,9 @@ def canonicalization_context(
     extra_mapping = entity_inventory_chinese_mapping(entity_inventory)
     if args.mapping_json:
         extra_mapping.update(load_mapping_json(args.mapping_json))
-    entries = canonicalization_entries(extra_mapping, entity_inventory)
+    entries = canonicalization_entries(
+        extra_mapping, entity_inventory, pre_blinded=getattr(args, "pre_blinded", False)
+    )
     extra_token_mapping = {
         str(entity.get("protected_token")): str(entity.get("placeholder"))
         for entity in (entity_inventory or {}).get("entities", [])
@@ -441,6 +557,7 @@ def llm_canonicalize_qa_items(
     extra_token_mapping: dict[str, str] | None,
     model: str,
     retries: int,
+    temperature: float | None = None,
 ) -> list[dict]:
     try:
         from openai import OpenAI
@@ -470,6 +587,7 @@ def llm_canonicalize_qa_items(
         try:
             response = client.responses.create(
                 model=model,
+                **({} if temperature is None else {"temperature": temperature}),
                 input=[
                     {
                         "role": "system",
@@ -499,6 +617,7 @@ def llm_canonicalize_passage(
     extra_token_mapping: dict[str, str] | None,
     model: str,
     retries: int,
+    temperature: float | None = None,
 ) -> str:
     try:
         from openai import OpenAI
@@ -531,6 +650,7 @@ def llm_canonicalize_passage(
         try:
             response = client.responses.create(
                 model=model,
+                **({} if temperature is None else {"temperature": temperature}),
                 input=[
                     {
                         "role": "system",
@@ -601,6 +721,7 @@ def llm_discover_entity_inventory(
     qa_items: list[dict],
     model: str,
     retries: int,
+    temperature: float | None = None,
 ) -> dict:
     try:
         from openai import OpenAI
@@ -647,6 +768,7 @@ def llm_discover_entity_inventory(
         try:
             response = client.responses.create(
                 model=model,
+                **({} if temperature is None else {"temperature": temperature}),
                 input=[
                     {
                         "role": "system",
@@ -731,6 +853,7 @@ def run_entity_inventory_stage(
         qa_items=qa_items,
         model=model,
         retries=args.retries,
+        temperature=args.temperature,
     )
     entity_inventory_path.parent.mkdir(parents=True, exist_ok=True)
     write_score_json(entity_inventory_path, inventory)
@@ -826,6 +949,7 @@ def run_translate_stage(args: argparse.Namespace, translated_qa_path: Path) -> b
         return False
 
     print(f"run translate: {translated_qa_path}")
+    glossary = load_pseudonym_glossary(args.pseudonym_map)
     items = normalize_items(load_translation_json(args.qa_json))
     translated = translate_items(
         items,
@@ -834,7 +958,14 @@ def run_translate_stage(args: argparse.Namespace, translated_qa_path: Path) -> b
         batch_size=args.translation_batch_size,
         retries=args.retries,
         dry_run=False,
+        temperature=args.temperature,
+        seed=args.seed,
+        glossary=glossary,
     )
+    if glossary:
+        forced = enforce_glossary_in_items(translated, glossary)
+        if forced:
+            print(f"  glossary backstop rewrote {forced} untranslated name(s) in the QA")
     write_translation_json(translated_qa_path, translated)
     return True
 
@@ -855,11 +986,12 @@ def run_passage_translate_stage(
         return False
 
     print(f"[{method}] run passage translate: {translated_passage_path}")
+    glossary = load_pseudonym_glossary(args.pseudonym_map)
     raw_source_texts = read_texts_from_json_or_text(args.passage_file)
     if uses_natural_source_text(method):
         source_texts = raw_source_texts
     else:
-        source_mapping = dict(DEFAULT_ENGLISH_TOKEN_MAPPING)
+        source_mapping = {} if args.pre_blinded else dict(DEFAULT_ENGLISH_TOKEN_MAPPING)
         source_mapping.update(entity_inventory_english_mapping(entity_inventory))
         if args.mapping_json:
             source_mapping.update(load_mapping_json(args.mapping_json))
@@ -878,7 +1010,17 @@ def run_passage_translate_stage(
         nllb_model=args.nllb_model,
         nllb_dropout_rate=args.nllb_dropout_rate,
         openai_model=args.passage_translation_model,
+        temperature=args.temperature,
+        seed=args.seed,
+        glossary=glossary,
     )
+    if glossary:
+        forced = 0
+        for index, translation in enumerate(translations):
+            translations[index], count = enforce_glossary(translation, glossary)
+            forced += count
+        if forced:
+            print(f"[{method}] glossary backstop rewrote {forced} untranslated name(s)")
     method_dropout_rate = parse_nllb_dropout_rate(method) if is_nllb_dropout_method(method) else None
     if method == NLLB_DROPOUT_METHOD_PREFIX:
         method_dropout_rate = args.nllb_dropout_rate
@@ -945,13 +1087,22 @@ def run_shared_qa_decanonicalize_stage(
     )
     qa_data = load_score_json(translated_qa_path)
     qa_items = extract_items(qa_data)
-    transformed_qa = llm_canonicalize_qa_items(
-        qa_items=qa_items,
-        entries=entries,
-        extra_token_mapping=extra_token_mapping,
-        model=canonicalization_model,
-        retries=args.retries,
-    )
+    if args.pre_blinded and not entries:
+        # Same reasoning as the passage side: already blind, nothing to map, and
+        # an empty table makes the pass invent placeholders. Keeping both sides
+        # on the same rule is what guarantees the passage and the questions name
+        # the same people.
+        print("pre-blinded: skipping QA canonicalization")
+        transformed_qa = qa_items
+    else:
+        transformed_qa = llm_canonicalize_qa_items(
+            qa_items=qa_items,
+            entries=entries,
+            extra_token_mapping=extra_token_mapping,
+            model=canonicalization_model,
+            retries=args.retries,
+            temperature=args.temperature,
+        )
     write_score_json(decanonicalized_qa_path, transformed_qa)
     return True
 
@@ -984,13 +1135,25 @@ def run_decanonicalize_stage(
     )
 
     passage_text = translated_passage_path.read_text(encoding="utf-8")
-    transformed_passage = llm_canonicalize_passage(
-        passage_text=passage_text,
-        entries=entries,
-        extra_token_mapping=extra_token_mapping,
-        model=canonicalization_model,
-        retries=args.retries,
-    )
+    if args.pre_blinded and not entries:
+        # The passage was blinded before the pipeline and the glossary already
+        # pinned each entity's target-language name, so there is nothing left to
+        # canonicalize. Running the pass anyway is actively destructive: with an
+        # empty mapping table the LLM still follows the "replace names with
+        # placeholders" instruction and improvises its own, rewriting a clean
+        # 韦恩 / 韦姆村 / 尼温 passage into 角色甲 / 地名甲 / 人物甲 while the QA
+        # keeps the real pseudonyms. The two then name different people.
+        print(f"[{method}] pre-blinded: skipping passage canonicalization")
+        transformed_passage = passage_text
+    else:
+        transformed_passage = llm_canonicalize_passage(
+            passage_text=passage_text,
+            entries=entries,
+            extra_token_mapping=extra_token_mapping,
+            model=canonicalization_model,
+            retries=args.retries,
+            temperature=args.temperature,
+        )
     transformed_qa = load_score_json(shared_decanonicalized_qa_path)
 
     decanonicalized_passage_path.parent.mkdir(parents=True, exist_ok=True)
@@ -1074,6 +1237,11 @@ def run_answer_stage(
         expanded_answer_format=args.expanded_answer_format,
         mcq_choice_mapper=args.mcq_choice_mapper,
         mcq_choice_model=args.mcq_choice_model,
+        verse_windows=(
+            load_verse_windows(args.answer_verse_windows_json)
+            if args.answer_verse_windows_json
+            else None
+        ),
     )
     write_generated_json(generated_answers_path, answers)
     return True
@@ -1102,6 +1270,15 @@ def run_backtranslate_stage(
         translation_model=args.translation_model,
         retries=args.retries,
         batch_size=args.backtranslation_batch_size,
+        temperature=args.temperature,
+        seed=args.seed,
+        # zh -> en, so the back-translated answer and the English standard
+        # answer use the same names. Without it the judge marks correct answers
+        # wrong purely on naming: 韦恩的父亲是尼温 ("Tadul's father is Divus",
+        # exactly right) came back as "Wayne's father is Niwen" and scored 0.
+        reverse_glossary={
+            zh: en for en, zh in load_pseudonym_glossary(args.pseudonym_map).items()
+        },
     )
     write_score_json(backtranslated_answers_path, backtranslated)
     return True
@@ -1133,6 +1310,8 @@ def run_score_stage(
         skip_llm=args.skip_llm,
         placeholder_standard_answers=True,
         judge_batch_size=args.judge_batch_size,
+        temperature=args.temperature,
+        seed=args.seed,
     )
     write_score_json(
         scores_path,
@@ -1197,6 +1376,30 @@ def parse_args() -> argparse.Namespace:
         help="Disable LLM chapter-local entity inventory discovery.",
     )
     parser.add_argument(
+        "--pseudonym-map",
+        type=Path,
+        help=(
+            "Name map from scripts/pseudonyms/. Its pseudonym_en -> pseudonym_zh "
+            "pairs are given to every translation stage as a glossary, and "
+            "enforced afterwards, so one entity has one target-language name "
+            "across the passage and the questions. Without it each call "
+            "transliterates independently and questions end up naming people "
+            "the passage never mentions."
+        ),
+    )
+    parser.add_argument(
+        "--pre-blinded",
+        action="store_true",
+        help=(
+            "Inputs were already pseudonymized before the pipeline (see "
+            "scripts/pseudonyms/pseudonymize_english_source.py). Disables the "
+            "legacy Luke 1-8 blinding tables so names are not pseudonymized "
+            "twice by two different systems, and so common nouns the name map "
+            "deliberately left in plain English ('priest', 'lion') are not "
+            "rewritten to __WORKER_A__ style placeholders."
+        ),
+    )
+    parser.add_argument(
         "--methods",
         nargs="+",
         help=(
@@ -1252,6 +1455,29 @@ def parse_args() -> argparse.Namespace:
         help=(
             "OpenAI model for chapter-local entity discovery. Default: "
             "OPENAI_ENTITY_DISCOVERY_MODEL or --translation-model."
+        ),
+    )
+    parser.add_argument(
+        "--temperature",
+        type=float,
+        default=0.0,
+        help=(
+            "Sampling temperature for every OpenAI stage: QA translation, LLM "
+            "passage translation, canonicalization, entity discovery, "
+            "back-translation, and the judge. Defaults to 0 for reproducibility "
+            "(measured 2026-08-03: at the previous API default of 1.0, "
+            "re-translating one passage diverged ~22%% and re-judging one fixed "
+            "answer set flipped 18%% of open-item labels). Pass 1.0 to reproduce "
+            "pre-2026-08-03 runs."
+        ),
+    )
+    parser.add_argument(
+        "--seed",
+        type=int,
+        help=(
+            "Sampling seed. Only applies where the SDK supports it "
+            "(chat.completions); the Responses API accepts temperature but not "
+            "seed, so this is ignored for those stages."
         ),
     )
     parser.add_argument(
@@ -1331,6 +1557,18 @@ def parse_args() -> argparse.Namespace:
         help=(
             "Questions per answer-generation request when --answer-verse-window is -1. "
             "Default: 5."
+        ),
+    )
+    parser.add_argument(
+        "--answer-verse-windows-json",
+        type=Path,
+        help=(
+            "Curated per-question verse windows, e.g. "
+            "QA_algorithm/inputs/tier1_qa_verse_windows.json. Matched on content "
+            "id; takes precedence over --answer-verse-window, which is used only "
+            "for questions the file does not cover. These windows were checked to "
+            "contain the answer-bearing verse, which a mechanical span does not "
+            "guarantee."
         ),
     )
     parser.add_argument(

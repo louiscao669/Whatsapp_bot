@@ -37,7 +37,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from eten_shared.domain.qa_eligibility import qa_item_is_assignable
-from eten_shared.models import Assignment, ExperimentPlanCell, QAItem
+from eten_shared.models import Assignment, ExperimentPlanCell, ExperimentWindow, QAItem
 from eten_shared.recordings import participant_question_audio_satisfied
 
 # A strategy picks ONE item from the eligible remaining items of the active cell.
@@ -100,7 +100,7 @@ def _current_cell(cells: List[ExperimentPlanCell]) -> Optional[ExperimentPlanCel
 
 
 def _cell_candidates(db: Session, cell: ExperimentPlanCell, participant) -> List[QAItem]:
-    """Eligible, not-yet-assigned QAItems for this cell's CHAPTER (shared QA pool).
+    """Eligible, not-yet-assigned QAItems for this cell's window group.
 
     Keeps the production eligibility filters verbatim: ``qa_item_is_assignable`` (active +
     not review-removed) and ``participant_question_audio_satisfied`` — the latter IS the
@@ -114,7 +114,19 @@ def _cell_candidates(db: Session, cell: ExperimentPlanCell, participant) -> List
             )
         ).all()
     )
-    items = db.scalars(
+    window_items = db.scalars(
+        select(QAItem)
+        .join(ExperimentWindow, ExperimentWindow.qa_item_id == QAItem.id)
+        .where(
+            ExperimentWindow.group_index == cell.chapter,
+            QAItem.active.is_(True),
+            QAItem.review_removed_at.is_(None),
+        )
+        .order_by(ExperimentWindow.sequence_index)
+    ).all()
+    # Backwards-compatible Luke path for databases that have not imported the
+    # tier-1 experiment_windows table/pool.
+    items = window_items or db.scalars(
         select(QAItem).where(
             QAItem.passage_id == f"luke{cell.chapter}",
             QAItem.active.is_(True),

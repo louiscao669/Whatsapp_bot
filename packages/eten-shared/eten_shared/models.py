@@ -547,14 +547,20 @@ class ExperimentPassage(Base):
     __tablename__ = "experiment_passages"
     __table_args__ = (
         UniqueConstraint(
-            "chapter",
+            "source_passage_id",
             "condition",
             "language",
-            name="uq_experiment_passage_chapter_condition_language",
+            name="uq_experiment_passage_source_condition_language",
         ),
     )
 
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    # Stable source identity.  Luke rows are backfilled as ``luke{chapter}``;
+    # tier-1 rows use ids such as ``t1_judg9``.  ``chapter`` is retained as the
+    # source-passage ordinal for backwards compatibility with the first pilot.
+    source_passage_id: Mapped[Optional[str]] = mapped_column(
+        String(128), nullable=True, index=True
+    )
     chapter: Mapped[int] = mapped_column(Integer, nullable=False)
     condition: Mapped[str] = mapped_column(String(64), nullable=False)
     name: Mapped[Optional[str]] = mapped_column(String(128))
@@ -660,6 +666,44 @@ class ExperimentPlanCell(Base):
     assignments: Mapped[List["Assignment"]] = relationship(
         back_populates="experiment_cell"
     )
+
+
+class ExperimentWindow(Base):
+    """One deliverable tier-1 three-verse window and its sole QA item.
+
+    The unique ``(source_passage_id, window_key)`` constraint makes the study's
+    one-question-per-window rule structural rather than a convention.  Eight
+    balanced ``group_index`` buckets are the rows/columns rotated by the Latin
+    square; a group may cross a source-passage boundary.
+    """
+
+    __tablename__ = "experiment_windows"
+    __table_args__ = (
+        UniqueConstraint("qa_item_id", name="uq_experiment_windows_qa_item"),
+        UniqueConstraint(
+            "source_passage_id",
+            "window_key",
+            name="uq_experiment_windows_source_window",
+        ),
+        UniqueConstraint("sequence_index", name="uq_experiment_windows_sequence"),
+    )
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    qa_item_id: Mapped[str] = mapped_column(
+        ForeignKey("qa_items.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    source_passage_id: Mapped[str] = mapped_column(String(128), nullable=False, index=True)
+    content_id: Mapped[str] = mapped_column(String(128), nullable=False)
+    window_key: Mapped[str] = mapped_column(String(255), nullable=False)
+    group_index: Mapped[int] = mapped_column(Integer, nullable=False, index=True)
+    sequence_index: Mapped[int] = mapped_column(Integer, nullable=False)
+    window_ordinals: Mapped[List[int]] = mapped_column(JSON, default=list, nullable=False)
+    verse_numbers: Mapped[List[str]] = mapped_column(JSON, default=list, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utc_now, nullable=False
+    )
+
+    qa_item: Mapped["QAItem"] = relationship()
 
 
 class ParticipantResponse(Base):

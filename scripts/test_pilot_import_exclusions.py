@@ -95,21 +95,22 @@ def test_unconstrained_default_unchanged():
 
 
 def test_build_plan_pool_guard():
-    qa_rows, passage_rows, summary = NS["build_plan"](EVAL, 0.75, 2026)
+    # Gate 1 now builds tier 1. The Luke helper/exclusion tests above remain as
+    # regression coverage for historical data, but the executable pool is the
+    # translated tier-1/window-map intersection.
+    from pilot_import import build_plan
+    qa_rows, window_rows, passage_rows, summary, missing = build_plan(EVAL, 0.75, 2026)
     mcq = [r for r in qa_rows if r.question_type == "mcq"]
-    rewrites = NS["load_mcq_rewrites"](EVAL)
-    check("build_plan produces 56 passages (7 conditions x 8 chapters)",
-          len(passage_rows) == 56)
-    check("every imported MCQ has a rewrite (pool guard would abort otherwise)",
-          len(mcq) > 0 and "pool check" in "\n".join(summary))
-    check("MCQ fraction still ~75% of the pool",
-          abs(len(mcq) / len(qa_rows) - 0.75) < 0.02)
-    # the retired MCQs must appear as OPEN rows, not MCQ rows
-    open_texts = {r.question_text for r in qa_rows if r.question_type == "open"}
-    qa2 = NS["load_chapter_qa"](EVAL, 2)
-    check("uw-174346 is present, as an open row",
-          qa2["uw-174346"]["open"]["Q"] in open_texts)
-    check("rewrites file has the expected 94 active ids", len(rewrites) == 94)
+    check("build_plan produces 78 QA rows and 78 one-to-one windows",
+          len(qa_rows) == len(window_rows) == 78)
+    check("MCQ fraction remains ~75%", abs(len(mcq) / len(qa_rows) - 0.75) < 0.02)
+    identities = {(r["source_passage_id"], tuple(r["window_ordinals"])) for r in window_rows}
+    check("no two imported questions share an exact window", len(identities) == 78)
+    check("six available variants x ten passages are staged", len(passage_rows) == 60)
+    check("the ten missing WBW variants are reported and block a real write",
+          len(missing) == 10 and all(row[1] == "wbw" for row in missing))
+    check("summary records the 12 removed window collisions",
+          "removed 12 extra question" in "\n".join(summary))
 
 
 def test_prune_identifies_stale_form():
@@ -183,7 +184,7 @@ def main():
     for label, fn in [("allowed_forms", test_allowed_forms),
                       ("forced selection across seeds", test_forced_across_seeds),
                       ("unconstrained default unchanged", test_unconstrained_default_unchanged),
-                      ("build_plan + pool guard", test_build_plan_pool_guard),
+                      ("tier-1 build_plan + window guard", test_build_plan_pool_guard),
                       ("prune_stale_qa", test_prune_identifies_stale_form)]:
         print(f"{label}:")
         fn()

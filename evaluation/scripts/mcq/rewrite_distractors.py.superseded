@@ -1,0 +1,602 @@
+#!/usr/bin/env python3
+"""Rewrite MCQ distractors on the DELIVERED Chinese pilot items, then validate.
+
+Problem it fixes: the pilot MCQs are answerable without the passage (register-obvious
+options / weak distractors) -> defects can't move accuracy. This regenerates each item's
+options to be register-congruent, parallel, and passage-dependent, keyed to the source
+verse, WITHOUT knowing anything about the injected translation defects.
+
+Quality bar (encoded in the generation prompt + enforced by two gates):
+  * Correct answer: entailed by the passage, UNIQUELY correct, and a PLAIN-LANGUAGE
+    paraphrase (no verbatim overlap with the passage; but never a synonym that needs Bible
+    knowledge to map -- e.g. 圣灵 stays 圣灵, shared across a near-miss instead).
+  * Distractors: register-congruent, parallel in form/length, each NOT entailed by the
+    passage, no stem-echo, >=1 near-miss.
+  * Conform rewrite (always, unless --no-conform): an LLM rewrites the three distractors so
+    each is BUILT FROM MATERIAL IN THE PASSAGE and all four options are the SAME ANSWER TYPE.
+    This is a rewrite, not a gate -- there is no pass/fail, the options come out conforming.
+  * Gate 1 (faithfulness/uniqueness): LLM entailment -- answer entailed, every distractor
+    not entailed by the chapter passage.
+  * Gate 2 (guessability): closed-book accuracy (question+options only, religious-text
+    system prompt, K samples) must fall to <= --max-prior, while the clean open-book answer
+    stays correct.
+
+Few-shot: seeded by the LOCKED Luke 3 gold set (embedded below).
+Operates on delivered Chinese only: reads/writes evaluation/outputs/luke{ch}/<model-dir>/
+omission/0%/qa_target_pseudonymized.json. Writes a *proposal* file by default (never
+overwrites in place unless --in-place); flags any item that fails a gate for human review.
+
+Usage:
+  set -a; source .env; set +a               # or --provider ollama
+  python evaluation/scripts/mcq/rewrite_distractors.py --chapters 1 2 4 5 6 7 8 \
+      --provider openai --model gpt-4.1-mini \
+      --guess-provider ollama --guess-model qwen2.5:1.5b --k 5 --max-prior 0.4
+
+The generation model rewrites the choices. The guess model then receives only the
+question, rewritten choices, and religious-text system hint for the closed-book test.
+Aggregate accuracy is written to rewrite_summary.json; every sampled choice is retained
+in rewrite_report.json.
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import random
+import re
+import sys
+from pathlib import Path
+
+from regen_mcq_tier01 import randomized_three_verse_window
+
+LETTER_RE = re.compile(r"[A-Da-d]")
+CONFORM_SYSTEM = """You rewrite the three DISTRACTORS of a Chinese reading-comprehension MCQ
+so they satisfy two hard requirements. Do not change the correct option and do not change
+which option is correct.
+
+Requirement 1 — BUILT FROM THE ANSWER CONTEXT.
+You are given an ANSWER CONTEXT: the exact few verses the respondent will see when answering.
+Every distractor must be made of material drawn from THAT CONTEXT — a person, place, group,
+object, action or time that actually appears in it. Do not use material from elsewhere in the
+chapter, and never invent an entity the context does not contain: to the respondent, who sees
+only these verses, such an option looks made-up and can be eliminated without understanding
+anything. The distractor must still be FALSE as an answer to this question — true material
+from the context, wrong answer.
+
+Requirement 2 — SAME ANSWER TYPE.
+All four options must answer the same KIND of question as the correct one. If the answer is a
+person, every option is a person; a place, every option a place; an action, every option an
+action; a duration, every option a duration. An option of a different kind can be eliminated
+without reading the passage.
+
+Also keep: parallel grammar, length and specificity, so the correct option does not stand out;
+and do not let the correct option be the only one whose wording resembles (or the only one
+that avoids) the passage's own phrasing.
+
+Output STRICT JSON only: {"A":"...","B":"...","C":"...","D":"...","correct":"<letter>"}
+Keep "correct" exactly as given."""
+
+
+def conform_distractors(client, model, cand, question, window, ents=None):
+    """Rewrite the distractors so they are drawn from the ANSWER CONTEXT and type-matched.
+
+    ``window`` is the deterministic three-verse answer context -- the exact text the
+    respondent sees -- NOT the whole chapter. Grounding in the chapter was the wrong scope:
+    an option built from verse 60, delivered in a window covering verses 12-14, is
+    indistinguishable from an invented entity to someone who reads only those verses, and is
+    therefore *more* eliminable, not less.
+
+    ``ents`` is the chapter's type-tagged pseudonym inventory, filtered to names occurring in
+    the window, so the menu never suggests out-of-context material.
+    """
+    menu = ""
+    if ents:
+        by_cat = {}
+        for name, cat in ents.items():
+            if name and name in window:          # window-scoped, see docstring
+                by_cat.setdefault(cat, []).append(name)
+        if by_cat:
+            menu = "\n".join(f"- {cat}: {', '.join(sorted(set(v))[:20])}"
+                             for cat, v in sorted(by_cat.items()) if v)
+            menu = f"\nNamed entities present in the ANSWER CONTEXT, by type:\n{menu}\n"
+    body = "\n".join(f"{L}. {cand[L]}" + ("   [correct — keep as is]"
+                                          if L == cand["correct"] else "")
+                     for L in "ABCD")
+    user = (f"ANSWER CONTEXT (the only verses the respondent will see):\n{window}\n"
+            f"{menu}\nQUESTION: {question}\n\n"
+            f"CURRENT OPTIONS (correct = {cand['correct']}):\n{body}\n\n"
+            f"Rewrite the three distractors to meet both requirements, drawing every "
+            f"distractor from the ANSWER CONTEXT above. JSON only.")
+    out = chat(client, model, [{"role": "system", "content": CONFORM_SYSTEM},
+                               {"role": "user", "content": user}], temperature=0.4)
+    fixed = parse_json(out)
+    # Never let the conform step move the answer or drop the fact.
+    fixed["correct"] = cand["correct"]
+    fixed[cand["correct"]] = cand[cand["correct"]]
+    if not all(str(fixed.get(L, "")).strip() for L in "ABCD"):
+        return cand
+    return {L: fixed[L] for L in "ABCD"} | {"correct": cand["correct"]}
+
+
+def rebalance_key(cand, seed):
+    letters = "ABCD"
+    values = [cand[L] for L in letters]
+    correct_idx = letters.index(cand["correct"])
+    order = list(range(4))
+    random.Random(str(seed)).shuffle(order)
+    out = {letters[i]: values[order[i]] for i in range(4)}
+    out["correct"] = letters[order.index(correct_idx)]
+    return out
+
+
+GEN_SYSTEM = """You rewrite the four options of a Chinese biblical reading-comprehension MCQ.
+Goal: make the item answerable ONLY by reading the given passage — not by register, priors,
+or string-matching — while keeping the SAME correct fact.
+
+Rules:
+1. Keep the correct fact's meaning. Rewrite the correct option as a PLAIN-LANGUAGE paraphrase
+   so it does not copy a distinctive string from the passage. BUT never replace a fixed term
+   (e.g. 圣灵, 施洗, 鸽子) with a synonym that needs Bible knowledge to recognize as equal —
+   for such terms keep the term and instead repeat it in a distractor so discrimination falls
+   on a plain in-passage detail. Paraphrase only toward SIMPLER wording a reader with no Bible
+   background would understand.
+2. Write 3 distractors that are: register-congruent (all four equally plausible in a biblical
+   frame — no absurd war/trade/art options), parallel in grammar/length/specificity (the
+   answer must not stand out), each FALSE for this passage (not stated by it), and include at
+   least one near-miss drawn from a real biblical motif.
+3. No stem-echo: do not let the correct option uniquely repeat a word from the question. If a
+   cue word is unavoidable, put it in every option.
+4. SAME ANSWER TYPE. All four options must answer the same kind of question as the correct
+   one. If the answer is a person, every option names a person; if a place, every option
+   names a place; if a number or duration, every option is a number or duration. An option
+   of the wrong type is solvable without reading.
+5. BUILD DISTRACTORS FROM THE PASSAGE. Each distractor must reuse material that actually
+   occurs in the passage -- a person, place, group, object or phrase that is really there --
+   while being FALSE as a statement about this question. Example: if the question asks whom
+   the angel visited, use other people the passage really names. Do NOT invent entities that
+   never appear. This stops the answer from being findable by string-matching.
+6. Balance, do not invert. Because rule 1 paraphrases the correct option and rule 5 grounds
+   the distractors, take care that the correct option is not the ONLY one whose wording
+   differs from the passage -- that just replaces one surface cue with its mirror image.
+   Aim for all four options sitting at a similar distance from the passage wording.
+7. Output STRICT JSON only: {"A":"...","B":"...","C":"...","D":"...","correct":"<letter>"}.
+   Put the correct option in A and set "correct":"A". Do NOT try to randomise the position --
+   the harness reshuffles deterministically afterwards. (Asking a model to randomise produces
+   badly skewed keys: an earlier run put the answer at A in 92 of 100 items.)"""
+
+
+def build_client(provider):
+    from openai import OpenAI
+    if provider == "ollama":
+        return OpenAI(base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434/v1"),
+                      api_key="ollama")
+    return OpenAI()
+
+
+def chat(client, model, messages, temperature=0.0, max_tokens=400):
+    r = client.chat.completions.create(model=model, temperature=temperature,
+                                       max_tokens=max_tokens, messages=messages)
+    return (r.choices[0].message.content or "").strip()
+
+
+def options_block(o):
+    return "\n".join(f"{k}. {o[k]}" for k in ("A", "B", "C", "D") if o.get(k))
+
+
+def parse_json(text):
+    text = re.sub(r"^```(?:json)?|```$", "", text.strip(), flags=re.M).strip()
+    return json.loads(text)
+
+
+def pick(d, *names):
+    for n in names:
+        if (d / n).exists():
+            return d / n
+    return None
+
+
+# ---------------------------------------------------------------- generation + gates
+def generate(client, model, question, correct_fact, passage, ref):
+    user = (f"{FEWSHOT}\n\n### Now rewrite this item\n"
+            f"Passage (whole chapter, pseudonymized):\n{passage}\n\n"
+            f"This item's fact is from verse {ref}.\n"
+            f"Question: {question}\n"
+            f"Correct fact to keep (paraphrase to plain language): {correct_fact}\n"
+            f"Return STRICT JSON only.")
+    out = chat(client, model, [{"role": "system", "content": GEN_SYSTEM},
+                               {"role": "user", "content": user}], temperature=0.7)
+    return parse_json(out)
+
+
+FAILURE_HINTS = {
+    "type_mismatch": "Options are not all the same KIND of answer. Make every option the "
+                     "same type as the correct one (all people, all places, all actions...).",
+    "type_mismatch_llm": "Options are not all the same KIND of answer.",
+    "distractor_not_grounded": "These distractors use nothing that occurs in the passage. "
+                               "Rebuild them from people/places/objects/events really in it.",
+    "distractor_not_grounded_llm": "These distractors are invented rather than drawn from "
+                                   "the passage. Rebuild them from material really in it.",
+    "overlap_high_outlier": "The correct option copies the passage wording far more than the "
+                            "distractors, so it can be found by string-matching. Paraphrase "
+                            "it, or move the shared wording into every option.",
+    "overlap_low_outlier": "The correct option is the ONLY one whose wording differs from the "
+                           "passage, which is just the same cue inverted. Bring it closer to "
+                           "the passage register, or paraphrase the distractors too.",
+    "stem_echo": "The correct option uniquely repeats these words from the question. Put them "
+                 "in every option or none.",
+    "near_duplicate": "These options are near-duplicates and are not independent choices.",
+    "answer_not_entailed": "The correct option is NOT supported by the passage. Fix it.",
+    "distractors_entailed": "These distractors are TRUE according to the passage, so the item "
+                            "has more than one correct answer. Make them false.",
+    "too_guessable": "The item was answered correctly WITHOUT the passage. The distractors are "
+                     "too weak or the answer is too obvious from register — make all four "
+                     "equally plausible to someone who has not read the passage.",
+}
+
+
+def repair(client, model, question, correct_fact, passage, ref, prev, failures):
+    """Targeted fix of a failed candidate.
+
+    The retry loop used to call generate() again from scratch: same prompt, same inputs, a
+    fresh sample at temperature 0.7 and no idea what went wrong. If the model has a
+    systematic habit -- ungrounded distractors, say -- four blind resamples fail the same way
+    four times. Feeding the specific failures back makes each retry informative.
+    """
+    notes = []
+    for key, detail in (failures or {}).items():
+        hint = FAILURE_HINTS.get(key, key)
+        notes.append(f"- [{key}] {hint}" + (f"  (offending: {detail})" if detail else ""))
+    prev_block = "\n".join(f"{L}. {prev.get(L, '')}" for L in "ABCD")
+    user = (f"{FEWSHOT}\n\n### Fix this item\n"
+            f"Passage (whole chapter, pseudonymized):\n{passage}\n\n"
+            f"This item's fact is from verse {ref}.\n"
+            f"Question: {question}\n"
+            f"Correct fact to keep: {correct_fact}\n\n"
+            f"Your previous attempt (correct was {prev.get('correct')}):\n{prev_block}\n\n"
+            f"It was REJECTED for:\n" + "\n".join(notes) + "\n\n"
+            f"Rewrite the four options fixing ONLY these problems, keeping everything that "
+            f"was already fine and keeping the same correct fact. Put the correct option in A "
+            f"and set \"correct\":\"A\". Return STRICT JSON only.")
+    out = chat(client, model, [{"role": "system", "content": GEN_SYSTEM},
+                               {"role": "user", "content": user}], temperature=0.5)
+    return parse_json(out)
+
+
+def entails(client, model, passage, hypothesis):
+    """True iff the passage entails the hypothesis (semantic, not string)."""
+    msg = [{"role": "system", "content":
+            "Decide if the PASSAGE entails the STATEMENT (is it true and supported by the "
+            "passage?). Judge meaning, not wording. Answer strictly 'yes' or 'no'."},
+           {"role": "user", "content": f"PASSAGE:\n{passage}\n\nSTATEMENT: {hypothesis}\n\nyes or no?"}]
+    return chat(client, model, msg, 0.0, 4).strip().lower().startswith("y")
+
+
+def ask_letter(client, model, question, opts, passage, temperature, system):
+    header = f"文章：\n{passage}\n\n" if passage else ""
+    instr = "请只根据下面的文章作答。" if passage else "没有提供文章。请凭已有知识猜最可能的答案。"
+    prompt = (f"{header}这是一道单项选择题。{instr}\n\n问题：{question}\n选项：\n"
+              f"{options_block(opts)}\n\n只输出一个字母：A、B、C 或 D。")
+    m = [{"role": "system", "content": system}] if system else []
+    m.append({"role": "user", "content": prompt})
+    t = chat(client, model, m, temperature, 8)
+    mt = LETTER_RE.search(t)
+    return mt.group(0).upper() if mt else "?"
+
+
+def validate(client, model, gclient, gmodel, item, question, passage, k, max_prior, system):
+    opts = {L: item[L] for L in "ABCD"}
+    correct = item["correct"]
+    # Type-matching and passage-grounding are handled by conform_distractors() before this
+    # point -- they are a rewrite, not a gate, so there is nothing to check here.
+    # Gate 1: faithfulness / uniqueness (strong judge model)
+    ans_ok = entails(client, model, passage, opts[correct])
+    distractor_entailed = [L for L in "ABCD" if L != correct and entails(client, model, passage, opts[L])]
+    gate1 = ans_ok and not distractor_entailed
+    # Gate 2: guessability (WEAK proxy model = the human-like guesser)
+    guesses = [ask_letter(gclient, gmodel, question, opts, "", 1.0, system) for _ in range(k)]
+    prior = sum(g == correct for g in guesses) / max(1, k)
+    open_choice = ask_letter(gclient, gmodel, question, opts, passage, 0.0, system)
+    open_ok = open_choice == correct
+    gate2 = prior <= max_prior and open_ok
+    return {"answer_entailed": ans_ok, "distractors_entailed": distractor_entailed,
+            "gate1_faithful": gate1, "closed_book_guesses": guesses,
+            "prior_answerability": prior, "open_book_choice": open_choice,
+            "open_book_correct": open_ok, "gate2_passgame": gate2,
+            "passed": gate1 and gate2}
+
+
+# ------------------------------------------------------------------------------ main
+def run(args):
+    client = build_client(args.provider)                       # generation + entailment (strong)
+    gclient = build_client(args.guess_provider or args.provider)  # guessability (weak proxy)
+    gmodel = args.guess_model or args.model
+    system = None if args.no_domain_hint else args.domain_hint
+    root = Path(args.root)
+    active_ids = set(json.loads(Path(args.rewrites).read_text(encoding="utf-8")))
+    report = []
+    for ch in args.chapters:
+        d = root / f"luke{ch}" / args.model_dir / "omission" / "0%"
+        qf = pick(d, "qa_target_pseudonymized.json", "qa_target_decanonicalized.json")
+        pf = pick(d, "passage_target_pseudonymized.txt", "passage_target_decanonicalized.txt")
+        if not qf or not pf:
+            print(f"[warn] missing files for luke{ch}", file=sys.stderr); continue
+        passage = pf.read_text(encoding="utf-8")
+        data = json.loads(qf.read_text(encoding="utf-8"))
+        # Type-tagged entity inventory for THIS chapter, from the CLEAN passage's remap.
+        # Clean, not variant: options stay fixed across dose cells so the same item is
+        # comparable at every rate (the anchor-IRT work needs that invariance).
+        ents = load_entity_types(args.remap_dir, ch)
+        if not ents:
+            print(f"[warn] no entity types for luke{ch} from {args.remap_dir}; "
+                  f"gate 3 type-matching will be weak", file=sys.stderr)
+        for rec in data:
+            if rec.get("q_type") != "mcq" or rec.get("passage_id") not in active_ids:
+                continue
+            iid, ref = rec.get("passage_id"), rec.get("passage_reference")
+            correct_fact = (rec.get("A") or {}).get(rec.get("correct"), "")
+            best, result = None, None
+            prev_cand, prev_failures = None, None
+            # The exact verses the respondent will see. Computed ONCE so the item is
+            # conformed against the same text it is later answered against.
+            answer_window = randomized_three_verse_window(passage, rec)
+            # This helper falls back to the WHOLE passage when the verse reference will not
+            # parse or the parser finds <2 verses. Those items are a different task, so
+            # record it rather than letting it blend into the open-book average silently.
+            window_is_full_passage = answer_window.strip() == passage.strip()
+            # One pass per question in accuracy-only mode (the measurement design).
+            attempts = 1 if args.accuracy_only else args.max_tries
+            for attempt in range(1, attempts + 1):
+                try:
+                    if attempt == 1 or not prev_failures:
+                        cand = generate(client, args.model, rec["Q"], correct_fact, passage, ref)
+                    else:
+                        # Targeted repair instead of a blind resample (see repair()).
+                        cand = repair(client, args.model, rec["Q"], correct_fact, passage, ref,
+                                      prev_cand, prev_failures)
+                    # Rewrite the distractors to be passage-grounded and type-matched. This
+                    # is a rewrite, not a check -- there is no pass/fail and nothing to
+                    # report; the options simply come out conforming.
+                    if args.conform:
+                        cand = conform_distractors(client, args.model, cand, rec["Q"],
+                                                   answer_window, ents)
+                    # Take key placement away from the generator (see rebalance_key).
+                    cand = rebalance_key(cand, f"{args.shuffle_seed}:{iid}:{attempt}")
+                    # --accuracy-only skips gates 1/2 but measures closed-book AND open-book
+                    # accuracy on the stable randomized three-verse window. The options are
+                    # ungated, so use this mode to evaluate the rewrite prompt rather than to
+                    # produce deliverable items.
+                    if args.accuracy_only:
+                        opts = {letter: cand[letter] for letter in "ABCD"}
+                        guesses = [
+                            ask_letter(gclient, gmodel, rec["Q"], opts, "",
+                                       args.answer_temperature, system)
+                            for _ in range(args.k)
+                        ]
+                        prior = sum(g == cand["correct"] for g in guesses) / args.k
+                        open_context = answer_window
+                        open_choice = ask_letter(
+                            gclient, gmodel, rec["Q"], opts, open_context,
+                            args.answer_temperature, system,
+                        )
+                        res = {
+                            "accuracy_only": True,
+                            "closed_book_guesses": guesses,
+                            "prior_answerability": prior,
+                            "open_book_choice": open_choice,
+                            "open_book_correct": open_choice == cand["correct"],
+                            "open_book_context": open_context,
+                            # Recorded so the letter-bias check below can run: if the
+                            # rewriter concentrates the key on one letter and the answer
+                            # model favours that same letter, part of "closed-book
+                            # accuracy" is position bias rather than prior knowledge.
+                            "correct_letter": cand["correct"],
+                            "window_is_full_passage": window_is_full_passage,
+                            "passed": False,
+                        }
+                    else:
+                        res = validate(client, args.model, gclient, gmodel, cand, rec["Q"],
+                                       passage, args.k, args.max_prior, system)
+                except Exception as exc:
+                    print(f"  [luke{ch} {iid}] attempt {attempt} error: {exc}", file=sys.stderr)
+                    continue
+                best, result = cand, res
+                # Collect what failed so the NEXT attempt is a targeted repair, not a
+                # blind resample.
+                prev_cand = cand
+                prev_failures = {}
+                if res.get("answer_entailed") is False:
+                    prev_failures["answer_not_entailed"] = True
+                if res.get("distractors_entailed"):
+                    prev_failures["distractors_entailed"] = res["distractors_entailed"]
+                if res.get("gate2_passgame") is False and res.get("open_book_correct"):
+                    prev_failures["too_guessable"] = round(res.get("prior_answerability", 0), 2)
+                # accuracy-only has no pass/fail of its own, so stop as soon as the item is
+                # gate-3 acceptable; otherwise keep the existing gate-1/2 retry behaviour.
+                if res["passed"] or args.accuracy_only:
+                    break
+            if best and (args.accuracy_only or (result and result["passed"])):
+                rec["A"] = {L: best[L] for L in "ABCD"}
+                rec["correct"] = best["correct"]
+                rec["_rewritten"] = True
+            report.append({"chapter": ch, "id": iid, "ref": ref,
+                           "passed": bool(result and result["passed"]),
+                           **(result or {}), "options": best})
+            tag = "ACC" if args.accuracy_only and result else (
+                "OK " if (result and result["passed"]) else "FLAG"
+            )
+            r = result or {}
+            print(f"[{tag}] luke{ch} {iid} prior={round(r.get('prior_answerability', 0), 2)} "
+                  f"ans_entailed={r.get('answer_entailed')} "
+                  f"distractors_entailed={r.get('distractors_entailed')} "
+                  f"open_ok={r.get('open_book_correct')}")
+        # write proposal (or in-place)
+        out_qf = qf if args.in_place else qf.with_suffix(".rewritten.json")
+        out_qf.write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
+        print(f"  wrote {out_qf}")
+
+    outdir = Path(args.out_dir); outdir.mkdir(parents=True, exist_ok=True)
+    (outdir / "rewrite_report.json").write_text(json.dumps(report, ensure_ascii=False, indent=1))
+    n = len(report); ok = sum(r["passed"] for r in report)
+    scored = [r for r in report if "prior_answerability" in r]
+    open_scored = [r for r in scored if "open_book_correct" in r]
+    summary = {
+        "rewrite_model": args.model,
+        "rewrite_provider": args.provider,
+        "answer_model": gmodel,
+        "answer_provider": args.guess_provider or args.provider,
+        "k": args.k,
+        "n_items": n,
+        "n_scored": len(scored),
+        "chance": 0.25,
+        "domain_hint": system,
+        "mode": "accuracy_only" if args.accuracy_only else "rewrite_and_gate",
+        "closed_book_accuracy": (
+            round(sum(r["prior_answerability"] for r in scored) / len(scored), 4)
+            if scored else None
+        ),
+        "open_book_accuracy": (
+            round(sum(bool(r["open_book_correct"]) for r in open_scored) / len(open_scored), 4)
+            if open_scored else None
+        ),
+        # Per-item guessability needs repeated sampling. At k=1 the per-item value can only
+        # be 0.0 or 1.0, so ">=0.5" degenerates to "correct on a single draw" and the id
+        # list is one Bernoulli outcome per item, not a ranking. The AGGREGATE is still a
+        # sound estimate at k=1 across the full item set -- only the item-level
+        # split is unusable, so it is suppressed rather than reported misleadingly.
+        **({
+            "n_still_guessable_prior_at_least_0.5": sum(
+                r["prior_answerability"] >= 0.5 for r in scored
+            ),
+            "still_guessable_ids": [
+                r["id"] for r in scored if r["prior_answerability"] >= 0.5
+            ],
+        } if args.k >= 5 else {
+            "item_level_guessability": (
+                f"not reported: k={args.k} gives 0/1 per item. "
+                f"Re-run with --k 10+ for per-item triage; the aggregate above is valid."
+            ),
+            "n_correct_on_single_draw": sum(r["prior_answerability"] >= 0.5 for r in scored),
+        }),
+        # Letter-bias diagnostic: if the key concentrates on one letter and the answer
+        # model favours the same one, part of closed_book_accuracy is position bias.
+        "key_letter_distribution": {
+            L: sum(1 for r in scored if r.get("correct_letter") == L) for L in "ABCD"
+        },
+        "guess_letter_distribution": {
+            L: sum((r.get("closed_book_guesses") or []).count(L) for r in scored)
+            for L in "ABCD"
+        },
+        # What closed-book accuracy would be with ZERO knowledge, purely from the key and
+        # guess letters lining up. If closed_book_accuracy is not clearly above this, the
+        # measurement is reporting position bias rather than prior answerability.
+        "expected_accuracy_from_letter_alignment": (
+            round(sum(
+                (sum(1 for r in scored if r.get("correct_letter") == L) / len(scored))
+                * (sum((r.get("closed_book_guesses") or []).count(L) for r in scored)
+                   / max(1, sum(len(r.get("closed_book_guesses") or []) for r in scored)))
+                for L in "ABCD"), 4)
+            if scored else None
+        ),
+        "key_skew_warning": (
+            f"key concentrated on one letter "
+            f"({max((sum(1 for r in scored if r.get('correct_letter') == L) for L in 'ABCD'))}"
+            f"/{len(scored)}) -- a constant responder scores that rate"
+            if scored and max(sum(1 for r in scored if r.get("correct_letter") == L)
+                              for L in "ABCD") > 0.4 * len(scored) else None
+        ),
+        "n_passed_both_gates": ok,
+    }
+    (outdir / "rewrite_summary.json").write_text(
+        json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+    if args.accuracy_only:
+        print(f"\n=== CLOSED-BOOK ACCURACY ACROSS {len(scored)} REWRITTEN MCQs ===")
+    else:
+        print(f"\n=== {ok}/{n} items passed both gates; {n-ok} flagged for review ===")
+    print(json.dumps(summary, ensure_ascii=False, indent=2))
+    print(f"report: {outdir/'rewrite_report.json'}")
+    print(f"summary: {outdir/'rewrite_summary.json'}")
+
+
+def parse_args():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--root", default="evaluation/outputs")
+    ap.add_argument("--chapters", type=int, nargs="+", default=[1, 2, 4, 5, 6, 7, 8])
+    ap.add_argument("--model-dir", default="1.7b")
+    ap.add_argument("--provider", default="openai", choices=["openai", "ollama"],
+                    help="generation + entailment backend (use a STRONG model)")
+    ap.add_argument("--model", default="gpt-4.1-mini")
+    ap.add_argument("--guess-provider", choices=["openai", "ollama"],
+                    help="guessability-gate backend; use the WEAK respondent proxy "
+                         "(e.g. --guess-provider ollama --guess-model qwen2.5:1.5b). "
+                         "Defaults to --provider/--model, which is usually too strong to measure guessing.")
+    ap.add_argument("--guess-model")
+    ap.add_argument("--k", type=int, default=5)
+    ap.add_argument("--accuracy-only", action="store_true",
+                    help="rewrite every active item once and report aggregate closed-book "
+                         "and randomized-three-verse open-book accuracy; do not reject or "
+                         "retry individual rewrites")
+    ap.add_argument("--answer-temperature", type=float, default=0.0,
+                    help="small-model temperature in --accuracy-only mode (default: 0)")
+    ap.add_argument("--rewrites", default="evaluation/datasets/mcq/mcq_rewrites.json",
+                    help="active MCQ IDs; retired items are skipped")
+    ap.add_argument("--max-prior", type=float, default=0.4,
+                    help="max closed-book accuracy to accept (<=0.4 ~ near chance)")
+    ap.add_argument("--max-tries", type=int, default=4)
+    # Deliberately says "a religious text", NOT "the Bible": naming the Bible licenses the
+    # answer model to reach for canonical knowledge, which is exactly the leak the
+    # pseudonymisation is meant to close. The hint should establish register only.
+    ap.add_argument("--domain-hint", default="你正在回答关于一段宗教经文的阅读理解选择题。")
+    ap.add_argument("--no-domain-hint", action="store_true")
+    ap.add_argument("--in-place", action="store_true",
+                    help="overwrite qa_target_pseudonymized.json (default: write .rewritten.json)")
+    ap.add_argument("--out-dir", default="evaluation/outputs/reports/rewrite_distractors")
+    ap.add_argument("--remap-dir", default="evaluation/datasets/pseudonym_remap",
+                    help="source of the type-tagged entity inventory (_master.json)")
+    ap.add_argument("--conform", dest="conform", action="store_true", default=True,
+                    help="rewrite distractors to be passage-grounded and type-matched "
+                         "(default: on)")
+    ap.add_argument("--no-conform", dest="conform", action="store_false",
+                    help="skip the distractor conform rewrite")
+    ap.add_argument("--shuffle-seed", default="mcq-key",
+                    help="seed for the deterministic key reshuffle (see rebalance_key)")
+    ap.add_argument("--self-test", action="store_true",
+                    help="run gate-3 unit checks offline (no API, no outputs tree)")
+    return ap.parse_args()
+
+
+# ------------------------------------------------------------------------ self-test
+def self_test():
+    """Offline checks for gate 3. Runs without an API key or the outputs tree."""
+    cases = []
+
+    # rebalance_key: content preserved, key follows its option, positions near-uniform
+    src = {"A": "correct-opt", "B": "d1", "C": "d2", "D": "d3", "correct": "A"}
+    keeps, keys = True, []
+    for i in range(4000):
+        out = rebalance_key(src, f"seed:{i}")
+        if out[out["correct"]] != "correct-opt":
+            keeps = False
+        if {out[L] for L in "ABCD"} != {"correct-opt", "d1", "d2", "d3"}:
+            keeps = False
+        keys.append(out["correct"])
+    cases.append(("rebalance_key keeps content + key together", keeps, {}, None))
+    share = {L: keys.count(L) / len(keys) for L in "ABCD"}
+    uniform = all(0.22 <= s <= 0.28 for s in share.values())
+    cases.append((f"rebalance_key spreads the key uniformly {share}", uniform, {}, None))
+    stable = (rebalance_key(src, "x") == rebalance_key(src, "x"))
+    cases.append(("rebalance_key is deterministic", stable, {}, None))
+
+    bad = 0
+    for name, passed, detail, raw in cases:
+        print(f"  [{'PASS' if passed else 'FAIL'}] {name}")
+        if not passed:
+            bad += 1
+            print(f"        got: {raw}")
+    print(f"\n{len(cases)-bad}/{len(cases)} self-tests passed")
+    return 1 if bad else 0
+
+
+if __name__ == "__main__":
+    _args = parse_args()
+    sys.exit(self_test() if _args.self_test else run(_args))

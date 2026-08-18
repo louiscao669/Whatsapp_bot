@@ -20,10 +20,19 @@ Split modes:
     a per-participant slug. Preserves the respondent dimension for ability separability
     (H-T4) — each participant is a "respondent" like an LLM answer-model.
 
-Scoring (matches the pilot rubric, not an LLM judge):
+Scoring [CHANGED 2026-08-12 -- now the LLM judge, on the grid's scale]:
   * MCQ  → ``direct_correct`` via ``choice_response_is_correct`` (letter vs key).
-  * open → ``llm_score`` = ``correctness_score`` (fraction of required keywords matched);
-    ``llm_label`` from ``is_correct``.
+  * open → ``llm_score`` = ``correctness_score``, written by the LLM judge in
+    ``engagement/outbox.py`` on the 0 / 0.5 / 1 scale; ``llm_label`` from ``is_correct``.
+
+    Previously this was the keyword-match fraction. Because the offline proxy
+    benchmarks (omission/mistranslation dose-response, the sᵢ ladders) were
+    produced by ``judge_open`` on 0/0.5/1, scoring humans by keyword put the two
+    legs on different scales and confounded every human-vs-proxy delta with the
+    scorer. Both legs now share one rubric, model and temperature.
+
+    Rows still awaiting the judge export ``llm_score = None`` and are counted in
+    ``open_unscored``; drain the outbox before treating an export as complete.
 The scored answer is the participant's text, or the Whisper ``transcript_text`` for voice.
 
 Audio: the transcript is exported as the answer. Raw participant audio is access-tiered, so
@@ -113,17 +122,35 @@ def _item_payload(rec: dict, index: int, include_audio_ref: bool) -> dict:
         "review_status": rec.get("review_status"),
         "generation_error": None,
     }
+    meta = rec.get("scoring_metadata") or {}
     if qtype == "mcq":
-        item["direct_correct"] = bool(rec.get("mcq_correct"))
-        item["llm_score"] = 1.0 if rec.get("mcq_correct") else 0.0
-        item["llm_label"] = "correct" if rec.get("mcq_correct") else "incorrect"
+        # [CHANGED 2026-08-12] An MCQ reply that never resolved to a letter is
+        # UNSCORED, not wrong. Previously choice_response_is_correct returned
+        # False for unparseable replies, so "I think the second one" and a
+        # genuinely wrong answer were indistinguishable in the export.
+        if rec.get("is_correct") == "pending" or meta.get("status") in {
+            "unresolved", "unusable_reply", "queued", "scorer_disabled"
+        }:
+            item["direct_correct"] = None
+            item["llm_score"] = None
+            item["llm_label"] = "pending"
+        else:
+            item["direct_correct"] = bool(rec.get("mcq_correct"))
+            item["llm_score"] = 1.0 if rec.get("mcq_correct") else 0.0
+            item["llm_label"] = "correct" if rec.get("mcq_correct") else "incorrect"
+        item["scoring_method"] = meta.get("method") or "exact_letter"
+        item["resolved_letter"] = meta.get("resolved_letter")
     else:
         score = rec.get("correctness_score")
         item["direct_correct"] = None
         item["llm_score"] = float(score) if score is not None else None
         item["llm_label"] = rec.get("is_correct")
-        item["matched_keywords"] = rec.get("matched_keywords") or []
-        item["missing_keywords"] = rec.get("missing_keywords") or []
+        # Provenance so a mixed export cannot be read as uniformly judged: rows
+        # scored before 2026-08-12 carry the retired keyword fraction, which is
+        # NOT on the 0/0.5/1 scale and must not be pooled with judged rows.
+        item["scoring_method"] = meta.get("method")
+        item["scoring_scale"] = meta.get("scale")
+        item["judge_rationale"] = meta.get("rationale")
     if include_audio_ref and rec.get("response_type") == "audio":
         # Opaque provider media id (Meta/Telegram) + the platform's authenticated proxy
         # route (admin/expert only, tier-checked, access-logged). NOT a public URL and
@@ -137,13 +164,48 @@ def _summary(items: list) -> dict:
     mcq = [it for it in items if it["q_type"] == "mcq"]
     opn = [it for it in items if it["q_type"] != "mcq"]
     open_scored = [it["llm_score"] for it in opn if it.get("llm_score") is not None]
+    # Open rows the judge has not reached yet (outbox not drained) or that an
+    # expert still owes a verdict on. A nonzero count means this export is
+    # partial, not that those answers were wrong.
+    open_unscored = [it for it in opn if it.get("llm_score") is None]
+    # Any open row not scored on the 0/0.5/1 scale -- e.g. legacy keyword rows.
+    off_scale = [
+        it for it in opn
+        if it.get("llm_score") is not None and it.get("scoring_scale") not in (None, "0/0.5/1")
+    ]
+    legacy_keyword = [
+        it for it in opn
+        if it.get("llm_score") is not None and it.get("scoring_method") is None
+    ]
+    # MCQ rows whose reply never resolved to a letter. Excluded from
+    # mcq_scored_count so accuracy denominators count only answered items --
+    # an unresolved reply is missing data, not a wrong answer.
+    mcq_scored = [it for it in mcq if it.get("direct_correct") is not None]
+    mcq_unscored = [it for it in mcq if it.get("direct_correct") is None]
+    mcq_llm_resolved = [
+        it for it in mcq if it.get("scoring_method") == "llm_choice_resolution"
+    ]
     return {
         "total": len(items),
         "mcq_count": len(mcq),
         "mcq_correct": sum(1 for it in mcq if it.get("direct_correct")),
+        "mcq_scored_count": len(mcq_scored),
+        "mcq_unscored": len(mcq_unscored),
+        # How many MCQ replies needed the LLM fallback. A high rate is a signal
+        # about instructions/delivery, not just a scoring detail -- worth
+        # watching during the dry run.
+        "mcq_llm_resolved": len(mcq_llm_resolved),
+        "mcq_accuracy": (
+            sum(1 for it in mcq_scored if it.get("direct_correct")) / len(mcq_scored)
+            if mcq_scored else None
+        ),
         "open_count": len(opn),
         "open_llm_score_mean": (sum(open_scored) / len(open_scored)) if open_scored else None,
         "open_scored_count": len(open_scored),
+        "open_unscored": len(open_unscored),
+        "open_off_scale": len(off_scale),
+        "open_legacy_unjudged": len(legacy_keyword),
+        "open_scale": "0/0.5/1",
         "answer_confidence_mean": None,
         "insufficient_information_rate": None,
         "evidence_supported_rate": None,
@@ -158,14 +220,14 @@ def assemble(records: list, split_by: str, subdir: str, include_audio_ref: bool)
     groups = defaultdict(list)
     for rec in records:
         if split_by == "participant":
-            key = (rec["chapter"], rec["condition"], rec["participant_slug"])
+            key = (rec["passage_id"], rec["condition"], rec["participant_slug"])
         else:
-            key = (rec["chapter"], rec["condition"])
+            key = (rec["passage_id"], rec["condition"])
         groups[key].append(rec)
 
     out = {}
     for key, recs in groups.items():
-        chapter, condition = key[0], key[1]
+        passage_id, condition = key[0], key[1]
         if condition not in CONDITION_TO_EVAL:
             continue
         defect, level = CONDITION_TO_EVAL[condition]
@@ -173,12 +235,16 @@ def assemble(records: list, split_by: str, subdir: str, include_audio_ref: bool)
         # deterministic item order: qa_item id then respondent (stable re-exports)
         recs = sorted(recs, key=lambda r: (str(r["qa_item_id"]), str(r.get("participant_slug"))))
         items = [_item_payload(r, i + 1, include_audio_ref) for i, r in enumerate(recs)]
-        parts = ["outputs", f"luke{chapter}", model_dir, defect]
+        if str(passage_id).startswith("t1_"):
+            parts = ["outputs", "tier1", str(passage_id), model_dir, defect]
+        else:
+            parts = ["outputs", str(passage_id), model_dir, defect]
         if level is not None:
             parts.append(level)
         rel = "/".join(parts) + "/scores_target_human.json"
         out[rel] = {"summary": _summary(items), "items": items,
-                    "chapter": chapter, "condition": condition, "defect": defect, "level": level}
+                    "passage_id": passage_id, "condition": condition,
+                    "defect": defect, "level": level}
     return out
 
 
@@ -222,7 +288,8 @@ def fetch_records(db: Session, require_reviewed: bool) -> list:
             "normalized_text": resp.normalized_text,
             "correctness_score": resp.correctness_score, "is_correct": resp.is_correct,
             "review_status": resp.review_status,
-            "matched_keywords": resp.matched_keywords, "missing_keywords": resp.missing_keywords,
+            "scoring_metadata": resp.scoring_metadata,
+            "backtranslated_text": resp.backtranslated_text,
             "media_id": resp.media_id, "mcq_correct": mcq_correct,
         })
     return records
@@ -272,7 +339,7 @@ def main():
     for rel, payload in payloads.items():
         path = args.eval_root / rel
         path.parent.mkdir(parents=True, exist_ok=True)
-        payload.pop("chapter", None); payload.pop("condition", None)
+        payload.pop("passage_id", None); payload.pop("condition", None)
         payload.pop("defect", None); payload.pop("level", None)
         path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"\nWrote {len(payloads)} files under {args.eval_root / 'outputs'}.")

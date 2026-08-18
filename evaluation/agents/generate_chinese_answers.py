@@ -218,20 +218,92 @@ def batched(items: List[dict], batch_size: int):
         yield items[start : start + batch_size]
 
 
-def index_passage_verses(passage: str) -> dict[int, List[str]]:
-    matches = []
+# "Judges 17:1-18:31" -> (17, 1, 18, 31);  "Judges 9:1-57" -> (9, 1, None, 57)
+SPAN_REFERENCE_RE = re.compile(
+    r"(\d+)\s*:\s*(\d+)(?:\s*[-–—]\s*(?:(\d+)\s*:\s*)?(\d+))?"
+)
+# A per-item reference: "18:30".
+ITEM_REFERENCE_RE = re.compile(r"^\s*(?:(\d+)\s*:\s*)?(\d+)\s*$")
+
+
+def chapters_from_reference(reference: Any) -> List[int]:
+    """Chapter numbers a passage reference spans, in order."""
+    match = SPAN_REFERENCE_RE.search(str(reference or ""))
+    if not match:
+        return []
+    start_chapter = int(match.group(1))
+    end_chapter = int(match.group(3) or start_chapter)
+    if end_chapter < start_chapter:
+        start_chapter, end_chapter = end_chapter, start_chapter
+    return list(range(start_chapter, end_chapter + 1))
+
+
+def index_passage_verses(
+    passage: str, chapters: List[int] | None = None
+) -> tuple[dict[tuple[int | None, int], str], List[tuple[int | None, int]]]:
+    """Map (chapter, verse) -> text, plus the keys in document order.
+
+    Keying on the bare verse number is wrong for any passage spanning a chapter
+    boundary: Judges 17:1-18:31 has two verse 2s, and they collapsed into one
+    bucket, so every window silently carried text from both chapters.
+
+    The fetcher renders BibleGateway's chapternum as a bare number standing in
+    for verse 1, so the marker stream for Judges 17-18 is
+
+        17  2 3 ... 13   18  2 3 ... 31
+         ^ chapter        ^ chapter, not verse 18
+
+    which is ambiguous on its own. It is not ambiguous given the chapter list
+    from the passage reference: a marker is a chapter break when it equals the
+    next expected chapter AND the following marker drops below it (verse
+    numbering restarting). A passage starting mid-chapter (2 Kings 6:24) simply
+    has no leading chapter marker, which the i==0 test handles.
+    """
+    markers = []
     for match in VERSE_MARKER_RE.finditer(passage):
         verse_number = int(match.group(1))
         if 1 <= verse_number <= 200:
-            matches.append((verse_number, match.start()))
+            markers.append((verse_number, match.start()))
 
-    verses = {}
-    for index, (verse_number, start) in enumerate(matches):
-        end = matches[index + 1][1] if index + 1 < len(matches) else len(passage)
-        verse_text = passage[start:end].strip()
-        if verse_text:
-            verses.setdefault(verse_number, []).append(verse_text)
-    return verses
+    chapters = list(chapters or [])
+    labelled: List[tuple[int | None, int, int]] = []
+    chapter_index = 0
+    current = chapters[0] if chapters else None
+
+    for index, (number, start) in enumerate(markers):
+        following = markers[index + 1][0] if index + 1 < len(markers) else None
+        next_chapter = (
+            chapters[chapter_index + 1] if chapter_index + 1 < len(chapters) else None
+        )
+        if chapters and index == 0 and number == current:
+            labelled.append((current, 1, start))
+            continue
+        if (
+            next_chapter is not None
+            and number == next_chapter
+            and following is not None
+            and following < number
+        ):
+            chapter_index += 1
+            current = next_chapter
+            labelled.append((current, 1, start))
+            continue
+        labelled.append((current, number, start))
+
+    verses: dict[tuple[int | None, int], str] = {}
+    order: List[tuple[int | None, int]] = []
+    for index, (chapter, verse, start) in enumerate(labelled):
+        end = labelled[index + 1][2] if index + 1 < len(labelled) else len(passage)
+        text = passage[start:end].strip()
+        if not text:
+            continue
+        key = (chapter, verse)
+        if key in verses:
+            verses[key] = f"{verses[key]}\n{text}"
+        else:
+            verses[key] = text
+            order.append(key)
+    return verses, order
 
 
 def verse_range_from_reference(reference: Any) -> tuple[int, int] | None:
@@ -245,26 +317,141 @@ def verse_range_from_reference(reference: Any) -> tuple[int, int] | None:
     return start, end
 
 
+def content_id_from_item(item: dict) -> str | None:
+    """Recover the uW content id ("t1_judg9:w5fv") from a pipeline item.
+
+    translate_llm_qa_to_chinese.py mints passage_id as ``uw-<content_id>-<q_type>``,
+    so the open and MCQ forms of one question share a content id -- which is the
+    key the curated verse-window table uses.
+    """
+    for field in ("content_id", "passage_id", "id"):
+        value = str(item.get(field) or "").strip()
+        if not value:
+            continue
+        if value.startswith("uw-"):
+            value = value[3:]
+        for suffix in ("-open", "-mcq"):
+            if value.endswith(suffix):
+                value = value[: -len(suffix)]
+        if ":" in value:
+            return value
+    return None
+
+
+def load_verse_windows(path: Any) -> dict[str, List[tuple[int, int]]]:
+    """Load curated per-question verse windows.
+
+    Accepts the schema written by
+    ``QA_algorithm/scripts/anchor_irt/build_tier1_verse_windows.py``: a
+    ``windows`` list whose records carry ``content_id`` and a ``window`` of
+    "chapter:verse" strings. These are hand-checked to contain the
+    answer-bearing verse, which a mechanical +/-N window does not guarantee.
+    """
+    data = json.loads(Path(path).read_text(encoding="utf-8"))
+    records = data.get("windows") if isinstance(data, dict) else data
+    windows: dict[str, List[tuple[int, int]]] = {}
+    for record in records or []:
+        content_id = str(record.get("content_id") or "").strip()
+        verses = record.get("window") or []
+        if not content_id or not verses:
+            continue
+        keys = []
+        for verse in verses:
+            match = ITEM_REFERENCE_RE.match(str(verse))
+            if match and match.group(1):
+                keys.append((int(match.group(1)), int(match.group(2))))
+        if keys:
+            windows[content_id] = keys
+    return windows
+
+
+def curated_window_for_item(
+    verse_windows: dict[str, List[tuple[int, int]]] | None, item: dict
+) -> List[tuple[int, int]] | None:
+    """Resolve an item's curated window, tolerating a re-keying suffix.
+
+    clean_tier1_qa.py re-keys colliding content_ids as "<id>#2"; the siblings
+    share a verse reference, so the window table stays keyed on the base id.
+
+    Single source of truth on purpose. The lookup and the "N/M matched" counter
+    were separate implementations, and only one of them stripped the suffix --
+    so a cell whose ids had been re-keyed reported a fallback that never
+    happened (t1_2chr26 printed 7/8 while all 8 got curated windows).
+    """
+    if not verse_windows:
+        return None
+    content_id = content_id_from_item(item)
+    if not content_id:
+        return None
+    window = verse_windows.get(content_id)
+    if window is None and "#" in content_id:
+        window = verse_windows.get(content_id.split("#", 1)[0])
+    return window
+
+
+def item_reference_key(
+    reference: Any, chapters: List[int] | None
+) -> tuple[int | None, int] | None:
+    """Parse a per-item reference such as "18:30" into an index key."""
+    match = ITEM_REFERENCE_RE.match(str(reference or ""))
+    if not match:
+        return None
+    chapter = int(match.group(1)) if match.group(1) else None
+    if chapter is None and chapters:
+        chapter = chapters[0]
+    return (chapter, int(match.group(2)))
+
+
 def local_passage_for_question(
     passage: str,
-    verse_index: dict[int, List[str]],
+    verse_index: dict[tuple[int | None, int], str],
     question: dict,
     verse_window: int | None,
+    order: List[tuple[int | None, int]] | None = None,
+    verse_windows: dict[str, List[tuple[int, int]]] | None = None,
 ) -> str:
-    if verse_window is None or not verse_index:
+    if not verse_index:
         return passage
 
+    order = order or list(verse_index)
+    chapters = chapters_from_reference(question.get("passage_reference"))
+
+    # Highest precedence: a curated window for this exact question. Unlike a
+    # mechanical +/-N span these were checked to contain the answer-bearing
+    # verse, and they are already chapter-qualified, so a window may legitimately
+    # straddle a boundary (["17:13", "18:1", "18:2"]).
+    if verse_windows:
+        curated = curated_window_for_item(verse_windows, question)
+        if curated:
+            selected = [key for key in curated if key in verse_index]
+            if selected:
+                return "\n".join(verse_index[k] for k in selected).strip() or passage
+
+    if verse_window is None:
+        return passage
+
+    # Preferred path: the item's own verse. Slicing the ordered key list rather
+    # than doing arithmetic on verse numbers makes a window straddle a chapter
+    # boundary correctly (18:2 reaches back into 17:12-13).
+    key = item_reference_key(question.get("reference"), chapters)
+    if key is not None and key in verse_index:
+        position = order.index(key)
+        selected = order[max(0, position - verse_window): position + verse_window + 1]
+        return "\n".join(verse_index[k] for k in selected).strip() or passage
+
+    # Fallback: the whole-passage span. This is what every run before the
+    # per-item reference was threaded through used, and it degenerates to the
+    # entire passage, so behaviour is unchanged where `reference` is absent.
     reference_range = verse_range_from_reference(question.get("passage_reference"))
     if not reference_range:
         return passage
 
     reference_start, reference_end = reference_range
-    first_verse = max(min(verse_index), reference_start - verse_window)
-    last_verse = min(max(verse_index), reference_end + verse_window)
-    selected = []
-    for verse_number in range(first_verse, last_verse + 1):
-        selected.extend(verse_index.get(verse_number, []))
-    return "\n".join(selected).strip() or passage
+    verse_numbers = [verse for _, verse in order]
+    first_verse = max(min(verse_numbers), reference_start - verse_window)
+    last_verse = min(max(verse_numbers), reference_end + verse_window)
+    selected = [k for k in order if first_verse <= k[1] <= last_verse]
+    return "\n".join(verse_index[k] for k in selected).strip() or passage
 
 
 def extract_response_text(response: Any) -> str:
@@ -1167,22 +1354,47 @@ def generate_ollama_single_raw(
         "stream": False,
         "options": options,
     }
+    if no_think:
+        # The "/no_think" prompt token is advisory and qwen3:1.7b ignores it:
+        # probed 2026-08-06, it emitted a full ~170-token Chinese reasoning trace
+        # before a 2-character answer. Ollama's structured `think` field is a
+        # real switch. Sent alongside the prompt token so older Ollama builds
+        # that reject unknown keys still behave as before -- see the fallback in
+        # the caller.
+        payload["think"] = False
     request = urllib.request.Request(
         base_url.rstrip("/") + "/api/chat",
         data=json.dumps(payload).encode("utf-8"),
         headers={"Content-Type": "application/json"},
         method="POST",
     )
+    def post(body: dict) -> dict:
+        req = urllib.request.Request(
+            base_url.rstrip("/") + "/api/chat",
+            data=json.dumps(body).encode("utf-8"),
+            headers={"Content-Type": "application/json"},
+            method="POST",
+        )
+        with urllib.request.urlopen(req, timeout=timeout) as response:
+            return json.loads(response.read().decode("utf-8"))
+
     try:
-        with urllib.request.urlopen(request, timeout=timeout) as response:
-            data = json.loads(response.read().decode("utf-8"))
+        try:
+            data = post(payload)
+        except urllib.error.HTTPError as exc:
+            # Ollama builds predating the `think` field reject it. Retry without,
+            # so the flag is a no-op there rather than breaking the run.
+            if "think" not in payload or exc.code not in (400, 404, 422):
+                raise
+            payload.pop("think", None)
+            data = post(payload)
     except urllib.error.URLError as exc:
         raise GenerationError(
             f"Could not reach Ollama at {base_url}. Is `ollama serve` running?"
         ) from exc
 
     content = ((data.get("message") or {}).get("content") or "").strip()
-    return raw_answer_to_output(
+    output = raw_answer_to_output(
         content,
         question,
         expanded_answer_format=expanded_answer_format,
@@ -1190,6 +1402,67 @@ def generate_ollama_single_raw(
         choice_mapper_model=choice_mapper_model,
         retries=retries,
     )
+    output["answer_effort"] = ollama_effort(data, content)
+    return output
+
+
+INLINE_THINK_RE = re.compile(r"<think>(.*?)</think>", re.DOTALL)
+
+
+def ollama_effort(data: dict, content: str = "") -> dict:
+    """Per-item generation effort, from Ollama's own response counters.
+
+    /api/chat returns token counts and nanosecond timings on every call; the
+    pipeline was discarding them. They give a per-question effort measure for
+    free -- no extra calls, no change to what the model sees.
+
+    output_tokens (eval_count) is the measure to prefer. It is machine
+    independent, whereas the durations move with load, thermal state and
+    whatever else is on the box. prompt_tokens is a control rather than a
+    signal: with fixed verse windows it should be near constant within a cell,
+    so a jump means the context changed, not that the item was harder.
+
+    Reasoning is counted from TWO places, because a Qwen3-style model can emit
+    it either way and reading only one is misleading:
+
+      * message.thinking -- Ollama's structured field, populated when the API
+        `think` parameter is used.
+      * an inline <think>...</think> block in the content -- what /no_think
+        (the prompt-level control this pipeline uses) produces when the model
+        ignores it. clean_raw_answer strips that block before anything is
+        saved, so measuring it here is the only chance to see it.
+
+    output_tokens is unaffected either way: eval_count counts every generated
+    token, reasoning included. So it stays the trustworthy effort measure even
+    when the reasoning text itself is invisible downstream.
+    """
+    thinking = (data.get("message") or {}).get("thinking") or ""
+    inline = "".join(INLINE_THINK_RE.findall(content or ""))
+    if inline and not thinking:
+        thinking = inline
+
+    def ms(key: str) -> float | None:
+        value = data.get(key)
+        return round(value / 1e6, 1) if isinstance(value, (int, float)) else None
+
+    return {
+        "output_tokens": data.get("eval_count"),
+        "prompt_tokens": data.get("prompt_eval_count"),
+        "output_ms": ms("eval_duration"),
+        "prompt_ms": ms("prompt_eval_duration"),
+        "total_ms": ms("total_duration"),
+        "thinking_chars": len(thinking),
+        # Answer length, reasoning excluded. Without this you cannot tell whether
+        # output_tokens(think) - output_tokens(no-think) is a thinking-token
+        # estimate or is partly the answer changing length between the two arms:
+        # that difference equals thinking_tokens + (answer_with - answer_without),
+        # and only the first term is wanted. Stable answer_chars across arms means
+        # the delta is clean; drifting answer_chars means prefer thinking_chars.
+        "answer_chars": len(INLINE_THINK_RE.sub("", content or "").strip()),
+        "thinking_source": ("api" if (data.get("message") or {}).get("thinking")
+                            else "inline" if inline else None),
+        "done_reason": data.get("done_reason"),
+    }
 
 
 def generate_answers(
@@ -1208,6 +1481,7 @@ def generate_answers(
     expanded_answer_format: bool,
     mcq_choice_mapper: str,
     mcq_choice_model: str,
+    verse_windows: dict[str, List[tuple[int, int]]] | None = None,
 ) -> List[dict]:
     if dry_run:
         return [
@@ -1250,8 +1524,33 @@ def generate_answers(
             choice_mapper_client = openai_client
 
     answers: List[dict] = []
-    verse_index = index_passage_verses(passage) if verse_window is not None else {}
-    if provider == "ollama" or verse_window is not None:
+    # The chapter list comes from any question's passage_reference; they all
+    # carry the same one.
+    passage_chapters = next(
+        (
+            chapters_from_reference(question.get("passage_reference"))
+            for question in questions
+            if chapters_from_reference(question.get("passage_reference"))
+        ),
+        [],
+    )
+    if verse_window is not None or verse_windows:
+        verse_index, verse_order = index_passage_verses(passage, passage_chapters)
+    else:
+        verse_index, verse_order = {}, []
+
+    if verse_windows:
+        matched = sum(
+            1
+            for question in questions
+            if curated_window_for_item(verse_windows, question)
+        )
+        print(
+            f"curated verse windows: {matched}/{len(questions)} question(s) matched"
+            + ("" if matched == len(questions) else "; the rest fall back to --answer-verse-window")
+        )
+
+    if provider == "ollama" or verse_window is not None or verse_windows:
         batches = [[question] for question in questions]
     else:
         batches = batched(questions, batch_size)
@@ -1260,8 +1559,10 @@ def generate_answers(
         batch_passage = batch[0].get("local_passage")
         if not batch_passage:
             batch_passage = (
-                local_passage_for_question(passage, verse_index, batch[0], verse_window)
-                if verse_window is not None
+                local_passage_for_question(
+                    passage, verse_index, batch[0], verse_window, verse_order, verse_windows
+                )
+                if (verse_window is not None or verse_windows)
                 else passage
             )
         last_error: Optional[Exception] = None

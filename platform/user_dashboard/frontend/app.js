@@ -20,6 +20,9 @@ import {
 } from "./state.js";
 
 const app = document.querySelector("#app");
+const QUESTION_TIME_LIMIT_MS = 60_000;
+const questionDeadlines = new Map();
+const expiringQuestions = new Set();
 const state = {
   participantId: parseParticipantIdFromLocation(),
   activePage: "journey",
@@ -101,6 +104,48 @@ function render() {
     ])
   );
   translateTree(app);
+  updateQuestionTimer();
+}
+
+function updateQuestionTimer() {
+  const assignmentId = state.journeyAnswerQuestion?.assignment_id
+    || state.journeyAnswerAssignmentId;
+  const timer = app.querySelector("[data-question-timer]");
+  if (!assignmentId || !timer) return;
+  if (!questionDeadlines.has(assignmentId)) {
+    questionDeadlines.set(assignmentId, Date.now() + QUESTION_TIME_LIMIT_MS);
+  }
+  const remaining = Math.max(0, questionDeadlines.get(assignmentId) - Date.now());
+  const seconds = Math.ceil(remaining / 1000);
+  timer.textContent = `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
+  timer.classList.toggle("warning", seconds <= 10);
+  if (remaining === 0 && !expiringQuestions.has(assignmentId)) {
+    expireQuestion(assignmentId);
+  }
+}
+
+setInterval(updateQuestionTimer, 250);
+
+async function expireQuestion(assignmentId) {
+  expiringQuestions.add(assignmentId);
+  try {
+    const payload = await postRawJson(state.participantId, "/questions/expire", {
+      assignment_id: assignmentId
+    });
+    questionDeadlines.delete(assignmentId);
+    state.questionCompletion = null;
+    state.journeyAnswerQuestion = payload.next_question || null;
+    state.journeyAnswerAssignmentId = payload.next_question?.assignment_id
+      || payload.next_assignment_id
+      || null;
+    if (state.journeyAnswerAssignmentId) pingQuestionViewed(state.journeyAnswerAssignmentId);
+    render();
+    if (!state.journeyAnswerAssignmentId) refreshDashboardInBackground();
+  } catch (error) {
+    showModal(error.message);
+  } finally {
+    expiringQuestions.delete(assignmentId);
+  }
 }
 
 function openSettings() {
@@ -343,6 +388,7 @@ async function submitAnswer(assignmentId, responseText) {
     showModal("Answer the question before submitting.");
     return;
   }
+  expiringQuestions.add(assignmentId);
   try {
     const payload = await postRawJson(state.participantId, "/answers", {
       assignment_id: assignmentId,
@@ -370,6 +416,9 @@ async function submitAnswer(assignmentId, responseText) {
   } catch (error) {
     render();
     showModal(error.message);
+  } finally {
+    questionDeadlines.delete(assignmentId);
+    expiringQuestions.delete(assignmentId);
   }
 }
 

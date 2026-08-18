@@ -20,7 +20,9 @@ from eten_shared.domain.assignments import (
     automatic_assignment_enabled,
     complete_current_batch_if_needed,
     create_assignment_for_qa_item,
+    ExperimentPassageMissingError,
     experiment_passage_assignment_kwargs,
+    resolve_experiment_passage,
     experiment_assignment_enabled,
     get_incomplete_assignment,
     get_or_create_participant_session,
@@ -30,10 +32,7 @@ from eten_shared.domain.assignments import (
     try_complete_assignment,
 )
 from eten_shared.domain.qa_eligibility import qa_item_is_assignable
-from eten_shared.keyword_matching import (
-    keyword_matches_in_response,
-    normalize_response_text,
-)
+from eten_shared.keyword_matching import normalize_response_text
 from eten_shared.media_storage import (
     delete_storage_uri,
     download_storage_object,
@@ -72,7 +71,6 @@ from eten_shared.mcq import (
     is_choice_scored_item,
     question_type_value,
 )
-from eten_shared.qa_keywords import get_language_keywords
 from eten_shared.question_discovery import (
     experiment_batch_should_reset,
     select_next_experiment_cell_item,
@@ -304,52 +302,9 @@ def _serialize_dashboard_question(
     }
 
 
-def _score_text_response_with_rubric(response_text, rubric):
-    normalized_text = normalize_response_text(response_text or "")
-    required_keywords = rubric.required_keywords or []
-    matched_keywords = []
-    missing_keywords = []
-
-    for keyword in required_keywords:
-        if keyword_matches_in_response(
-            keyword,
-            response_text or "",
-            keyword_specs=rubric.required_keyword_specs,
-        ):
-            matched_keywords.append(keyword)
-        else:
-            missing_keywords.append(keyword)
-
-    if not required_keywords:
-        return (
-            normalized_text,
-            None,
-            matched_keywords,
-            missing_keywords,
-            True,
-            "Pending expert review: no required keywords configured for this language.",
-        )
-
-    correctness_score = len(matched_keywords) / len(required_keywords)
-    needs_expert_review = bool(missing_keywords)
-    flag_reason = (
-        "Missing required keywords: " + ", ".join(missing_keywords)
-        if missing_keywords
-        else None
-    )
-    return (
-        normalized_text,
-        correctness_score,
-        matched_keywords,
-        missing_keywords,
-        needs_expert_review,
-        flag_reason,
-    )
-
-
-def _score_open_dashboard_response(db, participant, qa_item, response_text):
-    rubric = get_language_keywords(db, qa_item.id, participant.target_language or "eng")
-    return _score_text_response_with_rubric(response_text, rubric)
+# [2026-08-12] _score_text_response_with_rubric / _score_open_dashboard_response
+# deleted with the keyword scorer. Open answers submitted through the dashboard
+# are judged by the LLM path in engagement/outbox.py, same as bot answers.
 
 
 def _award_dashboard_currency(
@@ -458,12 +413,32 @@ def _experiment_assignment_kwargs(db, participant_session, cell, qa_item):
     if experiment_batch_should_reset(db, participant_session.current_batch_id, cell):
         participant_session.current_batch_id = None
     result = {"experiment_cell_id": cell.id}
-    if cell.experiment_passage_id:
-        experiment_passage = db.get(ExperimentPassage, cell.experiment_passage_id)
-        if experiment_passage:
-            result.update(
-                experiment_passage_assignment_kwargs(db, experiment_passage, qa_item)
-            )
+    # [2026-08-12] Mirrors the message-bot guard. The condition reaches the
+    # participant only through this passage (QA is shared across a chapter's
+    # conditions), so an unresolvable passage must fail rather than silently
+    # fall through to the condition-invariant qa_item.passage_text.
+    experiment_passage = resolve_experiment_passage(
+        db, cell, qa_item, participant_language_code(participant)
+    )
+    if experiment_passage is None:
+        raise ExperimentPassageMissingError(
+            f"plan cell {cell.id} (group {cell.chapter}, condition "
+            f"{cell.condition!r}) has no variant for source passage "
+            f"{qa_item.passage_id!r}. Run scripts/verify_experiment_delivery.py."
+        )
+    if experiment_passage.condition != cell.condition:
+        raise ExperimentPassageMissingError(
+            f"plan cell {cell.id} is condition {cell.condition!r} but its passage "
+            f"is condition {experiment_passage.condition!r}."
+        )
+    result.update(
+        experiment_passage_assignment_kwargs(db, experiment_passage, qa_item)
+    )
+    if not (result.get("passage_text") or "").strip():
+        raise ExperimentPassageMissingError(
+            f"experiment_passage {experiment_passage.id} (chapter {cell.chapter}, "
+            f"condition {cell.condition!r}) has empty passage text."
+        )
     return result
 
 
@@ -995,16 +970,26 @@ def claim_batch_chest_reward(db, participant_id: str, batch_id: str):
 
 DASHBOARD_ANSWER_SYNCED_NOTIFICATION = "dashboard_answer_synced"
 ANSWER_LLM_SCORE_REQUESTED_NOTIFICATION = "answer_llm_score_requested"
+MCQ_CHOICE_RESOLUTION_REQUESTED_NOTIFICATION = "mcq_choice_resolution_requested"
+
+# Per-response scoring work must NEVER be superseded: each notification carries
+# its own response_id, so collapsing two would leave one answer permanently
+# unscored. Only participant-level push notifications are collapsible.
+_PER_RESPONSE_NOTIFICATIONS = frozenset({
+    ANSWER_LLM_SCORE_REQUESTED_NOTIFICATION,
+    MCQ_CHOICE_RESOLUTION_REQUESTED_NOTIFICATION,
+})
 
 
 def _enqueue_outbox_notification(db, participant, notification_type, payload):
     """Queue a cross-surface notification for the message-bot poller.
 
     Older pending notifications of the same type for the same participant
-    are superseded so rapid dashboard answering collapses into one push.
+    are superseded so rapid dashboard answering collapses into one push --
+    except for per-response scoring work, which must not be collapsed.
     """
 
-    stale = [] if notification_type == ANSWER_LLM_SCORE_REQUESTED_NOTIFICATION else db.scalars(
+    stale = [] if notification_type in _PER_RESPONSE_NOTIFICATIONS else db.scalars(
         select(OutboxNotification).where(
             OutboxNotification.participant_id == participant.id,
             OutboxNotification.notification_type == notification_type,
@@ -1185,37 +1170,52 @@ def submit_dashboard_answer(db, participant_id: str, assignment_id: str, respons
     backtranslated_text = None
     scoring_metadata = {}
 
+    mcq_needs_llm_resolution = False
     if is_choice_scored_item(qa_item):
-        choice_correct = choice_response_is_correct(qa_item, answer_text)
-        stored_response_text = choice_response_letter(qa_item, answer_text)
-        is_correct_label = "yes (auto)" if choice_correct else "no (auto)"
-        review_status = ReviewStatus.AUTO.value
-    else:
-        (
-            normalized_text,
-            correctness_score,
-            matched_keywords,
-            missing_keywords,
-            needs_expert_review,
-            flag_reason,
-        ) = _score_open_dashboard_response(db, participant, qa_item, answer_text)
-        if needs_expert_review:
-            is_correct_label = "pending"
-        elif correctness_score is not None and correctness_score < 1.0:
-            is_correct_label = "no (auto)"
-        else:
-            is_correct_label = "yes (auto)"
-        review_status = (
-            ReviewStatus.PENDING.value
-            if needs_expert_review
-            else ReviewStatus.AUTO.value
-        )
-        if llm_answer_scoring_enabled():
-            correctness_score = None
+        # Dashboard replies are usually button taps, so the letter parses and
+        # this is the exact-match path. Free-text entry still gets the same
+        # fallback as the bot -- the two channels must score identically.
+        parsed_letter = choice_response_letter(qa_item, answer_text)
+        if parsed_letter is not None:
+            stored_response_text = parsed_letter
+            choice_correct = choice_response_is_correct(qa_item, answer_text)
+            is_correct_label = "yes (auto)" if choice_correct else "no (auto)"
+            review_status = ReviewStatus.AUTO.value
+        elif llm_answer_scoring_enabled() and (answer_text or "").strip():
+            mcq_needs_llm_resolution = True
             is_correct_label = "pending"
             review_status = ReviewStatus.PENDING.value
+            flag_reason = "MCQ choice resolution queued."
+            scoring_metadata = {"method": "llm_choice_resolution", "status": "queued"}
+        else:
+            is_correct_label = "pending"
+            review_status = ReviewStatus.PENDING.value
+            flag_reason = "Pending: MCQ reply did not resolve to a choice."
+            scoring_metadata = {"method": "none", "status": "unusable_reply"}
+    else:
+        # [2026-08-12] Keyword scoring removed here too -- this is the dashboard
+        # twin of the message-bot ingest path, and the two must agree or the
+        # same answer scores differently depending on the channel it arrived on
+        # (source_channel is a pilot covariate, so that would be a real
+        # confound). Open answers are LLM-judged only; see workflow.py.
+        normalized_text = normalize_response_text(answer_text)
+        correctness_score = None
+        needs_expert_review = True
+        is_correct_label = "pending"
+        review_status = ReviewStatus.PENDING.value
+        if llm_answer_scoring_enabled():
             flag_reason = "LLM scoring queued."
-            scoring_metadata = {"method": "backtranslation_binary_llm", "status": "queued"}
+            scoring_metadata = {
+                "method": "backtranslation_llm_judge",
+                "scale": "0/0.5/1",
+                "status": "queued",
+            }
+        else:
+            flag_reason = (
+                "Pending expert review: LLM answer scoring is disabled "
+                "(set ENABLE_LLM_ANSWER_SCORING)."
+            )
+            scoring_metadata = {"method": "none", "status": "scorer_disabled"}
 
     response = ParticipantResponse(
         participant_id=participant.id,
@@ -1239,6 +1239,11 @@ def submit_dashboard_answer(db, participant_id: str, assignment_id: str, respons
     if not is_choice_scored_item(qa_item) and llm_answer_scoring_enabled():
         _enqueue_outbox_notification(
             db, participant, ANSWER_LLM_SCORE_REQUESTED_NOTIFICATION,
+            {"response_id": response.id},
+        )
+    elif mcq_needs_llm_resolution:
+        _enqueue_outbox_notification(
+            db, participant, MCQ_CHOICE_RESOLUTION_REQUESTED_NOTIFICATION,
             {"response_id": response.id},
         )
 
@@ -1494,6 +1499,44 @@ def submit_dashboard_answer_receipt(
         "next_question": next_question,
         "wallet": {"balance": wallet.balance if wallet else 0},
         "awards": {"answer": 0, "batch_completed": 0},
+    }
+
+
+def expire_dashboard_question(db, participant_id: str, assignment_id: str):
+    """Expire an unanswered dashboard question and return its successor."""
+    from app.services.participant_assignment_service import skip_participant_assignment
+
+    participant = _participant_by_id(db, participant_id)
+    if not participant:
+        raise DashboardAnswerError("Participant not found")
+    assignment = db.get(Assignment, (assignment_id or "").strip())
+    if not assignment or assignment.participant_id != participant.id:
+        raise DashboardAnswerError("Assignment not found")
+    if assignment.status == AssignmentStatus.COMPLETED.value:
+        raise DashboardAnswerError("This question is already answered")
+    if assignment.status == AssignmentStatus.EXPIRED.value:
+        raise DashboardAnswerError("This question has already expired")
+
+    skip_participant_assignment(db, participant.id, assignment.id)
+    assignment.status = AssignmentStatus.EXPIRED.value
+    participant_session = get_or_create_participant_session(db, participant)
+    next_assignment = (
+        db.get(Assignment, participant_session.current_assignment_id)
+        if participant_session.current_assignment_id
+        else None
+    )
+    next_question = None
+    if next_assignment and next_assignment.status == AssignmentStatus.ASSIGNED.value:
+        next_qa_item = next_assignment.qa_item or db.get(QAItem, next_assignment.qa_item_id)
+        if next_qa_item:
+            next_question = _serialize_dashboard_question(
+                db, participant, next_assignment, next_qa_item, question_index=0
+            )
+    db.flush()
+    return {
+        "expired_assignment_id": assignment.id,
+        "next_assignment_id": next_assignment.id if next_assignment else None,
+        "next_question": next_question,
     }
 
 
@@ -1884,6 +1927,11 @@ def get_luke_journey_chapters(db, participant_id):
             batch_index[batch_id] = batch
             batches.append(batch)
         complete = assignment.status == AssignmentStatus.COMPLETED.value
+        terminal = assignment.status in {
+            AssignmentStatus.COMPLETED.value,
+            AssignmentStatus.SKIPPED.value,
+            AssignmentStatus.EXPIRED.value,
+        }
         question = {
             **_serialize_dashboard_question(
                 db,
@@ -1892,7 +1940,8 @@ def get_luke_journey_chapters(db, participant_id):
                 qa_item,
                 question_index=len(batch["questions"]),
             ),
-            "status": "complete" if complete else "current",
+            "status": "complete" if terminal else "current",
+            "timed_out": assignment.status == AssignmentStatus.EXPIRED.value,
         }
         if complete:
             question["review"] = _serialize_completed_question_review(

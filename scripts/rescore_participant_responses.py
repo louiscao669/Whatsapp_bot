@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
 """
-Re-score existing participant_responses using per-language keyword matching.
+Re-score existing participant_responses with the LLM judge (0 / 0.5 / 1).
+
+[CHANGED 2026-08-12] Was per-language keyword matching. Open answers are now
+judged by ``eten_shared.answer_llm_scoring.score_open_answer``, the same scorer
+and scale as the offline benchmark judge, so re-scored rows stay comparable to
+the proxy grid. MCQ is still scored by letter. Requires OPENAI_API_KEY.
 
 Usage (from repo root):
   python scripts/rescore_participant_responses.py RESPONSE_ID ...
@@ -33,15 +38,22 @@ from eten_shared.models import (
     ParticipantResponse,
     ReviewStatus,
 )
-from app.services.workflow import (
-    audio_answer_lacks_usable_transcript,
-    has_usable_text_for_keyword_scoring,
-    score_text_response_for_participant,
+from app.services.workflow import audio_answer_lacks_usable_transcript
+from eten_shared.answer_llm_scoring import (
+    resolve_choice_letter,
+    resolve_response_passage_text,
+    score_open_answer,
 )
+
+# Judge score -> is_correct label; mirrors engagement/outbox.py.
+_AUTO_LABELS = {1.0: "yes (auto)", 0.5: "partial (auto)", 0.0: "no (auto)"}
 from eten_shared.mcq import (
-    choice_response_is_correct,
+    choice_letters_for_type,
     choice_response_letter,
     is_choice_scored_item,
+    normalize_labeled_choices,
+    parse_mcq_correct_letter,
+    question_type_value,
 )
 from eten_shared.transcription import (
     is_transcription_enabled,
@@ -113,76 +125,116 @@ def score_response_row(db, response, retranscribe: bool):
         response_type,
     )
 
+    backtranslated_text = None
+    scoring_metadata = {}
+
     if is_choice_scored_item(qa_item):
         normalized_text = None
-        correctness_score = None
-        matched_keywords = []
-        missing_keywords = []
-        keyword_scored = False
-        needs_expert_review = False
         flag_reason = None
-        choice_correct = choice_response_is_correct(qa_item, analysis_text)
+        parsed_letter = choice_response_letter(qa_item, analysis_text)
+        if parsed_letter is None and (analysis_text or "").strip():
+            # Same fallback as the live path: resolve the free text to a letter
+            # rather than letting choice_response_is_correct score it False.
+            question_type = question_type_value(qa_item)
+            letters = choice_letters_for_type(question_type)
+            options = normalize_labeled_choices(qa_item.mcq_choices, question_type)
+            resolution = resolve_choice_letter(
+                question=qa_item.question_text,
+                participant_answer=analysis_text,
+                choices={
+                    letters[i]: opt for i, opt in enumerate(options) if i < len(letters)
+                },
+                language=(participant.target_language or "eng").strip() or "eng",
+            )
+            parsed_letter = resolution.letter
+            scoring_metadata = {
+                "method": "llm_choice_resolution",
+                "status": "complete" if parsed_letter else "unresolved",
+                "resolved_letter": parsed_letter,
+                "rationale": resolution.rationale,
+                "original_reply": analysis_text,
+            }
+
+        if parsed_letter is None:
+            # Unresolvable: held, not scored wrong.
+            correctness_score = None
+            is_correct = "pending"
+            review_status = ReviewStatus.PENDING.value
+            flag_reason = "MCQ reply selects no choice."
+        else:
+            correct_letter = parse_mcq_correct_letter(qa_item.mcq_correct_choice)
+            choice_correct = parsed_letter == correct_letter
+            correctness_score = 1.0 if choice_correct else 0.0
+            is_correct = "yes (auto)" if choice_correct else "no (auto)"
+            review_status = ReviewStatus.AUTO.value
     elif unusable_audio_transcript:
         normalized_text = analysis_text
         correctness_score = None
-        matched_keywords = []
-        missing_keywords = []
-        needs_expert_review = True
         if not (transcript_text or "").strip():
             flag_reason = "Pending expert review: no transcript for audio answer."
         else:
-            flag_reason = "Pending expert review: placeholder transcript (not keyword-scored)."
-        keyword_scored = False
-    elif has_usable_text_for_keyword_scoring(
-        transcript_text, response_text, response_type
-    ):
-        (
-            normalized_text,
-            correctness_score,
-            matched_keywords,
-            missing_keywords,
-            needs_expert_review,
-            flag_reason,
-        ) = score_text_response_for_participant(db, qa_item, participant, analysis_text)
-        keyword_scored = True
-    else:
-        (
-            normalized_text,
-            correctness_score,
-            matched_keywords,
-            missing_keywords,
-            needs_expert_review,
-            flag_reason,
-        ) = score_text_response_for_participant(db, qa_item, participant, analysis_text)
-        keyword_scored = bool((response_text or "").strip())
-
-    if is_choice_scored_item(qa_item):
-        is_correct = "yes (auto)" if choice_correct else "no (auto)"
-        review_status = ReviewStatus.AUTO.value
-    elif needs_expert_review:
+            flag_reason = "Pending expert review: placeholder transcript."
         is_correct = "pending"
         review_status = ReviewStatus.PENDING.value
-    elif correctness_score is not None and correctness_score < 1.0:
-        is_correct = "no (auto)"
-        review_status = ReviewStatus.AUTO.value
     else:
-        is_correct = "yes (auto)"
+        # [2026-08-12] LLM judge, 0/0.5/1, same scorer as the live path and the
+        # offline grid. Judged against the VARIANT passage for this response's
+        # experiment cell -- see resolve_response_passage_text.
+        normalized_text = analysis_text
+        passage_text = resolve_response_passage_text(response)
+        if passage_text is None and response.assignment is not None and (
+            response.assignment.experiment_cell_id
+        ):
+            raise SystemExit(
+                f"response {response.id}: experiment cell has no passage "
+                "(NULL experiment_passage_id). Refusing to judge against the "
+                "clean chapter text -- repair the plan cell first."
+            )
+        scored = score_open_answer(
+            question=qa_item.question_text,
+            original_question=qa_item.original_question_text,
+            participant_answer=analysis_text,
+            expected_answer=qa_item.expected_answer,
+            original_expected_answer=qa_item.original_expected_answer,
+            passage=passage_text,
+            language=(participant.target_language or "eng").strip() or "eng",
+        )
+        correctness_score = scored.score
+        backtranslated_text = scored.backtranslated_answer
+        flag_reason = None
+        is_correct = _AUTO_LABELS[scored.score]
         review_status = ReviewStatus.AUTO.value
+        scoring_metadata = {
+            "method": "backtranslation_llm_judge",
+            "scale": "0/0.5/1",
+            "status": "complete",
+            "label": scored.label,
+            "expected_answer_english": scored.expected_answer_english,
+            "rationale": scored.rationale,
+            "core_claim_expected": scored.core_claim_expected,
+            "core_claim_found": scored.core_claim_found,
+        }
 
     result = {
         "normalized_text": normalized_text,
         "correctness_score": correctness_score,
-        "matched_keywords": matched_keywords,
-        "missing_keywords": missing_keywords,
+        # Keyword fields are retained in the schema but always cleared: nothing
+        # writes them any more, and stale values would misrepresent the score.
+        "matched_keywords": [],
+        "missing_keywords": [],
         "is_correct": is_correct,
         "review_status": review_status,
         "flag_reason": flag_reason,
-        "keyword_scored": keyword_scored,
+        "backtranslated_text": backtranslated_text,
+        "scoring_metadata": scoring_metadata,
         "transcript_text": transcript_text,
         "target_language": (participant.target_language or "eng").strip() or "eng",
     }
-    if is_choice_scored_item(qa_item):
-        result["response_text"] = choice_response_letter(qa_item, analysis_text)
+    if is_choice_scored_item(qa_item) and parsed_letter is not None:
+        # Only overwrite with the letter once we HAVE one -- writing None would
+        # destroy the participant's original words and make the row
+        # unresolvable on any later pass.
+        result["response_text"] = parsed_letter
     return result
 
 
@@ -198,6 +250,10 @@ def apply_scores_to_response(response, scores):
     response.is_correct = scores.get("is_correct", "pending")
     response.review_status = scores.get("review_status", ReviewStatus.PENDING.value)
     response.flag_reason = scores.get("flag_reason")
+    if scores.get("backtranslated_text") is not None:
+        response.backtranslated_text = scores.get("backtranslated_text")
+    if scores.get("scoring_metadata"):
+        response.scoring_metadata = scores.get("scoring_metadata")
 
 
 def print_result(response, scores):

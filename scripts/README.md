@@ -1,5 +1,31 @@
 # Test scripts
 
+## Rank all Tier-1 questions
+
+Fit the permutation-p gate and partially pooled item sensitivity `s_i`, then
+rank all 90 translated questions. The existing collision features are used
+only after the p/s_i primary ordering:
+
+```bash
+python scripts/rank_tier1_questions.py --eval-root evaluation
+```
+
+Outputs are written to `evaluation/reports/tier1_question_ranking.{json,csv}`;
+the reusable sensitivity fit is `evaluation/reports/tier1_item_sensitivity.json`.
+Use `--no-refresh-sensitivity` to reuse the current fit.
+
+Apply that ranking when resolving overlaps while preserving the maximum
+72-question disjoint set:
+
+```bash
+python scripts/rewindow_tier1_disjoint.py \
+  --windows QA_algorithm/inputs/tier1_qa_verse_windows.json \
+  --ranking evaluation/reports/tier1_question_ranking.json \
+  --out evaluation/datasets/tier1_gold_72_selection.json \
+  --gold-out evaluation/datasets/tier1_gold_72.json \
+  --gold-missing-out evaluation/datasets/tier1_gold_72_missing.json
+```
+
 ## Translate LLM QA output to Chinese
 
 Translate a mixed open-QA/MCQ JSON file shaped like:
@@ -20,13 +46,13 @@ Run from the repository root:
 
 ```bash
 export OPENAI_API_KEY=...
-python evaluation/scripts/translate_llm_qa_to_chinese.py input.json evaluation/outputs/qa_zh.json
+python evaluation/scripts/data_prep/translate_llm_qa_to_chinese.py input.json evaluation/outputs/qa_zh.json
 ```
 
 Use `--format native` to emit JSON that can be pasted into the admin QA importer:
 
 ```bash
-python evaluation/scripts/translate_llm_qa_to_chinese.py input.json evaluation/outputs/qa_zh_native.json --format native
+python evaluation/scripts/data_prep/translate_llm_qa_to_chinese.py input.json evaluation/outputs/qa_zh_native.json --format native
 ```
 
 The compact output shape is:

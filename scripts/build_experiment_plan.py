@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Write the per-participant Latin-square plan for the human pilot (prereq #4).
 
-Populates ``experiment_plan_cells``: one row per (participant, chapter) fixing the
-condition that participant sees for that chapter, plus the FK to the variant passage
-(``experiment_passages``, imported by ``scripts/pilot_import.py``). The designed selector
+Populates ``experiment_plan_cells``: one row per (participant, window group) fixing the
+condition that participant sees for that group. A group contains 9-10 tier-1 windows and
+may span source passages, so delivery resolves its variant per QA rather than storing one
+misleading passage FK on the group. The designed selector
 (``question_discovery.experiment_selection``) then serves questions strictly from this
 plan when ``ENABLE_EXPERIMENT_ASSIGNMENT`` is set.
 
@@ -13,9 +14,9 @@ Design (HUMAN_PILOT_DESIGN_2026-07-27 §4/§5; DESIGNED_ASSIGNMENT_EXTENSION_202
     pooled anchors: one supplies theta-hat, one supplies the re-zeroing baseline) and the
     clean cell is also the 0% dose of BOTH adequacy ladders.
     [CHANGED 2026-07-27b] was omission{10,20,30} + mistranslation20.
-  * condition = SLOTS[(chapter - 1 + block_index) mod 8]  -> a balanced Latin square:
-    across each 8-participant block every chapter is paired with every slot exactly once.
-  * chapter ORDER is shuffled independently per participant (seeded by participant_id, so
+  * condition = SLOTS[(group - 1 + block_index) mod 8]  -> a balanced Latin square:
+    across each 8-participant block every window group is paired with every slot once.
+  * group ORDER is shuffled independently per participant (seeded by participant_id, so
     it is stable across re-runs / resumption) -> breaks order x condition confounding.
 
 Block assignment: participants are taken in a fixed order (explicit --participant-ids, or
@@ -48,12 +49,13 @@ from _bootstrap import use_message_bot  # noqa: E402
 
 use_message_bot()
 
-from sqlalchemy import select  # noqa: E402
+from sqlalchemy import func, select  # noqa: E402
 
 from eten_shared.database import get_session_factory  # noqa: E402
 from eten_shared.models import (  # noqa: E402
     ExperimentPassage,
     ExperimentPlanCell,
+    ExperimentWindow,
     Participant,
 )
 
@@ -73,13 +75,16 @@ SLOTS = [
     "grammar30",
     "wbw",
 ]
-CHAPTERS = list(range(1, 9))
+# ``chapter`` in the legacy schema now stores the balanced window-group index.
+# Each group contains 9-10 tier-1 windows and may cross a passage boundary.
+GROUPS = list(range(1, 9))
+CHAPTERS = GROUPS  # compatibility for older tests/imports
 LANGUAGE = "zh"
 
 
 def build_cells(participant_id: str, block_index: int):
     """Return the list of (chapter, condition, sequence_index) for one participant."""
-    chapter_order = CHAPTERS.copy()
+    chapter_order = GROUPS.copy()
     random.Random(str(participant_id)).shuffle(chapter_order)  # stable per participant
     cells = []
     for seq, chapter in enumerate(chapter_order):
@@ -111,6 +116,23 @@ def passage_index(db, language):
     for p in db.scalars(select(ExperimentPassage).where(ExperimentPassage.language == language)).all():
         idx[(p.chapter, p.condition)] = p.id
     return idx
+
+
+def tier1_variant_gaps(db, language):
+    """Missing (source passage, condition) variants required by imported windows."""
+    source_ids = set(db.scalars(select(ExperimentWindow.source_passage_id).distinct()).all())
+    present = set(db.execute(
+        select(ExperimentPassage.source_passage_id, ExperimentPassage.condition).where(
+            ExperimentPassage.language == language,
+            ExperimentPassage.source_passage_id.in_(source_ids),
+        )
+    ).all()) if source_ids else set()
+    return {
+        (source_id, condition)
+        for source_id in source_ids
+        for condition in set(SLOTS)
+        if (source_id, condition) not in present
+    }
 
 
 def main():
@@ -152,6 +174,15 @@ def main():
             print(f"  [warn] {len(participants)} participants is not a multiple of 8 -- "
                   f"the last block is partial (Latin square unbalanced; design tolerates >=12).")
         pidx = passage_index(db, args.language)
+        tier1_mode = bool(db.scalar(select(func.count(ExperimentWindow.id))))
+        if tier1_mode:
+            gaps = tier1_variant_gaps(db, args.language)
+            if gaps:
+                sys.exit(
+                    f"REFUSING: {len(gaps)} tier-1 source-passage/condition variants are "
+                    f"missing (first: {sorted(gaps)[:6]}). Run scripts/pilot_import.py "
+                    "and generate any missing condition outputs before building plans."
+                )
 
         for position, participant in enumerate(participants):
             existing = db.scalar(
@@ -166,8 +197,11 @@ def main():
             cells = build_cells(participant.id, block_index)
             per_participant_slots[participant.id] = Counter(c[1] for c in cells)
             for chapter, condition, seq in cells:
-                passage_id = pidx.get((chapter, condition))
-                if passage_id is None:
+                # A tier-1 group can span two source passages, so there is no
+                # truthful single passage FK. Delivery resolves dynamically from
+                # (QAItem.passage_id, condition). Legacy Luke plans keep the FK.
+                passage_id = None if tier1_mode else pidx.get((chapter, condition))
+                if passage_id is None and not tier1_mode:
                     missing_passage.add((chapter, condition))
                 balance[chapter][condition] += 1
                 if not args.dry_run:
@@ -190,7 +224,7 @@ def main():
     print("\nLatin-square balance (chapter -> condition counts across planned participants):")
     conds = SLOTS[:1] + SLOTS[2:]  # unique condition keys, clean once
     print("  ch  " + "  ".join(f"{c[:9]:>9}" for c in conds))
-    for ch in CHAPTERS:
+    for ch in GROUPS:
         row = "  ".join(f"{balance[ch][c]:>9}" for c in conds)
         print(f"  {ch:<3} {row}")
     # each participant should see all 8 slots (2 clean + 6 others)

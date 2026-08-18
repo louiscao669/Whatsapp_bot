@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Additivity analysis for the MIXED-DEFECT campaign
 (EXPERIMENT_BURDEN_MQM_BRIDGE.md §7.2; variants generated + answered by
-evaluation/scripts/run_mixed_defect_campaign.sh).
+evaluation/scripts/campaigns/run_mixed_defect_campaign.sh).
 
 MODEL UNDER TEST: defects add in the logit —
     Delta(A@dA + B@dB) = Delta(A@dA) + Delta(B@dB)      (all relative to 0%)
@@ -166,8 +166,8 @@ def main():
     if not rows:
         raise SystemExit(
             "No mixed cells with scores found — run the campaign first:\n"
-            "  bash evaluation/scripts/run_mixed_defect_campaign.sh generate\n"
-            "  bash evaluation/scripts/run_mixed_defect_campaign.sh answer")
+            "  bash evaluation/scripts/campaigns/run_mixed_defect_campaign.sh generate\n"
+            "  bash evaluation/scripts/campaigns/run_mixed_defect_campaign.sh answer")
 
     lines = [f"Mixed-defect additivity (tier={args.tier}, "
              f"q_types={args.q_types}, {len(rows)} cells, "

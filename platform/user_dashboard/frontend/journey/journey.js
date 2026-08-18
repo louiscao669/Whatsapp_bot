@@ -203,7 +203,14 @@ function renderQuestionAnswerPage(target, actions) {
           text: `${chapter?.title || "Question path"} / ${batch?.label || "Batch"}`
         }),
         el("h2", { text: `Question ${questionIndex + 1}` })
-      ])
+      ]),
+      el("div", {
+        className: "question-timer",
+        "data-question-timer": question.assignment_id,
+        role: "timer",
+        "aria-live": "polite",
+        text: "1:00"
+      })
     ]),
     el("form", {
       className: "question-answer-card",
@@ -498,7 +505,9 @@ function renderPathNode(question, index, position, batchIndex, actions = {}) {
       "aria-label": `${batchIndex + 1}.${index + 1} ${question.question || "Question"}`
     }, [
       status === "complete"
-        ? el("img", { src: "/user_dashboard/assets/checkmark.svg", alt: "", "aria-hidden": "true" })
+        ? question.timed_out
+          ? el("span", { text: "⌛", "aria-label": "Time expired" })
+          : el("img", { src: "/user_dashboard/assets/checkmark.svg", alt: "", "aria-hidden": "true" })
         : status === "locked"
           ? el("img", { className: "lock-icon", src: "/user_dashboard/assets/lock.svg", alt: "", "aria-hidden": "true" })
           : el("span", { text: isCurrent ? `${index + 1}` : "" })

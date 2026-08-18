@@ -176,9 +176,94 @@ def test_fetch_records_sqlite():
               len(fetch_records(db, require_reviewed=True)) == 0)
 
 
+def test_unresolved_mcq_is_unscored_not_wrong():
+    """[2026-08-12] An MCQ reply that never resolved to a letter is missing
+    data, not an error.
+
+    Before the LLM fallback, choice_response_is_correct returned False for an
+    unparseable reply, so a participant who wrote "I think the second one" was
+    indistinguishable in the export from one who picked the wrong choice. That
+    biases human MCQ accuracy downward relative to the proxy benchmark, where
+    answer models always emit clean letters.
+    """
+    base = dict(chapter=3, condition="clean", participant_slug="P01",
+                passage_id="luke3", passage_reference="Luke 3",
+                question_type="mcq", question_text="Q", expected_answer="B",
+                response_type="text", transcript_text=None, normalized_text=None,
+                correctness_score=None, review_status="auto", media_id=None)
+    recs = [
+        # cleanly parsed, correct
+        dict(base, qa_item_id="q1", response_id="r1", response_text="B",
+             is_correct="yes (auto)", mcq_correct=True, scoring_metadata=None),
+        # cleanly parsed, wrong -- a real error, must still count
+        dict(base, qa_item_id="q2", response_id="r2", response_text="A",
+             is_correct="no (auto)", mcq_correct=False, scoring_metadata=None),
+        # reply selected nothing -- must NOT count as wrong
+        dict(base, qa_item_id="q3", response_id="r3", response_text="no idea",
+             is_correct="pending", review_status="pending", mcq_correct=False,
+             scoring_metadata={"method": "llm_choice_resolution",
+                               "status": "unresolved"}),
+        # still queued -- must NOT count either
+        dict(base, qa_item_id="q4", response_id="r4", response_text="the second one",
+             is_correct="pending", review_status="pending", mcq_correct=False,
+             scoring_metadata={"method": "llm_choice_resolution", "status": "queued"}),
+        # rescued by the LLM fallback, resolved to the correct letter
+        dict(base, qa_item_id="q5", response_id="r5", response_text="B",
+             is_correct="yes (auto)", mcq_correct=True,
+             scoring_metadata={"method": "llm_choice_resolution",
+                               "status": "complete", "resolved_letter": "B"}),
+    ]
+    out = assemble(recs, "condition", "human", False)
+    payload = next(iter(out.values()))
+    summary = payload["summary"]
+
+    check("unresolved + queued excluded from mcq_scored_count",
+          summary["mcq_scored_count"] == 3)
+    check("both unscorable rows counted as mcq_unscored",
+          summary["mcq_unscored"] == 2)
+    check("mcq_correct counts only genuinely correct answers",
+          summary["mcq_correct"] == 2)
+    check("accuracy denominator excludes unscored (2/3, not 2/5)",
+          abs(summary["mcq_accuracy"] - 2 / 3) < 1e-9)
+    check("llm-rescued replies are counted",
+          summary["mcq_llm_resolved"] == 3)
+
+    by_item = {it["id"]: it for it in payload["items"]}
+    check("unresolved row exports llm_score None (not 0.0)",
+          by_item["q3"]["llm_score"] is None)
+    check("unresolved row exports direct_correct None (not False)",
+          by_item["q3"]["direct_correct"] is None)
+    check("cleanly-wrong row still exports 0.0",
+          by_item["q2"]["llm_score"] == 0.0)
+    check("rescued row carries its resolved letter",
+          by_item["q5"]["resolved_letter"] == "B")
+    check("cleanly-parsed row is labelled exact_letter",
+          by_item["q1"]["scoring_method"] == "exact_letter")
+
+
+def test_tier1_path():
+    rec = dict(
+        chapter=2, condition="omission15", participant_slug="P01",
+        qa_item_id="t1q", passage_id="t1_judg17_18",
+        passage_reference="Judges 17:1-18:31", question_type="open",
+        question_text="Q", expected_answer="A", response_id="r-t1",
+        response_type="text", response_text="A", transcript_text=None,
+        normalized_text=None, correctness_score=1.0, is_correct="correct",
+        review_status="auto", media_id=None, mcq_correct=None,
+        scoring_metadata={"method": "backtranslation_llm_judge", "scale": "0/0.5/1"},
+    )
+    out = assemble([rec], "condition", "human", False)
+    check("tier-1 export routes by source passage, not window-group/chapter field",
+          "outputs/tier1/t1_judg17_18/human/omission/15%/scores_target_human.json" in out)
+
+
 def main():
     print("assemble():")
     test_assemble()
+    print("unresolved MCQ handling:")
+    test_unresolved_mcq_is_unscored_not_wrong()
+    print("tier-1 output routing:")
+    test_tier1_path()
     print("fetch_records() [sqlite]:")
     test_fetch_records_sqlite()
     print("slate consistency across the three declaration sites:")

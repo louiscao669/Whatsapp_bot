@@ -22,7 +22,9 @@ from eten_shared.domain.assignments import (
     build_assignment_prompt,
     complete_current_batch_if_needed,
     create_assignment_for_qa_item,
+    ExperimentPassageMissingError,
     experiment_passage_assignment_kwargs,
+    resolve_experiment_passage,
     experiment_assignment_enabled,
     get_incomplete_assignment,
     get_chained_assignment,
@@ -55,15 +57,7 @@ from eten_shared.media_storage import (
     store_provider_audio_bytes,
     store_whatsapp_audio,
 )
-from eten_shared.keyword_matching import (
-    keyword_matches_in_response,
-    normalize_response_text,
-)
-from eten_shared.qa_keywords import (
-    KeywordRubric,
-    get_language_keywords,
-    rubric_from_qa_item,
-)
+from eten_shared.keyword_matching import normalize_response_text
 from eten_shared.question_discovery import (
     experiment_batch_should_reset,
     select_next_experiment_cell_item,
@@ -148,83 +142,15 @@ class WorkflowResult:
     engagement_deferred: bool = False
 
 
-def score_text_response_with_rubric(response_text: str, rubric: KeywordRubric):
-    if is_placeholder_transcript(response_text or ""):
-        required = rubric.required_keywords or []
-        return (
-            normalize_response_text(response_text or ""),
-            None,
-            [],
-            list(required),
-            True,
-            "Pending expert review: placeholder transcript.",
-        )
-
-    normalized_text = normalize_response_text(response_text)
-    required_keywords = rubric.required_keywords or []
-    matched_keywords = []
-    missing_keywords = []
-
-    for keyword in required_keywords:
-        if keyword_matches_in_response(
-            keyword,
-            response_text,
-            keyword_specs=rubric.required_keyword_specs,
-        ):
-            matched_keywords.append(keyword)
-        else:
-            missing_keywords.append(keyword)
-
-    if not required_keywords:
-        return (
-            normalized_text,
-            None,
-            matched_keywords,
-            missing_keywords,
-            True,
-            "Pending expert review: no required keywords configured for this language.",
-        )
-
-    correctness_score = len(matched_keywords) / len(required_keywords)
-    needs_expert_review = bool(missing_keywords)
-    flag_reason = (
-        "Missing required keywords: " + ", ".join(missing_keywords)
-        if missing_keywords
-        else None
-    )
-
-    return (
-        normalized_text,
-        correctness_score,
-        matched_keywords,
-        missing_keywords,
-        needs_expert_review,
-        flag_reason,
-    )
-
-
-def score_text_response(
-    qa_item,
-    response_text,
-    db: Optional[Session] = None,
-    language: Optional[str] = None,
-):
-    if db is not None and language:
-        rubric = get_language_keywords(db, qa_item.id, language)
-    else:
-        rubric = rubric_from_qa_item(qa_item)
-    return score_text_response_with_rubric(response_text, rubric)
-
-
-def score_text_response_for_participant(
-    db: Session,
-    qa_item,
-    participant,
-    response_text,
-):
-    language = (participant.target_language or "eng").strip() or "eng"
-    rubric = get_language_keywords(db, qa_item.id, language)
-    return score_text_response_with_rubric(response_text, rubric)
+# [2026-08-12] score_text_response_with_rubric / score_text_response /
+# score_text_response_for_participant deleted. Keyword matching was the open
+# instrument while the offline benchmarks used an LLM judge on a 0/0.5/1 scale,
+# which made human-vs-proxy comparisons scorer-confounded. It also failed
+# directionally: it under-credits a correct answer phrased differently (exactly
+# what humans do), and items whose gold answer is not lexically present in the
+# passage -- e.g. 2chr26 26:11 -- scored ~0 for every respondent regardless of
+# what they wrote. Open answers are now judged only by
+# eten_shared.answer_llm_scoring.score_open_answer.
 
 
 def audio_answer_lacks_usable_transcript(transcript_text, response_type) -> bool:
@@ -235,16 +161,9 @@ def audio_answer_lacks_usable_transcript(transcript_text, response_type) -> bool
     return is_placeholder_transcript(transcript_text)
 
 
-def has_usable_text_for_keyword_scoring(
-    transcript_text,
-    response_text,
-    response_type,
-) -> bool:
-    if response_type == ResponseType.TEXT.value:
-        return bool((response_text or "").strip())
-    if response_type == ResponseType.AUDIO.value:
-        return not audio_answer_lacks_usable_transcript(transcript_text, response_type)
-    return False
+# has_usable_text_for_keyword_scoring deleted with the keyword scorer (unused).
+# audio_answer_lacks_usable_transcript above is the surviving gate: it decides
+# whether there is anything for the LLM judge to read.
 
 
 def create_assignment_prompt(db: Session, participant, participant_session):
@@ -291,13 +210,34 @@ def create_assignment_prompt(db: Session, participant, participant_session):
             return None, False, completed_batch_size
         if experiment_batch_should_reset(db, participant_session.current_batch_id, cell):
             participant_session.current_batch_id = None
-        passage_kwargs = {}
-        if cell.experiment_passage_id:
-            experiment_passage = db.get(ExperimentPassage, cell.experiment_passage_id)
-            if experiment_passage:
-                passage_kwargs = experiment_passage_assignment_kwargs(
-                    db, experiment_passage, qa_item
-                )
+        # The condition reaches the participant ONLY through this passage: the QA
+        # is shared across all of a chapter's conditions. If it cannot be
+        # resolved, refuse to assign rather than letting build_assignment_prompt
+        # fall back to the condition-invariant qa_item.passage_text.
+        experiment_passage = resolve_experiment_passage(
+            db, cell, qa_item, participant_language_code(participant)
+        )
+        if experiment_passage is None:
+            raise ExperimentPassageMissingError(
+                f"plan cell {cell.id} (group {cell.chapter}, condition "
+                f"{cell.condition!r}) has no variant for source passage "
+                f"{qa_item.passage_id!r}. Run scripts/verify_experiment_delivery.py."
+            )
+        if experiment_passage.condition != cell.condition:
+            # Would deliver a real variant, just the WRONG one -- undetectable
+            # downstream, since the exported condition comes from the cell.
+            raise ExperimentPassageMissingError(
+                f"plan cell {cell.id} is condition {cell.condition!r} but its passage "
+                f"is condition {experiment_passage.condition!r}."
+            )
+        passage_kwargs = experiment_passage_assignment_kwargs(
+            db, experiment_passage, qa_item
+        )
+        if not (passage_kwargs.get("passage_text") or "").strip():
+            raise ExperimentPassageMissingError(
+                f"experiment_passage {experiment_passage.id} (chapter {cell.chapter}, "
+                f"condition {cell.condition!r}) has empty passage text."
+            )
         prompt = create_assignment_for_qa_item(
             db,
             participant,
@@ -383,11 +323,18 @@ def save_response_for_current_assignment(
         response_type,
     )
 
-    keyword_scoring = None
     mcq_scoring = None
     choice_answer_correct = None
     backtranslated_text = None
     scoring_metadata = {}
+
+    # [2026-08-12] Keyword scoring removed for open answers. It was the pilot's
+    # open instrument while the offline benchmarks were produced by an LLM
+    # judge, so human and proxy scores sat on different scales and any
+    # human-vs-proxy delta was confounded with the scorer. Open answers are now
+    # judged exclusively by the LLM path (queued here, resolved in
+    # engagement/outbox.py).
+    mcq_needs_llm_resolution = False
     if is_choice_scored_item(qa_item):
         normalized_text = None
         correctness_score = None
@@ -395,66 +342,92 @@ def save_response_for_current_assignment(
         missing_keywords = []
         needs_expert_review = False
         flag_reason = None
-        choice_answer_correct = choice_response_is_correct(qa_item, analysis_text)
-    elif has_usable_text_for_keyword_scoring(transcript_text, response_text, response_type):
-        keyword_scoring = score_text_response_for_participant(
-            db, qa_item, participant, analysis_text
-        )
-
-    if not is_choice_scored_item(qa_item):
-        if unusable_audio_transcript:
-            normalized_text = normalize_response_text(analysis_text)
-            correctness_score = None
-            matched_keywords = []
-            missing_keywords = []
+        # Exact letter first -- identical to the grid's mcq_correct, noiseless,
+        # and the overwhelmingly common case.
+        parsed_letter = choice_response_letter(qa_item, analysis_text)
+        if parsed_letter is not None:
+            choice_answer_correct = choice_response_is_correct(qa_item, analysis_text)
+        elif unusable_audio_transcript or not (analysis_text or "").strip():
+            # Nothing to resolve. Held, not scored 0 -- see the open branch.
+            choice_answer_correct = None
             needs_expert_review = True
+            flag_reason = "Pending: no usable reply text for this choice question."
+            scoring_metadata = {"method": "none", "status": "unusable_reply"}
+        elif llm_answer_scoring_enabled():
+            # [2026-08-12] Unparseable reply. choice_response_is_correct would
+            # return False here, recording a participant who wrote "the second
+            # one" as WRONG. Queue an LLM to map the reply onto a letter; the
+            # correctness comparison still happens against the stored key.
+            choice_answer_correct = None
+            mcq_needs_llm_resolution = True
+            needs_expert_review = True
+            flag_reason = "MCQ choice resolution queued."
+            scoring_metadata = {
+                "method": "llm_choice_resolution",
+                "status": "queued",
+            }
+        else:
+            choice_answer_correct = None
+            needs_expert_review = True
+            flag_reason = (
+                "Pending: MCQ reply did not parse and LLM resolution is disabled "
+                "(set ENABLE_LLM_ANSWER_SCORING)."
+            )
+            scoring_metadata = {"method": "none", "status": "scorer_disabled"}
+    else:
+        normalized_text = normalize_response_text(analysis_text)
+        correctness_score = None
+        matched_keywords = []
+        missing_keywords = []
+        needs_expert_review = True
+
+        if unusable_audio_transcript:
+            # No usable text to judge -- these go to a human, as before.
             if not (transcript_text or "").strip():
                 flag_reason = "Pending expert review: no transcript for audio answer."
             else:
-                flag_reason = "Pending expert review: placeholder transcript (not keyword-scored)."
-        elif keyword_scoring:
-            (
-                normalized_text,
-                correctness_score,
-                matched_keywords,
-                missing_keywords,
-                needs_expert_review,
-                flag_reason,
-            ) = keyword_scoring
+                flag_reason = "Pending expert review: placeholder transcript."
+        elif not llm_answer_scoring_enabled():
+            # Fail loudly rather than silently leaving open answers unscored:
+            # with keyword scoring gone there is no fallback scorer.
+            flag_reason = (
+                "Pending expert review: LLM answer scoring is disabled "
+                "(set ENABLE_LLM_ANSWER_SCORING)."
+            )
+            scoring_metadata = {"method": "none", "status": "scorer_disabled"}
         else:
-            (
-                normalized_text,
-                correctness_score,
-                matched_keywords,
-                missing_keywords,
-                needs_expert_review,
-                flag_reason,
-            ) = score_text_response_for_participant(db, qa_item, participant, analysis_text)
-
-        if llm_answer_scoring_enabled() and not unusable_audio_transcript:
-            correctness_score = None
-            needs_expert_review = True
             flag_reason = "LLM scoring queued."
-            scoring_metadata = {"method": "backtranslation_binary_llm", "status": "queued"}
+            scoring_metadata = {
+                "method": "backtranslation_llm_judge",
+                "scale": "0/0.5/1",
+                "status": "queued",
+            }
 
     if is_choice_scored_item(qa_item):
-        is_correct_label = "yes (auto)" if choice_answer_correct else "no (auto)"
-    elif needs_expert_review:
-        is_correct_label = "pending"
-    elif correctness_score is not None and correctness_score < 1.0:
-        is_correct_label = "no (auto)"
+        # None means "not resolved yet" (queued or unusable), NOT "wrong".
+        if choice_answer_correct is None:
+            is_correct_label = "pending"
+        else:
+            is_correct_label = "yes (auto)" if choice_answer_correct else "no (auto)"
     else:
-        is_correct_label = "yes (auto)"
+        # Open answers are never labelled at ingest now: they are "pending"
+        # until the outbox judge writes a 0 / 0.5 / 1 back.
+        is_correct_label = "pending"
 
     stored_response_text = response_text
     stored_media_id = media_id
     stored_media_url = media_url
     stored_transcript = transcript_text
     if is_choice_scored_item(qa_item):
-        stored_response_text = choice_response_letter(qa_item, analysis_text)
-        stored_media_id = None
-        stored_media_url = None
-        stored_transcript = None
+        parsed = choice_response_letter(qa_item, analysis_text)
+        # Keep the raw reply when it did not parse: the outbox resolver needs
+        # the participant's own words, and overwriting them with None would
+        # destroy the only copy.
+        stored_response_text = parsed if parsed is not None else response_text
+        if parsed is not None:
+            stored_media_id = None
+            stored_media_url = None
+            stored_transcript = None
 
     response = ParticipantResponse(
         participant_id=participant.id,
@@ -473,9 +446,9 @@ def save_response_for_current_assignment(
         missing_keywords=missing_keywords,
         is_correct=is_correct_label,
         flag_reason=flag_reason,
-        review_status=ReviewStatus.AUTO.value
-        if is_choice_scored_item(qa_item)
-        else (
+        # A cleanly-parsed MCQ is final at ingest; everything else is pending
+        # until the outbox resolves it.
+        review_status=(
             ReviewStatus.PENDING.value
             if needs_expert_review
             else ReviewStatus.AUTO.value
@@ -492,6 +465,13 @@ def save_response_for_current_assignment(
         db.add(OutboxNotification(
             participant_id=participant.id,
             notification_type="answer_llm_score_requested",
+            payload={"response_id": response.id},
+            status=OutboxStatus.PENDING.value,
+        ))
+    elif mcq_needs_llm_resolution:
+        db.add(OutboxNotification(
+            participant_id=participant.id,
+            notification_type="mcq_choice_resolution_requested",
             payload={"response_id": response.id},
             status=OutboxStatus.PENDING.value,
         ))
@@ -514,7 +494,7 @@ def save_response_for_current_assignment(
             "has_transcript": bool(transcript_text),
             "correctness_score": correctness_score,
             "is_correct": response.is_correct,
-            "keyword_scored": bool(keyword_scoring),
+            "scoring_method": (scoring_metadata or {}).get("method", "choice"),
             "choice_scored": is_choice_scored_item(qa_item),
             "question_type": qa_item.question_type,
         },

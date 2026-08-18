@@ -290,7 +290,7 @@ def validation_scatter(results, spearman_csv: Path, out_png: Path):
     """Merge fitted s_i against per-item Spearman rho and scatter + report correlation."""
     if not spearman_csv.exists():
         print(f"[validate] {spearman_csv} not found; skipping scatter. "
-              f"Generate it with: python3 evaluation/scripts/item_discrimination_spearman.py")
+              f"Generate it with: python3 QA_algorithm/scripts/item_grid_analysis/item_discrimination_spearman.py")
         return
     with spearman_csv.open(newline="") as fh:
         rd = csv.DictReader(fh)

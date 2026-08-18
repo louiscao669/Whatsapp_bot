@@ -11,7 +11,7 @@ if ! curl -sf http://localhost:11434/api/tags >/dev/null 2>&1; then
   exit 1
 fi
 export PYTHONPATH=.
-S=evaluation/scripts/answer_score_subset_in_place.py
+S=evaluation/scripts/scoring/answer_score_subset_in_place.py
 fail=0; ok=0
 
 # ================= RE_ANSWER: 56 cells =================

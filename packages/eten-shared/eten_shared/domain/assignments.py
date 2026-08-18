@@ -17,6 +17,8 @@ from eten_shared.models import (
     Assignment,
     AssignmentStatus,
     ExperimentPassageVerse,
+    ExperimentPassage,
+    ExperimentWindow,
     Participant,
     ParticipantEvent,
     ParticipantSession,
@@ -268,6 +270,35 @@ def experiment_passage_assignment_kwargs(db: Session, experiment_passage, qa_ite
     """
 
     fallback = {"passage_text": experiment_passage.passage_text}
+
+    # Tier 1 uses the curated, randomized window map verbatim.  Selecting by
+    # chapter-qualified labels avoids cross-chapter duplicate verse numbers and
+    # a second random draw at delivery time.
+    experiment_window = db.scalar(
+        select(ExperimentWindow).where(ExperimentWindow.qa_item_id == qa_item.id)
+    )
+    if experiment_window is not None:
+        if experiment_window.source_passage_id != qa_item.passage_id:
+            return {}
+        all_verses = list(db.scalars(
+            select(ExperimentPassageVerse)
+            .where(ExperimentPassageVerse.experiment_passage_id == experiment_passage.id)
+            .order_by(ExperimentPassageVerse.position)
+        ).all())
+        by_number = {verse.verse_number: verse for verse in all_verses}
+        verses = [
+            by_number[number]
+            for number in experiment_window.verse_numbers
+            if number in by_number
+        ]
+        if not verses:
+            return {}
+        return {
+            "passage_verse_numbers": [verse.verse_number for verse in verses],
+            "passage_text": " ".join(
+                verse.text.strip() for verse in verses if verse.text and verse.text.strip()
+            ),
+        }
     location = _qa_verse_location(qa_item)
     if not location:
         return fallback
@@ -300,6 +331,30 @@ def experiment_passage_assignment_kwargs(db: Session, experiment_passage, qa_ite
             verse.text.strip() for verse in verses if verse.text and verse.text.strip()
         ),
     }
+
+
+def resolve_experiment_passage(db: Session, cell, qa_item, language):
+    """Resolve the condition-specific source passage for an experiment item.
+
+    Tier-1 cells are window groups and may span two source passages, so their
+    single legacy ``experiment_passage_id`` cannot identify the passage.  The
+    QA item's stable ``passage_id`` plus the cell condition does.  Luke cells
+    retain the original FK path.
+    """
+    experiment_window = db.scalar(
+        select(ExperimentWindow.id).where(ExperimentWindow.qa_item_id == qa_item.id)
+    )
+    if experiment_window is not None:
+        return db.scalar(
+            select(ExperimentPassage).where(
+                ExperimentPassage.source_passage_id == qa_item.passage_id,
+                ExperimentPassage.condition == cell.condition,
+                ExperimentPassage.language == language,
+            )
+        )
+    if not cell.experiment_passage_id:
+        return None
+    return db.get(ExperimentPassage, cell.experiment_passage_id)
 
 
 def passage_translation_assignment_kwargs(db: Session, translation, qa_item):
@@ -403,21 +458,57 @@ def assignment_passage_snapshot(assignment):
     return " ".join(cleaned) or None
 
 
+class ExperimentPassageMissingError(RuntimeError):
+    """An experiment assignment has no condition-specific passage to deliver.
+
+    Raised rather than falling back, because the fallback is silent and
+    unrecoverable -- see build_assignment_prompt.
+    """
+
+
 def build_assignment_prompt(db: Session, assignment, qa_item, participant):
     language = participant_language_code(participant)
     recording = get_latest_question_recording(db, qa_item.id, language)
     audio_url = question_recording_playback_url(recording) or qa_item.audio_url
+
+    # Passage resolution, in order: the immutable snapshot stamped at assignment
+    # creation (prepared chain nodes already hold it, so no verse-table query on
+    # the answer fast path), then the verse tables.
+    passage_text = (
+        assignment_passage_snapshot(assignment)
+        or surrounding_passage_text(db, assignment)
+    )
+
+    # [2026-08-12] The old third fallback was ``qa_item.passage_text``. For an
+    # EXPERIMENT assignment that is a correctness bug, not a graceful default:
+    # QA is imported once per chapter and shared across all conditions, so
+    # qa_item.passage_text is condition-INVARIANT. A participant assigned to
+    # omission30 would be shown the CLEAN chapter while their plan cell still
+    # reads "omission30" -- and because the QA is variant-agnostic, no response,
+    # score or export would ever reveal the mismatch. The whole manipulation
+    # would silently not happen.
+    #
+    # Reachable today: build_experiment_plan.py writes a cell with
+    # experiment_passage_id=None when pilot_import has not yet imported that
+    # condition (it reports the gap but still creates the cell), and
+    # reset_experiment_plan's ondelete=SET NULL can strip the FK from a live
+    # cell. Both leave a plausible-looking plan that delivers clean text.
+    if getattr(assignment, "experiment_cell_id", None) and not passage_text:
+        raise ExperimentPassageMissingError(
+            f"assignment {getattr(assignment, 'id', '?')} is stamped to experiment cell "
+            f"{assignment.experiment_cell_id} but has no variant passage snapshot. "
+            "Refusing to deliver the condition-invariant qa_item.passage_text, which "
+            "would silently show this participant the CLEAN passage. Run "
+            "scripts/verify_experiment_delivery.py to find and repair affected cells."
+        )
+
     return AssignmentPrompt(
         assignment_id=assignment.id,
         qa_item_id=qa_item.id,
         audio_url=audio_url,
         question_text=qa_item.question_text,
         passage_reference=qa_item.passage_reference,
-        # Prepared chain nodes already contain the exact immutable passage
-        # snapshot. Avoid another verse-table query on the answer fast path.
-        passage_text=assignment_passage_snapshot(assignment)
-        or surrounding_passage_text(db, assignment)
-        or qa_item.passage_text,
+        passage_text=passage_text or qa_item.passage_text,
         question_type=qa_item.question_type or "open",
         mcq_choices=tuple(qa_item.mcq_choices or ()),
     )

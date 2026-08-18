@@ -23,6 +23,7 @@ from app.user_dashboard.service import (
     get_user_dashboard_payload,
     claim_batch_chest_reward,
     create_community_team,
+    expire_dashboard_question,
     join_community_team,
     leave_community_team,
     load_profile_photo,
@@ -276,6 +277,30 @@ def submit_user_dashboard_answer(participant_id):
         message = str(exc)
         status = 404 if message in {"Participant not found", "Assignment not found"} else 400
         return jsonify({"error": "answer_error", "message": message}), status
+
+    return jsonify({"ok": True, **payload})
+
+
+@user_dashboard_blueprint.route(
+    "/user-dashboard/api/<participant_id>/questions/expire",
+    methods=["POST", "OPTIONS"],
+)
+def expire_user_dashboard_question(participant_id):
+    if request.method == "OPTIONS":
+        return _cors_response(jsonify({"ok": True}))
+
+    body = request.get_json(silent=True) or {}
+    session_factory = get_session_factory()
+    try:
+        with session_factory() as db:
+            payload = expire_dashboard_question(
+                db, participant_id, body.get("assignment_id")
+            )
+            db.commit()
+    except DashboardAnswerError as exc:
+        message = str(exc)
+        status = 404 if message in {"Participant not found", "Assignment not found"} else 400
+        return jsonify({"error": "question_expiry_error", "message": message}), status
 
     return jsonify({"ok": True, **payload})
 
