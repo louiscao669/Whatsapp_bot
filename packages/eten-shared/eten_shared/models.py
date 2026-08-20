@@ -77,6 +77,23 @@ class SourceChannel(str, Enum):
     TELEGRAM = "telegram"
     WHATSAPP = "whatsapp"
     IMESSAGE = "imessage"
+    PILOT = "pilot"
+
+
+class PilotTrialStatus(str, Enum):
+    """Per-question progression inside the human pilot.
+
+    Deliberately NOT ``AssignmentStatus``: the pilot never expires a question,
+    so it tracks its own three-state progression on ``pilot_question_trials``
+    and leaves the shared ``assignments.status`` lifecycle (which other
+    surfaces and the answer-receipt drain depend on) untouched. "Incomplete" is
+    a DERIVED reporting state (``STARTED`` with no accepted answer receipt),
+    never a stored status -- there is no pilot ``expired``.
+    """
+
+    ASSIGNED = "assigned"
+    STARTED = "started"
+    SUBMITTED = "submitted"
 
 
 class OutboxStatus(str, Enum):
@@ -746,6 +763,11 @@ class ParticipantResponse(Base):
         String(32), default=ReviewStatus.PENDING.value, index=True, nullable=False
     )
     source_channel: Mapped[Optional[str]] = mapped_column(String(32), index=True)
+    # When a correctness verdict was written (LLM judge, MCQ letter match or an
+    # expert). NULL = still unscored, which the pilot export counts as missing
+    # data rather than as a wrong answer. Distinct from received_at: scoring can
+    # land minutes after intake, so it must never be used as a submission time.
+    scored_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
     received_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=utc_now, nullable=False
     )
@@ -1049,3 +1071,145 @@ class ParticipantSession(Base):
 
     participant: Mapped["Participant"] = relationship(back_populates="session")
     current_assignment: Mapped[Optional["Assignment"]] = relationship()
+
+
+class PilotSession(Base):
+    """One participant's run through the ``/pilot`` study interface.
+
+    Pseudonymous by construction: it carries no personal data beyond the
+    participant FK (itself an opaque id) and the consent version/timestamp the
+    ethics protocol requires. One row per participant -- the pilot is a single
+    sitting that may span reloads, so re-entering ``/pilot`` resumes this row
+    rather than starting a new one.
+    """
+
+    __tablename__ = "pilot_sessions"
+    __table_args__ = (
+        UniqueConstraint("participant_id", name="uq_pilot_sessions_participant"),
+    )
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    participant_id: Mapped[str] = mapped_column(
+        ForeignKey("participants.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    consent_version: Mapped[Optional[str]] = mapped_column(String(64))
+    consented_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
+    started_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utc_now, nullable=False
+    )
+    completed_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
+    session_metadata: Mapped[dict] = mapped_column(
+        "metadata", JSON, default=dict, nullable=False
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utc_now, nullable=False
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utc_now, onupdate=utc_now, nullable=False
+    )
+
+    participant: Mapped["Participant"] = relationship()
+    trials: Mapped[List["PilotQuestionTrial"]] = relationship(
+        back_populates="pilot_session",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+    )
+
+
+class PilotQuestionTrial(Base):
+    """One presented pilot question: its timing, its provenance, its outcome.
+
+    The pilot's unit of analysis. Everything answer-shaped is *joined*, never
+    copied: the answer text and ``submitted_at`` live on ``answer_receipts``
+    (immutable, one per assignment), and the verdict lives on
+    ``participant_responses`` (written later by the existing scoring pipeline).
+    What is stored here is only what no existing table records --
+
+      * ``active_time_ms``  -- accumulated time the question page was VISIBLE,
+        measured client-side with ``performance.now()`` and pushed on
+        visibility change / submit. Monotonic: a checkpoint may only raise it,
+        so a stale beacon or a reload can never shrink an earlier total. This
+        is the study's PRIMARY duration metric.
+      * ``wall_clock_time_ms`` -- ``answer_receipts.created_at - started_at``,
+        kept only as a secondary quality-control signal.
+      * ``visibility_change_count`` / ``reload_count`` -- QC covariates.
+      * ``status`` -- ``assigned -> started -> submitted``. Never ``expired``:
+        an abandoned question stays ``started`` and is reported as incomplete
+        by derivation (see :class:`PilotTrialStatus`).
+      * ``trial_metadata`` -- the immutable experimental provenance snapshot
+        (documented in ``eten_shared.pilot_trials.build_trial_metadata``):
+        question_version, passage_id, window_key, defect_type, defect_rate and
+        the plan-cell ids. Snapshotted at presentation time because QA items
+        and passages are editable, so a later edit must not rewrite what a
+        participant actually saw.
+    """
+
+    __tablename__ = "pilot_question_trials"
+    __table_args__ = (
+        UniqueConstraint("assignment_id", name="uq_pilot_trials_assignment"),
+        UniqueConstraint(
+            "pilot_session_id", "sequence_index", name="uq_pilot_trials_session_sequence"
+        ),
+        CheckConstraint("active_time_ms >= 0", name="ck_pilot_trials_active_time_ms"),
+        CheckConstraint("focused_time_ms >= 0", name="ck_pilot_trials_focused_time_ms"),
+        CheckConstraint(
+            "passage_onscreen_ms >= 0", name="ck_pilot_trials_passage_onscreen_ms"
+        ),
+    )
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    pilot_session_id: Mapped[str] = mapped_column(
+        ForeignKey("pilot_sessions.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    participant_id: Mapped[str] = mapped_column(
+        ForeignKey("participants.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    assignment_id: Mapped[str] = mapped_column(
+        ForeignKey("assignments.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    qa_item_id: Mapped[str] = mapped_column(
+        ForeignKey("qa_items.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    sequence_index: Mapped[int] = mapped_column(Integer, nullable=False)
+    question_type: Mapped[str] = mapped_column(
+        String(16), default=QuestionType.OPEN.value, nullable=False, index=True
+    )
+    condition: Mapped[Optional[str]] = mapped_column(String(64), index=True)
+    status: Mapped[str] = mapped_column(
+        String(16), default=PilotTrialStatus.ASSIGNED.value, index=True, nullable=False
+    )
+    started_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
+    submitted_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
+    active_time_ms: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    # Companion attention measures. Each is wrong in a KNOWN direction, so the
+    # three together bracket real reading time rather than pretending to one
+    # number: active is an upper bound (a covered window still reports
+    # visible), focused is a lower bound (the address bar and OS notifications
+    # steal focus mid-read), and onscreen answers the separate question of
+    # whether the passage was in the viewport at all. Focus never gates
+    # active_time_ms.
+    focused_time_ms: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    passage_onscreen_ms: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    wall_clock_time_ms: Mapped[Optional[int]] = mapped_column(Integer)
+    visibility_change_count: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    focus_change_count: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    reload_count: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    submission_id: Mapped[Optional[str]] = mapped_column(String(64), index=True)
+    answer_receipt_id: Mapped[Optional[str]] = mapped_column(
+        ForeignKey("answer_receipts.id", ondelete="SET NULL"), index=True
+    )
+    trial_metadata: Mapped[dict] = mapped_column(
+        "metadata", JSON, default=dict, nullable=False
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utc_now, nullable=False
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utc_now, onupdate=utc_now, nullable=False
+    )
+
+    pilot_session: Mapped["PilotSession"] = relationship(back_populates="trials")
+    participant: Mapped["Participant"] = relationship()
+    assignment: Mapped["Assignment"] = relationship()
+    qa_item: Mapped["QAItem"] = relationship()
+    answer_receipt: Mapped[Optional["AnswerReceipt"]] = relationship()

@@ -516,6 +516,106 @@ def _run_startup_migrations(engine: Engine):
             )
         )
 
+        # --- human pilot (/pilot) -------------------------------------------
+        # Mirrors supabase/migrations/pilot_question_trials.sql so a deploy that
+        # has not run the SQL file still comes up. See that file for the design
+        # notes; the short version: pilot_question_trials is the pilot's unit of
+        # analysis, it never carries an 'expired' status, and answer text /
+        # submission time stay on answer_receipts rather than being copied here.
+        connection.execute(
+            text(
+                "ALTER TABLE participant_responses ADD COLUMN IF NOT EXISTS scored_at timestamptz"
+            )
+        )
+        connection.execute(
+            text(
+                """
+                CREATE TABLE IF NOT EXISTS pilot_sessions (
+                    id text PRIMARY KEY DEFAULT gen_random_uuid()::text,
+                    participant_id text NOT NULL
+                        REFERENCES participants(id) ON DELETE CASCADE,
+                    consent_version varchar(64),
+                    consented_at timestamptz,
+                    started_at timestamptz NOT NULL DEFAULT now(),
+                    completed_at timestamptz,
+                    metadata jsonb NOT NULL DEFAULT '{}'::jsonb,
+                    created_at timestamptz NOT NULL DEFAULT now(),
+                    updated_at timestamptz NOT NULL DEFAULT now(),
+                    CONSTRAINT uq_pilot_sessions_participant UNIQUE (participant_id)
+                )
+                """
+            )
+        )
+        connection.execute(
+            text(
+                """
+                CREATE TABLE IF NOT EXISTS pilot_question_trials (
+                    id text PRIMARY KEY DEFAULT gen_random_uuid()::text,
+                    pilot_session_id text NOT NULL
+                        REFERENCES pilot_sessions(id) ON DELETE CASCADE,
+                    participant_id text NOT NULL
+                        REFERENCES participants(id) ON DELETE CASCADE,
+                    assignment_id text NOT NULL
+                        REFERENCES assignments(id) ON DELETE CASCADE,
+                    qa_item_id text NOT NULL REFERENCES qa_items(id) ON DELETE CASCADE,
+                    sequence_index integer NOT NULL,
+                    question_type varchar(16) NOT NULL DEFAULT 'open',
+                    condition varchar(64),
+                    status varchar(16) NOT NULL DEFAULT 'assigned',
+                    started_at timestamptz,
+                    submitted_at timestamptz,
+                    active_time_ms integer NOT NULL DEFAULT 0,
+                    wall_clock_time_ms integer,
+                    visibility_change_count integer NOT NULL DEFAULT 0,
+                    reload_count integer NOT NULL DEFAULT 0,
+                    submission_id varchar(64),
+                    answer_receipt_id text
+                        REFERENCES answer_receipts(id) ON DELETE SET NULL,
+                    metadata jsonb NOT NULL DEFAULT '{}'::jsonb,
+                    created_at timestamptz NOT NULL DEFAULT now(),
+                    updated_at timestamptz NOT NULL DEFAULT now(),
+                    CONSTRAINT uq_pilot_trials_assignment UNIQUE (assignment_id),
+                    CONSTRAINT uq_pilot_trials_session_sequence
+                        UNIQUE (pilot_session_id, sequence_index),
+                    CONSTRAINT ck_pilot_trials_active_time_ms CHECK (active_time_ms >= 0),
+                    CONSTRAINT ck_pilot_trials_status
+                        CHECK (status IN ('assigned', 'started', 'submitted'))
+                )
+                """
+            )
+        )
+        for statement in (
+            "CREATE INDEX IF NOT EXISTS ix_pilot_sessions_participant_id "
+            "ON pilot_sessions(participant_id)",
+            "CREATE INDEX IF NOT EXISTS ix_pilot_question_trials_participant_id "
+            "ON pilot_question_trials(participant_id)",
+            "CREATE INDEX IF NOT EXISTS ix_pilot_question_trials_pilot_session_id "
+            "ON pilot_question_trials(pilot_session_id)",
+            "CREATE INDEX IF NOT EXISTS ix_pilot_question_trials_assignment_id "
+            "ON pilot_question_trials(assignment_id)",
+            "CREATE INDEX IF NOT EXISTS ix_pilot_question_trials_qa_item_id "
+            "ON pilot_question_trials(qa_item_id)",
+            "CREATE INDEX IF NOT EXISTS ix_pilot_question_trials_condition "
+            "ON pilot_question_trials(condition)",
+            "CREATE INDEX IF NOT EXISTS ix_pilot_question_trials_question_type "
+            "ON pilot_question_trials(question_type)",
+            "CREATE INDEX IF NOT EXISTS ix_pilot_question_trials_status "
+            "ON pilot_question_trials(status)",
+            "CREATE INDEX IF NOT EXISTS ix_pilot_question_trials_submission_id "
+            "ON pilot_question_trials(submission_id)",
+            "ALTER TABLE pilot_sessions ENABLE ROW LEVEL SECURITY",
+            "ALTER TABLE pilot_question_trials ENABLE ROW LEVEL SECURITY",
+            # Companion attention measures; see
+            # supabase/migrations/pilot_attention_measures.sql.
+            "ALTER TABLE pilot_question_trials ADD COLUMN IF NOT EXISTS "
+            "focused_time_ms integer NOT NULL DEFAULT 0",
+            "ALTER TABLE pilot_question_trials ADD COLUMN IF NOT EXISTS "
+            "passage_onscreen_ms integer NOT NULL DEFAULT 0",
+            "ALTER TABLE pilot_question_trials ADD COLUMN IF NOT EXISTS "
+            "focus_change_count integer NOT NULL DEFAULT 0",
+        ):
+            connection.execute(text(statement))
+
 
 def normalize_database_url(database_url):
     """Convert common Supabase URLs into SQLAlchemy-compatible driver URLs."""

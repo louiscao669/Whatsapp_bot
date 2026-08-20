@@ -1,0 +1,147 @@
+/*
+ * Plain study styling. Deliberately austere: no progress bars, no streaks, no
+ * badges, no colour-coded feedback -- anything that reads as reward or
+ * performance signal would be an experimental confound.
+ */
+
+:root {
+  color-scheme: light;
+  --pilot-ink: #1c1c1c;
+  --pilot-muted: #5b5b5b;
+  --pilot-line: #d9d9d9;
+  --pilot-surface: #ffffff;
+  --pilot-page: #f6f6f4;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--pilot-page);
+  color: var(--pilot-ink);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.pilot-app {
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: 2.5rem 1.25rem 4rem;
+}
+
+.pilot-card {
+  background: var(--pilot-surface);
+  border: 1px solid var(--pilot-line);
+  border-radius: 6px;
+  padding: 1.75rem;
+}
+
+.pilot-step {
+  margin: 0 0 1.25rem;
+  color: var(--pilot-muted);
+  font-family: system-ui, sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.pilot-passage {
+  border-left: 3px solid var(--pilot-line);
+  padding: 0 0 0 1rem;
+  margin: 0 0 1.75rem;
+}
+
+.pilot-passage-ref {
+  margin: 0 0 0.5rem;
+  color: var(--pilot-muted);
+  font-family: system-ui, sans-serif;
+  font-size: 0.85rem;
+}
+
+.pilot-verse {
+  margin: 0 0 0.6rem;
+  white-space: pre-wrap;
+}
+
+.pilot-verse:last-child {
+  margin-bottom: 0;
+}
+
+.pilot-question,
+.pilot-title {
+  margin: 0 0 1.5rem;
+  font-size: 1.25rem;
+  line-height: 1.45;
+}
+
+.pilot-body {
+  margin: 0;
+  color: var(--pilot-muted);
+}
+
+.pilot-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.pilot-choices {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.pilot-choice {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  border: 1px solid var(--pilot-line);
+  border-radius: 4px;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+}
+
+.pilot-choice:hover {
+  border-color: var(--pilot-muted);
+}
+
+.pilot-choice input {
+  margin-top: 0.4rem;
+}
+
+.pilot-answer {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--pilot-line);
+  border-radius: 4px;
+  font: inherit;
+  resize: vertical;
+}
+
+.pilot-submit {
+  align-self: flex-start;
+  padding: 0.6rem 1.6rem;
+  border: 1px solid var(--pilot-ink);
+  border-radius: 4px;
+  background: var(--pilot-ink);
+  color: #fff;
+  font-family: system-ui, sans-serif;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.pilot-submit[disabled] {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.pilot-status {
+  margin: 0;
+  min-height: 1.4rem;
+  color: var(--pilot-muted);
+  font-family: system-ui, sans-serif;
+  font-size: 0.9rem;
+}

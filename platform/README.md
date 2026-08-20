@@ -17,6 +17,8 @@ Default: http://localhost:7860
 
 - Admin JSON API: `/api/v1/*`
 - React SPA: `/`
+- Participant dashboard: `/user_dashboard/index.html/<participant_id>`
+- Human-pilot study: `/pilot/<participant_id>` (see `platform/pilot/README.md`)
 
 ## Layout
 
@@ -27,8 +29,10 @@ platform/
   app/
     api/              # JSON API blueprints
     services/         # admin / expert business logic
+    pilot/            # /pilot study routes + service
     spa_views.py      # SPA static files + /admin redirects
     utils/
+  pilot/              # /pilot static participant interface
 ```
 
 Shared assets: `packages/eten-shared/`, `supabase/`, `platform/frontend/dist/`.

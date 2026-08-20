@@ -1233,6 +1233,9 @@ def submit_dashboard_answer(db, participant_id: str, assignment_id: str, respons
         flag_reason=flag_reason,
         review_status=review_status,
         source_channel=SourceChannel.USER_DASHBOARD.value,
+        # Only a cleanly-parsed choice has a verdict at ingest; everything else
+        # stays NULL until the outbox scorer writes one back.
+        scored_at=utc_now() if review_status == ReviewStatus.AUTO.value else None,
     )
     db.add(response)
     db.flush()

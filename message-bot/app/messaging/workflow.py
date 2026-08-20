@@ -454,6 +454,11 @@ def save_response_for_current_assignment(
             else ReviewStatus.AUTO.value
         ),
         source_channel=provider if provider != "workflow" else None,
+        # A cleanly-parsed choice is scored right here, so stamp the verdict
+        # time now. Everything else stays NULL until the outbox resolves it --
+        # NULL means "no verdict yet", which the pilot report counts as missing
+        # data rather than as a wrong answer.
+        scored_at=utc_now() if choice_answer_correct is not None else None,
     )
     db.add(response)
     db.flush()

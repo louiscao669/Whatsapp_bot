@@ -211,6 +211,7 @@ def process_pending_outbox(limit=50):
                     # 0.5 is a real judgement, not a failure to decide: it is
                     # auto-scored like the other two, and only the label differs.
                     response.is_correct = _AUTO_LABELS[result.score]
+                    response.scored_at = utc_now()
                     response.review_status = "auto"
                     response.flag_reason = None
                     response.matched_keywords = []
@@ -274,6 +275,9 @@ def process_pending_outbox(limit=50):
                         response.is_correct = "pending"
                         response.review_status = "pending"
                         response.correctness_score = None
+                        # Still unscored: leave scored_at NULL so the pilot
+                        # report keeps counting this as missing data.
+                        response.scored_at = None
                         response.flag_reason = "MCQ reply selects no choice."
                         response.scoring_metadata = {
                             "method": "llm_choice_resolution",
@@ -291,6 +295,7 @@ def process_pending_outbox(limit=50):
                         response.correctness_score = 1.0 if is_right else 0.0
                         response.is_correct = "yes (auto)" if is_right else "no (auto)"
                         response.review_status = "auto"
+                        response.scored_at = utc_now()
                         response.flag_reason = None
                         response.scoring_metadata = {
                             "method": "llm_choice_resolution",
