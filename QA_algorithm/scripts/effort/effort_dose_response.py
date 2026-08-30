@@ -326,16 +326,30 @@ def load_difficulty(paths: dict[str, Path] | None = None) -> dict[str, float]:
                   f"point --anchor-estimates at the real file.")
             continue
         payload = json.loads(path.read_text(encoding="utf-8"))
-        entries = payload.get("items") or payload.get("questions") or []
+        # Real shape (verified against the committed estimates):
+        #   {"model_abilities": {...},
+        #    "item_difficulties": {"luke1:item10:mcq": {"b_posterior": -1.09,
+        #                                               "b_prior_mean": -1.0,
+        #                                               "label": "easy", ...}},
+        #    "convergence": {...}}
+        # The 'items'/'questions' list forms are accepted too so a future
+        # estimator rewrite does not silently produce an empty join.
+        entries = (payload.get("item_difficulties") or payload.get("items")
+                   or payload.get("questions") or [])
         if isinstance(entries, dict):
-            entries = [dict(v, question_id=k) for k, v in entries.items()]
+            entries = [dict(v, question_id=k) if isinstance(v, dict)
+                       else {"question_id": k, "b_posterior": v}
+                       for k, v in entries.items()]
+        before = len(out)
         for entry in entries:
             key = entry.get("question_id") or entry.get("id")
-            b = entry.get("b") if entry.get("b") is not None \
-                else entry.get("difficulty")
+            b = next((entry[f] for f in ("b_posterior", "b", "difficulty")
+                      if entry.get(f) is not None), None)
             if key and b is not None:
                 out[str(key)] = float(b)
-        _ = q_type
+        if len(out) == before:
+            print(f"[warn] {path} parsed but yielded no b_hat for "
+                  f"q_type={q_type} -- unrecognised schema, G1 will be empty.")
     return out
 
 

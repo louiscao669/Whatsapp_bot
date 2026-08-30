@@ -284,6 +284,54 @@ def assemble_verse_translation_plans(plans: list[list[dict[str, Any]]]) -> list[
     return outputs
 
 
+# --- wbw resilience (patched) ---
+# Token cache + fallback accounting for google_word_by_word. Keyed on the
+# lowercased token, which is exactly what the translator is asked for, so a hit
+# is byte-identical to what the request would have returned.
+_WBW_LAST_STATS: dict = {}
+
+
+def last_wbw_fallbacks() -> dict:
+    """Stats from the most recent google_word_by_word call.
+
+    `fallbacks` counts tokens left untranslated after exhausting retries. A
+    passage with a high count is NOT a clean word-salad baseline -- inspect it
+    before treating it as one.
+    """
+    return dict(_WBW_LAST_STATS)
+
+
+def _wbw_cache_path(source_language: str, target_language: str) -> Path:
+    override = os.getenv("WBW_CACHE_PATH")
+    if override:
+        return Path(override)
+    safe = f"{source_language}_{normalize_target_language(target_language)}"
+    safe = re.sub(r"[^A-Za-z0-9_.-]", "-", safe)
+    return Path("evaluation/datasets/perturbations") / f".wbw_cache_{safe}.json"
+
+
+def _wbw_load_cache(path: Path) -> dict:
+    if os.getenv("WBW_CACHE_DISABLED"):
+        return {}
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+        return data if isinstance(data, dict) else {}
+    except Exception:
+        return {}
+
+
+def _wbw_save_cache(path: Path, cache: dict) -> None:
+    if os.getenv("WBW_CACHE_DISABLED") or not cache:
+        return
+    try:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        tmp = path.with_suffix(path.suffix + ".tmp")
+        tmp.write_text(json.dumps(cache, ensure_ascii=False), encoding="utf-8")
+        tmp.replace(path)
+    except Exception:
+        pass  # a cache failure must never break a translation run
+
+
 def google_word_by_word(
     texts: str | Iterable[str],
     *,
@@ -309,6 +357,16 @@ def google_word_by_word(
         source=source_language,
         target=normalize_target_language(target_language),
     )
+
+    # --- wbw resilience (patched) ---
+    cache_path = _wbw_cache_path(source_language, target_language)
+    cache = _wbw_load_cache(cache_path)
+    attempts = int(os.getenv("WBW_TOKEN_RETRIES", "3"))
+    base_delay = float(os.getenv("WBW_RETRY_BASE_DELAY", "0.5"))
+    global _WBW_LAST_STATS
+    stats = {"tokens": 0, "requests": 0, "cache_hits": 0, "fallbacks": 0,
+             "fallback_tokens": []}
+
     outputs = []
     for text in ensure_texts(texts):
         translated_words = []
@@ -319,15 +377,52 @@ def google_word_by_word(
             if is_protected_token(word):
                 translated_words.append(word)
                 continue
-            try:
-                translated_words.append(translator.translate(word.lower()))
-            except Exception as exc:
-                raise TranslationQualityError(
-                    f"Google word-by-word translation failed for token {word!r}: {exc}"
-                ) from exc
+            stats["tokens"] += 1
+            key = word.lower()
+            if key in cache:
+                stats["cache_hits"] += 1
+                translated_words.append(cache[key])
+                continue
+            rendered = None
+            for attempt in range(attempts):
+                try:
+                    stats["requests"] += 1
+                    rendered = translator.translate(key)
+                    break
+                except Exception:
+                    if attempt + 1 >= attempts:
+                        break
+                    time.sleep(base_delay * (2 ** attempt))
+            if rendered is None:
+                # Keep the SOURCE token. Aborting here is what cost whole
+                # passages before; an untranslated word is survivable damage.
+                rendered = word
+                stats["fallbacks"] += 1
+                if len(stats["fallback_tokens"]) < 25:
+                    stats["fallback_tokens"].append(word)
+            else:
+                cache[key] = rendered
+            translated_words.append(rendered)
             if sleep_seconds:
                 time.sleep(sleep_seconds)
         outputs.append(" ".join(translated_words))
+
+    _wbw_save_cache(cache_path, cache)
+    _WBW_LAST_STATS = stats
+    if stats["fallbacks"]:
+        print(
+            f"  [wbw] {stats['fallbacks']}/{stats['tokens']} tokens kept as "
+            f"SOURCE after {attempts} attempts "
+            f"({100 * stats['fallbacks'] / max(stats['tokens'], 1):.1f}%): "
+            f"{stats['fallback_tokens'][:8]}",
+            file=sys.stderr,
+        )
+    print(
+        f"  [wbw] {stats['tokens']} tokens, {stats['requests']} requests, "
+        f"{stats['cache_hits']} cache hits "
+        f"({100 * stats['cache_hits'] / max(stats['tokens'], 1):.0f}% saved)",
+        file=sys.stderr,
+    )
     return outputs
 
 

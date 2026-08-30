@@ -43,6 +43,77 @@ CONNECTIVE_REPLACEMENTS = {
 PROTECTED_CHARS = set("不没无未非莫勿")
 
 
+# --- name protection (patched) ---
+# Pseudonymised entity names are ordinary Chinese text to PLACEHOLDER_PATTERN,
+# so they must be registered explicitly or the operations will corrupt them.
+EXTRA_PROTECTED: "re.Pattern | None" = None
+_CJK_RE = re.compile(r"[\u3400-\u9fff]")
+
+
+def _collect_cjk_strings(node, out: set) -> None:
+    """Harvest every CJK string from an arbitrarily nested name-map JSON."""
+    if isinstance(node, dict):
+        for key, value in node.items():
+            if isinstance(key, str) and _CJK_RE.search(key):
+                out.add(key)
+            _collect_cjk_strings(value, out)
+    elif isinstance(node, list):
+        for value in node:
+            _collect_cjk_strings(value, out)
+    elif isinstance(node, str) and _CJK_RE.search(node):
+        out.add(node)
+
+
+def load_protected_terms(paths) -> int:
+    """Compile the pseudonym vocabulary into EXTRA_PROTECTED. Returns its size."""
+    global EXTRA_PROTECTED
+    terms: set = set()
+    for path in paths or []:
+        _collect_cjk_strings(json.loads(Path(path).read_text(encoding="utf-8")), terms)
+    # Single characters are far too aggressive -- one common character would
+    # freeze half the passage and silently drive the achieved rate to zero.
+    terms = {t.strip() for t in terms if len(t.strip()) >= 2}
+    if not terms:
+        EXTRA_PROTECTED = None
+        return 0
+    # Longest first: 韦姆村 must match before 韦姆, else the tail is left exposed.
+    ordered = sorted(terms, key=len, reverse=True)
+    EXTRA_PROTECTED = re.compile("|".join(re.escape(t) for t in ordered))
+    return len(ordered)
+
+
+def merged_protected_spans(text: str) -> list:
+    """Placeholders + pseudonyms, overlaps merged, sorted by start."""
+    spans = [(m.start(), m.end()) for m in PLACEHOLDER_PATTERN.finditer(text)]
+    if EXTRA_PROTECTED is not None:
+        spans += [(m.start(), m.end()) for m in EXTRA_PROTECTED.finditer(text)]
+    if not spans:
+        return []
+    spans.sort()
+    merged = [list(spans[0])]
+    for start, end in spans[1:]:
+        if start <= merged[-1][1]:
+            merged[-1][1] = max(merged[-1][1], end)
+        else:
+            merged.append([start, end])
+    return [tuple(s) for s in merged]
+
+
+def verify_protected(clean: str, corrupted: str) -> list:
+    """Every protected term must survive with its exact occurrence count.
+
+    This is the invariant whose absence let 8% of names be destroyed unnoticed.
+    """
+    if EXTRA_PROTECTED is None:
+        return []
+    losses = []
+    for term in {m.group(0) for m in EXTRA_PROTECTED.finditer(clean)}:
+        before, after = clean.count(term), corrupted.count(term)
+        if after != before:
+            losses.append({"term": term, "before": before, "after": after})
+    return sorted(losses, key=lambda d: d["term"])
+
+
 class GrammarError(Exception):
     pass
 
@@ -184,7 +255,7 @@ def passage_units(text: str) -> list[dict]:
 
 
 def protected_spans(text: str) -> list[tuple[int, int]]:
-    spans = [(match.start(), match.end()) for match in PLACEHOLDER_PATTERN.finditer(text)]
+    spans = list(merged_protected_spans(text))
     spans.extend((match.start(), match.end()) for match in re.finditer(r"\d+", text))
     return spans
 
@@ -294,11 +365,13 @@ def make_classifier_awkward(text: str, rng: random.Random) -> tuple[str, str] | 
 def token_chunks(text: str) -> list[dict]:
     chunks = []
     last = 0
-    for match in PLACEHOLDER_PATTERN.finditer(text):
-        if match.start() > last:
-            chunks.append({"text": text[last : match.start()], "protected": False})
-        chunks.append({"text": match.group(0), "protected": True})
-        last = match.end()
+    # Was PLACEHOLDER_PATTERN only, which left pseudonyms splittable by the
+    # phrase-reorder operation even once the char-level ops were fixed.
+    for start, end in merged_protected_spans(text):
+        if start > last:
+            chunks.append({"text": text[last:start], "protected": False})
+        chunks.append({"text": text[start:end], "protected": True})
+        last = end
     if last < len(text):
         chunks.append({"text": text[last:], "protected": False})
 
@@ -410,8 +483,16 @@ def apply_grammar_errors(text: str, *, rate: float, seed: int) -> tuple[str, dic
                 continue
         output.append(original)
     actual_rate = affected_chars / total_chars if total_chars else 0.0
-    return "".join(output), {
+    corrupted_text = "".join(output)
+    # INVARIANT: a protected term must survive with its exact occurrence count.
+    # Its absence is what let 8% of name mentions be destroyed unnoticed.
+    protected_losses = verify_protected(text, corrupted_text)
+    return corrupted_text, {
         "requested_rate": rate,
+        "protected_terms": (0 if EXTRA_PROTECTED is None
+                            else len({m.group(0) for m in EXTRA_PROTECTED.finditer(text)})),
+        "protected_losses": protected_losses,
+        "protected_verified": not protected_losses,
         "actual_affected_rate": actual_rate,
         "seed": seed,
         "total_content_chars": total_chars,
@@ -635,12 +716,39 @@ def parse_args() -> argparse.Namespace:
         help="Grammar affected-clause rates, e.g. 5%% 10%% 0.15. Default: 0%% 5%% 10%% 15%% 20%% 30%%.",
     )
     parser.add_argument("--seed", type=int, default=2026)
+    parser.add_argument(
+        "--protected-terms",
+        action="append",
+        default=[],
+        metavar="NAME_MAP.json",
+        help=(
+            "Pseudonym map whose CJK terms must never be split or edited. "
+            "Repeatable. Without this, English-side pseudonyms (尼温, 韦姆村) "
+            "are treated as ordinary text and get corrupted -- 8%% of name "
+            "mentions were destroyed at 30%% dose before this was added."
+        ),
+    )
+    parser.add_argument(
+        "--allow-protected-loss",
+        action="store_true",
+        help="Downgrade the protected-term invariant from fatal to a warning.",
+    )
     parser.add_argument("--force", action="store_true")
     return parser.parse_args()
 
 
 def main() -> int:
     args = parse_args()
+    loaded = load_protected_terms(args.protected_terms)
+    if args.protected_terms:
+        print(f"protected terms loaded: {loaded}")
+    else:
+        print(
+            "warning: no --protected-terms given. Pseudonymised names are NOT "
+            "protected and WILL be corrupted (measured: 8% of name mentions "
+            "lost at 30% dose). Pass the passage set's name map.",
+            file=sys.stderr,
+        )
     try:
         rates = parse_rates(args.rates)
     except Exception as exc:
