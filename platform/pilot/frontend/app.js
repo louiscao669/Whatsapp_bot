@@ -17,8 +17,8 @@
 // Everything under /pilot/static/ is served immutable for a year, so an
 // unversioned module URL would pin participants to a stale build forever.
 // Bump all three together when the frontend changes.
-import { createPilotApi, parseParticipantIdFromLocation } from "./api.js?v=20260818c";
-import { createAttentionTimers, createTrialStore, resumeActiveMs } from "./timing.js?v=20260818c";
+import { createPilotApi, parseParticipantIdFromLocation } from "./api.js?v=20260830a";
+import { createAttentionTimers, createTrialStore, resumeActiveMs } from "./timing.js?v=20260830a";
 
 const root = document.querySelector("#pilot");
 const participantId = parseParticipantIdFromLocation();
@@ -446,6 +446,132 @@ async function onSubmit(answer, submitButton, status) {
   await loadQuestion();
 }
 
+
+// ------------------------------------------------------------------ consent
+// The consent text is the IRB-approved wording, served by the API and stored
+// under platform/pilot/consent/ so the file, the version identifier and what
+// the participant saw stay tied together. It is rendered into DOM nodes rather
+// than assigned as HTML: the wording is ours, but consent copy is the last
+// place to leave an innerHTML sink.
+
+/** Inline **bold** only; everything else is literal text. */
+function appendInline(parent, text) {
+  const parts = text.split(/(\*\*[^*]+\*\*)/g);
+  for (const part of parts) {
+    if (!part) continue;
+    if (part.startsWith("**") && part.endsWith("**") && part.length > 4) {
+      parent.append(element("strong", null, part.slice(2, -2)));
+    } else {
+      parent.append(document.createTextNode(part));
+    }
+  }
+}
+
+function renderConsentText(container, markdown) {
+  let list = null;
+  for (const raw of markdown.split("\n")) {
+    const line = raw.trimEnd();
+    if (!line.trim()) {
+      list = null;
+      continue;
+    }
+    if (line.startsWith("- ")) {
+      if (!list) {
+        list = element("ul", "pilot-consent-list");
+        container.append(list);
+      }
+      const li = element("li");
+      appendInline(li, line.slice(2));
+      list.append(li);
+      continue;
+    }
+    list = null;
+    const heading = line.match(/^(#{2,4})\s+(.*)$/);
+    if (heading) {
+      const level = heading[1].length === 2 ? "h1" : "h2";
+      const node = element(level, level === "h1" ? "pilot-title" : "pilot-consent-heading");
+      appendInline(node, heading[2]);
+      container.append(node);
+      continue;
+    }
+    const para = element("p", "pilot-consent-para");
+    appendInline(para, line);
+    container.append(para);
+  }
+}
+
+function renderDeclined() {
+  renderMessage(
+    "You have declined",
+    "Thank you for your time. You will not be asked any questions, and you can " +
+      "close this page. If you declined by mistake, contact the study team."
+  );
+}
+
+function renderConsent(consent) {
+  root.replaceChildren();
+  const card = element("section", "pilot-card pilot-consent");
+
+  const body = element("div", "pilot-consent-text");
+  renderConsentText(body, consent.text);
+  card.append(body);
+
+  const status = element("p", "pilot-status");
+  const actions = element("div", "pilot-consent-actions");
+  const agree = element("button", "pilot-submit", "I agree to take part");
+  const decline = element("button", "pilot-submit pilot-decline", "I do not agree");
+  agree.type = "button";
+  decline.type = "button";
+
+  let sending = false;
+  async function decide(agreed) {
+    if (sending) return;
+    sending = true;
+    agree.disabled = true;
+    decline.disabled = true;
+    status.textContent = "Saving your choice…";
+    try {
+      await api.recordConsent(agreed, consent.version);
+    } catch (error) {
+      sending = false;
+      agree.disabled = false;
+      decline.disabled = false;
+      status.textContent = `${error.message} — please try again.`;
+      return;
+    }
+    if (agreed) {
+      await loadQuestion();
+    } else {
+      renderDeclined();
+    }
+  }
+
+  agree.addEventListener("click", () => decide(true));
+  decline.addEventListener("click", () => decide(false));
+  actions.append(agree, decline);
+  card.append(actions, status);
+  root.append(card);
+}
+
+async function start() {
+  let consent;
+  try {
+    consent = await api.getConsent();
+  } catch (error) {
+    renderMessage("Something went wrong", error.message);
+    return;
+  }
+  if (consent.declined) {
+    renderDeclined();
+    return;
+  }
+  if (consent.required) {
+    renderConsent(consent);
+    return;
+  }
+  await loadQuestion();
+}
+
 document.addEventListener("visibilitychange", onVisibilityChange);
 window.addEventListener("focus", onFocusChange);
 window.addEventListener("blur", onFocusChange);
@@ -458,5 +584,7 @@ if (!participantId) {
     "Open the personal link you were given to start the study."
   );
 } else {
-  loadQuestion();
+  // Consent is the first screen: no question is fetched until the participant
+  // has agreed, so an unconsented person never sees study material.
+  start();
 }

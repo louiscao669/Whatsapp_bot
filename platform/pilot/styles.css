@@ -145,3 +145,56 @@ body {
   font-family: system-ui, sans-serif;
   font-size: 0.9rem;
 }
+
+/* ---------------------------------------------------------------- consent */
+/* The approved consent text is long by design. It scrolls inside the card so
+   the Agree / Decline buttons stay reachable without hunting for the bottom of
+   the page on a phone, which is where most participants will read it. */
+.pilot-consent-text {
+  max-height: 60vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-right: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.pilot-consent-heading {
+  font-size: 1.05rem;
+  line-height: 1.4;
+  margin: 1.25rem 0 0.35rem;
+}
+
+.pilot-consent-para {
+  margin: 0 0 0.75rem;
+  line-height: 1.6;
+}
+
+.pilot-consent-list {
+  margin: 0 0 0.75rem 1.1rem;
+  padding: 0;
+  line-height: 1.6;
+}
+
+.pilot-consent-list li {
+  margin-bottom: 0.35rem;
+}
+
+.pilot-consent-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.pilot-consent-actions .pilot-submit {
+  flex: 1 1 12rem;
+}
+
+/* Decline is deliberately as reachable as agree -- equal weight, not hidden
+   or de-emphasised. Voluntariness is a required element of the consent form. */
+.pilot-decline {
+  /* .pilot-submit sets a filled dark button with white text; the decline
+     variant must restore the ink colour or it renders white-on-white. */
+  background: transparent;
+  color: var(--pilot-ink);
+  border: 1px solid var(--pilot-ink);
+}

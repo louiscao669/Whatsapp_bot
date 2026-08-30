@@ -1,3 +1,4 @@
+from eten_shared.participant_identity import delivery_address
 import asyncio
 import logging
 import sys
@@ -44,9 +45,9 @@ async def run_campaign(text: str | None = None):
     for index, contact in enumerate(contacts, 1):
         name = contact.display_name or "there"
         body = (text or default_text).format(name=name)
-        ok = await send_message(bot, contact.external_user_id, body)
+        ok = await send_message(bot, delivery_address(contact), body)
         print(
-            f"[{index}/{len(contacts)}] {contact.external_user_id}: "
+            f"[{index}/{len(contacts)}] {delivery_address(contact)}: "
             f"{'sent' if ok else 'FAILED'}"
         )
         await asyncio.sleep(1)

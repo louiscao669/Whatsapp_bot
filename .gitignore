@@ -1,4 +1,9 @@
 .env
+# Every .env variant, not just the bare name. A `.env.backup-*` written during
+# maintenance carries the same 16 secrets and was caught only by GitHub's push
+# protection, one commit short of publishing a live OpenAI and Supabase key.
+.env.*
+!.env.example
 node_modules/
 platform/frontend/dist/
 __pycache__/

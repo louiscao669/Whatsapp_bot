@@ -1,3 +1,4 @@
+from eten_shared.participant_identity import delivery_address
 import asyncio
 import logging
 import sys
@@ -65,23 +66,25 @@ def language_question():
 
 async def send_initial_workflow_prompt(context, contact, message_id=None):
     workflow_result = record_telegram_text_message(
-        chat_id=contact.external_user_id,
+        chat_id=delivery_address(contact),
         display_name=contact.display_name,
         message_id=message_id,
         message_text="",
         record_response=False,
     )
-    await send_workflow_result(context.bot, contact.external_user_id, workflow_result)
+    await send_workflow_result(context.bot, delivery_address(contact), workflow_result)
 
 
 async def start(update, context):
     contact_input = contact_input_from_update(update)
     participant, contact, created = upsert_telegram_contact(contact_input)
+    # No chat id and no username in logs: application logs are a second copy
+    # outside the database and outlive it. The blind index is enough to
+    # correlate an incident without identifying anyone.
     logging.info(
-        "Telegram opt-in: chat_id=%s participant_id=%s username=%s created=%s",
-        contact.external_user_id,
+        "Telegram opt-in: contact_ref=%s participant_id=%s created=%s",
+        (contact.external_user_id or "")[:12],
         participant.id,
-        contact.username,
         created,
     )
 
@@ -150,13 +153,13 @@ async def unknown_text(update, context):
 
     reply = getattr(update.effective_message, "reply_to_message", None)
     workflow_result = record_telegram_answer_receipt(
-        chat_id=contact.external_user_id,
+        chat_id=delivery_address(contact),
         display_name=contact.display_name or participant.display_name,
         update_id=update.update_id,
         raw_answer=message_text,
         question_message_id=getattr(reply, "message_id", None),
     )
-    await send_workflow_result(context.bot, contact.external_user_id, workflow_result)
+    await send_workflow_result(context.bot, delivery_address(contact), workflow_result)
 
 
 async def voice_message(update, context):
@@ -195,7 +198,7 @@ async def voice_message(update, context):
         return
 
     workflow_result = record_telegram_voice_message(
-        chat_id=contact.external_user_id,
+        chat_id=delivery_address(contact),
         display_name=contact.display_name or participant.display_name,
         message_id=contact_input.message_id,
         file_id=voice.file_id,
@@ -205,7 +208,7 @@ async def voice_message(update, context):
         duration_seconds=getattr(voice, "duration", None),
         record_response=True,
     )
-    await send_workflow_result(context.bot, contact.external_user_id, workflow_result)
+    await send_workflow_result(context.bot, delivery_address(contact), workflow_result)
 
 
 async def mcq_button_tap(update, context):

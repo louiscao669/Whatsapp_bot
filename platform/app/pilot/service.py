@@ -24,6 +24,7 @@ from datetime import timezone
 
 from sqlalchemy import func, select
 
+from eten_shared.repo_paths import REPO_ROOT
 from eten_shared.answer_receipts import create_answer_receipt
 from eten_shared.domain.assignments import (
     create_assignment_for_qa_item,
@@ -140,6 +141,72 @@ def get_or_create_pilot_session(db, participant, consent_version=None) -> PilotS
     elif pilot_session.consented_at is None and participant.consented:
         pilot_session.consented_at = utc_now()
     return pilot_session
+
+
+CONSENT_DIR = REPO_ROOT / "platform" / "pilot" / "consent"
+
+
+def get_consent_state(db, participant_id):
+    """What the consent screen needs: whether to show, and the text to show.
+
+    ``required`` is false once the participant has agreed, so a reload mid-study
+    does not re-prompt. A participant who declined is NOT re-prompted either --
+    they are shown the declined state, because re-asking someone who refused is
+    pressure, not consent.
+    """
+
+    participant = _participant(db, participant_id)
+    version = DEFAULT_CONSENT_VERSION
+    return {
+        "required": not participant.consented and participant.consent_declined_at is None,
+        "consented": bool(participant.consented),
+        "declined": participant.consent_declined_at is not None,
+        "version": version,
+        "text": _consent_text(version),
+    }
+
+
+def _consent_text(version):
+    path = CONSENT_DIR / f"consent_en_{version}.md"
+    if not path.is_file():
+        raise PilotError(
+            f"Consent text {path.name} is missing; refusing to show a consent "
+            "screen without the approved wording."
+        )
+    return path.read_text(encoding="utf-8")
+
+
+def record_consent(db, participant_id, agreed, version=None):
+    """Write the participant's decision.
+
+    Agreement is idempotent. A decline is terminal for this flow: it clears
+    nothing that was already agreed, and a later agreement is only possible by
+    an administrator resetting the record, which is deliberate -- withdrawing
+    and re-entering a study is an enrolment decision, not a UI one.
+    """
+
+    participant = _participant(db, participant_id)
+    version = version or DEFAULT_CONSENT_VERSION
+    if _consent_text(version) is None:  # pragma: no cover - guarded above
+        raise PilotError("Unknown consent version")
+
+    if agreed:
+        if not participant.consented:
+            participant.consented = True
+            participant.consented_at = utc_now()
+            participant.consent_version = version
+            participant.consent_declined_at = None
+        get_or_create_pilot_session(db, participant, version)
+    else:
+        if not participant.consented and participant.consent_declined_at is None:
+            participant.consent_declined_at = utc_now()
+            participant.consent_version = version
+    db.flush()
+    return {
+        "consented": bool(participant.consented),
+        "declined": participant.consent_declined_at is not None,
+        "version": participant.consent_version,
+    }
 
 
 def _answered_assignment_ids(db, participant):

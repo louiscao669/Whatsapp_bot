@@ -5,6 +5,7 @@ from dataclasses import dataclass
 
 from sqlalchemy import select
 
+from eten_shared.participant_identity import delivery_address
 from eten_shared.domain.identity import PROVIDER_WHATSAPP, provider_external_id
 from eten_shared.models import ParticipantProviderContact
 from eten_shared.answer_receipts import record_assignment_delivery
@@ -38,7 +39,7 @@ def _whatsapp_recipient(db, participant, contact=None):
     provider contact."""
 
     if contact is not None and contact.provider == PROVIDER_WHATSAPP:
-        return contact.external_user_id
+        return delivery_address(contact)
     return provider_external_id(db, participant, PROVIDER_WHATSAPP)
 
 
@@ -51,7 +52,7 @@ def send_assignment_prompt(db, participant, prompt):
         from app.providers.telegram.messaging import send_assignment_prompt as send_telegram_prompt
 
         bot = Bot(token=telegram_bot_token())
-        sent = asyncio.run(send_telegram_prompt(bot, contact.external_user_id, prompt))
+        sent = asyncio.run(send_telegram_prompt(bot, delivery_address(contact), prompt))
         message_id = getattr(sent, "message_id", None)
         if message_id is not None:
             record_assignment_delivery(
@@ -83,7 +84,7 @@ def send_text_message(db, participant, text):
         from app.providers.telegram.messaging import send_text
 
         bot = Bot(token=telegram_bot_token())
-        asyncio.run(send_text(bot, contact.external_user_id, text))
+        asyncio.run(send_text(bot, delivery_address(contact), text))
         return DeliveryResult(provider="telegram")
 
     from app.providers.whatsapp.messaging import get_text_message_input, send_message
@@ -106,7 +107,7 @@ def send_reminder(db, participant, assignment, reminder):
         from app.providers.telegram.messaging import send_text
 
         bot = Bot(token=telegram_bot_token())
-        asyncio.run(send_text(bot, contact.external_user_id, reminder.message_text))
+        asyncio.run(send_text(bot, delivery_address(contact), reminder.message_text))
         return DeliveryResult(provider="telegram")
 
     from app.providers.whatsapp.reminders import send_reminder as send_whatsapp_reminder

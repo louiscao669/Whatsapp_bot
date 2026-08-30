@@ -17,6 +17,7 @@ from typing import Optional, Tuple
 from sqlalchemy import select, update
 from sqlalchemy.orm import Session
 
+from eten_shared.participant_identity import blind_index, key_fingerprint, seal
 from eten_shared.models import (
     Assignment,
     OutboxNotification,
@@ -37,14 +38,12 @@ PROVIDER_TELEGRAM = "telegram"
 PROVIDER_IMESSAGE = "imessage"
 
 # Optional contact fields callers may pass through to the contact row.
-_CONTACT_FIELDS = (
-    "display_name",
-    "username",
-    "first_name",
-    "last_name",
-    "phone",
-    "locale",
-)
+#
+# display_name / username / first_name / last_name / phone were removed: the
+# approved protocol collects none of them, and leaving them in this allowlist
+# meant any caller could reintroduce identifying data without touching the
+# model. Callers may still pass them; they are now ignored.
+_CONTACT_FIELDS = ("locale",)
 
 
 def _apply_contact_fields(contact: ParticipantProviderContact, fields: dict) -> None:
@@ -59,7 +58,8 @@ def get_contact(
     return db.scalars(
         select(ParticipantProviderContact).where(
             ParticipantProviderContact.provider == provider,
-            ParticipantProviderContact.external_user_id == str(external_user_id),
+            ParticipantProviderContact.external_user_id
+            == blind_index(provider, external_user_id),
         )
     ).first()
 
@@ -98,7 +98,9 @@ def resolve_login(
         candidates.append(normalized)
 
     stmt = select(ParticipantProviderContact).where(
-        ParticipantProviderContact.external_user_id.in_(candidates),
+        ParticipantProviderContact.external_user_id.in_(
+            [blind_index(provider, c) for c in candidates]
+        ),
         ParticipantProviderContact.opted_out_at.is_(None),
     )
     if provider:
@@ -132,10 +134,8 @@ def get_or_create_participant_by_contact(
         participant = contact.participant
         participant.last_seen_at = now
         contact.last_seen_at = now
-        if display_name:
-            if not participant.display_name:
-                participant.display_name = display_name
-            contact.display_name = display_name
+        # display_name is accepted for signature compatibility and
+        # deliberately discarded: names are not collected.
         if locale:
             contact.locale = locale
             if not participant.locale:
@@ -147,7 +147,6 @@ def get_or_create_participant_by_contact(
         return participant, contact, False
 
     participant = Participant(
-        display_name=display_name,
         locale=locale,
         last_seen_at=now,
     )
@@ -157,8 +156,9 @@ def get_or_create_participant_by_contact(
     contact = ParticipantProviderContact(
         participant_id=participant.id,
         provider=provider,
-        external_user_id=external_user_id,
-        display_name=display_name,
+        external_user_id=blind_index(provider, external_user_id),
+        external_user_secret=seal(external_user_id),
+        identity_key_fingerprint=key_fingerprint(),
         locale=locale,
         opted_in_at=now if opt_in else None,
         last_seen_at=now,
@@ -247,7 +247,9 @@ def link_provider_contact(
     contact = ParticipantProviderContact(
         participant_id=participant.id,
         provider=provider,
-        external_user_id=external_user_id,
+        external_user_id=blind_index(provider, external_user_id),
+        external_user_secret=seal(external_user_id),
+        identity_key_fingerprint=key_fingerprint(),
         opted_in_at=now,
         last_seen_at=now,
     )

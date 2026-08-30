@@ -10,6 +10,7 @@ from eten_shared.domain.assignments import (
     get_or_create_participant_session,
     record_participant_event,
 )
+from eten_shared.participant_identity import blind_index, key_fingerprint, seal
 from eten_shared.models import (
     Participant,
     ParticipantProviderContact,
@@ -39,12 +40,15 @@ def contact_input_from_update(update) -> TelegramContactInput:
     user = update.effective_user
     chat = update.effective_chat
     message = update.effective_message
+    # Name, username and surname are deliberately NOT read off the update.
+    # The approved protocol states none of them is collected; the Telegram
+    # payload offers them, and declining to copy them is the whole point.
     return TelegramContactInput(
         chat_id=str(chat.id),
-        display_name=(user.full_name if user else None),
-        username=(user.username if user else None),
-        first_name=(user.first_name if user else None),
-        last_name=(user.last_name if user else None),
+        display_name=None,
+        username=None,
+        first_name=None,
+        last_name=None,
         language_code=(user.language_code if user else None),
         message_id=str(message.message_id) if message else None,
     )
@@ -54,7 +58,8 @@ def _get_contact(db: Session, chat_id: str) -> ParticipantProviderContact | None
     return db.scalars(
         select(ParticipantProviderContact).where(
             ParticipantProviderContact.provider == PROVIDER,
-            ParticipantProviderContact.external_user_id == chat_id,
+            ParticipantProviderContact.external_user_id
+            == blind_index(PROVIDER, chat_id),
         )
     ).first()
 
@@ -83,7 +88,6 @@ def upsert_telegram_contact(contact_input: TelegramContactInput):
 
         if contact is None:
             participant = Participant(
-                display_name=contact_input.display_name,
                 locale=contact_input.language_code,
                 last_seen_at=now,
             )
@@ -93,7 +97,9 @@ def upsert_telegram_contact(contact_input: TelegramContactInput):
             contact = ParticipantProviderContact(
                 participant_id=participant.id,
                 provider=PROVIDER,
-                external_user_id=contact_input.chat_id,
+                external_user_id=blind_index(PROVIDER, contact_input.chat_id),
+                external_user_secret=seal(contact_input.chat_id),
+                identity_key_fingerprint=key_fingerprint(),
                 opted_in_at=now,
                 last_seen_at=now,
             )
@@ -104,16 +110,11 @@ def upsert_telegram_contact(contact_input: TelegramContactInput):
             participant.last_seen_at = now
             contact.last_seen_at = now
 
-        if contact_input.display_name:
-            participant.display_name = contact_input.display_name
-            contact.display_name = contact_input.display_name
         if contact_input.language_code:
             participant.locale = contact_input.language_code
             contact.locale = contact_input.language_code
 
-        contact.username = contact_input.username
-        contact.first_name = contact_input.first_name
-        contact.last_name = contact_input.last_name
+        # Identity fields intentionally left unwritten (see protocol).
         metadata = dict(contact.contact_metadata or {})
         metadata.setdefault("language_confirmation_status", LANGUAGE_PENDING)
         metadata.setdefault("default_target_language", default_target_language())
@@ -134,7 +135,9 @@ def upsert_telegram_contact(contact_input: TelegramContactInput):
             "provider_contact_opted_in" if created else "provider_contact_seen",
             {
                 "provider": PROVIDER,
-                "external_user_id": contact_input.chat_id,
+                # Blind index only: participant_events is research data and must
+                # not carry a readable platform id.
+                "external_user_id": blind_index(PROVIDER, contact_input.chat_id),
                 "username": contact_input.username,
                 "message_id": contact_input.message_id,
             },
@@ -178,7 +181,9 @@ def confirm_telegram_default_language(contact_input: TelegramContactInput):
             "provider_language_confirmed",
             {
                 "provider": PROVIDER,
-                "external_user_id": contact_input.chat_id,
+                # Blind index only: participant_events is research data and must
+                # not carry a readable platform id.
+                "external_user_id": blind_index(PROVIDER, contact_input.chat_id),
                 "target_language": language,
                 "message_id": contact_input.message_id,
             },
@@ -211,7 +216,9 @@ def reject_telegram_default_language(contact_input: TelegramContactInput):
             "provider_language_rejected",
             {
                 "provider": PROVIDER,
-                "external_user_id": contact_input.chat_id,
+                # Blind index only: participant_events is research data and must
+                # not carry a readable platform id.
+                "external_user_id": blind_index(PROVIDER, contact_input.chat_id),
                 "default_target_language": default_target_language(),
                 "message_id": contact_input.message_id,
             },
@@ -243,7 +250,9 @@ def opt_out_telegram_contact(contact_input: TelegramContactInput) -> bool:
             "provider_contact_opted_out",
             {
                 "provider": PROVIDER,
-                "external_user_id": contact_input.chat_id,
+                # Blind index only: participant_events is research data and must
+                # not carry a readable platform id.
+                "external_user_id": blind_index(PROVIDER, contact_input.chat_id),
                 "message_id": contact_input.message_id,
             },
             source=PROVIDER,

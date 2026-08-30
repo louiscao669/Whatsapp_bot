@@ -554,8 +554,9 @@ def _record_provider_answer_for_participant(
             participant.last_seen_at = now
             if contact is not None:
                 contact.last_seen_at = now
-            if display_name and participant.display_name != display_name:
-                participant.display_name = display_name
+            # display_name is not persisted: names are not collected under the
+            # approved protocol. The parameter is retained so provider adapters
+            # need no signature change.
             participant_session = get_or_create_participant_session(db, participant)
             if (
                 expected_assignment_id is not None

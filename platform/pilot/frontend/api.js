@@ -42,6 +42,19 @@ export function createPilotApi(participantId, { origin = window.location.origin 
       return request("/question");
     },
 
+    /** Whether the consent screen is due, plus the approved text to render. */
+    getConsent() {
+      return request("/consent");
+    },
+
+    /** Record the decision. `agreed` is always sent explicitly, never defaulted. */
+    recordConsent(agreed, consentVersion) {
+      return request("/consent", {
+        method: "POST",
+        body: { agreed: Boolean(agreed), consent_version: consentVersion || undefined }
+      });
+    },
+
     startSession(consentVersion) {
       return request("/session", {
         method: "POST",

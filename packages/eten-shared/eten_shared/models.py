@@ -151,6 +151,13 @@ class Participant(Base):
     profile_photo_uri: Mapped[Optional[str]] = mapped_column(Text)
     dashboard_preferences: Mapped[dict] = mapped_column(JSON, default=dict, nullable=False)
     consented: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
+    # Consent provenance. `consented` alone records only that consent exists;
+    # these say when, against which approved text, and whether the person
+    # actively declined (consented=False + consent_declined_at set) rather
+    # than simply not having reached the screen.
+    consented_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
+    consent_version: Mapped[Optional[str]] = mapped_column(String(64), index=True)
+    consent_declined_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
     preferred_batch_size: Mapped[int] = mapped_column(Integer, default=3, nullable=False)
     completed_count: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
     nudge_platform_sequence: Mapped[list] = mapped_column(
@@ -202,7 +209,11 @@ class ParticipantProviderContact(Base):
         ForeignKey("participants.id", ondelete="CASCADE"), nullable=False, index=True
     )
     provider: Mapped[str] = mapped_column(String(64), nullable=False, index=True)
+    # HMAC blind index of provider:chat_id -- deterministic for lookup, not
+    # reversible. The readable id lives only in external_user_secret.
     external_user_id: Mapped[str] = mapped_column(String(255), nullable=False, index=True)
+    external_user_secret: Mapped[Optional[str]] = mapped_column(Text)
+    identity_key_fingerprint: Mapped[Optional[str]] = mapped_column(String(32), index=True)
     display_name: Mapped[Optional[str]] = mapped_column(String(255))
     username: Mapped[Optional[str]] = mapped_column(String(255))
     first_name: Mapped[Optional[str]] = mapped_column(String(255))

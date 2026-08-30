@@ -17,6 +17,8 @@ from eten_shared.repo_paths import REPO_ROOT
 from app.pilot.service import (
     PilotError,
     PilotNotFoundError,
+    get_consent_state,
+    record_consent,
     get_pilot_results,
     get_pilot_state,
     mark_pilot_question_viewed,
@@ -55,6 +57,48 @@ def _body():
     """
 
     return request.get_json(silent=True, force=True) or {}
+
+
+@pilot_blueprint.route("/pilot/api/<participant_id>/consent", methods=["GET"])
+def pilot_consent_state(participant_id):
+    """Whether the consent screen is due, and the approved text to display."""
+
+    try:
+        with get_session_factory()() as db:
+            payload = get_consent_state(db, participant_id)
+    except PilotError as exc:
+        return _error(exc)
+    return jsonify(payload)
+
+
+@pilot_blueprint.route("/pilot/api/<participant_id>/consent", methods=["POST"])
+def pilot_consent_record(participant_id):
+    """Record the participant's decision. ``agreed`` must be sent explicitly.
+
+    There is no default: a missing flag is a client bug, and defaulting either
+    way would either fabricate consent or silently discard it.
+    """
+
+    body = _body()
+    if "agreed" not in body or not isinstance(body["agreed"], bool):
+        return (
+            jsonify(
+                {
+                    "error": "pilot_error",
+                    "message": "consent requires an explicit boolean 'agreed'",
+                }
+            ),
+            400,
+        )
+    try:
+        with get_session_factory()() as db:
+            payload = record_consent(
+                db, participant_id, body["agreed"], body.get("consent_version")
+            )
+            db.commit()
+    except PilotError as exc:
+        return _error(exc)
+    return jsonify(payload)
 
 
 @pilot_blueprint.route("/pilot/api/<participant_id>/question", methods=["GET"])
