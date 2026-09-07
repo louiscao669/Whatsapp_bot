@@ -91,7 +91,7 @@ class PilotNotFoundError(PilotError):
 
 #: Consent version stamped on a pilot session. Bump when the consent text
 #: changes so responses can be attributed to the text a participant agreed to.
-DEFAULT_CONSENT_VERSION = os.getenv("PILOT_CONSENT_VERSION", "pilot-2026-08-18")
+DEFAULT_CONSENT_VERSION = os.getenv("PILOT_CONSENT_VERSION", "pilot-2026-09-07")
 
 
 def _iso(value):
