@@ -5,6 +5,7 @@ from importlib.util import module_from_spec, spec_from_file_location
 
 from dotenv import load_dotenv
 
+from eten_shared.log_redaction import install_log_redaction
 from eten_shared.repo_paths import REPO_ROOT
 
 
@@ -61,3 +62,9 @@ def configure_logging():
         format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
         stream=sys.stdout,
     )
+    # Client IPs, participant ids and deep-link tokens must not reach the
+    # journal: it is outside every data path the protocol describes, so
+    # nothing exports it, prunes it or destroys it with the rest of the
+    # identifiers. Attached to the root handlers, which is what the WSGI
+    # access log propagates to.
+    install_log_redaction()
