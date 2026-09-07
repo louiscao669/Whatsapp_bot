@@ -418,7 +418,7 @@ def _experiment_assignment_kwargs(db, participant_session, cell, qa_item):
     # conditions), so an unresolvable passage must fail rather than silently
     # fall through to the condition-invariant qa_item.passage_text.
     experiment_passage = resolve_experiment_passage(
-        db, cell, qa_item, participant_language_code(participant)
+        db, cell, qa_item, participant_language_code(participant_session.participant)
     )
     if experiment_passage is None:
         raise ExperimentPassageMissingError(
