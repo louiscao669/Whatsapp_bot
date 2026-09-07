@@ -1,0 +1,32 @@
+# ETEN Telegram bot: long-polling participant messenger surface.
+#
+# Install to /etc/systemd/system/eten-telegram-bot.service, then:
+#   sudo systemctl daemon-reload && sudo systemctl enable --now eten-telegram-bot
+#
+# ONLY ONE HOST MAY RUN THIS AT A TIME. Telegram allows a single long-poller
+# per bot token; a second one causes 409 conflicts and participants get
+# duplicated or dropped messages. During a VM migration, stop this on the old
+# machine BEFORE starting it on the new one.
+
+[Unit]
+Description=ETEN Telegram Bot (participant messenger poller)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=lcao4_nd_edu
+Group=lcao4_nd_edu
+WorkingDirectory=/opt/eten-whatsapp-bot
+EnvironmentFile=/opt/eten-whatsapp-bot/.env
+# bot.py puts message-bot/ on sys.path itself, so an absolute path works and
+# no PYTHONPATH is needed.
+ExecStart=/opt/eten-whatsapp-bot/.venv/bin/python \
+    /opt/eten-whatsapp-bot/message-bot/app/providers/telegram/bot.py
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
