@@ -10,9 +10,13 @@ CONFIG_DEFAULTS = {
     'OPENAI_ASSISTANT_ID': '""',
     'PHONE_NUMBER_ID': '1071137239409274',
     'REMINDER_SCHEDULER_ENABLED': 'false',
+    # Admin login codes are sent from a Gmail / Workspace account using an app
+    # password (SMTP_USERNAME / SMTP_PASSWORD in .env). Gmail rewrites the From
+    # header to the authenticated account, so SMTP_FROM_EMAIL must be that same
+    # address -- set it in .env; the placeholder here only prevents a crash.
     'SMTP_FROM_EMAIL': 'no-reply@example.org',
-    'SMTP_FROM_NAME': 'WhatsApp QA Bot',
-    'SMTP_HOST': 'smtp.example.org',
+    'SMTP_FROM_NAME': 'Bible Translation QC',
+    'SMTP_HOST': 'smtp.gmail.com',
     'SMTP_PORT': '587',
     'SMTP_USE_TLS': 'true',
     'SUPABASE_AUDIO_BUCKET': 'participant-audio',

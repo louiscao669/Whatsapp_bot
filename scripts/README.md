@@ -46,13 +46,13 @@ Run from the repository root:
 
 ```bash
 export OPENAI_API_KEY=...
-python evaluation/scripts/data_prep/translate_llm_qa_to_chinese.py input.json evaluation/outputs/qa_zh.json
+python evaluation/scripts/pipeline/translate_qa.py input.json evaluation/outputs/qa_zh.json
 ```
 
 Use `--format native` to emit JSON that can be pasted into the admin QA importer:
 
 ```bash
-python evaluation/scripts/data_prep/translate_llm_qa_to_chinese.py input.json evaluation/outputs/qa_zh_native.json --format native
+python evaluation/scripts/pipeline/translate_qa.py input.json evaluation/outputs/qa_zh_native.json --format native
 ```
 
 The compact output shape is:

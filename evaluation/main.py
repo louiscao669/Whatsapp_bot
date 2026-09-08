@@ -35,7 +35,7 @@ from evaluation.agents.generate_chinese_answers import (
     public_questions,
     write_json as write_generated_json,
 )
-from evaluation.scripts.scoring.score_generated_answers import (
+from evaluation.scripts.scoring.current.score_generated_answers import (
     ScoreError,
     backtranslate_generated_answers,
     extract_items,
@@ -44,7 +44,7 @@ from evaluation.scripts.scoring.score_generated_answers import (
     summarize,
     write_json as write_score_json,
 )
-from evaluation.scripts.data_prep.decanonicalize_chinese_dataset import (
+from evaluation.scripts.pipeline.decanonicalize import (
     DEFAULT_ENGLISH_TOKEN_MAPPING,
     DEFAULT_MAPPING,
     PROTECTED_TOKEN_MAPPING,
@@ -53,7 +53,7 @@ from evaluation.scripts.data_prep.decanonicalize_chinese_dataset import (
     replace_english_terms,
     replace_text,
 )
-from evaluation.scripts.data_prep.translate_llm_qa_to_chinese import (
+from evaluation.scripts.pipeline.translate_qa import (
     TranslationError,
     extract_response_text,
     load_json as load_translation_json,
@@ -61,7 +61,7 @@ from evaluation.scripts.data_prep.translate_llm_qa_to_chinese import (
     translate_items,
     write_json as write_translation_json,
 )
-from evaluation.scripts.scoring.translation_quality import (
+from evaluation.scripts.scoring.current.translation_quality import (
     DEFAULT_NLLB_DROPOUT_RATES,
     NLLB_DROPOUT_METHOD_PREFIX,
     TranslationQualityError,
@@ -1379,7 +1379,7 @@ def parse_args() -> argparse.Namespace:
         "--pseudonym-map",
         type=Path,
         help=(
-            "Name map from scripts/pseudonyms/. Its pseudonym_en -> pseudonym_zh "
+            "Name map from scripts/pseudonyms/current/. Its pseudonym_en -> pseudonym_zh "
             "pairs are given to every translation stage as a glossary, and "
             "enforced afterwards, so one entity has one target-language name "
             "across the passage and the questions. Without it each call "
@@ -1392,7 +1392,7 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help=(
             "Inputs were already pseudonymized before the pipeline (see "
-            "scripts/pseudonyms/pseudonymize_english_source.py). Disables the "
+            "scripts/pseudonyms/current/pseudonymize_english_source.py). Disables the "
             "legacy Luke 1-8 blinding tables so names are not pseudonymized "
             "twice by two different systems, and so common nouns the name map "
             "deliberately left in plain English ('priest', 'lion') are not "

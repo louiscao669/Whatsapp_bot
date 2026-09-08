@@ -739,7 +739,7 @@ def main(argv: list[str] | None = None) -> int:
               f"        cells found={tally['cells']} items={tally['items']} "
               f"no_effort={tally['no_effort']} no_bhat={tally['no_bhat']}\n"
               f"        Run the clean pass first: "
-              f"bash evaluation/scripts/campaigns/run_g1_clean_pass.sh")
+              f"bash evaluation/scripts/campaigns/legacy_luke/run_g1_clean_pass.sh")
         return 2
 
     res = correlate(rows)

@@ -466,7 +466,7 @@ def main() -> int:
     item_comparison = read_csv(args.comparison_dir / "item_comparison.csv")
     if not summary_by_model or not summary_by_chapter_method_model:
         print(
-            "Missing comparison CSVs. Run evaluation/scripts/analysis/compare_answer_models.py first."
+            "Missing comparison CSVs. Run evaluation/scripts/analysis/legacy_luke/compare_answer_models.py first."
         )
         return 1
     summary_by_chapter_method_model = filter_rows_by_methods(

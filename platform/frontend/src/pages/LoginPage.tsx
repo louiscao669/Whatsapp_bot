@@ -17,6 +17,11 @@ export function LoginPage() {
   const [error, setError] = useState('')
   const [submitting, setSubmitting] = useState(false)
 
+  // Token login stays enabled on the server (ADMIN_ALLOW_TOKEN_LOGIN) as a way
+  // back in if SMTP fails, but it is not advertised on a login page that is
+  // reachable from the open internet. Reach it with /login?token=1.
+  const showTokenForm = new URLSearchParams(window.location.search).has('token')
+
   if (!loading && user) {
     return <Navigate to={redirectTo} replace />
   }
@@ -101,24 +106,45 @@ export function LoginPage() {
             <button type="submit" disabled={submitting}>
               Verify code
             </button>
+            <button
+              type="button"
+              className="link-button"
+              onClick={() => {
+                setCodeSent(false)
+                setCode('')
+                setMessage('')
+                setError('')
+              }}
+            >
+              Use a different email
+            </button>
           </form>
         )}
 
-        <hr />
-        <p className="hint">Token fallback for development or emergency access:</p>
-        <form onSubmit={handleTokenLogin}>
-          <label htmlFor="token">Admin or expert token</label>
-          <input
-            id="token"
-            type="password"
-            value={token}
-            onChange={(e) => setToken(e.target.value)}
-            autoComplete="current-password"
-          />
-          <button type="submit" disabled={submitting}>
-            Log in with token
-          </button>
-        </form>
+        {showTokenForm ? (
+          <>
+            <hr />
+            <p className="hint">Token fallback for development or emergency access:</p>
+            <form onSubmit={handleTokenLogin}>
+              <label htmlFor="token">Admin or expert token</label>
+              <input
+                id="token"
+                type="password"
+                value={token}
+                onChange={(e) => setToken(e.target.value)}
+                autoComplete="current-password"
+              />
+              <button type="submit" disabled={submitting}>
+                Log in with token
+              </button>
+            </form>
+          </>
+        ) : (
+          <p className="hint">
+            Access is limited to approved study accounts. Ask the study lead to add
+            your address if you cannot sign in.
+          </p>
+        )}
       </section>
     </main>
   )

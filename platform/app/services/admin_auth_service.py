@@ -15,6 +15,58 @@ from eten_shared.models import AdminLoginCode, AdminRole, AdminUser, utc_now
 
 VALID_ADMIN_ROLES = {AdminRole.ADMIN.value, AdminRole.EXPERT.value}
 
+DEFAULT_ALLOWED_ROLE = AdminRole.ADMIN.value
+
+
+def get_allowed_emails():
+    """Parse ``ADMIN_ALLOWED_EMAILS`` into ``{email: role}``.
+
+    Format: comma- or whitespace-separated entries, each ``email`` or
+    ``email:role``; role defaults to admin. For example::
+
+        ADMIN_ALLOWED_EMAILS=lcao4@nd.edu,colleague@nd.edu:expert
+
+    An unknown role raises rather than silently downgrading: a typo that
+    granted the wrong level of access would otherwise be invisible, and this
+    file is the only thing standing between a public IP and the study data.
+
+    An unset or empty value returns ``{}``, which leaves the ``admin_users``
+    table as the sole gate -- the behaviour that existed before this variable.
+    """
+
+    raw = os.getenv("ADMIN_ALLOWED_EMAILS", "")
+    allowed = {}
+    for entry in raw.replace("\n", ",").replace(" ", ",").split(","):
+        entry = entry.strip()
+        if not entry:
+            continue
+        raw_email, _, raw_role = entry.partition(":")
+        email = normalize_email(raw_email)
+        role = (raw_role.strip().lower() or DEFAULT_ALLOWED_ROLE)
+        if not email:
+            continue
+        if role not in VALID_ADMIN_ROLES:
+            raise AdminAuthError(
+                f"ADMIN_ALLOWED_EMAILS: unknown role '{role}' for {email}"
+            )
+        allowed[email] = role
+    return allowed
+
+
+def get_allowlisted_role(email):
+    """Role this email is granted by the env allowlist, or None."""
+
+    return get_allowed_emails().get(normalize_email(email))
+
+
+def email_is_allowed(email):
+    """Whether an OTP may be sent to this address at all."""
+
+    allowed = get_allowed_emails()
+    if not allowed:
+        return True
+    return normalize_email(email) in allowed
+
 
 class AdminAuthError(Exception):
     pass
@@ -151,10 +203,21 @@ def send_smtp_login_otp(email):
 
 
 def send_admin_login_otp(email):
-    if get_admin_auth_provider() == "smtp":
-        return send_smtp_login_otp(email)
+    """Send a login code, but only to an approved address.
 
-    return send_supabase_login_otp(email)
+    The check belongs here rather than only at verify time: /otp/request is an
+    unauthenticated endpoint on a public IP, so without it anyone could make
+    this service mail an arbitrary address on demand.
+    """
+
+    normalized_email = normalize_email(email)
+    if not email_is_allowed(normalized_email):
+        raise AdminAuthError("This email is not approved for admin access.")
+
+    if get_admin_auth_provider() == "smtp":
+        return send_smtp_login_otp(normalized_email)
+
+    return send_supabase_login_otp(normalized_email)
 
 
 def verify_supabase_login_otp(email, token):
@@ -236,12 +299,41 @@ def verify_admin_login_otp(email, token):
 
 
 def get_allowed_admin_user(email):
+    """Resolve a verified email to an admin user, or None if not approved.
+
+    When ADMIN_ALLOWED_EMAILS is set it is authoritative for membership and
+    role: an address missing from it is refused even if an admin_users row
+    exists, and an approved address that has no row yet gets one created on
+    first login, so adding a colleague is a one-line .env edit rather than SQL.
+
+    ``active = false`` on an existing row still denies access. That is the
+    revocation path which takes effect without a restart -- worth keeping
+    distinct from the .env list, which does not.
+    """
+
     normalized_email = normalize_email(email)
+    allowlist = get_allowed_emails()
+    env_role = allowlist.get(normalized_email)
+    if allowlist and not env_role:
+        return None
+
     session_factory = get_session_factory()
     with session_factory() as db:
         admin_user = db.scalars(
             select(AdminUser).where(AdminUser.email == normalized_email)
         ).first()
+
+        if admin_user is None and env_role:
+            admin_user = AdminUser(
+                email=normalized_email,
+                role=env_role,
+                active=True,
+            )
+            db.add(admin_user)
+            db.flush()
+        elif admin_user is not None and env_role and admin_user.role != env_role:
+            admin_user.role = env_role
+
         if (
             not admin_user
             or not admin_user.active

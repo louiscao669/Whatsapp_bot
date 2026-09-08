@@ -1,7 +1,7 @@
 """Judge parity tests.
 
 The contract under test is that the live human judge matches the offline
-benchmark judge (``evaluation/scripts/mcq/regen_mcq_tier01.py::judge_open``) on
+benchmark judge (``evaluation/scripts/mcq/legacy_luke/regen_mcq_tier01.py::judge_open``) on
 scale, temperature and rubric. If these fail, the human pilot's open scores are
 no longer comparable to the proxy benchmarks that H-T1 / H-T2 / H-T7 test
 against -- so treat a failure here as a research-validity bug, not a unit-test

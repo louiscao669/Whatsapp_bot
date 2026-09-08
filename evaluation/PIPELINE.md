@@ -24,10 +24,10 @@ translation quality. Every step below exists to keep the passage recoverable
 | 2 | Translate QA to Chinese | `main.py` (`translate`) | `_shared/<run>_qa_zh.json` |
 | 3 | Protect source + translate passage | `main.py` (`passage-translate`) | `<method>/passage_target.txt` |
 | 4 | Decanonicalize | `main.py` (`decanonicalize`) | `<method>/passage_target_decanonicalized.txt` |
-| 5 | Defect variants | `scripts/variants/create_*_variants.py` | `<method>/<defect>/<rate>%/` |
+| 5 | Defect variants | `scripts/variants/current/create_*_variants.py` | `<method>/<defect>/<rate>%/` |
 | 6 | **Tag section headers** | `data_prep/tag_passage_headers.py` (+ manual LLM) | `<header>…</header>` in place |
-| 7 | Build pseudonym remap | `pseudonyms/build_pseudonym_remap.py` | `datasets/pseudonym_remap/lukeN_remap.json` |
-| 8 | Apply pseudonyms | `pseudonyms/apply_pseudonym_remap.py` | `passage_target_pseudonymized.txt` |
+| 7 | Build pseudonym remap | `pseudonyms/legacy_luke/build_pseudonym_remap.py` | `datasets/pseudonym_remap/lukeN_remap.json` |
+| 8 | Apply pseudonyms | `pseudonyms/legacy_luke/apply_pseudonym_remap.py` | `passage_target_pseudonymized.txt` |
 | 9 | Answer → back-translate → score | `main.py` | `scores_target_llama.json` |
 
 ---
@@ -35,7 +35,7 @@ translation quality. Every step below exists to keep the passage recoverable
 ## 0. Fetch the English passage
 
 ```bash
-python evaluation/scripts/data_prep/fetch_biblegateway_passage.py "Micah 5:4-20"
+python evaluation/scripts/data_prep/sources/fetch_biblegateway_passage.py "Micah 5:4-20"
 ```
 
 BibleGateway has no public API, so this parses the browser page and fails loudly
@@ -118,7 +118,7 @@ input to stage 7.
 ## 5. Defect variants
 
 ```bash
-python evaluation/scripts/variants/create_omission_variants.py \
+python evaluation/scripts/variants/current/create_omission_variants.py \
   --chapters 1 2 3 4 5 6 7 8 --rates 0% 5% 10% 15% 20% 30%
 ```
 
@@ -131,8 +131,8 @@ validated and frozen, with entries marked `systematic` (all occurrences) or
 ## 6. Tag section headers ← the manual LLM step
 
 ```bash
-python evaluation/scripts/data_prep/tag_passage_headers.py --dry-run
-python evaluation/scripts/data_prep/tag_passage_headers.py
+python evaluation/scripts/data_prep/sources/tag_passage_headers.py --dry-run
+python evaluation/scripts/data_prep/sources/tag_passage_headers.py
 ```
 
 Wraps heading lines as `<header>…</header>` in `passage_target.txt`,
@@ -155,7 +155,7 @@ Two reasons it matters downstream:
    it is absorbed into the **preceding** verse's chunk and drifts into the wrong
    ±2-verse answer window.
 2. Headings are answer spoilers. "Jesus Heals a Man With Leprosy" gives away the
-   question. `scripts/mcq/regen_mcq_tier01.py` strips them with its `HEADER`
+   question. `scripts/mcq/legacy_luke/regen_mcq_tier01.py` strips them with its `HEADER`
    regex — which only works if they are tagged.
 
 Run this **before** stage 8 so the tags propagate into the pseudonymized files.
@@ -163,7 +163,7 @@ Run this **before** stage 8 so the tags propagate into the pseudonymized files.
 ## 7. Build the pseudonym remap
 
 ```bash
-cd evaluation && python scripts/pseudonyms/build_pseudonym_remap.py
+cd evaluation && python scripts/pseudonyms/legacy_luke/build_pseudonym_remap.py
 ```
 
 Reads `canonicalization.mapping` from each chapter's
@@ -187,8 +187,8 @@ Writes `datasets/pseudonym_remap/lukeN_remap.json` and prints a doubling scan.
 
 ```bash
 cd evaluation
-python scripts/pseudonyms/apply_pseudonym_remap.py --dry-run
-python scripts/pseudonyms/apply_pseudonym_remap.py
+python scripts/pseudonyms/legacy_luke/apply_pseudonym_remap.py --dry-run
+python scripts/pseudonyms/legacy_luke/apply_pseudonym_remap.py
 ```
 
 Rewrites **Chinese content only** — both placeholders and any leaked canonical

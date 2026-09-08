@@ -1,7 +1,7 @@
 """LLM scoring for participant open answers.
 
 The evaluator mirrors the offline benchmark judge
-(``evaluation/scripts/mcq/regen_mcq_tier01.py::judge_open``) so that human
+(``evaluation/scripts/mcq/legacy_luke/regen_mcq_tier01.py::judge_open``) so that human
 open scores and proxy open scores live on the SAME scale and can be compared
 directly by the human-pilot hypotheses (H-T1 / H-T2 / H-T7).
 

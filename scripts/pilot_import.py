@@ -64,7 +64,7 @@ CHAPTERS = range(1, 9)
 ANSWER_MODELS = ["1.7b", "1.5b", "llama 1b", "llama 3b"]  # search order; target files identical
 LANGUAGE = "zh"
 MCQ_FRACTION = 0.75
-# [NEW 2026-07-27b] Item exclusions, mirroring evaluation/scripts/mcq/regen_mcq_tier01.py. The
+# [NEW 2026-07-27b] Item exclusions, mirroring evaluation/scripts/mcq/legacy_luke/regen_mcq_tier01.py. The
 # delivered qa_target_pseudonymized.json files still CONTAIN these records --
 # promote_mcq_rewrites.py patches, it never deletes -- so the importer must filter them or the
 # retired forms reach participants.
@@ -179,7 +179,7 @@ def validate_eval_root(eval_root: Path) -> None:
 
 
 # Prefer the pseudonymized (natural-name) files produced by
-# evaluation/scripts/pseudonyms/apply_pseudonym_remap.py; fall back to the raw decanonicalized files.
+# evaluation/scripts/pseudonyms/legacy_luke/apply_pseudonym_remap.py; fall back to the raw decanonicalized files.
 _warned = set()
 
 def _pick(d: Path, pseudo: str, decanon: str) -> Path:
@@ -187,7 +187,7 @@ def _pick(d: Path, pseudo: str, decanon: str) -> Path:
         return d / pseudo
     if decanon not in _warned:
         print(f"  [warn] {pseudo} not found -> using {decanon} (token names). "
-              f"Run evaluation/scripts/pseudonyms/apply_pseudonym_remap.py for the natural-name version.")
+              f"Run evaluation/scripts/pseudonyms/legacy_luke/apply_pseudonym_remap.py for the natural-name version.")
         _warned.add(decanon)
     return d / decanon
 
@@ -668,8 +668,30 @@ def parse_tier1_verses(text: str, metadata: dict) -> list[tuple[str, str]]:
         accepted.append((label, match))
     want_first = f"{metadata['chapter_start']}:{metadata['verse_start']}"
     labels = [label for label, _ in accepted]
-    if not labels or labels[0] != want_first:
-        raise ValueError(f"verse parse mismatch for {metadata['id']}: first={labels[:1]}, expected {want_first}")
+    if not labels:
+        raise ValueError(f"verse parse mismatch for {metadata['id']}: no verses parsed, expected {want_first}")
+    # [RELAXED] An omission variant can delete the passage's opening verses along with
+    # their markers, so the first surviving label legitimately sits AFTER the catalog's
+    # chapter_start:verse_start. Delivery resolves windows by chapter-qualified label
+    # (domain/assignments.experiment_passage_assignment_kwargs), never by position, so a
+    # later origin does not misalign windows against verses. Still fail hard when the
+    # first label falls OUTSIDE the declared span -- that is the cross-chapter misparse
+    # this check was written to catch.
+    def _key(lbl):
+        chapter, _, verse = str(lbl).partition(":")
+        return (int(chapter), int(verse))
+
+    lo = (int(metadata["chapter_start"]), int(metadata["verse_start"]))
+    hi = (int(metadata["chapter_end"]), int(metadata["verse_end"]))
+    got = _key(labels[0])
+    if not (lo <= got <= hi):
+        raise ValueError(
+            f"verse parse mismatch for {metadata['id']}: first={labels[:1]}, "
+            f"outside declared span {want_first}..{metadata['chapter_end']}:{metadata['verse_end']}"
+        )
+    if labels[0] != want_first:
+        print(f"  [warn] {metadata['id']}: passage starts at {labels[0]}, not {want_first} "
+              f"-- leading verses absent (expected for an omission variant)")
     verses = []
     for index, (label, marker) in enumerate(accepted):
         end = accepted[index + 1][1].start() if index + 1 < len(accepted) else len(text)
@@ -877,7 +899,7 @@ def allowed_forms(chapter_qa: dict, rewrites: set) -> dict:
     regen_mcq_tier01.py, which the importer previously did not know about:
 
       * an MCQ form is deliverable only if it has an entry in mcq_rewrites.json.
-        The two retired MCQs (build_rewrites_v2.EXCLUDED_IDS) have no rewrite, so their
+        The two retired MCQs (mcq/preparation/build_rewrites_v2.py) have no rewrite, so their
         ORIGINAL guessable distractors would otherwise be delivered verbatim.
       * the ambiguous open form (EXCLUDED_OPEN_STEMS) is never deliverable; its MCQ form
         is fine, because the options pin the answer.
@@ -977,7 +999,7 @@ def load_mcq_rewrites(eval_root: Path) -> set:
     path = eval_root / "datasets" / "mcq" / MCQ_REWRITES_FILENAME
     if not path.exists():
         sys.exit(f"missing {path} -- required to tell rewritten MCQs from retired ones.\n"
-                 f"  run evaluation/scripts/mcq/build_rewrites_v2.py first")
+                 f"  run evaluation/scripts/mcq/preparation/build_rewrites_v2.py first")
     return set(json.loads(path.read_text(encoding="utf-8")))
 
 

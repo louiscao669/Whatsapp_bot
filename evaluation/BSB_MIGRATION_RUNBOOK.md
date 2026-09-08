@@ -46,7 +46,7 @@ the 94 IDs and commit/freeze that manifest before continuing.
 Fetch into staging, never directly over the NIV files:
 
 ```bash
-python evaluation/scripts/data_prep/fetch_biblegateway_passage.py \
+python evaluation/scripts/data_prep/sources/fetch_biblegateway_passage.py \
   --csv evaluation/datasets/obscure_narrative_passages_tier1.csv \
   --version BSB \
   --out-dir evaluation/datasets/passages/tier1_bsb
@@ -100,7 +100,7 @@ Reuse `evaluation/datasets/pseudonym_remap/name_map_tier1_reconciled.json` as
 the identity-to-pseudonym authority. Do not regenerate pseudonyms.
 
 For each passage/QA pair, run
-`evaluation/scripts/pseudonyms/pseudonymize_english_source.py` with the existing
+`evaluation/scripts/pseudonyms/current/pseudonymize_english_source.py` with the existing
 map and the correct `--passage-id`, writing to a BSB staging directory.
 
 BSB may spell an existing entity differently from NIV. Add that spelling as an
@@ -121,7 +121,7 @@ defect conditions. Use a new output root, for example:
 ```bash
 OUT_ROOT=evaluation/outputs/tier1_bsb \
   STOP_AFTER=decanonicalize \
-  bash evaluation/scripts/campaigns/run_tier1_small_models.sh
+  bash evaluation/scripts/campaigns/current/run_tier1_small_models.sh
 ```
 
 The campaign currently has hardcoded Tier-1 input directories, so either stage
@@ -142,7 +142,7 @@ Build every variant from the new BSB-derived Chinese clean base:
 
 ```bash
 OUT_ROOT=evaluation/outputs/tier1_bsb \
-  bash evaluation/scripts/campaigns/build_tier1_defect_variants.sh
+  bash evaluation/scripts/campaigns/current/build_tier1_defect_variants.sh
 ```
 
 Regenerate passage-specific mistranslation and awkward-style banks. Do not
@@ -220,4 +220,3 @@ Promote only after Gates 0-6 pass.
 `94-ID manifest` → `BSB fetch` → `BSB QA/span review` → `window selection` →
 `English pseudonymization` → `clean Chinese translation` → `clean MCQ check` →
 `defect banks and variants` → `delivery regression` → `promotion`.
-

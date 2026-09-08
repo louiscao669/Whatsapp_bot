@@ -1,6 +1,6 @@
 import unittest
 
-from evaluation.scripts.data_prep.translate_llm_qa_to_chinese import normalize_items
+from evaluation.scripts.pipeline.translate_qa import normalize_items
 
 
 class NormalizeAllFormatsTests(unittest.TestCase):

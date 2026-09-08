@@ -77,7 +77,7 @@ Run from the repository root:
 
 ```bash
 export OPENAI_API_KEY=...
-python evaluation/scripts/data_prep/translate_llm_qa_to_chinese.py input.json evaluation/outputs/qa_zh.json
+python evaluation/scripts/pipeline/translate_qa.py input.json evaluation/outputs/qa_zh.json
 ```
 
 For open questions, the script translates the question but keeps the standard
@@ -87,7 +87,7 @@ options because the options are part of the question shown to the model.
 Importer-native output:
 
 ```bash
-python evaluation/scripts/data_prep/translate_llm_qa_to_chinese.py input.json evaluation/outputs/qa_zh_native.json --format native
+python evaluation/scripts/pipeline/translate_qa.py input.json evaluation/outputs/qa_zh_native.json --format native
 ```
 
 The old path still works as a compatibility wrapper:
@@ -100,18 +100,18 @@ To inspect or translate QA after replacing canonical English terms with
 protected source tokens:
 
 ```bash
-python evaluation/scripts/data_prep/prepare_protected_qa.py \
+python evaluation/scripts/data_prep/legacy/prepare_protected_qa.py \
   evaluation/datasets/qa/qa_output_luke_ch1_mixed.json \
   evaluation/outputs/qa_luke_ch1_protected.json
 ```
 
 ## Passage Translation Quality Baselines
 
-`evaluation/scripts/scoring/translation_quality.py` defines passage translation methods for
+`evaluation/scripts/scoring/current/translation_quality.py` defines passage translation methods for
 quality experiments:
 
 ```bash
-python evaluation/scripts/scoring/translation_quality.py \
+python evaluation/scripts/scoring/current/translation_quality.py \
   english_passage.txt \
   evaluation/outputs \
   --method google_word_by_word \
@@ -195,7 +195,7 @@ an LLM judge after back-translation.
 
 ```bash
 export OPENAI_API_KEY=...
-python evaluation/scripts/scoring/score_generated_answers.py \
+python evaluation/scripts/scoring/current/score_generated_answers.py \
   evaluation/outputs/generated_answers_zh_qwen.json \
   evaluation/outputs/qa_zh.json \
   evaluation/outputs/scores_zh_qwen.json
@@ -204,7 +204,7 @@ python evaluation/scripts/scoring/score_generated_answers.py \
 For a structure-only run without OpenAI calls:
 
 ```bash
-python evaluation/scripts/scoring/score_generated_answers.py \
+python evaluation/scripts/scoring/current/score_generated_answers.py \
   evaluation/outputs/generated_answers_zh_qwen.json \
   evaluation/outputs/qa_zh.json \
   evaluation/outputs/scores_zh_qwen.no_ai.json \
@@ -228,7 +228,7 @@ frozen. Entries are categorized as:
 
 ```bash
 export OPENAI_API_KEY=...
-python evaluation/scripts/variants/generate_mistranslation_banks.py \
+python evaluation/scripts/variants/banks/generate_mistranslation_banks.py \
   --chapters 1 2 3 4 5 6 7 8 \
   --source-model-dir 1.7b \
   --source-method llm_prompt_high \
@@ -241,7 +241,7 @@ each chapter's generated
 it falls back to the built-in bank.
 
 ```bash
-python evaluation/scripts/variants/create_mistranslation_variants.py \
+python evaluation/scripts/variants/current/create_mistranslation_variants.py \
   --chapters 1 2 3 4 5 6 7 8 \
   --source-model-dir 1.7b \
   --source-method llm_prompt_high \
@@ -253,7 +253,7 @@ Use a custom substitution bank when you want tighter control over the exact
 semantic swaps:
 
 ```bash
-python evaluation/scripts/variants/create_mistranslation_variants.py \
+python evaluation/scripts/variants/current/create_mistranslation_variants.py \
   --chapters 2 \
   --bank evaluation/configs/mistranslation_bank_zh.json \
   --rates 5% 10% \
