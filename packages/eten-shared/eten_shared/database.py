@@ -613,6 +613,46 @@ def _run_startup_migrations(engine: Engine):
             "passage_onscreen_ms integer NOT NULL DEFAULT 0",
             "ALTER TABLE pilot_question_trials ADD COLUMN IF NOT EXISTS "
             "focus_change_count integer NOT NULL DEFAULT 0",
+            # Admin sign-in. These live in supabase/schema.sql too, but a
+            # database created before they were added to it has neither, and
+            # the failure mode is that nobody can log in to the platform at
+            # all -- worth self-healing on start rather than needing the SQL
+            # editor on a box that is already up.
+            """
+            CREATE TABLE IF NOT EXISTS admin_users (
+                id text PRIMARY KEY DEFAULT gen_random_uuid()::text,
+                email text NOT NULL UNIQUE,
+                role text NOT NULL CHECK (role in ('admin', 'expert')),
+                active boolean NOT NULL DEFAULT true,
+                display_name text,
+                last_login_at timestamptz,
+                created_at timestamptz NOT NULL DEFAULT now(),
+                updated_at timestamptz NOT NULL DEFAULT now()
+            )
+            """,
+            """
+            CREATE TABLE IF NOT EXISTS admin_login_codes (
+                id text PRIMARY KEY DEFAULT gen_random_uuid()::text,
+                email text NOT NULL,
+                code_hash text NOT NULL,
+                expires_at timestamptz NOT NULL,
+                consumed_at timestamptz,
+                attempts integer NOT NULL DEFAULT 0,
+                created_at timestamptz NOT NULL DEFAULT now()
+            )
+            """,
+            "CREATE INDEX IF NOT EXISTS idx_admin_users_email ON admin_users(email)",
+            "CREATE INDEX IF NOT EXISTS idx_admin_users_role ON admin_users(role)",
+            "CREATE INDEX IF NOT EXISTS idx_admin_login_codes_email "
+            "ON admin_login_codes(email)",
+            "CREATE INDEX IF NOT EXISTS idx_admin_login_codes_expires_at "
+            "ON admin_login_codes(expires_at)",
+            # Closed to PostgREST: the service connects as the table owner
+            # and bypasses RLS, but without this the project's publishable
+            # key would expose the admin allowlist and live code hashes over
+            # the REST API. Same treatment the pilot tables get above.
+            "ALTER TABLE admin_users ENABLE ROW LEVEL SECURITY",
+            "ALTER TABLE admin_login_codes ENABLE ROW LEVEL SECURITY",
         ):
             connection.execute(text(statement))
 
