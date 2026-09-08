@@ -22,7 +22,7 @@ import os
 import re
 from datetime import timezone
 
-from sqlalchemy import func, select
+from sqlalchemy import func, select, text
 
 from eten_shared.repo_paths import REPO_ROOT
 from eten_shared.answer_receipts import create_answer_receipt
@@ -52,6 +52,7 @@ from eten_shared.models import (
     PilotTrialStatus,
     QAItem,
     ResponseType,
+    SessionState,
     utc_now,
 )
 from eten_shared.pilot_metrics import compute_pilot_metrics
@@ -252,15 +253,61 @@ def _open_pilot_assignments(db, participant):
     return [assignment for assignment, _cell in candidates]
 
 
-def _mint_next_assignment(db, participant):
-    """Ask the existing selector for the participant's next planned question."""
+def _lock_participant_for_mint(db, participant_id):
+    """Serialize minting per participant, across processes.
+
+    Minting can now be triggered from two places at once: inline, when a
+    participant asks for a question there is none of, and in the background,
+    while they read the current one. Without this, both could pass the
+    "nothing is assigned" check and create two assignments from the same plan
+    cell -- not corruption, but an extra item in a counterbalanced sequence,
+    which is exactly the kind of thing that is invisible until analysis.
+
+    A transaction-scoped Postgres advisory lock releases on commit or rollback,
+    so no cleanup path can leak it. SQLite (tests) has no equivalent and needs
+    none: those runs are single-threaded.
+    """
+
+    if db.bind is None or db.bind.dialect.name != "postgresql":
+        return
+    db.execute(
+        text("SELECT pg_advisory_xact_lock(hashtext(:participant_id))"),
+        {"participant_id": participant_id},
+    )
+
+
+def _mint_next_assignment(db, participant, *, advance_session_pointer=True):
+    """Ask the existing selector for the participant's next planned question.
+
+    ``advance_session_pointer`` is False when minting AHEAD of the participant
+    (see ``premint_next_assignment``). ``participant_session.current_assignment_id``
+    is what the Telegram workflow uses to decide which question an incoming
+    message answers, so moving it to a question that has not been shown yet
+    would misattribute a cross-surface answer. The pointer is instead advanced
+    at presentation time, by ``_point_session_at_assignment``.
+    """
 
     if not (automatic_assignment_enabled() or experiment_assignment_enabled()):
         return None
+
+    _lock_participant_for_mint(db, participant.id)
+    # Re-read under the lock: a background pre-mint may have created exactly
+    # what this caller was about to create. Serving that one is both correct
+    # and faster than minting another.
+    already_open = _open_pilot_assignments(db, participant)
+    if already_open:
+        return already_open[0]
+
     qa_item, cell = _select_next_dashboard_qa_item(db, participant)
     if qa_item is None:
         return None
     participant_session = get_or_create_participant_session(db, participant)
+    pointer_before = (
+        participant_session.current_assignment_id,
+        participant_session.current_batch_id,
+        participant_session.state,
+        participant_session.last_prompt_sent_at,
+    )
     prompt = create_assignment_for_qa_item(
         db,
         participant,
@@ -269,9 +316,36 @@ def _mint_next_assignment(db, participant):
         assignment_source=PILOT_PROVIDER,
         **_experiment_assignment_kwargs(db, participant_session, cell, qa_item),
     )
+    if not advance_session_pointer:
+        (
+            participant_session.current_assignment_id,
+            participant_session.current_batch_id,
+            participant_session.state,
+            participant_session.last_prompt_sent_at,
+        ) = pointer_before
     if prompt is None:
         return None
     return db.get(Assignment, prompt.assignment_id)
+
+
+def _point_session_at_assignment(db, participant, assignment):
+    """Keep the messenger's "what is this participant answering" pointer on the
+    question actually on screen.
+
+    Previously this was a side effect of minting, which was fine only because
+    minting happened at the moment of presentation. Now that a question can be
+    minted before it is shown, the pointer has to move here instead -- one
+    round trip, and it is what keeps a participant who answers on Telegram from
+    having that answer recorded against the wrong assignment.
+    """
+
+    participant_session = get_or_create_participant_session(db, participant)
+    if participant_session.current_assignment_id != assignment.id:
+        participant_session.current_assignment_id = assignment.id
+        participant_session.current_batch_id = assignment.batch_id
+        participant_session.state = SessionState.AWAITING_RESPONSE.value
+        participant_session.last_prompt_sent_at = utc_now()
+    return participant_session
 
 
 def _next_sequence_index(db, pilot_session):
@@ -576,6 +650,7 @@ def get_pilot_state(db, participant_id, consent_version=None):
         }
 
     trial = _get_or_create_trial(db, pilot_session, participant, assignment, qa_item)
+    _point_session_at_assignment(db, participant, assignment)
     # Re-entering an unfinished study reopens it.
     pilot_session.completed_at = None
     return {
@@ -738,6 +813,7 @@ def submit_pilot_answer(
     focus_change_count=None,
     reload_count=None,
     client_event_at=None,
+    record_timing_event=True,
 ):
     """Accept one immutable answer receipt and close the question's timing.
 
@@ -828,15 +904,68 @@ def submit_pilot_answer(
             int((submitted_at - started_at).total_seconds() * 1000), 0
         )
 
-    _record_timing_event(
+    # The receipt and the trial's timing are the measurement and are committed
+    # before the participant is told the answer was accepted. The audit event
+    # is a derived record of the same facts, so it may follow -- see
+    # ``record_submitted_event`` and the ``/answers`` route.
+    if record_timing_event:
+        _record_timing_event(
+            db,
+            participant,
+            trial,
+            QUESTION_SUBMITTED_EVENT,
+            client_event_at=client_event_at,
+            server_received_at=submitted_at,
+        )
+    return _submission_payload(trial, receipt, duplicate=False)
+
+
+# --------------------------------------------------------------- background
+# Entry points for ``app.pilot.background.run_in_background``. Each takes a
+# fresh session as its first argument, is idempotent, and is safe to lose: a
+# later request redoes the work inline.
+
+
+def premint_next_assignment(db, participant_id):
+    """Mint the NEXT question while the participant reads the current one.
+
+    Only when exactly one question is open -- that is, one on screen and none
+    waiting. Zero means nothing is being read (or the plan is finished), and
+    two means a pre-mint already succeeded.
+
+    The participant is never told about this. ``GET /question`` still returns
+    exactly one question and only when asked, so nothing here lets the client
+    preload or pre-time an item; it only moves the server's work off the wait.
+    """
+
+    participant = _participant(db, participant_id)
+    open_assignments = _open_pilot_assignments(db, participant)
+    if len(open_assignments) != 1:
+        return None
+    return _mint_next_assignment(db, participant, advance_session_pointer=False)
+
+
+def record_submitted_event(db, participant_id, assignment_id, *, client_event_at=None):
+    """Write the submitted-timing event for an already-accepted answer.
+
+    ``server_received_at`` is read back from ``trial.submitted_at`` (the
+    receipt's own creation time), NOT from the clock now -- this runs after the
+    response was sent, so "now" would silently record when the background
+    thread got scheduled instead of when the answer was accepted.
+    """
+
+    participant = _participant(db, participant_id)
+    _assignment, trial = _trial_for_assignment(db, participant, assignment_id)
+    if trial is None or trial.submitted_at is None:
+        return None
+    return _record_timing_event(
         db,
         participant,
         trial,
         QUESTION_SUBMITTED_EVENT,
         client_event_at=client_event_at,
-        server_received_at=submitted_at,
+        server_received_at=_as_utc(trial.submitted_at),
     )
-    return _submission_payload(trial, receipt, duplicate=False)
 
 
 def get_pilot_results(db, participant_ids=None):

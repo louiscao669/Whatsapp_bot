@@ -14,11 +14,14 @@ from eten_shared.dashboard_links import DashboardLinkError, verify_dashboard_tok
 from eten_shared.database import get_session_factory
 from eten_shared.repo_paths import REPO_ROOT
 
+from app.pilot.background import run_in_background
 from app.pilot.service import (
     PilotError,
     PilotNotFoundError,
     get_consent_state,
+    premint_next_assignment,
     record_consent,
+    record_submitted_event,
     get_pilot_results,
     get_pilot_state,
     mark_pilot_question_viewed,
@@ -47,6 +50,23 @@ def add_pilot_cache_headers(response):
 def _error(exc):
     status = 404 if isinstance(exc, PilotNotFoundError) else 400
     return jsonify({"error": "pilot_error", "message": str(exc)}), status
+
+
+def _schedule_premint(participant_id, payload):
+    """Use the participant's reading time to mint what they will ask for next.
+
+    Scheduled only after the response has been produced, and only when a
+    question was actually served: on the completion screen there is nothing to
+    mint, and minting there would keep a finished plan looking unfinished.
+    """
+
+    if payload.get("state") != "question":
+        return
+    run_in_background(
+        premint_next_assignment,
+        participant_id,
+        key=("premint", participant_id),
+    )
 
 
 def _body():
@@ -111,6 +131,7 @@ def pilot_question(participant_id):
             db.commit()
     except PilotError as exc:
         return _error(exc)
+    _schedule_premint(participant_id, payload)
     return jsonify(payload)
 
 
@@ -123,6 +144,7 @@ def pilot_session(participant_id):
             db.commit()
     except PilotError as exc:
         return _error(exc)
+    _schedule_premint(participant_id, payload)
     return jsonify(payload)
 
 
@@ -186,6 +208,7 @@ def pilot_answers(participant_id):
                 focus_change_count=body.get("focus_change_count"),
                 reload_count=body.get("reload_count"),
                 client_event_at=body.get("client_event_at"),
+                record_timing_event=False,
             )
             # The receipt is committed here, before the client is told to
             # advance. Nothing about the next question is returned: the client
@@ -193,6 +216,16 @@ def pilot_answers(participant_id):
             db.commit()
     except PilotError as exc:
         return _error(exc)
+    # Only after the answer is durable. The audit event is derived from the
+    # receipt and the trial, both now committed, so losing it costs an audit
+    # row and never an answer.
+    if not payload.get("duplicate"):
+        run_in_background(
+            record_submitted_event,
+            participant_id,
+            body.get("assignment_id"),
+            client_event_at=body.get("client_event_at"),
+        )
     return jsonify({"ok": True, **payload})
 
 
