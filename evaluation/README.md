@@ -93,7 +93,7 @@ python evaluation/scripts/pipeline/translate_qa.py input.json evaluation/outputs
 The old path still works as a compatibility wrapper:
 
 ```bash
-python scripts/translate_llm_qa_to_chinese.py input.json evaluation/outputs/qa_zh.json
+python evaluation/scripts/archive/superseded/translate_llm_qa_to_chinese.py input.json evaluation/outputs/qa_zh.json
 ```
 
 To inspect or translate QA after replacing canonical English terms with

@@ -19,7 +19,15 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional
 
 
-CHOICE_LABELS = ("A", "B", "C", "D")
+# MCQ choice labels are configurable so an abstention option ("I can't tell from
+# this passage") can be added as E without forking the pipeline. Default is ABCD,
+# so every existing 4-option run behaves exactly as before. Set MCQ_CHOICE_LABELS
+# =ABCDE for a 5-option campaign. NOTE: chance moves 0.25 -> 0.20, so 5-option
+# results are NOT comparable to any 4-option number.
+CHOICE_LABELS = tuple(os.environ.get("MCQ_CHOICE_LABELS", "ABCD").strip().upper())
+_CL = "".join(CHOICE_LABELS)
+_FW = "ＡＢＣＤＥＦ"[:len(_CL)] + "ａｂｃｄｅｆ"[:len(_CL)]
+FULLWIDTH_CHOICE_LABELS = str.maketrans(_FW, _CL + _CL.lower())
 QUESTION_TYPE_ALIASES = {
     "open": "open",
     "mcq": "mcq",
@@ -76,7 +84,7 @@ def question_from_tagged_content(content: Any) -> Optional[str]:
     match = re.search(r"<question>\s*(.*?)\s*<question>", str(content or ""), re.DOTALL)
     if not match:
         return None
-    question = re.sub(r"\n\s*[A-D]\.\s+.*$", "", match.group(1).strip(), flags=re.DOTALL)
+    question = re.sub(rf"\n\s*[{_CL}]\.\s+.*$", "", match.group(1).strip(), flags=re.DOTALL)
     return question.strip() or None
 
 
@@ -182,7 +190,7 @@ def normalize_item(item: dict, index: int) -> dict:
         if correct is not None:
             correct = str(correct).strip().upper()
             if correct not in CHOICE_LABELS:
-                raise TranslationError(f"Item {index}: correct choice must be A, B, C, or D.")
+                raise TranslationError(f"Item {index}: correct choice must be one of {_CL}.")
             normalized["correct"] = correct
 
     for field in (

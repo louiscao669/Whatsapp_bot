@@ -7,7 +7,7 @@ how long what is left is kept, and clearing the logs written *before* redaction
 existed.
 
 Why it matters: journald is outside every data-handling path the protocol
-describes. `scripts/export_pilot_metrics.py` does not read it, the
+describes. `human_pilot/export_pilot_metrics.py` does not read it, the
 identifier-destruction step does not touch it, and nothing rotates it by
 default on this image. Un-redacted request logs going back to first boot would
 therefore outlive the study.

@@ -8,7 +8,7 @@ incomplete, nothing ever expires).
 
 The purely client-side half of the timing contract -- segments pausing on
 hidden, resuming on visible, surviving a reload, and excluding network time --
-lives in ``platform/pilot/tests/timing.test.mjs`` (``node --test``).
+lives in ``platform/frontends/pilot/tests/timing.test.mjs`` (``node --test``).
 """
 
 import unittest
@@ -17,7 +17,7 @@ from datetime import timedelta
 from sqlalchemy import create_engine, select
 from sqlalchemy.orm import Session
 
-from app.pilot.service import (
+from backend.pilot.service import (
     PilotError,
     PilotNotFoundError,
     get_pilot_results,

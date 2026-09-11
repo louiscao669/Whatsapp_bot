@@ -221,7 +221,7 @@ def create_assignment_prompt(db: Session, participant, participant_session):
             raise ExperimentPassageMissingError(
                 f"plan cell {cell.id} (group {cell.chapter}, condition "
                 f"{cell.condition!r}) has no variant for source passage "
-                f"{qa_item.passage_id!r}. Run scripts/verify_experiment_delivery.py."
+                f"{qa_item.passage_id!r}. Run human_pilot/verify_experiment_delivery.py."
             )
         if experiment_passage.condition != cell.condition:
             # Would deliver a real variant, just the WRONG one -- undetectable

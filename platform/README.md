@@ -9,7 +9,7 @@ From the **repository root** (`.env` lives here):
 ```bash
 pip install -e packages/eten-shared
 pip install -r platform/requirements.txt
-cd platform/frontend && npm run build
+cd platform/frontends/admin && npm run build
 python platform/app.py
 ```
 
@@ -18,7 +18,7 @@ Default: http://localhost:7860
 - Admin JSON API: `/api/v1/*`
 - React SPA: `/`
 - Participant dashboard: `/user_dashboard/index.html/<participant_id>`
-- Human-pilot study: `/pilot/<participant_id>` (see `platform/pilot/README.md`)
+- Human-pilot study: `/pilot/<participant_id>` (see `platform/frontends/pilot/README.md`)
 
 ## Admin sign-in
 
@@ -60,14 +60,17 @@ plain-HTTP IP is the weakest credential in the system.
 ```text
 platform/
   app.py
+  wsgi.py
   requirements.txt
-  app/
-    api/              # JSON API blueprints
-    services/         # admin / expert business logic
-    pilot/            # /pilot study routes + service
-    spa_views.py      # SPA static files + /admin redirects
-    utils/
-  pilot/              # /pilot static participant interface
+  backend/
+    admin/            # JSON API, admin services, and SPA delivery
+    user_dashboard/   # dashboard routes and capability services
+    pilot/            # /pilot study routes and service
+    shared/           # platform-wide configuration and infrastructure
+  frontends/
+    admin/            # React admin / expert workbench
+    user_dashboard/   # participant-dashboard browser assets
+    pilot/            # human-pilot browser interface
 ```
 
-Shared assets: `packages/eten-shared/`, `supabase/`, `platform/frontend/dist/`.
+Shared assets: `packages/eten-shared/`, `supabase/`, `platform/frontends/admin/dist/`.

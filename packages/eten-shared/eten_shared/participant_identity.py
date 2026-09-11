@@ -19,7 +19,7 @@ The resolution is the standard blind-index pattern, two values per contact:
 
 Destroying the key therefore destroys both directions at once: the index was
 never reversible, and the ciphertext becomes permanently unreadable. That is
-what ``scripts/purge_participant_identity.py`` relies on.
+what ``human_pilot/operations/purge_participant_identity.py`` relies on.
 
 Set ``PARTICIPANT_ID_KEY`` to a base64 32-byte value. Generate one with:
 
@@ -128,6 +128,6 @@ def delivery_address(contact) -> str:
     if not sealed:
         raise IdentityKeyError(
             "Contact has no sealed identifier; it predates identity protection "
-            "or was purged. Run scripts/migrate_participant_identity.py."
+            "or was purged. Run human_pilot/operations/migrate_participant_identity.py."
         )
     return unseal(sealed)

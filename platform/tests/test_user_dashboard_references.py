@@ -1,6 +1,6 @@
 import unittest
 
-from app.user_dashboard.service import _luke_chapter_from_reference
+from backend.user_dashboard.serialization import _luke_chapter_from_reference
 
 
 class UserDashboardReferenceTests(unittest.TestCase):

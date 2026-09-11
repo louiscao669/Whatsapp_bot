@@ -20,8 +20,24 @@ from pathlib import Path
 from typing import Any, Iterable, List, Optional
 
 
-CHOICE_LABELS = ("A", "B", "C", "D")
-FULLWIDTH_CHOICE_LABELS = str.maketrans("ＡＢＣＤａｂｃｄ", "ABCDabcd")
+# MCQ choice labels are configurable so an abstention option ("I can't tell from
+# this passage") can be added as E without forking the pipeline. Default is ABCD,
+# so every existing 4-option run behaves exactly as before. Set MCQ_CHOICE_LABELS
+# =ABCDE for a 5-option campaign. NOTE: chance moves 0.25 -> 0.20, so 5-option
+# results are NOT comparable to any 4-option number.
+CHOICE_LABELS = tuple(os.environ.get("MCQ_CHOICE_LABELS", "ABCD").strip().upper())
+_CL = "".join(CHOICE_LABELS)
+_FW = "ＡＢＣＤＥＦ"[:len(_CL)] + "ａｂｃｄｅｆ"[:len(_CL)]
+FULLWIDTH_CHOICE_LABELS = str.maketrans(_FW, _CL + _CL.lower())
+# "A, B, C, or D"  /  "A, B, C, D, or E" -- the prompt text must match the options
+# the model is actually shown, or it will never pick the extra one.
+_CL_PHRASE = ", ".join(CHOICE_LABELS[:-1]) + ", or " + CHOICE_LABELS[-1]
+# When an abstention option is present it needs an explicit instruction, otherwise
+# the model treats it as just another distractor and never selects it.
+_ABSTAIN_HINT = (
+    f" Answer only from the passage. If the passage does not say, choose {CHOICE_LABELS[-1]}."
+    if len(CHOICE_LABELS) > 4 else ""
+)
 VERSE_MARKER_RE = re.compile(r"(?<![\w\]])(\d{1,3})\s+")
 PASSAGE_REFERENCE_RE = re.compile(r":\s*(\d+)(?:\s*[-–—]\s*(\d+))?")
 ANSWER_FIELDS = {
@@ -103,7 +119,7 @@ def question_from_tagged_content(content: Any) -> Optional[str]:
     match = re.search(r"<question>\s*(.*?)\s*<question>", str(content or ""), re.DOTALL)
     if not match:
         return None
-    question = re.sub(r"\n\s*[A-D]\.\s+.*$", "", match.group(1).strip(), flags=re.DOTALL)
+    question = re.sub(rf"\n\s*[{_CL}]\.\s+.*$", "", match.group(1).strip(), flags=re.DOTALL)
     return question.strip() or None
 
 
@@ -644,7 +660,7 @@ def validate_answers(
                     choice_source = "openai"
             if not choice:
                 raise AnswerParseError(
-                    f"Item {item_index}: MCQ answer must be A, B, C, or D.",
+                    f"Item {item_index}: MCQ answer must be one of {_CL_PHRASE}.",
                     json.dumps(answer, ensure_ascii=False),
                 )
             output["mcq_choices"] = question["choices"]
@@ -703,7 +719,7 @@ def build_generation_prompt(
         "Do not include verse numbers in generated_answer.",
         "Do not include multiple verses or copied passage text in generated_answer.",
         "For open questions, generated_answer should usually be under 20 Chinese characters.",
-        "For MCQ items, selected_choice is required and must be exactly A, B, C, or D.",
+        f"For MCQ items, selected_choice is required and must be exactly {_CL_PHRASE}.{_ABSTAIN_HINT}",
         "Do not include hidden answer fields from the QA set.",
     ]
     if expanded_answer_format:
@@ -725,7 +741,7 @@ def build_generation_prompt(
             "For open questions, write only the shortest Simplified Chinese "
             "phrase or sentence that directly answers the question. Do not copy "
             "a verse span or passage excerpt. "
-            "For multiple-choice questions, choose exactly one letter: A, B, C, or D. "
+            f"For multiple-choice questions, choose exactly one letter: {_CL_PHRASE}.{_ABSTAIN_HINT} "
             "Also include the chosen answer text in Simplified Chinese."
         ),
         "passage": passage,
@@ -826,11 +842,11 @@ def build_raw_answer_prompt(
             [
                 "For multiple choice, choose the option best supported by explicit passage evidence.",
                 (
-                    "You must set selected_choice to exactly one uppercase letter: A, B, C, or D. "
+                    f"You must set selected_choice to exactly one uppercase letter: {_CL_PHRASE}.{_ABSTAIN_HINT} "
                     "Do not answer MCQ questions in free text only. "
                     "generated_answer must be the selected option text, not a new paraphrase."
                     if expanded_answer_format
-                    else "Return only one uppercase letter: A, B, C, or D."
+                    else f"Return only one uppercase letter: {_CL_PHRASE}.{_ABSTAIN_HINT}"
                 ),
             ]
         )
@@ -1021,8 +1037,8 @@ def selected_choice_from_raw_answer(question: dict, raw_answer: str) -> Optional
         return first_nonspace.group(0)
 
     label_patterns = [
-        r"(?:答案|答|选择|选项|选|choice|answer)\s*(?:是|为|:|：)?\s*([ABCD])\b",
-        r"\b([ABCD])\s*(?:是|为|:|：|\.|、|\))",
+        rf"(?:答案|答|选择|选项|选|choice|answer)\s*(?:是|为|:|：)?\s*([{_CL}])\b",
+        rf"\b([{_CL}])\s*(?:是|为|:|：|\.|、|\))",
     ]
     for pattern in label_patterns:
         matches = re.findall(pattern, upper_text, flags=re.IGNORECASE)
@@ -1032,7 +1048,7 @@ def selected_choice_from_raw_answer(question: dict, raw_answer: str) -> Optional
 
     standalone_labels = {
         match.group(1).upper()
-        for match in re.finditer(r"(?<![A-Z])([ABCD])(?![A-Z])", upper_text)
+        for match in re.finditer(rf"(?<![A-Z])([{_CL}])(?![A-Z])", upper_text)
     }
     if len(standalone_labels) == 1:
         return next(iter(standalone_labels))
@@ -1102,7 +1118,7 @@ def openai_closest_mcq_choice(
                         "content": (
                             "You are a deterministic MCQ answer mapper. Return valid "
                             "JSON only. The selected_choice field must be exactly one "
-                            "uppercase letter: A, B, C, or D."
+                            f"uppercase letter: {_CL_PHRASE}."
                         ),
                     },
                     {"role": "user", "content": json.dumps(prompt, ensure_ascii=False)},
@@ -1112,7 +1128,7 @@ def openai_closest_mcq_choice(
             choice = str(raw.get("selected_choice") or "").strip().upper()
             if choice[:1] in CHOICE_LABELS:
                 return choice[:1]
-            raise GenerationError("OpenAI MCQ mapper did not return A, B, C, or D.")
+            raise GenerationError(f"OpenAI MCQ mapper did not return one of {_CL_PHRASE}.")
         except Exception as exc:
             last_error = exc
             if attempt >= retries:
@@ -1194,12 +1210,12 @@ def raw_answer_to_output(
                 choice_source = "openai"
         if not choice:
             raise AnswerParseError(
-                f"Item {question['item_index']}: MCQ answer must be A, B, C, or D.",
+                f"Item {question['item_index']}: MCQ answer must be one of {_CL_PHRASE}.",
                 clean_raw_answer(raw_answer),
             )
         if choice not in CHOICE_LABELS:
             raise AnswerParseError(
-                f"Item {question['item_index']}: MCQ answer must be A, B, C, or D.",
+                f"Item {question['item_index']}: MCQ answer must be one of {_CL_PHRASE}.",
                 clean_raw_answer(raw_answer),
             )
         generated_answer = question["choices"][choice]

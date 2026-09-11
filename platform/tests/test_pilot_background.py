@@ -23,7 +23,7 @@ from unittest import mock
 
 from sqlalchemy import select
 
-from app.pilot.service import (
+from backend.pilot.service import (
     _open_pilot_assignments,
     get_pilot_state,
     premint_next_assignment,
@@ -99,7 +99,7 @@ class PremintTests(PilotServiceTestCase):
         before = self._assignment_ids()
 
         with self._enable_minting(), mock.patch(
-            "app.pilot.service._select_next_dashboard_qa_item",
+            "backend.pilot.service.select_next_participant_qa_item",
             return_value=(self.spare_item, None),
         ):
             minted = premint_next_assignment(self.db, self.participant.id)
@@ -121,7 +121,7 @@ class PremintTests(PilotServiceTestCase):
         self.db.flush()
 
         with self._enable_minting(), mock.patch(
-            "app.pilot.service._select_next_dashboard_qa_item",
+            "backend.pilot.service.select_next_participant_qa_item",
             return_value=(self.spare_item, None),
         ):
             minted = premint_next_assignment(self.db, self.participant.id)
@@ -149,7 +149,7 @@ class PremintTests(PilotServiceTestCase):
         self.db.flush()
 
         with self._enable_minting(), mock.patch(
-            "app.pilot.service._select_next_dashboard_qa_item",
+            "backend.pilot.service.select_next_participant_qa_item",
             return_value=(self.spare_item, None),
         ):
             minted = premint_next_assignment(self.db, self.participant.id)

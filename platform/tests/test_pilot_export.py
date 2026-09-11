@@ -11,7 +11,7 @@ from unittest.mock import patch
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
-from app.pilot.service import (
+from backend.pilot.service import (
     get_pilot_state,
     mark_pilot_question_viewed,
     submit_pilot_answer,
@@ -27,7 +27,7 @@ from eten_shared.pilot_metrics import compute_pilot_metrics
 from eten_shared.pilot_trials import CONDITION_DEFECTS, defect_for_condition
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(REPO_ROOT / "scripts"))
+sys.path.insert(0, str(REPO_ROOT / "human_pilot"))
 
 from export_pilot_metrics import (  # noqa: E402
     SUMMARY_SCALARS,

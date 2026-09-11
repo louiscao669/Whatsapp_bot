@@ -3,7 +3,7 @@
 -- Consent language: no name, telephone number or platform username is stored;
 -- the only identifier is keyed and is destroyed with its key at the end of
 -- collection. This migration provides the storage for that scheme. It does NOT
--- convert existing rows -- run scripts/migrate_participant_identity.py after
+-- convert existing rows -- run human_pilot/operations/migrate_participant_identity.py after
 -- applying it, with PARTICIPANT_ID_KEY set, or existing participants become
 -- unreachable.
 --

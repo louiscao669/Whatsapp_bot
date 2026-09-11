@@ -4,14 +4,14 @@ from unittest.mock import patch
 from sqlalchemy import create_engine, event, select
 from sqlalchemy.orm import Session
 
-from app.services.participant_assignment_service import (
+from backend.admin.services.participant_assignment_service import (
     assign_questions_with_passages,
     get_assignment_options,
     parse_qa_chapter_verse,
     qa_reference_sort_key,
     skip_participant_assignment,
 )
-from app.services.participant_assignment_service import (
+from backend.admin.services.participant_assignment_service import (
     NEW_ASSIGNMENT_ASSIGNED_NOTIFICATION,
 )
 from eten_shared.models import (

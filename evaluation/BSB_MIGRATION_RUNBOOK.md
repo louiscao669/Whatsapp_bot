@@ -83,7 +83,7 @@ python QA_algorithm/scripts/anchor_irt/build_tier1_verse_windows.py \
   --out QA_algorithm/inputs/tier1_qa_verse_windows_bsb.json \
   --repojustrt-missing QA_algorithm/inputs/tier1_spans_bsb_TODO.json \
   --seed 20260803
-python scripts/build_tier1_pilot_partition.py \
+python evaluation/scripts/data_prep/tier1/build_tier1_pilot_partition.py \
   --windows QA_algorithm/inputs/tier1_qa_verse_windows_bsb.json \
   --out evaluation/datasets/tier1_pilot_partition_bsb.json
 ```
@@ -191,9 +191,9 @@ valid baseline for this gate.
 Run:
 
 ```bash
-python scripts/test_tier1_pilot_windows.py
-python scripts/test_verify_experiment_delivery.py
-python scripts/verify_experiment_delivery.py
+python evaluation/tests/tier1/test_tier1_pilot_windows.py
+python human_pilot/tests/test_verify_experiment_delivery.py
+python human_pilot/verify_experiment_delivery.py
 ```
 
 Also assert that the runtime-delivered set equals the frozen 94-ID manifest.

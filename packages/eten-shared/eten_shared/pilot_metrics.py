@@ -59,7 +59,7 @@ def _timing_summary(values: Iterable[Optional[int]]) -> dict:
 
 
 #: ``scoring_metadata.status`` values that mean "no verdict yet". Mirrors
-#: ``scripts/export_pilot_responses._item_payload`` so the two pilot exports
+#: ``human_pilot/export_pilot_responses._item_payload`` so the two pilot exports
 #: agree on what counts as missing data.
 UNRESOLVED_SCORING_STATUSES = frozenset(
     {"unresolved", "unusable_reply", "queued", "scorer_disabled"}

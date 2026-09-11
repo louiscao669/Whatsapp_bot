@@ -1,8 +1,8 @@
 FROM node:20 AS frontend
 WORKDIR /build
-COPY platform/frontend/package.json platform/frontend/package-lock.json* ./
+COPY platform/frontends/admin/package.json platform/frontends/admin/package-lock.json* ./
 RUN npm install
-COPY platform/frontend ./
+COPY platform/frontends/admin ./
 RUN npm run build
 
 FROM python:3.11
@@ -12,6 +12,6 @@ COPY platform/requirements.txt /code/platform/requirements.txt
 RUN pip install --no-cache-dir --upgrade -r /code/platform/requirements.txt
 COPY platform /code/platform
 COPY supabase /code/supabase
-COPY --from=frontend /build/dist /code/platform/frontend/dist
+COPY --from=frontend /build/dist /code/platform/frontends/admin/dist
 WORKDIR /code/platform
 CMD ["python", "app.py"]

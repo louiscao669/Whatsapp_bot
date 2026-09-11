@@ -4,7 +4,7 @@ from sqlalchemy import create_engine, select
 from sqlalchemy.orm import Session
 
 from eten_shared.models import PassageTranslation, PassageVerse
-from app.services.passage_import_service import (
+from backend.admin.services.passage_import_service import (
     PassageImportError,
     import_passage_translation,
     parse_numbered_verses,

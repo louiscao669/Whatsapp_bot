@@ -3,7 +3,7 @@ import unittest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
-from app.services.participants_api_service import get_participant_detail
+from backend.admin.services.participants_api_service import get_participant_detail
 from eten_shared.models import (
     Assignment,
     AssignmentStatus,

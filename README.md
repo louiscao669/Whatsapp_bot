@@ -17,17 +17,20 @@ Monorepo with separate deployables for the participant message bot and the admin
 eten-whatsapp-bot/
   packages/eten-shared/   # Shared Python package (models, DB, storage, scoring)
   message-bot/            # Flask: provider webhook, participant workflow, engagement
-  platform/               # Flask: JSON API, expert/admin services, SPA hosting
-    frontend/             # React + Vite admin SPA (served by platform)
+  platform/
+    backend/              # Admin, dashboard, pilot, and shared Flask code
+    frontends/            # Admin, dashboard, and pilot browser interfaces
+  human_pilot/            # Human-study setup, operations, exports, and checks
+  evaluation/             # Translation evaluation pipelines and analyses
+  QA_algorithm/           # Statistical and QA-model experiments
   supabase/               # schema, migrations, seeds
-  scripts/                # CLI utilities
 ```
 
 | Component | Run locally |
 |-----------|-------------|
-| Platform + SPA (production) | `cd platform/frontend && npm run build` then `python platform/app.py` → http://localhost:7860 |
+| Platform + SPA (production) | `cd platform/frontends/admin && npm run build` then `python platform/app.py` → http://localhost:7860 |
 | Message bot | `python message-bot/app.py` → http://localhost:7861 (`/webhook`) |
-| Frontend dev (HMR) | `cd platform/frontend && npm install && npm run dev` → http://localhost:5173 |
+| Frontend dev (HMR) | `cd platform/frontends/admin && npm install && npm run dev` → http://localhost:5173 |
 | Both backends | `docker compose up --build` |
 
 Install shared package first (or use `-e ../packages/eten-shared` in each service's `requirements.txt`):
@@ -46,9 +49,9 @@ Runtime configuration is split between **root `config.py`** and **root `.env`**:
   database URLs, SMTP passwords, and service role keys.
 
 Both backend services load `config.py` first and `.env` second, so environment
-variables and local secrets can override defaults. See `platform/frontend/README.md`.
+variables and local secrets can override defaults. See `platform/frontends/admin/README.md`.
 
-JSON admin APIs live under `/api/v1` on the **platform** service (`platform/app/api/`). The platform serves the built React SPA from `platform/frontend/dist/`. Legacy `/admin/*` URLs redirect to SPA routes; `/admin/media/*` redirects to `/api/v1/media/*`.
+JSON admin APIs live under `/api/v1` on the **platform** service (`platform/backend/admin/api/`). The platform serves the built React SPA from `platform/frontends/admin/dist/`. Legacy `/admin/*` URLs redirect to SPA routes; `/admin/media/*` redirects to `/api/v1/media/*`.
 
 The default Docker image builds the **platform** (see root `Dockerfile`). Use `message-bot/Dockerfile` for the webhook service. Point Meta's webhook URL at the message-bot host when using the WhatsApp provider.
 
@@ -155,8 +158,8 @@ and optional per-language overrides in `qa_item_language_keywords`.
 Re-score stored responses locally:
 
 ```bash
-python scripts/rescore_participant_responses.py --commit RESPONSE_ID
-python scripts/rescore_participant_responses.py --retranscribe --commit RESPONSE_ID
+python human_pilot/operations/rescore_participant_responses.py --commit RESPONSE_ID
+python human_pilot/operations/rescore_participant_responses.py --retranscribe --commit RESPONSE_ID
 ```
 
 ## Keyword matching (fuzzy)
@@ -275,7 +278,7 @@ across `participant_id` and `badge_type`.
 
 ## Admin and expert dashboards
 
-The React admin SPA is served from `/` (build with `cd platform/frontend && npm run build`).
+The React admin SPA is served from `/` (build with `cd platform/frontends/admin && npm run build`).
 JSON APIs live under `/api/v1`. Main routes:
 
 ```text

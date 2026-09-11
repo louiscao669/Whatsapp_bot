@@ -9,8 +9,8 @@ happens to be in the database.
 
 import pytest
 
-from app.services import admin_auth_service as auth
-from app.services.admin_auth_service import (
+from backend.admin.services import admin_auth_service as auth
+from backend.admin.services.admin_auth_service import (
     AdminAuthError,
     email_is_allowed,
     get_allowed_emails,

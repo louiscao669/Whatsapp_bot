@@ -145,4 +145,4 @@ print(len(recs))")
   done
 done
 echo "DONE. Then re-fit slopes per model:"
-echo "  python3 scripts/fit_item_sensitivity.py --axis defect   (per tier; add lambda_g(model) equality test)"
+echo "  python3 QA_algorithm/scripts/modeling/fit_item_sensitivity.py --axis defect   (per tier; add lambda_g(model) equality test)"

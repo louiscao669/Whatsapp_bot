@@ -3,7 +3,7 @@ import unittest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
-from app.user_dashboard.service import expire_dashboard_question
+from backend.user_dashboard.questions import expire_dashboard_question
 from eten_shared.models import (
     Assignment,
     AssignmentStatus,

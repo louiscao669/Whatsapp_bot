@@ -31,7 +31,7 @@ alter table public.pilot_question_trials
 
 -- Added via DO blocks rather than "drop constraint; add constraint" so this
 -- migration only ever ADDS -- nothing existing is dropped or rewritten, which
--- keeps it safe to apply unattended (see scripts/verify_pilot_readiness.py).
+-- keeps it safe to apply unattended (see human_pilot/verify_pilot_readiness.py).
 do $$
 begin
     if not exists (

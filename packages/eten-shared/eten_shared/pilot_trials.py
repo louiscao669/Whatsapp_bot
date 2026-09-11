@@ -124,7 +124,7 @@ def question_version(qa_item) -> str:
 
 
 #: condition -> (defect_type, defect_rate). Mirrors
-#: ``scripts/export_pilot_responses.CONDITION_TO_EVAL`` (which expresses the
+#: ``human_pilot/export_pilot_responses.CONDITION_TO_EVAL`` (which expresses the
 #: rate as the eval tree's directory name); kept as a float here because the
 #: pilot report groups by numeric dose. ``clean`` is the shared 0% anchor of
 #: both adequacy ladders; ``wbw`` is a family of its own with no dose.

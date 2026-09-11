@@ -499,7 +499,7 @@ def build_assignment_prompt(db: Session, assignment, qa_item, participant):
             f"{assignment.experiment_cell_id} but has no variant passage snapshot. "
             "Refusing to deliver the condition-invariant qa_item.passage_text, which "
             "would silently show this participant the CLEAN passage. Run "
-            "scripts/verify_experiment_delivery.py to find and repair affected cells."
+            "human_pilot/verify_experiment_delivery.py to find and repair affected cells."
         )
 
     return AssignmentPrompt(

@@ -4,7 +4,7 @@ Unlike ``selection.py`` (a coverage optimizer that spreads scarce responses acro
 under-answered items), this serves a **prescribed** per-participant Latin square: each
 chapter is shown under exactly one condition, in a per-participant randomized chapter
 order, one condition's passage per chapter. The plan lives in ``experiment_plan_cells``
-(written once by ``scripts/build_experiment_plan.py``); this module only reads it and
+(written once by ``human_pilot/build_experiment_plan.py``); this module only reads it and
 flips a cell ``pending -> active -> done``.
 
 Schema note: QA is imported once per chapter as ``QAItem`` rows keyed by

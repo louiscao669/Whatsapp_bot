@@ -12,7 +12,7 @@ from unittest.mock import patch
 from sqlalchemy import create_engine, select
 from sqlalchemy.orm import Session, sessionmaker
 
-from app import create_app
+from backend import create_app
 from eten_shared.models import (
     AnswerReceipt,
     Assignment,
@@ -67,11 +67,11 @@ class PilotApiTests(unittest.TestCase):
         self.client = app.test_client()
 
         # Never let a test touch the configured Supabase database.
-        patcher = patch("app.pilot.routes.get_session_factory", return_value=self.factory)
+        patcher = patch("backend.pilot.routes.get_session_factory", return_value=self.factory)
         patcher.start()
         self.addCleanup(patcher.stop)
         dashboard_patcher = patch(
-            "app.user_dashboard.routes.get_session_factory", return_value=self.factory
+            "backend.user_dashboard.routes.get_session_factory", return_value=self.factory
         )
         dashboard_patcher.start()
         self.addCleanup(dashboard_patcher.stop)

@@ -3,7 +3,7 @@ import unittest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
-from app.services.passage_list_service import list_passage_items
+from backend.admin.services.passage_list_service import list_passage_items
 from eten_shared.models import PassageTranslation, PassageVerse
 
 
