@@ -32,12 +32,47 @@ FULLWIDTH_CHOICE_LABELS = str.maketrans(_FW, _CL + _CL.lower())
 # "A, B, C, or D"  /  "A, B, C, D, or E" -- the prompt text must match the options
 # the model is actually shown, or it will never pick the extra one.
 _CL_PHRASE = ", ".join(CHOICE_LABELS[:-1]) + ", or " + CHOICE_LABELS[-1]
-# When an abstention option is present it needs an explicit instruction, otherwise
-# the model treats it as just another distractor and never selects it.
-_ABSTAIN_HINT = (
-    f" Answer only from the passage. If the passage does not say, choose {CHOICE_LABELS[-1]}."
-    if len(CHOICE_LABELS) > 4 else ""
-)
+
+# Meta-options are named EXPLICITLY, never inferred from position: with ABCDEF the
+# last label is "none of the above", not the abstention, so CHOICE_LABELS[-1] is
+# the wrong letter to point an abstention instruction at.
+#
+#   ABSTAIN ("I can't tell from this passage") -- the passage does not give enough
+#           information to answer. A claim about the READER's access.
+#   NOTA    ("None of the above")              -- the passage does answer, but the
+#           answer is not among the content options. A claim about the OPTION SET.
+#
+# They come apart by defect family: omission removes the answer (-> abstain) while
+# mistranslation alters it (-> NOTA), so running both can in principle discriminate
+# defect type. Measured caution (2026-09-11): abstention fired at 6.6% at omission
+# 30%, so splitting it across two meta-options leaves ~7 events per cell. Offer both
+# only with a firing rate high enough to divide.
+_ABSTAIN_LABEL = (os.environ.get("MCQ_ABSTAIN_LABEL")
+                  or ("E" if len(CHOICE_LABELS) >= 5 else "")).strip().upper()
+_NOTA_LABEL = (os.environ.get("MCQ_NOTA_LABEL")
+               or ("F" if len(CHOICE_LABELS) >= 6 else "")).strip().upper()
+_ABSTAIN_LABEL = _ABSTAIN_LABEL if _ABSTAIN_LABEL in CHOICE_LABELS else ""
+_NOTA_LABEL = _NOTA_LABEL if _NOTA_LABEL in CHOICE_LABELS else ""
+_CONTENT_LABELS = tuple(L for L in CHOICE_LABELS
+                        if L not in (_ABSTAIN_LABEL, _NOTA_LABEL))
+
+def _meta_hint():
+    """Instruction for the meta-options. Without it the model treats them as
+    ordinary distractors and never selects them (measured: 0 spontaneous
+    abstentions in 3,312 observations when no meta-option was offered)."""
+    if not (_ABSTAIN_LABEL or _NOTA_LABEL):
+        return ""
+    parts = [" Answer only from the passage."]
+    if _ABSTAIN_LABEL:
+        parts.append(f" If the passage does not give enough information to answer,"
+                     f" choose {_ABSTAIN_LABEL}.")
+    if _NOTA_LABEL:
+        content = ", ".join(_CONTENT_LABELS[:-1]) + " or " + _CONTENT_LABELS[-1]
+        parts.append(f" If the passage does answer the question but the answer is not"
+                     f" {content}, choose {_NOTA_LABEL}.")
+    return "".join(parts)
+
+_ABSTAIN_HINT = _meta_hint()
 VERSE_MARKER_RE = re.compile(r"(?<![\w\]])(\d{1,3})\s+")
 PASSAGE_REFERENCE_RE = re.compile(r":\s*(\d+)(?:\s*[-–—]\s*(\d+))?")
 ANSWER_FIELDS = {

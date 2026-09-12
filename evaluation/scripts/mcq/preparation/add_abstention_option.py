@@ -24,6 +24,29 @@ import json, os, re, sys
 ABSTAIN_EN = "I can't tell from this passage"
 ABSTAIN_ZH = "根据这段文字无法判断"   # pinned after translation; see pin_abstention_option.py
 
+def repair_ids(item):
+    """Derive a missing top-level id/passage_id from content_id.
+
+    gold72 t1_judg9:o93q (Judges 9:54) ships without either field. The pipeline
+    keys items on passage_id, so it has been SILENTLY DROPPED from every run --
+    the blinded arm has been 71 items, not 72. content_id carries both halves.
+    """
+    cid = str(item.get("content_id") or "")
+    if ":" not in cid: return False
+    pid, iid = cid.split(":", 1)
+    fixed = False
+    if not item.get("passage_id"): item["passage_id"] = pid; fixed = True
+    if not item.get("id"): item["id"] = iid.split("#")[0]; fixed = True
+    if not item.get("question"):
+        q = ((item.get("open") or {}).get("original_question")
+             or (item.get("mcq") or {}).get("mcq_stem"))
+        if q: item["question"] = q; fixed = True
+    if not item.get("answer"):
+        a = (item.get("open") or {}).get("original_answer")
+        if a: item["answer"] = a; fixed = True
+    return fixed
+
+
 def add_e(item):
     mcq = item.get("mcq")
     if not mcq: return False
@@ -56,6 +79,9 @@ def main():
         files += 1
         for it in items:
             if not isinstance(it, dict) or not it.get("mcq"): continue
+            if repair_ids(it):
+                print(f"  repaired ids for {it.get('content_id')} "
+                      f"-> passage_id={it.get('passage_id')} id={it.get('id')}")
             total += 1
             if add_e(it): changed += 1
             m = re.search(r"<answer>([A-E])<answer>", it["mcq"].get("content", ""))

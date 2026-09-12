@@ -49,6 +49,16 @@ FORCE_BACKTRANSLATE="${FORCE_BACKTRANSLATE:-0}"
 FORCE_SCORE="${FORCE_SCORE:-0}"
 STOP_AFTER="${STOP_AFTER:-}"
 MCQ_CHOICE_MAPPER="${MCQ_CHOICE_MAPPER:-openai}"
+# SHARE_QA=1 points every answer model at the ONE _base QA translation instead of
+# letting each model translate the QA itself. Without it the same English item
+# becomes a different Chinese question per model -- measured 2026-09-11 on
+# tier1_bsb_unblinded_5opt: 45% of items differed across the three models, e.g.
+#   llama321b  当他们坐在桌旁时，老先知得到了什么？
+#   qwen2515b  当他们坐在桌旁时，什么话临到老先知？
+# which is a different item, not a rewording. The passage was already shared by
+# design; this makes the QA match. SHARE_QA=0 restores the pre-2026-09-11
+# behaviour for reproducing older runs.
+SHARE_QA="${SHARE_QA:-1}"
 # NO_THINK=0 lets qwen3 reason. /no_think alone is ignored by qwen3:1.7b, so the
 # pipeline sends Ollama's structured think:false -- omitting the flag is what
 # actually enables reasoning.
@@ -150,6 +160,15 @@ for pair in "${PAIRS[@]}"; do
              --pseudonym-map "$MAP"
              --answer-verse-window 2 --temperature 0.0
              --allow-partial-answers --continue-on-method-error)
+        if [[ "$SHARE_QA" == "1" ]]; then
+          shared_qa="$OUT_ROOT/$pid/_base/_shared/${pid}_base_qa_zh.json"
+          shared_dec="$OUT_ROOT/$pid/_base/_shared/${pid}_base_qa_zh_decanonicalized.json"
+          if [[ -f "$shared_qa" && -f "$shared_dec" ]]; then
+            cmd+=(--translated-qa-json "$shared_qa" --decanonicalized-qa-json "$shared_dec")
+          else
+            echo "  [warn] SHARE_QA=1 but no _base QA for $pid; this model will translate its own" >&2
+          fi
+        fi
         [[ -n "$WINDOWS" ]] && cmd+=(--answer-verse-windows-json "$WINDOWS")
         [[ "$model" == qwen3* && "$NO_THINK" == "1" ]] && cmd+=(--ollama-no-think)
         [[ "$FORCE_ANSWER" == "1" ]] && cmd+=(--force-answer)
