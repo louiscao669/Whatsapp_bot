@@ -40,6 +40,44 @@ class TranslationError(Exception):
     pass
 
 
+# A protected token is the pseudonymisation pipeline's placeholder for a name:
+# __PERSON_A__, __MOST_HIGH_A__ and so on. decanonicalize.py maps them back to
+# their Chinese stand-ins. The canonical (unblinded) arm has none of them -- it
+# uses real names throughout -- so a token in a canonical translation is always
+# an invention by the translating model, not a preserved input.
+#
+# One did get through: the prompt below used to name __MOST_HIGH_A__ as an
+# EXAMPLE of a token to preserve, and for 2 Kings 7:18-19 the model duly
+# "preserved" a token that was never there, turning "Impossible even if Yahweh
+# helped" into 即使__MOST_HIGH_A__帮助也不可能. That option then went out to
+# every answering model as an unreadable string. The two guards are: never show
+# the model a token that is not in its own input, and reject any output token
+# the input did not contain.
+PROTECTED_TOKEN_RE = re.compile(r"__[A-Z][A-Z0-9_]*__")
+
+
+def protected_tokens(obj: Any) -> set:
+    """Every __TOKEN__ appearing anywhere in a nested str/dict/list."""
+    if isinstance(obj, str):
+        return set(PROTECTED_TOKEN_RE.findall(obj))
+    if isinstance(obj, dict):
+        found: set = set()
+        for value in obj.values():
+            found |= protected_tokens(value)
+        return found
+    if isinstance(obj, list):
+        found = set()
+        for value in obj:
+            found |= protected_tokens(value)
+        return found
+    return set()
+
+
+def invented_tokens(original: Any, translated: Any) -> set:
+    """Tokens the translation introduced that its source did not have."""
+    return protected_tokens(translated) - protected_tokens(original)
+
+
 def load_json(path: Path) -> List[dict]:
     try:
         data = json.loads(path.read_text(encoding="utf-8"))
@@ -266,6 +304,7 @@ def translate_batch(
     ``temperature`` and ``seed`` are omitted from the request when None, which
     preserves the historical behaviour (API default temperature 1.0, no seed).
     """
+    present_tokens = sorted(protected_tokens(batch))
     prompt = {
         "task": (
             f"Translate questions into {target_language}. "
@@ -273,10 +312,16 @@ def translate_batch(
             "For open questions, translate Q only and leave A exactly as the original English answer. "
             "For MCQ, translate Q and the A choice values because choices are part of the question; "
             "do not translate A/B/C/D keys. "
-            "Preserve protected placeholder tokens such as __PERSON_A__, "
-            "__MOST_HIGH_A__, __MASTER_A__, __SPIRIT_A__, __PLACE_A__, and "
-            "__MATERIAL_A__ exactly; do not translate, transliterate, remove, or alter them. "
-            "Return JSON only, as an array of objects with the same compact schema."
+            + (
+                "Preserve these protected placeholder tokens exactly -- do not "
+                "translate, transliterate, remove or alter them -- and introduce "
+                "no others: " + ", ".join(present_tokens) + ". "
+                if present_tokens
+                else "This batch contains no placeholder tokens. Translate every "
+                "name as a name; never replace a name with a __TOKEN__ "
+                "placeholder of any kind. "
+            )
+            + "Return JSON only, as an array of objects with the same compact schema."
             + (
                 " Render every name in name_glossary EXACTLY as the glossary "
                 "gives it, every time it occurs. Do not transliterate names "
@@ -326,6 +371,16 @@ def translate_batch(
     for original, translated_item in zip(batch, normalized):
         if original["q_type"] == "open":
             translated_item["A"] = original["A"]
+        invented = invented_tokens(original, translated_item)
+        if invented:
+            ident = (original.get("content_id") or original.get("passage_id")
+                     or original.get("Q") or "?")
+            raise TranslationError(
+                f"{ident}: translation invented protected token(s) "
+                f"{sorted(invented)} that the source does not contain. "
+                "Raised rather than repaired so translate_items retries the "
+                "batch; a token that reaches disk becomes an unreadable option."
+            )
     return normalized
 
 
