@@ -214,3 +214,136 @@ def audit_feedback(audit):
             line += f"\n  suggested replacement: {v.suggested_fix}"
         lines.append(line)
     return "\n".join(lines)
+
+
+# ------------------------------------------------ falseness guard for the distractors
+# The relevance gate above asks "could this be the answer?". It deliberately does NOT ask
+# whether the option is true, because being false is what a distractor is for. Nothing
+# audited that, and the 2026-09-12 gold72 rewrite is what it cost:
+#
+#     closed-book accuracy   0.394 -> 0.394   (no gain)
+#     open-book accuracy     0.958 -> 0.831   (9 items made unanswerable)
+#     distractor/window word overlap  0.145 -> 0.511
+#
+# Mechanism: the rewrite prompt ranks "must be a possible answer" and "prefer material from
+# the window" above one sentence requiring falseness, and inside a 3-verse window those three
+# constraints are often unsatisfiable together. The model resolved the conflict by lifting
+# window material that was TRUE, producing items with two defensible answers.
+#
+# This gate closes that hole. It asks one narrow question per distractor -- "given these
+# verses, is this a WRONG answer?" -- and separates the two ways of not being wrong:
+# the passage SUPPORTS it (fatal), versus the passage is SILENT on it (fine, and what most
+# good distractors look like). The rule forbids TRUE, not UNMENTIONED; conflating those is
+# how the curated hand-drafts went the other way and became implausible.
+class FalsenessVerdict(BaseModel):
+    letter: Literal["A", "B", "C", "D"]
+    answer_status: Literal["supported", "contradicted", "unsupported"] = Field(
+        description=(
+            "'supported' = the passage lets a careful reader defend this as a correct or "
+            "co-correct answer, INCLUDING when it merely paraphrases the correct option or "
+            "restates it at a different grain. This is a failure. "
+            "'contradicted' = the passage gives enough to rule it out. "
+            "'unsupported' = the passage neither supports nor refutes it; this is fine."
+        )
+    )
+    reason: str = Field(description="One short clause. Chinese or English.")
+    quote: Optional[str] = Field(
+        default=None,
+        description="If answer_status is 'supported', the span of the ANSWER CONTEXT that "
+                    "supports it. Leave empty otherwise.",
+    )
+    suggested_fix: Optional[str] = Field(
+        default=None,
+        description="If answer_status is 'supported', a replacement that the passage does "
+                    "NOT support: still a possible answer to the question, still the same "
+                    "kind of thing, but false or unmentioned.",
+    )
+
+
+class FalsenessAudit(BaseModel):
+    verdicts: List[FalsenessVerdict]
+
+
+falseness_prompt = ChatPromptTemplate.from_messages([
+    (
+        "system",
+        "You audit the distractors of a reading-comprehension multiple-choice question. "
+        "Judge ONE thing only: given the ANSWER CONTEXT, is each distractor a WRONG answer "
+        "to the question?\n\n"
+        "An item is broken if more than one option can be defended from the passage. Catching "
+        "that is your entire job.\n\n"
+        "Return answer_status for each distractor:\n"
+        "  supported   -- the passage supports it as a correct or defensibly co-correct "
+        "answer. This INCLUDES a distractor that paraphrases the correct option, restates it "
+        "at a coarser or finer grain, or is entailed by it. This is a FAILURE.\n"
+        "  contradicted -- the passage says otherwise, so a reader can rule it out.\n"
+        "  unsupported -- the passage neither supports nor refutes it. This is FINE. Most "
+        "good distractors are unsupported; the rule forbids TRUE, not UNMENTIONED.\n\n"
+        "Do NOT judge whether the distractor is relevant, plausible or well written -- a "
+        "separate auditor does that, and 'unsupported' is not a defect. Do not judge the "
+        "correct option.\n\n"
+        "Be strict about paraphrase. Ask: would a fair grader mark BOTH this distractor and "
+        "the correct option right? If yes, it is supported, however differently it is worded.\n"
+        "Be equally strict the other way: do not call an option supported because it merely "
+        "reuses a name, place or phrase that appears in the passage. Reusing material is what "
+        "a good distractor does. Only the CLAIM it makes as an answer matters.",
+    ),
+    (
+        "human",
+        "QUESTION: {question}\n\n"
+        "CORRECT OPTION ({correct}): {correct_text}\n\n"
+        "DISTRACTORS TO AUDIT:\n{distractors}\n\n"
+        "ANSWER CONTEXT -- the only text the respondent will see:\n{window}",
+    ),
+])
+
+
+def build_falseness_chain(model: str = "gpt-5.6-sol", provider: str = "openai",
+                          temperature: float = 0.0, reasoning_effort: str | None = "medium"):
+    """ChatPromptTemplate | structured-output LLM. Same shape as build_relevance_chain."""
+    if provider == "ollama":
+        from langchain_ollama import ChatOllama
+        llm = ChatOllama(model=model, temperature=temperature,
+                         base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"))
+    else:
+        from langchain_openai import ChatOpenAI
+        kwargs = {"model": model}
+        if any(model.startswith(p) for p in REASONING_PREFIXES):
+            if reasoning_effort:
+                kwargs["reasoning_effort"] = reasoning_effort
+        else:
+            kwargs["temperature"] = temperature
+        llm = ChatOpenAI(**kwargs)
+    return falseness_prompt | llm.with_structured_output(FalsenessAudit)
+
+
+def audit_falseness(chain, question, options, correct, window):
+    """Return {letter: FalsenessVerdict} for the three distractors.
+
+    Fails OPEN, like audit_distractors: on any error return {} meaning "no opinion", and let
+    the caller keep the item rather than lose it to a transport flake. The caller records
+    that no verdict was obtained -- an unaudited item is reported, not silently trusted.
+    """
+    letters = [L for L in LETTERS if L != correct and options.get(L)]
+    body = "\n".join(f"{L}. {options[L]}" for L in letters)
+    try:
+        out = chain.invoke({
+            "question": question,
+            "correct": correct,
+            "correct_text": options.get(correct, ""),
+            "distractors": body,
+            "window": window,
+        })
+    except Exception:
+        return {}
+    if out is None:
+        return {}
+    verdicts = getattr(out, "verdicts", None) or []
+    return {v.letter: v for v in verdicts if v.letter in letters}
+
+
+# The three verdict helpers live in audit_verdicts.py -- no langchain, no pydantic -- so the
+# offline self-tests can exercise the decision rule (only 'supported' fails). Re-exported here
+# so callers keep importing them from this module.
+from audit_verdicts import (falseness_failing_letters, falseness_feedback,   # noqa: E402,F401
+                            falseness_status_counts)

@@ -13,6 +13,12 @@ Flow, one pass per question, exactly:
                                             checks each distractor is a possible ANSWER to
                                             the question, not just a true statement;
                                             rejections are regenerated with its feedback
+      2b-ii. audit falseness             -- the same second model checks each distractor is a
+                                            WRONG answer given the window. An option the
+                                            context SUPPORTS -- including one that merely
+                                            paraphrases the key -- leaves the item with two
+                                            defensible answers. Silence is fine: the gate
+                                            forbids TRUE, not UNMENTIONED.
       2c. length-match the answer        -- the correct option is rephrased toward the
                                             distractors' median length, and the rewrite is
                                             kept ONLY if a verifier agrees it asserts the
@@ -113,7 +119,29 @@ WORKED EXAMPLE — question: 珂温和哈丽为什么被认为是义人？
 Note what changed: the passage material was not dropped, it was RECAST as an answer to the
 question. Do that.
 
-2. PREFER MATERIAL FROM THE ANSWER CONTEXT.
+2. EVERY DISTRACTOR MUST BE FALSE FOR THIS PASSAGE.
+False as an ANSWER to this question, judged against the answer context above: a reader who
+has read those verses must be able to rule it out, and no fair grader would mark it right
+alongside the correct option. Two ways to break this, and the second is the common one:
+  - the context actually supports it, so the item now has two defensible answers;
+  - it restates the correct option in other words, or at a coarser grain, so it is right by
+    paraphrase.
+An option the context neither supports nor refutes is FINE -- that is what most good
+distractors are. This rule forbids TRUE, not UNMENTIONED.
+
+WORKED EXAMPLE -- question: 天使向谁显现？  correct: 向珂温
+  Bad:  向那在庙里烧香的祭司
+        The passage says the one burning incense WAS 珂温, so this is the same answer in
+        other words and the item no longer has a single key.
+  Good: 向哈丽 / 向庙外等候的众人 / 向他同班的祭司
+        Each is someone the passage mentions and each is someone the angel did NOT appear
+        to: usable material, false claim.
+
+Rules 1 and 2 bind together -- a distractor must be a possible answer AND a wrong one. If the
+answer context is too thin to satisfy both, go outside it under rule 3 rather than weaken
+either. Never resolve the tension by lifting something true.
+
+3. PREFER MATERIAL FROM THE ANSWER CONTEXT.
 Subject to rule 1, build distractors from something that really appears above — a person,
 place, group, object, action or time — recast so it answers the question. These are the
 strongest distractors, because a respondent cannot rule them out without actually
@@ -125,14 +153,14 @@ might plausibly believe until they check. Never produce an option a respondent c
 because it feels invented or out of place; that is a free elimination and it costs the item
 its discriminating power.
 
-Whatever its source, every distractor must be FALSE for this passage.
+Whatever its source, rule 2 still binds: the option must be false for this passage.
 
-3. MATCH THE ANSWER'S TYPE.
+4. MATCH THE ANSWER'S TYPE.
 All four options must answer the same KIND of question as the correct one. If the answer is a
 person, every option is a person; a reason, every option a reason; a place, every option a
 place; a duration, every option a duration.
 
-4. KEEP THE FOUR OPTIONS PARALLEL.
+5. KEEP THE FOUR OPTIONS PARALLEL.
 Parallel in grammar, length and specificity, so the correct one does not stand out. Do not let
 it be either the only option echoing the context's wording or the only option avoiding it.
 
@@ -191,9 +219,10 @@ def rewrite_distractors(client, model, item, question, window, ents=None, temper
     de_novo = not all(str(item.get(L, "")).strip() for L in LETTERS if L != correct)
     fb = ""
     if feedback:
-        fb = (f"\nAn independent reviewer REJECTED some of these options as not being possible "
-              f"answers to the question:\n{feedback}\n"
-              f"Fix exactly those, keep the others.\n")
+        fb = (f"\nAn independent reviewer REJECTED some of these options:\n{feedback}\n"
+              f"Fix exactly those, keep the others. Every replacement must satisfy the rules "
+              f"again -- in particular it must be a possible answer to the question (rule 1) "
+              f"AND false for this passage (rule 2).\n")
     if de_novo:
         user = (f"QUESTION: {question}\n\n"
                 f"CORRECT ANSWER (this is option {correct}, use it verbatim):\n"
@@ -380,7 +409,7 @@ def run(args):
     system = None if args.no_domain_hint else args.domain_hint
     root, report = Path(args.root), []
 
-    rel_chain = eq_chain = None
+    rel_chain = eq_chain = fal_chain = None
     if args.rewrite_correct:
         from relevance_chain import build_equivalence_chain, check_equivalent  # noqa: F401
         globals()["check_equivalent"] = check_equivalent
@@ -401,6 +430,26 @@ def run(args):
             print("[warn] the auditor and the rewriter are the SAME model -- this is "
                   "self-review and will under-report problems. Use a different "
                   "--relevance-model.", file=sys.stderr)
+    # Falseness gate. Defaults to the same judge as the relevance audit; both are narrow
+    # one-question judgments, and sharing the flag keeps the common case to one model name.
+    args.falseness_provider = args.falseness_provider or args.relevance_provider
+    args.falseness_model = args.falseness_model or args.relevance_model
+    if args.falseness_check:
+        from relevance_chain import build_falseness_chain, audit_falseness   # noqa: F401
+        from audit_verdicts import (falseness_failing_letters, falseness_feedback,
+                                    falseness_status_counts)
+        globals().update(audit_falseness=audit_falseness,
+                         falseness_failing_letters=falseness_failing_letters,
+                         falseness_feedback=falseness_feedback,
+                         falseness_status_counts=falseness_status_counts)
+        fal_chain = build_falseness_chain(args.falseness_model, args.falseness_provider,
+                                          reasoning_effort=args.falseness_effort)
+        print(f"falseness audit: {args.falseness_provider}:{args.falseness_model} "
+              f"(effort={args.falseness_effort}, retries={args.relevance_retries})")
+        if args.falseness_model == args.model and args.falseness_provider == args.provider:
+            print("[warn] the falseness auditor and the rewriter are the SAME model -- the "
+                  "model that lifted a true statement from the window is the worst judge of "
+                  "whether it is true. Use a different --falseness-model.", file=sys.stderr)
 
     de_novo_index = 0
     for ch in args.chapters:
@@ -457,7 +506,12 @@ def run(args):
             # 2b. second model audits relevance, and we regenerate what it rejects.
             # A separate model on purpose: the model that wrote an option is the worst judge
             # of whether it is relevant.
-            audit, audit_rounds = {}, 0
+            # Both gates run in ONE loop so a single regeneration round can fix a
+            # distractor that is irrelevant and a different one that is true. Running them
+            # in series would double the rewrite calls and let each gate reintroduce the
+            # other's failure -- which is exactly the trap: "must be a possible answer" and
+            # "must be false" pull in opposite directions inside a 3-verse window.
+            audit, faudit, audit_rounds = {}, {}, 0
             for audit_rounds in range(1, args.relevance_retries + 2):
                 notes = []
                 if rel_chain is not None:
@@ -465,6 +519,11 @@ def run(args):
                                               rewritten["correct"], window)
                     if failing_letters(audit):
                         notes.append(audit_feedback(audit))
+                if fal_chain is not None:
+                    faudit = audit_falseness(fal_chain, rec["Q"], rewritten,
+                                             rewritten["correct"], window)
+                    if falseness_failing_letters(faudit):
+                        notes.append(falseness_feedback(faudit))
                 if not notes or audit_rounds > args.relevance_retries:
                     break
                 rewritten = rewrite_distractors(
@@ -494,6 +553,16 @@ def run(args):
             # 3. randomize
             final = randomize_choices(rewritten, f"{args.shuffle_seed}:{iid}")
             opts = {L: final[L] for L in LETTERS}
+            # Both audits ran on the PRE-shuffle options. Their letters are therefore NOT the
+            # letters in `opts`, and storing them raw mislabels the verdicts -- relevance_verdicts
+            # has carried that bug since the audit was added. Remap by text, once, here.
+            _ship = {}
+            for _L in LETTERS:
+                _ship.setdefault(final[_L], _L)
+            def _shipped(L):
+                return _ship.get(rewritten.get(L, ""), "?")
+            audit = {_shipped(L): v for L, v in audit.items()}
+            faudit = {_shipped(L): v for L, v in faudit.items()}
 
             # 4. small model, closed book then open book
             try:
@@ -526,6 +595,16 @@ def run(args):
                 "relevance_verdicts": {L: {"is_possible_answer": v.is_possible_answer,
                                            "reason": v.reason}
                                        for L, v in audit.items()},
+                # An option the WINDOW SUPPORTS is a second defensible answer, so this list
+                # being non-empty means the item is not safe to ship, however good its
+                # closed/open-book numbers look.
+                "falseness_failed_after_retries": (
+                    falseness_failing_letters(faudit) if faudit else []),
+                "falseness_audited": bool(faudit),
+                "falseness_status_counts": falseness_status_counts(faudit) if faudit else {},
+                "falseness_verdicts": {L: {"answer_status": v.answer_status,
+                                           "reason": v.reason, "quote": v.quote}
+                                       for L, v in faudit.items()},
             })
             rec["A"] = opts
             rec["correct"] = final["correct"]
@@ -648,12 +727,33 @@ def write_report(args, report):
         "n_needed_relevance_rewrite": sum(1 for r in report if r.get("relevance_rounds", 0) > 1),
         "n_still_irrelevant_after_retries": sum(
             1 for r in report if r.get("relevance_failed_after_retries")),
+        "falseness_model": f"{args.falseness_provider}:{args.falseness_model}"
+                           if args.falseness_check else None,
+        # The number the 2026-09-12 gold72 rewrite had no way to report: items shipped with a
+        # distractor the passage supports. Each one is an item with two defensible answers,
+        # and it shows up downstream as depressed OPEN-book accuracy, not as anything wrong
+        # with closed-book. Anything above 0 here should be fixed before the set is used.
+        "n_items_with_supported_distractor": sum(
+            1 for r in report if r.get("falseness_failed_after_retries")),
+        "n_supported_distractors": sum(
+            len(r.get("falseness_failed_after_retries") or []) for r in report),
+        "n_items_unaudited_for_falseness": (
+            sum(1 for r in report if not r.get("falseness_audited"))
+            if args.falseness_check else None),
+        "distractor_status_counts": {
+            k: sum((r.get("falseness_status_counts") or {}).get(k, 0) for r in report)
+            for k in ("supported", "contradicted", "unsupported")},
     }
     # Needs enough items to distinguish skew from multinomial noise: at n=9 there is a 63%
     # chance some letter holds >=4 purely by chance, so the old threshold cried wolf.
     if n >= 40 and max(key_dist.values()) > 0.4 * n:
         summary["key_skew_warning"] = (f"key concentrated on one letter "
                                        f"({max(key_dist.values())}/{n})")
+    if summary["n_items_with_supported_distractor"]:
+        summary["falseness_warning"] = (
+            f"{summary['n_items_with_supported_distractor']} item(s) still carry a "
+            f"distractor the answer context SUPPORTS -- two defensible answers. Fix or drop "
+            f"them; open-book accuracy understates the item, it does not excuse it.")
     if n and closed <= expected + 0.02:
         summary["note"] = ("closed-book accuracy is at or below what letter alignment alone "
                            "predicts -- no evidence of prior answerability")
@@ -747,6 +847,49 @@ def self_test():
     cases.append(("unparseable rewrite falls back to the original item",
                   rewrite_distractors(stub("not json"), "m", item, "q", window)["B"] == "正确答案"))
 
+    # ---- falseness gate: prompt rule, and the pure verdict helpers (no API) ----
+    cases.append(("falseness rule is present and numbered 2",
+                  "2. EVERY DISTRACTOR MUST BE FALSE FOR THIS PASSAGE."
+                  in REWRITE_SYSTEM_TEMPLATE))
+    cases.append(("falseness rule forbids TRUE, not UNMENTIONED",
+                  "forbids TRUE, not UNMENTIONED" in REWRITE_SYSTEM_TEMPLATE))
+    cases.append(("falseness rule names the paraphrase failure",
+                  "right by\n    paraphrase" in REWRITE_SYSTEM_TEMPLATE
+                  or "paraphrase" in REWRITE_SYSTEM_TEMPLATE))
+    _idx = REWRITE_SYSTEM_TEMPLATE.index
+    cases.append(("rules are ordered 1..5 without a gap",
+                  _idx("1. EVERY DISTRACTOR MUST BE A POSSIBLE ANSWER")
+                  < _idx("2. EVERY DISTRACTOR MUST BE FALSE")
+                  < _idx("3. PREFER MATERIAL FROM THE ANSWER CONTEXT")
+                  < _idx("4. MATCH THE ANSWER'S TYPE")
+                  < _idx("5. KEEP THE FOUR OPTIONS PARALLEL")))
+    cases.append(("de-novo mode keeps the falseness rule",
+                  "EVERY DISTRACTOR MUST BE FALSE"
+                  in build_rewrite_system("W", "", de_novo=True)))
+
+    from audit_verdicts import (falseness_failing_letters as _ffl,
+                                falseness_feedback as _ffb,
+                                falseness_status_counts as _fsc)
+
+    class _V:
+        def __init__(self, st, why="r", q=None, fix=None):
+            self.answer_status, self.reason, self.quote, self.suggested_fix = st, why, q, fix
+
+    _a = {"A": _V("supported", "the verse says so", "13 ...", "try this instead"),
+          "C": _V("unsupported"), "D": _V("contradicted")}
+    cases.append(("only 'supported' fails the falseness gate", _ffl(_a) == ["A"]))
+    cases.append(("'unsupported' is not treated as a defect",
+                  _ffl({"C": _V("unsupported")}) == []))
+    cases.append(("empty audit fails OPEN (no opinion, item kept)", _ffl({}) == []))
+    _fb = _ffb(_a)
+    cases.append(("feedback names the supported letter and nothing else",
+                  "- A is TRUE" in _fb and "- C" not in _fb and "- D" not in _fb))
+    cases.append(("feedback carries the quote and the suggested replacement",
+                  "the context says: 13 ..." in _fb
+                  and "suggested replacement: try this instead" in _fb))
+    cases.append(("status counts tally all three verdicts",
+                  _fsc(_a) == {"supported": 1, "contradicted": 1, "unsupported": 1}))
+
     bad = 0
     for name, passed in cases:
         print(f"  [{'PASS' if passed else 'FAIL'}] {name}")
@@ -796,7 +939,26 @@ def parse_args():
                     choices=["none", "low", "medium", "high", "xhigh", "max"],
                     help="reasoning_effort for GPT-5.x/o-series auditors; ignored otherwise")
     ap.add_argument("--relevance-retries", type=int, default=1,
-                    help="regeneration rounds when the auditor rejects a distractor")
+                    help="regeneration rounds when either auditor rejects a distractor")
+    # falseness gate (second model) -- the complement of the relevance audit
+    ap.add_argument("--falseness-check", dest="falseness_check", action="store_true",
+                    default=True,
+                    help="audit that each distractor is a WRONG answer given the window "
+                         "(default: on). The relevance gate deliberately ignores truth; "
+                         "without this nothing does, and the 2026-09-12 gold72 rewrite "
+                         "shipped 9 items whose distractors the passage supported "
+                         "(open-book 0.958 -> 0.831).")
+    ap.add_argument("--no-falseness-check", dest="falseness_check", action="store_false")
+    ap.add_argument("--falseness-provider", default=None,
+                    choices=["openai", "ollama"],
+                    help="defaults to --relevance-provider")
+    ap.add_argument("--falseness-model", default=None,
+                    help="judge for the falseness gate; defaults to --relevance-model. Must "
+                         "differ from --model: the model that lifted a true statement out of "
+                         "the window is the worst judge of whether it is true.")
+    ap.add_argument("--falseness-effort", default="medium",
+                    choices=["none", "low", "medium", "high", "xhigh", "max"],
+                    help="reasoning_effort for GPT-5.x/o-series falseness auditors")
     ap.add_argument("--rewrite-correct", dest="rewrite_correct", action="store_true",
                     default=True,
                     help="rephrase the CORRECT option to match the distractors' length, "
