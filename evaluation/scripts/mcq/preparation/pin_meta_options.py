@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 """Pin each translated meta-option to one fixed string, everywhere.
 
-    E  根据这段文字无法判断   abstention  -- not enough information in the passage
-    F  以上都不是             none-of-the-above -- passage answers, but not with A-D
+    E  根据这段文字无法判断   the one meta-option: no option among A-D is supported
+
+ONE hatch, not two. F ("以上都不是") was tested and dropped on 2026-09-14: with both
+offered, the choice between them tracked which LETTER each role sat on rather than what
+either label said. E's wording is unchanged and still absorbs F's case, which is a bug
+only while F exists. See EXPERIMENT_META_OPTION_COLLAPSE_2026-09-14.md.
 
 The MT stage translates options per item and per passage batch, so the same English
 sentence comes back worded several ways (measured: 2 renderings of E across one
@@ -23,10 +27,34 @@ only the cells silently reverts.
 import json, os, sys
 from collections import Counter
 
-PINNED = {"E": "根据这段文字无法判断", "F": "以上都不是"}
+# 2026-09-14: E is now ONE hatch covering both cases, not an abstention option.
+#
+# The two-key design (E "the passage does not say", F "it does say, but not these")
+# was tested and rejected -- see EXPERIMENT_META_OPTION_COLLAPSE_2026-09-14.md.
+# Rewriting both labels and stating the divide as a numbered procedure moved the
+# corrupted-condition result by exactly zero (38.5% -> 38.5%, p = 1.0); the only
+# variable that moved it was which LETTER each role sat on, and swapping them
+# destroyed abstention on the omission side (78.3% -> 29.0%, 35 items lost).
+#
+# Both cases share exactly one truth: no option among A-D is supported by the
+# passage. E now asserts that relation and nothing else, which makes it the exact
+# negation of the instruction that precedes it ("choose the option supported by
+# explicit passage evidence"). It deliberately avoids 无法判断 ("cannot determine"),
+# a claim about the READER that was literally TRUE whenever the passage answered
+# with something unlisted -- the wording that caused the failure.
+# The REPLACEMENT string was tested too, and lost. In a 2x2 on 16 items it won its best
+# cell only when paired with the OLD instruction -- an incoherent pairing, by two items --
+# while the coherent all-new cell was second worst (corrupted 68.8% vs 75.0%). Nothing at
+# that resolution justifies repinning a dataset, so E keeps the string it has.
+CANDIDATE_E_NOT_ADOPTED = "经文不支持以上任何一个选项"
+PINNED = {"E": "根据这段文字无法判断"}
 MARKERS = {
-    "E": ("无法", "不能", "没有说", "未提", "不知道", "判断", "确定", "can't tell", "cannot tell", "unable"),
-    "F": ("以上", "都不", "均不", "none of the above", "no ne of"),
+    # Accepts the legacy abstention wording AND the legacy none-of-the-above wording:
+    # both are being relabelled onto the one hatch, so both must be recognised rather
+    # than refused. Anything else is left alone for inspection.
+    "E": ("无法", "不能", "没有说", "未提", "不知道", "判断", "确定", "不支持",
+          "以上", "都不", "均不", "can't tell", "cannot tell", "unable",
+          "none of the above"),
 }
 TARGETS = ("qa_target.json", "qa_target_decanonicalized.json")
 SHARED_SUFFIXES = ("_qa_zh.json", "_qa_zh_decanonicalized.json")
@@ -78,7 +106,6 @@ def main():
                     elif add_missing:
                         # only extend an item that has its full content set and no key clash
                         if n_content != 4 or str(it.get("correct", "")).upper() == L: continue
-                        if L == "F" and "E" not in opts: continue   # E before F
                         seen[L]["<added>"] += 1
                         if apply_: opts[L] = pin; touched = True
                         fixed[L] += 1

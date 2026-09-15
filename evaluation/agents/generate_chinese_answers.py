@@ -56,12 +56,94 @@ _NOTA_LABEL = _NOTA_LABEL if _NOTA_LABEL in CHOICE_LABELS else ""
 _CONTENT_LABELS = tuple(L for L in CHOICE_LABELS
                         if L not in (_ABSTAIN_LABEL, _NOTA_LABEL))
 
+# Option-order control. Option order used to be fixed per item across every model x
+# family x dose cell, which locked each model's letter prior onto the same item every
+# time; at temperature 0 that makes the logs' many "observations" one decision repeated.
+# See mcq_option_order.py for the measurements and why rotation beats random shuffling.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import mcq_option_order as _order  # noqa: E402
+
+
+def _order_for(question, rotate, seed):
+    """Presented order of the CONTENT labels for one question, or None if unchanged."""
+    if rotate is None and seed is None:
+        return None
+    labels = [L for L in _CONTENT_LABELS if L in (question.get("choices") or {})]
+    if len(labels) < 2:
+        return None
+    item_key = str(question.get("id") or question.get("item_index") or "")
+    return labels, _order.content_order(labels, rotate=rotate, seed=seed,
+                                        item_key=item_key)
+
+
+def apply_option_order(questions, rotate=None, seed=None):
+    """Reorder the options each MCQ will be SHOWN in; return the per-question mapping.
+
+    The question dicts are mutated in place because they are what the prompt is built
+    from. The returned plan is what maps the model's answer back afterwards.
+    """
+    plan = {}
+    for q in questions:
+        if q.get("q_type") != "mcq":
+            continue
+        got = _order_for(q, rotate, seed)
+        if not got:
+            continue
+        labels, order = got
+        q["choices"] = _order.reorder_choices(q["choices"], labels, order)
+        plan[q["item_index"]] = (labels, order)
+    return plan
+
+
+def restore_canonical_order(answers, questions, plan, rotate=None, seed=None):
+    """Map every selected_choice back to the SOURCE data's lettering.
+
+    Done here, once, so that nothing downstream changes: scorers, the dose-response
+    analyses and the item audits all keep seeing canonical letters whether or not the
+    options were rotated. The presented lettering is recorded alongside so position
+    effects stay recoverable from the logs.
+    """
+    by_index = {q.get("item_index"): q for q in questions}
+    for answer in answers:
+        idx = answer.get("item_index")
+        if idx not in plan:
+            continue
+        labels, order = plan[idx]
+        shown = answer.get("selected_choice")
+        answer["presented_choice"] = shown
+        answer["presented_order"] = list(order)
+        answer["mcq_option_order"] = ("rotate:%d" % rotate if rotate is not None
+                                      else "seed:%s" % seed)
+        canon = _order.canonical_choice(shown, labels, order)
+        answer["selected_choice"] = canon
+        q = by_index.get(idx)
+        if canon and q and isinstance(q.get("choices"), dict):
+            # q["choices"] is the PRESENTED dict, so look the text up by the shown label;
+            # the text is order-invariant and must keep matching the mapped-back letter.
+            if shown in q["choices"]:
+                answer["selected_choice_text"] = q["choices"][shown]
+    return answers
+
 def _meta_hint():
     """Instruction for the meta-options. Without it the model treats them as
     ordinary distractors and never selects them (measured: 0 spontaneous
     abstentions in 3,312 observations when no meta-option was offered)."""
     if not (_ABSTAIN_LABEL or _NOTA_LABEL):
         return ""
+    # UNCHANGED, deliberately, and the reasoning is the result of 2026-09-14.
+    #
+    # The abstention sentence below absorbs the none-of-the-above case: "not enough
+    # information to answer" is true whenever the answer is merely unlisted. With TWO
+    # meta-options that is a bug -- both claim the same territory and the model guesses
+    # which, and the guess tracked which LETTER each sat on rather than what either said.
+    # With ONE hatch it is correct behaviour: the hatch is meant to cover both cases.
+    #
+    # A replacement was written and tested ("if the passage supports none of A-D") in a
+    # 2x2 against this one. It was the WORST cell in both mechanisms -- corrupted 62.5%
+    # vs 75.0%, redacted 81.2% vs 93.8% -- and the only variable that raised firing on
+    # clean text, 12.5% -> 18.8% in three of its four arms. So the fix is to drop F, not
+    # to reword this. Set MCQ_CHOICE_LABELS=ABCDE; nota auto-disables below six labels.
+    # See EXPERIMENT_META_OPTION_COLLAPSE_2026-09-14.md.
     parts = [" Answer only from the passage."]
     if _ABSTAIN_LABEL:
         parts.append(f" If the passage does not give enough information to answer,"
@@ -158,9 +240,20 @@ def question_from_tagged_content(content: Any) -> Optional[str]:
     return question.strip() or None
 
 
+# Which question formats to answer. Every QA item carries both an open and an MCQ
+# form of the same question, and answering both costs an OpenAI back-translation and a
+# judge call per open item -- by far the most expensive part of a cell. QA_FORMATS=mcq
+# runs the MCQ arm alone. Default is both, so nothing changes unless it is set.
+_Q_TYPES = tuple(
+    t for t in (x.strip().lower()
+                for x in os.environ.get("QA_FORMATS", "open,mcq").replace(" ", ",").split(","))
+    if t
+) or ("open", "mcq")
+
+
 def all_format_variants(item: dict) -> List[dict]:
     variants = []
-    for q_type in ("open", "mcq"):
+    for q_type in _Q_TYPES:
         nested = item.get(q_type)
         if not isinstance(nested, dict):
             continue
@@ -183,7 +276,12 @@ def expanded_items(items: Iterable[dict]) -> List[dict]:
     output = []
     for item in items:
         variants = all_format_variants(item)
-        output.extend(variants or [item])
+        if variants:
+            output.extend(variants)
+        elif q_type_value(item) in _Q_TYPES:
+            # Already-expanded (flat) QA, which is what the per-cell qa_target.json holds
+            # by the time the answerer sees it. Filter it the same way.
+            output.append(item)
     return output
 
 
@@ -1496,7 +1594,7 @@ def ollama_effort(data: dict, content: str = "") -> dict:
         value = data.get(key)
         return round(value / 1e6, 1) if isinstance(value, (int, float)) else None
 
-    return {
+    effort = {
         "output_tokens": data.get("eval_count"),
         "prompt_tokens": data.get("prompt_eval_count"),
         "output_ms": ms("eval_duration"),
@@ -1514,6 +1612,16 @@ def ollama_effort(data: dict, content: str = "") -> dict:
                             else "inline" if inline else None),
         "done_reason": data.get("done_reason"),
     }
+    # The reasoning TEXT is otherwise discarded here and stripped from the content by
+    # clean_raw_answer, so thinking_chars was the only trace that survived. That makes it
+    # impossible to ask whether a model reasoned its way to "the passage does not say" and
+    # then still picked a content option -- a prompt/format failure, not a capability one,
+    # and only visible in the trace. Off by default: traces run ~770 chars each and would
+    # roughly double every answers file.
+    if thinking and os.environ.get("MCQ_KEEP_THINKING", "").strip().lower() in (
+            "1", "true", "yes", "on"):
+        effort["thinking_text"] = thinking
+    return effort
 
 
 def generate_answers(
@@ -1786,7 +1894,37 @@ def parse_args() -> argparse.Namespace:
             "Default: OPENAI_MCQ_CHOICE_MODEL or gpt-4.1-mini."
         ),
     )
-    return parser.parse_args()
+    parser.add_argument(
+        "--mcq-rotate",
+        type=int,
+        default=None,
+        help=("Cyclically rotate the CONTENT options by K before showing them, mapping "
+              "the answer back to the source lettering afterwards. Run the campaign at "
+              "K=0,1,2,3 and every item's key sits in every position exactly once, so "
+              "averaging the four runs cancels the answerer's letter prior exactly. One "
+              "offset applies to the whole run, which keeps paired dose contrasts clean: "
+              "position is constant between the 0%% and 30%% cells of the same item. "
+              "Abstention and none-of-the-above never move. Env: MCQ_ROTATE."),
+    )
+    parser.add_argument(
+        "--mcq-shuffle-seed",
+        default=None,
+        help=("Per-item random option order, reproducible from this seed. Prefer "
+              "--mcq-rotate: with 3-4 effective observations per item a random order "
+              "removes the letter prior only in expectation, and it changes position "
+              "between dose cells, adding noise to the very contrast being measured. "
+              "Env: MCQ_SHUFFLE_SEED."),
+    )
+    args = parser.parse_args()
+    # Env fallbacks so campaign scripts can drive the rotation ladder without editing
+    # every call site.
+    if args.mcq_rotate is None and os.environ.get("MCQ_ROTATE", "").strip():
+        args.mcq_rotate = int(os.environ["MCQ_ROTATE"].strip())
+    if args.mcq_shuffle_seed is None and os.environ.get("MCQ_SHUFFLE_SEED", "").strip():
+        args.mcq_shuffle_seed = os.environ["MCQ_SHUFFLE_SEED"].strip()
+    if args.mcq_rotate is not None and args.mcq_shuffle_seed is not None:
+        parser.error("use --mcq-rotate or --mcq-shuffle-seed, not both")
+    return args
 
 
 def main() -> int:
@@ -1810,6 +1948,13 @@ def main() -> int:
                 model = os.getenv("OPENAI_EVALUATOR_MODEL", "gpt-4.1-mini")
         passage = load_passage(args.passage_file)
         questions = public_questions(load_qa_items(args.qa_json))
+        order_plan = apply_option_order(
+            questions, rotate=args.mcq_rotate, seed=args.mcq_shuffle_seed)
+        if order_plan:
+            how = (f"rotate {args.mcq_rotate}" if args.mcq_rotate is not None
+                   else f"seed {args.mcq_shuffle_seed}")
+            print(f"option order: {how} applied to {len(order_plan)} MCQ item(s); "
+                  f"answers are mapped back to the source lettering", file=sys.stderr)
         answers = generate_answers(
             passage,
             questions,
@@ -1826,6 +1971,8 @@ def main() -> int:
             mcq_choice_mapper=args.mcq_choice_mapper,
             mcq_choice_model=args.mcq_choice_model,
         )
+        restore_canonical_order(answers, questions, order_plan,
+                                rotate=args.mcq_rotate, seed=args.mcq_shuffle_seed)
         write_json(args.output_json, answers)
     except GenerationError as exc:
         print(f"error: {exc}", file=sys.stderr)
