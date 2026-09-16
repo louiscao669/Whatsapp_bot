@@ -9,7 +9,7 @@ import {
   type ReviewQaTab,
 } from '../api/reviewQa'
 
-const LETTERS = ['A', 'B', 'C', 'D'] as const
+const LETTERS = ['A', 'B', 'C', 'D', 'E'] as const
 
 type ReviewQaUnreviewedItemProps = {
   item: ReviewQaItem
@@ -26,7 +26,10 @@ export function ReviewQaUnreviewedItem({ item, onAction, onError }: ReviewQaUnre
   const [showPassage, setShowPassage] = useState(false)
   const [submitting, setSubmitting] = useState(false)
 
-  const choiceSlots = questionType === 'mcq' ? 4 : questionType === 'tf' ? 2 : 0
+  // Four content options, plus a fifth only when the item already carries one
+  // (the tier-1 5-option set ends in a single "cannot tell" meta-option).
+  const mcqSlots = item.mcq_choices.length >= 5 ? 5 : 4
+  const choiceSlots = questionType === 'mcq' ? mcqSlots : questionType === 'tf' ? 2 : 0
   const isChoiceType = questionType === 'mcq' || questionType === 'tf'
   const displayQuestionType = questionType === 'tf' ? 'mcq' : questionType
 
@@ -100,7 +103,7 @@ export function ReviewQaUnreviewedItem({ item, onAction, onError }: ReviewQaUnre
               onChange={(e) => setQuestionType(e.target.value)}
             >
               <option value="open">Open</option>
-              <option value="mcq">MCQ (4 choices)</option>
+              <option value="mcq">MCQ ({mcqSlots} choices)</option>
             </select>
           </div>
 

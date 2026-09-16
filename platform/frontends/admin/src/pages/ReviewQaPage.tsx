@@ -20,7 +20,7 @@ const TABS: { id: ReviewQaTab; label: string }[] = [
   { id: 'removed', label: 'Removed QAs' },
 ]
 
-const CHOICE_LETTERS = ['A', 'B', 'C', 'D'] as const
+const CHOICE_LETTERS = ['A', 'B', 'C', 'D', 'E'] as const
 
 function ReviewQaStandardAnswer({ item }: { item: ReviewQaItem }) {
   const questionType = item.question_type

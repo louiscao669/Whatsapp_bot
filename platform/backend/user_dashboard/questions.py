@@ -345,7 +345,7 @@ def submit_dashboard_answer_receipt(
     if not qa_item:
         raise DashboardAnswerError("Question not found")
     if is_choice_scored_item(qa_item):
-        valid_letters = choice_letters_for_type(question_type_value(qa_item))
+        valid_letters = choice_letters_for_item(qa_item)
         if answer_text.upper() not in valid_letters:
             letters = ", ".join(valid_letters[:-1]) + f", or {valid_letters[-1]}"
             raise DashboardAnswerError(f"Wrong answer format. Choose {letters}.")

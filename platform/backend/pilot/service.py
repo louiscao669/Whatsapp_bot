@@ -36,6 +36,7 @@ from eten_shared.domain.assignments import (
     surrounding_passage_text,
 )
 from eten_shared.mcq import (
+    choice_letters_for_item,
     choice_letters_for_type,
     is_choice_scored_item,
     question_type_value,
@@ -845,7 +846,7 @@ def submit_pilot_answer(
         raise PilotNotFoundError("Question not found")
 
     if is_choice_scored_item(qa_item):
-        valid_letters = choice_letters_for_type(question_type_value(qa_item))
+        valid_letters = choice_letters_for_item(qa_item)
         if answer_text.upper() not in valid_letters:
             raise PilotError(f"Choose {', '.join(valid_letters)}.")
         answer_text = answer_text.upper()

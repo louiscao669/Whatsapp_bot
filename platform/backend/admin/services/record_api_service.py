@@ -6,7 +6,13 @@ from sqlalchemy import func, select
 
 from eten_shared.models import QAItemRecording
 from eten_shared.media_storage import parse_storage_uri
-from eten_shared.mcq import QUESTION_TYPE_MCQ, QUESTION_TYPE_OPEN, QUESTION_TYPE_TF
+from eten_shared.mcq import (
+    MCQ_LABELS,
+    QUESTION_TYPE_MCQ,
+    QUESTION_TYPE_OPEN,
+    QUESTION_TYPE_TF,
+    choice_letters_for_item,
+)
 from backend.admin.services.qa_review_service import load_recordable_qa_items, sort_qa_items_by_passage
 from backend.admin.services.system_languages_service import (
     canonical_language_code,
@@ -24,7 +30,7 @@ def choice_answer_recording_version(letter: str) -> int:
 def choice_letter_for_answer_recording(recording: QAItemRecording):
     if (recording.recording_type or "").strip().lower() != "answer":
         return None
-    if recording.version < 1 or recording.version > 4:
+    if recording.version < 1 or recording.version > len(MCQ_LABELS):
         return None
     return chr(ord("A") + recording.version - 1)
 
@@ -86,7 +92,7 @@ def _serialize_answer_slots(qa_item, answer_recordings, language):
     recordings_by_version = {recording.version: recording for recording in answer_recordings}
 
     if question_type in {QUESTION_TYPE_MCQ, QUESTION_TYPE_TF}:
-        choice_slots = 4 if question_type == QUESTION_TYPE_MCQ else 2
+        choice_slots = len(choice_letters_for_item(qa_item))
         choices = list(qa_item.mcq_choices or [])
         correct_letter = (qa_item.mcq_correct_choice or "").strip().upper()
         slots = []

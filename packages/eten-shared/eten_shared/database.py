@@ -656,6 +656,26 @@ def _run_startup_migrations(engine: Engine):
         ):
             connection.execute(text(statement))
 
+        # MCQs may carry a fifth option (E, the single "cannot tell" meta-option of
+        # the tier-1 5-option set). The original constraint allowed only A-D, which
+        # would reject importing any item keyed or scored on E. Rewritten only when
+        # the live definition still lacks E, so a normal start takes no table lock.
+        connection.execute(text("""
+            DO $$
+            BEGIN
+                IF EXISTS (
+                    SELECT 1 FROM pg_constraint
+                    WHERE conname = 'ck_qa_items_mcq_correct_choice'
+                      AND pg_get_constraintdef(oid) NOT LIKE '%''E''%'
+                ) THEN
+                    ALTER TABLE qa_items DROP CONSTRAINT ck_qa_items_mcq_correct_choice;
+                    ALTER TABLE qa_items ADD CONSTRAINT ck_qa_items_mcq_correct_choice
+                        CHECK (mcq_correct_choice IS NULL
+                               OR mcq_correct_choice IN ('A', 'B', 'C', 'D', 'E'));
+                END IF;
+            END $$;
+        """))
+
 
 def normalize_database_url(database_url):
     """Convert common Supabase URLs into SQLAlchemy-compatible driver URLs."""

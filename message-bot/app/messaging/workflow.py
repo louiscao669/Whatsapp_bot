@@ -68,7 +68,7 @@ from eten_shared.recordings import (
     participant_language_code,
 )
 from eten_shared.mcq import (
-    choice_letters_for_type,
+    choice_letters_for_item,
     choice_response_is_correct,
     choice_response_letter,
     is_choice_scored_item,
@@ -920,9 +920,9 @@ def mcq_answer_format_error(qa_item, raw_answer):
 
     if not is_choice_scored_item(qa_item):
         return None
-    valid_letters = choice_letters_for_type(question_type_value(qa_item))
+    valid_letters = choice_letters_for_item(qa_item)
     answer = (raw_answer or "").strip()
-    callback_match = re.fullmatch(r"mcq_([0-3])", answer, flags=re.IGNORECASE)
+    callback_match = re.fullmatch(r"mcq_([0-4])", answer, flags=re.IGNORECASE)
     valid_callback = bool(
         callback_match and int(callback_match.group(1)) < len(valid_letters)
     )

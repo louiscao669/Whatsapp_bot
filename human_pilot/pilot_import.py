@@ -750,7 +750,10 @@ def build_tier1_qa_item(passage_id: str, entry: dict, qtype: str, *, base_id: st
         options = record.get("A") or {}
         correct = str(record.get("correct") or "A").strip()[:1]
         kwargs.update(
-            mcq_choices=[options.get(letter, "") for letter in "ABCD"],
+            # Four content options, plus E when the item carries the single
+            # "cannot tell" meta-option (tier-1 canonical 5-option set).
+            mcq_choices=[options[letter] for letter in "ABCDE" if letter in options]
+            if "E" in options else [options.get(letter, "") for letter in "ABCD"],
             mcq_correct_choice=correct,
             expected_answer=options.get(correct, ""),
         )
@@ -1003,7 +1006,7 @@ def build_qa_item(chapter: int, entry: dict, qtype: str, *, form_group_id=None,
         )
     m = entry["mcq"]
     opts = m.get("A") or {}
-    choices = [opts.get(k, "") for k in ("A", "B", "C", "D")]
+    choices = [opts.get(k, "") for k in ("A", "B", "C", "D")] + ([opts["E"]] if "E" in opts else [])
     correct = (m.get("correct") or "A").strip()[:1]
     return QAItem(
         passage_id=f"luke{chapter}",
@@ -1269,12 +1272,27 @@ def upload(database_url, qa_rows, window_rows, passage_rows, prune=False):
 
 
 def main():
+    global TIER1_ROOT, TIER1_WINDOWS
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument(
         "--eval-root",
         type=Path,
         default=REPO_ROOT / "evaluation",
         help="evaluation directory (default: repository evaluation/; uses outputs/tier1_bsb)",
+    )
+    ap.add_argument(
+        "--tier1-root",
+        default=TIER1_ROOT,
+        help=("output namespace under <eval-root>/outputs to import from (default: "
+              f"{TIER1_ROOT}; the unblinded 5-option pilot uses "
+              "tier1_bsb_unblinded_5opt_think)"),
+    )
+    ap.add_argument(
+        "--windows-file",
+        default=TIER1_WINDOWS,
+        help=("verse-window map under QA_algorithm/inputs (default: "
+              f"{TIER1_WINDOWS}; the unblinded arm uses "
+              "tier1_qa_verse_windows_canonical.json)"),
     )
     ap.add_argument("--mcq-fraction", type=float, default=MCQ_FRACTION)
     ap.add_argument(
@@ -1295,9 +1313,13 @@ def main():
                          "text. Refuses if the row has assignments/responses (FK CASCADE).")
     args = ap.parse_args()
 
+    TIER1_ROOT = args.tier1_root
+    TIER1_WINDOWS = args.windows_file
+
     args.eval_root = args.eval_root.expanduser().resolve()
     validate_eval_root(args.eval_root)
     print(f"eval-root: {args.eval_root}")
+    print(f"tier1-root: {TIER1_ROOT}   windows: {TIER1_WINDOWS}")
 
     qa_rows, window_rows, passage_rows, summary, missing = build_plan(
         args.eval_root, args.mcq_fraction, args.seed, args.question_forms

@@ -18,6 +18,7 @@ from eten_shared.mcq import (
     QUESTION_TYPE_MCQ,
     QUESTION_TYPE_OPEN,
     QUESTION_TYPE_TF,
+    choice_letters_for_item,
     validate_question_fields,
 )
 
@@ -54,7 +55,7 @@ def format_review_qa_standard_answer(qa_item: QAItem) -> str:
         answer = (qa_item.expected_answer or "").strip() or "…"
         return f"Standard Answer: {answer}"
 
-    choice_slots = 4 if question_type == QUESTION_TYPE_MCQ else 2
+    choice_slots = len(choice_letters_for_item(qa_item))
     choices = list(qa_item.mcq_choices or [])
     correct_letter = (qa_item.mcq_correct_choice or "").strip().upper()
     lines = ["Standard Answer:"]

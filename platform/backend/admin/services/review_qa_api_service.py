@@ -3,7 +3,7 @@
 from datetime import timezone
 
 from eten_shared.models import QAItem
-from eten_shared.mcq import QUESTION_TYPE_MCQ, QUESTION_TYPE_OPEN, QUESTION_TYPE_TF
+from eten_shared.mcq import QUESTION_TYPE_MCQ, QUESTION_TYPE_OPEN, QUESTION_TYPE_TF, choice_letters_for_item
 from backend.admin.services.qa_review_service import (
     format_review_qa_standard_answer,
     group_qa_items_by_chapter,
@@ -31,11 +31,16 @@ def _normalize_tab(tab: str) -> str:
 
 def _serialize_mcq_choices(qa_item: QAItem):
     question_type = (qa_item.question_type or QUESTION_TYPE_OPEN).strip().lower()
-    slots = 4 if question_type == QUESTION_TYPE_MCQ else 2 if question_type == QUESTION_TYPE_TF else 0
+    slots = (
+        len(choice_letters_for_item(qa_item))
+        if question_type in {QUESTION_TYPE_MCQ, QUESTION_TYPE_TF}
+        else 0
+    )
     choices = list(qa_item.mcq_choices or [])
-    while len(choices) < 4:
+    width = max(slots, 4)
+    while len(choices) < width:
         choices.append("")
-    return choices[:4], slots
+    return choices[:width], slots
 
 
 def serialize_review_qa_item(qa_item: QAItem, *, tab: str):

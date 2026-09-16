@@ -7,13 +7,17 @@ from typing import Dict, List, Optional, Tuple
 
 from eten_shared.keyword_matching import normalize_response_text
 
-MCQ_LABELS = ("A", "B", "C", "D")
+MCQ_LABELS = ("A", "B", "C", "D", "E")
+# An MCQ has four content options, optionally followed by ONE meta-option on E
+# ("cannot tell from this passage"). Five-option items come from the tier-1
+# canonical 5-option set; everything older has exactly four.
+MCQ_CHOICE_COUNTS = (4, 5)
 QUESTION_TYPE_OPEN = "open"
 QUESTION_TYPE_MCQ = "mcq"
 QUESTION_TYPE_TF = "tf"
 VALID_QUESTION_TYPES = frozenset({QUESTION_TYPE_OPEN, QUESTION_TYPE_MCQ, QUESTION_TYPE_TF})
 
-CHOICE_LINE_PATTERN = re.compile(r"^\s*([A-D])\.\s*(.+)\s*$", re.IGNORECASE | re.MULTILINE)
+CHOICE_LINE_PATTERN = re.compile(r"^\s*([A-E])\.\s*(.+)\s*$", re.IGNORECASE | re.MULTILINE)
 
 
 @dataclass
@@ -46,6 +50,7 @@ def choice_letters_for_type(question_type: str) -> Tuple[str, ...]:
 
 
 def expected_choice_count(question_type: str) -> int:
+    """Minimum choice count for the type (MCQ may also carry a fifth, see MCQ_CHOICE_COUNTS)."""
     if question_type == QUESTION_TYPE_TF:
         return 2
     if question_type == QUESTION_TYPE_MCQ:
@@ -53,19 +58,39 @@ def expected_choice_count(question_type: str) -> int:
     return 0
 
 
+def allowed_choice_counts(question_type: str) -> Tuple[int, ...]:
+    if question_type == QUESTION_TYPE_TF:
+        return (2,)
+    if question_type == QUESTION_TYPE_MCQ:
+        return MCQ_CHOICE_COUNTS
+    return ()
+
+
+def choice_letters_for_item(qa_item) -> Tuple[str, ...]:
+    """Letters actually offered by this item: A-D for a four-option MCQ, A-E for five."""
+    question_type = question_type_value(qa_item)
+    letters = choice_letters_for_type(question_type)
+    count = len(getattr(qa_item, "mcq_choices", None) or [])
+    if question_type == QUESTION_TYPE_MCQ and count in MCQ_CHOICE_COUNTS:
+        return letters[:count]
+    if question_type == QUESTION_TYPE_MCQ:
+        return letters[:4]
+    return letters
+
+
 def parse_mcq_correct_letter(raw) -> str:
     if raw is None or (isinstance(raw, str) and not str(raw).strip()):
-        raise ValueError("Correct choice is required (A, B, C, or D).")
+        raise ValueError("Correct choice is required (A, B, C, D, or E).")
 
     letter = str(raw).strip().upper()
     if len(letter) != 1 or letter not in MCQ_LABELS:
-        raise ValueError("Correct choice must be a single letter A, B, C, or D.")
+        raise ValueError("Correct choice must be a single letter A, B, C, D, or E.")
     return letter
 
 
 def normalize_labeled_choices(raw, question_type: str) -> List[str]:
-    required = expected_choice_count(question_type)
-    if required == 0:
+    allowed = allowed_choice_counts(question_type)
+    if not allowed:
         return []
 
     if raw is None:
@@ -83,8 +108,8 @@ def normalize_labeled_choices(raw, question_type: str) -> List[str]:
         raise ValueError("Choices must be a list of strings.")
 
     choices = [str(choice).strip() for choice in raw if str(choice).strip()]
-    if len(choices) != required:
-        label = "four" if required == 4 else "two"
+    if len(choices) not in allowed:
+        label = "four or five" if question_type == QUESTION_TYPE_MCQ else "two"
         raise ValueError(f"{question_type} requires exactly {label} non-empty choices.")
     return choices
 
@@ -121,7 +146,7 @@ def parse_choice_lines_from_text(block: str) -> Tuple[List[str], str]:
 
 
 def infer_question_type_from_choice_count(count: int) -> str:
-    if count == 4:
+    if count in MCQ_CHOICE_COUNTS:
         return QUESTION_TYPE_MCQ
     if count == 2:
         return QUESTION_TYPE_TF
@@ -138,9 +163,9 @@ def parse_mcq_response_letter(
     if not text:
         return None
 
-    valid_letters = choice_letters_for_type(question_type)
+    valid_letters = choice_letters_for_type(question_type)[: len(choices)]
 
-    mcq_id_match = re.match(r"^mcq_([0-3])$", text, flags=re.IGNORECASE)
+    mcq_id_match = re.match(r"^mcq_([0-4])$", text, flags=re.IGNORECASE)
     if mcq_id_match:
         index = int(mcq_id_match.group(1))
         if index < len(valid_letters):
@@ -148,6 +173,10 @@ def parse_mcq_response_letter(
 
     if len(text) == 1 and text.upper() in valid_letters:
         return text.upper()
+    if len(text) == 1 and text.upper() in MCQ_LABELS:
+        # A letter this item does not offer (E on a four-option MCQ). Never
+        # fuzzy-match it: "e" is a substring of almost any English choice.
+        return None
 
     lower = text.lower()
     for letter in valid_letters[: len(choices)]:
@@ -168,7 +197,7 @@ def format_choices_for_display(choices: List[str], question_type: str) -> str:
 
 
 def choice_response_letter(qa_item, response_text: str) -> Optional[str]:
-    """Parsed participant choice letter (A–D or A–B), or None if unparseable."""
+    """Parsed participant choice letter (A–D/A–E or A–B), or None if unparseable."""
     question_type = question_type_value(qa_item)
     choices = normalize_labeled_choices(qa_item.mcq_choices, question_type)
     return parse_mcq_response_letter(

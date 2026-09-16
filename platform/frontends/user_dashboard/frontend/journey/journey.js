@@ -246,7 +246,7 @@ function renderQuestionAnswerPage(target, actions) {
 }
 
 function renderChoiceAnswer(answerName, choices, questionType) {
-  const letters = questionType === "tf" ? ["A", "B"] : ["A", "B", "C", "D"];
+  const letters = questionType === "tf" ? ["A", "B"] : ["A", "B", "C", "D", "E"];
   return el("div", { className: "choice-answer-list" }, choices.map((choice, index) => {
     const letter = letters[index] || String(index + 1);
     const id = `${answerName}-${letter}`;

@@ -79,6 +79,7 @@ from eten_shared.models import (
 )
 
 from eten_shared.mcq import (
+    choice_letters_for_item,
     choice_letters_for_type,
     choice_response_is_correct,
     choice_response_letter,

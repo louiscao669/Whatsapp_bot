@@ -8,7 +8,7 @@ from eten_shared.mcq import (
     QUESTION_TYPE_MCQ,
     QUESTION_TYPE_OPEN,
     QUESTION_TYPE_TF,
-    choice_letters_for_type,
+    choice_letters_for_item,
     choice_response_letter,
     is_choice_scored_item,
 )
@@ -28,7 +28,7 @@ from backend.shared.response_labels import (
 
 def format_choice_response_answer_display(qa_item, response) -> str:
     stored = (response.response_text or "").strip().upper()
-    if len(stored) == 1 and stored in {"A", "B", "C", "D"}:
+    if len(stored) == 1 and stored in choice_letters_for_item(qa_item):
         return stored
     analysis_text = response.transcript_text or response.response_text or ""
     letter = choice_response_letter(qa_item, analysis_text)
@@ -90,7 +90,7 @@ def compute_response_stats(qa_item: QAItem, responses):
     ]
 
     if question_type == QUESTION_TYPE_MCQ:
-        letters = list(choice_letters_for_type(QUESTION_TYPE_MCQ))
+        letters = list(choice_letters_for_item(qa_item))
         distribution = {letter: 0 for letter in letters}
         unparsed = 0
         for response in responses:

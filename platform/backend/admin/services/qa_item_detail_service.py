@@ -5,6 +5,7 @@ from datetime import timezone
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 
+from eten_shared.mcq import choice_letters_for_item
 from eten_shared.models import ParticipantResponse, QAItem, QAItemRecording
 from backend.admin.services.qa_review_service import (
     format_qa_item_review_status_label,
@@ -30,7 +31,7 @@ def _serialize_expected_answer(qa_item: QAItem):
             "text": qa_item.expected_answer or "",
         }
 
-    choice_slots = 4 if question_type == "mcq" else 2
+    choice_slots = len(choice_letters_for_item(qa_item))
     choices = list(qa_item.mcq_choices or [])
     correct_letter = (qa_item.mcq_correct_choice or "").strip().upper()
     return {

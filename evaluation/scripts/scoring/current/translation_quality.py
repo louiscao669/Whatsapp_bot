@@ -363,6 +363,10 @@ def google_word_by_word(
     cache = _wbw_load_cache(cache_path)
     attempts = int(os.getenv("WBW_TOKEN_RETRIES", "3"))
     base_delay = float(os.getenv("WBW_RETRY_BASE_DELAY", "0.5"))
+    # Pause after every LIVE request (cache hits are free). Google's public
+    # endpoint answers TooManyRequests above ~5 requests/second, and once it
+    # does, every later lookup in the run fails too.
+    request_gap = float(os.getenv("WBW_REQUEST_GAP", str(sleep_seconds or 0)))
     global _WBW_LAST_STATS
     stats = {"tokens": 0, "requests": 0, "cache_hits": 0, "fallbacks": 0,
              "fallback_tokens": []}
@@ -387,6 +391,8 @@ def google_word_by_word(
             for attempt in range(attempts):
                 try:
                     stats["requests"] += 1
+                    if request_gap:
+                        time.sleep(request_gap)
                     rendered = translator.translate(key)
                     break
                 except Exception:
@@ -402,9 +408,9 @@ def google_word_by_word(
                     stats["fallback_tokens"].append(word)
             else:
                 cache[key] = rendered
+                if stats["requests"] % 25 == 0:
+                    _wbw_save_cache(cache_path, cache)
             translated_words.append(rendered)
-            if sleep_seconds:
-                time.sleep(sleep_seconds)
         outputs.append(" ".join(translated_words))
 
     _wbw_save_cache(cache_path, cache)
