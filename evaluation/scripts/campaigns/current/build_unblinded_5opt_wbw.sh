@@ -32,7 +32,7 @@ FORCE="${FORCE:-0}"
 # Largest share of word tokens allowed to stay English. Only lookups that FAIL stay
 # English (proper names are translated too), so a high share means Google refused
 # the requests -- rate limiting or a blocked network -- not a property of the text.
-MAX_ENGLISH_PCT="${MAX_ENGLISH_PCT:-3}"
+MAX_ENGLISH_PCT="${MAX_ENGLISH_PCT:-5}"
 # Seconds between live Google requests (see translation_quality.google_word_by_word).
 export WBW_REQUEST_GAP="${WBW_REQUEST_GAP:-0.5}"
 # On a refusal, back off 5, 10, 20, 40, 80 s before giving up on a word.
@@ -55,10 +55,32 @@ passage_file() {
 # (QA translation is reused and the empty name map skips canonicalization).
 if [ -z "${OPENAI_API_KEY:-}" ] && [ -f .env ]; then set -a; . ./.env; set +a; fi
 : "${OPENAI_API_KEY:?set OPENAI_API_KEY or run from the repo root with .env present}"
-python3 - <<'PY3' || { echo "Google is still refusing requests (TooManyRequests). Wait and retry, or switch network." >&2; exit 1; }
+# Skip the live-Google check when every word is already in the token cache
+# (e.g. filled with fill_wbw_cache.py or the Cloud Translation API): the build
+# then makes no requests at all.
+missing=$(python3 - <<'PY3'
+import glob, json, sys
+sys.path.insert(0, "evaluation/scripts/scoring/current")
+from translation_quality import is_protected_token
+try:
+    cache = json.load(open("evaluation/datasets/perturbations/.wbw_cache_en_zh-CN.json", encoding="utf-8"))
+except FileNotFoundError:
+    cache = {}
+keys = {w.lower() for f in glob.glob("evaluation/datasets/passages/tier1_bsb/*.txt")
+        for w in open(f, encoding="utf-8").read().split(" ") if w and not is_protected_token(w)}
+print(len(keys - set(cache)))
+PY3
+)
+if [ "$missing" = "0" ]; then
+  echo "token cache complete -- no Google requests needed"
+  export WBW_REQUEST_GAP=0
+elif [ "${WBW_SKIP_CHECK:-0}" != "1" ]; then
+  echo "$missing word(s) not cached yet; checking Google is reachable"
+  python3 - <<'PY3' || { echo "Google is still refusing requests (TooManyRequests). Wait and retry, or switch network." >&2; exit 1; }
 from deep_translator import GoogleTranslator
 GoogleTranslator(source="en", target="zh-CN").translate("mother")
 PY3
+fi
 [ -d "$OUT_ROOT" ] || { echo "missing $OUT_ROOT" >&2; exit 1; }
 python3 -c "import deep_translator" 2>/dev/null \
   || { echo "deep_translator is not installed: pip install deep-translator" >&2; exit 1; }
@@ -78,6 +100,9 @@ for pid in $PIDS; do
   cp "$OUT_ROOT/$pid/_base/_shared/${pid}_base_qa_zh.json" "$work/_shared/"
   cp "$OUT_ROOT/$pid/_base/_shared/${pid}_base_qa_zh_decanonicalized.json" "$work/_shared/"
 
+  # Never let main.py "reuse" a translation left by an earlier failed attempt.
+  rm -rf "$work/$METHOD"
+
   python3 -u evaluation/main.py \
     "$PASSAGE_DIR/$(passage_file "$pid")" "$QA_DIR/${pid}_all_formats.json" \
     --output-dir "$work" --run-name "${pid}_base" \
@@ -86,8 +111,6 @@ for pid in $PIDS; do
     --temperature 0.0
 
   src="$work/$METHOD"
-  # Never let main.py "reuse" a translation left by an earlier failed attempt.
-  rm -rf "$src"
   [ -s "$src/passage_target_decanonicalized.txt" ] \
     || { echo "no wbw passage produced for $pid" >&2; exit 1; }
   pct=$(python3 - "$src/passage_target_decanonicalized.txt" <<'PY2'

@@ -9,6 +9,21 @@ PLATFORM_ROOT = REPO_ROOT / "platform"
 SHARED_ROOT = REPO_ROOT / "packages" / "eten-shared"
 
 
+def _load_repo_env():
+    """Load <repo>/.env so every CLI sees DATABASE_URL, as the docstrings promise.
+
+    Values already set in the shell win (override=False).
+    """
+    try:
+        from dotenv import load_dotenv
+    except ImportError:
+        return
+    load_dotenv(REPO_ROOT / ".env", override=False)
+
+
+_load_repo_env()
+
+
 def use_message_bot():
     for path in (SHARED_ROOT, MESSAGE_BOT_ROOT):
         value = str(path)

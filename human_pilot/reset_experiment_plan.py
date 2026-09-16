@@ -44,9 +44,10 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT / "human_pilot"))
-from _bootstrap import use_message_bot  # noqa: E402
+from _bootstrap import use_message_bot, use_platform  # noqa: E402
 
 use_message_bot()
+use_platform()  # backend.shared.config (loads .env) lives in platform/
 
 from sqlalchemy import delete, func, select  # noqa: E402
 
