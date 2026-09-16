@@ -27,6 +27,7 @@ export type ParticipantRow = {
   questions_completed: number
   correct: number
   incorrect: number
+  partial: number
   under_review: number
   batch_size: number
   last_seen: string | null
@@ -67,6 +68,7 @@ export type ParticipantDetail = {
     questions_completed: number
     correct: number
     incorrect: number
+    partial: number
     under_review: number
     batch_size: number
     last_seen: string | null

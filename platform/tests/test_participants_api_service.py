@@ -3,7 +3,10 @@ import unittest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
-from backend.admin.services.participants_api_service import get_participant_detail
+from backend.admin.services.participants_api_service import (
+    get_participant_detail,
+    list_participants_dashboard,
+)
 from eten_shared.models import (
     Assignment,
     AssignmentStatus,
@@ -69,6 +72,40 @@ class ParticipantsApiServiceTests(unittest.TestCase):
                 [row["question"] for row in payload["history"]],
                 ["Completed question"],
             )
+
+    def test_score_buckets_count_auto_scored_and_partial_answers(self):
+        labels = (
+            ["yes (auto)", "yes (expert)"]
+            + ["no (auto)", "No (Auto)", "no (expert)"]
+            + ["partial (auto)", "partial (auto)"]
+            + ["pending", None, "unexpected label"]
+        )
+        with Session(self.engine) as db:
+            participant = Participant(display_name="Scored")
+            db.add(participant)
+            db.flush()
+            for label in labels:
+                db.add(
+                    ParticipantResponse(
+                        participant_id=participant.id,
+                        qa_item_id="qa",
+                        is_correct=label,
+                    )
+                )
+            db.commit()
+
+            expected = {
+                "questions_completed": 10,
+                "correct": 2,
+                "incorrect": 3,
+                "partial": 2,
+                "under_review": 3,
+            }
+            detail = get_participant_detail(db, participant.id)["participant"]
+            (row,) = list_participants_dashboard(db)["participants"]
+            for key, value in expected.items():
+                self.assertEqual(detail[key], value, key)
+                self.assertEqual(row[key], value, key)
 
 
 if __name__ == "__main__":

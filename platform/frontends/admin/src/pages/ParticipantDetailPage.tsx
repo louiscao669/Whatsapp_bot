@@ -176,6 +176,8 @@ export function ParticipantDetailPage() {
           <dd>{participant.correct}</dd>
           <dt>Incorrect</dt>
           <dd>{participant.incorrect}</dd>
+          <dt>Partial</dt>
+          <dd>{participant.partial ?? 0}</dd>
           <dt>Under review</dt>
           <dd>{participant.under_review}</dd>
           <dt>Batch size</dt>

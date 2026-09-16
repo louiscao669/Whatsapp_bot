@@ -48,6 +48,7 @@ export function ParticipantsPage() {
               <th>Completed</th>
               <th>Correct</th>
               <th>Incorrect</th>
+              <th>Partial</th>
               <th>Under review</th>
               <th>Batch</th>
               <th>Last seen</th>
@@ -67,6 +68,7 @@ export function ParticipantsPage() {
                 <td>{row.questions_completed}</td>
                 <td>{row.correct}</td>
                 <td>{row.incorrect}</td>
+                <td>{row.partial ?? 0}</td>
                 <td>{row.under_review}</td>
                 <td>{row.batch_size}</td>
                 <td className="participant-last-seen-cell">{row.last_seen ?? '—'}</td>

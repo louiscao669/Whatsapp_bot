@@ -23,8 +23,13 @@ from backend.admin.utils.admin_formatters import format_display_datetime
 
 
 CORRECT_IS_CORRECT_VALUES = frozenset({"yes (auto)", "yes (expert)"})
-INCORRECT_IS_CORRECT_VALUES = frozenset({"no (expert)"})
+INCORRECT_IS_CORRECT_VALUES = frozenset({"no (auto)", "no (expert)"})
+PARTIAL_IS_CORRECT_VALUES = frozenset({"partial (auto)", "partial (expert)"})
 UNDER_REVIEW_IS_CORRECT_VALUES = frozenset({"pending"})
+
+
+def _empty_response_stats():
+    return {"total": 0, "correct": 0, "incorrect": 0, "partial": 0, "under_review": 0}
 
 
 class ParticipantMutationError(Exception):
@@ -51,7 +56,7 @@ def _participant_response_stats(db, participant_ids):
         return {}
 
     stats = {
-        participant_id: {"total": 0, "correct": 0, "incorrect": 0, "under_review": 0}
+        participant_id: _empty_response_stats()
         for participant_id in participant_ids
     }
     rows = db.execute(
@@ -69,14 +74,15 @@ def _participant_response_stats(db, participant_ids):
             continue
         count = int(count or 0)
         bucket["total"] += count
-        value = (is_correct or "").strip()
+        value = (is_correct or "").strip().lower()
         if value in CORRECT_IS_CORRECT_VALUES:
             bucket["correct"] += count
         elif value in INCORRECT_IS_CORRECT_VALUES:
             bucket["incorrect"] += count
-        elif value in UNDER_REVIEW_IS_CORRECT_VALUES:
-            bucket["under_review"] += count
+        elif value in PARTIAL_IS_CORRECT_VALUES:
+            bucket["partial"] += count
         else:
+            # "pending" and any unrecognised label still need a human look.
             bucket["under_review"] += count
     return stats
 
@@ -175,7 +181,7 @@ def list_participants_dashboard(db):
         session_state, current_question = _build_current_work_summary(participant_session)
         stats = response_stats.get(
             participant.id,
-            {"total": 0, "correct": 0, "incorrect": 0, "under_review": 0},
+            _empty_response_stats(),
         )
         rows.append(
             {
@@ -191,6 +197,7 @@ def list_participants_dashboard(db):
                 "questions_completed": stats["total"],
                 "correct": stats["correct"],
                 "incorrect": stats["incorrect"],
+                "partial": stats["partial"],
                 "under_review": stats["under_review"],
                 "batch_size": participant.preferred_batch_size,
                 "last_seen": format_display_datetime(participant.last_seen_at),
@@ -231,7 +238,7 @@ def get_participant_detail(db, participant_id: str):
     ).all()
     stats = _participant_response_stats(db, [participant_id]).get(
         participant_id,
-        {"total": 0, "correct": 0, "incorrect": 0, "under_review": 0},
+        _empty_response_stats(),
     )
     session_state, current_question = _build_current_work_summary(participant.session)
 
@@ -290,6 +297,7 @@ def get_participant_detail(db, participant_id: str):
             "questions_completed": stats["total"],
             "correct": stats["correct"],
             "incorrect": stats["incorrect"],
+            "partial": stats["partial"],
             "under_review": stats["under_review"],
             "batch_size": participant.preferred_batch_size,
             "last_seen": format_display_datetime(participant.last_seen_at),
