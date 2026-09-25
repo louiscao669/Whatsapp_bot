@@ -11,9 +11,12 @@ limited to flagged participants so this action can never remove real data.
 from sqlalchemy import delete, func, select
 
 from eten_shared.experiment_plan import (
+    DEFAULT_QA_SET,
+    QA_SETS,
     SLOTS,
     TEST_PARTICIPANT_KEY,
     ExperimentPlanError,
+    available_qa_sets,
     is_test_participant,
     next_test_block_index,
     write_participant_plan,
@@ -49,14 +52,30 @@ def _display_name(value, block_index):
     return name[:MAX_NAME_LENGTH]
 
 
-def create_test_participant(db, *, display_name=None, language=None, build_plan=True):
+def test_participant_options(db):
+    """Question sets that currently have imported questions (for the admin form)."""
+    return {
+        "default_qa_set": DEFAULT_QA_SET,
+        "qa_sets": [
+            {"key": key, "label": label, "windows": count}
+            for key, label, count in available_qa_sets(db)
+        ],
+    }
+
+
+def create_test_participant(db, *, display_name=None, language=None, build_plan=True,
+                            qa_set=None):
     """Stage a flagged participant (+ plan). Caller commits; rollback on error."""
+
+    qa_set = (qa_set or DEFAULT_QA_SET).strip()
+    if qa_set not in QA_SETS:
+        raise TestParticipantError(f"Unknown question set '{qa_set}'")
 
     language_code = canonical_language_code(language or DEFAULT_LANGUAGE)
     if not language_code:
         raise TestParticipantError("Language is required")
 
-    block_index = next_test_block_index(db)
+    block_index = next_test_block_index(db, qa_set if build_plan else None)
     participant = Participant(
         display_name=_display_name(display_name, block_index),
         target_language=language_code,
@@ -69,7 +88,9 @@ def create_test_participant(db, *, display_name=None, language=None, build_plan=
     plan = []
     if build_plan:
         try:
-            cells = write_participant_plan(db, participant, block_index, language_code)
+            cells = write_participant_plan(
+                db, participant, block_index, language_code, qa_set=qa_set
+            )
         except ExperimentPlanError as exc:
             raise TestParticipantError(f"Could not build the pilot plan: {exc}") from exc
         plan = [
@@ -87,6 +108,7 @@ def create_test_participant(db, *, display_name=None, language=None, build_plan=
         "display_name": participant.display_name,
         "language": language_code,
         "block_index": block_index if build_plan else None,
+        "qa_set": qa_set if build_plan else None,
         "slot_count": len(SLOTS),
         "plan": plan,
         "pilot_path": f"/pilot/{participant.id}" if build_plan else None,

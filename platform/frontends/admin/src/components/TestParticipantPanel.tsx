@@ -3,8 +3,10 @@ import { Link } from 'react-router-dom'
 import { ApiError } from '../api/client'
 import {
   createTestParticipant,
+  fetchTestParticipantOptions,
   pilotUrl,
   type CreatedTestParticipant,
+  type TestParticipantOptions,
 } from '../api/participants'
 import { fetchSystemLanguages } from '../api/systemLanguages'
 
@@ -15,6 +17,8 @@ export function TestParticipantPanel({ onCreated }: { onCreated: () => void }) {
   const [language, setLanguage] = useState(DEFAULT_LANGUAGE)
   const [languages, setLanguages] = useState<string[]>([DEFAULT_LANGUAGE])
   const [buildPlan, setBuildPlan] = useState(true)
+  const [qaSets, setQaSets] = useState<TestParticipantOptions['qa_sets']>([])
+  const [qaSet, setQaSet] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
   const [created, setCreated] = useState<CreatedTestParticipant | null>(null)
@@ -26,6 +30,13 @@ export function TestParticipantPanel({ onCreated }: { onCreated: () => void }) {
         setLanguages(Array.from(new Set([DEFAULT_LANGUAGE, ...options])).sort()),
       )
       .catch(() => undefined) // the default language still works
+    fetchTestParticipantOptions()
+      .then((options) => {
+        setQaSets(options.qa_sets)
+        const keys = options.qa_sets.map((set) => set.key)
+        setQaSet(keys.includes(options.default_qa_set) ? options.default_qa_set : keys[0] ?? '')
+      })
+      .catch(() => undefined) // the server falls back to its default set
   }, [])
 
   async function handleSubmit(event: FormEvent) {
@@ -39,6 +50,7 @@ export function TestParticipantPanel({ onCreated }: { onCreated: () => void }) {
         display_name: displayName,
         language,
         build_plan: buildPlan,
+        qa_set: buildPlan && qaSet ? qaSet : undefined,
       })
       setCreated(result)
       setDisplayName('')
@@ -92,6 +104,20 @@ export function TestParticipantPanel({ onCreated }: { onCreated: () => void }) {
             </option>
           ))}
         </select>
+        <label htmlFor="test-participant-qa-set">Question set</label>
+        <select
+          id="test-participant-qa-set"
+          value={qaSet}
+          disabled={!buildPlan || qaSets.length === 0}
+          onChange={(event) => setQaSet(event.target.value)}
+        >
+          {qaSets.length === 0 ? <option value="">No question set imported</option> : null}
+          {qaSets.map((set) => (
+            <option key={set.key} value={set.key}>
+              {set.label} — {set.windows} questions
+            </option>
+          ))}
+        </select>
         <label className="checkbox-label">
           <input
             type="checkbox"
@@ -110,6 +136,7 @@ export function TestParticipantPanel({ onCreated }: { onCreated: () => void }) {
           <p className="success-message">
             Created{' '}
             <Link to={`/participants/${created.participant_id}`}>{created.display_name}</Link>
+            {created.qa_set ? ` on ${created.qa_set}` : ''}
             {created.block_index !== null ? ` (slot rotation ${created.block_index})` : ''}.
           </p>
           {link ? (

@@ -1196,7 +1196,18 @@ def upload(database_url, qa_rows, window_rows, passage_rows, prune=False):
         wanted_window_qa = {row["qa_item_id"] for row in normalized_windows}
         # Remove stale window definitions from a previous tier-1 pool build;
         # QA rows themselves remain protected by the explicit prune flag.
-        existing_windows = list(db.scalars(select(ExperimentWindow)).all())
+        # [2026-09-25] Only windows of the source passages THIS import owns: another
+        # question set (e.g. hard66, imported under "hard66/<id>" passage ids) lives
+        # in the same table and must survive a gold72 re-import, and vice versa.
+        import_sources = (
+            {row["source_passage_id"] for row in normalized_windows}
+            | {p["source_passage_id"] for p in passage_rows}
+        )
+        existing_windows = list(db.scalars(
+            select(ExperimentWindow).where(
+                ExperimentWindow.source_passage_id.in_(import_sources)
+            )
+        ).all())
         for existing in existing_windows:
             if existing.qa_item_id not in wanted_window_qa:
                 db.delete(existing)

@@ -36,6 +36,8 @@ from eten_shared.models import (
 )
 from eten_shared.repo_paths import REPO_ROOT
 
+sys.path.insert(0, str(REPO_ROOT / "human_pilot"))
+
 
 def _engine():
     engine = create_engine("sqlite://")
@@ -304,3 +306,115 @@ class TestParticipantApiTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+def _import_tier1_set(db, qa_set, passages=("t1_judg9", "t1_acts20"), windows_per_group=1):
+    """Minimal tier-1 import for one question set: windows in every group + all variants."""
+    from eten_shared.experiment_plan import QA_SETS, qa_set_groups
+
+    prefix = QA_SETS[qa_set]["passage_prefix"]
+    seq_base = 10000 if prefix else 0
+    seq = 0
+    for group in qa_set_groups(qa_set):
+        for n in range(windows_per_group):
+            source = prefix + passages[(group + n) % len(passages)]
+            qa = QAItem(passage_id=source, question_text=f"{qa_set} Q{group}.{n}",
+                        expected_answer="A")
+            db.add(qa)
+            db.flush()
+            db.add(ExperimentWindow(
+                qa_item_id=qa.id, source_passage_id=source, content_id=f"{source}:{group}{n}",
+                window_key=f"{group}:{n}", group_index=group, sequence_index=seq_base + seq,
+                verse_numbers=[f"{group}:{n}"],
+            ))
+            seq += 1
+    for p in passages:
+        for condition in set(SLOTS):
+            db.add(ExperimentPassage(source_passage_id=prefix + p, chapter=1,
+                                     condition=condition, language="zh", passage_text=condition))
+    db.flush()
+
+
+class QuestionSetTests(unittest.TestCase):
+    def setUp(self):
+        self.factory = sessionmaker(_engine(), autoflush=False, expire_on_commit=False)
+
+    def test_hard66_cells_use_offset_groups_and_the_same_schedule(self):
+        for block in range(8):
+            gold = build_cells("pid-7", block, "gold72")
+            hard = build_cells("pid-7", block, "hard66")
+            self.assertEqual([c for _, c, _ in gold], [c for _, c, _ in hard])
+            self.assertEqual([g + 100 for g, _, _ in gold], [g for g, _, _ in hard])
+            self.assertEqual(sorted(g for g, _, _ in hard), list(range(101, 109)))
+
+    def test_hard66_refused_until_imported(self):
+        with self.factory() as db:
+            _import_tier1_set(db, "gold72")
+            with self.assertRaisesRegex(TestParticipantError, "no imported questions"):
+                create_test_participant(db, qa_set="hard66")
+            with self.assertRaisesRegex(TestParticipantError, "Unknown question set"):
+                create_test_participant(db, qa_set="nope")
+
+    def test_each_set_gets_its_own_plan_and_block_rotation(self):
+        from backend.admin.services.test_participants_service import test_participant_options
+        from eten_shared.experiment_plan import participant_qa_set
+
+        with self.factory() as db:
+            _import_tier1_set(db, "gold72")
+            _import_tier1_set(db, "hard66")
+            options = test_participant_options(db)
+            self.assertEqual([s["key"] for s in options["qa_sets"]], ["gold72", "hard66"])
+
+            gold = create_test_participant(db, qa_set="gold72")
+            hard = [create_test_participant(db, qa_set="hard66") for _ in range(2)]
+            self.assertEqual(sorted(c["group"] for c in gold["plan"]), list(range(1, 9)))
+            self.assertEqual(sorted(c["group"] for c in hard[0]["plan"]), list(range(101, 109)))
+            self.assertEqual([gold["block_index"], hard[0]["block_index"], hard[1]["block_index"]],
+                             [0, 0, 1])
+            self.assertEqual(participant_qa_set(db, gold["participant_id"]), "gold72")
+            self.assertEqual(participant_qa_set(db, hard[0]["participant_id"]), "hard66")
+            rows = {r["id"]: r["qa_set"] for r in list_participants_dashboard(db)["participants"]}
+            self.assertEqual(rows[hard[1]["participant_id"]], "hard66")
+
+    def test_selector_serves_only_the_participants_set(self):
+        from eten_shared.question_discovery.experiment_selection import (
+            select_next_experiment_cell_item,
+        )
+
+        with self.factory() as db:
+            _import_tier1_set(db, "gold72")
+            _import_tier1_set(db, "hard66")
+            for qa_set, prefix in (("gold72", "t1_"), ("hard66", "hard66/")):
+                pid = create_test_participant(db, qa_set=qa_set)["participant_id"]
+                participant = db.get(Participant, pid)
+                served = []
+                while True:
+                    item, cell = select_next_experiment_cell_item(db, participant)
+                    if item is None:
+                        break
+                    served.append(item.passage_id)
+                    db.add(Assignment(participant_id=pid, qa_item_id=item.id,
+                                      experiment_cell_id=cell.id,
+                                      status=AssignmentStatus.COMPLETED.value))
+                    db.flush()
+                self.assertEqual(len(served), 8)
+                self.assertTrue(all(p.startswith(prefix) for p in served), served)
+
+    def test_import_only_prunes_windows_of_its_own_passages(self):
+        import pilot_import
+
+        with self.factory() as db:
+            _import_tier1_set(db, "gold72")
+            db.commit()
+            gold_windows = db.scalar(select(func.count()).select_from(ExperimentWindow))
+
+        hard_qa = QAItem(id="hard66:q1", passage_id="hard66/t1_judg9",
+                         question_text="hard Q", expected_answer="A")
+        window = dict(qa_item_id="hard66:q1", source_passage_id="hard66/t1_judg9",
+                      content_id="hard66/t1_judg9:c1", window_key="9:1", group_index=101,
+                      sequence_index=10000, window_ordinals=[0], verse_numbers=["9:1"])
+        with patch("eten_shared.database.get_session_factory", return_value=self.factory):
+            pilot_import.upload("sqlite://", [hard_qa], [window], [])
+        with self.factory() as db:
+            self.assertEqual(
+                db.scalar(select(func.count()).select_from(ExperimentWindow)), gold_windows + 1)

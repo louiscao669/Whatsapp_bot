@@ -12,7 +12,11 @@ from eten_shared.models import (
     ParticipantResponse,
     ParticipantSession,
 )
-from eten_shared.experiment_plan import is_test_participant
+from eten_shared.experiment_plan import (
+    is_test_participant,
+    participant_qa_set,
+    participants_qa_sets,
+)
 from eten_shared.mcq import is_choice_scored_item
 from backend.admin.services.qa_item_stats_service import (
     format_choice_correctness_label,
@@ -152,6 +156,7 @@ def list_participants_dashboard(db):
     participants = db.scalars(select(Participant).order_by(Participant.created_at.desc())).all()
     participant_ids = [participant.id for participant in participants]
     response_stats = _participant_response_stats(db, participant_ids)
+    qa_sets = participants_qa_sets(db, participant_ids)
 
     assignments = db.scalars(
         select(Assignment)
@@ -204,6 +209,7 @@ def list_participants_dashboard(db):
                 "last_seen": format_display_datetime(participant.last_seen_at),
                 "consented": participant.consented,
                 "is_test": is_test_participant(participant),
+                "qa_set": qa_sets.get(participant.id),
             }
         )
 
@@ -305,6 +311,7 @@ def get_participant_detail(db, participant_id: str):
             "last_seen": format_display_datetime(participant.last_seen_at),
             "consented": participant.consented,
             "is_test": is_test_participant(participant),
+            "qa_set": participant_qa_set(db, participant.id),
             "created_at": _iso_datetime(participant.created_at),
         },
         "assigned_questions": assigned_questions,

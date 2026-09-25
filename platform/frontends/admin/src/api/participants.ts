@@ -33,6 +33,7 @@ export type ParticipantRow = {
   last_seen: string | null
   consented: boolean
   is_test: boolean
+  qa_set: string | null
 }
 
 export type ParticipantHistoryRow = {
@@ -75,6 +76,7 @@ export type ParticipantDetail = {
     last_seen: string | null
     consented: boolean
     is_test: boolean
+    qa_set: string | null
     created_at: string | null
   }
   assigned_questions: ParticipantAssignedQuestionRow[]
@@ -139,15 +141,26 @@ export type CreatedTestParticipant = {
   display_name: string
   language: string
   block_index: number | null
+  qa_set: string | null
   slot_count: number
   plan: TestParticipantPlanCell[]
   pilot_path: string | null
+}
+
+export type TestParticipantOptions = {
+  default_qa_set: string
+  qa_sets: { key: string; label: string; windows: number }[]
+}
+
+export function fetchTestParticipantOptions() {
+  return apiFetch<TestParticipantOptions>('/api/v1/participants/test/options')
 }
 
 export function createTestParticipant(input: {
   display_name?: string
   language?: string
   build_plan?: boolean
+  qa_set?: string
 }) {
   return apiFetch<CreatedTestParticipant>('/api/v1/participants/test', {
     method: 'POST',

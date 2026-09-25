@@ -12,6 +12,7 @@ from backend.admin.services.test_participants_service import (
     TestParticipantError,
     create_test_participant,
     delete_test_participant,
+    test_participant_options,
 )
 from backend.admin.services.participant_assignment_service import (
     ParticipantAssignmentError,
@@ -36,6 +37,15 @@ def list_participants():
     return jsonify(payload)
 
 
+@participants_blueprint.route("/test/options", methods=["GET"])
+@require_roles("admin")
+def get_test_participant_options():
+    session_factory = get_session_factory()
+    with session_factory() as db:
+        payload = test_participant_options(db)
+    return jsonify(payload)
+
+
 @participants_blueprint.route("/test", methods=["POST"])
 @require_roles("admin")
 def post_test_participant():
@@ -48,6 +58,7 @@ def post_test_participant():
                 display_name=body.get("display_name"),
                 language=body.get("language"),
                 build_plan=bool(body.get("build_plan", True)),
+                qa_set=body.get("qa_set"),
             )
             db.commit()
     except TestParticipantError as exc:

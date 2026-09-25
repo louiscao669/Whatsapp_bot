@@ -68,6 +68,9 @@ export function ParticipantsPage() {
                 <td className="participant-display-name-cell">
                   <Link to={`/participants/${row.id}`}>{row.display_name || row.participant_id}</Link>
                   {row.is_test ? <span className="test-badge">TEST</span> : null}
+                  {row.qa_set && row.qa_set !== 'gold72' ? (
+                    <span className="test-badge qa-set-badge">{row.qa_set}</span>
+                  ) : null}
                 </td>
                 <td>{row.language}</td>
                 <td>{row.session_state}</td>

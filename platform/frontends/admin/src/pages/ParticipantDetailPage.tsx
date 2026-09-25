@@ -233,6 +233,8 @@ export function ParticipantDetailPage() {
           <dd>{participant.last_seen ?? '—'}</dd>
           <dt>Consented</dt>
           <dd>{participant.consented ? 'Yes' : 'No'}</dd>
+          <dt>Question set</dt>
+          <dd>{participant.qa_set ?? '—'}</dd>
         </dl>
       </section>
 

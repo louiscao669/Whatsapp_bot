@@ -63,9 +63,13 @@ from eten_shared.models import (  # noqa: E402
 from eten_shared.experiment_plan import (  # noqa: E402
     GROUPS,
     LANGUAGE,
+    DEFAULT_QA_SET,
+    QA_SETS,
     SLOTS,
     build_cells,
     is_test_participant,
+    qa_set_groups,
+    qa_set_window_count,
     passage_index,
     tier1_variant_gaps,
 )
@@ -102,6 +106,9 @@ def main():
     grp.add_argument("--all-consented", action="store_true",
                      help="plan every consented participant without an existing plan")
     ap.add_argument("--language", default=LANGUAGE)
+    ap.add_argument("--qa-set", choices=sorted(QA_SETS), default=DEFAULT_QA_SET,
+                    help="question set to serve these participants (default: %(default)s; "
+                         "hard66 needs human_pilot/pilot_import_hard66.py first)")
     ap.add_argument("--database-url", default=None, help="overrides DATABASE_URL env")
     ap.add_argument("--dry-run", action="store_true", help="build + print, no DB writes")
     args = ap.parse_args()
@@ -133,8 +140,12 @@ def main():
                   f"the last block is partial (Latin square unbalanced; design tolerates >=12).")
         pidx = passage_index(db, args.language)
         tier1_mode = bool(db.scalar(select(func.count(ExperimentWindow.id))))
+        if QA_SETS[args.qa_set]["group_offset"] and not tier1_mode:
+            sys.exit(f"REFUSING: question set {args.qa_set!r} needs the tier-1 window import.")
+        if tier1_mode and not qa_set_window_count(db, args.qa_set):
+            sys.exit(f"REFUSING: question set {args.qa_set!r} has no imported questions.")
         if tier1_mode:
-            gaps = tier1_variant_gaps(db, args.language)
+            gaps = tier1_variant_gaps(db, args.language, args.qa_set)
             if gaps:
                 sys.exit(
                     f"REFUSING: {len(gaps)} tier-1 source-passage/condition variants are "
@@ -152,7 +163,7 @@ def main():
                 skipped += 1
                 continue
             block_index = position % len(SLOTS)
-            cells = build_cells(participant.id, block_index)
+            cells = build_cells(participant.id, block_index, args.qa_set)
             per_participant_slots[participant.id] = Counter(c[1] for c in cells)
             for chapter, condition, seq in cells:
                 # A tier-1 group can span two source passages, so there is no
@@ -182,7 +193,7 @@ def main():
     print("\nLatin-square balance (chapter -> condition counts across planned participants):")
     conds = SLOTS[:1] + SLOTS[2:]  # unique condition keys, clean once
     print("  ch  " + "  ".join(f"{c[:9]:>9}" for c in conds))
-    for ch in GROUPS:
+    for ch in qa_set_groups(args.qa_set):
         row = "  ".join(f"{balance[ch][c]:>9}" for c in conds)
         print(f"  {ch:<3} {row}")
     # each participant should see all 8 slots (2 clean + 6 others)
