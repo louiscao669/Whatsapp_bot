@@ -64,6 +64,7 @@ from sqlalchemy import select  # noqa: E402
 from sqlalchemy.orm import Session  # noqa: E402
 
 from eten_shared.database import get_session_factory  # noqa: E402
+from eten_shared.experiment_plan import is_test_participant  # noqa: E402
 from eten_shared.mcq import choice_response_is_correct, is_choice_scored_item  # noqa: E402
 from eten_shared.models import (  # noqa: E402
     Assignment,
@@ -248,8 +249,12 @@ def assemble(records: list, split_by: str, subdir: str, include_audio_ref: bool)
     return out
 
 
-def fetch_records(db: Session, require_reviewed: bool) -> list:
-    """One row per completed experiment assignment: its latest response + cell + item."""
+def fetch_records(db: Session, require_reviewed: bool, include_test: bool = False) -> list:
+    """One row per completed experiment assignment: its latest response + cell + item.
+
+    Participants created with the admin "Create test participant" action are skipped
+    unless ``include_test`` is set.
+    """
     stmt = (
         select(Assignment, ExperimentPlanCell, QAItem, Participant)
         .join(ExperimentPlanCell, Assignment.experiment_cell_id == ExperimentPlanCell.id)
@@ -262,6 +267,8 @@ def fetch_records(db: Session, require_reviewed: bool) -> list:
     )
     records = []
     for assignment, cell, qa_item, participant in db.execute(stmt).all():
+        if not include_test and is_test_participant(participant):
+            continue
         resp = db.scalars(
             select(ParticipantResponse)
             .where(ParticipantResponse.assignment_id == assignment.id)
@@ -306,6 +313,8 @@ def main():
     ap.add_argument("--include-audio-ref", action="store_true",
                     help="add opaque audio_ref (media_id) + authenticated proxy path for audio "
                          "answers (NO public/Supabase URL)")
+    ap.add_argument("--include-test-participants", action="store_true",
+                    help="also export participants flagged as test (excluded by default)")
     ap.add_argument("--database-url", default=None)
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args()
@@ -321,7 +330,7 @@ def main():
     factory = get_session_factory(database_url)
 
     with factory() as db:
-        records = fetch_records(db, args.require_reviewed)
+        records = fetch_records(db, args.require_reviewed, args.include_test_participants)
     payloads = assemble(records, args.split_by, args.subdir, args.include_audio_ref)
 
     print(f"Collected {len(records)} responses -> {len(payloads)} score files "

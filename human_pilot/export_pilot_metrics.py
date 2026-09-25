@@ -224,6 +224,18 @@ def session_factory_for(database_url):
     return sessionmaker(create_engine(resolved), autoflush=False, expire_on_commit=False)
 
 
+def non_test_participant_ids(db):
+    """Every participant not flagged as test. Never empty: an empty id list means
+    "no filter" to ``collect_pilot_rows``, so an all-test database would otherwise
+    report the test participants."""
+    from sqlalchemy import select
+    from eten_shared.experiment_plan import is_test_participant
+    from eten_shared.models import Participant
+
+    ids = [p.id for p in db.scalars(select(Participant)).all() if not is_test_participant(p)]
+    return ids or ["__no_real_participants__"]
+
+
 def main():
     parser = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
@@ -242,6 +254,12 @@ def main():
     )
     parser.add_argument(
         "--stdout", action="store_true", help="print the JSON report instead of writing files"
+    )
+    parser.add_argument(
+        "--include-test-participants",
+        action="store_true",
+        help="with no --participant-ids, also report participants flagged as test "
+        "(admin 'Create test participant'); excluded by default",
     )
     parser.add_argument("--database-url", default=None, help="overrides DATABASE_URL env")
     args = parser.parse_args()
@@ -264,6 +282,8 @@ def main():
         sys.exit("No DATABASE_URL (set it in the environment or .env).")
 
     with session_factory_for(database_url)() as db:
+        if participant_ids is None and not args.include_test_participants:
+            participant_ids = non_test_participant_ids(db)
         report = compute_pilot_metrics(db, participant_ids=participant_ids)
 
     if not args.include_trials:

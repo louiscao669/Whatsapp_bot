@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ApiError, getCachedApiData } from '../api/client'
 import { fetchParticipants, type ParticipantRow } from '../api/participants'
+import { TestParticipantPanel } from '../components/TestParticipantPanel'
 
 const PARTICIPANTS_PATH = '/api/v1/participants'
 
@@ -13,13 +14,17 @@ export function ParticipantsPage() {
   const [loading, setLoading] = useState(!cachedParticipants)
   const [error, setError] = useState('')
 
-  useEffect(() => {
-    fetchParticipants()
+  function loadParticipants() {
+    return fetchParticipants()
       .then((data) => setParticipants(data.participants))
       .catch((err) => {
         setError(err instanceof ApiError ? err.message : 'Failed to load participants')
       })
       .finally(() => setLoading(false))
+  }
+
+  useEffect(() => {
+    loadParticipants()
   }, [])
 
   if (loading) {
@@ -36,6 +41,7 @@ export function ParticipantsPage() {
       <p className="hint">
         Admin-only view of assigned questions, progress, and response scoring buckets.
       </p>
+      <TestParticipantPanel onCreated={loadParticipants} />
       <div className="table-wrap">
         <table className="data-table">
           <thead>
@@ -61,6 +67,7 @@ export function ParticipantsPage() {
                 <td className="wa-id-cell" title={row.participant_id}>{row.participant_id}</td>
                 <td className="participant-display-name-cell">
                   <Link to={`/participants/${row.id}`}>{row.display_name || row.participant_id}</Link>
+                  {row.is_test ? <span className="test-badge">TEST</span> : null}
                 </td>
                 <td>{row.language}</td>
                 <td>{row.session_state}</td>

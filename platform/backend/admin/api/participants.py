@@ -8,6 +8,11 @@ from backend.admin.services.participants_api_service import (
     list_participants_dashboard,
     update_participant_language,
 )
+from backend.admin.services.test_participants_service import (
+    TestParticipantError,
+    create_test_participant,
+    delete_test_participant,
+)
 from backend.admin.services.participant_assignment_service import (
     ParticipantAssignmentError,
     assign_questions_with_passages,
@@ -29,6 +34,40 @@ def list_participants():
     with session_factory() as db:
         payload = list_participants_dashboard(db)
     return jsonify(payload)
+
+
+@participants_blueprint.route("/test", methods=["POST"])
+@require_roles("admin")
+def post_test_participant():
+    body = _json_body()
+    session_factory = get_session_factory()
+    try:
+        with session_factory() as db:
+            payload = create_test_participant(
+                db,
+                display_name=body.get("display_name"),
+                language=body.get("language"),
+                build_plan=bool(body.get("build_plan", True)),
+            )
+            db.commit()
+    except TestParticipantError as exc:
+        return jsonify({"error": "validation_error", "message": str(exc)}), 400
+    return jsonify({"ok": True, "message": "Test participant created", **payload}), 201
+
+
+@participants_blueprint.route("/<participant_id>", methods=["DELETE"])
+@require_roles("admin")
+def delete_participant(participant_id):
+    session_factory = get_session_factory()
+    try:
+        with session_factory() as db:
+            payload = delete_test_participant(db, participant_id)
+            db.commit()
+    except TestParticipantError as exc:
+        message = str(exc)
+        status = 404 if message == "Participant not found" else 400
+        return jsonify({"error": "validation_error", "message": message}), status
+    return jsonify({"ok": True, "message": "Test participant deleted", **payload})
 
 
 @participants_blueprint.route("/<participant_id>", methods=["GET"])

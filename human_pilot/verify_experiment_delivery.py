@@ -138,8 +138,19 @@ def _verify_plan_design(db, cells, problems, notes):
     Neither is enforced by the schema. The unique constraints cover
     (participant, chapter) and (participant, sequence_index) only.
     """
+    # Test participants (admin "Create test participant") rotate through blocks on
+    # their own and are not part of the design; leave them out of the balance checks.
+    try:
+        from eten_shared.experiment_plan import is_test_participant
+
+        test_ids = {p.id for p in db.scalars(select(Participant)).all()
+                    if is_test_participant(p)}
+    except Exception:  # column/table shape differs in some test fixtures
+        test_ids = set()
     by_participant = defaultdict(list)
     for cell in cells:
+        if cell.participant_id in test_ids:
+            continue
         by_participant[cell.participant_id].append(cell)
 
     expected_slate = Counter(SLOTS) if SLOTS else None
@@ -226,7 +237,7 @@ def _verify_plan_design(db, cells, problems, notes):
     try:
         consented = set(db.scalars(
             select(Participant.id).where(Participant.consented.is_(True))
-        ).all())
+        ).all()) - test_ids
     except Exception:  # column/table shape differs in some test fixtures
         consented = set()
     unplanned = sorted(consented - set(by_participant))

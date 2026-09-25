@@ -78,6 +78,13 @@ META_LABELS = {
                 "nota": "以上都不是"},
     "explicit": {"abstain": "这段经文没有提到答案",
                  "nota": "经文给出了答案，但不在以上选项中"},
+    # 2026-09-19. Both roles stated as claims about the PASSAGE, in the plainest wording
+    # we could write: no 无法/不能/不知道 anywhere, because a reader genuinely "cannot
+    # determine" an answer that is merely unlisted -- that is the overlap that sank the
+    # 2026-09-14 six-option run. Pair with --meta-wording sequential, whose closing line
+    # forbids the abstain option once the passage has stated an answer.
+    "passage_claim": {"abstain": "这段经文没有提到这个问题的答案",
+                      "nota": "经文说了答案，但不是以上任何一个"},
     # The configuration adopted on 2026-09-14: ONE hatch, asserting only that no
     # content option is supported. Run it with --nota "" and --labels ABCDE; the
     # "nota" text here is what a 6-option run would show and exists only so the

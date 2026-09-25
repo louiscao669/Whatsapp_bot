@@ -32,6 +32,15 @@ QA_DIR="${QA_DIR:-evaluation/datasets/pseudonymized/qa/tier1_bsb}"
 DRY_RUN="${DRY_RUN:-0}"
 FORCE_ANSWER="${FORCE_ANSWER:-0}"
 NO_THINK="${NO_THINK:-1}"
+# Thinking on/off are different conditions and must not share an output cell, so the
+# model dir gets a suffix (defaults to "_think" when NO_THINK=0), matching
+# run_tier1_defect_models.sh. Set SLUG_SUFFIX explicitly to override.
+if [ -z "${SLUG_SUFFIX+x}" ]; then
+  [ "$NO_THINK" = "0" ] && SLUG_SUFFIX="_think" || SLUG_SUFFIX=""
+fi
+# SHARE_QA=1 points every model at the ONE _base QA translation (see the same flag in
+# run_tier1_defect_models.sh); without it each model would translate the QA itself.
+SHARE_QA="${SHARE_QA:-1}"
 
 PIDS="t1_judg9 t1_judg17_18 t1_2kgs6_7 t1_1kgs13 t1_2kgs11 t1_2chr26 t1_2sam21 t1_acts19 t1_acts20 t1_acts23"
 
@@ -79,7 +88,7 @@ for pid in $PIDS; do
     echo "  skip $pid: no wbw translation at $src" >&2; skipped=$((skipped+1)); continue
   fi
   for model in $MODELS; do
-    slug=$(echo "$model" | tr -d ':.')
+    slug=$(echo "$model" | tr -d ':.')$SLUG_SUFFIX
     dst="$OUT_ROOT/$pid/$slug/$METHOD"
     if [ "$DRY_RUN" != "1" ]; then
       mkdir -p "$dst"
@@ -93,6 +102,10 @@ for pid in $PIDS; do
       --mcq-choice-mapper openai --skip-entity-discovery --pre-blinded \
       --pseudonym-map \"$MAP\" --answer-verse-window 2 --temperature 0.0 \
       --allow-partial-answers --continue-on-method-error"
+    if [ "$SHARE_QA" = "1" ] && [ -f "$OUT_ROOT/$pid/_base/_shared/${pid}_base_qa_zh.json" ]; then
+      cmd="$cmd --translated-qa-json \"$OUT_ROOT/$pid/_base/_shared/${pid}_base_qa_zh.json\""
+      cmd="$cmd --decanonicalized-qa-json \"$OUT_ROOT/$pid/_base/_shared/${pid}_base_qa_zh_decanonicalized.json\""
+    fi
     [ -n "$WINDOWS" ] && cmd="$cmd --answer-verse-windows-json \"$WINDOWS\""
     case "$model" in qwen3*) [ "$NO_THINK" = "1" ] && cmd="$cmd --ollama-no-think" ;; esac
     [ "$FORCE_ANSWER" = "1" ] && cmd="$cmd --force-answer"

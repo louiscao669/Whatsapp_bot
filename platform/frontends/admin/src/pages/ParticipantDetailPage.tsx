@@ -1,8 +1,10 @@
 import { useEffect, useState, type FormEvent } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { ApiError, getCachedApiData } from '../api/client'
 import {
+  deleteTestParticipant,
   fetchParticipantDetail,
+  pilotUrl,
   skipParticipantAssignment,
   updateParticipantLanguage,
   type ParticipantDetail,
@@ -24,6 +26,8 @@ export function ParticipantDetailPage() {
   const [message, setMessage] = useState('')
   const [savingLanguage, setSavingLanguage] = useState(false)
   const [skippingAssignmentId, setSkippingAssignmentId] = useState('')
+  const [deleting, setDeleting] = useState(false)
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (!participantId) {
@@ -97,6 +101,23 @@ export function ParticipantDetailPage() {
     }
   }
 
+  async function handleDeleteTestParticipant() {
+    if (!participantId) return
+    const confirmed = window.confirm(
+      'Delete this test participant and all of its plan, assignments and answers?',
+    )
+    if (!confirmed) return
+    setDeleting(true)
+    setError('')
+    try {
+      await deleteTestParticipant(participantId)
+      navigate('/participants')
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : 'Could not delete participant')
+      setDeleting(false)
+    }
+  }
+
   function handleAssigned(successMessage: string) {
     setMessage(successMessage)
     if (!participantId) return
@@ -132,7 +153,33 @@ export function ParticipantDetailPage() {
       <p className="back-link">
         <Link to="/participants">← Back to Participants</Link>
       </p>
-      <h2>{participant.display_name || participant.participant_id}</h2>
+      <h2>
+        {participant.display_name || participant.participant_id}
+        {participant.is_test ? <span className="test-badge">TEST</span> : null}
+      </h2>
+      {participant.is_test ? (
+        <section className="detail-card">
+          <h3>Test participant</h3>
+          <p className="test-participant-link">
+            Pilot link:{' '}
+            <a href={pilotUrl(participant.id)} target="_blank" rel="noreferrer">
+              {pilotUrl(participant.id)}
+            </a>
+          </p>
+          <p className="hint">
+            Excluded from plan building and pilot exports. Deleting removes its plan,
+            assignments and answers; it cannot be undone.
+          </p>
+          <button
+            type="button"
+            className="btn-danger"
+            disabled={deleting}
+            onClick={handleDeleteTestParticipant}
+          >
+            {deleting ? 'Deleting…' : 'Delete test participant'}
+          </button>
+        </section>
+      ) : null}
       {error ? <p className="error-message">{error}</p> : null}
       {message ? <p className="success-message">{message}</p> : null}
 

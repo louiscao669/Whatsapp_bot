@@ -38,7 +38,6 @@ Usage (from repo root):
 """
 
 import argparse
-import random
 import sys
 from collections import Counter, defaultdict
 from pathlib import Path
@@ -54,44 +53,24 @@ from sqlalchemy import func, select  # noqa: E402
 
 from eten_shared.database import get_session_factory  # noqa: E402
 from eten_shared.models import (  # noqa: E402
-    ExperimentPassage,
     ExperimentPlanCell,
     ExperimentWindow,
     Participant,
 )
 
-# 8 condition slots. Two "clean" anchors (pooled). The strings MUST match
-# experiment_passages.condition written by human_pilot/pilot_import.py.
-# [CHANGED 2026-07-27b] Two matched adequacy ladders ({15,30}% each) replace the old
-# omission{10,20,30}+mistranslation20 slate: om10 vs om20 were not separable in the window-3
-# grid, and mistranslation had a single dose (no slope). The clean anchors double as the 0%
-# dose for BOTH families. See HUMAN_PILOT_DESIGN_2026-07-27.md §4.
-SLOTS = [
-    "clean",            # A1 anchor
-    "clean",            # A2 anchor (same passage; pooled)
-    "omission15",
-    "omission30",
-    "mistranslation15",
-    "mistranslation30",
-    "grammar30",
-    "wbw",
-]
-# ``chapter`` in the legacy schema now stores the balanced window-group index.
-# Each group contains 9-10 tier-1 windows and may cross a passage boundary.
-GROUPS = list(range(1, 9))
+# Plan rules (slots, groups, per-participant cells) live in eten_shared.experiment_plan
+# so the admin "Create test participant" action writes the identical plan.
+from eten_shared.experiment_plan import (  # noqa: E402
+    GROUPS,
+    LANGUAGE,
+    SLOTS,
+    build_cells,
+    is_test_participant,
+    passage_index,
+    tier1_variant_gaps,
+)
+
 CHAPTERS = GROUPS  # compatibility for older tests/imports
-LANGUAGE = "zh"
-
-
-def build_cells(participant_id: str, block_index: int):
-    """Return the list of (chapter, condition, sequence_index) for one participant."""
-    chapter_order = GROUPS.copy()
-    random.Random(str(participant_id)).shuffle(chapter_order)  # stable per participant
-    cells = []
-    for seq, chapter in enumerate(chapter_order):
-        condition = SLOTS[(chapter - 1 + block_index) % len(SLOTS)]
-        cells.append((chapter, condition, seq))
-    return cells
 
 
 def resolve_participants(db, args):
@@ -109,31 +88,9 @@ def resolve_participants(db, args):
     rows = db.scalars(
         select(Participant).where(Participant.consented.is_(True)).order_by(Participant.created_at)
     ).all()
-    return list(rows)
-
-
-def passage_index(db, language):
-    idx = {}
-    for p in db.scalars(select(ExperimentPassage).where(ExperimentPassage.language == language)).all():
-        idx[(p.chapter, p.condition)] = p.id
-    return idx
-
-
-def tier1_variant_gaps(db, language):
-    """Missing (source passage, condition) variants required by imported windows."""
-    source_ids = set(db.scalars(select(ExperimentWindow.source_passage_id).distinct()).all())
-    present = set(db.execute(
-        select(ExperimentPassage.source_passage_id, ExperimentPassage.condition).where(
-            ExperimentPassage.language == language,
-            ExperimentPassage.source_passage_id.in_(source_ids),
-        )
-    ).all()) if source_ids else set()
-    return {
-        (source_id, condition)
-        for source_id in source_ids
-        for condition in set(SLOTS)
-        if (source_id, condition) not in present
-    }
+    # Test participants (admin "Create test participant") never count toward block
+    # positions: including them would shift every later real participant's slot rotation.
+    return [p for p in rows if not is_test_participant(p)]
 
 
 def main():

@@ -32,6 +32,7 @@ export type ParticipantRow = {
   batch_size: number
   last_seen: string | null
   consented: boolean
+  is_test: boolean
 }
 
 export type ParticipantHistoryRow = {
@@ -73,6 +74,7 @@ export type ParticipantDetail = {
     batch_size: number
     last_seen: string | null
     consented: boolean
+    is_test: boolean
     created_at: string | null
   }
   assigned_questions: ParticipantAssignedQuestionRow[]
@@ -122,4 +124,45 @@ export function skipParticipantAssignment(participantId: string, assignmentId: s
     `/api/v1/participants/${participantId}/assignments/${assignmentId}`,
     { method: 'DELETE' },
   )
+}
+
+export type TestParticipantPlanCell = {
+  sequence_index: number
+  group: number
+  condition: string
+}
+
+export type CreatedTestParticipant = {
+  ok: true
+  message: string
+  participant_id: string
+  display_name: string
+  language: string
+  block_index: number | null
+  slot_count: number
+  plan: TestParticipantPlanCell[]
+  pilot_path: string | null
+}
+
+export function createTestParticipant(input: {
+  display_name?: string
+  language?: string
+  build_plan?: boolean
+}) {
+  return apiFetch<CreatedTestParticipant>('/api/v1/participants/test', {
+    method: 'POST',
+    body: JSON.stringify(input),
+  })
+}
+
+export function deleteTestParticipant(participantId: string) {
+  return apiFetch<{ ok: true; message: string; assignments: number; responses: number }>(
+    `/api/v1/participants/${participantId}`,
+    { method: 'DELETE' },
+  )
+}
+
+/** Absolute pilot URL for a participant, on the host serving the admin app. */
+export function pilotUrl(participantId: string) {
+  return `${window.location.origin}/pilot/${participantId}`
 }
