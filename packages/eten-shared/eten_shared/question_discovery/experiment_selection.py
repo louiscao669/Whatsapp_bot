@@ -24,7 +24,9 @@ Public API:
 Question-type arm: setting ``WH_TYPE_PREFERENCE=why`` (or ``why,how``) makes selection
 PREFER items whose stem asks that interrogative, falling back to the cell's other items
 when it holds none. Off by default; see ``wh_preference_strategy`` for why it is a
-preference rather than a filter.
+preference rather than a filter. Adding ``WH_TYPE_STRICT=1`` turns it into a hard filter:
+cells holding no matching item are skipped, which yields a single-stem stream at the cost
+of the Latin square -- test participants only, see ``wh_type_strict``.
 
 Adaptive hook: item ordering within a cell is delegated to a pluggable ``strategy``.
 The default is the designed order (MCQ-first, deterministic per participant). An adaptive
@@ -98,7 +100,7 @@ def wh_type_preference() -> frozenset:
 def wh_preference_strategy(keep, inner: Strategy = designed_order_strategy) -> Strategy:
     """Prefer items whose stem asks one of ``keep``; fall back to the cell's full set.
 
-    SOFT, not a hard filter, and that is the design decision. gold72 holds 13 `why` items
+    SOFT, not a hard filter, and that is the design decision. gold72 holds 12 `why` items
     across ten passages, so some cells contain none; a hard filter would exhaust those
     cells and either strand the participant mid-plan or silently drop chapters from the
     Latin square, which is the balance the design exists to protect. Falling back keeps
@@ -116,6 +118,31 @@ def wh_preference_strategy(keep, inner: Strategy = designed_order_strategy) -> S
         return inner(cell, preferred or remaining, participant)
 
     return strategy
+
+
+def wh_type_strict() -> bool:
+    """True when ``WH_TYPE_PREFERENCE`` should FILTER the pool rather than weight it.
+
+    Off by default. The soft preference cannot produce a single-stem stream: gold72 holds
+    12 `why` items and SIX of its ten passages contain none, so those cells fall back and
+    the realised stream is why-weighted at best. Strict mode drops the non-matching items
+    from the candidate pool *before* the emptiness check, so a stem-less cell is flipped
+    to ``done`` and skipped entirely.
+
+    DESTRUCTIVE TO THE PLAN, and deliberately so: the skipped cells are persisted as
+    ``done``, so unsetting the flag later does NOT bring those chapters back for that
+    participant. It sacrifices the Latin square to get a single-stem stream -- fine for a
+    throwaway test participant inspecting question quality, never for an analysed arm.
+    """
+    return os.getenv("WH_TYPE_STRICT", "").strip().lower() in {"1", "true", "yes", "on"}
+
+
+def filter_candidates_by_wh_type(items: List[QAItem], keep) -> List[QAItem]:
+    """Items whose stem asks one of ``keep``. Empty ``keep`` -> unchanged (no-op)."""
+    if not keep:
+        return list(items)
+    keep = frozenset(keep)
+    return [item for item in items if classify_wh_type(item.question_text) in keep]
 
 
 def active_strategy() -> Strategy:
@@ -204,10 +231,15 @@ def select_next_experiment_cell_item(
     (not committed) so they land in the same transaction as the created assignment.
     """
     strategy = strategy or active_strategy()
+    # Strict arm: filter BEFORE the emptiness check, so a cell holding no item of the
+    # wanted stem is treated as exhausted and advanced past rather than falling back.
+    strict_keep = wh_type_preference() if wh_type_strict() else frozenset()
     cells = _plan_cells(db, participant)
     cell = _current_cell(cells)
     while cell is not None:
         remaining = _cell_candidates(db, cell, participant)
+        if strict_keep:
+            remaining = filter_candidates_by_wh_type(remaining, strict_keep)
         if remaining:
             if cell.status != "active":
                 cell.status = "active"

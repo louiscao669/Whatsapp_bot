@@ -29,7 +29,8 @@ from eten_shared.question_discovery import (
     experiment_batch_should_reset, select_next_experiment_cell_item,
 )
 from eten_shared.question_discovery.experiment_selection import (
-    DEFAULT_STRATEGY, active_strategy, wh_preference_strategy,
+    DEFAULT_STRATEGY, active_strategy, filter_candidates_by_wh_type,
+    wh_preference_strategy, wh_type_strict,
 )
 from build_experiment_plan import SLOTS, CHAPTERS, build_cells
 
@@ -80,6 +81,121 @@ def write_plan(db):
                 experiment_passage_id=pidx.get((chapter, condition)),
                 sequence_index=seq, status="pending"))
     db.commit()
+
+
+# ------------------------------------------------------------------ strict wh arm
+# WH_TYPE_STRICT=1 turns the preference into a filter. Its whole point is the thing the
+# soft version refuses to do: SKIP a cell that holds no item of the wanted stem. These
+# checks run on their own tiny fixture (3 chapters, hand-written cells) because the Latin
+# square in main() deliberately has no stem variation to skip.
+STRICT_STEMS = {
+    101: [("why", "为什么这人离开？"), ("what", "他偷了什么？")],
+    102: [("who", "他的父亲是谁？"), ("what", "他们带走了什么？")],   # holds no why
+    103: [("why", "为什么他们逃走？"), ("when", "他们什么时候来？")],
+}
+
+
+class _Item:
+    def __init__(self, ident, text, qtype="mcq"):
+        self.id, self.question_text, self.question_type = ident, text, qtype
+
+
+def strict_fixture():
+    """Fresh in-memory DB: 3 chapters x 2 items, one chapter with no why item."""
+    engine = create_engine("sqlite:///:memory:")
+    Base.metadata.create_all(engine)
+    db = Session(engine)
+    db.add(Participant(id="s00", display_name="S0", consented=True, target_language="zh"))
+    for seq, (ch, stems) in enumerate(sorted(STRICT_STEMS.items())):
+        for k, (_kind, text) in enumerate(stems):
+            db.add(QAItem(
+                id=f"luke{ch}-s{k}", passage_id=f"luke{ch}",
+                question_text=text, question_type="mcq", expected_answer="a",
+                mcq_choices=["a", "b", "c", "d"], mcq_correct_choice="A",
+                required_keywords=[], optional_keywords=[], active=True,
+            ))
+        db.add(ExperimentPlanCell(participant_id="s00", chapter=ch, condition="clean",
+                                  sequence_index=seq, status="pending"))
+    db.commit()
+    return db
+
+
+def drain(db):
+    """Serve the participant's whole plan, returning the stems served."""
+    served = []
+    for _ in range(50):
+        part = db.get(Participant, "s00")
+        item, cell = select_next_experiment_cell_item(db, part)
+        if item is None:
+            break
+        served.append((cell.chapter, item.question_text))
+        db.add(Assignment(participant_id="s00", qa_item_id=item.id,
+                          status="completed", experiment_cell_id=cell.id))
+        db.commit()
+    return served
+
+
+def strict_checks():
+    prev_pref = os.environ.pop("WH_TYPE_PREFERENCE", None)
+    prev_strict = os.environ.pop("WH_TYPE_STRICT", None)
+    try:
+        check("strict: flag off by default", not wh_type_strict())
+        for truthy in ("1", "true", "YES", "on"):
+            os.environ["WH_TYPE_STRICT"] = truthy
+            if not wh_type_strict():
+                check(f"strict: {truthy!r} reads as on", False)
+                break
+        else:
+            check("strict: 1/true/yes/on all read as on", True)
+        os.environ["WH_TYPE_STRICT"] = "0"
+        check("strict: '0' reads as off", not wh_type_strict())
+
+        # no-op guard: an empty keep set must never filter anything away
+        check("strict: empty keep set is a no-op filter",
+              len(filter_candidates_by_wh_type([_Item("a", "谁来了？")], frozenset())) == 1)
+
+        # --- strict ON, why only
+        os.environ["WH_TYPE_PREFERENCE"] = "why"
+        os.environ["WH_TYPE_STRICT"] = "1"
+        db = strict_fixture()
+        served = drain(db)
+        check("strict: serves ONLY why stems",
+              served and all("为什么" in text for _ch, text in served))
+        check("strict: serves every why item and nothing else (2 of 6)", len(served) == 2)
+        check("strict: never serves from the why-less chapter",
+              102 not in {ch for ch, _ in served})
+        skipped = db.scalars(select(ExperimentPlanCell).where(
+            ExperimentPlanCell.participant_id == "s00",
+            ExperimentPlanCell.chapter == 102)).first()
+        check("strict: the why-less cell is flipped to done, not left pending",
+              skipped is not None and skipped.status == "done")
+        check("strict: plan runs to completion (returns None, not a hang)",
+              select_next_experiment_cell_item(db, db.get(Participant, "s00")) == (None, None))
+        db.close()
+
+        # --- strict ON for a stem NO cell holds: the plan yields nothing at all
+        os.environ["WH_TYPE_PREFERENCE"] = "where"
+        db = strict_fixture()
+        check("strict: a stem absent from every cell yields (None, None), not a fallback",
+              select_next_experiment_cell_item(db, db.get(Participant, "s00")) == (None, None))
+        db.close()
+
+        # --- strict OFF: the soft arm is untouched by any of this
+        os.environ["WH_TYPE_PREFERENCE"] = "why"
+        os.environ.pop("WH_TYPE_STRICT", None)
+        db = strict_fixture()
+        served = drain(db)
+        check("soft arm unchanged: still serves all 6 items across all 3 chapters",
+              len(served) == 6 and len({ch for ch, _ in served}) == 3)
+        check("soft arm unchanged: why still served first in a chapter that holds one",
+              [t for c, t in served if c == 101][0] == "为什么这人离开？")
+        db.close()
+    finally:
+        for key, val in (("WH_TYPE_PREFERENCE", prev_pref), ("WH_TYPE_STRICT", prev_strict)):
+            os.environ.pop(key, None)
+            if val is not None:
+                os.environ[key] = val
+
 
 
 def main():
@@ -230,10 +346,6 @@ def main():
         if prev is not None:
             os.environ["WH_TYPE_PREFERENCE"] = prev
 
-    class _Item:
-        def __init__(self, ident, text, qtype="mcq"):
-            self.id, self.question_text, self.question_type = ident, text, qtype
-
     class _Cell:
         participant_id = "p00"
 
@@ -255,6 +367,8 @@ def main():
     check("wh arm: ordering inside the preferred subset still delegates to inner",
           wh_preference_strategy({"why"}, inner=lambda c, r, p: r[-1])(
               _Cell(), [who, why, what], None) is why)
+
+    strict_checks()
 
     print("\n" + ("ALL TESTS PASSED" if not fails else f"FAILED: {fails}"))
     return 1 if fails else 0
