@@ -291,6 +291,24 @@ def experiment_passage_assignment_kwargs(db: Session, experiment_passage, qa_ite
             for number in experiment_window.verse_numbers
             if number in by_number
         ]
+        # Omission may have deleted part of the curated window. Pad it back to the full
+        # delivery length from surviving verses, so window LENGTH stops signalling whether
+        # the answer is still there (see pad_window_verses). Verses other items' windows
+        # claim are avoided where possible, to keep the added overlap minimal.
+        if len(verses) < PASSAGE_DELIVERY_VERSE_COUNT:
+            occupied = {
+                number
+                for other in db.scalars(
+                    select(ExperimentWindow).where(
+                        ExperimentWindow.source_passage_id == qa_item.passage_id,
+                        ExperimentWindow.qa_item_id != qa_item.id,
+                    )
+                ).all()
+                for number in (other.verse_numbers or [])
+            }
+            verses = pad_window_verses(
+                experiment_window.verse_numbers, all_verses, occupied=occupied
+            )
         if not verses:
             return {}
         return {

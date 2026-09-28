@@ -21,6 +21,11 @@ Public API:
         Thin wrapper with the same signature as ``select_next_qa_item`` for drop-in
         branching at the call sites.
 
+Question-type arm: setting ``WH_TYPE_PREFERENCE=why`` (or ``why,how``) makes selection
+PREFER items whose stem asks that interrogative, falling back to the cell's other items
+when it holds none. Off by default; see ``wh_preference_strategy`` for why it is a
+preference rather than a filter.
+
 Adaptive hook: item ordering within a cell is delegated to a pluggable ``strategy``.
 The default is the designed order (MCQ-first, deterministic per participant). An adaptive
 Fisher-information strategy can be swapped in later WITHOUT touching the plan/cell
@@ -31,6 +36,7 @@ H-T7 / P2 per-item-s_i results, which must license per-item selection first.
 from __future__ import annotations
 
 import hashlib
+import os
 from typing import Callable, List, Optional, Tuple
 
 from sqlalchemy import select
@@ -39,6 +45,7 @@ from sqlalchemy.orm import Session
 from eten_shared.domain.qa_eligibility import qa_item_is_assignable
 from eten_shared.models import Assignment, ExperimentPlanCell, ExperimentWindow, QAItem
 from eten_shared.recordings import participant_question_audio_satisfied
+from eten_shared.wh_type import classify_wh_type, parse_wh_types
 
 # A strategy picks ONE item from the eligible remaining items of the active cell.
 # (cell, remaining_items, participant) -> chosen QAItem
@@ -77,6 +84,48 @@ def adaptive_fisher_strategy(
 
 
 DEFAULT_STRATEGY: Strategy = designed_order_strategy
+
+
+def wh_type_preference() -> frozenset:
+    """Stem types this deployment prefers, from WH_TYPE_PREFERENCE. Empty = unrestricted.
+
+    Opt-in and default OFF, like ENABLE_EXPERIMENT_ASSIGNMENT: unset, selection behaves
+    exactly as before. Set to e.g. "why" or "why,how" for a question-type arm.
+    """
+    return parse_wh_types(os.getenv("WH_TYPE_PREFERENCE", ""))
+
+
+def wh_preference_strategy(keep, inner: Strategy = designed_order_strategy) -> Strategy:
+    """Prefer items whose stem asks one of ``keep``; fall back to the cell's full set.
+
+    SOFT, not a hard filter, and that is the design decision. gold72 holds 13 `why` items
+    across ten passages, so some cells contain none; a hard filter would exhaust those
+    cells and either strand the participant mid-plan or silently drop chapters from the
+    Latin square, which is the balance the design exists to protect. Falling back keeps
+    every cell answerable and every chapter represented -- the stream is why-weighted
+    rather than why-only, and analysis reads the realised composition per participant
+    rather than assuming it.
+
+    Ordering within the preferred subset is delegated to ``inner``, so resumption
+    stability and the MCQ-first split are unchanged.
+    """
+    keep = frozenset(keep)
+
+    def strategy(cell: ExperimentPlanCell, remaining: List[QAItem], participant) -> QAItem:
+        preferred = [i for i in remaining if classify_wh_type(i.question_text) in keep]
+        return inner(cell, preferred or remaining, participant)
+
+    return strategy
+
+
+def active_strategy() -> Strategy:
+    """DEFAULT_STRATEGY, or a wh-preferring wrapper when WH_TYPE_PREFERENCE is set.
+
+    Resolved per call rather than at import, so the flag can be set by a test or a
+    per-process launch without re-importing the module.
+    """
+    keep = wh_type_preference()
+    return wh_preference_strategy(keep) if keep else DEFAULT_STRATEGY
 
 
 # ----------------------------------------------------------------------- internals
@@ -145,7 +194,7 @@ def _cell_candidates(db: Session, cell: ExperimentPlanCell, participant) -> List
 
 # -------------------------------------------------------------------------- public
 def select_next_experiment_cell_item(
-    db: Session, participant, strategy: Strategy = DEFAULT_STRATEGY
+    db: Session, participant, strategy: Optional[Strategy] = None
 ) -> Tuple[Optional[QAItem], Optional[ExperimentPlanCell]]:
     """Return the next ``(QAItem, ExperimentPlanCell)`` from the participant's designed
     plan, or ``(None, None)`` when the plan is complete / no eligible item remains.
@@ -154,6 +203,7 @@ def select_next_experiment_cell_item(
     cells are flipped to ``done`` and skipped. Status changes are staged on the session
     (not committed) so they land in the same transaction as the created assignment.
     """
+    strategy = strategy or active_strategy()
     cells = _plan_cells(db, participant)
     cell = _current_cell(cells)
     while cell is not None:

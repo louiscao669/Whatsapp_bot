@@ -28,6 +28,9 @@ from eten_shared.domain.assignments import create_assignment_for_qa_item
 from eten_shared.question_discovery import (
     experiment_batch_should_reset, select_next_experiment_cell_item,
 )
+from eten_shared.question_discovery.experiment_selection import (
+    DEFAULT_STRATEGY, active_strategy, wh_preference_strategy,
+)
 from build_experiment_plan import SLOTS, CHAPTERS, build_cells
 
 # [CHANGED 2026-07-27b] Derive the condition set from SLOTS instead of restating it, so a
@@ -202,6 +205,56 @@ def main():
         distinct_across_cells = len({next(iter(v)) for v in by_cell.values()}) == len(by_cell)
         check("batch never mixes conditions: one batch_id per cell", one_batch_per_cell)
         check("batch resets at cell boundary: distinct batch_id per cell", distinct_across_cells)
+
+    # ---------------------------------------------------------------- wh-type arm
+    # WH_TYPE_PREFERENCE weights selection toward one interrogative (the question-type
+    # arm from 2026-09-26). It must be OFF unless set, must prefer rather than filter,
+    # and must reject a typo instead of silently serving an unrestricted stream.
+    prev = os.environ.pop("WH_TYPE_PREFERENCE", None)
+    try:
+        check("wh arm: unset -> the designed strategy, unchanged",
+              active_strategy() is DEFAULT_STRATEGY)
+        os.environ["WH_TYPE_PREFERENCE"] = "why,how"
+        check("wh arm: set -> a different strategy is installed",
+              active_strategy() is not DEFAULT_STRATEGY)
+        os.environ["WH_TYPE_PREFERENCE"] = "wat"
+        typo_rejected = False
+        try:
+            active_strategy()
+        except ValueError:
+            typo_rejected = True
+        check("wh arm: an unknown stem type raises, never silently unrestricts",
+              typo_rejected)
+    finally:
+        os.environ.pop("WH_TYPE_PREFERENCE", None)
+        if prev is not None:
+            os.environ["WH_TYPE_PREFERENCE"] = prev
+
+    class _Item:
+        def __init__(self, ident, text, qtype="mcq"):
+            self.id, self.question_text, self.question_type = ident, text, qtype
+
+    class _Cell:
+        participant_id = "p00"
+
+    why = _Item("w1", "为什么但人寻找地盘？")
+    who = _Item("h1", "亚比米勒的父亲是谁？")
+    what = _Item("t1", "米该偷了什么？")
+    strat = wh_preference_strategy({"why"})
+    check("wh arm: picks the why item when the cell holds one",
+          strat(_Cell(), [who, what, why], None) is why)
+    check("wh arm: FALLS BACK to the cell's items when it holds no why item",
+          strat(_Cell(), [who, what], None) in (who, what))
+    check("wh arm: a cell with only why items is unaffected",
+          strat(_Cell(), [why], None) is why)
+    # the fallback is what protects the Latin square: every cell stays answerable, so no
+    # chapter silently drops out of a participant's plan.
+    check("wh arm: never returns None for a non-empty cell",
+          all(strat(_Cell(), c, None) is not None
+              for c in ([who], [what, who], [why, who])))
+    check("wh arm: ordering inside the preferred subset still delegates to inner",
+          wh_preference_strategy({"why"}, inner=lambda c, r, p: r[-1])(
+              _Cell(), [who, why, what], None) is why)
 
     print("\n" + ("ALL TESTS PASSED" if not fails else f"FAILED: {fails}"))
     return 1 if fails else 0
