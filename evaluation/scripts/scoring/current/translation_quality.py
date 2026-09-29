@@ -396,6 +396,42 @@ def wbw_name_override(word: str, overrides: dict) -> str | None:
     return out
 
 
+# --- wbw spacing ---
+# Chinese is not written with spaces between words, so joining the rendered tokens with
+# " " left a visual signature no reader could miss: the arm announced itself as machine
+# output before a single word was read, which is the same class of artefact as the Latin
+# "WHO" and the non-canonical names. Joining with nothing keeps the syntactic damage --
+# every token still translated out of context -- while removing the typographic tell.
+#
+# Two gaps MUST survive, or the passage stops parsing:
+#   * after a verse marker. human_pilot/pilot_import._TIER1_MARKER matches r"(\d{1,3})\s+",
+#     a number FOLLOWED BY whitespace, so a glued "17现在" is no longer a verse and the
+#     pilot's verse/window alignment collapses.
+#   * between two latin-script runs, so an untranslated fallback token cannot fuse into
+#     its neighbour and become one unreadable word.
+# A number that is part of the text rather than a marker ("1,100") has a non-space before
+# its digits and so is left unspaced, which is how Chinese sets it anyway.
+_WBW_VERSE_TAIL = re.compile(r"(?:^|(?<=\s))\d{1,3}$")
+
+
+def wbw_join(pairs: "list[tuple[str, str]]", keep_spaces: bool = False) -> str:
+    """Assemble (source_token, rendered_token) pairs into the passage text."""
+    if keep_spaces:
+        return " ".join(rendered for _, rendered in pairs)
+    out: list[str] = []
+    for index, (source, rendered) in enumerate(pairs):
+        out.append(rendered)
+        if index + 1 >= len(pairs):
+            continue
+        following = pairs[index + 1][1]
+        if _WBW_VERSE_TAIL.search(source):
+            out.append(" ")
+        elif (rendered and following and rendered[-1].isascii() and rendered[-1].isalnum()
+              and following[0].isascii() and following[0].isalnum()):
+            out.append(" ")
+    return "".join(out)
+
+
 def google_word_by_word(
     texts: str | Iterable[str],
     *,
@@ -436,15 +472,16 @@ def google_word_by_word(
     stats = {"tokens": 0, "requests": 0, "cache_hits": 0, "fallbacks": 0,
              "name_overrides": 0, "fallback_tokens": []}
 
+    keep_spaces = bool(os.getenv("WBW_KEEP_SPACES"))
     outputs = []
     for text in ensure_texts(texts):
-        translated_words = []
+        translated_words = []   # (source token, rendered token)
         for word in text.split(" "):
             if not word:
-                translated_words.append("")
+                translated_words.append((word, ""))
                 continue
             if is_protected_token(word):
-                translated_words.append(word)
+                translated_words.append((word, word))
                 continue
             stats["tokens"] += 1
             # Canonical names first: the cache's answer for a lower-cased proper noun
@@ -452,12 +489,12 @@ def google_word_by_word(
             overridden = wbw_name_override(word, name_overrides)
             if overridden is not None:
                 stats["name_overrides"] += 1
-                translated_words.append(overridden)
+                translated_words.append((word, overridden))
                 continue
             key = word.lower()
             if key in cache:
                 stats["cache_hits"] += 1
-                translated_words.append(cache[key])
+                translated_words.append((word, cache[key]))
                 continue
             rendered = None
             for attempt in range(attempts):
@@ -482,8 +519,8 @@ def google_word_by_word(
                 cache[key] = rendered
                 if stats["requests"] % 25 == 0:
                     _wbw_save_cache(cache_path, cache)
-            translated_words.append(rendered)
-        outputs.append(" ".join(translated_words))
+            translated_words.append((word, rendered))
+        outputs.append(wbw_join(translated_words, keep_spaces))
 
     _wbw_save_cache(cache_path, cache)
     _WBW_LAST_STATS = stats
