@@ -23,7 +23,9 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[4]
 sys.path.insert(0, str(REPO / "evaluation" / "scripts" / "scoring" / "current"))
-from translation_quality import is_protected_token  # noqa: E402
+from translation_quality import (  # noqa: E402
+    _wbw_load_name_overrides, is_protected_token, wbw_name_override,
+)
 
 DEFAULT_CACHE = REPO / "evaluation/datasets/perturbations/.wbw_cache_en_zh-CN.json"
 DEFAULT_PASSAGES = REPO / "evaluation/datasets/passages/tier1_bsb"
@@ -40,10 +42,15 @@ def main() -> int:
     translator = GoogleTranslator(source="en", target="zh-CN")
 
     cache = json.loads(args.cache.read_text(encoding="utf-8")) if args.cache.exists() else {}
+    # Tokens the canonical-name overrides already answer need no lookup -- asking
+    # Google for a lower-cased proper noun is what produced 米卡 / 担 / "WHO".
+    overrides = _wbw_load_name_overrides()
     wanted = []
     for path in sorted(args.passages.glob("*.txt")):
         for word in path.read_text(encoding="utf-8").split(" "):
             if not word or is_protected_token(word):
+                continue
+            if wbw_name_override(word, overrides) is not None:
                 continue
             key = word.lower()
             if key not in cache and key not in wanted:

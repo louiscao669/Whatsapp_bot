@@ -332,6 +332,70 @@ def _wbw_save_cache(path: Path, cache: dict) -> None:
         pass  # a cache failure must never break a translation run
 
 
+# --- wbw canonical-name overrides ---
+# THE BUG THIS FIXES. google_word_by_word keys its cache on `word.lower()`, and the
+# capital is the only thing marking a proper noun, so the translator is asked for a
+# common word: "Dan" -> 担 (the verb "to carry"), "Micah" -> 米卡 (a secular
+# transliteration, not the Bible's 米迦), "who" -> "WHO" (the organization, left in
+# Latin script). Worse, the answer depends on what punctuation rode along with the
+# token -- 'micah' -> 米卡 but 'micah,' -> 米迦 -- so one passage called the same man
+# by two names. That gave the arm three tells a reader can use without reading:
+# Latin script in Chinese text, names that disagree with the MCQ options, and names
+# that disagree with themselves.
+#
+# The overrides are consulted BEFORE the cache and are keyed on the token's latin
+# core, so the fix needs no re-translation and no network. Every entry was verified
+# to occur in that passage's reference Chinese target before being written, which is
+# what keeps the passage's names consistent with the QA built from that reference.
+_WBW_LATIN_RUN = re.compile(r"[A-Za-z][A-Za-z'\u2019\-]*")
+_WBW_POSSESSIVE = re.compile(r"(?:'s|\u2019s)$")
+
+
+def _wbw_name_overrides_path() -> Path:
+    override = os.getenv("WBW_NAME_OVERRIDES_PATH")
+    if override:
+        return Path(override)
+    return Path("evaluation/datasets/perturbations/wbw_name_overrides.json")
+
+
+def _wbw_load_name_overrides() -> dict:
+    if os.getenv("WBW_NAME_OVERRIDES_DISABLED"):
+        return {}
+    try:
+        data = json.loads(_wbw_name_overrides_path().read_text(encoding="utf-8"))
+        return {str(k).lower(): str(v) for k, v in data.items()} if isinstance(data, dict) else {}
+    except Exception:
+        return {}
+
+
+def wbw_name_override(word: str, overrides: dict) -> str | None:
+    """`word` rendered via the override table, or None to fall through to the cache.
+
+    ALL-or-nothing by design: a token is only rewritten when EVERY latin run in it is
+    a known entry, so "twenty-two" or a name glued to an unknown word is left for the
+    normal path instead of being half-translated. Trailing punctuation, newlines and
+    verse numbers ride along untouched -- 'Micah.\n\n12' keeps its verse number.
+    """
+    if not overrides:
+        return None
+    runs = _WBW_LATIN_RUN.findall(word)
+    if not runs:
+        return None
+    out = word
+    for run in runs:
+        rendered = overrides.get(run.lower())
+        if rendered is None:
+            stem = _WBW_POSSESSIVE.sub("", run.lower())
+            if stem == run.lower():
+                return None
+            rendered = overrides.get(stem)
+            if rendered is None:
+                return None
+            rendered += "\u7684"  # 的, matching how the cache renders "micah\u2019s"
+        out = out.replace(run, rendered, 1)
+    return out
+
+
 def google_word_by_word(
     texts: str | Iterable[str],
     *,
@@ -361,6 +425,7 @@ def google_word_by_word(
     # --- wbw resilience (patched) ---
     cache_path = _wbw_cache_path(source_language, target_language)
     cache = _wbw_load_cache(cache_path)
+    name_overrides = _wbw_load_name_overrides()
     attempts = int(os.getenv("WBW_TOKEN_RETRIES", "3"))
     base_delay = float(os.getenv("WBW_RETRY_BASE_DELAY", "0.5"))
     # Pause after every LIVE request (cache hits are free). Google's public
@@ -369,7 +434,7 @@ def google_word_by_word(
     request_gap = float(os.getenv("WBW_REQUEST_GAP", str(sleep_seconds or 0)))
     global _WBW_LAST_STATS
     stats = {"tokens": 0, "requests": 0, "cache_hits": 0, "fallbacks": 0,
-             "fallback_tokens": []}
+             "name_overrides": 0, "fallback_tokens": []}
 
     outputs = []
     for text in ensure_texts(texts):
@@ -382,6 +447,13 @@ def google_word_by_word(
                 translated_words.append(word)
                 continue
             stats["tokens"] += 1
+            # Canonical names first: the cache's answer for a lower-cased proper noun
+            # is wrong by construction, so it must not get a chance to win here.
+            overridden = wbw_name_override(word, name_overrides)
+            if overridden is not None:
+                stats["name_overrides"] += 1
+                translated_words.append(overridden)
+                continue
             key = word.lower()
             if key in cache:
                 stats["cache_hits"] += 1
