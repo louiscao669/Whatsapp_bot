@@ -30,6 +30,10 @@ from eten_shared.models import (
     utc_now,
 )
 from eten_shared.languages import canonical_language_code
+from eten_shared.verse_windows import (
+    PASSAGE_DELIVERY_VERSE_COUNT,
+    pad_window_verses,
+)
 from eten_shared.recordings import (
     get_latest_question_recording,
     participant_language_code,
@@ -174,7 +178,9 @@ def get_chained_assignment(db: Session, participant, assignment_id):
 
 
 PASSAGE_CONTEXT_WINDOW = 2
-PASSAGE_DELIVERY_VERSE_COUNT = 3
+# PASSAGE_DELIVERY_VERSE_COUNT is imported from eten_shared.verse_windows above --
+# pad_window_verses defaults to it, so a second definition here could drift from the
+# padding it is supposed to describe.
 
 # These source references point one verse before the verse containing the
 # answer. Keep the source reference intact for traceability, but constrain the
