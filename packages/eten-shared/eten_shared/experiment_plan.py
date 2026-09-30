@@ -117,11 +117,12 @@ def qa_set_window_count(db, qa_set) -> int:
     ) or 0
 
 
-def qa_set_wh_type_counts(db, qa_set) -> dict:
+def qa_set_wh_type_counts(db, qa_set, question_types=None) -> dict:
     """{wh_type: n} over a set's active, not-review-removed questions (every type keyed).
 
     Classified from the stored stem with the same classifier the selector uses, so a
     count here is exactly what a question-type-restricted participant can be served.
+    ``question_types`` (e.g. {"mcq"}) limits the count to those forms.
     """
     stems = db.scalars(
         select(QAItem.question_text)
@@ -130,6 +131,7 @@ def qa_set_wh_type_counts(db, qa_set) -> dict:
             ExperimentWindow.group_index.in_(qa_set_groups(qa_set)),
             QAItem.active.is_(True),
             QAItem.review_removed_at.is_(None),
+            *([QAItem.question_type.in_(sorted(question_types))] if question_types else []),
         )
     ).all()
     return group_by_wh_type(stems)

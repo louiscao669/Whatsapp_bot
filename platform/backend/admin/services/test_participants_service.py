@@ -10,6 +10,9 @@ limited to flagged participants so this action can never remove real data.
 A test participant can also be restricted to question types (e.g. only ``why``
 stems of hard66): stored as ``dashboard_preferences["wh_types"]`` and applied by the
 selector as a hard filter for that participant alone (``participant_wh_filter``).
+
+Test participants are MCQ-only by default (``dashboard_preferences["question_forms"]``,
+see ``eten_shared.question_forms``); pass ``question_forms="all"`` to include open items.
 """
 
 from sqlalchemy import delete, func, select
@@ -25,6 +28,12 @@ from eten_shared.experiment_plan import (
     next_test_block_index,
     qa_set_wh_type_counts,
     write_participant_plan,
+)
+from eten_shared.question_forms import (
+    PARTICIPANT_QUESTION_FORMS_KEY,
+    QUESTION_FORMS,
+    TEST_PARTICIPANT_DEFAULT_FORMS,
+    parse_question_forms,
 )
 from eten_shared.wh_type import PARTICIPANT_WH_TYPES_KEY, WH_TYPES, parse_wh_types
 from eten_shared.models import (
@@ -64,6 +73,8 @@ def test_participant_options(db):
     return {
         "default_qa_set": DEFAULT_QA_SET,
         "wh_types": list(WH_TYPES),
+        "question_forms": list(QUESTION_FORMS),
+        "default_question_forms": sorted(TEST_PARTICIPANT_DEFAULT_FORMS),
         "qa_sets": [
             {
                 "key": key,
@@ -71,6 +82,9 @@ def test_participant_options(db):
                 "windows": count,
                 "wh_counts": {t: n for t, n in qa_set_wh_type_counts(db, key).items()
                               if t in WH_TYPES},
+                "mcq_wh_counts": {t: n for t, n in qa_set_wh_type_counts(
+                                      db, key, question_types={"mcq"}).items()
+                                  if t in WH_TYPES},
             }
             for key, label, count in available_qa_sets(db)
         ],
@@ -89,19 +103,33 @@ def _parse_wh_types(value):
         raise TestParticipantError(f"Question types: {exc}") from None
 
 
+def _parse_question_forms(value):
+    """None/"" -> the test default (MCQ-only); "all" / ["mcq","open"] -> both."""
+    try:
+        forms = parse_question_forms(value)
+    except ValueError as exc:
+        raise TestParticipantError(f"Question forms: {exc}") from None
+    return sorted(forms or TEST_PARTICIPANT_DEFAULT_FORMS)
+
+
 def create_test_participant(db, *, display_name=None, language=None, build_plan=True,
-                            qa_set=None, wh_types=None):
+                            qa_set=None, wh_types=None, question_forms=None):
     """Stage a flagged participant (+ plan). Caller commits; rollback on error.
 
     ``wh_types`` (e.g. ["why"]) restricts the participant to questions whose stem asks
     those interrogatives. Plan cells whose window group holds no such question are
     skipped at serving time, so the participant sees fewer than 8 conditions.
+
+    ``question_forms`` defaults to MCQ-only; "all" (or ["mcq", "open"]) serves both.
+    The choice is always stored explicitly, so later changes to the default do not
+    change an existing participant.
     """
 
     qa_set = (qa_set or DEFAULT_QA_SET).strip()
     if qa_set not in QA_SETS:
         raise TestParticipantError(f"Unknown question set '{qa_set}'")
     wh_list = _parse_wh_types(wh_types)
+    form_list = _parse_question_forms(question_forms)
     if wh_list and not build_plan:
         raise TestParticipantError("A question-type restriction needs a pilot plan")
 
@@ -117,6 +145,7 @@ def create_test_participant(db, *, display_name=None, language=None, build_plan=
         dashboard_preferences={
             TEST_PARTICIPANT_KEY: True,
             **({PARTICIPANT_WH_TYPES_KEY: wh_list} if wh_list else {}),
+            PARTICIPANT_QUESTION_FORMS_KEY: form_list,
         },
     )
     db.add(participant)
@@ -137,11 +166,12 @@ def create_test_participant(db, *, display_name=None, language=None, build_plan=
 
     wh_question_count = None
     if wh_list:
-        counts = qa_set_wh_type_counts(db, qa_set)
+        counts = qa_set_wh_type_counts(db, qa_set, question_types=set(form_list))
         wh_question_count = sum(counts[t] for t in wh_list)
         if not wh_question_count:
             raise TestParticipantError(
                 f"'{qa_set}' has no {'/'.join(wh_list)} questions imported"
+                f" (in {'/'.join(form_list)} form)"
             )
 
     # Last: its CREATE TABLE IF NOT EXISTS check committed the open transaction in
@@ -157,6 +187,7 @@ def create_test_participant(db, *, display_name=None, language=None, build_plan=
         "qa_set": qa_set if build_plan else None,
         "wh_types": wh_list,
         "wh_question_count": wh_question_count,
+        "question_forms": form_list,
         "slot_count": len(SLOTS),
         "plan": plan,
         "pilot_path": f"/pilot/{participant.id}" if build_plan else None,

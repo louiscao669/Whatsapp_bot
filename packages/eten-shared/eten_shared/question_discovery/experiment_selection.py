@@ -33,6 +33,10 @@ carries ``wh_types`` (set by the admin "Create test participant" action, e.g. ["
 is served ONLY stems of those types, whatever the deployment's env flags say -- the
 strict behaviour above, scoped to one participant. See ``participant_wh_filter``.
 
+Per-participant question-form filter: ``dashboard_preferences["question_forms"]``
+(e.g. ["mcq"]) restricts the forms served; TEST participants without the setting are
+MCQ-only. Hard filter, applied alongside the wh-type one. See ``eten_shared.question_forms``.
+
 Adaptive hook: item ordering within a cell is delegated to a pluggable ``strategy``.
 The default is the designed order (MCQ-first, deterministic per participant). An adaptive
 Fisher-information strategy can be swapped in later WITHOUT touching the plan/cell
@@ -51,6 +55,7 @@ from sqlalchemy.orm import Session
 
 from eten_shared.domain.qa_eligibility import qa_item_is_assignable
 from eten_shared.models import Assignment, ExperimentPlanCell, ExperimentWindow, QAItem
+from eten_shared.question_forms import filter_candidates_by_form, participant_question_forms
 from eten_shared.recordings import participant_question_audio_satisfied
 from eten_shared.wh_type import classify_wh_type, parse_wh_types, participant_wh_types
 
@@ -255,12 +260,17 @@ def select_next_experiment_cell_item(
     # check, so a cell holding no item of the wanted stem is treated as exhausted and
     # advanced past rather than falling back.
     strict_keep = participant_wh_filter(participant)
+    # Question-form restriction (test participants default to MCQ-only), same hard-filter
+    # mechanics: a cell with no item of an allowed form is exhausted and skipped.
+    form_keep = participant_question_forms(participant)
     cells = _plan_cells(db, participant)
     cell = _current_cell(cells)
     while cell is not None:
         remaining = _cell_candidates(db, cell, participant)
         if strict_keep:
             remaining = filter_candidates_by_wh_type(remaining, strict_keep)
+        if form_keep:
+            remaining = filter_candidates_by_form(remaining, form_keep)
         if remaining:
             if cell.status != "active":
                 cell.status = "active"

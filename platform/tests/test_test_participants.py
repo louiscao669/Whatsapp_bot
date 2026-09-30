@@ -308,8 +308,11 @@ if __name__ == "__main__":
     unittest.main()
 
 
-def _import_tier1_set(db, qa_set, passages=("t1_judg9", "t1_acts20"), windows_per_group=1):
-    """Minimal tier-1 import for one question set: windows in every group + all variants."""
+def _import_tier1_set(db, qa_set, passages=("t1_judg9", "t1_acts20"), windows_per_group=1,
+                     question_type="mcq"):
+    """Minimal tier-1 import for one question set: windows in every group + all variants.
+
+    Items are MCQ by default because test participants are MCQ-only by default."""
     from eten_shared.experiment_plan import QA_SETS, qa_set_groups
 
     prefix = QA_SETS[qa_set]["passage_prefix"]
@@ -319,7 +322,9 @@ def _import_tier1_set(db, qa_set, passages=("t1_judg9", "t1_acts20"), windows_pe
         for n in range(windows_per_group):
             source = prefix + passages[(group + n) % len(passages)]
             qa = QAItem(passage_id=source, question_text=f"{qa_set} Q{group}.{n}",
-                        expected_answer="A")
+                        expected_answer="A", question_type=question_type,
+                        **({"mcq_choices": ["a", "b", "c", "d"], "mcq_correct_choice": "A"}
+                           if question_type == "mcq" else {}))
             db.add(qa)
             db.flush()
             db.add(ExperimentWindow(
@@ -525,3 +530,133 @@ class QuestionTypeRestrictionTests(unittest.TestCase):
             self.assertEqual(counts["hard66"]["why"], 4)
             self.assertEqual(counts["hard66"]["who"], 12)
             self.assertEqual(counts["gold72"]["why"], 8)
+
+
+def _add_open_items(db, groups, stem="open Q"):
+    """One extra OPEN item per group, windowed like the imported MCQs."""
+    for group in groups:
+        qa = QAItem(passage_id=f"hard66/t1_judg9", question_text=f"{stem} {group}",
+                    expected_answer="A", question_type="open")
+        db.add(qa)
+        db.flush()
+        db.add(ExperimentWindow(
+            qa_item_id=qa.id, source_passage_id="hard66/t1_judg9",
+            content_id=f"hard66/t1_judg9:open{group}", window_key=f"{group}:open",
+            group_index=group, sequence_index=20000 + group, verse_numbers=[f"{group}:9"],
+        ))
+    db.flush()
+
+
+class QuestionFormRestrictionTests(unittest.TestCase):
+    """Test participants answer MCQ only unless told otherwise."""
+
+    def setUp(self):
+        self.factory = sessionmaker(_engine(), autoflush=False, expire_on_commit=False)
+
+    def _serve_types(self, db, pid):
+        from eten_shared.question_discovery.experiment_selection import (
+            select_next_experiment_cell_item,
+        )
+
+        participant = db.get(Participant, pid)
+        served = []
+        while True:
+            item, cell = select_next_experiment_cell_item(db, participant)
+            if item is None:
+                return served
+            served.append((cell.chapter, item.question_type))
+            db.add(Assignment(participant_id=pid, qa_item_id=item.id,
+                              experiment_cell_id=cell.id,
+                              status=AssignmentStatus.COMPLETED.value))
+            db.flush()
+
+    def _hard66_with_open(self, db):
+        _import_tier1_set(db, "hard66")          # 1 MCQ per group 101-108
+        _add_open_items(db, range(101, 109))     # + 1 open per group
+
+    def test_default_test_participant_is_mcq_only(self):
+        from eten_shared.question_forms import PARTICIPANT_QUESTION_FORMS_KEY
+
+        with self.factory() as db:
+            self._hard66_with_open(db)
+            created = create_test_participant(db, qa_set="hard66")
+            self.assertEqual(created["question_forms"], ["mcq"])
+            participant = db.get(Participant, created["participant_id"])
+            self.assertEqual(participant.dashboard_preferences[PARTICIPANT_QUESTION_FORMS_KEY],
+                             ["mcq"])
+            served = self._serve_types(db, created["participant_id"])
+            self.assertEqual(len(served), 8)
+            self.assertEqual({t for _, t in served}, {"mcq"})
+            self.assertEqual(sorted(g for g, _ in served), list(range(101, 109)))
+            detail = get_participant_detail(db, created["participant_id"])
+            self.assertEqual(detail["participant"]["question_forms"], ["mcq"])
+
+    def test_all_forms_on_request(self):
+        with self.factory() as db:
+            self._hard66_with_open(db)
+            created = create_test_participant(db, qa_set="hard66", question_forms="all")
+            self.assertEqual(created["question_forms"], ["mcq", "open"])
+            served = self._serve_types(db, created["participant_id"])
+            self.assertEqual(len(served), 16)
+            self.assertEqual({t for _, t in served}, {"mcq", "open"})
+
+    def test_existing_test_participant_without_setting_is_mcq_only(self):
+        """Accounts created before this setting existed still get MCQ only."""
+        from eten_shared.question_forms import PARTICIPANT_QUESTION_FORMS_KEY
+
+        with self.factory() as db:
+            self._hard66_with_open(db)
+            pid = create_test_participant(db, qa_set="hard66")["participant_id"]
+            participant = db.get(Participant, pid)
+            prefs = dict(participant.dashboard_preferences)
+            prefs.pop(PARTICIPANT_QUESTION_FORMS_KEY)
+            participant.dashboard_preferences = prefs
+            db.flush()
+            self.assertEqual({t for _, t in self._serve_types(db, pid)}, {"mcq"})
+
+    def test_real_participants_are_unaffected(self):
+        from eten_shared.question_forms import participant_question_forms
+
+        self.assertEqual(participant_question_forms(Participant(display_name="real")),
+                         frozenset())
+        self.assertEqual(participant_question_forms(Participant(
+            display_name="real", dashboard_preferences={"question_forms": ["mcq"]})),
+            frozenset({"mcq"}))
+
+    def test_open_only_cell_is_skipped_for_mcq_only(self):
+        with self.factory() as db:
+            _import_tier1_set(db, "hard66")
+            _add_open_items(db, [101])
+            # group 102 holds only an open item
+            item = db.scalars(select(QAItem).join(
+                ExperimentWindow, ExperimentWindow.qa_item_id == QAItem.id).where(
+                ExperimentWindow.group_index == 102)).first()
+            item.question_type = "open"
+            db.flush()
+            created = create_test_participant(db, qa_set="hard66")
+            served = self._serve_types(db, created["participant_id"])
+            self.assertNotIn(102, {g for g, _ in served})
+            self.assertEqual(len(served), 7)
+
+    def test_bad_form_refused(self):
+        with self.factory() as db:
+            self._hard66_with_open(db)
+            with self.assertRaisesRegex(TestParticipantError, "unknown question form"):
+                create_test_participant(db, qa_set="hard66", question_forms=["essay"])
+
+    def test_options_expose_forms_and_mcq_counts(self):
+        from backend.admin.services.test_participants_service import test_participant_options
+
+        with self.factory() as db:
+            _import_tier1_set(db, "hard66")
+            _add_open_items(db, range(101, 109), stem="橄榄树为什么不肯作王")
+            options = test_participant_options(db)
+            self.assertEqual(options["default_question_forms"], ["mcq"])
+            hard = {s["key"]: s for s in options["qa_sets"]}["hard66"]
+            self.assertEqual(hard["wh_counts"]["why"], 8)
+            self.assertEqual(hard["mcq_wh_counts"]["why"], 0)
+            with self.assertRaisesRegex(TestParticipantError, "no why questions"):
+                create_test_participant(db, qa_set="hard66", wh_types=["why"])
+            created = create_test_participant(db, qa_set="hard66", wh_types=["why"],
+                                              question_forms="all")
+            self.assertEqual(created["wh_question_count"], 8)

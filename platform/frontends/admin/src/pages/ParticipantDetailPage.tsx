@@ -237,6 +237,12 @@ export function ParticipantDetailPage() {
           <dd>{participant.qa_set ?? '—'}</dd>
           <dt>Question types</dt>
           <dd>{participant.wh_types?.length ? `${participant.wh_types.join(', ')} only` : 'All'}</dd>
+          <dt>Question forms</dt>
+          <dd>
+            {participant.question_forms?.length
+              ? `${participant.question_forms.map((f) => f.toUpperCase()).join(', ')} only`
+              : 'MCQ + open'}
+          </dd>
         </dl>
       </section>
 

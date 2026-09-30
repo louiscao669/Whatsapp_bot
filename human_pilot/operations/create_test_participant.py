@@ -5,6 +5,9 @@
     python human_pilot/operations/create_test_participant.py --name why_test --qa-set hard66
     python human_pilot/operations/create_test_participant.py --name probe --no-plan
     python human_pilot/operations/create_test_participant.py --name why_only --qa-set hard66 --wh-types why
+    python human_pilot/operations/create_test_participant.py --name both --question-forms all
+
+Test participants are MCQ-only unless --question-forms says otherwise.
 
 Same code path as POST /api/v1/participants/test -- it calls the identical service
 function and commits the same way. It exists because that route sits behind
@@ -44,6 +47,8 @@ def main() -> int:
     ap.add_argument("--wh-types", default=None,
                     help="restrict to these question stems, e.g. 'why' or 'why,how' "
                          "(cells with none are skipped)")
+    ap.add_argument("--question-forms", default=None,
+                    help="mcq (default for test participants), open, or all")
     ap.add_argument("--no-plan", action="store_true",
                     help="create the participant without writing plan cells")
     ap.add_argument("--database-url", default=None, help="overrides DATABASE_URL env")
@@ -70,6 +75,7 @@ def main() -> int:
                 build_plan=not a.no_plan,
                 qa_set=a.qa_set,
                 wh_types=a.wh_types,
+                question_forms=a.question_forms,
             )
             db.commit()
         except TestParticipantError as exc:

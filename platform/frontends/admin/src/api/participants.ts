@@ -35,6 +35,7 @@ export type ParticipantRow = {
   is_test: boolean
   qa_set: string | null
   wh_types: string[]
+  question_forms: string[]
 }
 
 export type ParticipantHistoryRow = {
@@ -79,6 +80,7 @@ export type ParticipantDetail = {
     is_test: boolean
     qa_set: string | null
     wh_types: string[]
+    question_forms: string[]
     created_at: string | null
   }
   assigned_questions: ParticipantAssignedQuestionRow[]
@@ -146,6 +148,7 @@ export type CreatedTestParticipant = {
   qa_set: string | null
   wh_types: string[]
   wh_question_count: number | null
+  question_forms: string[]
   slot_count: number
   plan: TestParticipantPlanCell[]
   pilot_path: string | null
@@ -154,11 +157,14 @@ export type CreatedTestParticipant = {
 export type TestParticipantOptions = {
   default_qa_set: string
   wh_types: string[]
+  question_forms: string[]
+  default_question_forms: string[]
   qa_sets: {
     key: string
     label: string
     windows: number
     wh_counts: Record<string, number>
+    mcq_wh_counts: Record<string, number>
   }[]
 }
 
@@ -172,6 +178,7 @@ export function createTestParticipant(input: {
   build_plan?: boolean
   qa_set?: string
   wh_types?: string[]
+  question_forms?: string[]
 }) {
   return apiFetch<CreatedTestParticipant>('/api/v1/participants/test', {
     method: 'POST',

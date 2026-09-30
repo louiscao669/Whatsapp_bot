@@ -21,6 +21,8 @@ export function TestParticipantPanel({ onCreated }: { onCreated: () => void }) {
   const [qaSet, setQaSet] = useState('')
   const [whTypeOptions, setWhTypeOptions] = useState<string[]>([])
   const [whTypes, setWhTypes] = useState<string[]>([])
+  // Test participants answer MCQ only unless this is unticked (server default too).
+  const [mcqOnly, setMcqOnly] = useState(true)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
   const [created, setCreated] = useState<CreatedTestParticipant | null>(null)
@@ -55,6 +57,7 @@ export function TestParticipantPanel({ onCreated }: { onCreated: () => void }) {
         build_plan: buildPlan,
         qa_set: buildPlan && qaSet ? qaSet : undefined,
         wh_types: buildPlan && whTypes.length ? whTypes : undefined,
+        question_forms: mcqOnly ? ['mcq'] : ['mcq', 'open'],
       })
       setCreated(result)
       setDisplayName('')
@@ -76,7 +79,8 @@ export function TestParticipantPanel({ onCreated }: { onCreated: () => void }) {
   }
 
   const link = created?.pilot_path ? pilotUrl(created.participant_id) : ''
-  const whCounts = qaSets.find((set) => set.key === qaSet)?.wh_counts ?? {}
+  const selectedSet = qaSets.find((set) => set.key === qaSet)
+  const whCounts = (mcqOnly ? selectedSet?.mcq_wh_counts : selectedSet?.wh_counts) ?? {}
   const whSelectedCount = whTypes.reduce((sum, type) => sum + (whCounts[type] ?? 0), 0)
 
   function toggleWhType(type: string, checked: boolean) {
@@ -158,6 +162,14 @@ export function TestParticipantPanel({ onCreated }: { onCreated: () => void }) {
         <label className="checkbox-label">
           <input
             type="checkbox"
+            checked={mcqOnly}
+            onChange={(event) => setMcqOnly(event.target.checked)}
+          />
+          Multiple-choice questions only (skip open-ended)
+        </label>
+        <label className="checkbox-label">
+          <input
+            type="checkbox"
             checked={buildPlan}
             onChange={(event) => setBuildPlan(event.target.checked)}
           />
@@ -177,6 +189,7 @@ export function TestParticipantPanel({ onCreated }: { onCreated: () => void }) {
             {created.wh_types?.length
               ? `, ${created.wh_types.join('/')} questions only (${created.wh_question_count ?? 0})`
               : ''}
+            {created.question_forms?.length === 1 ? `, ${created.question_forms[0].toUpperCase()} only` : ''}
             {created.block_index !== null ? ` (slot rotation ${created.block_index})` : ''}.
           </p>
           {link ? (
