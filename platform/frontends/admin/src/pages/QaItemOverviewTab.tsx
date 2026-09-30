@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+import { Link, useParams } from 'react-router-dom'
 import type { QaItemDetail, QaItemExpectedAnswer } from '../api/qaItems'
 import { QaItemSettingsForm } from '../components/QaItemSettingsForm'
 
@@ -51,6 +53,14 @@ type QaItemOverviewTabProps = {
 }
 
 export function QaItemOverviewTab({ item, onItemUpdated, onMessage, onError }: QaItemOverviewTabProps) {
+  const { variantId } = useParams<{ variantId: string }>()
+  const variants = item.passage_variants ?? []
+  const selectedVariant = variants.find((variant) => variant.id === variantId)
+
+  useEffect(() => {
+    if (variantId) document.getElementById('passages-by-defect')?.scrollIntoView({ block: 'start' })
+  }, [variantId])
+
   return (
     <>
       <div className="detail-grid">
@@ -101,31 +111,41 @@ export function QaItemOverviewTab({ item, onItemUpdated, onMessage, onError }: Q
         </section>
       </div>
 
-      <section className="detail-card">
+      <section className="detail-card" id="passages-by-defect">
         <h3>Passages by defect type</h3>
-        <p className="hint">Clean and defect variants for this question. Question windows follow the current delivery rules; saved participant passages remain in participant metadata.</p>
-        {(item.passage_variants ?? []).length === 0 ? (
-          <p>No experiment passage variants are available for this question.</p>
-        ) : (
-          <div className="detail-grid">
-            {item.passage_variants.map((variant) => (
-              <section className="detail-card" key={variant.id}>
-                <h4>{variant.condition === 'clean' ? 'Clean' : variant.condition} · {variant.language}</h4>
-                {variant.condition !== 'clean' ? (
-                  <p className="detail-meta">{variant.defect_type ?? variant.condition}{variant.defect_rate == null ? '' : ` · ${Math.round(variant.defect_rate * 100)}%`}</p>
-                ) : null}
-                <p className="detail-meta">{variant.is_window ? `Question window · ${variant.verse_numbers.join(', ') || 'Unavailable'}` : 'Full passage'}</p>
-                <p className="detail-text" style={{ whiteSpace: 'pre-wrap' }}>{variant.passage_text ?? 'No question window available for this variant.'}</p>
-                {variant.is_window ? (
-                  <details>
-                    <summary>Full passage</summary>
-                    <p className="detail-text" style={{ whiteSpace: 'pre-wrap' }}>{variant.full_passage_text}</p>
-                  </details>
-                ) : null}
-              </section>
+        {variants.length === 0 ? <p>No experiment passage variants are available for this question.</p> : (
+          <nav className="detail-tabs" aria-label="Passage variants">
+            {variants.map((variant) => (
+              <Link
+                key={variant.id}
+                className={variant.id === variantId ? 'detail-tab active' : 'detail-tab'}
+                aria-current={variant.id === variantId ? 'page' : undefined}
+                to={`/qa-items/${encodeURIComponent(item.id)}/passages/${encodeURIComponent(variant.id)}#passages-by-defect`}
+              >
+                {variant.condition === 'clean' ? 'Clean' : variant.condition} · {variant.language}
+              </Link>
             ))}
-          </div>
+          </nav>
         )}
+        {selectedVariant ? (
+          <section aria-label="Selected passage">
+            <h4>{selectedVariant.condition === 'clean' ? 'Clean' : selectedVariant.condition} · {selectedVariant.language}</h4>
+            {selectedVariant.condition !== 'clean' ? (
+              <p className="detail-meta">{selectedVariant.defect_type ?? selectedVariant.condition}{selectedVariant.defect_rate == null ? '' : ` · ${Math.round(selectedVariant.defect_rate * 100)}%`}</p>
+            ) : null}
+            <p className="detail-meta">{selectedVariant.is_window ? `Question window · ${selectedVariant.verse_numbers.join(', ') || 'Unavailable'}` : 'Full passage'}</p>
+            <p className="detail-text" style={{ whiteSpace: 'pre-wrap' }}>{selectedVariant.passage_text ?? 'No question window available for this variant.'}</p>
+            {selectedVariant.is_window ? (
+              <details>
+                <summary>Full passage</summary>
+                <p className="detail-text" style={{ whiteSpace: 'pre-wrap' }}>{selectedVariant.full_passage_text}</p>
+              </details>
+            ) : null}
+            <p className="hint">This is the current passage for this condition. Saved participant passages are available in participant metadata.</p>
+          </section>
+        ) : variantId ? (
+          <p role="alert">This passage variant is unavailable for this question. Choose an available variant above.</p>
+        ) : variants.length > 0 ? <p>Select a defect type or Clean to open its passage page.</p> : null}
       </section>
 
       <QaItemSettingsForm

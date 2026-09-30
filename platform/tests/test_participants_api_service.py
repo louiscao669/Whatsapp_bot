@@ -91,6 +91,7 @@ class ParticipantsApiServiceTests(unittest.TestCase):
                 ("omission30", "en", "Updated omission reference"),
                 ("grammar30", "en", "Grammar reference"),
                 ("clean", "zh", "Other language"),
+                ("omission30", "zh", "Wrong language omission"),
             ]:
                 db.add(ExperimentPassage(
                     source_passage_id="source", chapter=1, condition=condition,
@@ -109,6 +110,9 @@ class ParticipantsApiServiceTests(unittest.TestCase):
             self.assertEqual(metadata["clean_passage"], "Clean reference")
             self.assertEqual(metadata["defect_type"], "omission")
             self.assertEqual(metadata["defect_rate"], 0.30)
+            linked_variant = db.get(ExperimentPassage, metadata["assigned_passage_variant_id"])
+            self.assertEqual(linked_variant.condition, "omission30")
+            self.assertEqual(linked_variant.language, "en")
             self.assertEqual(
                 {row["condition"] for row in metadata["passage_variants"]},
                 {"omission30", "grammar30"},
@@ -120,6 +124,15 @@ class ParticipantsApiServiceTests(unittest.TestCase):
             ))
             db.commit()
             self.assertEqual(get_participant_detail(db, participant.id)["history"][0]["metadata"], metadata)
+            cell.condition = "clean"
+            db.commit()
+            clean_metadata = get_participant_detail(db, participant.id)["history"][0]["metadata"]
+            clean_variant = db.get(ExperimentPassage, clean_metadata["assigned_passage_variant_id"])
+            self.assertEqual(clean_variant.condition, "clean")
+            self.assertEqual(clean_variant.language, "en")
+            cell.condition = "missing_variant"
+            db.commit()
+            self.assertIsNone(get_participant_detail(db, participant.id)["history"][0]["metadata"]["assigned_passage_variant_id"])
             assignment.passage_text = None
             db.commit()
             self.assertIsNone(get_participant_detail(db, participant.id)["history"][0]["metadata"]["served_passage"])

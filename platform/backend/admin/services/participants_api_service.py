@@ -230,9 +230,11 @@ def _passage_metadata(assignment, variants):
     condition = cell.condition if cell else None
     defect_type, defect_rate = defect_for_condition(condition)
     clean = next((row for row in variants if row.condition == "clean"), None)
+    assigned_variant = next((row for row in variants if row.condition == condition), None)
     return {
         "served_passage": assignment_passage_snapshot(assignment) if assignment else None,
         "condition": condition,
+        "assigned_passage_variant_id": assigned_variant.id if assigned_variant else None,
         "defect_type": defect_type,
         "defect_rate": defect_rate,
         "passage_verse_numbers": list(assignment.passage_verse_numbers or []) if assignment else [],

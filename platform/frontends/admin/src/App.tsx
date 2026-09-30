@@ -60,6 +60,7 @@ function App() {
               <Route path="qa-items/list" element={<QaItemsListPage />} />
               <Route path="qa-items/passages" element={<Navigate to="/passages" replace />} />
               <Route path="qa-items/:qaItemId" element={<QaItemDetailPage />} />
+              <Route path="qa-items/:qaItemId/passages/:variantId" element={<QaItemDetailPage />} />
               <Route path="participants" element={<ParticipantsPage />} />
               <Route path="participants/:participantId" element={<ParticipantDetailPage />} />
               <Route path="export/audio" element={<ExportAudioPage />} />

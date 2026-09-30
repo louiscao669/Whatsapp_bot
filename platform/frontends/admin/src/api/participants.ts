@@ -39,6 +39,7 @@ export type ParticipantRow = {
 }
 
 export type QuestionPassageMetadata = {
+  assigned_passage_variant_id: string | null
   served_passage: string | null
   condition: string | null
   defect_type: string | null

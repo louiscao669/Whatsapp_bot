@@ -13,6 +13,13 @@ import {
 import { fetchSystemLanguages } from '../api/systemLanguages'
 import { ParticipantAssignmentPanel } from '../components/ParticipantAssignmentPanel'
 
+function questionLink(qaItemId: string, metadata?: QuestionPassageMetadata): string {
+  const base = `/qa-items/${encodeURIComponent(qaItemId)}`
+  return metadata?.assigned_passage_variant_id
+    ? `${base}/passages/${encodeURIComponent(metadata.assigned_passage_variant_id)}#passages-by-defect`
+    : base
+}
+
 function defectLabel(metadata?: QuestionPassageMetadata): string {
   if (!metadata?.condition) return 'Not recorded'
   if (metadata.condition === 'clean') return 'Clean (no defect)'
@@ -315,7 +322,7 @@ export function ParticipantDetailPage() {
                   <tr key={row.assignment_id}>
                     <td>{row.passage}</td>
                     <td className="question-cell">
-                      <Link to={`/qa-items/${row.qa_item_id}`}>{row.question}</Link>
+                      <Link to={questionLink(row.qa_item_id, row.metadata)}>{row.question}</Link>
                     </td>
                     <td>{defectLabel(row.metadata)}</td>
                     <td><PassageMetadata metadata={row.metadata} /></td>
@@ -368,7 +375,7 @@ export function ParticipantDetailPage() {
                   <tr key={`${row.qa_item_id}-${row.question}`}>
                     <td>{row.passage}</td>
                     <td>
-                      <Link to={`/qa-items/${row.qa_item_id}`}>{row.question}</Link>
+                      <Link to={questionLink(row.qa_item_id, row.metadata)}>{row.question}</Link>
                     </td>
                     <td>{defectLabel(row.metadata)}</td>
                     <td><PassageMetadata metadata={row.metadata} /></td>
