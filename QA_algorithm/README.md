@@ -122,3 +122,40 @@ For MCQ-only or combined inputs, change `--q-type`:
 python3 QA_algorithm/scripts/build_anchor_irt_input.py --q-type mcq
 python3 QA_algorithm/scripts/build_anchor_irt_input.py --q-type all
 ```
+
+## Evidence-backed QA outputs
+
+New QA pipeline outputs include source evidence after shortening and format
+conversion. Each item (and each nested assessment format) has:
+
+```json
+{
+  "supporting_verse_ids": ["7:4"],
+  "supporting_evidence": [
+    {"verse_id": "7:4", "text": "And if we stay here, we will die."}
+  ]
+}
+```
+
+Verse IDs are `chapter:verse` within the item's `passage_id`. Evidence text is an
+exact excerpt from that verse (whitespace differences are allowed). All cited
+verses require quotes. Evidence identifies both the answer and any necessary
+context; the generator judges sufficiency, while code validates IDs and quotes.
+
+The window builder validates this evidence against the source passage and uses
+the smallest contiguous span covering the supporting verses. No manual span file
+is needed for these records:
+
+```bash
+python3 QA_algorithm/scripts/anchor_irt/build_tier1_verse_windows.py \
+  --qa-root /path/to/qa_generation \
+  --qa-file /path/to/qa_generation/outputs/tier1_shortened.json \
+  --out /tmp/evidence_windows.json
+```
+
+`--spans` remains an optional fallback for legacy records without either evidence
+field. Invalid supplied evidence is excluded with `invalid_supporting_evidence`;
+it never silently falls back to a manual annotation. Spans wider than three
+verses are excluded as before. Each window records its `span_source`.
+Existing cached QA files are not automatically regenerated; rerun generation
+with its normal cache override to obtain evidence-backed outputs.

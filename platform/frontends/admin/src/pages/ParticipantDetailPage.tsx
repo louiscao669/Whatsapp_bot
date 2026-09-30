@@ -13,6 +13,21 @@ import {
 import { fetchSystemLanguages } from '../api/systemLanguages'
 import { ParticipantAssignmentPanel } from '../components/ParticipantAssignmentPanel'
 
+function defectLabel(metadata?: QuestionPassageMetadata): string {
+  if (!metadata?.condition) return 'Not recorded'
+  if (metadata.condition === 'clean') return 'Clean (no defect)'
+  const labels: Record<string, string> = {
+    omission: 'Omission',
+    mistranslation: 'Mistranslation',
+    grammar: 'Grammar',
+    google_word_by_word: 'Word by word',
+  }
+  const label = labels[metadata.defect_type ?? ''] ?? metadata.condition
+  return metadata.defect_rate == null
+    ? label
+    : `${label} (${Math.round(metadata.defect_rate * 100)}%)`
+}
+
 function PassageMetadata({ metadata }: { metadata?: QuestionPassageMetadata }) {
   if (!metadata) return <span>Unavailable</span>
   return (
@@ -285,6 +300,7 @@ export function ParticipantDetailPage() {
                 <tr>
                   <th>Passage</th>
                   <th>Question</th>
+                  <th>Defect type</th>
                   <th>Metadata</th>
                   <th>Translation</th>
                   <th>Verses</th>
@@ -301,6 +317,7 @@ export function ParticipantDetailPage() {
                     <td className="question-cell">
                       <Link to={`/qa-items/${row.qa_item_id}`}>{row.question}</Link>
                     </td>
+                    <td>{defectLabel(row.metadata)}</td>
                     <td><PassageMetadata metadata={row.metadata} /></td>
                     <td>{row.translation_name ?? 'Automatic/default'}</td>
                     <td>{row.passage_verse_numbers.join(', ') || '—'}</td>
@@ -338,6 +355,7 @@ export function ParticipantDetailPage() {
                 <tr>
                   <th>Passage</th>
                   <th>Question</th>
+                  <th>Defect type</th>
                   <th>Metadata</th>
                   <th>Type</th>
                   <th>Expected answer</th>
@@ -352,6 +370,7 @@ export function ParticipantDetailPage() {
                     <td>
                       <Link to={`/qa-items/${row.qa_item_id}`}>{row.question}</Link>
                     </td>
+                    <td>{defectLabel(row.metadata)}</td>
                     <td><PassageMetadata metadata={row.metadata} /></td>
                     <td>{row.question_type}</td>
                     <td>{row.expected_answer}</td>

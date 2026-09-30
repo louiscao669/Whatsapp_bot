@@ -99,11 +99,12 @@ REFERENCE_RE = re.compile(
 
 
 def build_verse_index(
-    text: str, *, chapter_start: int, verse_start: int, chapter_end: int, verse_end: int
-) -> list[str]:
+    text: str, *, chapter_start: int, verse_start: int, chapter_end: int, verse_end: int,
+    include_text: bool = False,
+) -> list[str] | dict[str, str]:
     """Return ordered ['9:1', '9:2', ...] labels as they appear in the passage."""
     markers = [
-        int(m.group(1))
+        m
         for m in VERSE_MARKER_RE.finditer(text)
         if 1 <= int(m.group(1)) <= 200
     ]
@@ -111,17 +112,22 @@ def build_verse_index(
     out: list[tuple[int, int]] = []
     chapter = chapter_start
     expected = verse_start
-    for num in markers:
+    accepted = []
+    for marker in markers:
+        num = int(marker.group(1))
         if not out and verse_start == 1 and num == chapter_start:
+            accepted.append(marker)
             out.append((chapter, 1))  # chapter number standing in for verse 1
             expected = 2
             continue
         if num == expected:
+            accepted.append(marker)
             out.append((chapter, num))
             expected += 1
             continue
         if num == chapter + 1 and chapter < chapter_end:
             chapter += 1  # new chapter; its number stands in for verse 1
+            accepted.append(marker)
             out.append((chapter, 1))
             expected = 2
             continue
@@ -135,7 +141,12 @@ def build_verse_index(
         raise WindowError(f"last verse {out[-1]} != expected ({chapter_end},{verse_end})")
     if len(set(out)) != len(out):
         raise WindowError("duplicate verse ids in index")
-    return [f"{c}:{v}" for c, v in out]
+    labels = [f"{c}:{v}" for c, v in out]
+    if include_text:
+        return {label: text[accepted[i].end():accepted[i+1].start()
+                            if i+1 < len(accepted) else len(text)].strip()
+                for i, label in enumerate(labels)}
+    return labels
 
 
 def parse_reference(ref: str, index: list[str]) -> list[str]:
@@ -238,7 +249,8 @@ def load_tier1(
     csv_path = qa_root / "fixtures" / "obscure_narrative_passages_tier1.csv"
     if not csv_path.exists():
         raise WindowError(f"tier1 csv not found: {csv_path}")
-    meta = {r["id"]: r for r in csv.DictReader(csv_path.open(encoding="utf-8"))}
+    with csv_path.open(encoding="utf-8") as source:
+        meta = {r["id"]: r for r in csv.DictReader(source)}
 
     items: dict[str, list[dict]] = {pid: [] for pid in meta}
 
@@ -319,6 +331,35 @@ def llm_required_span(
 # --------------------------------------------------------------------------
 
 
+def evidence_annotation(item: dict, verse_text: dict[str, str]) -> dict | None:
+    """Validate the QA evidence contract; never fall back when supplied evidence is invalid."""
+    if "supporting_verse_ids" not in item and "supporting_evidence" not in item:
+        return None
+    ids = item.get("supporting_verse_ids")
+    quotes = item.get("supporting_evidence")
+    if not isinstance(ids, list) or not ids or not all(isinstance(v, str) for v in ids):
+        raise WindowError("supporting_verse_ids must be a nonempty list of verse IDs")
+    if len(set(ids)) != len(ids) or any(v not in verse_text for v in ids):
+        raise WindowError("supporting verse IDs must be unique and inside the source passage")
+    if not isinstance(quotes, list) or not quotes or not all(isinstance(e, dict) for e in quotes):
+        raise WindowError("supporting_evidence must contain verse_id/text entries")
+    quoted_ids = []
+    for evidence in quotes:
+        verse = evidence.get("verse_id")
+        quote = evidence.get("text")
+        if not isinstance(verse, str) or verse not in ids or not isinstance(quote, str) or not quote.strip():
+            raise WindowError("invalid supporting evidence entry")
+        if " ".join(quote.split()) not in " ".join(verse_text[verse].split()):
+            raise WindowError(f"evidence quote not found in verse {verse}")
+        quoted_ids.append(verse)
+    if set(quoted_ids) != set(ids):
+        raise WindowError("every supporting verse requires a quote")
+    index = list(verse_text)
+    positions = sorted(index.index(v) for v in ids)
+    return {"required_span": index[positions[0]:positions[-1]+1],
+            "source": "qa_supporting_evidence"}
+
+
 def build(
     *,
     qa_root: Path,
@@ -326,8 +367,7 @@ def build(
     seed: int,
     qa_file: Path | None = None,
 ) -> tuple[dict, list[dict]]:
-    """Returns (map, needs_annotation). Items whose span_key is already present
-    in `spans` are reused untouched -- nothing is re-judged."""
+    """Use verified QA evidence first, then saved annotations for legacy records."""
     meta, items_by_passage = load_tier1(qa_root, qa_file)
     windows: list[dict] = []
     excluded: list[dict] = []
@@ -336,13 +376,15 @@ def build(
 
     for pid, row in meta.items():
         passage_path = qa_root / "fixtures" / "passages" / "tier1" / PASSAGE_FILES[pid]
-        index = build_verse_index(
+        verse_text = build_verse_index(
             passage_path.read_text(encoding="utf-8"),
             chapter_start=int(row["chapter_start"]),
             verse_start=int(row["verse_start"]),
             chapter_end=int(row["chapter_end"]),
             verse_end=int(row["verse_end"]),
+            include_text=True,
         )
+        index = list(verse_text)
 
         occurrence: Counter[str] = Counter()
         for idx, item in enumerate(items_by_passage[pid]):
@@ -363,6 +405,16 @@ def build(
                 "passage_reference": row["reference"],
                 "reference": item.get("reference"),
             }
+
+            try:
+                embedded = evidence_annotation(item, verse_text)
+            except WindowError as exc:
+                excluded.append({**base, "reason": "invalid_supporting_evidence", "error": str(exc)})
+                continue
+            if embedded is not None:
+                ann = embedded
+            base["span_source"] = ("qa_supporting_evidence" if embedded is not None
+                                   else spans.get("_meta", {}).get("source", "unknown"))
 
             if ann is None:
                 # New question: cannot place a window until its required span is
@@ -416,11 +468,12 @@ def build(
                 continue
 
             chosen = pick_window(cands, key=key, seed=seed)
-            ref_span = (
-                parse_reference(item["reference"], index)
-                if item.get("reference")
-                else None
-            )
+            try:
+                ref_span = parse_reference(item["reference"], index) if item.get("reference") else None
+            except WindowError:
+                if embedded is None:
+                    raise
+                ref_span = None
 
             dup_of = seen_question.get(question) if question else None
             if question and dup_of is None:
@@ -450,13 +503,15 @@ def build(
                 }
             )
 
+    sources = {w["span_source"] for w in windows}
+    span_source = next(iter(sources)) if len(sources) == 1 else "mixed" if sources else "unknown"
     return {
         "schema_version": 2,
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "window_size": WINDOW_SIZE,
         "seed": seed,
         "key_scheme": "sha1(normalized question)[:10] + occurrence -- content-addressed, order-invariant",
-        "span_source": spans.get("_meta", {}).get("source", "unknown"),
+        "span_source": span_source,
         "qa_root_name": qa_root.name,  # name only; absolute paths differ per machine
         "counts": {
             "windows": len(windows),
@@ -630,11 +685,11 @@ def main() -> int:
     args = parse_args()
     if args.self_test:
         return self_test()
-    if not args.qa_root or not args.spans or not args.out:
-        print("--qa-root, --spans and --out are required", file=sys.stderr)
+    if not args.qa_root or not args.out:
+        print("--qa-root and --out are required", file=sys.stderr)
         return 2
 
-    spans_doc = json.loads(args.spans.read_text(encoding="utf-8"))
+    spans_doc = json.loads(args.spans.read_text(encoding="utf-8")) if args.spans else {}
     spans = {k: v for k, v in spans_doc.items() if not k.startswith("_")}
     spans["_meta"] = spans_doc.get("_meta", {})
 
