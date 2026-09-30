@@ -4,6 +4,7 @@
     python human_pilot/operations/create_test_participant.py --name why_test
     python human_pilot/operations/create_test_participant.py --name why_test --qa-set hard66
     python human_pilot/operations/create_test_participant.py --name probe --no-plan
+    python human_pilot/operations/create_test_participant.py --name why_only --qa-set hard66 --wh-types why
 
 Same code path as POST /api/v1/participants/test -- it calls the identical service
 function and commits the same way. It exists because that route sits behind
@@ -40,6 +41,9 @@ def main() -> int:
     ap.add_argument("--name", help="display name (a TEST prefix is added by the service)")
     ap.add_argument("--language", default=None, help="target language (default: pilot default)")
     ap.add_argument("--qa-set", default=None, help="gold72 (default) or hard66")
+    ap.add_argument("--wh-types", default=None,
+                    help="restrict to these question stems, e.g. 'why' or 'why,how' "
+                         "(cells with none are skipped)")
     ap.add_argument("--no-plan", action="store_true",
                     help="create the participant without writing plan cells")
     ap.add_argument("--database-url", default=None, help="overrides DATABASE_URL env")
@@ -65,6 +69,7 @@ def main() -> int:
                 language=a.language,
                 build_plan=not a.no_plan,
                 qa_set=a.qa_set,
+                wh_types=a.wh_types,
             )
             db.commit()
         except TestParticipantError as exc:

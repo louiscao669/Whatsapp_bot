@@ -18,6 +18,7 @@ from eten_shared.experiment_plan import (
     participants_qa_sets,
 )
 from eten_shared.mcq import is_choice_scored_item
+from eten_shared.wh_type import participant_wh_types
 from backend.admin.services.qa_item_stats_service import (
     format_choice_correctness_label,
     format_choice_response_answer_display,
@@ -210,6 +211,7 @@ def list_participants_dashboard(db):
                 "consented": participant.consented,
                 "is_test": is_test_participant(participant),
                 "qa_set": qa_sets.get(participant.id),
+                "wh_types": sorted(participant_wh_types(participant)),
             }
         )
 
@@ -312,6 +314,7 @@ def get_participant_detail(db, participant_id: str):
             "consented": participant.consented,
             "is_test": is_test_participant(participant),
             "qa_set": participant_qa_set(db, participant.id),
+            "wh_types": sorted(participant_wh_types(participant)),
             "created_at": _iso_datetime(participant.created_at),
         },
         "assigned_questions": assigned_questions,

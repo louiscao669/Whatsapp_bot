@@ -28,6 +28,11 @@ preference rather than a filter. Adding ``WH_TYPE_STRICT=1`` turns it into a har
 cells holding no matching item are skipped, which yields a single-stem stream at the cost
 of the Latin square -- test participants only, see ``wh_type_strict``.
 
+Per-participant question-type filter: a participant whose ``dashboard_preferences``
+carries ``wh_types`` (set by the admin "Create test participant" action, e.g. ["why"])
+is served ONLY stems of those types, whatever the deployment's env flags say -- the
+strict behaviour above, scoped to one participant. See ``participant_wh_filter``.
+
 Adaptive hook: item ordering within a cell is delegated to a pluggable ``strategy``.
 The default is the designed order (MCQ-first, deterministic per participant). An adaptive
 Fisher-information strategy can be swapped in later WITHOUT touching the plan/cell
@@ -47,7 +52,7 @@ from sqlalchemy.orm import Session
 from eten_shared.domain.qa_eligibility import qa_item_is_assignable
 from eten_shared.models import Assignment, ExperimentPlanCell, ExperimentWindow, QAItem
 from eten_shared.recordings import participant_question_audio_satisfied
-from eten_shared.wh_type import classify_wh_type, parse_wh_types
+from eten_shared.wh_type import classify_wh_type, parse_wh_types, participant_wh_types
 
 # A strategy picks ONE item from the eligible remaining items of the active cell.
 # (cell, remaining_items, participant) -> chosen QAItem
@@ -145,6 +150,21 @@ def filter_candidates_by_wh_type(items: List[QAItem], keep) -> List[QAItem]:
     return [item for item in items if classify_wh_type(item.question_text) in keep]
 
 
+def participant_wh_filter(participant) -> frozenset:
+    """Stem types to HARD-filter this participant's candidates to; empty = no filter.
+
+    The participant's own ``wh_types`` setting wins; without one, the deployment-wide
+    strict arm (``WH_TYPE_PREFERENCE`` + ``WH_TYPE_STRICT=1``) applies as before. Same
+    cost as the strict arm: cells holding no matching item are flipped to ``done`` and
+    skipped, so the participant's Latin square is incomplete by design. Only the
+    test-participant creation path writes the setting.
+    """
+    own = participant_wh_types(participant)
+    if own:
+        return own
+    return wh_type_preference() if wh_type_strict() else frozenset()
+
+
 def active_strategy() -> Strategy:
     """DEFAULT_STRATEGY, or a wh-preferring wrapper when WH_TYPE_PREFERENCE is set.
 
@@ -231,9 +251,10 @@ def select_next_experiment_cell_item(
     (not committed) so they land in the same transaction as the created assignment.
     """
     strategy = strategy or active_strategy()
-    # Strict arm: filter BEFORE the emptiness check, so a cell holding no item of the
-    # wanted stem is treated as exhausted and advanced past rather than falling back.
-    strict_keep = wh_type_preference() if wh_type_strict() else frozenset()
+    # Strict arm (per participant, else deployment-wide): filter BEFORE the emptiness
+    # check, so a cell holding no item of the wanted stem is treated as exhausted and
+    # advanced past rather than falling back.
+    strict_keep = participant_wh_filter(participant)
     cells = _plan_cells(db, participant)
     cell = _current_cell(cells)
     while cell is not None:

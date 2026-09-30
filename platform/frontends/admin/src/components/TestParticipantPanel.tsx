@@ -19,6 +19,8 @@ export function TestParticipantPanel({ onCreated }: { onCreated: () => void }) {
   const [buildPlan, setBuildPlan] = useState(true)
   const [qaSets, setQaSets] = useState<TestParticipantOptions['qa_sets']>([])
   const [qaSet, setQaSet] = useState('')
+  const [whTypeOptions, setWhTypeOptions] = useState<string[]>([])
+  const [whTypes, setWhTypes] = useState<string[]>([])
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
   const [created, setCreated] = useState<CreatedTestParticipant | null>(null)
@@ -33,6 +35,7 @@ export function TestParticipantPanel({ onCreated }: { onCreated: () => void }) {
     fetchTestParticipantOptions()
       .then((options) => {
         setQaSets(options.qa_sets)
+        setWhTypeOptions(options.wh_types ?? [])
         const keys = options.qa_sets.map((set) => set.key)
         setQaSet(keys.includes(options.default_qa_set) ? options.default_qa_set : keys[0] ?? '')
       })
@@ -51,6 +54,7 @@ export function TestParticipantPanel({ onCreated }: { onCreated: () => void }) {
         language,
         build_plan: buildPlan,
         qa_set: buildPlan && qaSet ? qaSet : undefined,
+        wh_types: buildPlan && whTypes.length ? whTypes : undefined,
       })
       setCreated(result)
       setDisplayName('')
@@ -72,6 +76,14 @@ export function TestParticipantPanel({ onCreated }: { onCreated: () => void }) {
   }
 
   const link = created?.pilot_path ? pilotUrl(created.participant_id) : ''
+  const whCounts = qaSets.find((set) => set.key === qaSet)?.wh_counts ?? {}
+  const whSelectedCount = whTypes.reduce((sum, type) => sum + (whCounts[type] ?? 0), 0)
+
+  function toggleWhType(type: string, checked: boolean) {
+    setWhTypes((current) =>
+      checked ? [...current.filter((t) => t !== type), type] : current.filter((t) => t !== type),
+    )
+  }
 
   return (
     <details className="detail-card test-participant-panel">
@@ -109,7 +121,10 @@ export function TestParticipantPanel({ onCreated }: { onCreated: () => void }) {
           id="test-participant-qa-set"
           value={qaSet}
           disabled={!buildPlan || qaSets.length === 0}
-          onChange={(event) => setQaSet(event.target.value)}
+          onChange={(event) => {
+            setQaSet(event.target.value)
+            setWhTypes([])
+          }}
         >
           {qaSets.length === 0 ? <option value="">No question set imported</option> : null}
           {qaSets.map((set) => (
@@ -118,6 +133,28 @@ export function TestParticipantPanel({ onCreated }: { onCreated: () => void }) {
             </option>
           ))}
         </select>
+        {whTypeOptions.length ? (
+          <fieldset className="wh-type-options" disabled={!buildPlan || !qaSet}>
+            <legend>Question types (none ticked = all)</legend>
+            {whTypeOptions.map((type) => (
+              <label key={type} className="checkbox-label">
+                <input
+                  type="checkbox"
+                  checked={whTypes.includes(type)}
+                  disabled={!whCounts[type] && !whTypes.includes(type)}
+                  onChange={(event) => toggleWhType(type, event.target.checked)}
+                />
+                {type} ({whCounts[type] ?? 0})
+              </label>
+            ))}
+            {whTypes.length ? (
+              <p className="hint">
+                Only {whTypes.join('/')} questions: {whSelectedCount} in this set. Conditions
+                whose window group has none are skipped, so the Latin square is incomplete.
+              </p>
+            ) : null}
+          </fieldset>
+        ) : null}
         <label className="checkbox-label">
           <input
             type="checkbox"
@@ -137,6 +174,9 @@ export function TestParticipantPanel({ onCreated }: { onCreated: () => void }) {
             Created{' '}
             <Link to={`/participants/${created.participant_id}`}>{created.display_name}</Link>
             {created.qa_set ? ` on ${created.qa_set}` : ''}
+            {created.wh_types?.length
+              ? `, ${created.wh_types.join('/')} questions only (${created.wh_question_count ?? 0})`
+              : ''}
             {created.block_index !== null ? ` (slot rotation ${created.block_index})` : ''}.
           </p>
           {link ? (

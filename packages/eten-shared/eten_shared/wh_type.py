@@ -78,6 +78,26 @@ def parse_wh_types(raw: Optional[str]) -> frozenset:
     return keep
 
 
+# Per-participant stem filter, stored in ``participants.dashboard_preferences`` (JSON,
+# no schema change) by the admin "Create test participant" action. When present it is a
+# HARD filter for that participant only -- see experiment_selection.participant_wh_filter.
+PARTICIPANT_WH_TYPES_KEY = "wh_types"
+
+
+def participant_wh_types(participant) -> frozenset:
+    """The stem types a participant is restricted to; empty = unrestricted.
+
+    Reads ``dashboard_preferences[PARTICIPANT_WH_TYPES_KEY]`` (a list such as ["why"]).
+    Unknown names are dropped rather than raised: this runs on every question served,
+    and the value was already validated when the participant was created.
+    """
+    prefs = getattr(participant, "dashboard_preferences", None) or {}
+    raw = prefs.get(PARTICIPANT_WH_TYPES_KEY) or []
+    if isinstance(raw, str):
+        raw = re.split(r"[,\s]+", raw)
+    return frozenset(str(t).strip().lower() for t in raw) & frozenset(WH_TYPES)
+
+
 def group_by_wh_type(stems: Iterable[Optional[str]]) -> dict:
     """{wh_type: count}, every known type present (possibly zero)."""
     out = {t: 0 for t in WH_TYPES}

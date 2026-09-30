@@ -21,7 +21,9 @@ from eten_shared.models import (
     ExperimentPlanCell,
     ExperimentWindow,
     Participant,
+    QAItem,
 )
+from eten_shared.wh_type import group_by_wh_type
 
 # 8 condition slots. Two "clean" anchors (pooled). The strings MUST match
 # experiment_passages.condition written by human_pilot/pilot_import.py.
@@ -113,6 +115,24 @@ def qa_set_window_count(db, qa_set) -> int:
     return db.scalar(
         select(func.count(ExperimentWindow.id)).where(ExperimentWindow.group_index.in_(groups))
     ) or 0
+
+
+def qa_set_wh_type_counts(db, qa_set) -> dict:
+    """{wh_type: n} over a set's active, not-review-removed questions (every type keyed).
+
+    Classified from the stored stem with the same classifier the selector uses, so a
+    count here is exactly what a question-type-restricted participant can be served.
+    """
+    stems = db.scalars(
+        select(QAItem.question_text)
+        .join(ExperimentWindow, ExperimentWindow.qa_item_id == QAItem.id)
+        .where(
+            ExperimentWindow.group_index.in_(qa_set_groups(qa_set)),
+            QAItem.active.is_(True),
+            QAItem.review_removed_at.is_(None),
+        )
+    ).all()
+    return group_by_wh_type(stems)
 
 
 def available_qa_sets(db):

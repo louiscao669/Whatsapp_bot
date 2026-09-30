@@ -235,6 +235,8 @@ export function ParticipantDetailPage() {
           <dd>{participant.consented ? 'Yes' : 'No'}</dd>
           <dt>Question set</dt>
           <dd>{participant.qa_set ?? '—'}</dd>
+          <dt>Question types</dt>
+          <dd>{participant.wh_types?.length ? `${participant.wh_types.join(', ')} only` : 'All'}</dd>
         </dl>
       </section>
 

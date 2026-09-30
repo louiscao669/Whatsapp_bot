@@ -418,3 +418,110 @@ class QuestionSetTests(unittest.TestCase):
         with self.factory() as db:
             self.assertEqual(
                 db.scalar(select(func.count()).select_from(ExperimentWindow)), gold_windows + 1)
+
+
+def _restem(db, qa_set, stems_by_group):
+    """Rewrite imported stems: {group: [stem for window 0, window 1, ...]}."""
+    from eten_shared.experiment_plan import qa_set_groups
+
+    for group in qa_set_groups(qa_set):
+        items = db.scalars(
+            select(QAItem).join(ExperimentWindow, ExperimentWindow.qa_item_id == QAItem.id)
+            .where(ExperimentWindow.group_index == group)
+            .order_by(ExperimentWindow.sequence_index)
+        ).all()
+        for item, stem in zip(items, stems_by_group.get(group, [])):
+            item.question_text = stem
+    db.flush()
+
+
+class QuestionTypeRestrictionTests(unittest.TestCase):
+    """A test participant restricted to `why` stems of hard66."""
+
+    WHY, WHO = "橄榄树为什么不肯作王？", "亚比筛击杀了谁？"
+
+    def setUp(self):
+        self.factory = sessionmaker(_engine(), autoflush=False, expire_on_commit=False)
+
+    def _hard66_with_three_why(self, db):
+        _import_tier1_set(db, "gold72")
+        _import_tier1_set(db, "hard66", windows_per_group=2)
+        _restem(db, "gold72", {g: [self.WHY] for g in range(1, 9)})  # must never leak in
+        stems = {g: [self.WHO, self.WHO] for g in range(101, 109)}
+        stems[101] = [self.WHO, self.WHY]
+        stems[104] = [self.WHY, self.WHO]
+        stems[108] = [self.WHY, self.WHY]
+        _restem(db, "hard66", stems)
+
+    def _serve_all(self, db, pid):
+        from eten_shared.question_discovery.experiment_selection import (
+            select_next_experiment_cell_item,
+        )
+
+        participant = db.get(Participant, pid)
+        served = []
+        while True:
+            item, cell = select_next_experiment_cell_item(db, participant)
+            if item is None:
+                return served
+            served.append((cell.chapter, item.passage_id, item.question_text))
+            db.add(Assignment(participant_id=pid, qa_item_id=item.id,
+                              experiment_cell_id=cell.id,
+                              status=AssignmentStatus.COMPLETED.value))
+            db.flush()
+
+    def test_why_only_participant_is_served_only_hard66_why_questions(self):
+        with self.factory() as db:
+            self._hard66_with_three_why(db)
+            created = create_test_participant(db, qa_set="hard66", wh_types=["why"])
+            self.assertEqual(created["wh_types"], ["why"])
+            self.assertEqual(created["wh_question_count"], 4)
+            self.assertEqual(len(created["plan"]), 8)  # plan itself is untouched
+
+            served = self._serve_all(db, created["participant_id"])
+            self.assertEqual(len(served), 4)
+            self.assertTrue(all(q == self.WHY for _, _, q in served), served)
+            self.assertTrue(all(p.startswith("hard66/") for _, p, _ in served), served)
+            self.assertEqual(sorted({g for g, _, _ in served}), [101, 104, 108])
+
+            detail = get_participant_detail(db, created["participant_id"])
+            self.assertEqual(detail["participant"]["wh_types"], ["why"])
+
+    def test_unrestricted_participant_still_gets_every_type(self):
+        with self.factory() as db:
+            self._hard66_with_three_why(db)
+            created = create_test_participant(db, qa_set="hard66")
+            self.assertEqual(created["wh_types"], [])
+            served = self._serve_all(db, created["participant_id"])
+            self.assertEqual(len(served), 16)
+            self.assertIn(self.WHO, {q for _, _, q in served})
+
+    def test_env_strict_arm_does_not_override_participant_setting(self):
+        with self.factory() as db:
+            self._hard66_with_three_why(db)
+            pid = create_test_participant(db, qa_set="hard66", wh_types="why")["participant_id"]
+            with patch.dict("os.environ", {"WH_TYPE_PREFERENCE": "who", "WH_TYPE_STRICT": "1"}):
+                served = self._serve_all(db, pid)
+            self.assertEqual({q for _, _, q in served}, {self.WHY})
+
+    def test_refusals(self):
+        with self.factory() as db:
+            self._hard66_with_three_why(db)
+            with self.assertRaisesRegex(TestParticipantError, "unknown stem type"):
+                create_test_participant(db, qa_set="hard66", wh_types=["wy"])
+            with self.assertRaisesRegex(TestParticipantError, "needs a pilot plan"):
+                create_test_participant(db, qa_set="hard66", wh_types=["why"], build_plan=False)
+            with self.assertRaisesRegex(TestParticipantError, "no where questions"):
+                create_test_participant(db, qa_set="hard66", wh_types=["where"])
+
+    def test_options_report_per_set_type_counts(self):
+        from backend.admin.services.test_participants_service import test_participant_options
+
+        with self.factory() as db:
+            self._hard66_with_three_why(db)
+            options = test_participant_options(db)
+            self.assertIn("why", options["wh_types"])
+            counts = {s["key"]: s["wh_counts"] for s in options["qa_sets"]}
+            self.assertEqual(counts["hard66"]["why"], 4)
+            self.assertEqual(counts["hard66"]["who"], 12)
+            self.assertEqual(counts["gold72"]["why"], 8)
