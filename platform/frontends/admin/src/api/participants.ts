@@ -38,7 +38,25 @@ export type ParticipantRow = {
   question_forms: string[]
 }
 
+export type QuestionPassageMetadata = {
+  served_passage: string | null
+  condition: string | null
+  defect_type: string | null
+  defect_rate: number | null
+  passage_verse_numbers: string[]
+  clean_passage: string | null
+  passage_variants: {
+    id: string
+    condition: string
+    language: string
+    defect_type: string | null
+    defect_rate: number | null
+    passage_text: string
+  }[]
+}
+
 export type ParticipantHistoryRow = {
+  metadata: QuestionPassageMetadata
   qa_item_id: string
   passage: string
   question: string
@@ -49,6 +67,7 @@ export type ParticipantHistoryRow = {
 }
 
 export type ParticipantAssignedQuestionRow = {
+  metadata: QuestionPassageMetadata
   assignment_id: string
   qa_item_id: string
   passage: string

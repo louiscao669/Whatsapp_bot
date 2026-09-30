@@ -8,6 +8,8 @@ from sqlalchemy.orm import selectinload
 from eten_shared.models import (
     Assignment,
     AssignmentStatus,
+    ExperimentPassage,
+    ExperimentPlanCell,
     Participant,
     ParticipantResponse,
     ParticipantSession,
@@ -17,6 +19,8 @@ from eten_shared.experiment_plan import (
     participant_qa_set,
     participants_qa_sets,
 )
+from eten_shared.domain.assignments import assignment_passage_snapshot
+from eten_shared.pilot_trials import defect_for_condition
 from eten_shared.mcq import is_choice_scored_item
 from eten_shared.question_forms import participant_question_forms
 from eten_shared.wh_type import participant_wh_types
@@ -220,6 +224,33 @@ def list_participants_dashboard(db):
     return {"participants": rows}
 
 
+def _passage_metadata(assignment, variants):
+    """Keep the historical assignment snapshot separate from current references."""
+    cell = assignment.experiment_cell if assignment else None
+    condition = cell.condition if cell else None
+    defect_type, defect_rate = defect_for_condition(condition)
+    clean = next((row for row in variants if row.condition == "clean"), None)
+    return {
+        "served_passage": assignment_passage_snapshot(assignment) if assignment else None,
+        "condition": condition,
+        "defect_type": defect_type,
+        "defect_rate": defect_rate,
+        "passage_verse_numbers": list(assignment.passage_verse_numbers or []) if assignment else [],
+        "clean_passage": clean.passage_text if clean else None,
+        "passage_variants": [
+            {
+                "id": row.id,
+                "condition": row.condition,
+                "language": row.language,
+                "defect_type": defect_for_condition(row.condition)[0],
+                "defect_rate": defect_for_condition(row.condition)[1],
+                "passage_text": row.passage_text,
+            }
+            for row in variants if row.condition != "clean"
+        ],
+    }
+
+
 def get_participant_detail(db, participant_id: str):
     participant = db.scalar(
         select(Participant)
@@ -245,6 +276,7 @@ def get_participant_detail(db, participant_id: str):
         .options(
             selectinload(Assignment.qa_item),
             selectinload(Assignment.passage_translation),
+            selectinload(Assignment.experiment_cell).selectinload(ExperimentPlanCell.experiment_passage),
         )
         .order_by(Assignment.assigned_at.desc())
     ).all()
@@ -253,6 +285,32 @@ def get_participant_detail(db, participant_id: str):
         _empty_response_stats(),
     )
     session_state, current_question = _build_current_work_summary(participant.session)
+
+    assignments_by_id = {assignment.id: assignment for assignment in assignments}
+    source_ids = {item.qa_item.passage_id for item in assignments if item.qa_item}
+    source_ids.update(response.qa_item.passage_id for response in responses if response.qa_item)
+    variants_by_source = {}
+    if source_ids:
+        variants = db.scalars(
+            select(ExperimentPassage)
+            .where(ExperimentPassage.source_passage_id.in_(source_ids))
+            .order_by(ExperimentPassage.condition, ExperimentPassage.language)
+        ).all()
+        for variant in variants:
+            variants_by_source.setdefault(variant.source_passage_id, []).append(variant)
+
+    def metadata_for(assignment, qa_item):
+        translation = assignment.passage_translation if assignment else None
+        cell = assignment.experiment_cell if assignment else None
+        passage = cell.experiment_passage if cell else None
+        language = (passage.language if passage else None) or (
+            translation.language if translation else None
+        ) or participant.target_language
+        variants = [
+            row for row in variants_by_source.get(qa_item.passage_id, [])
+            if row.language == language
+        ]
+        return _passage_metadata(assignment, variants)
 
     history = []
     for response in responses:
@@ -268,6 +326,7 @@ def get_participant_detail(db, participant_id: str):
                 "expected_answer": _format_expected_answer(qa_item),
                 "user_answer": _format_user_answer(qa_item, response),
                 "correctness_status": _format_correctness_status(qa_item, response),
+                "metadata": metadata_for(assignments_by_id.get(response.assignment_id), qa_item),
             }
         )
 
@@ -286,6 +345,7 @@ def get_participant_detail(db, participant_id: str):
         assigned_questions.append(
             {
                 "assignment_id": assignment.id,
+                "metadata": metadata_for(assignment, qa_item),
                 "qa_item_id": qa_item.id,
                 "passage": qa_item.passage_reference or qa_item.passage_id or "",
                 "question": _truncate_text(qa_item.question_text, 100),

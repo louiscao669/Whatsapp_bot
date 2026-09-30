@@ -8,9 +8,35 @@ import {
   skipParticipantAssignment,
   updateParticipantLanguage,
   type ParticipantDetail,
+  type QuestionPassageMetadata,
 } from '../api/participants'
 import { fetchSystemLanguages } from '../api/systemLanguages'
 import { ParticipantAssignmentPanel } from '../components/ParticipantAssignmentPanel'
+
+function PassageMetadata({ metadata }: { metadata?: QuestionPassageMetadata }) {
+  if (!metadata) return <span>Unavailable</span>
+  return (
+    <details style={{ minWidth: '18rem', maxWidth: '40rem' }}>
+      <summary>Passage metadata</summary>
+      <p>Condition: {metadata.condition ?? 'Not recorded'}</p>
+      <p>Verses: {metadata.passage_verse_numbers.join(', ') || 'Not recorded'}</p>
+      <h4>Served passage</h4>
+      <p style={{ whiteSpace: 'pre-wrap' }}>{metadata.served_passage ?? 'No saved passage snapshot available.'}</p>
+      <p className="hint">Reference passages below show the full source passage from the current experiment data.</p>
+      <details>
+        <summary>Clean passage</summary>
+        <p style={{ whiteSpace: 'pre-wrap' }}>{metadata.clean_passage ?? 'Clean passage unavailable.'}</p>
+      </details>
+      {metadata.passage_variants.map((variant) => (
+        <details key={variant.id}>
+          <summary>{variant.condition} · {variant.defect_type ?? 'Unknown defect'}{variant.defect_rate == null ? '' : ` · ${Math.round(variant.defect_rate * 100)}%`}</summary>
+          <p style={{ whiteSpace: 'pre-wrap' }}>{variant.passage_text}</p>
+        </details>
+      ))}
+      {metadata.passage_variants.length === 0 ? <p>No defect variants available.</p> : null}
+    </details>
+  )
+}
 
 export function ParticipantDetailPage() {
   const { participantId } = useParams<{ participantId: string }>()
@@ -259,6 +285,7 @@ export function ParticipantDetailPage() {
                 <tr>
                   <th>Passage</th>
                   <th>Question</th>
+                  <th>Metadata</th>
                   <th>Translation</th>
                   <th>Verses</th>
                   <th>Batch</th>
@@ -274,6 +301,7 @@ export function ParticipantDetailPage() {
                     <td className="question-cell">
                       <Link to={`/qa-items/${row.qa_item_id}`}>{row.question}</Link>
                     </td>
+                    <td><PassageMetadata metadata={row.metadata} /></td>
                     <td>{row.translation_name ?? 'Automatic/default'}</td>
                     <td>{row.passage_verse_numbers.join(', ') || '—'}</td>
                     <td>{row.batch_id ?? '—'}</td>
@@ -310,6 +338,7 @@ export function ParticipantDetailPage() {
                 <tr>
                   <th>Passage</th>
                   <th>Question</th>
+                  <th>Metadata</th>
                   <th>Type</th>
                   <th>Expected answer</th>
                   <th>User answer</th>
@@ -323,6 +352,7 @@ export function ParticipantDetailPage() {
                     <td>
                       <Link to={`/qa-items/${row.qa_item_id}`}>{row.question}</Link>
                     </td>
+                    <td><PassageMetadata metadata={row.metadata} /></td>
                     <td>{row.question_type}</td>
                     <td>{row.expected_answer}</td>
                     <td>{row.user_answer}</td>
