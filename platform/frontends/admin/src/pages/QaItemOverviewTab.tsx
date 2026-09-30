@@ -101,6 +101,33 @@ export function QaItemOverviewTab({ item, onItemUpdated, onMessage, onError }: Q
         </section>
       </div>
 
+      <section className="detail-card">
+        <h3>Passages by defect type</h3>
+        <p className="hint">Clean and defect variants for this question. Question windows follow the current delivery rules; saved participant passages remain in participant metadata.</p>
+        {(item.passage_variants ?? []).length === 0 ? (
+          <p>No experiment passage variants are available for this question.</p>
+        ) : (
+          <div className="detail-grid">
+            {item.passage_variants.map((variant) => (
+              <section className="detail-card" key={variant.id}>
+                <h4>{variant.condition === 'clean' ? 'Clean' : variant.condition} · {variant.language}</h4>
+                {variant.condition !== 'clean' ? (
+                  <p className="detail-meta">{variant.defect_type ?? variant.condition}{variant.defect_rate == null ? '' : ` · ${Math.round(variant.defect_rate * 100)}%`}</p>
+                ) : null}
+                <p className="detail-meta">{variant.is_window ? `Question window · ${variant.verse_numbers.join(', ') || 'Unavailable'}` : 'Full passage'}</p>
+                <p className="detail-text" style={{ whiteSpace: 'pre-wrap' }}>{variant.passage_text ?? 'No question window available for this variant.'}</p>
+                {variant.is_window ? (
+                  <details>
+                    <summary>Full passage</summary>
+                    <p className="detail-text" style={{ whiteSpace: 'pre-wrap' }}>{variant.full_passage_text}</p>
+                  </details>
+                ) : null}
+              </section>
+            ))}
+          </div>
+        )}
+      </section>
+
       <QaItemSettingsForm
         item={item}
         onUpdated={onItemUpdated}

@@ -41,6 +41,17 @@ export type QaItemDetail = {
   passage_id: string
   passage: string
   passage_text: string | null
+  passage_variants: {
+    id: string
+    condition: string
+    language: string
+    defect_type: string | null
+    defect_rate: number | null
+    passage_text: string | null
+    verse_numbers: string[]
+    is_window: boolean
+    full_passage_text: string
+  }[]
   question_type: string
   question_text: string
   expected_answer: QaItemExpectedAnswer

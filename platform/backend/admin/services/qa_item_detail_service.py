@@ -6,7 +6,9 @@ from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 
 from eten_shared.mcq import choice_letters_for_item
-from eten_shared.models import ParticipantResponse, QAItem, QAItemRecording
+from eten_shared.models import ExperimentPassage, ExperimentWindow, ParticipantResponse, QAItem, QAItemRecording
+from eten_shared.domain.assignments import experiment_passage_assignment_kwargs
+from eten_shared.pilot_trials import defect_for_condition
 from backend.admin.services.qa_review_service import (
     format_qa_item_review_status_label,
     review_qa_tab_for_item,
@@ -108,6 +110,33 @@ def _latest_recordings_for_language(db, qa_item_id: str, language: str):
     return latest
 
 
+def _question_passage_variants(db, qa_item):
+    passages = db.scalars(
+        select(ExperimentPassage)
+        .where(ExperimentPassage.source_passage_id == qa_item.passage_id)
+        .order_by(ExperimentPassage.language, ExperimentPassage.condition)
+    ).all()
+    window = db.scalar(select(ExperimentWindow).where(ExperimentWindow.qa_item_id == qa_item.id))
+    variants = []
+    for passage in sorted(passages, key=lambda row: (row.language, row.condition != "clean", row.condition)):
+        # Curated windows use the same omission-padding rules as delivery.
+        # Legacy questions have randomized windows, so show their full source.
+        selection = experiment_passage_assignment_kwargs(db, passage, qa_item) if window else {}
+        defect_type, defect_rate = defect_for_condition(passage.condition)
+        variants.append({
+            "id": passage.id,
+            "condition": passage.condition,
+            "language": passage.language,
+            "defect_type": None if passage.condition == "clean" else defect_type,
+            "defect_rate": defect_rate,
+            "passage_text": selection.get("passage_text") if window else passage.passage_text,
+            "verse_numbers": selection.get("passage_verse_numbers", []),
+            "is_window": window is not None,
+            "full_passage_text": passage.passage_text,
+        })
+    return variants
+
+
 def get_qa_item_overview(db, qa_item_id: str, *, language: str = ""):
     qa_item = db.get(QAItem, qa_item_id)
     if not qa_item:
@@ -128,6 +157,7 @@ def get_qa_item_overview(db, qa_item_id: str, *, language: str = ""):
         "passage_id": qa_item.passage_id,
         "passage": qa_item.passage_reference or qa_item.passage_id,
         "passage_text": qa_item.passage_text,
+        "passage_variants": _question_passage_variants(db, qa_item),
         "question_type": (qa_item.question_type or "open").strip().lower(),
         "question_text": qa_item.question_text,
         "expected_answer": _serialize_expected_answer(qa_item),
