@@ -78,8 +78,12 @@ def stub_llm():
             clauses = [c for c in re.split(r"[，。：；“”‘’！？\s\d]+", p["excerpt"]) if 2 <= len(c) <= 12]
             state["key_text"] = p["correct_answer"]
             return {"candidates": [{"text": c, "source": "stub", "why_wrong": "stub"} for c in clauses[:8]]}
-        return {"options": [{"letter": l, "label": "correct" if t == state.get("key_text") else "incorrect"}
-                            for l, t in p["options"].items()]}
+        if role == "factcheck":
+            state["key_text"] = p["correct_answer"]
+            return {"options": [{"letter": l, "verdict": "ok"} for l in p["wrong_options"]]}
+        return {"options": [{"letter": l, "label": "correct" if t == state.get("key_text") else "incorrect",
+                             "natural": True} for l, t in p["options"].items()]}
+    call.state = state
     return call
 
 
@@ -120,11 +124,14 @@ def main() -> int:
                        if (passage_dir / n).exists())
         ctx = rb.PassageContext(passage.read_text(encoding="utf-8"), record.get("passage_reference", ""),
                                 windows)
+        if args.stub:
+            base.state["key_text"] = rb.content_options(record).get(rb.key_letter(record))
         transcript.append({"item": item_id, "set": set_name, "source": source_name,
                            "expect": expect, "calls": []})
         result = rb.rebalance_item(record, ctx, logged)
         counts[result.status] = counts.get(result.status, 0) + 1
         transcript[-1].update(status=result.status, reason=result.reason, judge=result.judge,
+                              natural=result.natural, facts=result.facts,
                               old=result.old_options, new=result.new_options,
                               before=result.before, after=result.after, notes=result.notes)
 
@@ -142,16 +149,30 @@ def main() -> int:
                 new = f"{result.new_options[l]} ({result.after['ratios'][l]:.2f})"
                 new = "(same)" if result.new_options[l] == result.old_options[l] else new
             mark = "*" if l == key else " "
-            print(f"   {l}{mark} {old:<34} -> {new:<34} {result.judge.get(l, '')}")
+            flags = [result.judge.get(l, "")]
+            if result.natural and not result.natural.get(l, True):
+                flags.append("UNNATURAL")
+            if result.facts.get(l, "ok") != "ok":
+                flags.append(result.facts[l].upper())
+            print(f"   {l}{mark} {old:<34} -> {new:<34} {' '.join(f for f in flags if f)}")
         if result.before:
             gap_after = f"{result.after['gap']:+.2f}" if result.after else "-"
-            print(f"   gap {result.before['gap']:+.2f} -> {gap_after}")
+            lead2_after = f"{result.after['second_gap']:+.2f}" if result.after else "-"
+            print(f"   gap {result.before['gap']:+.2f} -> {gap_after}   "
+                  f"2nd-distractor gap {result.before['second_gap']:+.2f} -> {lead2_after}")
         if current and current.get("A") != record.get("A"):
             print("   manual redraft: " + " | ".join(f"{l}:{current['A'][l]}" for l in rb.CONTENT_LETTERS if l in current["A"]))
         gens = [c for c in transcript[-1]["calls"] if c["role"] == "generate"]
         if gens:
             cands = [c.get("text") for g in gens for c in (g["reply"].get("candidates") or [])]
-            print(f"   candidates ({len(cands)}): " + " / ".join(cands))
+            kinds = [c.get("kind", "?") for g in gens for c in (g["reply"].get("candidates") or [])]
+            print(f"   candidates ({len(cands)}): " + " / ".join(f"{t}[{k}]" for t, k in zip(cands, kinds)))
+        for c in transcript[-1]["calls"]:
+            if c["role"] == "factcheck":
+                bad = [(o.get("letter"), o.get("verdict"), o.get("reason")) for o in c["reply"].get("options", [])
+                       if o.get("verdict") not in (None, "ok")]
+                if bad:
+                    print(f"   fact check: {bad}")
         for n in result.notes.items():
             print(f"   note {n[0]}: {n[1]}")
 

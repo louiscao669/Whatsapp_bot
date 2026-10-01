@@ -25,27 +25,37 @@ STANDS_OUT = {"A": "建造新的祭坛", "B": "立刻离开伯特利", "C": "请
 
 
 class StubLLM:
-    """generate -> fixed candidates; judge -> key text 'correct', listed texts as given, rest incorrect."""
+    """generate -> fixed candidates; judge -> key text 'correct', listed verdicts, rest incorrect;
+    factcheck -> listed fact verdicts, rest ok."""
 
-    def __init__(self, candidates, key_text="请同我回家", verdicts=None, key_supported=True):
+    def __init__(self, candidates, key_text="请同我回家", verdicts=None, key_supported=True,
+                 unnatural=(), facts=None):
         self.candidates = candidates
         self.key_text = key_text
         self.verdicts = verdicts or {}
         self.key_supported = key_supported
+        self.unnatural = set(unnatural)
+        self.facts = facts or {}
         self.calls = []
+        self.generate_payloads = []
 
     def __call__(self, role, system, user):
         self.calls.append(role)
         payload = json.loads(user)
         if role == "generate":
-            return {"candidates": [{"text": t, "source": "v", "why_wrong": "w"} for t in self.candidates]}
+            self.generate_payloads.append(payload)
+            return {"candidates": [{"text": t, "kind": "span", "source": "v", "why_wrong": "w"}
+                                   for t in self.candidates]}
+        if role == "factcheck":
+            return {"options": [{"letter": l, "verdict": self.facts.get(t, "ok")}
+                                for l, t in payload["wrong_options"].items()]}
         out = []
         for letter, text in payload["options"].items():
             if text == self.key_text:
                 label = "correct" if self.key_supported else "incorrect"
             else:
                 label = self.verdicts.get(text, "incorrect")
-            out.append({"letter": letter, "label": label, "reason": ""})
+            out.append({"letter": letter, "label": label, "natural": text not in self.unnatural})
         return {"options": out}
 
 
@@ -81,7 +91,7 @@ class RebalanceTests(unittest.TestCase):
         self.assertEqual(result.status, "rebalanced", result.reason)
         self.assertEqual(result.new_options["C"], "请同我回家")
         self.assertLessEqual(abs(result.after["gap"]), 0.15)
-        self.assertEqual(llm.calls, ["generate", "judge"])
+        self.assertEqual(llm.calls, ["judge", "factcheck", "generate", "judge", "factcheck"])
         rb.apply_to_records([record], {result.item_id: result}, {"date": "x"})
         self.assertEqual(record["A"]["E"], "根据这段文字无法判断")
         self.assertEqual(record["correct"], "C")
@@ -94,7 +104,8 @@ class RebalanceTests(unittest.TestCase):
         result = rb.rebalance_item(item(STANDS_OUT), ctx(), llm)
         self.assertIn(result.status, ("rebalanced", "partial"))
         self.assertNotIn(bad, result.new_options.values())
-        self.assertEqual(llm.calls.count("judge"), 2)
+        self.assertEqual(llm.calls.count("judge"), 3)   # audit + rejected set + accepted set
+        self.assertIn(bad, llm.generate_payloads[-1]["do_not_propose"] if len(llm.generate_payloads) > 1 else [bad])
 
     def test_unsupported_key_is_left_for_review(self):
         llm = StubLLM(["给我一半的家产", "在这地方吃饭喝水", "照来时的路回去"], key_supported=False)
@@ -111,12 +122,57 @@ class RebalanceTests(unittest.TestCase):
         result = rb.rebalance_item(item(STANDS_OUT), ctx(), llm, max_rounds=3)
         self.assertEqual(result.status, "needs_review")
 
-    def test_balanced_item_makes_no_calls(self):
+    def test_balanced_item_is_audited_only(self):
         llm = StubLLM([])
         balanced = {"A": "给我一半的家产", "B": "照来时的路回去", "C": "请同我回家", "D": "从别的路回去"}
         result = rb.rebalance_item(item(balanced), ctx(), llm)
-        self.assertEqual(result.status, "balanced")
-        self.assertEqual(llm.calls, [])
+        self.assertEqual(result.status, "ok")
+        self.assertFalse(result.changed)
+        self.assertEqual(llm.calls, ["judge", "factcheck"])
+
+    def test_balanced_item_with_same_referent_distractor_is_replaced(self):
+        alias = "从别的路回去"
+        llm = StubLLM(["给我一半的家产", "在这地方吃饭喝水", "不可吃饭喝水", "照来时的路回去"],
+                      facts={alias: "same_referent"})
+        balanced = {"A": "给我一半的家产", "B": "照来时的路回去", "C": "请同我回家", "D": alias}
+        result = rb.rebalance_item(item(balanced), ctx(), llm)
+        self.assertEqual(result.reason, "invalid_distractor")
+        self.assertEqual(result.status, "replaced_invalid")
+        self.assertNotIn(alias, result.new_options.values())
+        self.assertEqual(result.new_options["A"], "给我一半的家产")   # untouched options stay
+        self.assertIn(alias, llm.generate_payloads[0]["do_not_propose"])
+
+    def test_unnatural_new_candidate_is_rejected(self):
+        odd = "在这地方吃饭喝水"
+        llm = StubLLM(["给我一半的家产", odd, "照来时的路回去", "从别的路回去"], unnatural={odd})
+        result = rb.rebalance_item(item(STANDS_OUT), ctx(), llm)
+        self.assertIn(result.status, ("rebalanced", "partial"))
+        self.assertNotIn(odd, result.new_options.values())
+
+    def test_unnatural_existing_option_is_only_reported(self):
+        llm = StubLLM([], unnatural={"照来时的路回去"})
+        balanced = {"A": "给我一半的家产", "B": "照来时的路回去", "C": "请同我回家", "D": "从别的路回去"}
+        result = rb.rebalance_item(item(balanced), ctx(), llm)
+        self.assertEqual(result.status, "ok")
+        self.assertFalse(result.natural["B"])
+
+    def test_single_lure_with_throwaways_is_flagged_and_fixed(self):
+        lure = {"A": "给我一半的家产", "B": "飞上天空", "C": "请同我回家", "D": "变成石头"}
+        record = item(lure)
+        stats = rb.measure(rb.content_options(record), "C", ctx().window_for(record))
+        self.assertLessEqual(abs(stats["gap"]), 0.15)
+        self.assertEqual(rb.classify(stats, 0.15), "single_lure")
+        llm = StubLLM(["在这地方吃饭喝水", "照来时的路回去", "从别的路回去"])
+        result = rb.rebalance_item(record, ctx(), llm)
+        self.assertEqual(result.status, "rebalanced")
+        self.assertLessEqual(result.after["second_gap"], rb.SECOND_GAP_TOLERANCE)
+
+    def test_claimed_span_not_in_window_is_relabelled(self):
+        record = item(STANDS_OUT)
+        window = ctx().window_for(record)
+        kept = rb.clean_candidates([{"text": "给我一半的家产", "kind": "span"},
+                                    {"text": "飞上天空", "kind": "span"}], "请同我回家", [], window)
+        self.assertEqual([c.kind for c in kept], ["span", "paraphrase"])
 
     def test_dominating_distractor_judged_correct_is_replaced(self):
         # B is verbatim and also a correct answer (an alias of the key, per the stub)
@@ -124,16 +180,16 @@ class RebalanceTests(unittest.TestCase):
         llm = StubLLM(["那神人", "别的路", "赏赐"], key_text="跟他到府上",
                       verdicts={"请同我回家，歇息": "correct"})
         result = rb.rebalance_item(item(opts), ctx(), llm)
-        self.assertEqual(result.reason, "distractor_dominates")
-        self.assertEqual(result.status, "replaced_second_correct")
+        self.assertEqual(result.reason, "invalid_distractor")
+        self.assertEqual(result.status, "replaced_invalid")
         self.assertNotIn("请同我回家，歇息", result.new_options.values())
 
     def test_dominating_distractor_validated_wrong_is_only_checked(self):
         opts = {"A": "建造祭坛", "B": "请同我回家，歇息", "C": "跟他到府上", "D": "祷告"}
         llm = StubLLM([], key_text="跟他到府上")
         result = rb.rebalance_item(item(opts), ctx(), llm)
-        self.assertEqual(result.status, "checked")
-        self.assertEqual(llm.calls, ["judge"])
+        self.assertEqual(result.status, "ok")
+        self.assertEqual(llm.calls, ["judge", "factcheck"])
 
     def test_stem_echo_is_avoided_when_alternatives_exist(self):
         q = "王对神人说了什么？"
@@ -147,6 +203,16 @@ class RebalanceTests(unittest.TestCase):
         kept = rb.clean_candidates([{"text": "请同我回家吧"}, {"text": "给我一半的家产"}],
                                    "请同我回家", ["建造新的祭坛"])
         self.assertEqual([c.text for c in kept], ["给我一半的家产"])
+
+
+class ParallelTests(unittest.TestCase):
+    def test_workers_preserve_order_and_results(self):
+        records = [item(STANDS_OUT, pid=f"p{i}") for i in range(5)]
+        llm = StubLLM(["给我一半的家产", "在这地方吃饭喝水", "照来时的路回去", "从别的路回去"])
+        serial = rb.rebalance_records([dict(r, A=dict(r["A"])) for r in records], ctx(), llm, workers=1)
+        parallel = rb.rebalance_records(records, ctx(), llm, workers=4)
+        self.assertEqual([r.item_id for _, r in parallel], [f"p{i}" for i in range(5)])
+        self.assertEqual([r.new_options for _, r in parallel], [r.new_options for _, r in serial])
 
 
 class ApplyTests(unittest.TestCase):
@@ -198,6 +264,8 @@ class OpenAICallerTests(unittest.TestCase):
         self.assertNotIn("reasoning", seen[-1])
         call("judge", "s", "u")
         self.assertEqual(seen[-1]["reasoning"], {"effort": "high"})
+        call("factcheck", "s", "u")
+        self.assertEqual(seen[-1]["model"], "gpt-6-astra")
         self.assertEqual(seen[-1]["text"], {"format": {"type": "json_object"}})
 
 
