@@ -9,6 +9,12 @@ pinned: false
 
 Check out the configuration reference at https://huggingface.co/docs/hub/spaces-config-reference
 
+## VM deployment
+
+Use [the runtime-only deployment workflow](deploy/README.md) and
+[VM file allowlist](deploy/vm-files.txt) instead of full-repository Git pulls.
+Preview with `sh deploy/deploy-vm.sh --host HOST`; add `--apply` to upload.
+
 ## Repository layout
 
 Monorepo with separate deployables for the participant message bot and the admin platform:

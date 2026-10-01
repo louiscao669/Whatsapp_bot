@@ -9,6 +9,12 @@ Pipeline:
 5. Generate Chinese answers from the decanonicalized passage and questions with GPT.
 6. Back-translate generated open answers to English.
 7. Score against the initially imported English QA set.
+
+Optional (--rebalance-mcq): after QA translation, rebalance the Chinese MCQ options so the
+key does not stand out by verbatim overlap with its window (see
+scripts/pipeline/rebalance_mcq_options.py). Runs once on the shared translated QA,
+against the reference method's translated passage, so every method and defect variant
+inherits the same options.
 """
 
 from __future__ import annotations
@@ -52,6 +58,14 @@ from evaluation.scripts.pipeline.decanonicalize import (
     protected_token_mapping,
     replace_english_terms,
     replace_text,
+)
+from evaluation.scripts.pipeline.rebalance_mcq_options import (
+    DEFAULT_EFFORT as REBALANCE_DEFAULT_EFFORT,
+    DEFAULT_GENERATOR_MODEL as REBALANCE_DEFAULT_GENERATOR,
+    DEFAULT_JUDGE_MODEL as REBALANCE_DEFAULT_JUDGE,
+    DEFAULT_TOLERANCE as REBALANCE_DEFAULT_TOLERANCE,
+    RebalanceError,
+    rebalance_qa_file,
 )
 from evaluation.scripts.pipeline.translate_qa import (
     TranslationError,
@@ -106,7 +120,7 @@ ENTITY_TYPE_CONFIG = {
     "title": ("TITLE", "称号"),
     "other": ("ENTITY", "实体"),
 }
-STOP_STAGES = ("entity-inventory", "translate", "passage-translate", "decanonicalize", "answer", "backtranslate", "score")
+STOP_STAGES = ("entity-inventory", "translate", "passage-translate", "mcq-rebalance", "decanonicalize", "answer", "backtranslate", "score")
 
 
 class PipelineError(Exception):
@@ -1048,6 +1062,60 @@ def run_passage_translate_stage(
     return True
 
 
+def mcq_rebalance_report_path(shared_paths: dict) -> Path:
+    translated = shared_paths["translated_qa"]
+    return translated.with_name(f"{translated.stem}_mcq_rebalance.csv")
+
+
+def run_mcq_rebalance_stage(
+    args: argparse.Namespace,
+    shared_paths: dict,
+    entity_inventory: dict | None,
+    upstream_changed: bool,
+) -> bool:
+    """Rebalance the shared translated QA's MCQ options in place. True if it changed.
+
+    The report CSV doubles as the stage marker: it is rerun when missing, when the
+    translated QA changed upstream, or with --force-rebalance.
+    """
+    report = mcq_rebalance_report_path(shared_paths)
+    if not should_run(report, force=args.force or upstream_changed,
+                      force_stage=args.force_rebalance):
+        print(f"[shared] reuse MCQ rebalance: {report}")
+        return False
+    method = args.rebalance_reference_method
+    paths = method_output_paths(args, method)
+    if stage_enabled(args, "passage-translate"):
+        run_passage_translate_stage(
+            args, method, paths["translated_passage_json"], paths["translated_passage"],
+            entity_inventory,
+        )
+    if not paths["translated_passage"].exists():
+        raise PipelineError(
+            f"--rebalance-mcq needs the reference passage {paths['translated_passage']} "
+            f"(method {method}); run passage-translate for it first."
+        )
+    require_openai_key()
+    print(f"[shared] MCQ rebalance against {method}: {shared_paths['translated_qa']}")
+    try:
+        changed = rebalance_qa_file(
+            shared_paths["translated_qa"],
+            paths["translated_passage"],
+            report,
+            windows_json=args.answer_verse_windows_json,
+            verse_window=args.answer_verse_window if args.answer_verse_window >= 0 else 2,
+            generator_model=args.rebalance_generator_model,
+            judge_model=args.rebalance_judge_model,
+            effort=args.rebalance_effort or None,
+            tolerance=args.rebalance_tolerance,
+            retries=args.retries,
+        )
+    except RebalanceError as exc:
+        raise PipelineError(f"MCQ rebalance failed: {exc}") from exc
+    print(f"[shared] MCQ rebalance: {changed} items changed; review {report}")
+    return changed > 0
+
+
 def run_method_qa_stage(
     shared_translated_qa_path: Path,
     method_translated_qa_path: Path,
@@ -1606,6 +1674,29 @@ def parse_args() -> argparse.Namespace:
             "Ignored by methods that include the rate in the method name."
         ),
     )
+    parser.add_argument(
+        "--rebalance-mcq",
+        action="store_true",
+        help=(
+            "After QA translation, rebalance Chinese MCQ distractors so the key does not "
+            "stand out by verbatim overlap with its window (OpenAI generate + blind "
+            "validate; writes <run>_qa_zh_mcq_rebalance.csv for review). Off by default."
+        ),
+    )
+    parser.add_argument(
+        "--rebalance-reference-method",
+        default="llm_prompt_high",
+        help="Method whose translated passage the overlap is measured against.",
+    )
+    parser.add_argument("--rebalance-generator-model", default=REBALANCE_DEFAULT_GENERATOR)
+    parser.add_argument("--rebalance-judge-model", default=REBALANCE_DEFAULT_JUDGE)
+    parser.add_argument(
+        "--rebalance-effort",
+        default=REBALANCE_DEFAULT_EFFORT,
+        help="Reasoning effort for both rebalance models; empty string to omit.",
+    )
+    parser.add_argument("--rebalance-tolerance", type=float,
+                        default=REBALANCE_DEFAULT_TOLERANCE)
     parser.add_argument("--retries", type=int, default=2)
     parser.add_argument("--skip-llm", action="store_true")
     parser.add_argument(
@@ -1623,6 +1714,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--force-translate", action="store_true")
     parser.add_argument("--force-passage-translate", action="store_true")
     parser.add_argument("--force-decanonicalize", action="store_true")
+    parser.add_argument("--force-rebalance", action="store_true")
     parser.add_argument("--force-answer", action="store_true")
     parser.add_argument("--force-backtranslate", action="store_true")
     parser.add_argument("--force-score", action="store_true")
@@ -1709,6 +1801,16 @@ def main() -> int:
             print("pipeline complete")
             print(f"entity_inventory: {shared_paths['entity_inventory']}")
             print(f"shared_translated_qa: {shared_paths['translated_qa']}")
+            return 0
+
+        if args.rebalance_mcq and stage_enabled(args, "mcq-rebalance"):
+            translated_qa_changed = run_mcq_rebalance_stage(
+                args, shared_paths, entity_inventory, translated_qa_changed,
+            ) or translated_qa_changed
+        if args.stop_after == "mcq-rebalance":
+            print("pipeline complete")
+            print(f"shared_translated_qa: {shared_paths['translated_qa']}")
+            print(f"mcq_rebalance_report: {mcq_rebalance_report_path(shared_paths)}")
             return 0
 
         shared_decanonicalized_qa_changed = False

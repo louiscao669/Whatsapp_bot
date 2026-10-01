@@ -1,5 +1,10 @@
 # Running the platform under gunicorn
 
+For application file updates, use the [runtime-only deployment workflow](../README.md).
+The Git clone/pull commands below describe the older full-checkout setup; do not
+use them for allowlisted deployments. Transfer the runtime payload from your Mac,
+then follow the applicable VM configuration and service steps below.
+
 Replaces Werkzeug's development server. Nothing in the application changes:
 gunicorn imports the same `create_app()` through `platform/wsgi.py`, the same
 blueprints are registered, and every route behaves identically.

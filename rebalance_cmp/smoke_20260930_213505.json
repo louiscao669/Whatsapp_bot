@@ -1,0 +1,1168 @@
+{
+ "generator": "gpt-6.1-sol",
+ "judge": "gpt-6-astra",
+ "effort": "high",
+ "stub": false,
+ "items": [
+  {
+   "item": "uw-t1_2kgs6_7:kenl-mcq",
+   "set": "gold72",
+   "source": "qa_target_decanonicalized.json.bak_overlap_2026-09-30",
+   "expect": "key 关门挡住他 verbatim vs distractors at 0.00 -> rebalanced with in-window actions",
+   "calls": [
+    {
+     "role": "generate",
+     "seconds": 29.3,
+     "user": {
+      "excerpt": "31 他宣告说：“沙法的儿子以利沙的头今日若还在他肩上，愿神重重地惩罚我！”\n32 那时以利沙坐在自己的屋里，长老们与他同坐。王打发使者先去，但使者还未到，以利沙对长老们说：“你们看这杀人犯打发人来砍我的头吗？看哪，使者来了，你们就关门挡住他。他主人脚步的声音不就在他后面吗？”\n33 以利沙正与他们说话时，使者下来见他。王说：“这灾祸是耶和华所降，我还等耶和华作什么呢？”",
+      "question": "以利沙告诉长老们做什么？",
+      "correct_answer": "关门挡住他",
+      "current_wrong_options": [
+       "召集百姓",
+       "祈求保护",
+       "准备食物"
+      ],
+      "number_of_candidates": 8
+     },
+     "reply": {
+      "candidates": [
+       {
+        "text": "打发使者先去",
+        "source": "32",
+        "why_wrong": "这是王所做的事，不是以利沙给长老们的吩咐。"
+       },
+       {
+        "text": "与他同坐",
+        "source": "32",
+        "why_wrong": "这是长老们当时的状态，不是以利沙要求他们做的事。"
+       },
+       {
+        "text": "砍我的头",
+        "source": "32",
+        "why_wrong": "这是以利沙所说的来人目的，不是他给长老们的命令。"
+       },
+       {
+        "text": "下来见他",
+        "source": "33",
+        "why_wrong": "这是使者的行动，不是以利沙吩咐长老们做的事。"
+       },
+       {
+        "text": "重重地惩罚我",
+        "source": "31",
+        "why_wrong": "这是宣告中求神惩罚自己的话，不是对长老们的吩咐。"
+       },
+       {
+        "text": "等耶和华",
+        "source": "33",
+        "why_wrong": "这是王反问中提到的事，不是以利沙对长老们的要求。"
+       },
+       {
+        "text": "开门迎接他",
+        "source": "paraphrase",
+        "why_wrong": "以利沙要求关门挡住使者，而不是开门迎接他。"
+       },
+       {
+        "text": "去向王求情",
+        "source": "paraphrase",
+        "why_wrong": "以利沙没有要求长老们去向王求情。"
+       }
+      ]
+     }
+    },
+    {
+     "role": "judge",
+     "seconds": 5.9,
+     "user": {
+      "excerpt": "31 他宣告说：“沙法的儿子以利沙的头今日若还在他肩上，愿神重重地惩罚我！”\n32 那时以利沙坐在自己的屋里，长老们与他同坐。王打发使者先去，但使者还未到，以利沙对长老们说：“你们看这杀人犯打发人来砍我的头吗？看哪，使者来了，你们就关门挡住他。他主人脚步的声音不就在他后面吗？”\n33 以利沙正与他们说话时，使者下来见他。王说：“这灾祸是耶和华所降，我还等耶和华作什么呢？”",
+      "question": "以利沙告诉长老们做什么？",
+      "options": {
+       "A": "打发使者先去",
+       "B": "与他同坐",
+       "C": "关门挡住他",
+       "D": "重重地惩罚我"
+      }
+     },
+     "reply": {
+      "options": [
+       {
+        "letter": "A",
+        "label": "incorrect",
+        "reason": "打发使者先去的是王，不是以利沙对长老们的吩咐。"
+       },
+       {
+        "letter": "B",
+        "label": "incorrect",
+        "reason": "长老们与以利沙同坐是当时的情景，不是他要求他们做的事。"
+       },
+       {
+        "letter": "C",
+        "label": "correct",
+        "reason": "以利沙明确告诉长老们，使者来了就关门挡住他。"
+       },
+       {
+        "letter": "D",
+        "label": "incorrect",
+        "reason": "这是宣告者求神惩罚自己的誓言，不是以利沙对长老们的吩咐。"
+       }
+      ]
+     }
+    }
+   ],
+   "status": "rebalanced",
+   "reason": "key_stands_out",
+   "judge": {
+    "A": "incorrect",
+    "B": "incorrect",
+    "C": "correct",
+    "D": "incorrect"
+   },
+   "old": {
+    "A": "召集百姓",
+    "B": "祈求保护",
+    "C": "关门挡住他",
+    "D": "准备食物"
+   },
+   "new": {
+    "A": "打发使者先去",
+    "B": "与他同坐",
+    "C": "关门挡住他",
+    "D": "重重地惩罚我"
+   },
+   "before": {
+    "ratios": {
+     "A": 0.0,
+     "B": 0.0,
+     "C": 1.0,
+     "D": 0.0
+    },
+    "key": 1.0,
+    "best_distractor": 0.0,
+    "gap": 1.0
+   },
+   "after": {
+    "ratios": {
+     "A": 1.0,
+     "B": 1.0,
+     "C": 1.0,
+     "D": 1.0
+    },
+    "key": 1.0,
+    "best_distractor": 1.0,
+    "gap": 0.0
+   },
+   "notes": {
+    "A": "32: 这是王所做的事，不是以利沙给长老们的吩咐。",
+    "B": "32: 这是长老们当时的状态，不是以利沙要求他们做的事。",
+    "D": "31: 这是宣告中求神惩罚自己的话，不是对长老们的吩咐。"
+   }
+  },
+  {
+   "item": "uw-t1_acts20:jxkk#2-mcq",
+   "set": "gold72",
+   "source": "qa_target_decanonicalized.json",
+   "expect": "gap +0.66, missed by the manual audit -> rebalanced",
+   "calls": [
+    {
+     "role": "generate",
+     "seconds": 31.7,
+     "user": {
+      "excerpt": "8 当时我们聚集的楼上的房间里有许多灯。\n9 有一个名叫尤提古斯的年轻人坐在窗户边，保罗不停地讲，他渐渐进入沉睡。当他熟睡时，从三楼坠下，被捡起时已死。\n10 但保罗下去，扑到那年轻人身上，抱住他，说：“不要惊慌！他还活着！”",
+      "question": "掉下去的年轻人发生了什么？",
+      "correct_answer": "他被捡起时已死",
+      "current_wrong_options": [
+       "他受伤但意识清醒",
+       "有人接住了他",
+       "他毫发无伤"
+      ],
+      "number_of_candidates": 8
+     },
+     "reply": {
+      "candidates": [
+       {
+        "text": "他被捡起时仍然清醒",
+        "source": "paraphrase",
+        "why_wrong": "经文说他被捡起时已死，并非仍然清醒。"
+       },
+       {
+        "text": "他被捡起后才断了气",
+        "source": "paraphrase",
+        "why_wrong": "他被捡起时已经死了，不是在被捡起后才死。"
+       },
+       {
+        "text": "他坠下前就已经死了",
+        "source": "paraphrase",
+        "why_wrong": "经文说他熟睡时坠下，并非死后才坠下。"
+       },
+       {
+        "text": "他被保罗抱住后才坠下",
+        "source": "paraphrase",
+        "why_wrong": "保罗是在他坠下后才下去抱住他的。"
+       },
+       {
+        "text": "他落在楼上的房间里",
+        "source": "paraphrase",
+        "why_wrong": "他从三楼坠下，保罗随后下去，并非落在楼上的房间里。"
+       },
+       {
+        "text": "他始终清醒地听保罗讲",
+        "source": "paraphrase",
+        "why_wrong": "他渐渐进入沉睡，并在熟睡时坠下。"
+       },
+       {
+        "text": "他扑到保罗身上抱住他",
+        "source": "paraphrase",
+        "why_wrong": "是保罗扑到年轻人身上抱住他，动作的双方被颠倒了。"
+       },
+       {
+        "text": "他叫众人不要惊慌",
+        "source": "paraphrase",
+        "why_wrong": "说不要惊慌的是保罗，不是年轻人。"
+       }
+      ]
+     }
+    },
+    {
+     "role": "judge",
+     "seconds": 6.6,
+     "user": {
+      "excerpt": "8 当时我们聚集的楼上的房间里有许多灯。\n9 有一个名叫尤提古斯的年轻人坐在窗户边，保罗不停地讲，他渐渐进入沉睡。当他熟睡时，从三楼坠下，被捡起时已死。\n10 但保罗下去，扑到那年轻人身上，抱住他，说：“不要惊慌！他还活着！”",
+      "question": "掉下去的年轻人发生了什么？",
+      "options": {
+       "A": "他受伤但意识清醒",
+       "B": "他被捡起时已死",
+       "C": "有人接住了他",
+       "D": "他落在楼上的房间里"
+      }
+     },
+     "reply": {
+      "options": [
+       {
+        "letter": "A",
+        "label": "incorrect",
+        "reason": "经文说他被捡起时已死，并非受伤但意识清醒。"
+       },
+       {
+        "letter": "B",
+        "label": "correct",
+        "reason": "经文明说他从三楼坠下，被捡起时已死。"
+       },
+       {
+        "letter": "C",
+        "label": "incorrect",
+        "reason": "经文说他坠下后被捡起，没有说有人接住了他。"
+       },
+       {
+        "letter": "D",
+        "label": "incorrect",
+        "reason": "他从三楼坠下，保罗随后下去，并非落在楼上的房间里。"
+       }
+      ]
+     }
+    }
+   ],
+   "status": "partial",
+   "reason": "key_stands_out",
+   "judge": {
+    "A": "incorrect",
+    "B": "correct",
+    "C": "incorrect",
+    "D": "incorrect"
+   },
+   "old": {
+    "A": "他受伤但意识清醒",
+    "B": "他被捡起时已死",
+    "C": "有人接住了他",
+    "D": "他毫发无伤"
+   },
+   "new": {
+    "A": "他受伤但意识清醒",
+    "B": "他被捡起时已死",
+    "C": "有人接住了他",
+    "D": "他落在楼上的房间里"
+   },
+   "before": {
+    "ratios": {
+     "A": 0.125,
+     "B": 0.8571428571428571,
+     "C": 0.16666666666666666,
+     "D": 0.2
+    },
+    "key": 0.8571428571428571,
+    "best_distractor": 0.2,
+    "gap": 0.657142857142857
+   },
+   "after": {
+    "ratios": {
+     "A": 0.125,
+     "B": 0.8571428571428571,
+     "C": 0.16666666666666666,
+     "D": 0.6666666666666666
+    },
+    "key": 0.8571428571428571,
+    "best_distractor": 0.6666666666666666,
+    "gap": 0.19047619047619047
+   },
+   "notes": {
+    "D": "paraphrase: 他从三楼坠下，保罗随后下去，并非落在楼上的房间里。"
+   }
+  },
+  {
+   "item": "uw-t1_1kgs13:sy7m-mcq",
+   "set": "gold72",
+   "source": "qa_target_decanonicalized.json.bak_overlap_2026-09-30",
+   "expect": "window has only one 'word' -> partial or needs_review, no near-synonym of 耶和华的话",
+   "calls": [
+    {
+     "role": "generate",
+     "seconds": 40.5,
+     "user": {
+      "excerpt": "20 他们坐席的时候，耶和华的话临到带他回来的先知，\n21 先知就向从犹大来的神人喊叫说：“耶和华如此说：‘因为你违背耶和华的话，没有遵守耶和华你神所吩咐你的命令，\n22 反倒回去，在他吩咐你不可吃饭喝水的地方吃了饭喝了水，你的尸首必不得入你列祖的坟墓。’”",
+      "question": "当老先知坐在桌旁时，什么话临到他？",
+      "correct_answer": "耶和华的话",
+      "current_wrong_options": [
+       "狮子的警告",
+       "天使的异象",
+       "王的信息"
+      ],
+      "number_of_candidates": 8
+     },
+     "reply": {
+      "candidates": [
+       {
+        "text": "神人的答话",
+        "source": "paraphrase",
+        "why_wrong": "经文没有记载神人答话，临到先知的是耶和华的话。"
+       },
+       {
+        "text": "列祖的叮嘱",
+        "source": "paraphrase",
+        "why_wrong": "列祖只在坟墓的归属中被提及，并没有发出叮嘱。"
+       },
+       {
+        "text": "犹大的消息",
+        "source": "paraphrase",
+        "why_wrong": "犹大是神人来的地方，不是临到先知的话的来源。"
+       },
+       {
+        "text": "同席者的问候",
+        "source": "paraphrase",
+        "why_wrong": "经文说他们正在坐席，并未记载同席者的问候。"
+       },
+       {
+        "text": "坐席的邀请",
+        "source": "paraphrase",
+        "why_wrong": "话临到先知时他们已经坐席，并不是有人邀请坐席。"
+       },
+       {
+        "text": "吃饭的劝说",
+        "source": "paraphrase",
+        "why_wrong": "临到先知的话责备神人违命吃饭，并非劝他吃饭。"
+       },
+       {
+        "text": "喝水的劝告",
+        "source": "paraphrase",
+        "why_wrong": "临到先知的话责备神人违命喝水，并非劝他喝水。"
+       },
+       {
+        "text": "回去的催促",
+        "source": "paraphrase",
+        "why_wrong": "经文提到回去是神人已经做过的事，并非此时临到先知的催促。"
+       }
+      ]
+     }
+    },
+    {
+     "role": "judge",
+     "seconds": 3.8,
+     "user": {
+      "excerpt": "20 他们坐席的时候，耶和华的话临到带他回来的先知，\n21 先知就向从犹大来的神人喊叫说：“耶和华如此说：‘因为你违背耶和华的话，没有遵守耶和华你神所吩咐你的命令，\n22 反倒回去，在他吩咐你不可吃饭喝水的地方吃了饭喝了水，你的尸首必不得入你列祖的坟墓。’”",
+      "question": "当老先知坐在桌旁时，什么话临到他？",
+      "options": {
+       "A": "狮子的警告",
+       "B": "天使的异象",
+       "C": "耶和华的话",
+       "D": "列祖的叮嘱"
+      }
+     },
+     "reply": {
+      "options": [
+       {
+        "letter": "A",
+        "label": "incorrect",
+        "reason": "经文没有提到狮子的警告。"
+       },
+       {
+        "letter": "B",
+        "label": "incorrect",
+        "reason": "经文没有提到天使的异象。"
+       },
+       {
+        "letter": "C",
+        "label": "correct",
+        "reason": "经文明说，他们坐席的时候，耶和华的话临到带神人回来的先知。"
+       },
+       {
+        "letter": "D",
+        "label": "incorrect",
+        "reason": "经文只提到列祖的坟墓，没有提到列祖的叮嘱。"
+       }
+      ]
+     }
+    }
+   ],
+   "status": "partial",
+   "reason": "key_stands_out",
+   "judge": {
+    "A": "incorrect",
+    "B": "incorrect",
+    "C": "correct",
+    "D": "incorrect"
+   },
+   "old": {
+    "A": "狮子的警告",
+    "B": "天使的异象",
+    "C": "耶和华的话",
+    "D": "王的信息"
+   },
+   "new": {
+    "A": "狮子的警告",
+    "B": "天使的异象",
+    "C": "耶和华的话",
+    "D": "列祖的叮嘱"
+   },
+   "before": {
+    "ratios": {
+     "A": 0.2,
+     "B": 0.2,
+     "C": 1.0,
+     "D": 0.25
+    },
+    "key": 1.0,
+    "best_distractor": 0.25,
+    "gap": 0.75
+   },
+   "after": {
+    "ratios": {
+     "A": 0.2,
+     "B": 0.2,
+     "C": 1.0,
+     "D": 0.6
+    },
+    "key": 1.0,
+    "best_distractor": 0.6,
+    "gap": 0.4
+   },
+   "notes": {
+    "D": "paraphrase: 列祖只在坟墓的归属中被提及，并没有发出叮嘱。"
+   }
+  },
+  {
+   "item": "uw-t1_judg17_18:h3z1-mcq",
+   "set": "gold72",
+   "source": "qa_target_decanonicalized.json.bak_overlap_2026-09-30",
+   "expect": "old C 来自伯利恒的利未人 IS Jonathan -> must not survive; must not be re-proposed",
+   "calls": [
+    {
+     "role": "generate",
+     "seconds": 32.0,
+     "user": {
+      "excerpt": "29 他们给城起名叫但，照着他们祖先但的名字，原名来士。\n30 但人为自己立偶像，摩西的孙子、革顺的儿子约拿单和他的儿子作但支派的祭司，直到被掳之日。\n31 神的殿在示罗多少日子，他们为自己设立的米迦的雕像也在那里多少日子。",
+      "question": "但支派的祭司是谁？",
+      "correct_answer": "约拿单和他的儿子们",
+      "current_wrong_options": [
+       "但支派的长老们",
+       "来自伯利恒的利未人",
+       "米迦和他的儿子"
+      ],
+      "number_of_candidates": 8
+     },
+     "reply": {
+      "candidates": [
+       {
+        "text": "摩西和他的儿子革顺",
+        "source": "30",
+        "why_wrong": "摩西和革顺是约拿单的祖父和父亲，不是文中所说的祭司。"
+       },
+       {
+        "text": "摩西和他们的祖先但",
+        "source": "paraphrase",
+        "why_wrong": "摩西和祖先但都不是文中指定的但支派祭司。"
+       },
+       {
+        "text": "革顺和他们的祖先但",
+        "source": "paraphrase",
+        "why_wrong": "革顺是约拿单的父亲，但是城名所依据的祖先，二人不是所问的祭司。"
+       },
+       {
+        "text": "米迦和他们的祖先但",
+        "source": "paraphrase",
+        "why_wrong": "文中提到米迦的雕像和祖先但的名字，却没有说他们担任祭司。"
+       },
+       {
+        "text": "摩西和雕像的主人米迦",
+        "source": "paraphrase",
+        "why_wrong": "文中担任祭司的是约拿单和他的儿子，不是摩西和米迦。"
+       },
+       {
+        "text": "革顺和雕像的主人米迦",
+        "source": "paraphrase",
+        "why_wrong": "革顺是约拿单的父亲，米迦与雕像有关，都不是文中指定的祭司。"
+       },
+       {
+        "text": "摩西和革顺以及米迦",
+        "source": "paraphrase",
+        "why_wrong": "这三人都不是文中所说的约拿单和他的儿子。"
+       },
+       {
+        "text": "摩西和革顺以及祖先但",
+        "source": "paraphrase",
+        "why_wrong": "这些人是文中提及的父辈或祖先，不是所问的祭司。"
+       }
+      ]
+     }
+    },
+    {
+     "role": "judge",
+     "seconds": 7.6,
+     "user": {
+      "excerpt": "29 他们给城起名叫但，照着他们祖先但的名字，原名来士。\n30 但人为自己立偶像，摩西的孙子、革顺的儿子约拿单和他的儿子作但支派的祭司，直到被掳之日。\n31 神的殿在示罗多少日子，他们为自己设立的米迦的雕像也在那里多少日子。",
+      "question": "但支派的祭司是谁？",
+      "options": {
+       "A": "约拿单和他的儿子们",
+       "B": "但支派的长老们",
+       "C": "来自伯利恒的利未人",
+       "D": "米迦和他的儿子"
+      }
+     },
+     "reply": {
+      "options": [
+       {
+        "letter": "A",
+        "label": "correct",
+        "reason": "第30节明确说约拿单和他的儿子作但支派的祭司。"
+       },
+       {
+        "letter": "B",
+        "label": "incorrect",
+        "reason": "经文所记的祭司是约拿单和他的儿子，而非但支派的长老们。"
+       },
+       {
+        "letter": "C",
+        "label": "incorrect",
+        "reason": "摘录没有提到来自伯利恒的利未人，也未提供这一身份信息。"
+       },
+       {
+        "letter": "D",
+        "label": "incorrect",
+        "reason": "经文提到的是米迦的雕像，并非米迦和他的儿子担任祭司。"
+       }
+      ]
+     }
+    }
+   ],
+   "status": "needs_review",
+   "reason": "no validated set improves the gap",
+   "judge": {
+    "A": "correct",
+    "B": "incorrect",
+    "C": "incorrect",
+    "D": "incorrect"
+   },
+   "old": {
+    "A": "约拿单和他的儿子们",
+    "B": "但支派的长老们",
+    "C": "来自伯利恒的利未人",
+    "D": "米迦和他的儿子"
+   },
+   "new": {
+    "A": "约拿单和他的儿子们",
+    "B": "但支派的长老们",
+    "C": "来自伯利恒的利未人",
+    "D": "米迦和他的儿子"
+   },
+   "before": {
+    "ratios": {
+     "A": 0.8888888888888888,
+     "B": 0.5714285714285714,
+     "C": 0.1111111111111111,
+     "D": 0.7142857142857143
+    },
+    "key": 0.8888888888888888,
+    "best_distractor": 0.7142857142857143,
+    "gap": 0.17460317460317454
+   },
+   "after": {
+    "ratios": {
+     "A": 0.8888888888888888,
+     "B": 0.5714285714285714,
+     "C": 0.1111111111111111,
+     "D": 0.7142857142857143
+    },
+    "key": 0.8888888888888888,
+    "best_distractor": 0.7142857142857143,
+    "gap": 0.17460317460317454
+   },
+   "notes": {}
+  },
+  {
+   "item": "uw-t1_2kgs6_7:5bba-mcq",
+   "set": "hard66",
+   "source": "t1_2kgs6_7.json.bak_overlap_2026-09-30",
+   "expect": "only full in-window alternative 以色列王 is near-correct -> partial / needs_review",
+   "calls": [
+    {
+     "role": "generate",
+     "seconds": 35.3,
+     "user": {
+      "excerpt": "5 黄昏时他们起来，往叙利亚营去。到了营外，却无人。\n6 因为耶和华使叙利亚人听见车马声和大军声，他们彼此说：“看哪，以色列王必是雇了赫人的诸王和埃及的诸王来攻击我们。”\n7 叙利亚人就起来，黄昏时逃跑，丢下帐棚、马匹和驴子，营地完好无损，逃命去了。",
+      "question": "叙利亚人以为谁要来攻击他们？",
+      "correct_answer": "赫人的诸王和埃及的诸王",
+      "current_wrong_options": [
+       "摩押人",
+       "长大麻风的人",
+       "非利士人"
+      ],
+      "number_of_candidates": 8
+     },
+     "reply": {
+      "candidates": [
+       {
+        "text": "使他们听见车马声的耶和华",
+        "source": "6",
+        "why_wrong": "耶和华使他们听见声音，并不是他们所认定的攻击者。"
+       },
+       {
+        "text": "黄昏时来到叙利亚营的人",
+        "source": "5",
+        "why_wrong": "这些人是来到营外的人，不是叙利亚人所说的攻击者。"
+       },
+       {
+        "text": "摩押的诸王和亚扪的诸王",
+        "source": "paraphrase",
+        "why_wrong": "他们所说的是赫人和埃及的诸王，不是摩押和亚扪的诸王。"
+       },
+       {
+        "text": "亚述的诸王和巴比伦的诸王",
+        "source": "paraphrase",
+        "why_wrong": "经文没有将亚述和巴比伦的诸王列为他们认定的攻击者。"
+       },
+       {
+        "text": "以东的诸王和米甸的诸王",
+        "source": "paraphrase",
+        "why_wrong": "他们认定的攻击者不是以东和米甸的诸王。"
+       },
+       {
+        "text": "推罗的诸王和西顿的诸王",
+        "source": "paraphrase",
+        "why_wrong": "他们的话中提到的是赫人和埃及，而不是推罗和西顿。"
+       },
+       {
+        "text": "非利士的诸王和摩押的诸王",
+        "source": "paraphrase",
+        "why_wrong": "非利士和摩押的诸王并不是经文中他们以为要来攻击的人。"
+       },
+       {
+        "text": "亚玛力的诸王和亚扪的诸王",
+        "source": "paraphrase",
+        "why_wrong": "他们没有说亚玛力和亚扪的诸王要来攻击他们。"
+       }
+      ]
+     }
+    },
+    {
+     "role": "judge",
+     "seconds": 3.7,
+     "user": {
+      "excerpt": "5 黄昏时他们起来，往叙利亚营去。到了营外，却无人。\n6 因为耶和华使叙利亚人听见车马声和大军声，他们彼此说：“看哪，以色列王必是雇了赫人的诸王和埃及的诸王来攻击我们。”\n7 叙利亚人就起来，黄昏时逃跑，丢下帐棚、马匹和驴子，营地完好无损，逃命去了。",
+      "question": "叙利亚人以为谁要来攻击他们？",
+      "options": {
+       "A": "赫人的诸王和埃及的诸王",
+       "B": "使他们听见车马声的耶和华",
+       "C": "黄昏时来到叙利亚营的人",
+       "D": "摩押的诸王和亚扪的诸王"
+      }
+     },
+     "reply": {
+      "options": [
+       {
+        "letter": "A",
+        "label": "correct",
+        "reason": "叙利亚人说，以色列王必是雇了赫人的诸王和埃及的诸王来攻击他们。"
+       },
+       {
+        "letter": "B",
+        "label": "incorrect",
+        "reason": "耶和华使他们听见声音，但不是他们以为要来攻击的人。"
+       },
+       {
+        "letter": "C",
+        "label": "incorrect",
+        "reason": "黄昏时来到营地的人并非叙利亚人所认为的攻击者。"
+       },
+       {
+        "letter": "D",
+        "label": "incorrect",
+        "reason": "他们以为来攻击的是赫人和埃及的诸王，而非摩押和亚扪的诸王。"
+       }
+      ]
+     }
+    }
+   ],
+   "status": "needs_review",
+   "reason": "no validated set improves the gap",
+   "judge": {
+    "A": "correct",
+    "B": "incorrect",
+    "C": "incorrect",
+    "D": "incorrect"
+   },
+   "old": {
+    "A": "赫人的诸王和埃及的诸王",
+    "B": "摩押人",
+    "C": "长大麻风的人",
+    "D": "非利士人"
+   },
+   "new": {
+    "A": "赫人的诸王和埃及的诸王",
+    "B": "使他们听见车马声的耶和华",
+    "C": "黄昏时来到叙利亚营的人",
+    "D": "摩押的诸王和亚扪的诸王"
+   },
+   "before": {
+    "ratios": {
+     "A": 1.0,
+     "B": 0.3333333333333333,
+     "C": 0.16666666666666666,
+     "D": 0.25
+    },
+    "key": 1.0,
+    "best_distractor": 0.3333333333333333,
+    "gap": 0.6666666666666667
+   },
+   "after": {
+    "ratios": {
+     "A": 1.0,
+     "B": 0.4166666666666667,
+     "C": 0.36363636363636365,
+     "D": 0.36363636363636365
+    },
+    "key": 1.0,
+    "best_distractor": 0.4166666666666667,
+    "gap": 0.5833333333333333
+   },
+   "notes": {}
+  },
+  {
+   "item": "uw-t1_2chr26:9860-mcq",
+   "set": "hard66",
+   "source": "t1_2chr26.json.bak_overlap_2026-09-30",
+   "expect": "timing item; 约坦管理王宫 (regency) vs 接续他作王 -> validator decides",
+   "calls": [
+    {
+     "role": "generate",
+     "seconds": 34.9,
+     "user": {
+      "excerpt": "21 乌西雅王患麻风直到死日，住在隔离处，因麻风被隔绝在耶和华的殿外。他的儿子约坦管理王宫，治理国民。\n22 乌西雅一切事迹，从头到尾都记载在亚摩斯的儿子先知以赛亚的书中。\n23 乌西雅与列祖同睡，葬在王的坟地，因为百姓说：“他是麻风病人。”他的儿子约坦接续他作王。",
+      "question": "乌西雅被埋葬以后，发生了什么事？",
+      "correct_answer": "他的儿子约坦接续他作王",
+      "current_wrong_options": [
+       "圣殿被重建",
+       "乌西雅的军队解散了",
+       "先知以赛亚记载了乌西雅的事迹"
+      ],
+      "number_of_candidates": 8
+     },
+     "reply": {
+      "candidates": [
+       {
+        "text": "他因麻风被隔绝在耶和华的殿外",
+        "source": "21",
+        "why_wrong": "这是乌西雅生前的遭遇，不是他被埋葬以后发生的事。"
+       },
+       {
+        "text": "他住在隔离处并患麻风直到死日",
+        "source": "paraphrase",
+        "why_wrong": "住在隔离处养病发生在乌西雅死前，而非埋葬以后。"
+       },
+       {
+        "text": "他的儿子约坦开始管理王宫",
+        "source": "paraphrase",
+        "why_wrong": "约坦在乌西雅生前已经管理王宫，并非埋葬后才开始。"
+       },
+       {
+        "text": "亚摩斯的儿子以赛亚接续他作王",
+        "source": "paraphrase",
+        "why_wrong": "接续乌西雅作王的是约坦，不是以赛亚。"
+       },
+       {
+        "text": "他的儿子约坦被葬在王的坟地",
+        "source": "paraphrase",
+        "why_wrong": "被葬在王的坟地的是乌西雅，不是约坦。"
+       },
+       {
+        "text": "他的儿子约坦被隔绝在殿外",
+        "source": "paraphrase",
+        "why_wrong": "因麻风被隔绝在殿外的是乌西雅，不是约坦。"
+       },
+       {
+        "text": "百姓接管王宫并开始治理国民",
+        "source": "paraphrase",
+        "why_wrong": "经文记载约坦管理王宫、治理国民，并非百姓接管。"
+       },
+       {
+        "text": "他的儿子约坦患麻风直到死日",
+        "source": "paraphrase",
+        "why_wrong": "患麻风直到死日的是乌西雅，不是约坦。"
+       }
+      ]
+     }
+    },
+    {
+     "role": "judge",
+     "seconds": 7.6,
+     "user": {
+      "excerpt": "21 乌西雅王患麻风直到死日，住在隔离处，因麻风被隔绝在耶和华的殿外。他的儿子约坦管理王宫，治理国民。\n22 乌西雅一切事迹，从头到尾都记载在亚摩斯的儿子先知以赛亚的书中。\n23 乌西雅与列祖同睡，葬在王的坟地，因为百姓说：“他是麻风病人。”他的儿子约坦接续他作王。",
+      "question": "乌西雅被埋葬以后，发生了什么事？",
+      "options": {
+       "A": "他因麻风被隔绝在耶和华的殿外",
+       "B": "他的儿子约坦接续他作王",
+       "C": "乌西雅的军队解散了",
+       "D": "先知以赛亚记载了乌西雅的事迹"
+      }
+     },
+     "reply": {
+      "options": [
+       {
+        "letter": "A",
+        "label": "incorrect",
+        "reason": "乌西雅因麻风被隔绝在殿外是他生前的事。"
+       },
+       {
+        "letter": "B",
+        "label": "correct",
+        "reason": "经文在叙述乌西雅下葬后，明确说他的儿子约坦接续他作王。"
+       },
+       {
+        "letter": "C",
+        "label": "incorrect",
+        "reason": "经文没有提到乌西雅的军队解散。"
+       },
+       {
+        "letter": "D",
+        "label": "incorrect",
+        "reason": "经文虽提到以赛亚记载乌西雅的事迹，却未说这发生在乌西雅下葬以后。"
+       }
+      ]
+     }
+    }
+   ],
+   "status": "rebalanced",
+   "reason": "key_stands_out",
+   "judge": {
+    "A": "incorrect",
+    "B": "correct",
+    "C": "incorrect",
+    "D": "incorrect"
+   },
+   "old": {
+    "A": "圣殿被重建",
+    "B": "他的儿子约坦接续他作王",
+    "C": "乌西雅的军队解散了",
+    "D": "先知以赛亚记载了乌西雅的事迹"
+   },
+   "new": {
+    "A": "他因麻风被隔绝在耶和华的殿外",
+    "B": "他的儿子约坦接续他作王",
+    "C": "乌西雅的军队解散了",
+    "D": "先知以赛亚记载了乌西雅的事迹"
+   },
+   "before": {
+    "ratios": {
+     "A": 0.2,
+     "B": 1.0,
+     "C": 0.3333333333333333,
+     "D": 0.35714285714285715
+    },
+    "key": 1.0,
+    "best_distractor": 0.35714285714285715,
+    "gap": 0.6428571428571428
+   },
+   "after": {
+    "ratios": {
+     "A": 0.9285714285714286,
+     "B": 1.0,
+     "C": 0.3333333333333333,
+     "D": 0.35714285714285715
+    },
+    "key": 1.0,
+    "best_distractor": 0.9285714285714286,
+    "gap": 0.0714285714285714
+   },
+   "notes": {
+    "A": "21: 这是乌西雅生前的遭遇，不是他被埋葬以后发生的事。"
+   }
+  },
+  {
+   "item": "uw-t1_2chr26:723e-mcq",
+   "set": "hard66",
+   "source": "t1_2chr26.json.bak_overlap_2026-09-30",
+   "expect": "A 哈拿尼雅 reads as commander (在…指挥下) -> judged non-incorrect and replaced",
+   "calls": [
+    {
+     "role": "judge",
+     "seconds": 7.7,
+     "user": {
+      "excerpt": "11 乌西雅有一支预备出战的军队，按班次出征，由书记耶列和官长玛西亚在王官哈拿尼雅的指挥下记载。\n12 勇士家族的首领共有二千六百人。\n13 他们统领的军队共有三十万七千五百名训练有素的士兵，是支持王抵御敌人的强大力量。\n14 乌西雅为全军配备了盾牌、枪矛、头盔、铠甲、弓和弹石器。\n15 他在耶路撒冷巧妙制造发射箭矢和投掷大石的装置，安置在城楼和城角。因此他的名声远扬，因神大大帮助他，他就变得强盛。",
+      "question": "这三十万七千五百训练有素的军队由谁统领？",
+      "options": {
+       "A": "哈拿尼雅",
+       "B": "耶列和玛西亚",
+       "C": "乌西雅",
+       "D": "那二千六百个家族首领"
+      }
+     },
+     "reply": {
+      "options": [
+       {
+        "letter": "A",
+        "label": "incorrect",
+        "reason": "哈拿尼雅指挥的是军队的记载工作，并非文中所说的统领者。"
+       },
+       {
+        "letter": "B",
+        "label": "incorrect",
+        "reason": "耶列和玛西亚负责记载军队，而非统领这支军队。"
+       },
+       {
+        "letter": "C",
+        "label": "incorrect",
+        "reason": "乌西雅是军队支持的王，文中并未将他列为这支军队的统领者。"
+       },
+       {
+        "letter": "D",
+        "label": "correct",
+        "reason": "第13节的“他们”指第12节所说的二千六百名勇士家族首领。"
+       }
+      ]
+     }
+    }
+   ],
+   "status": "checked",
+   "reason": "distractor out-overlaps key but validated wrong",
+   "judge": {
+    "A": "incorrect",
+    "B": "incorrect",
+    "C": "incorrect",
+    "D": "correct"
+   },
+   "old": {
+    "A": "哈拿尼雅",
+    "B": "耶列和玛西亚",
+    "C": "乌西雅",
+    "D": "那二千六百个家族首领"
+   },
+   "new": null,
+   "before": {
+    "ratios": {
+     "A": 1.0,
+     "B": 0.5,
+     "C": 1.0,
+     "D": 0.4
+    },
+    "key": 0.4,
+    "best_distractor": 1.0,
+    "gap": -0.6
+   },
+   "after": null,
+   "notes": {}
+  },
+  {
+   "item": "uw-t1_acts23:5613-mcq",
+   "set": "hard66",
+   "source": "t1_acts23.json",
+   "expect": "B 保罗被带到公会 is also awaited by the ambush -> judged non-incorrect and replaced",
+   "calls": [
+    {
+     "role": "judge",
+     "seconds": 10.0,
+     "user": {
+      "excerpt": "19 军长拉着年轻人的手，把他带到一边，问：“你有什么话要告诉我？”\n20 他回答说：“犹太人已经商量好，明天要请你把保罗带到公会，假装要详细查问他。\n21 你千万不要被他们说服，因为有四十多人埋伏等候，要杀他。他们彼此发誓，非杀死他不可，誓不吃不喝，现在正等着你的同意。”\n22 军长就打发年轻人回去，吩咐他说：“你不要告诉任何人你把这事告诉了我。”",
+      "question": "埋伏的人动手之前，还在等什么？",
+      "options": {
+       "A": "总督到来",
+       "B": "保罗被带到公会",
+       "C": "军长同意他们的请求",
+       "D": "审问结束"
+      }
+     },
+     "reply": {
+      "options": [
+       {
+        "letter": "A",
+        "label": "incorrect",
+        "reason": "节选没有提到他们在等总督到来。"
+       },
+       {
+        "letter": "B",
+        "label": "ambiguous",
+        "reason": "把保罗带到公会是行刺计划的一环，但节选明确指出他们当前等的是军长同意。"
+       },
+       {
+        "letter": "C",
+        "label": "correct",
+        "reason": "年轻人明确告诉军长，埋伏者“现在正等着你的同意”。"
+       },
+       {
+        "letter": "D",
+        "label": "incorrect",
+        "reason": "详细查问只是借口，节选没有说他们要等审问结束。"
+       }
+      ]
+     }
+    },
+    {
+     "role": "generate",
+     "seconds": 30.5,
+     "user": {
+      "excerpt": "19 军长拉着年轻人的手，把他带到一边，问：“你有什么话要告诉我？”\n20 他回答说：“犹太人已经商量好，明天要请你把保罗带到公会，假装要详细查问他。\n21 你千万不要被他们说服，因为有四十多人埋伏等候，要杀他。他们彼此发誓，非杀死他不可，誓不吃不喝，现在正等着你的同意。”\n22 军长就打发年轻人回去，吩咐他说：“你不要告诉任何人你把这事告诉了我。”",
+      "question": "埋伏的人动手之前，还在等什么？",
+      "correct_answer": "军长同意他们的请求",
+      "current_wrong_options": [
+       "总督到来",
+       "保罗被带到公会",
+       "审问结束"
+      ],
+      "number_of_candidates": 8
+     },
+     "reply": {
+      "candidates": [
+       {
+        "text": "军长拉着年轻人的手",
+        "source": "19",
+        "why_wrong": "这是军长听取消息前的动作，不是埋伏者等待的条件。"
+       },
+       {
+        "text": "军长把年轻人带到一边",
+        "source": "19",
+        "why_wrong": "这是已经发生的事，埋伏者等的是军长同意请求。"
+       },
+       {
+        "text": "年轻人回答军长的问题",
+        "source": "19-21",
+        "why_wrong": "年轻人的回答是在报告阴谋，并非埋伏者动手的条件。"
+       },
+       {
+        "text": "犹太人商量好查问保罗",
+        "source": "20",
+        "why_wrong": "犹太人已经商量好了，并不是还在等待商议。"
+       },
+       {
+        "text": "他们彼此发誓不吃不喝",
+        "source": "21",
+        "why_wrong": "他们已经发过誓，当前等待的是军长的同意。"
+       },
+       {
+        "text": "军长打发年轻人回去",
+        "source": "22",
+        "why_wrong": "这是军长听完报告后的安排，不是埋伏者所等的事。"
+       },
+       {
+        "text": "军长吩咐年轻人保密",
+        "source": "22",
+        "why_wrong": "保密吩咐针对报信的年轻人，与埋伏者等待的同意不同。"
+       },
+       {
+        "text": "年轻人把这事告诉别人",
+        "source": "paraphrase",
+        "why_wrong": "军长要求年轻人不要告诉别人，埋伏者也不是在等消息被透露。"
+       }
+      ]
+     }
+    },
+    {
+     "role": "judge",
+     "seconds": 4.0,
+     "user": {
+      "excerpt": "19 军长拉着年轻人的手，把他带到一边，问：“你有什么话要告诉我？”\n20 他回答说：“犹太人已经商量好，明天要请你把保罗带到公会，假装要详细查问他。\n21 你千万不要被他们说服，因为有四十多人埋伏等候，要杀他。他们彼此发誓，非杀死他不可，誓不吃不喝，现在正等着你的同意。”\n22 军长就打发年轻人回去，吩咐他说：“你不要告诉任何人你把这事告诉了我。”",
+      "question": "埋伏的人动手之前，还在等什么？",
+      "options": {
+       "A": "总督到来",
+       "B": "犹太人商量好查问保罗",
+       "C": "军长同意他们的请求",
+       "D": "审问结束"
+      }
+     },
+     "reply": {
+      "options": [
+       {
+        "letter": "A",
+        "label": "incorrect",
+        "reason": "经文没有提到埋伏的人在等总督到来。"
+       },
+       {
+        "letter": "B",
+        "label": "incorrect",
+        "reason": "犹太人已经商量好了，这不是埋伏者仍在等待的事。"
+       },
+       {
+        "letter": "C",
+        "label": "correct",
+        "reason": "年轻人明确说他们“现在正等着你的同意”，指军长同意把保罗带到公会。"
+       },
+       {
+        "letter": "D",
+        "label": "incorrect",
+        "reason": "经文说他们在等军长同意，并非等审问结束。"
+       }
+      ]
+     }
+    }
+   ],
+   "status": "replaced_second_correct",
+   "reason": "distractor_dominates",
+   "judge": {
+    "A": "incorrect",
+    "B": "incorrect",
+    "C": "correct",
+    "D": "incorrect"
+   },
+   "old": {
+    "A": "总督到来",
+    "B": "保罗被带到公会",
+    "C": "军长同意他们的请求",
+    "D": "审问结束"
+   },
+   "new": {
+    "A": "总督到来",
+    "B": "犹太人商量好查问保罗",
+    "C": "军长同意他们的请求",
+    "D": "审问结束"
+   },
+   "before": {
+    "ratios": {
+     "A": 0.25,
+     "B": 0.5714285714285714,
+     "C": 0.2222222222222222,
+     "D": 0.25
+    },
+    "key": 0.2222222222222222,
+    "best_distractor": 0.5714285714285714,
+    "gap": -0.3492063492063492
+   },
+   "after": {
+    "ratios": {
+     "A": 0.25,
+     "B": 0.3,
+     "C": 0.2222222222222222,
+     "D": 0.25
+    },
+    "key": 0.2222222222222222,
+    "best_distractor": 0.3,
+    "gap": -0.07777777777777778
+   },
+   "notes": {
+    "B": "20: 犹太人已经商量好了，并不是还在等待商议。"
+   }
+  }
+ ]
+}

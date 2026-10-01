@@ -1,0 +1,54 @@
+# VM runtime allowlist. Repository-relative Python glob patterns; ** is recursive.
+# Directories themselves are not copied. Secrets, caches and runtime data are denied
+# independently by deploy_vm.py. Add a narrow pattern for each new runtime dependency.
+config.py
+platform/app.py
+platform/wsgi.py
+platform/requirements.txt
+platform/backend/**/*.py
+
+# Admin + expert share the React build. Source and node_modules stay local.
+platform/frontends/admin/dist/**/*
+
+# Participant pilot and gamified dashboard are served directly as static files.
+platform/frontends/pilot/index.html
+platform/frontends/pilot/styles.css
+platform/frontends/pilot/frontend/**/*.js
+platform/frontends/pilot/consent/*.md
+platform/frontends/user_dashboard/*.html
+platform/frontends/user_dashboard/*.js
+platform/frontends/user_dashboard/*.css
+platform/frontends/user_dashboard/frontend/**/*.js
+platform/frontends/user_dashboard/assets/**/*.svg
+
+# Messaging backend (WhatsApp and Telegram). Participant CSVs/logs are excluded.
+message-bot/app.py
+message-bot/requirements.txt
+message-bot/app/**/*.py
+
+# Shared backend, scoring, and LIVE question-assignment algorithms.
+# QA_algorithm/scripts contains offline research; it is not imported by the services.
+packages/eten-shared/pyproject.toml
+packages/eten-shared/eten_shared/**/*.py
+
+# Runtime service configuration; copying does not install or restart services.
+deploy/gunicorn/gunicorn.conf.py
+deploy/gunicorn/override.conf
+deploy/systemd/*.service
+deploy/journald/*.conf
+
+# Deployment source datasets. Exact families, not all evaluation/datasets.
+# Runtime delivery reads the DB; these files support content imports and setup.
+evaluation/datasets/passages/test_passage_luke*.txt
+evaluation/datasets/qa/qa_output_luke_ch*_all_formats.json
+evaluation/datasets/passages/tier1/*.txt
+evaluation/datasets/passages/tier1_bsb/*.txt
+evaluation/datasets/qa/tier1_QAs_easy/t1_*_all_formats.json
+evaluation/datasets/qa/tier1_gold72_canonical_5opt/*_all_formats.json
+evaluation/datasets/qa/tier1_hard66_canonical/t1_*.json
+evaluation/datasets/obscure_narrative_passages_tier1.csv
+evaluation/datasets/tier1_gold_72.json
+evaluation/datasets/tier1_gold_72_windows.json
+evaluation/datasets/tier1_pilot_partition.json
+QA_algorithm/inputs/tier1_qa_verse_windows.json
+QA_algorithm/inputs/tier1_qa_verse_windows_canonical.json

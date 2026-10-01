@@ -22,6 +22,7 @@ translation quality. Every step below exists to keep the passage recoverable
 | 0 | Fetch English passage | `data_prep/fetch_biblegateway_passage.py` | `datasets/passages/test_passage_lukeN.txt` |
 | 1 | Entity inventory | `main.py` (`entity-inventory`) | `_shared/<run>_entity_inventory.json` |
 | 2 | Translate QA to Chinese | `main.py` (`translate`) | `_shared/<run>_qa_zh.json` |
+| 2b | *(optional)* Rebalance MCQ options | `main.py --rebalance-mcq` or `scripts/pipeline/rebalance_mcq_options.py` | `_shared/<run>_qa_zh.json` (in place) + `_shared/<run>_qa_zh_mcq_rebalance.csv` |
 | 3 | Protect source + translate passage | `main.py` (`passage-translate`) | `<method>/passage_target.txt` |
 | 4 | Decanonicalize | `main.py` (`decanonicalize`) | `<method>/passage_target_decanonicalized.txt` |
 | 5 | Defect variants | `scripts/variants/current/create_*_variants.py` | `<method>/<defect>/<rate>%/` |
@@ -69,6 +70,20 @@ constant while passage quality varies. Questions and MCQ options are translated;
 **open standard answers stay in English** — they are the scoring rubric, not
 participant-facing. MCQ options are translated because they are part of the
 displayed question.
+
+## 2b. (Optional) Rebalance MCQ options against verbatim overlap
+
+`--rebalance-mcq` (off by default) rewrites Chinese MCQ distractors whose key stands out
+by verbatim overlap with the window the respondent sees -- a recognition shortcut the
+models were shown to exploit (2026-09-30). OpenAI only: a generator
+(`--rebalance-generator-model`, default `gpt-6.1-sol`) proposes window-derived wrong
+options, a deterministic selector matches their overlap and length to the key, and a
+validator (`--rebalance-judge-model`, default `gpt-6-astra`) labels every option blind to
+the key; only validated sets are applied. Keys, option E and open items are never changed.
+It runs once on the shared translated QA against `--rebalance-reference-method`
+(default `llm_prompt_high`), so all methods and variants inherit the same options.
+**Skim the review CSV before importing.** For existing corpus trees and hard66-style QA
+files use the standalone CLI (`tier1` mode, `--apply`, `--sync`); see its docstring.
 
 ## 3. Protect the source, then translate the passage
 

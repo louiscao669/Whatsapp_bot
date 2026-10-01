@@ -1,5 +1,10 @@
 # Migrating the study VM to the database's region
 
+For application file updates, use the [runtime-only deployment workflow](../README.md).
+The Git clone/pull commands below describe the older full-checkout setup; do not
+use them for allowlisted deployments. Transfer the runtime payload from your Mac,
+then follow the applicable VM configuration and service steps below.
+
 Why: on 2026-09-07 a `SELECT 1` from the `us-central1` VM to the Supabase
 project in AWS `us-east-2` measured **27ms**. Every endpoint pays that per
 query — `GET /question` issues ~40 of them while minting an assignment, which

@@ -1,5 +1,10 @@
 # Log retention on the study VM
 
+For application file updates, use the [runtime-only deployment workflow](../README.md).
+The Git clone/pull commands below describe the older full-checkout setup; do not
+use them for allowlisted deployments. Transfer the runtime payload from your Mac,
+then follow the applicable VM configuration and service steps below.
+
 The application no longer writes client IP addresses, participant ids or
 deep-link tokens into its logs (`eten_shared/log_redaction.py`, installed by
 `configure_logging()` in both services). This directory covers the other half:
