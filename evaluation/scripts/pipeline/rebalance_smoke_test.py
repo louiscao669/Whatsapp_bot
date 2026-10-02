@@ -77,12 +77,20 @@ def stub_llm():
         if role == "generate":
             clauses = [c for c in re.split(r"[，。：；“”‘’！？\s\d]+", p["excerpt"]) if 2 <= len(c) <= 12]
             state["key_text"] = p["correct_answer"]
-            return {"candidates": [{"text": c, "source": "stub", "why_wrong": "stub"} for c in clauses[:8]]}
+            return {"answer_type": "", "candidates": [{"text": c, "source": "stub", "why_wrong": "stub",
+                                                       "why_tempting": "stub"} for c in clauses[:8]]}
+        if role == "keygen":
+            return {"rewordings": [{"text": "stub改写" + p["correct_answer"][:2], "why_same": "stub"}]}
+        if role == "keycheck":
+            return {"rewordings": [{"id": rid, "verdict": "same", "natural": True} for rid in p["rewordings"]]}
+        if role == "screen":
+            return {"candidates": [{"id": cid, "label": "correct" if t == state.get("key_text") else "incorrect",
+                                    "natural": True, "plausibility": 4} for cid, t in p["candidates"].items()]}
         if role == "factcheck":
             state["key_text"] = p["correct_answer"]
             return {"options": [{"letter": l, "verdict": "ok"} for l in p["wrong_options"]]}
         return {"options": [{"letter": l, "label": "correct" if t == state.get("key_text") else "incorrect",
-                             "natural": True} for l, t in p["options"].items()]}
+                             "natural": True, "plausibility": 4} for l, t in p["options"].items()]}
     call.state = state
     return call
 
@@ -128,10 +136,11 @@ def main() -> int:
             base.state["key_text"] = rb.content_options(record).get(rb.key_letter(record))
         transcript.append({"item": item_id, "set": set_name, "source": source_name,
                            "expect": expect, "calls": []})
-        result = rb.rebalance_item(record, ctx, logged)
+        result = rb.process_item(record, ctx, logged)
         counts[result.status] = counts.get(result.status, 0) + 1
         transcript[-1].update(status=result.status, reason=result.reason, judge=result.judge,
                               natural=result.natural, facts=result.facts,
+                              plausibility=result.plausibility, proposal=result.proposal,
                               old=result.old_options, new=result.new_options,
                               before=result.before, after=result.after, notes=result.notes)
 
@@ -152,21 +161,37 @@ def main() -> int:
             flags = [result.judge.get(l, "")]
             if result.natural and not result.natural.get(l, True):
                 flags.append("UNNATURAL")
+            if l != key and l in result.plausibility:
+                flags.append(f"plaus={result.plausibility[l]}")
             if result.facts.get(l, "ok") != "ok":
                 flags.append(result.facts[l].upper())
             print(f"   {l}{mark} {old:<34} -> {new:<34} {' '.join(f for f in flags if f)}")
         if result.before:
             gap_after = f"{result.after['gap']:+.2f}" if result.after else "-"
-            lead2_after = f"{result.after['second_gap']:+.2f}" if result.after else "-"
+            lead2_after = f"{result.after['weakest_gap']:+.2f}" if result.after else "-"
             print(f"   gap {result.before['gap']:+.2f} -> {gap_after}   "
-                  f"2nd-distractor gap {result.before['second_gap']:+.2f} -> {lead2_after}")
+                  f"weakest-distractor gap {result.before['weakest_gap']:+.2f} -> {lead2_after}")
         if current and current.get("A") != record.get("A"):
             print("   manual redraft: " + " | ".join(f"{l}:{current['A'][l]}" for l in rb.CONTENT_LETTERS if l in current["A"]))
         gens = [c for c in transcript[-1]["calls"] if c["role"] == "generate"]
         if gens:
             cands = [c.get("text") for g in gens for c in (g["reply"].get("candidates") or [])]
             kinds = [c.get("kind", "?") for g in gens for c in (g["reply"].get("candidates") or [])]
-            print(f"   candidates ({len(cands)}): " + " / ".join(f"{t}[{k}]" for t, k in zip(cands, kinds)))
+            verdicts = {}
+            for c in transcript[-1]["calls"]:
+                if c["role"] == "screen":
+                    texts = c["user"]["candidates"]
+                    for e in c["reply"].get("candidates", []):
+                        t = texts.get(e.get("id"))
+                        if t:
+                            ok = "" if e.get("natural", True) else ",unnatural"
+                            verdicts[t] = f"{e.get('label', '?')[:3]},p{e.get('plausibility', '?')}{ok}"
+            print(f"   candidates ({len(cands)}), screened as label,plausibility:")
+            for t, k in zip(cands, kinds):
+                print(f"      {t} [{k}] {verdicts.get(t, 'dropped before screening')}")
+            first = gens[0]["reply"]
+            if first.get("answer_type") or first.get("question_assumes"):
+                print(f"   answer type: {first.get('answer_type')} | question assumes: {first.get('question_assumes')}")
         for c in transcript[-1]["calls"]:
             if c["role"] == "factcheck":
                 bad = [(o.get("letter"), o.get("verdict"), o.get("reason")) for o in c["reply"].get("options", [])
@@ -175,6 +200,19 @@ def main() -> int:
                     print(f"   fact check: {bad}")
         for n in result.notes.items():
             print(f"   note {n[0]}: {n[1]}")
+        if result.proposal:
+            pr = result.proposal
+            print(f"   KEY REWORDING PROPOSAL (report only) [{pr.get('status')}]: "
+                  f"{pr.get('original_key', '')} -> {pr.get('key', '')}"
+                  + (f" ({pr['key_overlap']:.2f})" if pr.get("key_overlap") is not None else "")
+                  + (f" fluency {pr['key_fluency']}" if pr.get("key_fluency") is not None else ""))
+            if pr.get("candidates"):
+                print(f"      rewordings: {' / '.join(pr['candidates'])}   valid: {' / '.join(pr.get('valid', []))}")
+            if pr.get("options"):
+                print("      options: " + " | ".join(f"{l}:{v}" for l, v in sorted(pr["options"].items()))
+                      + f"   gap {pr.get('gap')}, weakest {pr.get('weakest_gap')}")
+            if pr.get("note"):
+                print(f"      note: {pr['note']}")
 
     print("\nsummary:", ", ".join(f"{k}={v}" for k, v in sorted(counts.items())))
     args.out_dir.mkdir(parents=True, exist_ok=True)

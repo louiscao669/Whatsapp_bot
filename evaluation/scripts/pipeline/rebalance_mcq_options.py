@@ -10,9 +10,11 @@ paraphrases onto the passage's wording), so it has to be fixed on the TARGET-lan
 QA, against the window the respondent actually sees.
 
 WHAT. Every MCQ is first AUDITED as it stands:
-  * window check  -- an OpenAI model, BLIND to the key, labels every option correct /
-                     incorrect / ambiguous using only the window the respondent sees, and
-                     says whether each reads as natural Chinese in the question's form;
+  * window check  -- the candidate-screening prompt (the SAME prompt new candidates get,
+                     one scale for old and new options), BLIND to the key, labels every
+                     option correct / incorrect / ambiguous using only the window the
+                     respondent sees, rates naturalness and plausibility 1-5; a distractor
+                     rated 1-2 fails the audit (--no-plausibility-gate: report only);
   * fact check    -- the same model, given the WHOLE passage, flags wrong options that
                      name the same person/thing as the key or are true answers elsewhere in
                      the passage (respondents who know the story would be marked wrong).
@@ -20,21 +22,42 @@ The key must come back "correct". A distractor failing either check is replaced.
 
 Then overlap is measured deterministically (longest contiguous shared span / option
 length vs the window, as in ``analysis/current/audit_option_overlap.py``). An item is
-rebalanced when the key leads the best distractor by more than --tolerance, or leads the
-SECOND-best by more than 0.35 (one verbatim lure plus throwaways is still a recognition
-cue):
+rebalanced when the key leads the best distractor by more than --tolerance, or leads ANY
+distractor by more than 0.40 (a verbatim lure plus leftover throwaways is still a
+recognition cue -- every distractor has to be in range):
 
-  1. generate  -- candidates, at least half copied verbatim from the window (true there but
-                  wrong for this question), part-swaps for multi-part keys, paraphrases
-                  only for inference answers; claimed spans are verified against the window;
+  1. generate  -- the generator first states the key's answer type and what the question
+                  assumes; every candidate must be that type and carry a "why_tempting"
+                  reason (candidates without one, or of another type, are dropped);
+                  about half copied verbatim from the window (true there but
+                  wrong for this question) when the window can supply them, part-swaps for
+                  multi-part keys (the swapped-in part may be an outside name of the same
+                  kind), paraphrases for inference answers or exhausted windows; claimed
+                  spans are verified against the window and duplicates dropped;
   2. select    -- deterministically pick the 3-distractor set whose overlap and length best
-                  match the key, penalising a weak runner-up, throwaways, stem echoes and
-                  needless changes;
-  3. validate  -- window check + naturalness (new options) + fact check; offenders are
-                  banned and selection repeats (more candidates are generated if needed);
-  4. gate      -- apply when validated and within tolerance ("rebalanced"), improved by
-                  >= 0.15 ("partial"), or when an invalid distractor was replaced
+                  match the key, penalising every distractor far below the key, stem echoes,
+                  needless changes and low plausibility (which outranks a slightly better
+                  overlap match);
+  2a. screen   -- ALL new candidates are rated in one blind call (correct/incorrect/
+                  ambiguous, natural, plausibility 1-5 "would a careless reader be tempted?");
+                  only incorrect, natural candidates rated >= 3 can be chosen. Each candidate
+                  is scored once, so a score cannot flip between rounds;
+  3. validate  -- the chosen set is re-checked blind for correctness (in context of the
+                  other options) + whole-passage fact check; offenders are banned and
+                  selection repeats, up to 5 rounds (more candidates generated if needed);
+  4. gate      -- apply when validated and both gaps are within tolerance ("rebalanced"),
+                  when the WORSE of the two gaps improved by >= 0.15 ("partial"), or when
+                  an invalid distractor was replaced
                   ("replaced_invalid"); everything else is left unchanged (needs_review).
+
+Key rewording (report-only): when an item ends needs_review because it could not be
+balanced AND its key is copied from the window (overlap >= 0.8), the generator proposes
+rewordings of the key that mean exactly the same, about the original's length and one
+clause; each is checked blind (still correct, natural) and against the original (same
+meaning, not narrower/broader; fluency 1-5); among the valid ones the choice weighs the
+overlap target, fluency and length match to the other options (no "longest option" cue),
+and the distractors are rebalanced against it. The proposal goes to the report columns key_proposal_status / proposed_key /
+proposed_options for a human to approve -- it is NEVER applied. --no-key-rewording skips it.
 
 Never changed: the key's text and letter, option E (the meta-option), the open form,
 items with status "exclude". Every change is recorded on the item (``option_rebalance``)
@@ -103,10 +126,12 @@ DEFAULT_JUDGE_MODEL = os.getenv("OPENAI_DISTRACTOR_JUDGE_MODEL", "gpt-6-astra")
 DEFAULT_EFFORT = os.getenv("OPENAI_DISTRACTOR_EFFORT", "high")
 DEFAULT_TOLERANCE = 0.15
 DEFAULT_CANDIDATES = 10
-DEFAULT_MAX_ROUNDS = 3
+DEFAULT_MAX_ROUNDS = 5
 MIN_IMPROVEMENT = 0.15
-SECOND_GAP_TOLERANCE = 0.35   # key may lead the 2nd-best distractor by at most this
-THROWAWAY_RATIO = 0.15        # a distractor this far from the text is a throwaway
+WEAKEST_GAP_TOLERANCE = 0.40  # key may lead its WEAKEST distractor by at most this, so every
+                              # distractor -- not just the best one or two -- is in range
+MIN_PLAUSIBILITY = 3          # judge rates 1-5; new options rated below this are rejected
+PLAUSIBILITY_WEIGHT = 0.1     # selection cost per plausibility point below 5
 BACKUP_TAG = "bak_rebalance"
 
 # LLM interface: (role, system, user) -> parsed JSON object; role is generate/judge/factcheck.
@@ -153,14 +178,14 @@ def measure(options: Dict[str, str], key: str, window: str) -> dict:
     best = max(others) if others else 0.0
     k = ratios.get(key, 0.0)
     return {"ratios": ratios, "key": k, "best_distractor": best, "gap": k - best,
-            "second_gap": second_gap(k, others)}
+            "weakest_gap": weakest_gap(k, others)}
 
 
 def classify(stats: dict, tolerance: float) -> str:
     if stats["gap"] > tolerance:
         return "key_stands_out"
-    if stats["key"] >= 0.5 and stats.get("second_gap", 0.0) > SECOND_GAP_TOLERANCE:
-        return "single_lure"      # one distractor matches the key, the rest are far off
+    if stats.get("weakest_gap", 0.0) > WEAKEST_GAP_TOLERANCE:
+        return "uneven"           # some distractor is far below the key: a leftover throwaway
     if stats["gap"] < -tolerance:
         return "distractor_dominates"
     return "balanced"
@@ -174,6 +199,8 @@ class PassageContext:
     verse_windows: Optional[dict] = None
     verse_window: int = 2
     fact_check: bool = True
+    key_rewording: bool = True
+    plausibility_gate: bool = True    # existing distractors rated 1-2 fail the audit
     index: dict = field(default_factory=dict)
     order: list = field(default_factory=list)
 
@@ -236,27 +263,47 @@ GENERATE_SYSTEM = """You write WRONG options (distractors) for a Simplified-Chin
 reading-comprehension question. Respondents see ONLY the excerpt given, and the purpose of the \
 question is to test whether they understood it.
 
+First decide, and return, the correct answer's TYPE (person, group, place, time, object, \
+action, reason, quantity or other) and what the question ASSUMES about the answer (e.g. "kings or \
+armies that could be hired to attack the Syrians").
+
 Rules for every candidate:
+0. It must be the SAME TYPE as the correct answer and fit what the question assumes, so it is a \
+believable answer to someone who read carefully but misremembered or skimmed. Give, for each, \
+"why_tempting": one short sentence on why a careless reader might pick it. If you cannot give a \
+real reason, do not propose it. Outside names must fit the passage's period and region.
 1. It must be clearly WRONG as an answer to the question, judged using ONLY the excerpt. Not \
 partially right, not a synonym, restatement, superset or subset of the correct answer, and not \
 another name or description of the same person, place or thing.
-2. At least HALF of the candidates must be kind "span": a phrase COPIED VERBATIM (character for \
-character) from the excerpt that is true there but does not answer THIS question -- the wrong \
-person (someone else in the scene), the wrong time or order (an earlier or later event), the wrong \
-place, object or role. Light trimming is fine; rewording is not.
-3. If the correct answer lists several parts (e.g. "X和Y"), give at least one kind "swap" candidate \
-that keeps one part and replaces the other with something else from the excerpt or the story.
-4. Use kind "paraphrase" only for why/how questions whose answer is an inference, or when the \
-excerpt offers nothing suitable.
+2. Prefer kind "span": a phrase COPIED VERBATIM (character for character) from the excerpt that is \
+true there but does not answer THIS question -- the wrong person (someone else in the scene), the \
+wrong time or order (an earlier or later event), the wrong place, object or role. Light trimming is \
+fine; rewording is not. Aim for about half spans, BUT only as many as the excerpt can genuinely \
+supply: never repeat a candidate, never give the same phrase twice in different wording, and never \
+use a span that is a strained or implausible answer just to fill the quota. If the excerpt runs out \
+of suitable phrases, set "excerpt_exhausted": true and fill the rest with swaps or paraphrases.
+3. If the correct answer lists several parts (e.g. "X和Y"), give at least two kind "swap" \
+candidates for EACH part -- some keeping the first part, some keeping the second -- replacing \
+the other part with something of the SAME KIND. The \
+replacement may come from OUTSIDE the excerpt (e.g. another nation or group of kings for a \
+nation/group of kings) as long as it is plausible for the question and clearly not what the \
+excerpt says. Do not swap in anything that would make the option partly true.
+4. Use kind "paraphrase" for why/how questions whose answer is an inference, or when the excerpt \
+and swaps offer nothing suitable.
 5. Every candidate must read as a natural, grammatical answer to THIS question in Simplified \
 Chinese, in the same form as the correct answer (if the answer is a noun phrase, give noun \
 phrases; if it is an action the person was told to do, give actions; keep pronouns unambiguous). \
-Match the correct answer's punctuation style and approximate length.
+Match the correct answer's punctuation style and approximate length. Write each candidate as a \
+plain answer phrase: no quotation marks, no "X说：" lead-ins, no quoted sentences copied whole; \
+end with 。 only if the correct answer does.
 6. Do not reuse the question's own subject phrase as an option.
 7. Do not propose anything listed under "do_not_propose".
 
-Return a JSON object: {"candidates": [{"text": "...", "kind": "span|swap|paraphrase", \
-"source": "verse number it comes from, or 'paraphrase'", "why_wrong": "one short sentence"}]}"""
+Return a JSON object: {"answer_type": "...", "question_assumes": "...", \
+"excerpt_exhausted": false, "candidates": [{"text": "...", "type": "same value as answer_type", \
+"kind": "span|swap|paraphrase", "source": "verse number it comes from, 'outside' for an outside \
+name in a swap, or 'paraphrase'", "why_wrong": "one short sentence", \
+"why_tempting": "one short sentence"}]}"""
 
 JUDGE_SYSTEM = """You check multiple-choice reading-comprehension items. Using ONLY the excerpt \
 (no outside knowledge), decide for EACH option whether it is a correct answer to the question:
@@ -269,8 +316,53 @@ that reads as a sensible answer to this question in form (a noun phrase for who/
 action for what-did-X-do questions, a reason for why questions, with clear pronouns). Whether it \
 is right or wrong does not matter for "natural".
 
+Finally rate each option's PLAUSIBILITY from 1 to 5: "Would a reader who skimmed or \
+half-remembered the excerpt be tempted to choose it?" 1 = nobody would pick it (wrong kind of \
+answer, absurd, or obviously not what the question is about); 3 = some readers might; 5 = very \
+tempting. Rate correct options 5.
+
 Return a JSON object: {"options": [{"letter": "A", "label": "correct|incorrect|ambiguous", \
-"natural": true, "reason": "one short sentence"}]}"""
+"natural": true, "plausibility": 4, "reason": "one short sentence"}]}"""
+
+SCREEN_SYSTEM = """You screen candidate answers for a multiple-choice reading-comprehension \
+question. Using ONLY the excerpt (no outside knowledge), judge EACH candidate on its own:
+- "label": "correct" if the excerpt supports it as an answer to the question, "incorrect" if the \
+excerpt shows it does not answer the question (or answers a different one), "ambiguous" if a \
+careful reader could reasonably defend it as correct;
+- "natural": true only if it is grammatical Simplified Chinese that reads as a sensible answer to \
+this question in form (whether it is right or wrong does not matter);
+- "plausibility" 1-5: "Would a reader who skimmed or half-remembered the excerpt be tempted to \
+choose it?" 1 = nobody would (wrong kind of answer, absurd, obviously off-topic); 3 = some \
+readers might; 5 = very tempting. Rate correct candidates 5.
+Use the same standard for every candidate so their scores are comparable.
+
+Return a JSON object: {"candidates": [{"id": "c1", "label": "correct|incorrect|ambiguous", \
+"natural": true, "plausibility": 3, "reason": "one short sentence"}]}"""
+
+KEYGEN_SYSTEM = """The correct answer of a Simplified-Chinese multiple-choice reading question \
+is copied word for word from the excerpt, so readers can find it by recognition without \
+understanding. Write REWORDINGS of the correct answer that:
+- mean EXACTLY the same thing in this context: not more specific, not vaguer, no added or \
+dropped detail, still clearly the right answer to the question from the excerpt alone;
+- do NOT copy the excerpt's wording: change the words and/or structure (synonyms, a different \
+but natural construction); a few shared characters such as names are fine;
+- read as a natural answer to the question in the same form as the original (noun phrase for \
+who/what, action for what-did-X-do, and so on), with no quotation marks;
+- stay close to the original's LENGTH (within about a third longer or shorter) and use a \
+single clause: no commas splitting it into two clauses. Longer or wordier rewordings make the \
+correct answer stand out as the longest option.
+
+Return a JSON object: {"rewordings": [{"text": "...", "why_same": "one short sentence"}]}"""
+
+KEYCHECK_SYSTEM = """You check proposed rewordings of the correct answer to a multiple-choice \
+reading question. For EACH rewording decide whether it means EXACTLY the same as the original \
+correct answer in the context of the excerpt and question: "same", or "narrower" (adds detail or \
+is more specific), "broader" (vaguer or drops detail), "different" (changes the meaning). Also \
+say whether it reads naturally, and rate its FLUENCY 1-5 as an answer to this question (5 = \
+exactly how a native speaker would phrase it; 3 = understandable but a little stiff; 1 = awkward).
+
+Return a JSON object: {"rewordings": [{"id": "r1", "verdict": "same|narrower|broader|different", \
+"natural": true, "fluency": 4, "reason": "one short sentence"}]}"""
 
 FACTCHECK_SYSTEM = """You check the WRONG options of a multiple-choice question about one excerpt of \
 a longer Bible passage. Respondents see only the excerpt, but some of them know the whole story. \
@@ -303,6 +395,14 @@ def judge_user_prompt(item: dict, window_text: str, options: Dict[str, str]) -> 
         "excerpt": window_text,
         "question": item.get("Q"),
         "options": {k: options[k] for k in sorted(options)},
+    }, ensure_ascii=False, indent=1)
+
+
+def screen_user_prompt(item: dict, window_text: str, candidates: Sequence[str]) -> str:
+    return json.dumps({
+        "excerpt": window_text,
+        "question": item.get("Q"),
+        "candidates": {f"c{i + 1}": text for i, text in enumerate(candidates)},
     }, ensure_ascii=False, indent=1)
 
 
@@ -347,13 +447,14 @@ def _response_text(response: Any) -> str:
 
 def openai_llm(generator_model: str, judge_model: str, effort: Optional[str],
                retries: int = 2, client: Any = None) -> LLM:
-    """Responses-API caller. Roles: generate -> generator model; judge and factcheck -> judge
-    model. Reasoning models get ``reasoning.effort`` and no temperature; a model that rejects
+    """Responses-API caller. Roles: generate -> generator model; judge, screen and factcheck ->
+    judge model. Reasoning models get ``reasoning.effort`` and no temperature; a model that rejects
     ``reasoning`` (classic chat models) is retried at temperature 0. Thread-safe."""
     if client is None:
         from openai import OpenAI
         client = OpenAI()
-    models = {"generate": generator_model, "judge": judge_model, "factcheck": judge_model}
+    models = {"generate": generator_model, "judge": judge_model, "screen": judge_model,
+              "factcheck": judge_model, "keygen": generator_model, "keycheck": judge_model}
     no_reasoning: set = set()
 
     def call(role: str, system: str, user: str) -> dict:
@@ -391,6 +492,7 @@ class Candidate:
     source: str = ""
     why_wrong: str = ""
     kind: str = ""
+    why_tempting: str = ""
 
 
 def _similar(a: str, b: str) -> float:
@@ -407,22 +509,53 @@ def stem_echo(option: str, stem: str) -> bool:
     return len(option) >= 3 and option in normalize(stem)
 
 
+QUOTE_CHARS = "“”‘’\"'「」『』"
+SPEECH_LEAD = re.compile(r"^[^，。：:“”]{1,12}[说道问答][：:]\s*")
+
+
+def tidy_option(text: str, key_ends_with_stop: bool) -> str:
+    """Make a candidate look like an answer, not a quotation: drop quote marks and a
+    "X说：" lead-in, and match the key's sentence-final stop."""
+    text = text.strip()
+    stripped = SPEECH_LEAD.sub("", text)
+    if stripped != text and any(q in text for q in QUOTE_CHARS):
+        text = stripped
+    text = "".join(ch for ch in text if ch not in QUOTE_CHARS).strip()
+    text = text.rstrip("。.").strip()
+    return text + "。" if key_ends_with_stop and text else text
+
+
 def clean_candidates(raw: Sequence[dict], key_text: str, existing: Sequence[str],
-                     window: str = "") -> List[Candidate]:
-    """Drop restatements of the key and duplicates; re-label kind from the text itself
-    (a claimed "span" that is not actually in the window becomes "paraphrase")."""
+                     window: str = "", answer_type: str = "") -> List[Candidate]:
+    """Drop restatements of the key, duplicates, candidates of a different answer type than
+    the key, and candidates without a reason a careless reader would pick them; re-label
+    kind from the text itself (a claimed "span" not in the window becomes "paraphrase")."""
     out: List[Candidate] = []
     seen = [normalize(t) for t in existing]
+    answer_type = str(answer_type or "").strip().lower()
+    key_ends = normalize(key_text).endswith(("。", "."))
     for entry in raw or []:
-        text = str((entry or {}).get("text") or "").strip()
+        text = tidy_option(str((entry or {}).get("text") or ""), key_ends)
+        why_tempting = str((entry or {}).get("why_tempting") or "").strip()
+        if not why_tempting:
+            continue
+        cand_type = str((entry or {}).get("type") or "").strip().lower()
+        if answer_type and cand_type and cand_type != answer_type:
+            continue
         if not text or len(normalize(text)) > 3 * len(normalize(key_text)) + 8:
             continue
-        if _similar(text, key_text) >= 0.8:
+        kind = str(entry.get("kind") or "").strip().lower()
+        # A swap differs from the key (and from sibling swaps) in exactly one part by design,
+        # so character similarity says nothing; drop it only if it equals or contains them.
+        is_swap = kind == "swap"
+        contains = lambda a, b: normalize(a) == normalize(b) or (
+            len(normalize(a)) >= 2 and len(normalize(b)) >= 2
+            and (normalize(a) in normalize(b) or normalize(b) in normalize(a)))
+        if (contains(text, key_text) if is_swap else _similar(text, key_text) >= 0.8):
             continue
-        if any(_similar(text, s) >= 0.85 for s in seen):
+        if any((contains(text, s) if is_swap else _similar(text, s) >= 0.85) for s in seen):
             continue
         seen.append(normalize(text))
-        kind = str(entry.get("kind") or "").strip().lower()
         if window:
             ratio = overlap_ratio(text, window)
             if kind == "span" and ratio < 0.8:
@@ -430,33 +563,69 @@ def clean_candidates(raw: Sequence[dict], key_text: str, existing: Sequence[str]
             elif not kind:
                 kind = "span" if ratio >= 0.8 else "paraphrase"
         out.append(Candidate(text=text, origin="new", source=str(entry.get("source") or ""),
-                             why_wrong=str(entry.get("why_wrong") or ""), kind=kind))
+                             why_wrong=str(entry.get("why_wrong") or ""), kind=kind,
+                             why_tempting=why_tempting))
     return out
 
 
-def second_gap(key_ratio: float, ratios: Sequence[float]) -> float:
-    """How far the key leads the SECOND most-overlapping distractor (0 if < 2 distractors)."""
-    ranked = sorted(ratios, reverse=True)
-    return key_ratio - ranked[1] if len(ranked) > 1 else 0.0
+def weakest_gap(key_ratio: float, ratios: Sequence[float]) -> float:
+    """How far the key leads its LEAST-overlapping distractor (0 with no distractors)."""
+    return key_ratio - min(ratios) if ratios else 0.0
+
+
+def worst_gap(stats: dict) -> float:
+    """The larger of |key - best distractor| and the key's lead over its weakest one."""
+    return max(abs(stats["gap"]), max(0.0, stats.get("weakest_gap", 0.0)))
+
+
+KEY_PART_SPLIT = re.compile(r"以及|[和与、，,]")   # not 及 alone: it is inside 埃及
+
+
+def key_parts(key_text: str) -> List[str]:
+    """Parts of a multi-part key ("赫人的诸王和埃及的诸王" -> ["赫人的诸王", "埃及的诸王"])."""
+    parts = [p for p in KEY_PART_SPLIT.split(normalize(key_text).rstrip("。.")) if len(p) >= 2]
+    return parts if len(parts) >= 2 else []
+
+
+def same_part_penalty(key_text: str, chosen: Sequence["Candidate"]) -> float:
+    """Swaps should not all keep the SAME part of a multi-part key: if every swap keeps
+    "埃及的诸王", a reader who remembers only the other part still finds the answer."""
+    parts = key_parts(key_text)
+    if not parts:
+        return 0.0
+    kept = [frozenset(p for p in parts if p in normalize(c.text)) for c in chosen]
+    kept = [k for k in kept if k]
+    if len(kept) < 2:
+        return 0.0
+    from collections import Counter
+    most = Counter(kept).most_common(1)[0][1]
+    if most == len(chosen):          # every option keeps the same part
+        return 0.25
+    return 0.08 * (most - 1)
 
 
 def set_cost(key_ratio: float, key_text: str, stem: str, chosen: Sequence[Candidate],
-             window: str) -> float:
+             window: str, plaus: Optional[Dict[str, int]] = None) -> float:
     ratios = [overlap_ratio(c.text, window) for c in chosen]
     k_len = max(len(normalize(key_text)), 1)
     cost = abs(key_ratio - max(ratios))
-    # one strong lure must not carry the item: the runner-up should be close as well
-    cost += 0.6 * max(0.0, second_gap(key_ratio, ratios) - SECOND_GAP_TOLERANCE)
+    # EVERY distractor must be in range, not just the best one or two: each one the key
+    # leads by more than the tolerance is penalised, so no leftover throwaway survives
+    cost += 0.6 * sum(max(0.0, (key_ratio - r) - WEAKEST_GAP_TOLERANCE) for r in ratios)
     cost += 0.25 * sum(abs(key_ratio - r) for r in ratios) / len(ratios)
-    if key_ratio >= 0.5:      # throwaways (barely in the text) next to a verbatim key
-        cost += 0.15 * sum(r < THROWAWAY_RATIO for r in ratios)
     cost += 0.15 * sum(abs(math.log(max(len(normalize(c.text)), 1) / k_len)) for c in chosen) / len(chosen)
     cost += 0.30 * sum(stem_echo(c.text, stem) for c in chosen)
     cost += 0.04 * sum(c.origin == "new" for c in chosen)
+    cost += same_part_penalty(key_text, chosen)
+    # plausibility outranks a slightly better overlap match: each point below 5 costs
+    # about as much as 0.1 of overlap gap (unknown = 3, i.e. not yet judged)
+    if plaus is not None:
+        cost += PLAUSIBILITY_WEIGHT * sum(5 - plaus.get(normalize(c.text), 3) for c in chosen)
     return cost
 
 
-def choose_set(item: dict, window: str, pool: Sequence[Candidate], banned: set) -> Optional[List[Candidate]]:
+def choose_set(item: dict, window: str, pool: Sequence[Candidate], banned: set,
+               plaus: Optional[Dict[str, int]] = None) -> Optional[List[Candidate]]:
     key = key_letter(item)
     options = content_options(item)
     key_text = options[key]
@@ -467,7 +636,7 @@ def choose_set(item: dict, window: str, pool: Sequence[Candidate], banned: set) 
         return None
     best, best_cost = None, None
     for combo in itertools.combinations(usable, n):
-        cost = set_cost(key_ratio, key_text, item.get("Q") or "", combo, window)
+        cost = set_cost(key_ratio, key_text, item.get("Q") or "", combo, window, plaus)
         if best_cost is None or cost < best_cost:
             best, best_cost = list(combo), cost
     return best
@@ -498,9 +667,12 @@ class ItemResult:
     new_options: Optional[Dict[str, str]] = None
     judge: Dict[str, str] = field(default_factory=dict)
     natural: Dict[str, bool] = field(default_factory=dict)
+    plausibility: Dict[str, int] = field(default_factory=dict)
     facts: Dict[str, str] = field(default_factory=dict)
     notes: Dict[str, str] = field(default_factory=dict)
     window: str = ""
+    # report-only proposal to reword a verbatim key (never applied automatically)
+    proposal: Optional[dict] = None
 
     @property
     def changed(self) -> bool:
@@ -508,9 +680,9 @@ class ItemResult:
 
 
 def judge_options(llm: LLM, item: dict, window_text: str, options: Dict[str, str]):
-    """Blind window check: ({letter: label}, {letter: natural})."""
+    """Blind window check: ({letter: label}, {letter: natural}, {letter: plausibility 1-5})."""
     raw = llm("judge", JUDGE_SYSTEM, judge_user_prompt(item, window_text, options))
-    labels, natural = {}, {}
+    labels, natural, plaus = {}, {}, {}
     for entry in raw.get("options") or []:
         letter = str(entry.get("letter") or "").strip()[:1].upper()
         if letter not in options:
@@ -518,10 +690,15 @@ def judge_options(llm: LLM, item: dict, window_text: str, options: Dict[str, str
         label = str(entry.get("label") or "").strip().lower()
         labels[letter] = label if label in ("correct", "incorrect", "ambiguous") else "ambiguous"
         natural[letter] = entry.get("natural") is not False
+        try:
+            plaus[letter] = max(1, min(5, int(round(float(entry.get("plausibility"))))))
+        except (TypeError, ValueError):
+            pass
     for letter in options:
         labels.setdefault(letter, "ambiguous")   # a missing verdict never passes
         natural.setdefault(letter, True)
-    return labels, natural
+        plaus.setdefault(letter, 3)              # unrated: neutral, neither kept nor rejected for it
+    return labels, natural, plaus
 
 
 def factcheck_options(llm: LLM, item: dict, passage: str, window_text: str,
@@ -541,20 +718,83 @@ def factcheck_options(llm: LLM, item: dict, passage: str, window_text: str,
     return verdicts
 
 
-def validate(llm: LLM, item: dict, ctx: "PassageContext", display: str,
-             content: Dict[str, str], key: str, new_letters: set):
-    """Window judge + naturalness (new options only) + whole-passage fact check.
-    Returns (labels, natural, facts, offending_letters, key_ok)."""
-    labels, natural = judge_options(llm, item, display, content)
+def screen_candidates(llm: LLM, item: dict, window_text: str,
+                      candidates: Sequence["Candidate"]) -> Dict[str, dict]:
+    """One blind call rating every new candidate: {text: {label, natural, plausibility}}.
+    A candidate the screener skips gets a failing verdict (it is never chosen unscreened)."""
+    if not candidates:
+        return {}
+    texts = [c.text for c in candidates]
+    raw = llm("screen", SCREEN_SYSTEM, screen_user_prompt(item, window_text, texts))
+    by_id = {str(e.get("id") or "").strip(): e for e in raw.get("candidates") or []}
+    out = {}
+    for i, text in enumerate(texts):
+        entry = by_id.get(f"c{i + 1}")
+        if entry is None:
+            out[text] = {"label": "ambiguous", "natural": False, "plausibility": 1}
+            continue
+        label = str(entry.get("label") or "").strip().lower()
+        try:
+            score = max(1, min(5, int(round(float(entry.get("plausibility"))))))
+        except (TypeError, ValueError):
+            score = 1
+        out[text] = {"label": label if label in ("correct", "incorrect", "ambiguous") else "ambiguous",
+                     "natural": entry.get("natural") is not False, "plausibility": score}
+    return out
+
+
+def screen_passes(verdict: dict) -> bool:
+    return (verdict["label"] == "incorrect" and verdict["natural"]
+            and verdict["plausibility"] >= MIN_PLAUSIBILITY)
+
+
+def audit_existing(llm: LLM, item: dict, ctx: "PassageContext", display: str,
+                   options: Dict[str, str], key: str):
+    """Audit an item's CURRENT options with the candidate-screening prompt (each option rated
+    on its own, blind to the key) -- the same prompt and scale new candidates get -- then
+    the whole-passage fact check. Returns (labels, natural, plaus, facts, offending, key_ok).
+
+    Offending: a distractor that is not "incorrect", and -- when ``ctx.plausibility_gate``
+    is on -- a distractor rated below MIN_PLAUSIBILITY. Unnatural existing options are
+    only reported."""
+    letters = sorted(options)
+    verdicts = screen_candidates(llm, item, display, [Candidate(options[l], l) for l in letters])
+    labels = {l: verdicts[options[l]]["label"] for l in letters}
+    natural = {l: verdicts[options[l]]["natural"] for l in letters}
+    plaus = {l: verdicts[options[l]]["plausibility"] for l in letters}
     if labels.get(key) != "correct":
-        return labels, natural, {}, set(), False
+        return labels, natural, plaus, {}, set(), False
+    offending = {l for l in letters if l != key and labels[l] != "incorrect"}
+    if ctx.plausibility_gate:
+        offending |= {l for l in letters if l != key and plaus[l] < MIN_PLAUSIBILITY}
+    facts: Dict[str, str] = {}
+    if not offending and ctx.fact_check:
+        facts = factcheck_options(llm, item, ctx.text, display, options, key)
+        offending |= {l for l, v in facts.items() if v != "ok"}
+    return labels, natural, plaus, facts, offending, True
+
+
+def validate(llm: LLM, item: dict, ctx: "PassageContext", display: str,
+             content: Dict[str, str], key: str, new_letters: set, screened: bool = False):
+    """Window judge + naturalness and plausibility (new options only) + whole-passage fact
+    check. Returns (labels, natural, plaus, facts, offending_letters, key_ok).
+
+    ``screened``: the new options already passed the candidate screen, so their naturalness
+    and plausibility are NOT re-judged here (each candidate is scored once; re-rating made
+    the same option flip between 3 and 2). Correctness is still re-checked in context of
+    the full set, and the fact check runs as usual."""
+    labels, natural, plaus = judge_options(llm, item, display, content)
+    if labels.get(key) != "correct":
+        return labels, natural, plaus, {}, set(), False
     offending = {l for l, lab in labels.items() if l != key and lab != "incorrect"}
-    offending |= {l for l in new_letters if not natural.get(l, True)}
+    if not screened:
+        offending |= {l for l in new_letters if not natural.get(l, True)}
+        offending |= {l for l in new_letters if plaus.get(l, 3) < MIN_PLAUSIBILITY}
     facts: Dict[str, str] = {}
     if not offending and ctx.fact_check:
         facts = factcheck_options(llm, item, ctx.text, display, content, key)
         offending |= {l for l, v in facts.items() if v != "ok"}
-    return labels, natural, facts, offending, True
+    return labels, natural, plaus, facts, offending, True
 
 
 def rebalance_item(item: dict, ctx: PassageContext, llm: Optional[LLM], *,
@@ -575,41 +815,66 @@ def rebalance_item(item: dict, ctx: PassageContext, llm: Optional[LLM], *,
         return ItemResult(status="measured", reason=kind, before=before, **base)
 
     display = ctx.display_window_for(item)
-    # 1. audit the CURRENT options (every item): window judge + whole-passage fact check
-    labels, natural, facts, offending, key_ok = validate(
-        llm, item, ctx, display, options, key, new_letters=set())
+    # 1. audit the CURRENT options (every item) with the SAME screening prompt new candidates
+    #    get, so existing and new options are scored on one scale; then the fact check
+    labels, natural, plaus, facts, offending, key_ok = audit_existing(
+        llm, item, ctx, display, options, key)
     if not key_ok:
         return ItemResult(status="needs_review", reason="validator does not support the key",
-                          before=before, judge=labels, natural=natural, **base)
+                          before=before, judge=labels, natural=natural, plausibility=plaus,
+                          **base)
     if not offending and kind in ("balanced", "distractor_dominates"):
         reason = ("balanced and validated" if kind == "balanced"
                   else "distractor out-overlaps key but validated wrong")
-        return ItemResult(status="ok", reason=reason, before=before,
-                          judge=labels, natural=natural, facts=facts, **base)
+        return ItemResult(status="ok", reason=reason, before=before, judge=labels,
+                          natural=natural, plausibility=plaus, facts=facts, **base)
+    # plausibility of every text the screen has rated, used by selection
+    plaus_by_text = {normalize(options[l]): v for l, v in plaus.items() if l != key}
+    # once an item is being rewritten, existing throwaways (rated 1-2) go too (this is what
+    # the plausibility gate already enforces; it still applies when the gate is off)
+    weak_existing = {l for l, v in plaus.items() if l != key and v < MIN_PLAUSIBILITY}
     if offending:
         kind = "invalid_distractor"
 
-    banned = {normalize(options[l]) for l in offending}
+    banned = {normalize(options[l]) for l in offending | weak_existing}
     pool: List[Candidate] = [Candidate(text=v, origin=l) for l, v in options.items() if l != key]
     avoid: List[str] = [options[l] for l in offending]
     generated = 0
-    last = dict(judge=labels, natural=natural, facts=facts)
+    exhausted = False
+    answer_type = ""
+    screened: Dict[str, dict] = {}
+    last = dict(judge=labels, natural=natural, plausibility=plaus, facts=facts)
     for _round in range(max_rounds):
-        if generated == 0 or choose_set(item, window, pool, banned) is None:
+        if generated == 0 or choose_set(item, window, pool, banned, plaus_by_text) is None:
             raw = llm("generate", GENERATE_SYSTEM,
                       generate_user_prompt(item, display, n_candidates, avoid))
-            pool += clean_candidates(raw.get("candidates") or [], options[key],
-                                     [c.text for c in pool], window)
+            exhausted = exhausted or bool(raw.get("excerpt_exhausted"))
+            answer_type = answer_type or str(raw.get("answer_type") or "")
+            fresh = clean_candidates(raw.get("candidates") or [], options[key],
+                                     [c.text for c in pool], window, answer_type)
+            # screen ALL new candidates in one call before choosing: selection then only
+            # sees candidates that are wrong, natural and plausible, scored once
+            for text, verdict in screen_candidates(llm, item, display, fresh).items():
+                screened[normalize(text)] = verdict
+                plaus_by_text[normalize(text)] = verdict["plausibility"]
+                if not screen_passes(verdict):
+                    banned.add(normalize(text))
+                    avoid.append(text)
+            pool += fresh
             generated += 1
-        chosen = choose_set(item, window, pool, banned)
+        chosen = choose_set(item, window, pool, banned, plaus_by_text)
         if chosen is None:
             break
         proposal = assign_letters(item, chosen)
         content = {l: v for l, v in proposal.items() if l in CONTENT_LETTERS}
         new_letters = {l for l in content if l != key and content[l] != options.get(l)}
-        labels, natural, facts, offending, key_ok = validate(
-            llm, item, ctx, display, content, key, new_letters)
-        last = dict(judge=labels, natural=natural, facts=facts)
+        labels, natural, plaus, facts, offending, key_ok = validate(
+            llm, item, ctx, display, content, key, new_letters, screened=True)
+        for l in new_letters:          # report the screened (single) scores for new options
+            verdict = screened.get(normalize(content[l]))
+            if verdict:
+                plaus[l], natural[l] = verdict["plausibility"], verdict["natural"]
+        last = dict(judge=labels, natural=natural, plausibility=plaus, facts=facts)
         if not key_ok:
             return ItemResult(status="needs_review", reason="validator does not support the key",
                               before=before, **last, **base)
@@ -622,19 +887,22 @@ def rebalance_item(item: dict, ctx: PassageContext, llm: Optional[LLM], *,
         for letter in new_letters:
             cand = next((c for c in chosen if c.text == content[letter]), None)
             if cand:
-                notes[letter] = f"[{cand.kind}] {cand.source}: {cand.why_wrong}".strip(": ")
-        lead2 = second_gap(after["key"], [r for l, r in after["ratios"].items() if l != key])
+                notes[letter] = (f"[{cand.kind}] {cand.source}: {cand.why_wrong}"
+                                 f" | tempting: {cand.why_tempting}").strip(": ")
         if kind == "invalid_distractor":
             status = "replaced_invalid"
-        elif abs(after["gap"]) <= tolerance and lead2 <= SECOND_GAP_TOLERANCE:
+        elif abs(after["gap"]) <= tolerance and after["weakest_gap"] <= WEAKEST_GAP_TOLERANCE:
             status = "rebalanced"
-        elif abs(after["gap"]) <= abs(before["gap"]) - MIN_IMPROVEMENT or (
-                abs(after["gap"]) <= tolerance and new_letters):
+        elif worst_gap(after) <= worst_gap(before) - MIN_IMPROVEMENT:
+            # partial only when the WORSE of the two gaps improved: fixing the best
+            # distractor while leaving throwaways behind is not an improvement
             status = "partial"
         else:
             return ItemResult(status="needs_review", reason="no validated set improves the gap",
                               before=before, after=after, **last,
                               **{**base, "new_options": content})
+        if exhausted:
+            notes["*"] = "generator: excerpt has no more suitable phrases"
         return ItemResult(status=status, reason=kind, before=before, after=after,
                           notes=notes, **last, **{**base, "new_options": content})
     reason = ("an invalid distractor could not be replaced" if kind == "invalid_distractor"
@@ -682,9 +950,11 @@ def write_json(path: Path, data: Any) -> None:
 
 REPORT_FIELDS = ["passage", "item", "status", "reason", "question", "key", "key_text",
                  "key_overlap", "best_distractor_before", "gap_before", "best_distractor_after",
-                 "gap_after", "second_gap_before", "second_gap_after",
+                 "gap_after", "weakest_gap_before", "weakest_gap_after",
                  "old_A", "old_B", "old_C", "old_D", "new_A", "new_B", "new_C",
-                 "new_D", "judge", "unnatural", "fact_check", "new_option_notes", "window"]
+                 "new_D", "judge", "plausibility", "unnatural", "fact_check", "new_option_notes",
+                 "key_proposal_status", "proposed_key", "proposed_options", "key_proposal_note",
+                 "window"]
 
 
 def report_row(passage: str, item: dict, result: ItemResult) -> dict:
@@ -700,13 +970,24 @@ def report_row(passage: str, item: dict, result: ItemResult) -> dict:
         "gap_before": f"{result.before['gap']:+.2f}" if result.before else "",
         "best_distractor_after": f"{result.after['best_distractor']:.2f}" if result.after else "",
         "gap_after": f"{result.after['gap']:+.2f}" if result.after else "",
-        "second_gap_before": f"{result.before['second_gap']:+.2f}" if result.before else "",
-        "second_gap_after": f"{result.after['second_gap']:+.2f}" if result.after else "",
+        "weakest_gap_before": f"{result.before['weakest_gap']:+.2f}" if result.before else "",
+        "weakest_gap_after": f"{result.after['weakest_gap']:+.2f}" if result.after else "",
         "judge": " ".join(f"{l}:{v}" for l, v in sorted(result.judge.items())),
         "unnatural": " ".join(l for l, ok in sorted(result.natural.items()) if not ok),
+        "plausibility": " ".join(f"{l}:{v}" for l, v in sorted(result.plausibility.items())
+                                 if l != key),
         "fact_check": " ".join(f"{l}:{v}" for l, v in sorted(result.facts.items()) if v != "ok"),
         "new_option_notes": " | ".join(f"{l}: {v}" for l, v in sorted(result.notes.items())),
         "window": result.window,
+        "key_proposal_status": (result.proposal or {}).get("status", ""),
+        "proposed_key": ((result.proposal or {}).get("key", "")
+                         + (f" ({result.proposal['key_overlap']:.2f})"
+                            if (result.proposal or {}).get("key_overlap") is not None else "")),
+        "proposed_options": " | ".join(f"{l}:{v}" for l, v in sorted(
+            ((result.proposal or {}).get("options") or {}).items())),
+        "key_proposal_note": (result.proposal or {}).get("note", "") or (
+            f"gap {result.proposal['gap']:+.2f}, weakest {result.proposal['weakest_gap']:+.2f}"
+            if result.proposal and "gap" in result.proposal else ""),
     }
     for l in CONTENT_LETTERS:
         row[f"old_{l}"] = fmt(result.old_options, result.before, l)
@@ -730,14 +1011,133 @@ def summarize(results: List[ItemResult]) -> str:
     flagged = [r for r in measured if r.reason not in ("balanced", "balanced and validated")]
     lines = [f"items: {len(results)}  measured: {len(measured)}  flagged: {len(flagged)}",
              "status: " + ", ".join(f"{k}={v}" for k, v in sorted(counts.items()))]
+    proposals = Counter((r.proposal or {}).get("status") for r in results if r.proposal)
+    if proposals:
+        lines.append("key-rewording proposals (report only): "
+                     + ", ".join(f"{k}={v}" for k, v in sorted(proposals.items())))
     if measured:
         gaps = [abs((r.after or r.before)["gap"]) for r in measured]
-        lead2 = [(r.after or r.before)["second_gap"] for r in measured]
+        lead2 = [(r.after or r.before)["weakest_gap"] for r in measured]
         lines.append(f"mean |gap| after: {sum(gaps)/len(gaps):.3f}  "
                      f"within tolerance: {sum(g <= DEFAULT_TOLERANCE for g in gaps)}/{len(gaps)}  "
-                     f"single-lure (2nd gap > {SECOND_GAP_TOLERANCE}): "
-                     f"{sum(g > SECOND_GAP_TOLERANCE for g in lead2)}")
+                     f"uneven (weakest distractor > {WEAKEST_GAP_TOLERANCE} below key): "
+                     f"{sum(g > WEAKEST_GAP_TOLERANCE for g in lead2)}")
     return "\n".join(lines)
+
+
+VERBATIM_KEY = 0.8
+REWORDING_ELIGIBLE = ("no validated set improves the gap",
+                      "candidates exhausted (every set had a rejected distractor)")
+
+
+def rewording_cost(text: str, window: str, target: float, ref_len: int, fluency: int) -> float:
+    """Lower is better: near the overlap target, fluent, about the options' length, one clause."""
+    cost = abs(overlap_ratio(text, window) - target)
+    cost += 0.1 * (5 - fluency)
+    cost += 0.5 * abs(math.log(max(len(normalize(text)), 1) / ref_len))
+    cost += 0.2 * ("，" in text or "," in text)
+    return cost
+
+
+def needs_key_rewording(result: ItemResult) -> bool:
+    """The item could not be balanced AND its key is copied from the window: the
+    recognition cue lives in the key itself, which only a reworded key can remove."""
+    return (result.status == "needs_review" and result.reason in REWORDING_ELIGIBLE
+            and bool(result.before) and result.before.get("key", 0.0) >= VERBATIM_KEY)
+
+
+def propose_key_rewording(item: dict, ctx: PassageContext, llm: LLM, result: ItemResult,
+                          n: int = 4, **kw) -> dict:
+    """REPORT-ONLY. Reword a verbatim key, check it blind (still correct, natural) and
+    against the original (same meaning), pick the rewording whose overlap is nearest the
+    distractors', and rebalance the distractors against it. Nothing is written to QA files.
+
+    Returns {"status": proposed|no_valid_rewording|rebalance_failed, "key": ..., ...}."""
+    key = key_letter(item)
+    options = content_options(item)
+    original = options[key]
+    display = ctx.display_window_for(item)
+    window = ctx.window_for(item)
+    raw = llm("keygen", KEYGEN_SYSTEM, json.dumps({
+        "excerpt": display, "question": item.get("Q"), "correct_answer": original,
+        "number_of_rewordings": n}, ensure_ascii=False, indent=1))
+    ends = normalize(original).endswith(("。", "."))
+    texts, seen = [], {normalize(original)}
+    for entry in raw.get("rewordings") or []:
+        text = tidy_option(str((entry or {}).get("text") or ""), ends)
+        if text and normalize(text) not in seen and overlap_ratio(text, window) < VERBATIM_KEY:
+            seen.add(normalize(text))
+            texts.append(text)
+    if not texts:
+        return {"status": "no_valid_rewording", "note": "every rewording still copied the window"}
+
+    # 1) blind: is each rewording, on its own, a correct and natural answer?
+    blind = screen_candidates(llm, item, display, [Candidate(t, "new") for t in texts])
+    # 2) against the original: same meaning, not narrower/broader?
+    check = llm("keycheck", KEYCHECK_SYSTEM, json.dumps({
+        "excerpt": display, "question": item.get("Q"), "original_correct_answer": original,
+        "rewordings": {f"r{i + 1}": t for i, t in enumerate(texts)}}, ensure_ascii=False, indent=1))
+    same, fluency = {}, {}
+    for entry in check.get("rewordings") or []:
+        rid = str(entry.get("id") or "")
+        if rid.startswith("r") and rid[1:].isdigit() and int(rid[1:]) <= len(texts):
+            text = texts[int(rid[1:]) - 1]
+            same[text] = (str(entry.get("verdict") or "").lower() == "same"
+                          and entry.get("natural") is not False)
+            try:
+                fluency[text] = max(1, min(5, int(round(float(entry.get("fluency"))))))
+            except (TypeError, ValueError):
+                fluency[text] = 3
+    valid = [t for t in texts if blind.get(t, {}).get("label") == "correct"
+             and blind.get(t, {}).get("natural") and same.get(t)]
+    if not valid:
+        return {"status": "no_valid_rewording", "candidates": texts,
+                "note": "no rewording was judged correct, natural and same-meaning"}
+
+    # choose by overlap target AND fluency AND length: the overlap target alone picked the
+    # stiffest or longest rewording (耶和华传来的言语 over 耶和华所说的话; a two-clause key
+    # longer than every distractor -- "pick the longest option" is its own cue)
+    others = [overlap_ratio(v, window) for l, v in options.items() if l != key]
+    target = max(0.3, max(others) if others else 0.3)
+    lengths = sorted(len(normalize(v)) for v in options.values())
+    ref_len = max(lengths[len(lengths) // 2], 1)          # median of key + distractors
+    chosen = min(valid, key=lambda t: rewording_cost(t, window, target, ref_len,
+                                                     fluency.get(t, 3)))
+
+    # 3) rebalance the distractors against the reworded key (no further key rewording)
+    trial = dict(item, A={**item["A"], key: chosen})
+    sub_ctx = PassageContext(ctx.text, ctx.reference, ctx.verse_windows, ctx.verse_window,
+                             fact_check=ctx.fact_check, key_rewording=False,
+                             plausibility_gate=True)   # always: no throwaways in a proposal
+    sub = rebalance_item(trial, sub_ctx, llm, **kw)
+    proposal = {"key": chosen, "key_overlap": round(overlap_ratio(chosen, window), 2),
+                "key_fluency": fluency.get(chosen), "fluency": fluency,
+                "original_key": original, "candidates": texts, "valid": valid,
+                "sub_status": sub.status, "sub_reason": sub.reason}
+    if sub.status in ("rebalanced", "partial", "replaced_invalid", "ok"):
+        opts = sub.new_options or {l: v for l, v in trial["A"].items() if l in CONTENT_LETTERS}
+        stats = sub.after or sub.before
+        balanced = (abs(stats["gap"]) <= kw.get("tolerance", DEFAULT_TOLERANCE)
+                    and stats["weakest_gap"] <= WEAKEST_GAP_TOLERANCE)
+        # a reworded key far BELOW verbatim distractors is the reverse cue ("pick the one
+        # that is not copied"): still reported, but flagged
+        proposal.update(status="proposed" if balanced else "proposed_unbalanced", options=opts,
+                        gap=round(stats["gap"], 2), weakest_gap=round(stats["weakest_gap"], 2),
+                        plausibility=sub.plausibility, notes=sub.notes)
+    else:
+        proposal.update(status="rebalance_failed",
+                        note="reworded key accepted, but distractors still could not be balanced")
+    return proposal
+
+
+def process_item(record: dict, ctx: PassageContext, llm: Optional[LLM], **kw) -> ItemResult:
+    result = rebalance_item(record, ctx, llm, **kw)
+    if llm is not None and ctx.key_rewording and needs_key_rewording(result):
+        try:
+            result.proposal = propose_key_rewording(record, ctx, llm, result, **kw)
+        except RebalanceError as exc:
+            result.proposal = {"status": "error", "note": str(exc)}
+    return result
 
 
 def rebalance_records(records: List[dict], ctx: PassageContext, llm: Optional[LLM],
@@ -745,10 +1145,10 @@ def rebalance_records(records: List[dict], ctx: PassageContext, llm: Optional[LL
     """Process every MCQ; ``workers`` > 1 runs items concurrently (order is preserved)."""
     todo = [r for r in records if r.get("q_type") == "mcq" and r.get("status") != "exclude"]
     if workers <= 1 or llm is None or len(todo) < 2:
-        return [(r, rebalance_item(r, ctx, llm, **kw)) for r in todo]
+        return [(r, process_item(r, ctx, llm, **kw)) for r in todo]
     from concurrent.futures import ThreadPoolExecutor
     with ThreadPoolExecutor(max_workers=workers) as pool:
-        results = list(pool.map(lambda r: rebalance_item(r, ctx, llm, **kw), todo))
+        results = list(pool.map(lambda r: process_item(r, ctx, llm, **kw), todo))
     return list(zip(todo, results))
 
 
@@ -814,7 +1214,9 @@ def run_tier1(args, llm: Optional[LLM], meta: dict) -> List[dict]:
         records = json.loads(qa_path.read_text(encoding="utf-8"))
         reference = next((r.get("passage_reference") for r in records if r.get("passage_reference")), "")
         ctx = PassageContext(passage_path.read_text(encoding="utf-8"), reference, verse_windows,
-                             args.verse_window, fact_check=not args.no_fact_check)
+                             args.verse_window, fact_check=not args.no_fact_check,
+                             key_rewording=not args.no_key_rewording,
+                             plausibility_gate=not args.no_plausibility_gate)
         pairs = rebalance_records(records, ctx, llm, workers=args.workers,
                                   tolerance=args.tolerance,
                                   n_candidates=args.candidates, max_rounds=args.max_rounds)
@@ -846,7 +1248,9 @@ def run_file(args, llm: Optional[LLM], meta: dict) -> List[dict]:
     verse_windows = load_verse_windows(args.windows_json) if args.windows_json else None
     reference = next((r.get("passage_reference") for r in records if r.get("passage_reference")), "")
     ctx = PassageContext(args.passage.read_text(encoding="utf-8"), reference, verse_windows,
-                         args.verse_window, fact_check=not args.no_fact_check)
+                         args.verse_window, fact_check=not args.no_fact_check,
+                         key_rewording=not args.no_key_rewording,
+                         plausibility_gate=not args.no_plausibility_gate)
     pairs = rebalance_records(records, ctx, llm, workers=args.workers, tolerance=args.tolerance,
                               n_candidates=args.candidates, max_rounds=args.max_rounds)
     results = {r.item_id: r for _, r in pairs}
@@ -905,6 +1309,13 @@ def parse_args(argv=None):
     common.add_argument("--max-rounds", type=int, default=DEFAULT_MAX_ROUNDS)
     common.add_argument("--retries", type=int, default=2)
     common.add_argument("--workers", type=int, default=4, help="items processed concurrently")
+    common.add_argument("--no-plausibility-gate", action="store_true",
+                        help="do not fail items whose EXISTING distractors are rated 1-2 "
+                             "(they are then only reported); key-rewording proposals always "
+                             "apply the gate")
+    common.add_argument("--no-key-rewording", action="store_true",
+                        help="do not propose rewordings for verbatim keys of items that could "
+                             "not be balanced (proposals are report-only either way)")
     common.add_argument("--no-fact-check", action="store_true",
                         help="skip the whole-passage check for distractors that are true "
                              "elsewhere in the passage / another name for the key")
