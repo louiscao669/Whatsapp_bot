@@ -1,5 +1,5 @@
 import { Link, Outlet, useLocation } from 'react-router-dom'
-import { useAuth } from '../auth/AuthContext'
+import { useAuth } from '../auth/useAuth'
 import { ExpertLogoutButton } from './ExpertLogoutButton'
 import { REVIEW_WORKBENCH_TABS } from '../reviewWorkbench'
 

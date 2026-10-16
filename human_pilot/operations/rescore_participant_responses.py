@@ -17,7 +17,6 @@ For audio rows, ensure transcript_text is populated (Whisper STT on ingest or ma
 """
 
 import argparse
-import os
 import sys
 from pathlib import Path
 
@@ -27,10 +26,13 @@ from _bootstrap import use_message_bot
 
 use_message_bot()
 
-from sqlalchemy import or_, select
-from sqlalchemy.orm import selectinload
-
 from app import create_app
+from app.services.workflow import audio_answer_lacks_usable_transcript
+from eten_shared.answer_llm_scoring import (
+    resolve_choice_letter,
+    resolve_response_passage_text,
+    score_open_answer,
+)
 from eten_shared.database import get_session_factory
 from eten_shared.models import (
     Participant,
@@ -38,12 +40,8 @@ from eten_shared.models import (
     ParticipantResponse,
     ReviewStatus,
 )
-from app.services.workflow import audio_answer_lacks_usable_transcript
-from eten_shared.answer_llm_scoring import (
-    resolve_choice_letter,
-    resolve_response_passage_text,
-    score_open_answer,
-)
+from sqlalchemy import or_, select
+from sqlalchemy.orm import selectinload
 
 # Judge score -> is_correct label; mirrors engagement/outbox.py.
 _AUTO_LABELS = {1.0: "yes (auto)", 0.5: "partial (auto)", 0.0: "no (auto)"}
@@ -99,7 +97,6 @@ def score_response_row(db, response, retranscribe: bool):
     response_type = response.response_type or ""
     transcript_text = response.transcript_text
     response_text = response.response_text
-    media_url = response.media_url
     analysis_text = transcript_text or response_text or ""
     choice_correct = None
 

@@ -1,7 +1,9 @@
 /**
  * The `/pilot` participant interface: one question at a time, plainly.
  *
- * Not present, on purpose: any correctness feedback during the study, any
+ * Study participants receive no correctness feedback. Flagged test participants
+ * see the condition and clean-source answer key in a separate testing panel.
+ * Not present, on purpose: any
  * score / reward / balance / streak, any clock shown to the participant, any
  * time limit, any periodic
  * poll, and any preloading of the next question. The next question is fetched
@@ -17,8 +19,8 @@
 // Everything under /pilot/static/ is served immutable for a year, so an
 // unversioned module URL would pin participants to a stale build forever.
 // Bump all three together when the frontend changes.
-import { createPilotApi, parseParticipantIdFromLocation } from "./api.js?v=20260830a";
-import { createAttentionTimers, createTrialStore, resumeActiveMs } from "./timing.js?v=20260830a";
+import { createPilotApi, parseParticipantIdFromLocation } from "./api.js?v=20261016a";
+import { createAttentionTimers, createTrialStore, resumeActiveMs } from "./timing.js?v=20261016a";
 
 const root = document.querySelector("#pilot");
 const participantId = parseParticipantIdFromLocation();
@@ -126,10 +128,46 @@ function renderComplete() {
   );
 }
 
+function renderTestInfo(info) {
+  const panel = element("aside", "pilot-test-info");
+  panel.setAttribute("aria-label", "Testing information");
+  panel.append(element("h2", "pilot-test-title", "Testing only"));
+
+  const defectLabels = {
+    omission: "Omission",
+    mistranslation: "Mistranslation",
+    grammar: "Grammar",
+    google_word_by_word: "Word-by-word translation (Google)"
+  };
+  let condition = info.condition || "No experiment condition assigned";
+  if (info.condition === "clean") {
+    condition = "Clean — no injected defect";
+  } else if (info.defect_type) {
+    condition = defectLabels[info.defect_type] || info.defect_type;
+    if (typeof info.defect_rate === "number") {
+      condition += ` · ${Math.round(info.defect_rate * 100)}%`;
+    }
+  }
+
+  const details = element("dl", "pilot-test-details");
+  details.append(element("dt", "", "Passage condition"), element("dd", "", condition));
+  const answer = info.correct_answer
+    ? `${info.correct_choice ? `${info.correct_choice}. ` : ""}${info.correct_answer}`
+    : "No answer key configured";
+  details.append(element("dt", "", "Correct answer (clean source)"), element("dd", "", answer));
+  panel.append(details, element("p", "pilot-test-note",
+    "This is the answer key from the clean passage. A defective passage may change or omit the evidence."
+  ));
+  return panel;
+}
+
 function renderQuestion(question) {
   root.replaceChildren();
   const card = element("section", "pilot-card");
   card.append(element("p", "pilot-step", `Question ${question.question_number}`));
+  if (question.test_info) {
+    card.append(renderTestInfo(question.test_info));
+  }
 
   // One line per verse. `passage_lines` is the same delivered text the server
   // split on verse boundaries; it falls back to the whole block when the text

@@ -1,12 +1,11 @@
 import {
-  createContext,
   useCallback,
-  useContext,
   useEffect,
   useMemo,
   useState,
   type ReactNode,
 } from 'react'
+import { AuthContext } from './useAuth'
 import { ApiError } from '../api/client'
 import {
   fetchMe,
@@ -18,20 +17,6 @@ import {
   type MeResponse,
   type NavPage,
 } from '../api/auth'
-
-type AuthState = {
-  user: AuthUser | null
-  nav: NavPage[]
-  exports: NavPage[]
-  loading: boolean
-  refresh: () => Promise<void>
-  sendCode: (email: string) => Promise<string>
-  verifyCode: (email: string, code: string) => Promise<MeResponse>
-  tokenLogin: (token: string) => Promise<MeResponse>
-  logout: () => Promise<void>
-}
-
-const AuthContext = createContext<AuthState | null>(null)
 
 function applySession(
   setUser: (u: AuthUser | null) => void,
@@ -66,14 +51,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [])
 
   useEffect(() => {
-    refresh()
+    let cancelled = false
+    fetchMe()
+      .then((data) => {
+        if (!cancelled) applySession(setUser, setNav, setExports, data)
+      })
       .catch(() => {
+        if (cancelled) return
         setUser(null)
         setNav([])
         setExports([])
       })
-      .finally(() => setLoading(false))
-  }, [refresh])
+      .finally(() => { if (!cancelled) setLoading(false) })
+    return () => { cancelled = true }
+  }, [])
 
   const sendCode = useCallback(async (email: string) => {
     const result = await requestOtp(email)
@@ -115,12 +106,4 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
-}
-
-export function useAuth() {
-  const context = useContext(AuthContext)
-  if (!context) {
-    throw new Error('useAuth must be used within AuthProvider')
-  }
-  return context
 }

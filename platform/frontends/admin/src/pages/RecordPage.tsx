@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { ApiError, getCachedApiData } from '../api/client'
 import {
@@ -11,6 +11,7 @@ import {
   type RecordRow,
   type RecordTake,
 } from '../api/record'
+import { useApiResource } from '../hooks/useApiResource'
 import { RecordControls } from '../components/RecordControls'
 import { RetakeConfirmModal } from '../components/RetakeConfirmModal'
 
@@ -20,39 +21,13 @@ export function RecordPage() {
   const recordPath = `/api/v1/record${language ? `?language=${encodeURIComponent(language)}` : ''}`
   const cachedDashboard = getCachedApiData<RecordDashboard>(recordPath)
 
-  const [dashboard, setDashboard] = useState<RecordDashboard | null>(cachedDashboard)
-  const [loading, setLoading] = useState(!cachedDashboard)
-  const [error, setError] = useState('')
+  const loadDashboard = useCallback(() => fetchRecordDashboard(language || undefined), [language])
+  const { data: dashboard, setData: setDashboard, loading, error, setError } = useApiResource(
+    recordPath, loadDashboard, cachedDashboard, 'Failed to load Record page',
+  )
   const [message, setMessage] = useState('')
   const [retakeBlob, setRetakeBlob] = useState<Blob | null>(null)
   const [retakeResolver, setRetakeResolver] = useState<((value: boolean) => void) | null>(null)
-
-  const loadDashboard = useCallback((targetLanguage?: string, options?: { silent?: boolean }) => {
-    const silent = options?.silent ?? false
-    const path = `/api/v1/record${targetLanguage ? `?language=${encodeURIComponent(targetLanguage)}` : ''}`
-    const cached = getCachedApiData<RecordDashboard>(path)
-    if (cached) {
-      setDashboard(cached)
-    }
-    if (!silent) {
-      setLoading(!cached)
-    }
-    setError('')
-    return fetchRecordDashboard(targetLanguage || undefined)
-      .then(setDashboard)
-      .catch((err) => {
-        setError(err instanceof ApiError ? err.message : 'Failed to load Record page')
-      })
-      .finally(() => {
-        if (!silent) {
-          setLoading(false)
-        }
-      })
-  }, [])
-
-  useEffect(() => {
-    loadDashboard(language)
-  }, [language, loadDashboard])
 
   function applyLanguage(nextLanguage: string) {
     setSearchParams(nextLanguage ? { language: nextLanguage } : {})

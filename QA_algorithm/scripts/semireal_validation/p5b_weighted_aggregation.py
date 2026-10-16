@@ -22,9 +22,12 @@ OPTIMAL (inverse observed variance = unattainable upper bound). Metric: variance
 pooled damage estimate and dose-recovery fidelity -> effective respondent savings.
 """
 from __future__ import annotations
-import csv, json, math
-from collections import defaultdict
+
+import csv
+import json
+import math
 from pathlib import Path
+
 import numpy as np
 
 REPO = Path(__file__).resolve().parents[3]

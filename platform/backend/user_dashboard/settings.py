@@ -1,10 +1,18 @@
 """Dashboard settings services."""
 
-from ._common import *  # noqa: F401,F403
+from datetime import datetime, timezone
+
+from eten_shared.domain.streaks import set_streak_pause
+from eten_shared.models import ParticipantEvent
+
+from backend.user_dashboard.errors import DashboardSettingsError, StreakPauseUpdateError
+
+SUPPORTED_DASHBOARD_LANGUAGES = ("en", "zh")
+
 
 def set_user_streak_pause(db, participant_id: str, paused: bool):
-    from .profile import _participant_by_id
     from .payload import get_user_dashboard_payload
+    from .profile import _participant_by_id
 
     participant = _participant_by_id(db, participant_id)
     if not participant:
@@ -17,13 +25,15 @@ def set_user_streak_pause(db, participant_id: str, paused: bool):
     return get_user_dashboard_payload(db, participant_id)
 
 
-def update_dashboard_settings(db, participant_id: str, *, language=None, batch_size=None):
+def update_dashboard_settings(
+    db, participant_id: str, *, language=None, batch_size=None
+):
     """Persist the participant's dashboard language and/or preferred batch size,
     then return the fresh dashboard payload."""
-    from .profile import _participant_by_id
-    from .payload import get_user_dashboard_payload
-
     from eten_shared.domain.batch_size_nudges import clamp_batch_size
+
+    from .payload import get_user_dashboard_payload
+    from .profile import _participant_by_id
 
     participant = _participant_by_id(db, participant_id)
     if not participant:
@@ -60,5 +70,3 @@ def update_dashboard_settings(db, participant_id: str, *, language=None, batch_s
         db.flush()
 
     return get_user_dashboard_payload(db, participant_id)
-
-

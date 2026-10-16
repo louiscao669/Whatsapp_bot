@@ -33,7 +33,6 @@ the why items alone.
 from __future__ import annotations
 
 import argparse
-import re
 import sys
 from pathlib import Path
 
@@ -45,14 +44,16 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "packages" / "eten-
 # stack it never touches.
 
 from eten_shared.wh_type import (  # noqa: E402
-    UNKNOWN, WH_TYPES, classify_wh_type,
+    UNKNOWN,
+    WH_TYPES,
+    classify_wh_type,
 )
 
 
 def run(participant_id, keep, apply_, database_url=None):
-    from sqlalchemy import select
     from eten_shared.database import get_session_factory
     from eten_shared.models import Assignment, AssignmentStatus, Participant, QAItem
+    from sqlalchemy import select
 
     try:
         factory = get_session_factory(database_url)

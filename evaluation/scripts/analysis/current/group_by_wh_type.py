@@ -20,13 +20,14 @@ not on one import path; if you change a cue, change it there too.
 import argparse
 import glob
 import json
-import os
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[4] / "packages" / "eten-shared"))
 from eten_shared.wh_type import (  # noqa: E402
-    UNKNOWN, WH_TYPES, classify_wh_type,
+    UNKNOWN,
+    WH_TYPES,
+    classify_wh_type,
 )
 
 SETS = {

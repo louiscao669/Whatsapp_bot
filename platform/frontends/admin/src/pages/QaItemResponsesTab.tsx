@@ -1,11 +1,14 @@
-import { useEffect, useState } from 'react'
-import { ApiError, getCachedApiData } from '../api/client'
+import { useCallback } from 'react'
+import { getCachedApiData } from '../api/client'
 import {
   type QaItemResponsesPayload,
   fetchQaItemResponses,
+  qaItemSectionPath,
   type QaItemChoiceResponse,
   type QaItemOpenResponse,
 } from '../api/qaItems'
+
+import { useApiResource } from '../hooks/useApiResource'
 
 type QaItemResponsesTabProps = {
   qaItemId: string
@@ -13,38 +16,12 @@ type QaItemResponsesTabProps = {
   choiceScored: boolean
 }
 
-function responsesPath(qaItemId: string, languages: string[]) {
-  const params = new URLSearchParams()
-  for (const language of languages) {
-    params.append('languages', language)
-  }
-  const query = params.toString()
-  return `/api/v1/qa-items/${qaItemId}/responses${query ? `?${query}` : ''}`
-}
-
 export function QaItemResponsesTab({ qaItemId, languages, choiceScored }: QaItemResponsesTabProps) {
-  const cachedResponses = getCachedApiData<QaItemResponsesPayload>(
-    responsesPath(qaItemId, languages),
-  )
-  const [responses, setResponses] = useState<(QaItemOpenResponse | QaItemChoiceResponse)[]>(
-    cachedResponses?.responses ?? [],
-  )
-  const [loading, setLoading] = useState(!cachedResponses)
-  const [error, setError] = useState('')
-
-  useEffect(() => {
-    const cached = getCachedApiData<QaItemResponsesPayload>(responsesPath(qaItemId, languages))
-    if (cached) {
-      setResponses(cached.responses)
-    }
-    setLoading(!cached)
-    fetchQaItemResponses(qaItemId, languages)
-      .then((data) => setResponses(data.responses))
-      .catch((err) => {
-        setError(err instanceof ApiError ? err.message : 'Failed to load responses')
-      })
-      .finally(() => setLoading(false))
-  }, [qaItemId, languages])
+  const path = qaItemSectionPath(qaItemId, 'responses', languages)
+  const cached = getCachedApiData<QaItemResponsesPayload>(path)
+  const load = useCallback(() => fetchQaItemResponses(qaItemId, languages), [qaItemId, languages])
+  const { data, loading, error } = useApiResource(path, load, cached, 'Failed to load responses')
+  const responses = data?.responses ?? []
 
   if (loading) {
     return <p className="loading-message">Loading responses…</p>

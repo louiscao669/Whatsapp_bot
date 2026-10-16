@@ -1,6 +1,20 @@
 """Dashboard store services."""
 
-from ._common import *  # noqa: F401,F403
+from datetime import datetime, timezone
+
+from eten_shared.domain.streaks import STREAK_FREEZE_ITEM_ID, get_freeze_token_balance
+from eten_shared.models import (
+    Participant,
+    ParticipantCurrencyEvent,
+    ParticipantEvent,
+    ParticipantWallet,
+)
+from sqlalchemy import select
+
+from backend.user_dashboard.errors import CosmeticUpdateError, StorePurchaseError
+
+from ._common import COSMETIC_SLOTS, STORE_ITEMS
+
 
 def _get_or_create_wallet(db, participant):
     wallet = db.scalars(
@@ -66,8 +80,8 @@ def get_equipped_cosmetics(participant):
 
 
 def set_cosmetic_equipped(db, participant_id: str, item_id: str, equipped: bool):
-    from .profile import _participant_by_id
     from .payload import get_user_dashboard_payload
+    from .profile import _participant_by_id
 
     item = STORE_ITEMS.get((item_id or "").strip())
     if not item:
@@ -112,8 +126,8 @@ def set_cosmetic_equipped(db, participant_id: str, item_id: str, equipped: bool)
 
 
 def purchase_store_item(db, participant_id: str, item_id: str):
-    from .profile import _participant_by_id
     from .payload import get_user_dashboard_payload
+    from .profile import _participant_by_id
 
     item = STORE_ITEMS.get((item_id or "").strip())
     if not item:
@@ -124,7 +138,9 @@ def purchase_store_item(db, participant_id: str, item_id: str):
         raise StorePurchaseError("Participant not found")
 
     wallet = db.scalar(
-        select(ParticipantWallet).where(ParticipantWallet.participant_id == participant.id)
+        select(ParticipantWallet).where(
+            ParticipantWallet.participant_id == participant.id
+        )
     )
     inventory = get_store_inventory(db, participant.id)
     owned = inventory.get(item["item_id"], {}).get("owned", 0)
@@ -153,5 +169,3 @@ def purchase_store_item(db, participant_id: str, item_id: str):
     db.add(event)
     db.flush()
     return get_user_dashboard_payload(db, participant_id)
-
-

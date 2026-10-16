@@ -1,6 +1,8 @@
-import { useEffect, useState } from 'react'
-import { ApiError, getCachedApiData } from '../api/client'
-import { fetchQaItemStats, type QaItemStats } from '../api/qaItems'
+import { useCallback } from 'react'
+import { getCachedApiData } from '../api/client'
+import { qaItemSectionPath, fetchQaItemStats, type QaItemStats } from '../api/qaItems'
+
+import { useApiResource } from '../hooks/useApiResource'
 
 type QaItemStatsTabProps = {
   qaItemId: string
@@ -35,57 +37,16 @@ function StatsBarChart({ rows }: { rows: QaItemStats['bar_chart'] }) {
   )
 }
 
-function statsPath(qaItemId: string, languages: string[]) {
-  const params = new URLSearchParams()
-  for (const language of languages) {
-    params.append('languages', language)
-  }
-  const query = params.toString()
-  return `/api/v1/qa-items/${qaItemId}/stats${query ? `?${query}` : ''}`
-}
-
 export function QaItemStatsTab({
   qaItemId,
   selectedLanguages,
   onLanguagesChange,
 }: QaItemStatsTabProps) {
-  const cachedStats = getCachedApiData<{ stats: QaItemStats }>(
-    statsPath(qaItemId, selectedLanguages),
-  )
-  const [stats, setStats] = useState<QaItemStats | null>(cachedStats?.stats ?? null)
-  const [loading, setLoading] = useState(!cachedStats)
-  const [error, setError] = useState('')
-
-  useEffect(() => {
-    let cancelled = false
-    const cached = getCachedApiData<{ stats: QaItemStats }>(statsPath(qaItemId, selectedLanguages))
-    if (cached) {
-      setStats(cached.stats)
-    }
-    setLoading(!cached)
-    setError('')
-
-    fetchQaItemStats(qaItemId, selectedLanguages)
-      .then((data) => {
-        if (!cancelled) {
-          setStats(data.stats)
-        }
-      })
-      .catch((err) => {
-        if (!cancelled) {
-          setError(err instanceof ApiError ? err.message : 'Failed to load statistics')
-        }
-      })
-      .finally(() => {
-        if (!cancelled) {
-          setLoading(false)
-        }
-      })
-
-    return () => {
-      cancelled = true
-    }
-  }, [qaItemId, selectedLanguages])
+  const path = qaItemSectionPath(qaItemId, 'stats', selectedLanguages)
+  const cached = getCachedApiData<{ stats: QaItemStats }>(path)
+  const load = useCallback(() => fetchQaItemStats(qaItemId, selectedLanguages), [qaItemId, selectedLanguages])
+  const { data, loading, error } = useApiResource(path, load, cached, 'Failed to load statistics')
+  const stats = data?.stats ?? null
 
   if (loading) {
     return <p className="loading-message">Loading response statistics…</p>
@@ -128,6 +89,7 @@ export function QaItemStatsTab({
           name="languages"
           multiple
           size={Math.min(Math.max(languageOptions.length, 3), 6)}
+          key={path}
           defaultValue={stats.selected_languages}
         >
           {languageOptions.map((language) => (

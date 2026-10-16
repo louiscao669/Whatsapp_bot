@@ -1,48 +1,20 @@
-import { useEffect, useState } from 'react'
-import { ApiError, getCachedApiData } from '../api/client'
-import { fetchQaItemAssignments, type QaItemAssignmentRow } from '../api/qaItems'
+import { useCallback } from 'react'
+import { getCachedApiData } from '../api/client'
+import { qaItemSectionPath, fetchQaItemAssignments, type QaItemAssignmentRow } from '../api/qaItems'
+
+import { useApiResource } from '../hooks/useApiResource'
 
 type QaItemAssignmentsTabProps = {
   qaItemId: string
   languages: string[]
 }
 
-function assignmentsPath(qaItemId: string, languages: string[]) {
-  const params = new URLSearchParams()
-  for (const language of languages) {
-    params.append('languages', language)
-  }
-  const query = params.toString()
-  return `/api/v1/qa-items/${qaItemId}/assignments${query ? `?${query}` : ''}`
-}
-
 export function QaItemAssignmentsTab({ qaItemId, languages }: QaItemAssignmentsTabProps) {
-  const cachedAssignments = getCachedApiData<{
-    assignments: QaItemAssignmentRow[]
-    languages: string[]
-  }>(assignmentsPath(qaItemId, languages))
-  const [assignments, setAssignments] = useState<QaItemAssignmentRow[]>(
-    cachedAssignments?.assignments ?? [],
-  )
-  const [loading, setLoading] = useState(!cachedAssignments)
-  const [error, setError] = useState('')
-
-  useEffect(() => {
-    const cached = getCachedApiData<{
-      assignments: QaItemAssignmentRow[]
-      languages: string[]
-    }>(assignmentsPath(qaItemId, languages))
-    if (cached) {
-      setAssignments(cached.assignments)
-    }
-    setLoading(!cached)
-    fetchQaItemAssignments(qaItemId, languages)
-      .then((data) => setAssignments(data.assignments))
-      .catch((err) => {
-        setError(err instanceof ApiError ? err.message : 'Failed to load assignments')
-      })
-      .finally(() => setLoading(false))
-  }, [qaItemId, languages])
+  const path = qaItemSectionPath(qaItemId, 'assignments', languages)
+  const cached = getCachedApiData<{ assignments: QaItemAssignmentRow[]; languages: string[] }>(path)
+  const load = useCallback(() => fetchQaItemAssignments(qaItemId, languages), [qaItemId, languages])
+  const { data, loading, error } = useApiResource(path, load, cached, 'Failed to load assignments')
+  const assignments = data?.assignments ?? []
 
   if (loading) {
     return <p className="loading-message">Loading assignments…</p>

@@ -4,7 +4,8 @@ What this module deliberately does NOT do, because the pilot measures reading
 comprehension under translation defects and anything else is a confound:
 
 * no rewards, wallet, streak, badge or leaderboard writes;
-* no correctness feedback to the participant while the study runs;
+* no correctness feedback to study participants (flagged test participants
+  receive a separate testing panel with the condition and answer key);
 * no countdown, no deadline, no expiry -- ``expire_dashboard_question`` and
   ``AssignmentStatus.EXPIRED`` are never touched from here;
 * no periodic heartbeat and no general engagement analytics -- the only events
@@ -22,19 +23,17 @@ import os
 import re
 from datetime import timezone
 
-from sqlalchemy import func, select, text
-
-from eten_shared.repo_paths import REPO_ROOT
 from eten_shared.answer_receipts import create_answer_receipt
 from eten_shared.domain.assignments import (
+    assignment_passage_snapshot,
+    automatic_assignment_enabled,
     create_assignment_for_qa_item,
+    experiment_assignment_enabled,
     get_or_create_participant_session,
     record_participant_event,
-    automatic_assignment_enabled,
-    experiment_assignment_enabled,
-    assignment_passage_snapshot,
     surrounding_passage_text,
 )
+from eten_shared.experiment_plan import is_test_participant
 from eten_shared.mcq import (
     choice_letters_for_item,
     choice_letters_for_type,
@@ -66,10 +65,13 @@ from eten_shared.pilot_trials import (
     QUESTION_VISIBLE_EVENT,
     PilotActiveTimeError,
     build_trial_metadata,
+    defect_for_condition,
     question_bucket,
     validate_active_time_ms,
     validate_count,
 )
+from eten_shared.repo_paths import REPO_ROOT
+from sqlalchemy import func, select, text
 
 # The dashboard already owns the one correct way to turn a plan cell into an
 # assignment (resolve the condition's variant passage, refuse to fall back to
@@ -292,12 +294,13 @@ def _mint_next_assignment(db, participant, *, advance_session_pointer=True):
         return None
 
     _lock_participant_for_mint(db, participant.id)
-    # Re-read under the lock: a background pre-mint may have created exactly
-    # what this caller was about to create. Serving that one is both correct
-    # and faster than minting another.
+    # Re-read under the lock: inline delivery reuses any waiting question.
+    # Pre-minting expects one question on screen and creates only its successor.
     already_open = _open_pilot_assignments(db, participant)
-    if already_open:
+    if advance_session_pointer and already_open:
         return already_open[0]
+    if not advance_session_pointer and len(already_open) != 1:
+        return None
 
     qa_item, cell = select_next_participant_qa_item(db, participant)
     if qa_item is None:
@@ -518,9 +521,9 @@ def _passage_lines(db, assignment, qa_item, delivered_text):
 def _serialize_question(db, participant, assignment, qa_item, trial):
     """The participant-facing question payload.
 
-    Carries no correctness signal of any kind: no expected answer, no correct
-    choice, no score, no wallet, no streak. Only what is needed to read the
-    passage and answer.
+    Study participants receive only what is needed to read and answer.
+    Answer keys and condition details are included only for participants
+    carrying the server-side test flag, never enabled by a client parameter.
     """
 
     question_type = question_type_value(qa_item)
@@ -535,7 +538,7 @@ def _serialize_question(db, participant, assignment, qa_item, trial):
         or surrounding_passage_text(db, assignment)
         or qa_item.passage_text
     )
-    return {
+    payload = {
         "assignment_id": assignment.id,
         "trial_id": trial.id,
         "qa_item_id": qa_item.id,
@@ -560,6 +563,23 @@ def _serialize_question(db, participant, assignment, qa_item, trial):
         "focus_change_count": trial.focus_change_count,
         "reload_count": trial.reload_count,
     }
+    if is_test_participant(participant):
+        defect_type, defect_rate = defect_for_condition(trial.condition)
+        correct_choice = None
+        correct_answer = qa_item.expected_answer
+        if is_choice_scored_item(qa_item):
+            letter = str(qa_item.mcq_correct_choice or "").strip().upper()
+            correct = next((choice for choice in choices if choice["letter"] == letter), None)
+            correct_choice = correct["letter"] if correct else None
+            correct_answer = correct["text"] if correct else None
+        payload["test_info"] = {
+            "condition": trial.condition,
+            "defect_type": defect_type,
+            "defect_rate": defect_rate,
+            "correct_choice": correct_choice,
+            "correct_answer": correct_answer,
+        }
+    return payload
 
 
 def _timing_payload(trial):

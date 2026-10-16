@@ -31,11 +31,13 @@ use_message_bot()
 # than prepend so the message-bot's `app` package remains the active `app`.
 sys.path.append(str(REPO_ROOT / "platform"))
 
-from sqlalchemy import select
-
 from app import create_app
+from app.messaging.workflow import (
+    create_assignment_prompt,
+    record_whatsapp_text_message,
+)
+from app.webhook.messaging import get_assignment_prompt_text
 from eten_shared.database import get_session_factory
-from eten_shared.models import QAItem, SessionState
 from eten_shared.domain.assignments import (
     AssignmentAssignError,
     assign_qa_item_to_participant,
@@ -45,7 +47,8 @@ from eten_shared.domain.identity import (
     PROVIDER_WHATSAPP,
     get_or_create_participant_by_contact,
 )
-from app.webhook.messaging import get_assignment_prompt_text
+from eten_shared.models import QAItem, SessionState
+from sqlalchemy import select
 from uw_qa_content import find_uw_entry, qa_item_payload_from_uw_entry
 
 DEFAULT_CONTENT_ID = "174314"

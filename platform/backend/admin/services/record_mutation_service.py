@@ -2,16 +2,16 @@
 
 import logging
 
-from sqlalchemy import func, select
-
-from eten_shared.models import QAItemRecording, utc_now
+from eten_shared.domain.qa_eligibility import qa_item_is_recordable
 from eten_shared.mcq import choice_letters_for_type
 from eten_shared.media_storage import (
     delete_storage_uri,
     is_supabase_storage_configured,
     store_qa_recording_audio,
 )
-from eten_shared.domain.qa_eligibility import qa_item_is_recordable
+from eten_shared.models import QAItemRecording, utc_now
+from sqlalchemy import select
+
 from backend.admin.services.record_api_service import choice_answer_recording_version
 from backend.admin.services.system_languages_service import (
     canonical_language_code,

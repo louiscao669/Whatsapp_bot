@@ -40,12 +40,23 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import sys
 from pathlib import Path
 
 import numpy as np
 
 QA_ROOT = Path(__file__).resolve().parents[2]
 REPO = QA_ROOT.parent
+if str(REPO) not in sys.path:
+    sys.path.insert(0, str(REPO))
+
+from QA_algorithm.scripts.semireal_validation._common import (
+    PRIOR_SD as PRIOR_SD,
+)
+from QA_algorithm.scripts.semireal_validation._common import (
+    fit_delta as fit_delta,
+)
+
 EVAL_OUT = REPO / "evaluation" / "outputs"
 ANCHOR = {qt: QA_ROOT / "outputs" / f"anchor_irt_estimates_{qt}.json"
           for qt in ("mcq", "open")}
@@ -58,24 +69,7 @@ DEFECT_DIRS = ["omission", "mistranslation", "grammar", "awkward",
 SUB_PREFIXES = ("adversarial", "bad", "neutral", "name", "style")
 ADEQUACY_FAMILIES = {"omission", "mistranslation", "addition:adversarial",
                      "addition:bad"}
-PRIOR_SD = 3.0
 LEVEL_RE = re.compile(r"^(?:(" + "|".join(SUB_PREFIXES) + r")_)?(\d+(?:\.\d+)?)%$")
-
-
-def fit_delta(y, base_logit, prior_sd=PRIOR_SD):
-    y = np.asarray(y, float)
-    d = 0.0
-    for _ in range(100):
-        p = 1.0 / (1.0 + np.exp(-(base_logit - d)))
-        g = float(np.sum(p - y)) - d / prior_sd**2
-        h = -float(np.sum(p * (1 - p))) - 1.0 / prior_sd**2
-        step = g / h
-        d -= step
-        if abs(step) < 1e-10:
-            break
-    p = 1.0 / (1.0 + np.exp(-(base_logit - d)))
-    se = 1.0 / np.sqrt(np.sum(p * (1 - p)) + 1.0 / prior_sd**2)
-    return float(d), float(se)
 
 
 def spearman(a, b):

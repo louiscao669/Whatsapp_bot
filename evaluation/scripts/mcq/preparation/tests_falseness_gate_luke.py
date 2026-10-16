@@ -5,8 +5,12 @@ Builds a synthetic outputs tree so the real loop runs offline. Asserts the gate 
 wired, retries once, clears the flag when the regeneration works, and SURFACES an item
 it cannot fix instead of shipping it. Run via tests_falseness_gate.py.
 """
-import importlib, json, os, subprocess, sys, tempfile, types
+import json
+import sys
+import tempfile
+import types
 from pathlib import Path
+
 PREP = Path(__file__).resolve().parent
 REPO = PREP.parents[3]
 sys.path.insert(0, str(REPO)); sys.path.insert(0, str(PREP))
@@ -37,13 +41,12 @@ def audit_falseness(chain, q, opts, correct, window):
             letters[1]: FV("contradicted"), letters[2]: FV("unsupported")}
 rc.audit_distractors = audit_distractors
 rc.audit_falseness = audit_falseness
-from audit_verdicts import (falseness_failing_letters, falseness_feedback,
-                            falseness_status_counts)
 rc.failing_letters = lambda a: sorted(L for L, v in a.items() if not v.is_possible_answer)
 rc.audit_feedback = lambda a: ""
 sys.modules["relevance_chain"] = rc
 
 import evaluation.scripts.mcq.preparation.rewrite_distractors as rd
+
 rd.build_client = lambda p: "C"
 def fake_rewrite(client, model, item, question, window, ents=None, temperature=0.4,
                  feedback=None, effort=None):

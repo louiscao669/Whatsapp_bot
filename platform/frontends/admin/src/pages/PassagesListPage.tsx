@@ -1,30 +1,17 @@
-import { useCallback, useEffect, useState, type KeyboardEvent } from 'react'
+import { useState, type KeyboardEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ApiError } from '../api/client'
+import { useApiResource } from '../hooks/useApiResource'
 import { fetchPassageItems, type PassageItem } from '../api/passages'
 import { PassageImportPanel } from '../components/PassageImportPanel'
 
 export function PassagesListPage() {
   const navigate = useNavigate()
-  const [items, setItems] = useState<PassageItem[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
+  const { data, loading, error, reload: loadItems } = useApiResource(
+    '/api/v1/passages', fetchPassageItems, null, 'Failed to load passages',
+  )
+  const items = data?.items ?? []
   const [message, setMessage] = useState('')
   const [showImport, setShowImport] = useState(false)
-
-  const loadItems = useCallback(() => {
-    setError('')
-    return fetchPassageItems()
-      .then(({ items: loadedItems }) => setItems(loadedItems))
-      .catch((err) =>
-        setError(err instanceof ApiError ? err.message : 'Failed to load passages'),
-      )
-      .finally(() => setLoading(false))
-  }, [])
-
-  useEffect(() => {
-    loadItems()
-  }, [loadItems])
 
   function open(item: PassageItem) {
     navigate(`/passages/${encodeURIComponent(item.id)}/${item.chapter_number}`)

@@ -18,7 +18,6 @@ import hashlib
 import json
 import shutil
 import sys
-import zlib
 from pathlib import Path
 from typing import Any
 
@@ -26,6 +25,9 @@ REPO_ROOT = Path(__file__).resolve().parents[4]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
+from evaluation.scripts.variants._common import (
+    seed_offset as seed_offset,
+)
 from evaluation.scripts.variants.current.create_inconsistency_variants import (
     DEFAULT_RATES,
     DEFAULT_STYLE_MODEL,
@@ -42,9 +44,7 @@ from evaluation.scripts.variants.current.create_inconsistency_variants import (
     parse_rates,
     parse_types,
     write_json,
-    write_text,
 )
-
 
 PASSAGE_REFERENCE_RE = __import__("re").compile(r":\s*(\d+)(?:\s*[-–—]\s*(\d+))?")
 VERSE_MARKER_RE = __import__("re").compile(r"(?<![\w\]])(\d{1,3})\s+")
@@ -59,22 +59,6 @@ COPY_FILES = (
 DEFAULT_BANK_DIR = Path("evaluation/datasets/perturbations/local_inconsistency")
 
 
-
-def seed_offset(chapter) -> int:
-    """Deterministic per-cell seed offset.
-
-    Cells used to be integer chapter numbers, so the seed was `args.seed +
-    chapter`. Named passage dirs ("tier1/t1_judg9") broke that with a TypeError.
-    Integers keep their exact previous offset, so every Luke variant reproduces
-    bit-for-bit; names hash to a stable offset. crc32 rather than hash(), which
-    is salted per process and would make runs non-reproducible.
-    """
-    if isinstance(chapter, int):
-        return chapter
-    text = str(chapter)
-    if text.isdigit():
-        return int(text)
-    return zlib.crc32(text.encode("utf-8")) % 100000
 
 def load_json(path: Path) -> Any:
     return json.loads(path.read_text(encoding="utf-8"))

@@ -21,7 +21,12 @@ names, so copying canonical text into it would reintroduce the real names the bl
 exists to remove. A target whose unchanged items do not already match the source is refused.
 """
 from __future__ import annotations
-import argparse, json, os, shutil, sys
+
+import argparse
+import json
+import os
+import shutil
+import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -32,7 +37,12 @@ if str(REPO) not in sys.path:
     sys.path.insert(0, str(REPO))
 
 from evaluation.scripts.mcq.preparation.rewrite_distractors_gold72_en import (  # noqa: E402
-    ABSTAIN_EN, LABELS, LETTERS, META_EN, NOTA_EN, split_meta)
+    ABSTAIN_EN,
+    LABELS,
+    META_EN,
+    NOTA_EN,
+    split_meta,
+)
 
 DRIFT_LIMIT = 0.20      # fraction of matched items allowed to differ before we refuse
 

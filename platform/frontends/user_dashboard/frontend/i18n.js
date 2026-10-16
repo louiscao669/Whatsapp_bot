@@ -137,8 +137,6 @@ const ZH = {
   "Cancel": "取消",
   "Leave team?": "退出团队？",
   "Remove team?": "解散团队？",
-  "Leave team": "退出团队",
-  "Remove team": "解散团队",
   "Dashboard refresh failed": "仪表板刷新失败",
   "Dashboard error": "仪表板错误",
   "This question is not ready yet.": "这个问题尚未准备好。",

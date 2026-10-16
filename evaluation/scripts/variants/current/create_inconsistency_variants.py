@@ -10,10 +10,37 @@ import random
 import re
 import shutil
 import sys
-import zlib
 from pathlib import Path
 from typing import Any
 
+REPO_ROOT = Path(__file__).resolve().parents[4]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from evaluation.scripts.variants._common import (
+    content_len as content_len,
+)
+from evaluation.scripts.variants._common import (
+    copy_if_exists as copy_if_exists,
+)
+from evaluation.scripts.variants._common import (
+    copy_shared_files as copy_shared_files,
+)
+from evaluation.scripts.variants._common import (
+    format_rate as format_rate,
+)
+from evaluation.scripts.variants._common import (
+    parse_verse_blocks as parse_verse_blocks,
+)
+from evaluation.scripts.variants._common import (
+    seed_offset as seed_offset,
+)
+from evaluation.scripts.variants._common import (
+    write_json as write_json,
+)
+from evaluation.scripts.variants._common import (
+    write_text as write_text,
+)
 
 VERSE_MARKER_PATTERN = re.compile(r"(?<![\w\]])(\d{1,3})\s+")
 CLAUSE_SPLIT_PATTERN = re.compile(r"([，。！？；：,.!?;:])")
@@ -109,39 +136,10 @@ class InconsistencyError(Exception):
 
 
 
-def seed_offset(chapter) -> int:
-    """Deterministic per-cell seed offset.
-
-    Cells used to be integer chapter numbers, so the seed was `args.seed +
-    chapter`. Named passage dirs ("tier1/t1_judg9") broke that with a TypeError.
-    Integers keep their exact previous offset, so every Luke variant reproduces
-    bit-for-bit; names hash to a stable offset. crc32 rather than hash(), which
-    is salted per process and would make runs non-reproducible.
-    """
-    if isinstance(chapter, int):
-        return chapter
-    text = str(chapter)
-    if text.isdigit():
-        return int(text)
-    return zlib.crc32(text.encode("utf-8")) % 100000
-
 def load_text(path: Path) -> str:
     if not path.exists():
         raise InconsistencyError(f"File not found: {path}")
     return path.read_text(encoding="utf-8")
-
-
-def write_text(path: Path, text: str) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(text, encoding="utf-8")
-
-
-def write_json(path: Path, data: Any) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(
-        json.dumps(data, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-    )
 
 
 def extract_response_text(response: Any) -> str:
@@ -202,36 +200,6 @@ def get_openai_client() -> Any:
     if not os.getenv("OPENAI_API_KEY"):
         raise InconsistencyError("OPENAI_API_KEY is required for LLM style rewriting.")
     return OpenAI()
-
-
-def format_rate(rate: float) -> str:
-    value = rate * 100
-    if abs(value - round(value)) < 1e-9:
-        return f"{int(round(value))}%"
-    return f"{value:g}%"
-
-
-def content_len(text: str) -> int:
-    return len(CONTENT_CHAR_PATTERN.findall(text or ""))
-
-
-def parse_verse_blocks(text: str) -> list[dict]:
-    matches = list(VERSE_MARKER_PATTERN.finditer(text))
-    if not matches:
-        return [{"kind": "text", "verse": None, "text": text}]
-
-    blocks = []
-    if matches[0].start() > 0:
-        blocks.append(
-            {"kind": "heading", "verse": None, "text": text[: matches[0].start()]}
-        )
-
-    for index, match in enumerate(matches):
-        verse = int(match.group(1))
-        start = match.start()
-        end = matches[index + 1].start() if index + 1 < len(matches) else len(text)
-        blocks.append({"kind": "verse", "verse": verse, "text": text[start:end]})
-    return blocks
 
 
 def clause_units_for_verse(block: dict) -> list[dict]:
@@ -593,21 +561,6 @@ def apply_inconsistency(
         "affected_unit_count": len(affected_units),
         "affected_units": affected_units,
     }
-
-
-def copy_if_exists(source: Path, target: Path) -> None:
-    if source.exists():
-        target.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(source, target)
-
-
-def copy_shared_files(source_shared: Path, target_shared: Path) -> None:
-    if not source_shared.exists():
-        return
-    target_shared.mkdir(parents=True, exist_ok=True)
-    for path in source_shared.iterdir():
-        if path.is_file():
-            shutil.copy2(path, target_shared / path.name)
 
 
 def build_passage_translation_json(

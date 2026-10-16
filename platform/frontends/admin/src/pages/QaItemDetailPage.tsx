@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { ApiError, getCachedApiData } from '../api/client'
 import { deleteQaItem, fetchQaItemDetail, type QaItemDetail } from '../api/qaItems'
@@ -6,6 +6,8 @@ import { QaItemAssignmentsTab } from './QaItemAssignmentsTab'
 import { QaItemOverviewTab } from './QaItemOverviewTab'
 import { QaItemResponsesTab } from './QaItemResponsesTab'
 import { QaItemStatsTab } from './QaItemStatsTab'
+
+import { useApiResource } from '../hooks/useApiResource'
 
 type DetailTab = 'overview' | 'stats' | 'responses' | 'assignments'
 
@@ -40,39 +42,15 @@ export function QaItemDetailPage() {
     ? getCachedApiData<{ item: QaItemDetail }>(detailPath)
     : null
 
-  const [item, setItem] = useState<QaItemDetail | null>(cachedDetail?.item ?? null)
-  const [loading, setLoading] = useState(!cachedDetail)
-  const [error, setError] = useState('')
+  const fetchItem = useCallback(() => qaItemId
+    ? fetchQaItemDetail(qaItemId)
+    : Promise.reject(new ApiError('Missing QA item id.', 404)), [qaItemId])
+  const { data, loading, error, setError, setData } = useApiResource(
+    detailPath, fetchItem, cachedDetail, 'Failed to load QA item', 'QA item not found.',
+  )
+  const item = data?.item ?? null
   const [message, setMessage] = useState('')
   const [deleting, setDeleting] = useState(false)
-
-  const loadItem = useCallback(() => {
-    if (!qaItemId) {
-      return Promise.resolve()
-    }
-    const cached = getCachedApiData<{ item: QaItemDetail }>(`/api/v1/qa-items/${qaItemId}`)
-    if (cached) {
-      setItem(cached.item)
-      setLoading(false)
-    } else {
-      setLoading(true)
-    }
-    setError('')
-    return fetchQaItemDetail(qaItemId)
-      .then((data) => setItem(data.item))
-      .catch((err) => {
-        if (err instanceof ApiError && err.status === 404) {
-          setError('QA item not found.')
-          return
-        }
-        setError(err instanceof ApiError ? err.message : 'Failed to load QA item')
-      })
-      .finally(() => setLoading(false))
-  }, [qaItemId])
-
-  useEffect(() => {
-    loadItem()
-  }, [loadItem])
 
   function setTab(tab: DetailTab) {
     const next = new URLSearchParams(searchParams)
@@ -174,7 +152,7 @@ export function QaItemDetailPage() {
       {activeTab === 'overview' ? (
         <QaItemOverviewTab
           item={item}
-          onItemUpdated={setItem}
+          onItemUpdated={(item) => setData({ item })}
           onMessage={setMessage}
           onError={setError}
         />

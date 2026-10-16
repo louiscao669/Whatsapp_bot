@@ -52,7 +52,13 @@ Usage:
       --verify-only --no-verify --relevance-check --falseness-check
 """
 from __future__ import annotations
-import argparse, hashlib, json, os, random, re, sys
+
+import argparse
+import hashlib
+import json
+import os
+import re
+import sys
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[4]
@@ -61,7 +67,7 @@ if str(REPO) not in sys.path: sys.path.insert(0, str(REPO))
 # relevance_chain / audit_verdicts are imported by bare name (rewrite_distractors does the
 # same from run()), so the preparation dir has to be importable, not just the repo root.
 if str(HERE) not in sys.path: sys.path.insert(0, str(HERE))
-import evaluation.scripts.mcq.preparation.rewrite_distractors as rd   # noqa: E402
+import evaluation.scripts.mcq.preparation.rewrite_distractors as rd  # noqa: E402
 
 LETTERS = "ABCD"
 LABELS = "ABCDEF"
@@ -120,7 +126,7 @@ def win_key(pid, q, occ=0):
 
 def parse_passage(stem, pdir):
     m = re.match(r"^[0-9]?[a-z]+_(\d+)_(\d+)-(?:(\d+)_)?(\d+)$", stem)
-    c0, v0 = int(m.group(1)), int(m.group(2))
+    v0 = int(m.group(2))
     idx, ch, prev = {}, int(m.group(1)), None
     for b in [x.strip() for x in (Path(pdir)/f"{stem}.txt").read_text(encoding="utf-8").split("\n\n") if x.strip()]:
         mm = re.match(r"^(\d+)\s+(.*)$", b, re.S); n = int(mm.group(1))
@@ -159,7 +165,6 @@ def self_test():
     ok.append(("shuffle preserves the keyed text", sh[sh["correct"]] == "y"))
     ok.append(("shuffle is deterministic", rd.randomize_choices(dict(it), "seed-1") == sh))
     ok.append(("shuffle touches only 4 options", set(sh) == set("ABCD") | {"correct"}))
-    idx = {("9",1):"x"}
     ok.append(("window key is content-addressed",
                win_key("p","Who ran?") == win_key("p"," who  RAN? ")))
     ok.append(("abstention never enters the shuffle", ABSTAIN_EN not in sh.values()))
@@ -218,9 +223,9 @@ def self_test():
     ok.append(("--falseness-check forces it on without the rewriter",
                gate_on(True, False) is True))
     ok.append(("--no-falseness-check wins over auto", gate_on(False, True) is False))
-    from audit_verdicts import (falseness_failing_letters as _ffl,
-                                falseness_feedback as _ffb,
-                                falseness_status_counts as _fsc)
+    from audit_verdicts import falseness_failing_letters as _ffl
+    from audit_verdicts import falseness_feedback as _ffb
+    from audit_verdicts import falseness_status_counts as _fsc
 
     class _V:
         def __init__(self, st, why="r", q=None, fix=None):
@@ -355,8 +360,12 @@ def main():
     a.relevance_check = gate_on(a.relevance_check, _need_llm)
     rel_chain = fal_chain = None
     if a.relevance_check:
-        from relevance_chain import (build_relevance_chain, audit_distractors,  # noqa: F401
-                                     failing_letters, audit_feedback)
+        from relevance_chain import (  # noqa: F401
+            audit_distractors,
+            audit_feedback,
+            build_relevance_chain,
+            failing_letters,
+        )
         rel_chain = build_relevance_chain(a.relevance_model, a.relevance_provider,
                                           reasoning_effort=a.relevance_effort)
         print(f"relevance gate: {a.relevance_provider}:{a.relevance_model} "
@@ -365,9 +374,12 @@ def main():
             print("[warn] the relevance judge and the rewriter are the SAME model -- "
                   "self-review. Use a different --relevance-model.", file=sys.stderr)
     if a.falseness_check:
-        from relevance_chain import build_falseness_chain, audit_falseness    # noqa: F401
-        from audit_verdicts import (falseness_failing_letters, falseness_feedback,
-                                    falseness_status_counts)
+        from audit_verdicts import (
+            falseness_failing_letters,
+            falseness_feedback,
+            falseness_status_counts,
+        )
+        from relevance_chain import audit_falseness, build_falseness_chain  # noqa: F401
         fal_chain = build_falseness_chain(a.falseness_model, a.falseness_provider,
                                           reasoning_effort=a.falseness_effort)
         print(f"falseness gate: {a.falseness_provider}:{a.falseness_model} "
@@ -390,7 +402,6 @@ def main():
                    for x in items if isinstance(x, dict)
                    and (x.get("passage_id") or x.get("content_id")))
         idx = parse_passage(PASSAGE_FILE[pid], a.passage_dir)
-        occ = {}
         for it in items:
             mcq = it.get("mcq")
             if not mcq: continue

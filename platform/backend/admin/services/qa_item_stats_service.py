@@ -1,17 +1,16 @@
 """Response statistics for QA item detail (stats tab)."""
 
-from sqlalchemy import select
-from sqlalchemy.orm import selectinload
-
-from eten_shared.models import ParticipantResponse, QAItem
 from eten_shared.mcq import (
     QUESTION_TYPE_MCQ,
     QUESTION_TYPE_OPEN,
-    QUESTION_TYPE_TF,
     choice_letters_for_item,
     choice_response_letter,
     is_choice_scored_item,
 )
+from eten_shared.models import ParticipantResponse, QAItem
+from sqlalchemy import select
+from sqlalchemy.orm import selectinload
+
 from backend.admin.services.system_languages_service import (
     get_registered_system_languages,
     parse_selected_languages,

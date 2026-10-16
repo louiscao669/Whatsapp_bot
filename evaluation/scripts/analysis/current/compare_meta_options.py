@@ -13,22 +13,20 @@ Chance: 0.250 at 4 options, 0.200 at 5, 0.167 at 6 -- but measured EFFECTIVE opt
 on gold72 are 2.81 (40% of content distractors are never selected), so the real
 floor is higher. Do not compare across option counts.
 """
-import json, math, os, sys
+import json
+import math
+import os
+import sys
 from collections import defaultdict
+from pathlib import Path
 
-def _outputs_root():
-    env = os.environ.get("EVAL_OUTPUTS_ROOT")
-    if env and os.path.isdir(env): return env
-    here = os.path.dirname(os.path.abspath(__file__))
-    for _ in range(6):
-        c = os.path.join(here, "evaluation", "outputs")
-        if os.path.isdir(c): return c
-        here = os.path.dirname(here)
-    for c in ("evaluation/outputs", "outputs", "."):
-        if os.path.isdir(c): return c
-    raise SystemExit("cannot locate evaluation/outputs; set EVAL_OUTPUTS_ROOT")
+REPO_ROOT = Path(__file__).resolve().parents[4]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
 
-R = _outputs_root()
+from evaluation.scripts._common import outputs_root
+
+R = outputs_root(__file__)
 ARMS = {"blinded": os.environ.get("ARM_BLINDED", "tier1_bsb_6opt"),
         "unblinded": os.environ.get("ARM_UNBLINDED", "tier1_bsb_unblinded_6opt")}
 MODELS = ["llama321b", "qwen2515b", "qwen317b"]

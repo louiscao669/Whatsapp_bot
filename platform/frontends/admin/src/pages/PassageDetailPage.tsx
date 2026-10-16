@@ -1,7 +1,9 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { ApiError } from '../api/client'
-import { fetchPassageDetail, type PassageDetail } from '../api/passages'
+import { fetchPassageDetail } from '../api/passages'
+
+import { useApiResource } from '../hooks/useApiResource'
 
 function formatTimestamp(value: string | null): string {
   if (!value) return '—'
@@ -15,33 +17,15 @@ export function PassageDetailPage() {
     chapterNumber: string
   }>()
   const chapter = Number(chapterNumber)
-  const [detail, setDetail] = useState<PassageDetail | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
-
   const loadDetail = useCallback(() => {
     if (!translationId || !Number.isInteger(chapter) || chapter < 1) {
-      setError('Passage not found.')
-      setLoading(false)
-      return Promise.resolve()
+      return Promise.reject(new ApiError('Passage not found.', 404))
     }
-    setError('')
-    setLoading(true)
     return fetchPassageDetail(translationId, chapter)
-      .then(setDetail)
-      .catch((err) => {
-        if (err instanceof ApiError && err.status === 404) {
-          setError('Passage not found.')
-          return
-        }
-        setError(err instanceof ApiError ? err.message : 'Failed to load passage')
-      })
-      .finally(() => setLoading(false))
   }, [translationId, chapter])
-
-  useEffect(() => {
-    loadDetail()
-  }, [loadDetail])
+  const { data: detail, loading, error } = useApiResource(
+    `${translationId}/${chapter}`, loadDetail, null, 'Failed to load passage', 'Passage not found.',
+  )
 
   return (
     <section className="panel">

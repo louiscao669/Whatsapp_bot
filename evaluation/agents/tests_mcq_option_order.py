@@ -17,13 +17,14 @@ What must hold:
   * always            -> abstention / none-of-the-above never move, and the text under
                          the mapped-back letter still matches what was shown.
 """
-import json, os, sys
+import json
+import os
+import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
-import generate_chinese_answers as g          # noqa: E402
-import mcq_option_order as order              # noqa: E402
+import generate_chinese_answers as g  # noqa: E402
 
 QA = Path(os.path.expanduser(
     "~/mnt/eten-research-outputs/evaluation/outputs/tier1_bsb"))
@@ -43,6 +44,7 @@ for q, it in zip(mcq, [i for i in items if i.get("q_type") == "mcq"]):
 print(f"loaded {len(mcq)} real MCQ items from {len(SRC)} passages")
 
 import collections
+
 kd = collections.Counter(keys.values())
 print("  key letters:", {L: f"{kd[L]}({kd[L]/len(keys):.0%})" for L in "ABCD"})
 

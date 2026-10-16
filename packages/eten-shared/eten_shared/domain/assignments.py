@@ -1,8 +1,8 @@
 """Participant assignment DB logic shared by the message bot and platform."""
 
+import hashlib
 import os
 import re
-import hashlib
 from dataclasses import dataclass
 from typing import Optional
 
@@ -12,14 +12,13 @@ from sqlalchemy.orm import Session
 from eten_shared.domain.batch_schedules import cancel_pending_next_batch_schedules
 from eten_shared.domain.batch_size_nudges import clamp_batch_size
 from eten_shared.domain.qa_eligibility import qa_item_is_assignable
-from eten_shared.question_discovery import get_qa_item_distribution_metrics
+from eten_shared.languages import canonical_language_code
 from eten_shared.models import (
     Assignment,
     AssignmentStatus,
-    ExperimentPassageVerse,
     ExperimentPassage,
+    ExperimentPassageVerse,
     ExperimentWindow,
-    Participant,
     ParticipantEvent,
     ParticipantSession,
     PassageTranslation,
@@ -29,18 +28,17 @@ from eten_shared.models import (
     new_id,
     utc_now,
 )
-from eten_shared.languages import canonical_language_code
-from eten_shared.verse_windows import (
-    PASSAGE_DELIVERY_VERSE_COUNT,
-    pad_window_verses,
-)
+from eten_shared.question_discovery import get_qa_item_distribution_metrics
 from eten_shared.recordings import (
     get_latest_question_recording,
     participant_language_code,
     participant_question_audio_satisfied,
     question_recording_playback_url,
 )
-
+from eten_shared.verse_windows import (
+    PASSAGE_DELIVERY_VERSE_COUNT,
+    pad_window_verses,
+)
 
 
 def record_participant_event(db: Session, participant, event_type, metadata=None, *, source="workflow"):

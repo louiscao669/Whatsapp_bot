@@ -9,10 +9,8 @@ import unittest
 from contextlib import contextmanager
 from unittest.mock import patch
 
-from sqlalchemy import create_engine, select
-from sqlalchemy.orm import Session, sessionmaker
-
 from backend import create_app
+from eten_shared.experiment_plan import TEST_PARTICIPANT_KEY
 from eten_shared.models import (
     AnswerReceipt,
     Assignment,
@@ -22,6 +20,8 @@ from eten_shared.models import (
     QAItem,
     SessionState,
 )
+from sqlalchemy import create_engine, select
+from sqlalchemy.orm import sessionmaker
 
 
 class PilotApiTests(unittest.TestCase):
@@ -121,6 +121,34 @@ class PilotApiTests(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.headers["Cache-Control"], "no-store")
         self.assertIn(b'id="pilot"', response.data)
+
+    @patch("backend.pilot.routes.run_in_background")
+    def test_answer_key_requires_the_stored_test_flag(self, _background):
+        url = self._url("/question") + "?test=1&test_participant=true"
+        with self._db() as db:
+            participant = db.get(Participant, self.participant_id)
+            participant.display_name = "TEST in name only"
+            participant.dashboard_preferences = {TEST_PARTICIPANT_KEY: False}
+            db.commit()
+
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertNotIn("test_info", response.get_json()["question"])
+        self.assertNotIn("Something", response.get_data(as_text=True))
+
+        with self._db() as db:
+            db.get(Participant, self.participant_id).dashboard_preferences = {
+                TEST_PARTICIPANT_KEY: True,
+            }
+            db.commit()
+        response = self.client.get(self._url("/question"))
+        self.assertEqual(response.get_json()["question"]["test_info"]["correct_answer"], "Something")
+        self.assertEqual(response.headers["Cache-Control"], "no-store")
+
+        with self._db() as db:
+            db.get(Participant, self.participant_id).dashboard_preferences = {}
+            db.commit()
+        self.assertNotIn("test_info", self.client.get(url).get_json()["question"])
 
     def test_versioned_static_assets_are_cacheable(self):
         response = self.client.get("/pilot/static/frontend/timing.js?v=20260818")

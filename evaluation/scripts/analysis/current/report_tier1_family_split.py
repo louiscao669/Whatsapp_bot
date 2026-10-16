@@ -255,7 +255,6 @@ def fit_tier1_s_i(observations):
     Gaussian pooling match the established item-sensitivity fitter.
     """
     import numpy as np
-
     from fit_item_sensitivity import fit_penalized_logistic
 
     rows = [row for item_rows in observations.values() for row in item_rows]
@@ -481,7 +480,6 @@ def revisit_removals(eval_root: Path, passages, all_formats_path: Path):
     kept and removed pools overall.
     """
     records = _records(all_formats_path)
-    by_cid = {r.get("content_id"): r for r in records}
 
     rho = {family: {} for family in LADDERS}
     for family in LADDERS:

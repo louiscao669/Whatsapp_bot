@@ -11,22 +11,19 @@ general escape hatch and that model's cells are uninterpretable.
 
 Chance is 0.20 here, not 0.25. Do not compare these numbers to 4-option runs.
 """
-import json, math, os
-from collections import defaultdict
+import json
+import math
+import os
+import sys
+from pathlib import Path
 
-def _outputs_root():
-    env = os.environ.get("EVAL_OUTPUTS_ROOT")
-    if env and os.path.isdir(env): return env
-    here = os.path.dirname(os.path.abspath(__file__))
-    for _ in range(6):
-        c = os.path.join(here, "evaluation", "outputs")
-        if os.path.isdir(c): return c
-        here = os.path.dirname(here)
-    for c in ("evaluation/outputs", "outputs", "."):
-        if os.path.isdir(c): return c
-    raise SystemExit("cannot locate evaluation/outputs; set EVAL_OUTPUTS_ROOT")
+REPO_ROOT = Path(__file__).resolve().parents[4]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
 
-R = _outputs_root()
+from evaluation.scripts._common import outputs_root
+
+R = outputs_root(__file__)
 ARMS = {"blinded": "tier1_bsb_5opt", "unblinded": "tier1_bsb_unblinded_5opt"}
 MODELS = ["llama321b", "qwen2515b", "qwen317b"]
 DOSES = ["0%", "30%"]

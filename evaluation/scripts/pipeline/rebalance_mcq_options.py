@@ -119,6 +119,7 @@ from evaluation.agents.generate_chinese_answers import (  # noqa: E402
     load_verse_windows,
     local_passage_for_question,
 )
+from evaluation.scripts._common import longest_shared_span as longest_shared_span
 
 CONTENT_LETTERS = "ABCD"
 DEFAULT_GENERATOR_MODEL = os.getenv("OPENAI_DISTRACTOR_MODEL", "gpt-6.1-sol")
@@ -145,17 +146,6 @@ class RebalanceError(Exception):
 # ----------------------------------------------------------------------- measurement
 def normalize(text: Any) -> str:
     return re.sub(r"\s+", "", str(text or ""))
-
-
-def longest_shared_span(option: str, window: str) -> int:
-    best = 0
-    for start in range(len(option)):
-        for end in range(start + best + 1, len(option) + 1):
-            if option[start:end] in window:
-                best = end - start
-            else:
-                break
-    return best
 
 
 def overlap_ratio(option: Any, window: str) -> float:

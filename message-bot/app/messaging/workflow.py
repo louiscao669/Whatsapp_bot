@@ -5,76 +5,78 @@ import time
 from dataclasses import dataclass
 from typing import Optional
 
-from sqlalchemy import select
-from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy.orm import Session
-
-from eten_shared.database import get_session_factory
 from eten_shared.answer_llm_scoring import llm_answer_scoring_enabled
 from eten_shared.answer_receipts import (
     assignment_for_provider_message,
     assignment_has_delivery,
     create_answer_receipt,
 )
+from eten_shared.database import get_session_factory
 from eten_shared.domain.assignments import (
     AssignmentPrompt,
+    ExperimentPassageMissingError,
     automatic_assignment_enabled,
     build_assignment_prompt,
     complete_current_batch_if_needed,
     create_assignment_for_qa_item,
-    ExperimentPassageMissingError,
-    experiment_passage_assignment_kwargs,
-    resolve_experiment_passage,
     experiment_assignment_enabled,
-    get_incomplete_assignment,
+    experiment_passage_assignment_kwargs,
     get_chained_assignment,
+    get_incomplete_assignment,
     get_or_create_participant_session,
-    get_preferred_batch_size,
-    record_participant_event as _record_participant_event,
+    resolve_experiment_passage,
     resume_incomplete_assignment,
     try_complete_assignment,
 )
-from eten_shared.domain.batch_schedules import has_pending_next_batch_schedule
-from eten_shared.domain.identity import (
-    PROVIDER_WHATSAPP,
-    get_or_create_participant_by_contact,
-    resolve_participant,
+from eten_shared.domain.assignments import (
+    record_participant_event as _record_participant_event,
 )
+from eten_shared.domain.batch_schedules import has_pending_next_batch_schedule
 from eten_shared.domain.batch_size_nudges import (
     apply_batch_size_nudge_response,
     batch_size_response_choice,
     recommend_batch_size_nudge,
     record_batch_size_nudge_sent,
 )
-from eten_shared.domain.streaks import update_streak_for_response
-from app.engagement.badges import evaluate_and_award_badges
-from app.engagement.currency import (
-    award_batch_completion_currency,
-    award_response_currency,
+from eten_shared.domain.identity import (
+    PROVIDER_WHATSAPP,
+    get_or_create_participant_by_contact,
+    resolve_participant,
 )
-from app.providers.whatsapp.schedule_policy import create_assignment_reminders
+from eten_shared.domain.streaks import update_streak_for_response
+from eten_shared.keyword_matching import normalize_response_text
+from eten_shared.mcq import (
+    choice_letters_for_item,
+    choice_response_is_correct,
+    choice_response_letter,
+    is_choice_scored_item,
+)
 from eten_shared.media_storage import (
     store_provider_audio_bytes,
     store_whatsapp_audio,
 )
-from eten_shared.keyword_matching import normalize_response_text
+from eten_shared.models import (
+    AnswerReceipt,
+    Assignment,
+    AssignmentStatus,
+    OutboxNotification,
+    OutboxStatus,
+    Participant,
+    ParticipantProviderContact,
+    ParticipantResponse,
+    ResponseType,
+    ReviewStatus,
+    SessionState,
+    utc_now,
+)
 from eten_shared.question_discovery import (
     experiment_batch_should_reset,
     select_next_experiment_cell_item,
     select_next_qa_item,
 )
 from eten_shared.recordings import (
-    has_question_recording_for_participant,
     participant_language_code,
 )
-from eten_shared.mcq import (
-    choice_letters_for_item,
-    choice_response_is_correct,
-    choice_response_letter,
-    is_choice_scored_item,
-    question_type_value,
-)
-from eten_shared.domain.qa_eligibility import qa_item_is_assignable
 from eten_shared.transcription import (
     TranscriptionResult,
     get_placeholder_transcript_text,
@@ -82,25 +84,16 @@ from eten_shared.transcription import (
     transcribe_audio_bytes,
     transcribe_whatsapp_audio,
 )
-from eten_shared.models import (
-    Assignment,
-    AssignmentStatus,
-    AnswerReceipt,
-    ExperimentPassage,
-    OutboxNotification,
-    OutboxStatus,
-    ParticipantEvent,
-    Participant,
-    ParticipantProviderContact,
-    ParticipantResponse,
-    ParticipantSession,
-    QAItem,
-    ResponseType,
-    ReviewStatus,
-    SessionState,
-    new_id,
-    utc_now,
+from sqlalchemy import select
+from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.orm import Session
+
+from app.engagement.badges import evaluate_and_award_badges
+from app.engagement.currency import (
+    award_batch_completion_currency,
+    award_response_currency,
 )
+from app.providers.whatsapp.schedule_policy import create_assignment_reminders
 
 
 def record_participant_event(db: Session, participant, event_type, metadata=None):
@@ -323,7 +316,6 @@ def save_response_for_current_assignment(
         response_type,
     )
 
-    mcq_scoring = None
     choice_answer_correct = None
     backtranslated_text = None
     scoring_metadata = {}

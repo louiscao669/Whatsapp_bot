@@ -126,14 +126,22 @@ export type QaItemStats = {
   participants: QaItemStatsParticipantRow[]
 }
 
-export function fetchQaItemStats(qaItemId: string, languages: string[] = []) {
+export function qaItemSectionPath(
+  qaItemId: string,
+  section: 'stats' | 'responses' | 'assignments',
+  languages: string[] = [],
+) {
   const params = new URLSearchParams()
   for (const language of languages) {
     params.append('languages', language)
   }
   const query = params.toString()
+  return `/api/v1/qa-items/${qaItemId}/${section}${query ? `?${query}` : ''}`
+}
+
+export function fetchQaItemStats(qaItemId: string, languages: string[] = []) {
   return apiFetch<{ stats: QaItemStats }>(
-    `/api/v1/qa-items/${qaItemId}/stats${query ? `?${query}` : ''}`,
+    qaItemSectionPath(qaItemId, 'stats', languages),
   )
 }
 
@@ -284,23 +292,13 @@ export type QaItemAssignmentRow = {
 }
 
 export function fetchQaItemResponses(qaItemId: string, languages: string[] = []) {
-  const params = new URLSearchParams()
-  for (const language of languages) {
-    params.append('languages', language)
-  }
-  const query = params.toString()
   return apiFetch<QaItemResponsesPayload>(
-    `/api/v1/qa-items/${qaItemId}/responses${query ? `?${query}` : ''}`,
+    qaItemSectionPath(qaItemId, 'responses', languages),
   )
 }
 
 export function fetchQaItemAssignments(qaItemId: string, languages: string[] = []) {
-  const params = new URLSearchParams()
-  for (const language of languages) {
-    params.append('languages', language)
-  }
-  const query = params.toString()
   return apiFetch<{ assignments: QaItemAssignmentRow[]; languages: string[] }>(
-    `/api/v1/qa-items/${qaItemId}/assignments${query ? `?${query}` : ''}`,
+    qaItemSectionPath(qaItemId, 'assignments', languages),
   )
 }

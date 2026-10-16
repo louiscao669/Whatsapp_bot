@@ -1,45 +1,22 @@
 #!/usr/bin/env python3
-"""Shared helpers reused as-is (no behavior differences) across evaluation/scripts/*.py."""
+"""Common analysis helpers, shared with the evaluation scripts."""
 
-from __future__ import annotations
-
-import json
-import math
+import sys
 from pathlib import Path
-from typing import Any
 
+REPO_ROOT = Path(__file__).resolve().parents[2]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
 
-def load_json(path: Path) -> Any:
-    return json.loads(path.read_text(encoding="utf-8"))
-
-
-def extract_items(data: Any) -> list[dict]:
-    if isinstance(data, dict) and isinstance(data.get("items"), list):
-        return [item for item in data["items"] if isinstance(item, dict)]
-    if isinstance(data, list):
-        return [item for item in data if isinstance(item, dict)]
-    return []
-
-
-def numeric(value: Any) -> float | None:
-    if value is None:
-        return None
-    try:
-        return float(value)
-    except (TypeError, ValueError):
-        return None
-
-
-def average_ranks_desc(values: dict[str, float]) -> dict[str, float]:
-    ordered = sorted(values.items(), key=lambda item: (-item[1], item[0]))
-    ranks: dict[str, float] = {}
-    index = 0
-    while index < len(ordered):
-        end = index + 1
-        while end < len(ordered) and math.isclose(ordered[end][1], ordered[index][1]):
-            end += 1
-        rank = (index + 1 + end) / 2
-        for key, _ in ordered[index:end]:
-            ranks[key] = rank
-        index = end
-    return ranks
+from evaluation.scripts._common import (
+    average_ranks_desc as average_ranks_desc,
+)
+from evaluation.scripts._common import (
+    extract_items as extract_items,
+)
+from evaluation.scripts._common import (
+    load_json as load_json,
+)
+from evaluation.scripts._common import (
+    numeric as numeric,
+)

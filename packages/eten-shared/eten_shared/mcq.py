@@ -5,8 +5,6 @@ import re
 from dataclasses import dataclass
 from typing import Dict, List, Optional, Tuple
 
-from eten_shared.keyword_matching import normalize_response_text
-
 MCQ_LABELS = ("A", "B", "C", "D", "E")
 # An MCQ has four content options, optionally followed by ONE meta-option on E
 # ("cannot tell from this passage"). Five-option items come from the tier-1

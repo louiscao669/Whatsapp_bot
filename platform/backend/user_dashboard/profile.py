@@ -1,9 +1,33 @@
 """Dashboard profile services."""
 
-from ._common import *  # noqa: F401,F403
+import hashlib
+from datetime import datetime, timezone
+
+from eten_shared.media_storage import (
+    delete_storage_uri,
+    download_storage_object,
+    parse_storage_uri,
+    store_participant_profile_photo,
+)
+from eten_shared.models import Participant, ParticipantCurrencyEvent
+from sqlalchemy import select
+
+from backend.user_dashboard.errors import (
+    ProfilePhotoNotFoundError,
+    ProfilePhotoUploadError,
+)
+
+from ._common import (
+    ALLOWED_PROFILE_PHOTO_TYPES,
+    MAX_PROFILE_PHOTO_BYTES,
+    PROFILE_PHOTO_CHANGE_COST,
+)
+
 
 def _participant_by_id(db, participant_id):
-    return db.scalars(select(Participant).where(Participant.id == participant_id)).first()
+    return db.scalars(
+        select(Participant).where(Participant.id == participant_id)
+    ).first()
 
 
 def _profile_photo_url(participant_id, participant):
@@ -43,8 +67,8 @@ def load_profile_photo(db, participant_id: str):
 
 
 def update_profile_photo(db, participant_id: str, content: bytes, content_type: str):
-    from .store import _get_or_create_wallet
     from .payload import get_user_dashboard_payload
+    from .store import _get_or_create_wallet
 
     participant = _participant_by_id(db, participant_id)
     if not participant:
@@ -91,5 +115,3 @@ def update_profile_photo(db, participant_id: str, content: bytes, content_type: 
         delete_storage_uri(previous_uri)
 
     return get_user_dashboard_payload(db, participant_id)
-
-

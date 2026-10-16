@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { ApiError, getCachedApiData } from '../api/client'
 import {
@@ -7,6 +7,8 @@ import {
   type ReviewResponseDashboard,
   type ReviewResponseItem,
 } from '../api/reviewResponse'
+
+import { useApiResource } from '../hooks/useApiResource'
 
 type ReviewResponseGroup = {
   key: string
@@ -74,38 +76,12 @@ export function ReviewResponsePage() {
   const reviewPath = `/api/v1/review-response${language ? `?language=${encodeURIComponent(language)}` : ''}`
   const cachedDashboard = getCachedApiData<ReviewResponseDashboard>(reviewPath)
 
-  const [dashboard, setDashboard] = useState<ReviewResponseDashboard | null>(cachedDashboard)
-  const [loading, setLoading] = useState(!cachedDashboard)
-  const [error, setError] = useState('')
+  const fetchDashboard = useCallback(() => fetchReviewResponse(language || undefined), [language])
+  const { data: dashboard, loading, error, setError, reload: load } = useApiResource(
+    reviewPath, fetchDashboard, cachedDashboard, 'Failed to load review queue',
+  )
   const [message, setMessage] = useState('')
   const [busyId, setBusyId] = useState('')
-
-  const load = useCallback((options?: { silent?: boolean }) => {
-    const silent = options?.silent ?? false
-    const path = `/api/v1/review-response${language ? `?language=${encodeURIComponent(language)}` : ''}`
-    const cached = getCachedApiData<ReviewResponseDashboard>(path)
-    if (cached) {
-      setDashboard(cached)
-    }
-    if (!silent) {
-      setLoading(!cached)
-    }
-    setError('')
-    return fetchReviewResponse(language || undefined)
-      .then(setDashboard)
-      .catch((err) => {
-        setError(err instanceof ApiError ? err.message : 'Failed to load review queue')
-      })
-      .finally(() => {
-        if (!silent) {
-          setLoading(false)
-        }
-      })
-  }, [language])
-
-  useEffect(() => {
-    load()
-  }, [load])
 
   const groups = useMemo(
     () => groupReviewResponses(dashboard?.items ?? []),
@@ -118,7 +94,7 @@ export function ReviewResponsePage() {
     try {
       const result = await submitReviewResponseDecision(responseId, decision)
       setMessage(result.message)
-      load({ silent: true })
+      load()
     } catch (err) {
       setError(err instanceof ApiError ? err.message : 'Could not save decision')
     } finally {

@@ -19,8 +19,11 @@ Run from evaluation/:  python scripts/pseudonyms/legacy_luke/build_pseudonym_rem
 Writes: datasets/pseudonym_remap/luke{1..8}_remap.json  (+ prints a doubling scan)
 """
 
-import glob, hashlib, json, os, re
-from collections import defaultdict
+import glob
+import hashlib
+import json
+import os
+import re
 
 OUT = "datasets/pseudonym_remap"
 os.makedirs(OUT, exist_ok=True)

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { ApiError, getCachedApiData } from '../api/client'
 import {
@@ -12,6 +12,7 @@ import {
   type ReviewQaItem,
   type ReviewQaTab,
 } from '../api/reviewQa'
+import { useApiResource } from '../hooks/useApiResource'
 import { ReviewQaUnreviewedItem } from '../components/ReviewQaUnreviewedItem'
 
 const TABS: { id: ReviewQaTab; label: string }[] = [
@@ -58,37 +59,13 @@ export function ReviewQaPage() {
     items: ReviewQaItem[]
   }>(reviewQaPath)
 
-  const [chapters, setChapters] = useState<ReviewQaChapter[]>(cachedDashboard?.chapters ?? [])
-  const [removedItems, setRemovedItems] = useState<ReviewQaItem[]>(cachedDashboard?.items ?? [])
-  const [loading, setLoading] = useState(!cachedDashboard)
-  const [error, setError] = useState('')
+  const fetchDashboard = useCallback(() => fetchReviewQa(activeTab), [activeTab])
+  const { data: dashboard, loading, error, setError, reload } = useApiResource(
+    reviewQaPath, fetchDashboard, cachedDashboard, 'Failed to load Review QA',
+  )
+  const chapters = dashboard?.chapters ?? []
+  const removedItems = dashboard?.items ?? []
   const [message, setMessage] = useState('')
-
-  const loadDashboard = useCallback((targetTab: ReviewQaTab) => {
-    const cached = getCachedApiData<{
-      chapters: ReviewQaChapter[]
-      items: ReviewQaItem[]
-    }>(`/api/v1/review-qa?tab=${encodeURIComponent(targetTab)}`)
-    if (cached) {
-      setChapters(cached.chapters)
-      setRemovedItems(cached.items)
-    }
-    setLoading(!cached)
-    setError('')
-    return fetchReviewQa(targetTab)
-      .then((data) => {
-        setChapters(data.chapters)
-        setRemovedItems(data.items)
-      })
-      .catch((err) => {
-        setError(err instanceof ApiError ? err.message : 'Failed to load Review QA')
-      })
-      .finally(() => setLoading(false))
-  }, [])
-
-  useEffect(() => {
-    loadDashboard(activeTab)
-  }, [activeTab, loadDashboard])
 
   function setTab(nextTab: ReviewQaTab) {
     setSearchParams({ tab: nextTab })
@@ -96,7 +73,11 @@ export function ReviewQaPage() {
 
   function handleAction(nextTab: ReviewQaTab, successMessage: string) {
     setMessage(successMessage)
-    setTab(nextTab)
+    if (nextTab === activeTab) {
+      void reload()
+    } else {
+      setTab(nextTab)
+    }
   }
 
   async function handleMarkAllReviewed() {

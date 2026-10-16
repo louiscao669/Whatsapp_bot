@@ -1,6 +1,35 @@
 """Dashboard scheduling services."""
 
-from ._common import *  # noqa: F401,F403
+import os
+from datetime import timedelta, timezone
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
+
+from eten_shared.domain.assignments import (
+    automatic_assignment_enabled,
+    create_assignment_for_qa_item,
+    experiment_assignment_enabled,
+    get_incomplete_assignment,
+    get_or_create_participant_session,
+)
+from eten_shared.domain.batch_schedules import (
+    BATCH_NEXT_ASSIGNMENT_TYPE,
+    cancel_pending_next_batch_schedules,
+)
+from eten_shared.models import (
+    Assignment,
+    ParticipantEvent,
+    QAItem,
+    Reminder,
+    ReminderStatus,
+    SessionState,
+    utc_now,
+)
+from sqlalchemy import select
+
+from backend.user_dashboard.errors import DashboardAnswerError
+
+from ._common import DEFAULT_NEXT_BATCH_HOUR, DEFAULT_NEXT_BATCH_TIMEZONE
+
 
 def _next_batch_hour():
     raw = os.getenv("BATCH_NEXT_ASSIGN_HOUR", str(DEFAULT_NEXT_BATCH_HOUR)).strip()
@@ -58,7 +87,9 @@ def _schedule_dashboard_next_batch(db, participant):
         participant.id,
         reason="Superseded by dashboard batch-completion schedule",
     )
-    scheduled_for, scheduled_local, timezone_name = _next_batch_scheduled_time(participant)
+    scheduled_for, scheduled_local, timezone_name = _next_batch_scheduled_time(
+        participant
+    )
     reminder = Reminder(
         participant_id=participant.id,
         assignment_id=None,
@@ -92,22 +123,26 @@ def _schedule_dashboard_next_batch(db, participant):
 
 
 def _assign_dashboard_next_batch(db, participant, *, source, reminder=None):
-    from backend.shared.assignment_selection import select_next_participant_qa_item
-    from backend.shared.assignment_selection import experiment_assignment_kwargs
+    from backend.shared.assignment_selection import (
+        experiment_assignment_kwargs,
+        select_next_participant_qa_item,
+    )
 
     participant_session = get_or_create_participant_session(db, participant)
     if participant_session.state not in (
         SessionState.IDLE.value,
         SessionState.ONBOARDING.value,
     ):
-        raise DashboardAnswerError("Finish the current question before starting a new batch")
+        raise DashboardAnswerError(
+            "Finish the current question before starting a new batch"
+        )
 
     cancel_pending_next_batch_schedules(
         db,
         participant.id,
         reason=f"Dashboard next batch started by {source}",
     )
-    participant_session.current_assignment_id = assignment.next_assignment_id
+    participant_session.current_assignment_id = None
     participant_session.current_batch_id = None
     participant_session.state = SessionState.IDLE.value
 
@@ -126,7 +161,9 @@ def _assign_dashboard_next_batch(db, participant, *, source, reminder=None):
             raise DashboardAnswerError("Automatic assignment is currently disabled")
         qa_item, cell = select_next_participant_qa_item(db, participant)
         if not qa_item:
-            raise DashboardAnswerError("No eligible question is available for a new batch")
+            raise DashboardAnswerError(
+                "No eligible question is available for a new batch"
+            )
 
         prompt = create_assignment_for_qa_item(
             db,
@@ -183,5 +220,3 @@ def _materialize_due_dashboard_next_batch(db, participant):
         reminder.failure_reason = str(exc)
         reminder.updated_at = utc_now()
         return None
-
-

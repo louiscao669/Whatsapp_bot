@@ -31,7 +31,11 @@ Deliberately NOT fixed: ordinary words rendered two ways (alive -> 活 / 还活�
 
 # ======================== stage: harvest ========================
 def _stage_harvest():
-    import json, re, sys, glob, os
+    import glob
+    import json
+    import os
+    import re
+    import sys
     from collections import defaultdict
 
     REPO = os.path.expanduser("~/mnt/eten-whatsapp-bot")
@@ -106,7 +110,10 @@ def _stage_harvest():
 
 # ======================== stage: propose ========================
 def _stage_propose():
-    import json, re, glob, os
+    import glob
+    import json
+    import os
+    import re
     OUTS = os.path.expanduser("~/mnt/eten-research-outputs/evaluation/outputs/tier1_bsb_unblinded_5opt_think")
 
     PROPOSED = {
@@ -167,7 +174,8 @@ def _stage_propose():
 
 # ======================== stage: propose2 ========================
 def _stage_propose_two():
-    import json, re, glob, os
+    import json
+    import os
     OUTS = os.path.expanduser("~/mnt/eten-research-outputs/evaluation/outputs/tier1_bsb_unblinded_5opt_think")
 
     FROM_REFERENCE = {

@@ -17,7 +17,6 @@ Usage (from repo root):
 
 import argparse
 import sys
-from collections import Counter
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -27,17 +26,21 @@ from _bootstrap import use_platform
 use_platform()
 
 from backend.shared.config import load_configurations  # loads .env  # noqa: E402
-from flask import Flask  # noqa: E402
-from sqlalchemy import func, select  # noqa: E402
-
 from eten_shared.database import get_session_factory  # noqa: E402
-from eten_shared.models import Assignment, QAItem, QAItemRecording, Participant  # noqa: E402
 from eten_shared.domain.identity import resolve_login  # noqa: E402
+from eten_shared.models import (  # noqa: E402
+    Assignment,
+    Participant,
+    QAItem,
+    QAItemRecording,
+)
 from eten_shared.recordings import (  # noqa: E402
     participant_language_code,
     participant_question_audio_satisfied,
     question_audio_required,
 )
+from flask import Flask  # noqa: E402
+from sqlalchemy import func, select  # noqa: E402
 
 
 def main():

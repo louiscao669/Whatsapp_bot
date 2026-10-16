@@ -29,26 +29,18 @@ import re
 import sys
 from pathlib import Path
 
+from evaluation.scripts._common import longest_shared_span as longest_shared_span
+
 REPO = Path(__file__).resolve().parents[4]
 sys.path.insert(0, str(REPO / "packages" / "eten-shared"))
 sys.path.insert(0, str(REPO / "human_pilot"))
+sys.path.insert(0, str(REPO))
 
 GOLD_ROOT = "tier1_bsb_unblinded_5opt_think"
 HARD_DIR = REPO / "evaluation/datasets/qa/tier1_hard66_canonical"
 GOLD_EN = REPO / "evaluation/datasets/qa/tier1_gold72_canonical_5opt"
 WINDOWS = REPO / "QA_algorithm/inputs/tier1_qa_verse_windows_canonical.json"
 LETTERS = "ABCD"
-
-
-def longest_shared_span(option: str, window: str) -> int:
-    best = 0
-    for start in range(len(option)):
-        for end in range(start + best + 1, len(option) + 1):
-            if option[start:end] in window:
-                best = end - start
-            else:
-                break
-    return best
 
 
 def ratio(option: str, window: str) -> float:

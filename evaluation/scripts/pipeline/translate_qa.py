@@ -18,6 +18,11 @@ import time
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional
 
+REPO_ROOT = Path(__file__).resolve().parents[3]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from evaluation.scripts._common import all_format_variants as all_format_variants
 
 # MCQ choice labels are configurable so an abstention option ("I can't tell from
 # this passage") can be added as E without forking the pipeline. Default is ABCD,
@@ -124,27 +129,6 @@ def question_from_tagged_content(content: Any) -> Optional[str]:
         return None
     question = re.sub(rf"\n\s*[{_CL}]\.\s+.*$", "", match.group(1).strip(), flags=re.DOTALL)
     return question.strip() or None
-
-
-def all_format_variants(item: dict) -> List[dict]:
-    variants = []
-    for q_type in ("open", "mcq"):
-        nested = item.get(q_type)
-        if not isinstance(nested, dict):
-            continue
-        merged = {
-            key: value
-            for key, value in item.items()
-            if key not in {"open", "mcq"}
-        }
-        merged.update(nested)
-        merged["q_type"] = q_type
-        base_id = item.get("content_id") or item.get("id") or item.get("passage_id")
-        if base_id:
-            merged["content_id"] = f"{base_id}-{q_type}"
-            merged["passage_id"] = f"uw-{base_id}-{q_type}"
-        variants.append(merged)
-    return variants
 
 
 def normalize_item(item: dict, index: int) -> dict:

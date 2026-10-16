@@ -12,10 +12,18 @@ import os
 import threading
 import time
 
-from sqlalchemy import select
-from sqlalchemy.exc import SQLAlchemyError
-
+from eten_shared.answer_llm_scoring import (
+    resolve_choice_letter,
+    resolve_response_passage_text,
+    score_open_answer,
+)
 from eten_shared.database import get_session_factory
+from eten_shared.mcq import (
+    choice_letters_for_type,
+    normalize_labeled_choices,
+    parse_mcq_correct_letter,
+    question_type_value,
+)
 from eten_shared.models import (
     Assignment,
     AssignmentStatus,
@@ -26,41 +34,39 @@ from eten_shared.models import (
     QAItem,
     utc_now,
 )
-from eten_shared.answer_llm_scoring import (
-    resolve_choice_letter,
-    resolve_response_passage_text,
-    score_open_answer,
-)
-from eten_shared.mcq import (
-    choice_letters_for_type,
-    normalize_labeled_choices,
-    parse_mcq_correct_letter,
-    question_type_value,
-)
+from sqlalchemy import select
+from sqlalchemy.exc import SQLAlchemyError
 
 # Judge score -> stored is_correct label. All three are auto-scored; 0.5 gets its
 # own label so a partial never gets read back as a clean pass or a clean fail.
 _AUTO_LABELS = {1.0: "yes (auto)", 0.5: "partial (auto)", 0.0: "no (auto)"}
 from eten_shared.domain.assignments import build_assignment_prompt
-from app.providers.delivery import (
-    provider_name_for_participant,
-    send_assignment_prompt as send_provider_assignment_prompt,
-    send_text_message,
+from eten_shared.domain.streaks import update_streak_for_response
+from eten_shared.notification_types import (
+    ANSWER_LLM_SCORE_REQUESTED_TYPE,
+    ANSWER_POSTPROCESS_REQUESTED_TYPE,
+    DASHBOARD_ANSWER_SYNCED_TYPE,
+    MCQ_CHOICE_RESOLUTION_REQUESTED_TYPE,
+    NEW_ASSIGNMENT_ASSIGNED_TYPE,
 )
-from app.providers.whatsapp.schedule_policy import is_within_customer_service_window
-from app.providers.whatsapp.schedule_policy import create_assignment_reminders
+
 from app.engagement.badges import evaluate_and_award_badges
 from app.engagement.currency import (
     award_batch_completion_currency,
     award_response_currency,
 )
-from eten_shared.domain.streaks import update_streak_for_response
+from app.providers.delivery import (
+    provider_name_for_participant,
+    send_text_message,
+)
+from app.providers.delivery import (
+    send_assignment_prompt as send_provider_assignment_prompt,
+)
+from app.providers.whatsapp.schedule_policy import (
+    create_assignment_reminders,
+    is_within_customer_service_window,
+)
 
-DASHBOARD_ANSWER_SYNCED_TYPE = "dashboard_answer_synced"
-NEW_ASSIGNMENT_ASSIGNED_TYPE = "new_assignment_assigned"
-ANSWER_LLM_SCORE_REQUESTED_TYPE = "answer_llm_score_requested"
-ANSWER_POSTPROCESS_REQUESTED_TYPE = "answer_postprocess_requested"
-MCQ_CHOICE_RESOLUTION_REQUESTED_TYPE = "mcq_choice_resolution_requested"
 KNOWN_NOTIFICATION_TYPES = (
     DASHBOARD_ANSWER_SYNCED_TYPE,
     NEW_ASSIGNMENT_ASSIGNED_TYPE,

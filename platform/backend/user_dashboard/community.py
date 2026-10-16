@@ -1,6 +1,19 @@
 """Dashboard community services."""
 
-from ._common import *  # noqa: F401,F403
+from datetime import datetime, timedelta, timezone
+
+from eten_shared.models import (
+    CommunityTeam,
+    CommunityTeamMember,
+    Participant,
+    ParticipantCurrencyEvent,
+)
+from sqlalchemy import delete, func, select
+
+from backend.user_dashboard.errors import CommunityTeamError
+
+from ._common import LEADERBOARD_LIMIT, TEAM_MAX_MEMBERS
+
 
 def _week_bounds(now=None):
     now = now or datetime.now(timezone.utc)
@@ -45,8 +58,8 @@ def _participant_team_membership(db, participant_id):
 
 
 def create_community_team(db, participant_id, name):
-    from .profile import _participant_by_id
     from .payload import get_user_dashboard_payload
+    from .profile import _participant_by_id
 
     participant = _participant_by_id(db, participant_id)
     if not participant:
@@ -73,8 +86,8 @@ def create_community_team(db, participant_id, name):
 
 
 def join_community_team(db, participant_id, team_id):
-    from .profile import _participant_by_id
     from .payload import get_user_dashboard_payload
+    from .profile import _participant_by_id
 
     participant = _participant_by_id(db, participant_id)
     if not participant:
@@ -82,7 +95,9 @@ def join_community_team(db, participant_id, team_id):
     if _participant_team_membership(db, participant.id):
         raise CommunityTeamError("You are already on a team")
     team = db.scalar(
-        select(CommunityTeam).where(CommunityTeam.id == str(team_id or "")).with_for_update()
+        select(CommunityTeam)
+        .where(CommunityTeam.id == str(team_id or ""))
+        .with_for_update()
     )
     if not team:
         raise CommunityTeamError("Team not found")
@@ -103,7 +118,9 @@ def join_community_team(db, participant_id, team_id):
 def rename_community_team(db, participant_id, team_id, name):
     from .payload import get_user_dashboard_payload
 
-    team = db.scalar(select(CommunityTeam).where(CommunityTeam.id == str(team_id or "")))
+    team = db.scalar(
+        select(CommunityTeam).where(CommunityTeam.id == str(team_id or ""))
+    )
     if not team:
         raise CommunityTeamError("Team not found")
     if team.creator_participant_id != participant_id:
@@ -134,9 +151,13 @@ def leave_community_team(db, participant_id, team_id):
     )
     if not membership:
         raise CommunityTeamError("You are not a member of this team")
-    team = db.scalar(select(CommunityTeam).where(CommunityTeam.id == membership.team_id))
+    team = db.scalar(
+        select(CommunityTeam).where(CommunityTeam.id == membership.team_id)
+    )
     if team and team.creator_participant_id == participant_id:
-        raise CommunityTeamError("Team creators must remove the team instead of leaving it")
+        raise CommunityTeamError(
+            "Team creators must remove the team instead of leaving it"
+        )
     db.delete(membership)
     db.flush()
     return get_user_dashboard_payload(db, participant_id)
@@ -145,7 +166,9 @@ def leave_community_team(db, participant_id, team_id):
 def remove_community_team(db, participant_id, team_id):
     from .payload import get_user_dashboard_payload
 
-    team = db.scalar(select(CommunityTeam).where(CommunityTeam.id == str(team_id or "")))
+    team = db.scalar(
+        select(CommunityTeam).where(CommunityTeam.id == str(team_id or ""))
+    )
     if not team:
         raise CommunityTeamError("Team not found")
     if team.creator_participant_id != participant_id:
@@ -211,7 +234,9 @@ def get_language_team_leaderboard(db, participant, week_start, week_end):
                 for member in members_by_team[team.id]
             ),
             "members": members_by_team[team.id],
-            "member_ids": [member["participant_id"] for member in members_by_team[team.id]],
+            "member_ids": [
+                member["participant_id"] for member in members_by_team[team.id]
+            ],
             "member_count": len(members_by_team[team.id]),
             "is_current_user": any(
                 member["participant_id"] == participant.id
@@ -300,5 +325,3 @@ def get_language_weekly_leaderboard(db, participant, limit=LEADERBOARD_LIMIT):
         "rows": leaderboard_rows,
         "teams": get_language_team_leaderboard(db, participant, week_start, week_end),
     }
-
-

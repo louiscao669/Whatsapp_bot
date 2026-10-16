@@ -17,15 +17,21 @@ Point-estimate lambdas are read from the canonical fitter output (lambda_by_defe
 the bootstrap re-derives them from raw responses assembled by fit_item_sensitivity.
 """
 from __future__ import annotations
-import csv, json, sys
+
+import csv
+import sys
 from collections import defaultdict
 from pathlib import Path
 from types import SimpleNamespace
+
 import numpy as np
 
 REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(REPO / "scripts"))
-from fit_item_sensitivity import assemble_rows_defect, fit_penalized_logistic  # noqa: E402
+from fit_item_sensitivity import (  # noqa: E402
+    assemble_rows_defect,
+    fit_penalized_logistic,
+)
 
 OUTDIR = REPO / "QA_algorithm" / "outputs" / "reports" / "item_sensitivity"
 LAMBDA_CSV = OUTDIR / "lambda_by_defect_model.csv"

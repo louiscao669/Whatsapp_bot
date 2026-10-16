@@ -1,6 +1,23 @@
 """Dashboard engagement services."""
 
-from ._common import *  # noqa: F401,F403
+from datetime import timezone
+
+from eten_shared.domain.assignments import record_participant_event
+from eten_shared.models import (
+    Assignment,
+    AssignmentStatus,
+    DashboardEngagementSession,
+    OutboxNotification,
+    OutboxStatus,
+    utc_now,
+)
+from eten_shared.notification_types import PER_RESPONSE_NOTIFICATION_TYPES
+from sqlalchemy import select
+
+from backend.user_dashboard.errors import DashboardAnswerError
+
+DASHBOARD_HEARTBEAT_MAX_GAP_SECONDS = 45
+
 
 def _enqueue_outbox_notification(db, participant, notification_type, payload):
     """Queue a cross-surface notification for the message-bot poller.
@@ -10,13 +27,17 @@ def _enqueue_outbox_notification(db, participant, notification_type, payload):
     except for per-response scoring work, which must not be collapsed.
     """
 
-    stale = [] if notification_type in _PER_RESPONSE_NOTIFICATIONS else db.scalars(
-        select(OutboxNotification).where(
-            OutboxNotification.participant_id == participant.id,
-            OutboxNotification.notification_type == notification_type,
-            OutboxNotification.status == OutboxStatus.PENDING.value,
-        )
-    ).all()
+    stale = (
+        []
+        if notification_type in PER_RESPONSE_NOTIFICATION_TYPES
+        else db.scalars(
+            select(OutboxNotification).where(
+                OutboxNotification.participant_id == participant.id,
+                OutboxNotification.notification_type == notification_type,
+                OutboxNotification.status == OutboxStatus.PENDING.value,
+            )
+        ).all()
+    )
     for notification in stale:
         notification.status = OutboxStatus.SUPERSEDED.value
         notification.failure_reason = "Superseded by a newer notification"
@@ -39,7 +60,6 @@ def mark_dashboard_question_viewed(db, participant_id: str, assignment_id: str):
     """
     from .profile import _participant_by_id
     from .serialization import _iso_datetime
-
 
     assignment_id = (assignment_id or "").strip()
     if not assignment_id:
@@ -94,7 +114,9 @@ def _as_utc(value):
     return value
 
 
-def record_dashboard_heartbeat(db, participant_id: str, session_key: str, *, active: bool = True):
+def record_dashboard_heartbeat(
+    db, participant_id: str, session_key: str, *, active: bool = True
+):
     """Accumulate engaged dwell time for one dashboard browser session.
 
     Idempotent-ish upsert keyed by (participant_id, session_key). Each call
@@ -105,7 +127,6 @@ def record_dashboard_heartbeat(db, participant_id: str, session_key: str, *, act
     no messenger equivalent.
     """
     from .profile import _participant_by_id
-
 
     session_key = (session_key or "").strip()
     if not session_key:
@@ -145,5 +166,3 @@ def record_dashboard_heartbeat(db, participant_id: str, session_key: str, *, act
         "active_seconds": session.active_seconds,
         "heartbeat_count": session.heartbeat_count,
     }
-
-

@@ -7,9 +7,22 @@ dashboard is untouched and keeps its rewards, streaks, batches and expiry.
 
 ## What it does not do
 
-No rewards, wallet, streak, badge or leaderboard. No correctness feedback while
-the study runs. No countdown, no time limit, no expiry. No periodic heartbeat
+No rewards, wallet, streak, badge or leaderboard. No correctness feedback for
+study participants. No countdown, no time limit, no expiry. No periodic heartbeat
 and no general engagement analytics. No preloading of the next question.
+
+## Test participant information
+
+Participants created with the admin's **Create test participant** action see a
+**Testing only** panel on every question. It shows the passage condition and
+defect percentage (or clean / word-by-word), plus the correct choice and text
+for MCQs, or the expected answer for open questions. The answer is the key from
+the clean source; a defective passage may change or omit its evidence.
+
+The existing server-side `test_participant` flag controls this feature. Regular
+participants receive neither the panel nor its condition/answer data in the
+question API response. A URL parameter cannot enable it. Existing test
+participants get the panel too; no reimport or database migration is needed.
 
 ## Running it
 

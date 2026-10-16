@@ -62,6 +62,11 @@ function PassageMetadata({ metadata }: { metadata?: QuestionPassageMetadata }) {
 
 export function ParticipantDetailPage() {
   const { participantId } = useParams<{ participantId: string }>()
+  if (!participantId) return <p className="error-message">Missing participant id.</p>
+  return <ParticipantDetail key={participantId} participantId={participantId} />
+}
+
+function ParticipantDetail({ participantId }: { participantId: string }) {
   const cachedDetail = participantId
     ? getCachedApiData<ParticipantDetail>(`/api/v1/participants/${participantId}`)
     : null
@@ -78,29 +83,19 @@ export function ParticipantDetailPage() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (!participantId) {
-      return
-    }
-    const cachedParticipant = getCachedApiData<ParticipantDetail>(`/api/v1/participants/${participantId}`)
-    const cachedLanguagePayload = getCachedApiData<{ languages: string[] }>('/api/v1/system-languages')
-    if (cachedParticipant) {
-      setDetail(cachedParticipant)
-      setLanguage(cachedParticipant.participant.language)
-    }
-    if (cachedLanguagePayload) {
-      setLanguages(cachedLanguagePayload.languages)
-    }
-    setLoading(!cachedParticipant || !cachedLanguagePayload)
+    let cancelled = false
     Promise.all([fetchParticipantDetail(participantId), fetchSystemLanguages()])
       .then(([participantDetail, languagePayload]) => {
+        if (cancelled) return
         setDetail(participantDetail)
         setLanguage(participantDetail.participant.language)
         setLanguages(languagePayload.languages)
       })
       .catch((err) => {
-        setError(err instanceof ApiError ? err.message : 'Failed to load participant')
+        if (!cancelled) setError(err instanceof ApiError ? err.message : 'Failed to load participant')
       })
-      .finally(() => setLoading(false))
+      .finally(() => { if (!cancelled) setLoading(false) })
+    return () => { cancelled = true }
   }, [participantId])
 
   async function handleLanguageSubmit(event: FormEvent) {

@@ -1,36 +1,24 @@
-import { useCallback, useEffect, useState, type KeyboardEvent, type MouseEvent } from 'react'
+import { useState, type KeyboardEvent, type MouseEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ApiError, getCachedApiData } from '../api/client'
+import { getCachedApiData } from '../api/client'
 import { fetchQaItems, type QaItemRow } from '../api/qaItems'
 import { QaItemsBulkPanel } from '../components/QaItemsBulkPanel'
 import { QaItemsImportPanel } from '../components/QaItemsImportPanel'
+
+import { useApiResource } from '../hooks/useApiResource'
 
 const QA_ITEMS_PATH = '/api/v1/qa-items'
 
 export function QaItemsListPage() {
   const navigate = useNavigate()
   const cachedItems = getCachedApiData<{ items: QaItemRow[] }>(QA_ITEMS_PATH)
-  const [items, setItems] = useState<QaItemRow[]>(cachedItems?.items ?? [])
+  const { data, loading, error, setError, reload: loadItems } = useApiResource(
+    QA_ITEMS_PATH, fetchQaItems, cachedItems, 'Failed to load QA items',
+  )
+  const items = data?.items ?? []
   const [selectedIds, setSelectedIds] = useState<string[]>([])
-  const [loading, setLoading] = useState(!cachedItems)
-  const [error, setError] = useState('')
   const [message, setMessage] = useState('')
   const [showImport, setShowImport] = useState(false)
-
-  const loadItems = useCallback(() => {
-    setLoading((current) => current && items.length === 0)
-    setError('')
-    return fetchQaItems()
-      .then((data) => setItems(data.items))
-      .catch((err) => {
-        setError(err instanceof ApiError ? err.message : 'Failed to load QA items')
-      })
-      .finally(() => setLoading(false))
-  }, [items.length])
-
-  useEffect(() => {
-    loadItems()
-  }, [loadItems])
 
   function openItem(itemId: string) {
     navigate(`/qa-items/${itemId}`)

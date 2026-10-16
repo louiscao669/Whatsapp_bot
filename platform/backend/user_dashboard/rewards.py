@@ -1,6 +1,20 @@
 """Dashboard rewards services."""
 
-from ._common import *  # noqa: F401,F403
+import random
+from datetime import datetime, timezone
+
+from eten_shared.models import (
+    Assignment,
+    AssignmentStatus,
+    ParticipantCurrencyEvent,
+    utc_now,
+)
+from sqlalchemy import select
+
+from backend.user_dashboard.errors import ChestRewardError
+
+from ._common import CHEST_REWARD_MAX, CHEST_REWARD_MIN
+
 
 def _award_dashboard_currency(
     db,
@@ -96,9 +110,9 @@ def _batch_is_complete(db, participant_id, batch_id):
 
 
 def claim_batch_chest_reward(db, participant_id: str, batch_id: str):
+    from .payload import get_user_dashboard_payload
     from .profile import _participant_by_id
     from .store import _get_or_create_wallet
-    from .payload import get_user_dashboard_payload
 
     batch_id = (batch_id or "").strip()
     if not batch_id:
@@ -144,5 +158,3 @@ def claim_batch_chest_reward(db, participant_id: str, batch_id: str):
         "currency": "diamonds",
     }
     return payload
-
-

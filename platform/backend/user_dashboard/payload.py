@@ -1,18 +1,24 @@
 """Dashboard payload services."""
 
-from ._common import *  # noqa: F401,F403
+from eten_shared.domain.streaks import latest_progress_report, streak_status_payload
+from eten_shared.models import (
+    Assignment,
+    AssignmentStatus,
+    ParticipantBadge,
+    ParticipantCurrencyEvent,
+)
+from sqlalchemy import distinct, func, select
+
+from backend.user_dashboard.view_model import compose_dashboard_view_model
+
 
 def get_user_dashboard_payload(db, participant_id: str, event_limit: int = 100):
-    from .profile import _participant_by_id
-    from .scheduling import _materialize_due_dashboard_next_batch
-    from .store import _get_or_create_wallet
     from .community import get_language_weekly_leaderboard
-    from .store import get_store_payload
-    from .journey import get_luke_chapter_activity
-    from .journey import get_luke_journey_chapters
+    from .journey import get_luke_chapter_activity, get_luke_journey_chapters
+    from .profile import _participant_by_id, _profile_photo_url
+    from .scheduling import _materialize_due_dashboard_next_batch
     from .serialization import _iso_datetime
-    from .profile import _profile_photo_url
-    from .store import get_equipped_cosmetics
+    from .store import _get_or_create_wallet, get_equipped_cosmetics, get_store_payload
 
     participant = _participant_by_id(db, participant_id)
     if not participant:
@@ -112,5 +118,3 @@ def get_user_dashboard_payload(db, participant_id: str, event_limit: int = 100):
         },
         **view_model,
     }
-
-

@@ -3,17 +3,11 @@
 import re
 from typing import Dict, List, Literal, Tuple
 
-from sqlalchemy import select
-from sqlalchemy.orm import Session
-
-from eten_shared.models import QAItem, utc_now
+from eten_shared.domain.chapter_labels import chapter_label_from_reference
 from eten_shared.domain.qa_eligibility import (
-    qa_item_is_assignable,
-    qa_item_is_recordable,
     qa_item_is_removed,
     qa_item_is_reviewed,
 )
-from eten_shared.domain.chapter_labels import chapter_label_from_reference
 from eten_shared.mcq import (
     QUESTION_TYPE_MCQ,
     QUESTION_TYPE_OPEN,
@@ -21,6 +15,9 @@ from eten_shared.mcq import (
     choice_letters_for_item,
     validate_question_fields,
 )
+from eten_shared.models import QAItem, utc_now
+from sqlalchemy import select
+from sqlalchemy.orm import Session
 
 ReviewQATab = Literal["unreviewed", "reviewed", "removed"]
 

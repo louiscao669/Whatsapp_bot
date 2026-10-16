@@ -14,13 +14,25 @@ open_llm_score_mean in scores_target_window3_v2.json in place.
   python evaluation/scripts/mcq/legacy_luke/pseudonymize_expected_rejudge.py --judge-provider openai --judge-model gpt-4o-mini
 """
 from __future__ import annotations
-import argparse, json, os, re, sys
+
+import argparse
+import json
+import os
+import re
+import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from regen_mcq_tier01 import (build_client, judge_open, randomized_three_verse_window,
-                              item_stem, pick, CONDITIONS, EXCLUDED_OPEN_STEMS)
+from regen_mcq_tier01 import (
+    CONDITIONS,
+    EXCLUDED_OPEN_STEMS,
+    build_client,
+    item_stem,
+    judge_open,
+    pick,
+    randomized_three_verse_window,
+)
 
 # canonical English name -> pseudonym (consistent across chapters; from the remap files)
 EN2PS = {"Theophilus": "珈恒", "Zechariah": "珂温", "Elizabeth": "哈丽", "John": "米珥",
@@ -36,8 +48,6 @@ def pseudonymize(expected: str) -> str:
 
 def run(args):
     root = Path(args.root)
-    active_stems = {item_stem(i) for i in
-                    json.loads((root.parent / "datasets" / "mcq" / "mcq_rewrites.json").read_text(encoding="utf-8"))}
     judge = build_client(args.judge_provider)
 
     def do_cell(model_dir, ch, cond):

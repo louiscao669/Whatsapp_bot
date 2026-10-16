@@ -1,13 +1,27 @@
 import json
 import re
-from dataclasses import dataclass
 from html import unescape
-from typing import Any, List, Optional
+from typing import Optional
 
+from eten_shared.keyword_parsing import (
+    ParsedKeywords as ParsedKeywords,
+)
+from eten_shared.keyword_parsing import (
+    keyword_spec as keyword_spec,
+)
+from eten_shared.keyword_parsing import (
+    normalize_synonyms as normalize_synonyms,
+)
+from eten_shared.keyword_parsing import (
+    parse_keywords_field as parse_keywords_field,
+)
+from eten_shared.keyword_parsing import (
+    specs_to_texts as specs_to_texts,
+)
 from eten_shared.mcq import (
-    ParsedLabeledContent,
     QUESTION_TYPE_OPEN,
     VALID_QUESTION_TYPES,
+    ParsedLabeledContent,
     infer_question_type_from_choice_count,
     parse_choice_lines_from_text,
     parse_mcq_correct_letter,
@@ -132,87 +146,6 @@ def passage_text_from_entry(entry):
         return None
     text = str(value).strip()
     return text or None
-
-
-@dataclass
-class ParsedKeywords:
-    texts: List[str]
-    specs: List[dict]
-
-
-def normalize_synonyms(raw_synonyms: Any) -> List[str]:
-    if raw_synonyms is None:
-        return []
-    if isinstance(raw_synonyms, str):
-        return [part.strip() for part in raw_synonyms.split(",") if part.strip()]
-    if isinstance(raw_synonyms, list):
-        synonyms = []
-        for item in raw_synonyms:
-            text = str(item).strip()
-            if text and text not in synonyms:
-                synonyms.append(text)
-        return synonyms
-    return []
-
-
-def keyword_spec(keyword_id: str, text: str, synonyms: Optional[List[str]] = None) -> Optional[dict]:
-    cleaned_text = (text or "").strip()
-    if not cleaned_text:
-        return None
-    cleaned_id = (keyword_id or cleaned_text).strip() or cleaned_text
-    return {
-        "id": cleaned_id,
-        "text": cleaned_text,
-        "synonyms": normalize_synonyms(synonyms),
-    }
-
-
-def specs_to_texts(specs: List[dict]) -> List[str]:
-    texts = []
-    for spec in specs or []:
-        if not isinstance(spec, dict):
-            continue
-        text = (spec.get("text") or "").strip()
-        if text:
-            texts.append(text)
-    return texts
-
-
-def parse_keywords_field(raw_value: Any) -> ParsedKeywords:
-    if raw_value is None:
-        return ParsedKeywords(texts=[], specs=[])
-    if isinstance(raw_value, str):
-        raw_value = raw_value.strip()
-        if not raw_value:
-            return ParsedKeywords(texts=[], specs=[])
-        try:
-            raw_value = json.loads(raw_value)
-        except json.JSONDecodeError:
-            return ParsedKeywords(
-                texts=[part.strip() for part in raw_value.split(",") if part.strip()],
-                specs=[],
-            )
-    if isinstance(raw_value, list):
-        if not raw_value:
-            return ParsedKeywords(texts=[], specs=[])
-        if all(isinstance(item, str) for item in raw_value):
-            return ParsedKeywords(
-                texts=[item.strip() for item in raw_value if item.strip()],
-                specs=[],
-            )
-        specs = []
-        for item in raw_value:
-            if not isinstance(item, dict):
-                continue
-            spec = keyword_spec(
-                item.get("id", ""),
-                item.get("text", ""),
-                item.get("synonyms"),
-            )
-            if spec:
-                specs.append(spec)
-        return ParsedKeywords(texts=specs_to_texts(specs), specs=specs)
-    return ParsedKeywords(texts=[], specs=[])
 
 
 def keywords_from_answer(answer_text):
@@ -392,9 +325,8 @@ def normalize_language_code(language):
 
 
 def import_qa_entries(db, entries, skip_existing=True, import_defaults=None):
-    from sqlalchemy import select
-
     from eten_shared.models import QAItem
+    from sqlalchemy import select
 
     created = 0
     skipped = 0

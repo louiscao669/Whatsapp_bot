@@ -27,7 +27,15 @@ open variants.
   python evaluation/scripts/mcq/legacy_luke/regen_mcq_tier01.py --provider ollama --skip-promote --models "1.5b=qwen2.5:1.5b"
 """
 from __future__ import annotations
-import argparse, csv, hashlib, json, os, re, shutil, subprocess, sys
+
+import argparse
+import csv
+import hashlib
+import json
+import os
+import re
+import subprocess
+import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 

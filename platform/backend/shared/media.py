@@ -1,14 +1,16 @@
 import logging
 from typing import Optional, Tuple
 
-from sqlalchemy import select
-
 from eten_shared.database import get_session_factory
-from eten_shared.models import ParticipantResponse, QAItemKeywordRecording, QAItemRecording
 from eten_shared.media_storage import (
     download_storage_object,
     is_supabase_storage_configured,
     parse_storage_uri,
+)
+from eten_shared.models import (
+    ParticipantResponse,
+    QAItemKeywordRecording,
+    QAItemRecording,
 )
 
 logger = logging.getLogger(__name__)

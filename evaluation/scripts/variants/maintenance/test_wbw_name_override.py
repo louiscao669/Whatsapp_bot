@@ -3,14 +3,15 @@
 
 Run: python3 evaluation/scripts/variants/maintenance/test_wbw_name_override.py
 """
-import json
 import sys
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[4]
 sys.path.insert(0, str(REPO / "evaluation" / "scripts" / "scoring" / "current"))
 from translation_quality import (  # noqa: E402
-    _wbw_load_name_overrides, wbw_join, wbw_name_override,
+    _wbw_load_name_overrides,
+    wbw_join,
+    wbw_name_override,
 )
 
 OV = {"micah": "米迦", "dan": "但", "danites": "但人", "who": "谁",
@@ -89,6 +90,7 @@ check("a verse marker keeps its trailing space",
 check("a verse number glued to the previous token keeps its space too",
       J(("Micah.\n\n12", "米迦.\n\n12"), ("They", "他们")) == "米迦.\n\n12 他们")
 import re as _re
+
 _MARKER = _re.compile(r"(?<![\w\]\-\u2013\u2014])(\d{1,3})\s+")
 check("the pilot's verse-marker regex still finds both markers",
       [m.group(1) for m in _MARKER.finditer(

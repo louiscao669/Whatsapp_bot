@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Regression checks for the tier-1 Gate-1 pool and runtime delivery."""
 
-import os
 import json
+import os
 import sys
-from collections import Counter, defaultdict
+from collections import defaultdict
 from pathlib import Path
 
 os.environ.setdefault("REQUIRE_QUESTION_AUDIO", "false")
@@ -12,9 +12,6 @@ REPO_ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(REPO_ROOT / "packages" / "eten-shared"))
 sys.path.insert(0, str(REPO_ROOT / "human_pilot"))
 sys.path.insert(0, str(REPO_ROOT / "evaluation" / "scripts" / "data_prep" / "tier1"))
-
-from sqlalchemy import create_engine
-from sqlalchemy.orm import Session
 
 from eten_shared.domain.assignments import (
     experiment_passage_assignment_kwargs,
@@ -29,6 +26,7 @@ from eten_shared.models import (
     Participant,
 )
 from eten_shared.question_discovery import select_next_experiment_cell_item
+from mark_tier1_window_selection import build_annotations
 from pilot_import import (
     build_tier1_pool,
     load_tier1_metadata,
@@ -36,7 +34,8 @@ from pilot_import import (
     parse_tier1_verses,
     tier1_collision_rank,
 )
-from mark_tier1_window_selection import build_annotations
+from sqlalchemy import create_engine
+from sqlalchemy.orm import Session
 
 EVAL_ROOT = REPO_ROOT / "evaluation"
 fails = []

@@ -1,6 +1,5 @@
 import io
 import logging
-import os
 import re
 import zipfile
 from collections import defaultdict
@@ -8,16 +7,14 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Dict, List, Optional
 
-from sqlalchemy import select
-from sqlalchemy.orm import selectinload
-
 from eten_shared.database import get_session_factory
-from eten_shared.models import ParticipantResponse, ResponseType
 from eten_shared.media_storage import (
     download_storage_object,
-    is_supabase_storage_configured,
     parse_storage_uri,
 )
+from eten_shared.models import ParticipantResponse, ResponseType
+from sqlalchemy import select
+from sqlalchemy.orm import selectinload
 
 
 @dataclass

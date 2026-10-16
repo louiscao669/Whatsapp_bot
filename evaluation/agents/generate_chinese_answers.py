@@ -19,7 +19,6 @@ import urllib.request
 from pathlib import Path
 from typing import Any, Iterable, List, Optional
 
-
 # MCQ choice labels are configurable so an abstention option ("I can't tell from
 # this passage") can be added as E without forking the pipeline. Default is ABCD,
 # so every existing 4-option run behaves exactly as before. Set MCQ_CHOICE_LABELS
@@ -1511,12 +1510,6 @@ def generate_ollama_single_raw(
         # that reject unknown keys still behave as before -- see the fallback in
         # the caller.
         payload["think"] = False
-    request = urllib.request.Request(
-        base_url.rstrip("/") + "/api/chat",
-        data=json.dumps(payload).encode("utf-8"),
-        headers={"Content-Type": "application/json"},
-        method="POST",
-    )
     def post(body: dict) -> dict:
         req = urllib.request.Request(
             base_url.rstrip("/") + "/api/chat",

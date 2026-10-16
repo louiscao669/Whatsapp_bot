@@ -26,11 +26,13 @@ from backend.pilot.service import (
     record_pilot_activity_checkpoint,
     submit_pilot_answer,
 )
+from eten_shared.experiment_plan import TEST_PARTICIPANT_KEY
 from eten_shared.models import (
     AnswerReceipt,
     Assignment,
     AssignmentStatus,
     Base,
+    ExperimentPlanCell,
     Participant,
     ParticipantEvent,
     ParticipantResponse,
@@ -134,9 +136,66 @@ class PilotPresentationTests(PilotServiceTestCase):
         payload = state["question"]
 
         for leak in ("expected_answer", "mcq_correct_choice", "correctness_score",
-                     "is_correct", "wallet", "balance", "awards", "streak"):
+                     "is_correct", "wallet", "balance", "awards", "streak",
+                     "test_info", "condition", "defect_type", "defect_rate"):
             self.assertNotIn(leak, payload)
         self.assertNotIn("Something", str(payload))
+
+    def test_test_participant_sees_open_answer_and_snapshotted_condition(self):
+        self.participant.dashboard_preferences = {TEST_PARTICIPANT_KEY: True}
+        cell = ExperimentPlanCell(
+            participant_id=self.participant.id, chapter=1,
+            condition="mistranslation15", sequence_index=0,
+        )
+        self.db.add(cell)
+        self.db.flush()
+        self.first.experiment_cell_id = cell.id
+        self.db.flush()
+
+        payload = get_pilot_state(self.db, self.participant.id)["question"]
+        self.assertEqual(payload["test_info"], {
+            "condition": "mistranslation15",
+            "defect_type": "mistranslation",
+            "defect_rate": 0.15,
+            "correct_choice": None,
+            "correct_answer": "Something",
+        })
+        self.assertEqual(payload["passage_text"], "Verse one text.")
+
+        # Describe the trial actually served, even if the plan is later edited.
+        cell.condition = "omission30"
+        self.db.flush()
+        refreshed = get_pilot_state(self.db, self.participant.id)["question"]
+        self.assertEqual(refreshed["test_info"]["condition"], "mistranslation15")
+
+    def test_test_answer_matches_the_offered_choice_including_fifth_and_tf(self):
+        self.participant.dashboard_preferences = {TEST_PARTICIPANT_KEY: True}
+        for kind, choices, correct in (
+            ("mcq", ["Felix", "High priest", "Paul", "Claudius Lysias"], "D"),
+            ("mcq", ["One", "Two", "Three", "Four", "Cannot tell"], "E"),
+            ("tf", ["True", "False"], "B"),
+        ):
+            with self.subTest(kind=kind, correct=correct):
+                self.open_item.question_type = kind
+                self.open_item.mcq_choices = choices
+                self.open_item.mcq_correct_choice = correct
+                self.open_item.expected_answer = "Stale answer text"
+                self.db.flush()
+                payload = get_pilot_state(self.db, self.participant.id)["question"]
+                info = payload["test_info"]
+                self.assertEqual(info["correct_choice"], correct)
+                self.assertEqual(info["correct_answer"], choices[-1])
+                self.assertIsNone(info["condition"])
+
+    def test_invalid_test_answer_key_is_not_presented_as_a_correct_option(self):
+        self.participant.dashboard_preferences = {TEST_PARTICIPANT_KEY: True}
+        self.open_item.question_type = "mcq"
+        self.open_item.mcq_choices = ["One", "Two", "Three", "Four"]
+        self.open_item.mcq_correct_choice = "E"
+        self.db.flush()
+        info = get_pilot_state(self.db, self.participant.id)["question"]["test_info"]
+        self.assertIsNone(info["correct_choice"])
+        self.assertIsNone(info["correct_answer"])
 
     def test_presentation_creates_a_trial_without_starting_the_clock(self):
         get_pilot_state(self.db, self.participant.id)

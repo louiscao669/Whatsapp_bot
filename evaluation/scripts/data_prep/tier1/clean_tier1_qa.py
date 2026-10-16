@@ -53,7 +53,6 @@ import json
 import re
 import sys
 from pathlib import Path
-from typing import Any
 
 DEFAULT_QA_DIR = Path("evaluation/datasets/qa/tier1_QAs_easy")
 DEFAULT_WINDOWS = Path("QA_algorithm/inputs/tier1_qa_verse_windows.json")

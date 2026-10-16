@@ -16,14 +16,23 @@ scores_target_window3_bt.json and a comparison report.
   python evaluation/scripts/mcq/legacy_luke/backtranslate_score.py --mt-model gpt-4o-mini --judge-model gpt-4o-mini
 """
 from __future__ import annotations
-import argparse, json, os, sys
+
+import argparse
+import json
+import os
+import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from regen_mcq_tier01 import (   # reuse the exact helpers so scoring is identical to clean
-    build_client, judge_open, randomized_three_verse_window, item_stem, pick, CONDITIONS, CLEAN,
+from regen_mcq_tier01 import (  # reuse the exact helpers so scoring is identical to clean
+    CONDITIONS,
     EXCLUDED_OPEN_STEMS,
+    build_client,
+    item_stem,
+    judge_open,
+    pick,
+    randomized_three_verse_window,
 )
 
 MODELS = ["1.7b", "1.5b", "llama 1b"]

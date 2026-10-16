@@ -1,30 +1,16 @@
-import { useCallback, useEffect, useState, type KeyboardEvent } from 'react'
+import { type KeyboardEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ApiError } from '../api/client'
+import { useApiResource } from '../hooks/useApiResource'
 import {
   fetchExperimentPassages,
-  type ExperimentPassageRow,
 } from '../api/experimentPassages'
 
 export function ExperimentPassagesListPage() {
   const navigate = useNavigate()
-  const [items, setItems] = useState<ExperimentPassageRow[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
-
-  const loadItems = useCallback(() => {
-    setError('')
-    return fetchExperimentPassages()
-      .then(({ items: loaded }) => setItems(loaded))
-      .catch((err) =>
-        setError(err instanceof ApiError ? err.message : 'Failed to load experiment passages'),
-      )
-      .finally(() => setLoading(false))
-  }, [])
-
-  useEffect(() => {
-    loadItems()
-  }, [loadItems])
+  const { data, loading, error } = useApiResource(
+    '/api/v1/experiment-passages', fetchExperimentPassages, null, 'Failed to load experiment passages',
+  )
+  const items = data?.items ?? []
 
   function open(id: string) {
     navigate(`/experiment-passages/${id}`)

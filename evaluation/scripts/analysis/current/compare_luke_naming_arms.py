@@ -10,34 +10,20 @@ only in names. Two questions, same as the tier-1 diagnostic:
   1. does clean accuracy rise as names get more canonical?  -> prior-knowledge channel
   2. does the 0%->30% omission drop shrink?                 -> does it flatten lambda
 """
-import json, math, os
+import json
+import math
+import os
+import sys
 from collections import defaultdict
+from pathlib import Path
 
-def _outputs_root():
-    """Resolve evaluation/outputs portably.
+REPO_ROOT = Path(__file__).resolve().parents[4]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
 
-    Prefer EVAL_OUTPUTS_ROOT, then evaluation/outputs relative to the repo root
-    (it is a symlink into eten-research-outputs), then the cwd. Never hardcode a
-    machine-specific absolute path -- that silently yields an empty result set
-    and reads as 'the run has not finished'.
-    """
-    import os as _os
-    env = _os.environ.get("EVAL_OUTPUTS_ROOT")
-    if env and _os.path.isdir(env):
-        return env
-    here = _os.path.dirname(_os.path.abspath(__file__))
-    for _ in range(6):
-        cand = _os.path.join(here, "evaluation", "outputs")
-        if _os.path.isdir(cand):
-            return cand
-        here = _os.path.dirname(here)
-    for cand in ("evaluation/outputs", "outputs", "."):
-        if _os.path.isdir(cand):
-            return cand
-    raise SystemExit("cannot locate evaluation/outputs; set EVAL_OUTPUTS_ROOT")
+from evaluation.scripts._common import outputs_root
 
-
-R = _outputs_root()
+R = outputs_root(__file__)
 ARMS = ["decanon", "pseudonym", "canonical"]
 TIERS = ["llama 1b", "1.5b", "1.7b"]
 DOSES = ["0%", "30%"]

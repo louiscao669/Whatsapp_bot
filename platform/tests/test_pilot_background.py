@@ -21,8 +21,6 @@ import os
 import unittest
 from unittest import mock
 
-from sqlalchemy import select
-
 from backend.pilot.service import (
     _open_pilot_assignments,
     get_pilot_state,
@@ -33,11 +31,19 @@ from backend.pilot.service import (
 from eten_shared.domain.assignments import get_or_create_participant_session
 from eten_shared.models import Assignment, ParticipantEvent, QAItem
 from eten_shared.pilot_trials import QUESTION_SUBMITTED_EVENT
-
+from sqlalchemy import select
 from test_pilot_service import PilotServiceTestCase
 
 
-class PremintTests(PilotServiceTestCase):
+class PresentedPilotTestCase(PilotServiceTestCase):
+    def setUp(self):
+        super().setUp()
+        # Submission and pre-minting require a trial for the question on screen.
+        state = get_pilot_state(self.db, self.participant.id)
+        self.assertEqual(state["question"]["assignment_id"], self.first.id)
+
+
+class PremintTests(PresentedPilotTestCase):
     def setUp(self):
         super().setUp()
         # A third item, unassigned, for the pre-mint to find.
@@ -169,7 +175,7 @@ class PremintTests(PilotServiceTestCase):
         self.assertEqual(open_ids, {minted.id})
 
 
-class DeferredSubmitEventTests(PilotServiceTestCase):
+class DeferredSubmitEventTests(PresentedPilotTestCase):
     def _submitted_events(self):
         return [
             event

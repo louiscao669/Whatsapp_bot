@@ -1,8 +1,11 @@
 """Schedule and deliver the next question batch after batch completion."""
 
-from sqlalchemy import select
-from sqlalchemy.orm import Session
-
+from eten_shared.domain.batch_schedules import (
+    cancel_pending_next_batch_schedules as cancel_pending_next_batch_schedules,
+)
+from eten_shared.domain.batch_schedules import (
+    has_pending_next_batch_schedule as has_pending_next_batch_schedule,
+)
 from eten_shared.models import (
     Assignment,
     ParticipantEvent,
@@ -11,44 +14,15 @@ from eten_shared.models import (
     SessionState,
     utc_now,
 )
+from sqlalchemy.orm import Session
+
+from app.providers.delivery import provider_name_for_participant
 from app.providers.whatsapp.schedule_policy import (
     BATCH_NEXT_ASSIGNMENT_TYPE,
-    BATCH_NEXT_START_NOW_REPLY,
-    BATCH_NEXT_WAIT_REPLY,
-    batch_next_response_choice,
     create_assignment_reminders,
-    format_batch_next_assign_hour,
     is_within_customer_service_window,
     next_batch_assignment_time,
 )
-from app.providers.delivery import provider_name_for_participant
-
-
-def has_pending_next_batch_schedule(db: Session, participant_id: str) -> bool:
-    return (
-        db.scalars(
-            select(Reminder.id).where(
-                Reminder.participant_id == participant_id,
-                Reminder.reminder_type == BATCH_NEXT_ASSIGNMENT_TYPE,
-                Reminder.status == ReminderStatus.PENDING.value,
-            )
-        ).first()
-        is not None
-    )
-
-
-def cancel_pending_next_batch_schedules(db: Session, participant_id: str, *, reason: str):
-    reminders = db.scalars(
-        select(Reminder).where(
-            Reminder.participant_id == participant_id,
-            Reminder.reminder_type == BATCH_NEXT_ASSIGNMENT_TYPE,
-            Reminder.status == ReminderStatus.PENDING.value,
-        )
-    ).all()
-    for reminder in reminders:
-        reminder.status = ReminderStatus.CANCELLED.value
-        reminder.failure_reason = reason
-        reminder.updated_at = utc_now()
 
 
 def schedule_next_batch_assignment(db: Session, participant, participant_session):
@@ -105,8 +79,8 @@ def process_batch_next_assignment_reminder(db: Session, reminder: Reminder):
     Create the next-batch assignment for a due reminder.
     Returns an AssignmentPrompt when a question was assigned, else None.
     """
-    from app.messaging.workflow import create_assignment_prompt
     from app.engagement.reminders import mark_reminder_cancelled
+    from app.messaging.workflow import create_assignment_prompt
 
     participant = reminder.participant
     if not participant:

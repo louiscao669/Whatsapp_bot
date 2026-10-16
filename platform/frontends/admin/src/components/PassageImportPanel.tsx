@@ -1,10 +1,11 @@
-import { useEffect, useState, type FormEvent } from 'react'
+import { useCallback, useEffect, useState, type FormEvent } from 'react'
 import { ApiError } from '../api/client'
 import {
   fetchPassageTranslationNames,
   importPassageTranslation,
   importPassageTranslationFromFile,
 } from '../api/passages'
+import { useApiResource } from '../hooks/useApiResource'
 import { fetchSystemLanguages } from '../api/systemLanguages'
 
 type PassageImportPanelProps = {
@@ -15,7 +16,13 @@ export function PassageImportPanel({ onImported }: PassageImportPanelProps) {
   const [languages, setLanguages] = useState<string[]>([])
   const [language, setLanguage] = useState('')
   const [name, setName] = useState('')
-  const [translationNames, setTranslationNames] = useState<string[]>([])
+  const loadNames = useCallback(() => language
+    ? fetchPassageTranslationNames(language)
+    : Promise.resolve({ names: [] as string[] }), [language])
+  const { data: namesData, setData: setNamesData } = useApiResource(
+    language, loadNames, null, 'Could not load translation names',
+  )
+  const translationNames = namesData?.names ?? []
   const [chapterNumber, setChapterNumber] = useState('')
   const [translationText, setTranslationText] = useState('')
   const [translationFile, setTranslationFile] = useState<File | null>(null)
@@ -33,16 +40,6 @@ export function PassageImportPanel({ onImported }: PassageImportPanelProps) {
         setError(err instanceof ApiError ? err.message : 'Could not load languages'),
       )
   }, [])
-
-  useEffect(() => {
-    if (!language) {
-      setTranslationNames([])
-      return
-    }
-    fetchPassageTranslationNames(language)
-      .then(({ names }) => setTranslationNames(names))
-      .catch(() => setTranslationNames([]))
-  }, [language])
 
   function handleFileChange(file: File | null) {
     setTranslationFile(file)
@@ -85,9 +82,9 @@ export function PassageImportPanel({ onImported }: PassageImportPanelProps) {
       setTranslationFile(null)
       setTranslationText('')
       if (name.trim()) {
-        setTranslationNames((current) =>
-          current.includes(name.trim()) ? current : [...current, name.trim()].sort(),
-        )
+        setNamesData((current) => ({
+          names: Array.from(new Set([...(current?.names ?? []), name.trim()])).sort(),
+        }))
       }
       setName('')
       setChapterNumber('')

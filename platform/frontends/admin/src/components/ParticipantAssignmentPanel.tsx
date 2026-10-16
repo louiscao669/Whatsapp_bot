@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, type FormEvent } from 'react'
+import { useCallback, useState, type FormEvent } from 'react'
 import { ApiError } from '../api/client'
 import {
   assignParticipantQuestions,
@@ -6,32 +6,19 @@ import {
   type ParticipantAssignmentQuestion,
 } from '../api/participants'
 
+import { useApiResource } from '../hooks/useApiResource'
+
 type Props = { participantId: string; onAssigned: (message: string) => void }
 
 export function ParticipantAssignmentPanel({ participantId, onAssigned }: Props) {
-  const [questions, setQuestions] = useState<ParticipantAssignmentQuestion[]>([])
-  const [language, setLanguage] = useState('')
+  const fetchOptions = useCallback(() => fetchParticipantAssignmentOptions(participantId), [participantId])
+  const { data, loading, error, setError, reload: loadOptions } = useApiResource(
+    participantId, fetchOptions, null, 'Could not load assignment options',
+  )
+  const questions = data?.questions ?? []
+  const language = data?.participant_language ?? ''
   const [selected, setSelected] = useState<Record<string, string>>({})
-  const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
-  const [error, setError] = useState('')
-
-  const loadOptions = useCallback(() => {
-    setLoading(true)
-    setError('')
-    return fetchParticipantAssignmentOptions(participantId)
-      .then((payload) => {
-        setQuestions(payload.questions)
-        setLanguage(payload.participant_language)
-        setSelected({})
-      })
-      .catch((err) =>
-        setError(err instanceof ApiError ? err.message : 'Could not load assignment options'),
-      )
-      .finally(() => setLoading(false))
-  }, [participantId])
-
-  useEffect(() => { loadOptions() }, [loadOptions])
 
   function toggleQuestion(question: ParticipantAssignmentQuestion, checked: boolean) {
     setSelected((current) => {
@@ -55,6 +42,7 @@ export function ParticipantAssignmentPanel({ participantId, onAssigned }: Props)
     setError('')
     try {
       const result = await assignParticipantQuestions(participantId, selections)
+      setSelected({})
       onAssigned(result.message)
       await loadOptions()
     } catch (err) {

@@ -10,17 +10,16 @@ import json
 import sys
 from pathlib import Path
 
+import pytest
+
 REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO_ROOT / "packages" / "eten-shared"))
 sys.path.insert(0, str(REPO_ROOT / "human_pilot"))
 
-fails = []
-
 
 def check(name, cond):
     print(f"  [{'PASS' if cond else 'FAIL'}] {name}")
-    if not cond:
-        fails.append(name)
+    assert cond, name
 
 
 class FakeQAItem:
@@ -53,10 +52,43 @@ RETIRED_MCQ = {"uw-174346", "uw-174388"}
 AMBIGUOUS_OPEN = "uw-174382"
 
 
-def test_allowed_forms():
-    rewrites = NS["load_mcq_rewrites"](EVAL)
-    qa2 = NS["load_chapter_qa"](EVAL, 2)
-    qa4 = NS["load_chapter_qa"](EVAL, 4)
+@pytest.fixture
+def legacy_eval_root(tmp_path):
+    """Minimal Luke files exercise the real loaders without generated outputs."""
+    rewrites = {}
+    special_ids = {1: [], 2: ["uw-174346"], 4: ["uw-174388", AMBIGUOUS_OPEN]}
+    for chapter, special in special_ids.items():
+        ids = special + [f"fixture-{chapter}-{index}" for index in range(8 - len(special))]
+        records = []
+        for index, base_id in enumerate(ids):
+            for form in ("open", "mcq"):
+                records.append({
+                    "passage_id": f"{base_id}-{form}",
+                    "q_type": form,
+                    "Q": f"Question {index}?",
+                    "A": "short answer" if form == "open" else {
+                        "A": "short answer", "B": "wrong", "C": "also wrong", "D": "neither",
+                    },
+                    "required_keywords": ["answer"],
+                    "correct": "A",
+                })
+            if base_id not in RETIRED_MCQ:
+                rewrites[f"{base_id}-mcq"] = {"Q": f"Question {index}?"}
+        directory = tmp_path / "outputs" / f"luke{chapter}" / "1.7b" / "omission" / "0%"
+        directory.mkdir(parents=True)
+        (directory / "qa_target_pseudonymized.json").write_text(
+            json.dumps(records), encoding="utf-8"
+        )
+    rewrite_path = tmp_path / "datasets" / "mcq" / "mcq_rewrites.json"
+    rewrite_path.parent.mkdir(parents=True)
+    rewrite_path.write_text(json.dumps(rewrites), encoding="utf-8")
+    return tmp_path
+
+
+def test_allowed_forms(legacy_eval_root):
+    rewrites = NS["load_mcq_rewrites"](legacy_eval_root)
+    qa2 = NS["load_chapter_qa"](legacy_eval_root, 2)
+    qa4 = NS["load_chapter_qa"](legacy_eval_root, 4)
     a2 = NS["allowed_forms"](qa2, rewrites)
     a4 = NS["allowed_forms"](qa4, rewrites)
     check("retired MCQ (uw-174346) may only be delivered as open",
@@ -70,23 +102,23 @@ def test_allowed_forms():
           all(f == {"open", "mcq"} for f in normal))
 
 
-def test_forced_across_seeds():
+def test_forced_across_seeds(legacy_eval_root):
     """The pre-fix behaviour was correct only by luck of the seeded quota."""
-    rewrites = NS["load_mcq_rewrites"](EVAL)
+    rewrites = NS["load_mcq_rewrites"](legacy_eval_root)
     ok = True
     for seed in (1, 7, 99, 2026, 31337):
         for ch, bid, want in [(2, "uw-174346", "open"), (4, "uw-174388", "open"),
                               (4, AMBIGUOUS_OPEN, "mcq")]:
-            qa = NS["load_chapter_qa"](EVAL, ch)
+            qa = NS["load_chapter_qa"](legacy_eval_root, ch)
             types = NS["choose_question_types"](qa, 0.75, seed,
                                                 allowed=NS["allowed_forms"](qa, rewrites))
             ok &= types.get(bid) == want
     check("retired forms never selected, across 5 seeds", ok)
 
 
-def test_unconstrained_default_unchanged():
+def test_unconstrained_default_unchanged(legacy_eval_root):
     """Omitting `allowed` must preserve the original behaviour."""
-    qa = NS["load_chapter_qa"](EVAL, 1)
+    qa = NS["load_chapter_qa"](legacy_eval_root, 1)
     before = NS["choose_question_types"](qa, 0.75, 2026)
     n_open = sum(1 for v in before.values() if v == "open")
     check("no-allowed call still assigns every item", len(before) == len(qa))
@@ -115,6 +147,7 @@ def test_build_plan_pool_guard():
 def test_bsb_participant_files_reject_raw_placeholders():
     """Mechanical style labels must never reach a participant-facing import."""
     from tempfile import TemporaryDirectory
+
     from pilot_import import _pick_bsb_participant_file
 
     with TemporaryDirectory() as tmp:
@@ -134,11 +167,15 @@ def test_bsb_participant_files_reject_raw_placeholders():
 def test_prune_identifies_stale_form():
     """prune_stale_qa must target a row whose FORM is wrong while its text matches, and
     must refuse when responses would CASCADE."""
-    from sqlalchemy import create_engine, event, select, func
-    from sqlalchemy.orm import Session
     from eten_shared.models import (
-        Assignment, Base, Participant, ParticipantResponse, QAItem,
+        Assignment,
+        Base,
+        Participant,
+        ParticipantResponse,
+        QAItem,
     )
+    from sqlalchemy import create_engine, event, select
+    from sqlalchemy.orm import Session
     src = (REPO_ROOT / "human_pilot" / "pilot_import.py").read_text(encoding="utf-8")
     tree = ast.parse(src)
     fn = [n for n in tree.body
@@ -198,18 +235,6 @@ def test_prune_identifies_stale_form():
           blocked2[0][3] == 1 and blocked2[0][4] == 1)
 
 
-def main():
-    for label, fn in [("allowed_forms", test_allowed_forms),
-                      ("forced selection across seeds", test_forced_across_seeds),
-                      ("unconstrained default unchanged", test_unconstrained_default_unchanged),
-                      ("tier-1 build_plan + window guard", test_build_plan_pool_guard),
-                      ("BSB placeholder guard", test_bsb_participant_files_reject_raw_placeholders),
-                      ("prune_stale_qa", test_prune_identifies_stale_form)]:
-        print(f"{label}:")
-        fn()
-    print("\n" + ("ALL TESTS PASSED" if not fails else f"FAILED: {fails}"))
-    return 1 if fails else 0
-
 
 if __name__ == "__main__":
-    sys.exit(main())
+    sys.exit(pytest.main([__file__, *sys.argv[1:]]))

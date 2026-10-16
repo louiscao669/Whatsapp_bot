@@ -1,6 +1,17 @@
 """Dashboard journey services."""
 
-from ._common import *  # noqa: F401,F403
+from eten_shared.models import (
+    Assignment,
+    AssignmentStatus,
+    Participant,
+    ParticipantCurrencyEvent,
+    ParticipantResponse,
+    QAItem,
+)
+from sqlalchemy import func, select
+
+from ._common import CHEST_REWARD_MAX, CHEST_REWARD_MIN
+
 
 def get_luke_chapter_activity(db, participant_id, chapter_count=24):
     from .serialization import _luke_chapter_from_reference
@@ -38,12 +49,16 @@ def get_luke_chapter_activity(db, participant_id, chapter_count=24):
 
 
 def get_luke_journey_chapters(db, participant_id):
-    from .serialization import _luke_chapter_from_reference
-    from .serialization import _serialize_dashboard_question
-    from .serialization import _serialize_completed_question_review
+    from .serialization import (
+        _luke_chapter_from_reference,
+        _serialize_completed_question_review,
+        _serialize_dashboard_question,
+    )
 
     participant = db.get(Participant, participant_id)
-    preferred_batch_size = max(int(getattr(participant, "preferred_batch_size", 3) or 3), 1)
+    preferred_batch_size = max(
+        int(getattr(participant, "preferred_batch_size", 3) or 3), 1
+    )
     chest_reward_events = {
         event.source_event_id: event
         for event in db.scalars(
@@ -171,5 +186,3 @@ def get_luke_journey_chapters(db, participant_id):
             "current_batch_index": active_batch_index,
         }
     ]
-
-

@@ -1,16 +1,67 @@
 """Dashboard questions services."""
 
-from ._common import *  # noqa: F401,F403
+from eten_shared.answer_llm_scoring import llm_answer_scoring_enabled
+from eten_shared.answer_receipts import create_answer_receipt
+from eten_shared.domain.assignments import (
+    automatic_assignment_enabled,
+    complete_current_batch_if_needed,
+    create_assignment_for_qa_item,
+    experiment_assignment_enabled,
+    get_or_create_participant_session,
+    record_participant_event,
+    try_complete_assignment,
+)
+from eten_shared.domain.streaks import update_streak_for_response
+from eten_shared.keyword_matching import normalize_response_text
+from eten_shared.mcq import (
+    choice_letters_for_item,
+    choice_response_is_correct,
+    choice_response_letter,
+    is_choice_scored_item,
+)
+from eten_shared.models import (
+    Assignment,
+    AssignmentStatus,
+    ParticipantEvent,
+    ParticipantResponse,
+    ParticipantWallet,
+    QAItem,
+    ResponseType,
+    ReviewStatus,
+    SessionState,
+    SourceChannel,
+    utc_now,
+)
+from eten_shared.notification_types import (
+    ANSWER_LLM_SCORE_REQUESTED_TYPE,
+    DASHBOARD_ANSWER_SYNCED_TYPE,
+    MCQ_CHOICE_RESOLUTION_REQUESTED_TYPE,
+)
+from sqlalchemy import select
 
-def submit_dashboard_answer(db, participant_id: str, assignment_id: str, response_text: str):
+from backend.user_dashboard.errors import DashboardAnswerError
+
+from ._common import (
+    ANSWER_COMPLETED_DIAMONDS,
+    BATCH_COMPLETED_BONUS_DIAMONDS,
+    FIRST_ANSWER_COMPLETED_DIAMONDS,
+)
+
+
+def submit_dashboard_answer(
+    db, participant_id: str, assignment_id: str, response_text: str
+):
+    from backend.shared.assignment_selection import (
+        experiment_assignment_kwargs,
+        select_next_participant_qa_item,
+    )
+
+    from .engagement import _enqueue_outbox_notification
     from .profile import _participant_by_id
     from .rewards import _award_dashboard_currency
-    from .engagement import _enqueue_outbox_notification
-    from .store import _get_or_create_wallet
     from .scheduling import _schedule_dashboard_next_batch
     from .serialization import _serialize_dashboard_question
-    from backend.shared.assignment_selection import select_next_participant_qa_item
-    from backend.shared.assignment_selection import experiment_assignment_kwargs
+    from .store import _get_or_create_wallet
 
     assignment_id = (assignment_id or "").strip()
     answer_text = (response_text or "").strip()
@@ -48,7 +99,6 @@ def submit_dashboard_answer(db, participant_id: str, assignment_id: str, respons
     matched_keywords = []
     missing_keywords = []
     flag_reason = None
-    needs_expert_review = False
     stored_response_text = answer_text
     backtranslated_text = None
     scoring_metadata = {}
@@ -83,7 +133,6 @@ def submit_dashboard_answer(db, participant_id: str, assignment_id: str, respons
         # confound). Open answers are LLM-judged only; see workflow.py.
         normalized_text = normalize_response_text(answer_text)
         correctness_score = None
-        needs_expert_review = True
         is_correct_label = "pending"
         review_status = ReviewStatus.PENDING.value
         if llm_answer_scoring_enabled():
@@ -124,12 +173,16 @@ def submit_dashboard_answer(db, participant_id: str, assignment_id: str, respons
     db.flush()
     if not is_choice_scored_item(qa_item) and llm_answer_scoring_enabled():
         _enqueue_outbox_notification(
-            db, participant, ANSWER_LLM_SCORE_REQUESTED_NOTIFICATION,
+            db,
+            participant,
+            ANSWER_LLM_SCORE_REQUESTED_TYPE,
             {"response_id": response.id},
         )
     elif mcq_needs_llm_resolution:
         _enqueue_outbox_notification(
-            db, participant, MCQ_CHOICE_RESOLUTION_REQUESTED_NOTIFICATION,
+            db,
+            participant,
+            MCQ_CHOICE_RESOLUTION_REQUESTED_TYPE,
             {"response_id": response.id},
         )
 
@@ -279,7 +332,7 @@ def submit_dashboard_answer(db, participant_id: str, assignment_id: str, respons
     _enqueue_outbox_notification(
         db,
         participant,
-        DASHBOARD_ANSWER_SYNCED_NOTIFICATION,
+        DASHBOARD_ANSWER_SYNCED_TYPE,
         {
             "response_id": response.id,
             "assignment_id": assignment.id,
@@ -325,7 +378,6 @@ def submit_dashboard_answer_receipt(
     from .profile import _participant_by_id
     from .serialization import _serialize_dashboard_question
 
-
     assignment_id = (assignment_id or "").strip()
     answer_text = (response_text or "").strip()
     submission_id = (submission_id or "").strip()
@@ -362,17 +414,24 @@ def submit_dashboard_answer_receipt(
     except ValueError as exc:
         raise DashboardAnswerError(str(exc)) from exc
 
-    next_assignment = db.get(Assignment, assignment.next_assignment_id) \
-        if assignment.next_assignment_id else None
+    next_assignment = (
+        db.get(Assignment, assignment.next_assignment_id)
+        if assignment.next_assignment_id
+        else None
+    )
     next_question = None
     if next_assignment and next_assignment.status == AssignmentStatus.ASSIGNED.value:
-        next_qa_item = next_assignment.qa_item or db.get(QAItem, next_assignment.qa_item_id)
+        next_qa_item = next_assignment.qa_item or db.get(
+            QAItem, next_assignment.qa_item_id
+        )
         if next_qa_item:
             next_question = _serialize_dashboard_question(
                 db, participant, next_assignment, next_qa_item, question_index=0
             )
     wallet = db.scalar(
-        select(ParticipantWallet).where(ParticipantWallet.participant_id == participant.id)
+        select(ParticipantWallet).where(
+            ParticipantWallet.participant_id == participant.id
+        )
     )
     return {
         "answer_submission": {
@@ -393,10 +452,12 @@ def submit_dashboard_answer_receipt(
 
 def expire_dashboard_question(db, participant_id: str, assignment_id: str):
     """Expire an unanswered dashboard question and return its successor."""
+    from backend.admin.services.participant_assignment_service import (
+        skip_participant_assignment,
+    )
+
     from .profile import _participant_by_id
     from .serialization import _serialize_dashboard_question
-
-    from backend.admin.services.participant_assignment_service import skip_participant_assignment
 
     participant = _participant_by_id(db, participant_id)
     if not participant:
@@ -419,7 +480,9 @@ def expire_dashboard_question(db, participant_id: str, assignment_id: str):
     )
     next_question = None
     if next_assignment and next_assignment.status == AssignmentStatus.ASSIGNED.value:
-        next_qa_item = next_assignment.qa_item or db.get(QAItem, next_assignment.qa_item_id)
+        next_qa_item = next_assignment.qa_item or db.get(
+            QAItem, next_assignment.qa_item_id
+        )
         if next_qa_item:
             next_question = _serialize_dashboard_question(
                 db, participant, next_assignment, next_qa_item, question_index=0
@@ -433,14 +496,12 @@ def expire_dashboard_question(db, participant_id: str, assignment_id: str):
 
 
 def start_dashboard_new_batch(db, participant_id: str):
+    from .payload import get_user_dashboard_payload
     from .profile import _participant_by_id
     from .scheduling import _assign_dashboard_next_batch
-    from .payload import get_user_dashboard_payload
 
     participant = _participant_by_id(db, participant_id)
     if not participant:
         raise DashboardAnswerError("Participant not found")
     _assign_dashboard_next_batch(db, participant, source="manual")
     return get_user_dashboard_payload(db, participant_id)
-
-

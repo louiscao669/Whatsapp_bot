@@ -3,12 +3,14 @@
 import json
 import re
 
-from sqlalchemy import select
-
 from eten_shared.models import QAItem
 from eten_shared.repo_paths import REPO_ROOT
-from eten_shared.languages import LanguageError as QAImportError
-from backend.admin.services.uw_qa_import_service import import_qa_entries, parse_entries_from_json_text
+from sqlalchemy import select
+
+from backend.admin.services.uw_qa_import_service import (
+    import_qa_entries,
+    parse_entries_from_json_text,
+)
 
 
 class QaItemsMutationError(Exception):

@@ -16,6 +16,16 @@ import time
 from pathlib import Path
 from typing import Any
 
+REPO_ROOT = Path(__file__).resolve().parents[4]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from evaluation.scripts.variants._common import (
+    content_len as content_len,
+)
+from evaluation.scripts.variants._common import (
+    write_json as write_json,
+)
 
 CONTENT_CHAR_PATTERN = re.compile(r"[\w\u3400-\u9fff]")
 PROTECTED_TOKEN_PATTERN = re.compile(r"__[A-Za-z0-9_]+__")
@@ -44,18 +54,6 @@ def load_text(path: Path) -> str:
     if not path.exists():
         raise AwkwardBankError(f"File not found: {path}")
     return path.read_text(encoding="utf-8")
-
-
-def write_json(path: Path, data: Any) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(
-        json.dumps(data, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-    )
-
-
-def content_len(text: str) -> int:
-    return len(CONTENT_CHAR_PATTERN.findall(text or ""))
 
 
 def has_protected_token(text: str) -> bool:

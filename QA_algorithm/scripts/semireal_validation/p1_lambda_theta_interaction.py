@@ -15,9 +15,13 @@ FLOORED slope still rises with theta, ability-dependence of lambda is real.
 Reads raw score files directly (self-contained). Writes a tidy CSV + prints a summary.
 """
 from __future__ import annotations
-import csv, json, math, os
+
+import csv
+import json
+import math
 from collections import defaultdict
 from pathlib import Path
+
 import numpy as np
 
 REPO = Path(__file__).resolve().parents[3]

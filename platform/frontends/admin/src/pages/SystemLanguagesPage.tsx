@@ -1,46 +1,31 @@
-import { useCallback, useEffect, useState, type FormEvent } from 'react'
+import { useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { ApiError, getCachedApiData, setCachedApiData } from '../api/client'
 import { addSystemLanguage, fetchSystemLanguages, removeSystemLanguage } from '../api/systemLanguages'
-import { useAuth } from '../auth/AuthContext'
+import { useAuth } from '../auth/useAuth'
 import { homePathForRole } from '../auth/homePath'
 import { ExpertLogoutButton } from '../components/ExpertLogoutButton'
+
+import { useApiResource } from '../hooks/useApiResource'
 
 export function SystemLanguagesPage() {
   const { user } = useAuth()
   const cachedLanguages = getCachedApiData<{ languages: string[] }>('/api/v1/system-languages')
-  const [languages, setLanguages] = useState<string[]>(cachedLanguages?.languages ?? [])
+  const { data, setData, loading, error, setError } = useApiResource(
+    '/api/v1/system-languages', fetchSystemLanguages, cachedLanguages, 'Failed to load languages',
+  )
+  const languages = data?.languages ?? []
   const [code, setCode] = useState('')
-  const [loading, setLoading] = useState(!cachedLanguages)
-  const [error, setError] = useState('')
   const [message, setMessage] = useState('')
   const useStandaloneShell = user?.role === 'expert' || user?.role === 'admin'
   const backPath = homePathForRole(user?.role)
-
-  const load = useCallback(() => {
-    const cached = getCachedApiData<{ languages: string[] }>('/api/v1/system-languages')
-    if (cached) {
-      setLanguages(cached.languages)
-    }
-    setLoading(!cached)
-    return fetchSystemLanguages()
-      .then((data) => setLanguages(data.languages))
-      .catch((err) => {
-        setError(err instanceof ApiError ? err.message : 'Failed to load languages')
-      })
-      .finally(() => setLoading(false))
-  }, [])
-
-  useEffect(() => {
-    load()
-  }, [load])
 
   async function handleAdd(event: FormEvent) {
     event.preventDefault()
     setError('')
     try {
       const result = await addSystemLanguage(code.trim())
-      setLanguages(result.languages)
+      setData({ languages: result.languages })
       setCachedApiData('/api/v1/system-languages', { languages: result.languages })
       setCode('')
       setMessage('Language added.')
@@ -56,7 +41,7 @@ export function SystemLanguagesPage() {
     setError('')
     try {
       const result = await removeSystemLanguage(language)
-      setLanguages(result.languages)
+      setData({ languages: result.languages })
       setCachedApiData('/api/v1/system-languages', { languages: result.languages })
       setMessage('Language removed.')
     } catch (err) {

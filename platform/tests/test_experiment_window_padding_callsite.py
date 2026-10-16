@@ -10,31 +10,29 @@ place that calls it; this one drives the real function and would have.
 
 Run: python3 platform/tests/test_experiment_window_padding_callsite.py   (no DB / env)
 """
-import os
 import sys
 from pathlib import Path
 
-os.environ.setdefault("REQUIRE_QUESTION_AUDIO", "false")
 REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO_ROOT / "packages" / "eten-shared"))
 
+from eten_shared.domain.assignments import (
+    PASSAGE_DELIVERY_VERSE_COUNT,
+    experiment_passage_assignment_kwargs,
+)
+from eten_shared.models import (
+    Base,
+    ExperimentPassage,
+    ExperimentPassageVerse,
+    ExperimentWindow,
+    QAItem,
+)
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
-from eten_shared.models import (
-    Base, ExperimentPassage, ExperimentPassageVerse, ExperimentWindow, QAItem,
-)
-from eten_shared.domain.assignments import (
-    PASSAGE_DELIVERY_VERSE_COUNT, experiment_passage_assignment_kwargs,
-)
 
-fails = []
-
-
-def check(name, cond):
-    print(f"  [{'PASS' if cond else 'FAIL'}] {name}")
-    if not cond:
-        fails.append(name)
+def check(name, condition):
+    assert condition, name
 
 
 def build(surviving, window_numbers, other_windows=()):
@@ -72,43 +70,46 @@ def build(surviving, window_numbers, other_windows=()):
     return db, passage, item
 
 
-# THE REGRESSION: a window cut down to one verse by omission. This is the exact shape
-# that raised NameError: name 'pad_window_verses' is not defined.
-db, passage, item = build(surviving=["1", "2", "3", "4", "5"], window_numbers=["3", "4", "5"])
-db.execute(ExperimentPassageVerse.__table__.delete().where(
-    ExperimentPassageVerse.verse_number.in_(["4", "5"])))
-db.commit()
-kwargs = experiment_passage_assignment_kwargs(db, passage, item)
-check("a window cut to one verse is served, not an exception",
-      isinstance(kwargs, dict) and kwargs.get("passage_verse_numbers"))
-check(f"and it is padded back to {PASSAGE_DELIVERY_VERSE_COUNT} verses",
-      len(kwargs["passage_verse_numbers"]) == PASSAGE_DELIVERY_VERSE_COUNT)
-check("the padded text is non-empty", bool(kwargs["passage_text"].strip()))
-check("padding never resurrects a deleted verse",
-      not ({"4", "5"} & set(kwargs["passage_verse_numbers"])))
-db.close()
+def test_assignment_padding_cases():
+    # THE REGRESSION: a window cut down to one verse by omission. This is the exact shape
+    # that raised NameError: name 'pad_window_verses' is not defined.
+    db, passage, item = build(surviving=["1", "2", "3", "4", "5"], window_numbers=["3", "4", "5"])
+    db.execute(ExperimentPassageVerse.__table__.delete().where(
+        ExperimentPassageVerse.verse_number.in_(["4", "5"])))
+    db.commit()
+    kwargs = experiment_passage_assignment_kwargs(db, passage, item)
+    check("a window cut to one verse is served, not an exception",
+          isinstance(kwargs, dict) and kwargs.get("passage_verse_numbers"))
+    check(f"and it is padded back to {PASSAGE_DELIVERY_VERSE_COUNT} verses",
+          len(kwargs["passage_verse_numbers"]) == PASSAGE_DELIVERY_VERSE_COUNT)
+    check("the padded text is non-empty", bool(kwargs["passage_text"].strip()))
+    check("padding never resurrects a deleted verse",
+          not ({"4", "5"} & set(kwargs["passage_verse_numbers"])))
+    db.close()
 
-# an intact window must be returned verbatim, padding untouched
-db, passage, item = build(surviving=["1", "2", "3", "4"], window_numbers=["2", "3", "4"])
-kwargs = experiment_passage_assignment_kwargs(db, passage, item)
-check("an intact window is passed through unchanged",
-      kwargs["passage_verse_numbers"] == ["2", "3", "4"])
-db.close()
+    # an intact window must be returned verbatim, padding untouched
+    db, passage, item = build(surviving=["1", "2", "3", "4"], window_numbers=["2", "3", "4"])
+    kwargs = experiment_passage_assignment_kwargs(db, passage, item)
+    check("an intact window is passed through unchanged",
+          kwargs["passage_verse_numbers"] == ["2", "3", "4"])
+    db.close()
 
-# a wholly deleted window has nothing to anchor: no verses, no crash
-db, passage, item = build(surviving=["1", "2"], window_numbers=["7", "8", "9"])
-kwargs = experiment_passage_assignment_kwargs(db, passage, item)
-check("a wholly deleted window still returns padding rather than failing",
-      isinstance(kwargs, dict))
-db.close()
+    # a wholly deleted window has nothing to anchor: no verses, no crash
+    db, passage, item = build(surviving=["1", "2"], window_numbers=["7", "8", "9"])
+    kwargs = experiment_passage_assignment_kwargs(db, passage, item)
+    check("a wholly deleted window still returns padding rather than failing",
+          isinstance(kwargs, dict))
+    db.close()
 
-# `occupied` is advisory: a short window is never returned just to dodge an overlap
-db, passage, item = build(surviving=["1", "2", "3"], window_numbers=["3"],
-                          other_windows=(["1", "2"],))
-kwargs = experiment_passage_assignment_kwargs(db, passage, item)
-check("a claimed verse is taken rather than returning a short window",
-      len(kwargs["passage_verse_numbers"]) == PASSAGE_DELIVERY_VERSE_COUNT)
-db.close()
+    # `occupied` is advisory: a short window is never returned just to dodge an overlap
+    db, passage, item = build(surviving=["1", "2", "3"], window_numbers=["3"],
+                              other_windows=(["1", "2"],))
+    kwargs = experiment_passage_assignment_kwargs(db, passage, item)
+    check("a claimed verse is taken rather than returning a short window",
+          len(kwargs["passage_verse_numbers"]) == PASSAGE_DELIVERY_VERSE_COUNT)
+    db.close()
 
-print("\n" + ("ALL TESTS PASSED" if not fails else f"FAILED: {fails}"))
-sys.exit(1 if fails else 0)
+
+if __name__ == "__main__":
+    test_assignment_padding_cases()
+    print("ALL TESTS PASSED")

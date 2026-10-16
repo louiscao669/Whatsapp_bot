@@ -1,28 +1,14 @@
-import logging
 import os
-import sys
 from datetime import timedelta
-from importlib.util import module_from_spec, spec_from_file_location
 
 from dotenv import load_dotenv
-
-from eten_shared.log_redaction import install_log_redaction
 from eten_shared.repo_paths import REPO_ROOT
-
-
-def _load_config_defaults():
-    config_path = REPO_ROOT / "config.py"
-    if not config_path.exists():
-        return
-
-    spec = spec_from_file_location("eten_runtime_config", config_path)
-    if not spec or not spec.loader:
-        return
-
-    module = module_from_spec(spec)
-    spec.loader.exec_module(module)
-    for key, value in getattr(module, "CONFIG_DEFAULTS", {}).items():
-        os.environ.setdefault(key, str(value))
+from eten_shared.runtime_config import (
+    configure_logging as configure_logging,
+)
+from eten_shared.runtime_config import (
+    load_config_defaults as _load_config_defaults,
+)
 
 
 def _strip_env_token(value):
@@ -62,17 +48,3 @@ def configure_session_security(app):
     app.config["SESSION_COOKIE_SECURE"] = os.getenv("SESSION_COOKIE_SECURE", "true").lower() == "true"
     session_hours = int(os.getenv("ADMIN_SESSION_LIFETIME_HOURS", "8"))
     app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(hours=session_hours)
-
-
-def configure_logging():
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-        stream=sys.stdout,
-    )
-    # Client IPs, participant ids and deep-link tokens must not reach the
-    # journal: it is outside every data path the protocol describes, so
-    # nothing exports it, prunes it or destroys it with the rest of the
-    # identifiers. Attached to the root handlers, which is what the WSGI
-    # access log propagates to.
-    install_log_redaction()

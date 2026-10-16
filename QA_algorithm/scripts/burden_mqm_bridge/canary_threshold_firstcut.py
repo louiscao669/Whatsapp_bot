@@ -121,7 +121,6 @@ def main():
                      f"false alarm {fa:.3f}")
 
     # AUC (pooled z)
-    allz = sorted(set(posz + negz))
     auc = float(np.mean([[pz > nz for nz in negz].count(True) +
                          0.5 * [pz == nz for nz in negz].count(True)
                          for pz in posz]) / len(negz))

@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { ApiError } from '../api/client'
 import {
   fetchExperimentPassageDetail,
-  type ExperimentPassageDetail,
 } from '../api/experimentPassages'
+
+import { useApiResource } from '../hooks/useApiResource'
 
 function formatTimestamp(value: string | null): string {
   if (!value) return '—'
@@ -14,29 +15,12 @@ function formatTimestamp(value: string | null): string {
 
 export function ExperimentPassageDetailPage() {
   const { passageId } = useParams<{ passageId: string }>()
-  const [detail, setDetail] = useState<ExperimentPassageDetail | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
-
-  const loadDetail = useCallback(() => {
-    if (!passageId) return Promise.resolve()
-    setError('')
-    setLoading(true)
-    return fetchExperimentPassageDetail(passageId)
-      .then((data) => setDetail(data))
-      .catch((err) => {
-        if (err instanceof ApiError && err.status === 404) {
-          setError('Experiment passage not found.')
-          return
-        }
-        setError(err instanceof ApiError ? err.message : 'Failed to load passage')
-      })
-      .finally(() => setLoading(false))
-  }, [passageId])
-
-  useEffect(() => {
-    loadDetail()
-  }, [loadDetail])
+  const loadDetail = useCallback(() => passageId
+    ? fetchExperimentPassageDetail(passageId)
+    : Promise.reject(new ApiError('Experiment passage not found.', 404)), [passageId])
+  const { data: detail, loading, error } = useApiResource(
+    passageId ?? '', loadDetail, null, 'Failed to load passage', 'Experiment passage not found.',
+  )
 
   return (
     <section className="panel">

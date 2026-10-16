@@ -32,9 +32,12 @@ silently turns the control into noise.
 """
 from __future__ import annotations
 
-import argparse, json, os, sys
+import argparse
+import json
+import os
+import sys
 from pathlib import Path
-from typing import List, Literal, Optional
+from typing import List
 
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[3]
@@ -49,8 +52,8 @@ def build_chains(model, provider, effort):
     """Two chains: one that corrupts, one that checks. Separate models would be better
     still, but the check asks a different question than the rewrite, which is most of the
     independence that matters."""
-    from pydantic import BaseModel, Field
     from langchain_core.prompts import ChatPromptTemplate
+    from pydantic import BaseModel, Field
 
     class Corruption(BaseModel):
         corrupted_window: str = Field(

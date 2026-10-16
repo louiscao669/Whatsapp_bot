@@ -20,12 +20,12 @@ REPO_ROOT = Path(__file__).resolve().parents[4]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
+from evaluation.scripts._common import all_format_variants as all_format_variants
 from evaluation.scripts.pipeline.decanonicalize import (
     DEFAULT_ENGLISH_TOKEN_MAPPING,
     PROTECTED_TOKEN_MAPPING,
     replace_english_terms,
 )
-
 
 CHOICE_LABELS = ("A", "B", "C", "D")
 
@@ -171,27 +171,6 @@ def question_from_tagged_content(content: Any) -> Optional[str]:
         return None
     question = re.sub(r"\n\s*[A-D]\.\s+.*$", "", match.group(1).strip(), flags=re.DOTALL)
     return question.strip() or None
-
-
-def all_format_variants(item: dict) -> List[dict]:
-    variants = []
-    for q_type in ("open", "mcq"):
-        nested = item.get(q_type)
-        if not isinstance(nested, dict):
-            continue
-        merged = {
-            key: value
-            for key, value in item.items()
-            if key not in {"open", "mcq"}
-        }
-        merged.update(nested)
-        merged["q_type"] = q_type
-        base_id = item.get("content_id") or item.get("id") or item.get("passage_id")
-        if base_id:
-            merged["content_id"] = f"{base_id}-{q_type}"
-            merged["passage_id"] = f"uw-{base_id}-{q_type}"
-        variants.append(merged)
-    return variants
 
 
 def expanded_items(items: Iterable[dict]) -> List[dict]:

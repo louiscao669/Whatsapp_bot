@@ -1,6 +1,24 @@
 """Dashboard serialization services."""
 
-from ._common import *  # noqa: F401,F403
+import re
+
+from eten_shared.domain.assignments import (
+    assignment_passage_snapshot,
+    surrounding_passage_text,
+)
+from eten_shared.mcq import is_choice_scored_item
+from eten_shared.models import ParticipantResponse, QAItemRecording
+from eten_shared.recordings import (
+    get_latest_question_recording,
+    participant_language_code,
+)
+from sqlalchemy import func, select
+
+from backend.shared.response_labels import (
+    format_choice_correctness_label,
+    open_response_status_label,
+)
+
 
 def _iso_datetime(value):
     return value.isoformat() if value else None
@@ -137,5 +155,3 @@ def _serialize_completed_question_review(db, participant, assignment, qa_item):
         "correctness": correctness,
         "submitted_at": _iso_datetime(response.received_at),
     }
-
-
