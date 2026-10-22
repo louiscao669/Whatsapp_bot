@@ -66,6 +66,10 @@ CHAPTERS = range(1, 9)
 ANSWER_MODELS = ["1.7b", "1.5b", "llama 1b", "llama 3b"]  # search order; target files identical
 LANGUAGE = "zh"
 MCQ_FRACTION = 0.75
+# Option E, "cannot tell from this passage" -- the same wording hard66 uses
+# (pilot_import_hard66.CANNOT_TELL). ``--cannot-tell`` adds it to every MCQ that lacks it.
+CANNOT_TELL = "根据这段文字无法判断"
+ADD_CANNOT_TELL = False
 # [NEW 2026-07-27b] Item exclusions, mirroring evaluation/scripts/mcq/legacy_luke/regen_mcq_tier01.py. The
 # delivered qa_target_pseudonymized.json files still CONTAIN these records --
 # promote_mcq_rewrites.py patches, it never deletes -- so the importer must filter them or the
@@ -748,6 +752,8 @@ def build_tier1_qa_item(passage_id: str, entry: dict, qtype: str, *, base_id: st
         kwargs.update(expected_answer=str(record.get("A") or ""), mcq_choices=[])
     else:
         options = record.get("A") or {}
+        if ADD_CANNOT_TELL and "E" not in options:
+            options = {**options, "E": CANNOT_TELL}
         correct = str(record.get("correct") or "A").strip()[:1]
         kwargs.update(
             # Four content options, plus E when the item carries the single
@@ -1283,7 +1289,7 @@ def upload(database_url, qa_rows, window_rows, passage_rows, prune=False):
 
 
 def main():
-    global TIER1_ROOT, TIER1_WINDOWS
+    global TIER1_ROOT, TIER1_WINDOWS, ADD_CANNOT_TELL
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument(
         "--eval-root",
@@ -1314,6 +1320,10 @@ def main():
               "both available forms; mcq/open imports only that form (default: mixed)"),
     )
     ap.add_argument("--seed", type=int, default=2026)
+    ap.add_argument("--cannot-tell", action="store_true",
+                    help=f"add option E ({CANNOT_TELL}) to every MCQ that lacks it, as hard66 has. "
+                         "Only affects newly imported rows; for rows already in the database run "
+                         "human_pilot/add_cannot_tell_option.py")
     ap.add_argument("--database-url", default=None, help="overrides DATABASE_URL env")
     ap.add_argument("--dry-run", action="store_true", help="build + print the plan, no DB writes")
     ap.add_argument("--prune-stale-qa", action="store_true",
@@ -1325,6 +1335,7 @@ def main():
     args = ap.parse_args()
 
     TIER1_ROOT = args.tier1_root
+    ADD_CANNOT_TELL = args.cannot_tell
     TIER1_WINDOWS = args.windows_file
 
     args.eval_root = args.eval_root.expanduser().resolve()
