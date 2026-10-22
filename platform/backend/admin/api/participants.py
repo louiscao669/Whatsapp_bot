@@ -61,6 +61,7 @@ def post_test_participant():
                 qa_set=body.get("qa_set"),
                 wh_types=body.get("wh_types"),
                 question_forms=body.get("question_forms"),
+                quality_dimensions=body.get("quality_dimensions"),
             )
             db.commit()
     except TestParticipantError as exc:

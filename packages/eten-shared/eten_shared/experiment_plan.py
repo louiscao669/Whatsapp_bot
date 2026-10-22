@@ -39,6 +39,41 @@ SLOTS = [
     "grammar30",
     "wbw",
 ]
+# Quality dimensions: which slot conditions probe ADEQUACY (meaning preservation) and
+# which probe FLUENCY (target-language form). A test participant can be restricted to
+# one dimension; the plan keeps only that dimension's cells. The clean anchors belong
+# to both, because each ladder needs its own 0% dose for re-zeroing. ``wbw`` (word by
+# word) is filed under fluency as the high-dose fluency canary, though it also damages
+# open-answer production. Keys/order are what the admin form shows.
+QUALITY_DIMENSIONS = {
+    "adequacy": ("clean", "omission15", "omission30", "mistranslation15", "mistranslation30"),
+    "fluency": ("clean", "grammar30", "wbw"),
+}
+PARTICIPANT_QUALITY_DIMENSIONS_KEY = "quality_dimensions"
+
+
+def parse_quality_dimensions(value):
+    """None / "" / [] -> []; "adequacy" / ["fluency"] -> sorted list; unknown refused."""
+    if value is None:
+        return []
+    if isinstance(value, str):
+        value = value.replace(",", " ").split()
+    names = {str(v).strip().lower() for v in value if str(v).strip()}
+    unknown = names - set(QUALITY_DIMENSIONS)
+    if unknown:
+        raise ValueError(
+            f"unknown quality dimension(s) {sorted(unknown)}; known: {', '.join(QUALITY_DIMENSIONS)}"
+        )
+    return sorted(names)
+
+
+def dimension_conditions(dimensions):
+    """Conditions kept for the given dimensions; None (= keep all) when none given."""
+    if not dimensions:
+        return None
+    return {c for d in dimensions for c in QUALITY_DIMENSIONS[d]}
+
+
 # ``chapter`` in the legacy schema now stores the balanced window-group index.
 GROUPS = list(range(1, 9))
 LANGUAGE = "zh"
@@ -171,12 +206,15 @@ def tier1_variant_gaps(db, language, qa_set=None):
 
 
 def write_participant_plan(db, participant, block_index: int, language: str = LANGUAGE,
-                           qa_set: str = DEFAULT_QA_SET):
+                           qa_set: str = DEFAULT_QA_SET, conditions=None):
     """Stage one participant's plan cells (caller commits). Returns the cell tuples.
 
     Same checks as the CLI: refuses when nothing is imported, when a tier-1 variant is
     missing, or when the participant already has a plan. ``qa_set`` picks which
-    imported question set the participant is served.
+    imported question set the participant is served. ``conditions`` (a set of slot
+    condition names, see ``dimension_conditions``) keeps only those cells; the
+    Latin-square rotation is unchanged, so the kept cells are exactly the full
+    plan's cells for those conditions.
     """
     config = qa_set_config(qa_set)
     existing = db.scalar(
@@ -207,6 +245,10 @@ def write_participant_plan(db, participant, block_index: int, language: str = LA
             )
 
     cells = build_cells(participant.id, block_index % len(SLOTS), qa_set)
+    if conditions is not None:
+        cells = [cell for cell in cells if cell[1] in conditions]
+        if not cells:
+            raise ExperimentPlanError("No plan conditions match the chosen quality dimension")
     for chapter, condition, seq in cells:
         db.add(ExperimentPlanCell(
             participant_id=participant.id,

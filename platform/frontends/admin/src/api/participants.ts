@@ -169,6 +169,7 @@ export type CreatedTestParticipant = {
   wh_types: string[]
   wh_question_count: number | null
   question_forms: string[]
+  quality_dimensions?: string[]
   slot_count: number
   plan: TestParticipantPlanCell[]
   pilot_path: string | null
@@ -179,6 +180,7 @@ export type TestParticipantOptions = {
   wh_types: string[]
   question_forms: string[]
   default_question_forms: string[]
+  quality_dimensions?: Record<string, string[]>
   qa_sets: {
     key: string
     label: string
@@ -199,6 +201,7 @@ export function createTestParticipant(input: {
   qa_set?: string
   wh_types?: string[]
   question_forms?: string[]
+  quality_dimensions?: string[]
 }) {
   return apiFetch<CreatedTestParticipant>('/api/v1/participants/test', {
     method: 'POST',

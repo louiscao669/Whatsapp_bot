@@ -21,6 +21,9 @@ export function TestParticipantPanel({ onCreated }: { onCreated: () => void }) {
   const [qaSet, setQaSet] = useState('')
   const [whTypeOptions, setWhTypeOptions] = useState<string[]>([])
   const [whTypes, setWhTypes] = useState<string[]>([])
+  // Fluency vs adequacy: which slot conditions each dimension keeps (from the server).
+  const [dimensionOptions, setDimensionOptions] = useState<Record<string, string[]>>({})
+  const [dimensions, setDimensions] = useState<string[]>([])
   // Test participants answer MCQ only unless this is unticked (server default too).
   const [mcqOnly, setMcqOnly] = useState(true)
   const [submitting, setSubmitting] = useState(false)
@@ -38,6 +41,7 @@ export function TestParticipantPanel({ onCreated }: { onCreated: () => void }) {
       .then((options) => {
         setQaSets(options.qa_sets)
         setWhTypeOptions(options.wh_types ?? [])
+        setDimensionOptions(options.quality_dimensions ?? {})
         const keys = options.qa_sets.map((set) => set.key)
         setQaSet(keys.includes(options.default_qa_set) ? options.default_qa_set : keys[0] ?? '')
       })
@@ -58,6 +62,7 @@ export function TestParticipantPanel({ onCreated }: { onCreated: () => void }) {
         qa_set: buildPlan && qaSet ? qaSet : undefined,
         wh_types: buildPlan && whTypes.length ? whTypes : undefined,
         question_forms: mcqOnly ? ['mcq'] : ['mcq', 'open'],
+        quality_dimensions: buildPlan && dimensions.length ? dimensions : undefined,
       })
       setCreated(result)
       setDisplayName('')
@@ -88,6 +93,17 @@ export function TestParticipantPanel({ onCreated }: { onCreated: () => void }) {
       checked ? [...current.filter((t) => t !== type), type] : current.filter((t) => t !== type),
     )
   }
+
+  function toggleDimension(name: string, checked: boolean) {
+    setDimensions((current) =>
+      checked ? [...current.filter((d) => d !== name), name] : current.filter((d) => d !== name),
+    )
+  }
+
+  const dimensionNames = Object.keys(dimensionOptions)
+  const keptSlotCount = dimensions.length
+    ? new Set(dimensions.flatMap((d) => dimensionOptions[d] ?? [])).size
+    : 0
 
   return (
     <details className="detail-card test-participant-panel">
@@ -159,6 +175,28 @@ export function TestParticipantPanel({ onCreated }: { onCreated: () => void }) {
             ) : null}
           </fieldset>
         ) : null}
+        {dimensionNames.length ? (
+          <fieldset className="wh-type-options" disabled={!buildPlan}>
+            <legend>Quality dimension (none ticked = all)</legend>
+            {dimensionNames.map((name) => (
+              <label key={name} className="checkbox-label">
+                <input
+                  type="checkbox"
+                  checked={dimensions.includes(name)}
+                  onChange={(event) => toggleDimension(name, event.target.checked)}
+                />
+                {name} ({(dimensionOptions[name] ?? []).join(', ')})
+              </label>
+            ))}
+            {dimensions.length && keptSlotCount ? (
+              <p className="hint">
+                Only {dimensions.join('/')} conditions: the plan keeps the cells for those
+                conditions (clean anchors included) and drops the rest, so the participant
+                sees fewer than 8 window groups.
+              </p>
+            ) : null}
+          </fieldset>
+        ) : null}
         <label className="checkbox-label">
           <input
             type="checkbox"
@@ -188,6 +226,9 @@ export function TestParticipantPanel({ onCreated }: { onCreated: () => void }) {
             {created.qa_set ? ` on ${created.qa_set}` : ''}
             {created.wh_types?.length
               ? `, ${created.wh_types.join('/')} questions only (${created.wh_question_count ?? 0})`
+              : ''}
+            {created.quality_dimensions?.length
+              ? `, ${created.quality_dimensions.join('/')} conditions only (${created.plan.length} groups)`
               : ''}
             {created.question_forms?.length === 1 ? `, ${created.question_forms[0].toUpperCase()} only` : ''}
             {created.block_index !== null ? ` (slot rotation ${created.block_index})` : ''}.

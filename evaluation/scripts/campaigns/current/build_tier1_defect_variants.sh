@@ -20,8 +20,9 @@
 #
 #      addition and inconsistency keep their built-in banks: addition injects
 #      generic filler and inconsistency's style pass rewrites in place, so
-#      neither depends on passage vocabulary. omission and grammar are purely
-#      algorithmic.
+#      neither depends on passage vocabulary. Omission is purely algorithmic.
+#      Grammar builds a cached GPT-approved clause bank during step 3 and uses
+#      nested subsets of the same replacements for every dose.
 #
 #   3. Six defect families x six dose rates, derived from that base.
 #      Layout mirrors the Luke grid, so the existing analysis scripts read it:
@@ -29,8 +30,9 @@
 #      The variant scripts perturb the TRANSLATED Chinese and copy the QA
 #      across unchanged, so no re-translation happens here.
 #
-# Requirements: steps 1 and 2 need OPENAI_API_KEY. Step 3 is offline except
-# inconsistency (--types style).
+# Requirements: steps 1 and 2 need OPENAI_API_KEY. Step 3 also needs it for new
+# grammar judgments and inconsistency (--types style). Saved grammar banks can
+# be reused offline.
 #
 # Knobs:
 #   DEFECTS="omission mistranslation grammar awkward addition inconsistency"
@@ -41,6 +43,8 @@
 #   QA_DIR="evaluation/datasets/pseudonymized/qa/tier1"
 #   SKIP_BASE=1                  base translations already exist
 #   SKIP_BANKS=1                 use the global Luke-derived banks instead
+#   OPENAI_GRAMMAR_MODEL=gpt-4o-mini  grammar judge (must be available to your account)
+#   GRAMMAR_OFFLINE=1            require cached grammar banks/judgments
 #   DRY_RUN=1
 set -euo pipefail
 
@@ -137,7 +141,9 @@ echo "=== 2/3  passage-specific defect banks"
 if [[ "$SKIP_BANKS" == "1" ]]; then
   echo "  skipped (SKIP_BANKS=1); variants will use the global Luke-derived banks"
 else
-  : "${OPENAI_API_KEY:?export OPENAI_API_KEY for bank generation}"
+  if [[ "$DRY_RUN" != "1" && ( "$DEFECTS" == *mistranslation* || "$DEFECTS" == *awkward* ) ]]; then
+    : "${OPENAI_API_KEY:?export OPENAI_API_KEY for bank generation}"
+  fi
   if [[ "$DEFECTS" == *mistranslation* ]]; then
     echo "  --- mistranslation banks -> <passage>/_base/_shared/"
     run python evaluation/scripts/variants/banks/generate_mistranslation_banks.py \
@@ -195,6 +201,10 @@ for defect in $DEFECTS; do
   case "$defect" in
     mistranslation|awkward)
       [[ "$SKIP_BANKS" == "1" ]] || strict=(--require-bank)
+      ;;
+    grammar)
+      strict=(--protected-terms "$MAP")
+      [[ "${GRAMMAR_OFFLINE:-0}" != "1" ]] || strict+=(--offline)
       ;;
   esac
   run python "$path" \

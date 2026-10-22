@@ -660,3 +660,72 @@ class QuestionFormRestrictionTests(unittest.TestCase):
             created = create_test_participant(db, qa_set="hard66", wh_types=["why"],
                                               question_forms="all")
             self.assertEqual(created["wh_question_count"], 8)
+
+
+class QualityDimensionTests(unittest.TestCase):
+    """Fluency / adequacy split: a test participant keeps only one dimension's cells."""
+
+    def setUp(self):
+        self.engine = _engine()
+        self.factory = sessionmaker(self.engine, autoflush=False, expire_on_commit=False)
+
+    def _cells(self, db, pid):
+        return db.scalars(select(ExperimentPlanCell).where(
+            ExperimentPlanCell.participant_id == pid)).all()
+
+    def test_dimensions_partition_the_slate(self):
+        from eten_shared.experiment_plan import QUALITY_DIMENSIONS
+        covered = set().union(*QUALITY_DIMENSIONS.values())
+        self.assertEqual(covered, set(SLOTS))
+        self.assertEqual(set(QUALITY_DIMENSIONS["adequacy"]) & set(QUALITY_DIMENSIONS["fluency"]),
+                         {"clean"})
+
+    def test_adequacy_only_keeps_adequacy_cells_of_the_full_plan(self):
+        with self.factory() as db:
+            _import_legacy_passages(db)
+            created = create_test_participant(db, quality_dimensions=["adequacy"])
+            pid = created["participant_id"]
+            cells = self._cells(db, pid)
+            self.assertEqual(sorted(c.condition for c in cells), sorted(
+                ["clean", "clean", "omission15", "omission30",
+                 "mistranslation15", "mistranslation30"]))
+            full = build_cells(pid, created["block_index"])
+            self.assertEqual(
+                sorted((c.chapter, c.condition, c.sequence_index) for c in cells),
+                sorted(c for c in full if c[1] not in ("grammar30", "wbw")),
+            )
+            self.assertEqual(created["quality_dimensions"], ["adequacy"])
+            participant = db.get(Participant, pid)
+            self.assertEqual(participant.dashboard_preferences["quality_dimensions"], ["adequacy"])
+
+    def test_fluency_only(self):
+        with self.factory() as db:
+            _import_legacy_passages(db)
+            created = create_test_participant(db, quality_dimensions="fluency")
+            cells = self._cells(db, created["participant_id"])
+            self.assertEqual(sorted(c.condition for c in cells),
+                             ["clean", "clean", "grammar30", "wbw"])
+            self.assertEqual(len(created["plan"]), 4)
+
+    def test_both_or_none_is_the_full_plan(self):
+        with self.factory() as db:
+            _import_legacy_passages(db)
+            for value in (None, [], ["adequacy", "fluency"]):
+                created = create_test_participant(db, quality_dimensions=value)
+                self.assertEqual(created["quality_dimensions"], [])
+                self.assertEqual(len(self._cells(db, created["participant_id"])), 8)
+
+    def test_refusals(self):
+        with self.factory() as db:
+            _import_legacy_passages(db)
+            with self.assertRaisesRegex(TestParticipantError, "unknown quality dimension"):
+                create_test_participant(db, quality_dimensions=["style"])
+            with self.assertRaisesRegex(TestParticipantError, "needs a pilot plan"):
+                create_test_participant(db, quality_dimensions=["fluency"], build_plan=False)
+
+    def test_options_expose_dimensions(self):
+        from backend.admin.services.test_participants_service import test_participant_options
+        with self.factory() as db:
+            options = test_participant_options(db)
+            self.assertEqual(list(options["quality_dimensions"]), ["adequacy", "fluency"])
+            self.assertIn("grammar30", options["quality_dimensions"]["fluency"])

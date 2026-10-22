@@ -129,3 +129,110 @@ python evaluation/scripts/data_prep/sources/fetch_biblegateway_passage.py \
 ```
 
 Existing passage files are skipped unless `--force` is supplied.
+
+## LLM-generated grammar variants
+
+`variants/current/create_grammar_variants.py` uses an LLM to propose structural
+grammar defects, evaluates them with a separate judge call, and builds a cached
+bank for nested percentages. The default proposal path has no handwritten noun,
+verb, or phrase-matching templates. Each accepted clause keeps the exact same
+replacement at every dose.
+
+Dose measures the original content-character count of affected clauses, not
+characters edited or a model's grammaticality score. Whole clauses can overshoot
+a target. The default maximum bank rate is 30%, even when exporting lower rates.
+
+From the repository root, with `OPENAI_API_KEY` set and the `openai` package
+installed, test Judges 17–18 in a separate directory:
+
+```bash
+python3 evaluation/scripts/variants/current/create_grammar_variants.py \
+  --root evaluation/outputs/tier1_bsb_unblinded_5opt_think \
+  --passage-dirs t1_judg17_18 \
+  --source-model-dir _base \
+  --source-method llm_prompt_high \
+  --output-model-dir grammar_llm_test \
+  --generator-model gpt-4o-mini \
+  --judge-model gpt-4o-mini \
+  --bank-rate 30% \
+  --rates 0% 30% \
+  --allow-shortfall
+```
+
+`--allow-shortfall` permits inspection when accepted coverage is below 30%; check
+`actual_affected_rate`, `target_met`, and `shortfall_content_chars` in each output's
+`grammar_metadata.json`. Without that flag, insufficient coverage fails before
+exporting requested variants and retains the bank and completed responses.
+
+The generator receives the clean passage plus batches of eight clean clauses
+(`--proposal-batch-size`). It returns up to three alternatives per clause
+(`--max-candidates-per-clause`), each with the edited clause, an error type, and
+an explanation. It can return an empty list when no suitable defect exists.
+Every alternative starts from the clean clause. Every eligible clause can be
+sent to the model; generation stops requesting batches once coverage is met.
+There is no mechanical fallback. Refusals, truncated output, malformed response
+objects, wrong clause IDs, and altered source echoes stop the run.
+
+The model chooses the structural change, but local checks require unchanged
+character counts, punctuation/whitespace positions, verse markers, numbers, and
+registered protected terms. Added filler, omitted text, substitutions, unchanged
+candidates, and duplicates cannot reach the judge. The judge separately checks
+that words remain intact, a specific new structural violation exists, the
+intended meaning remains recoverable, and the defect is local to the clause.
+The generator's explanation is saved for review but is not sent to the judge.
+Changing who did what, grammatical topicalization, or merely awkward style must
+be rejected. A finite pool of LLM proposals still does not guarantee 30% coverage.
+
+The judge prompt explicitly distinguishes introducing a defect (`yes`) from
+judging a sentence correct, and asks for decisions consistent with its explanation.
+Cosmetic enclosing quotation marks around an error span can be removed only
+when that yields an exact substring of the edited clause. No decision is flipped,
+no fuzzy text match is used, and raw responses remain available for audit.
+
+For pseudonymized passages, pass `--protected-terms path/to/name_map.json`
+(repeatable). The Tier 1 campaign supplies its `MAP` automatically. Configure the
+judge through `--judge-model` or `OPENAI_GRAMMAR_MODEL` (default `gpt-4o-mini`).
+The generator defaults to the judge model; override it with `--generator-model`
+or `OPENAI_GRAMMAR_GENERATOR_MODEL`. Both models need Chat Completions Structured
+Outputs support and account access. There is no automatic model fallback.
+
+The following are saved under `<output-model-dir>/_grammar_bank/`:
+
+- `proposals.json`: complete generation batches, including empty and subsequently
+  rejected proposals, keyed by generator model, prompt, schema, context, source
+  clauses, seed, protected terms, and requested alternative count.
+- `judgments.json`: accepted, rejected, and uncertain evaluations keyed by judge
+  model, prompt, schema, context, and exact candidate. Each distinct candidate is
+  judged once for those settings.
+- `bank_<fingerprint>.json`: approved before/after clauses, generator explanations
+  and proposal IDs, judge explanations, fixed selection order, and coverage.
+  Counts distinguish generated alternatives (including unused batch results),
+  attempted candidates rejected by hard checks, duplicate/no-op candidates, and
+  candidates evaluated by the judge.
+
+Both stages checkpoint each completed response. Interrupted runs resume saved
+work; a request interrupted before saving its response may need to be resent.
+Identical raw and decanonicalized text shares proposals, judgments, and a bank.
+Different text is evaluated separately. The first build has generation costs in
+addition to judging costs. Lower doses perform neither stage again.
+
+Repeat the command with `--offline` to prohibit all model calls, and change
+`--rates` to `0% 5% 10% 15% 20% 30%` to export nested doses. Keep the seed, models,
+batch size, and candidate count the same. `--force` rewrites outputs without
+clearing either cache. A changed generation setting makes a new proposal request;
+it is not guaranteed to produce the same candidates as an earlier configuration.
+Increasing the candidate limit does not guarantee higher accepted coverage.
+
+LLM banks use schema version 3 and `edit_style: llm_structural_v1`. Earlier
+particle-based or handwritten-template banks are not reused as LLM banks. Use a
+new output directory or `--force` when replacing variants. The revised judge
+rubric also requires fresh judgments. Existing files and caches are not deleted.
+Generating files does not import them into the participant platform.
+
+`--legacy-unvalidated` retains the original independent per-rate mechanical
+algorithm without GPT. Model approval is not human verification; review a sample
+of a new bank before experimental use. Offline regression tests make no API calls:
+
+```bash
+python3 -m pytest evaluation/tests/test_grammar_variants.py -q
+```
