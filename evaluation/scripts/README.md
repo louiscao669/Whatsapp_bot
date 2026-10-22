@@ -183,6 +183,19 @@ The generator's explanation is saved for review but is not sent to the judge.
 Changing who did what, grammatical topicalization, or merely awkward style must
 be rejected. A finite pool of LLM proposals still does not guarantee 30% coverage.
 
+Both prompts require displacement of an intact multiword constituent containing
+at least two linguistic words, including a content word. Chinese character count
+does not establish phrase size. Isolated word/particle/preposition/classifier
+relocation, or a collection of function-word moves, does not qualify. In
+particular, an edit achievable by moving one function word cannot be relabeled
+as a larger neighboring phrase movement. The generator must name the moved
+phrase and the violated construction, or return no candidate; the judge makes
+that assessment independently. A real grammar error can receive
+`grammar_worsened=yes` but `structural_error=no` under this narrower rubric.
+These are prompt-based linguistic criteria, not an additional deterministic
+phrase parser. Prompt fingerprints prevent reuse of old proposals, judgments,
+and banks for a new run; existing exports are not retroactively revised.
+
 The judge prompt explicitly distinguishes introducing a defect (`yes`) from
 judging a sentence correct, and asks for decisions consistent with its explanation.
 Cosmetic enclosing quotation marks around an error span can be removed only

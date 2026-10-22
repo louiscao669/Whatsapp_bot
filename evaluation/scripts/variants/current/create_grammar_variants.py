@@ -86,9 +86,24 @@ Use only their contents; do not use Bible knowledge or an answer key.
 For EACH requested clause, return up to max_candidates_per_clause distinct
 alternatives, strongest first. Start every alternative from the ORIGINAL clause.
 Use your linguistic analysis to choose one structural violation: displace an
-intact phrase, argument, modifier or complement so that a grammatical dependency
-or constituent order is broken. These examples are not an exhaustive list;
-there is no permitted noun/verb vocabulary or fixed phrase template.
+intact MULTIWORD constituent so that a grammatical dependency or constituent
+order is broken. The moved constituent must contain at least two linguistic
+words, including at least one content word: e.g. an expanded noun phrase, a
+prepositional phrase, a relative clause, or a multiword complement. Count words,
+not Chinese characters; a two-character lexical word alone does not qualify.
+These are examples, not a vocabulary restriction or fixed phrase template.
+
+Do not merely relocate an isolated word, particle, preposition, aspect marker,
+connective, or classifier. Combining several isolated function-word moves also
+does not qualify. If the result can be produced just by moving ONE function
+word while keeping everything else in the same order, reject it even if the
+same result can be described as moving a larger neighboring phrase.
+Excluded examples: 是我拿的 -> 是我的拿 (only 的 moves);
+祭司站在城门口 -> 祭司站城门口在 (only 在 moves).
+Desired scale: 工人在院子里修理那辆旧车 -> 工人修理那辆在院子里旧车.
+Here the intact phrase 在院子里 interrupts the object noun phrase 那辆旧车.
+This illustrates the scope; independently verify every candidate's grammatical
+violation, lexical integrity, and recoverable meaning.
 
 Preserve every original character with the same occurrence count. Preserve
 punctuation and whitespace positions, verse prefixes, numbers, protected terms,
@@ -100,9 +115,12 @@ Do not propose grammatical topicalization, stylistic awkwardness or a change
 whose effect requires another clause also to be changed. Other clauses will
 independently remain clean or be replaced in later variants.
 
-Give an error_type and a brief explanation of the ONE intended syntactic
-violation. These are proposals for a separate judge, not self-approvals. Return
-an empty candidates array when no defensible edit exists. Return every requested
+Give an error_type and a brief explanation naming the exact moved multiword
+constituent, its original role, and the ONE ordering or attachment requirement
+violated at its new position. These are proposals for a separate judge, not
+self-approvals. Return an empty candidates array when no qualifying phrase-level
+edit exists; never fall back to token relocation to increase coverage or fill
+the requested candidate count. Return every requested
 unit_index exactly once and echo its original_clause exactly, including any
 verse number, quotation marks and whitespace. Return only the requested JSON.
 """
@@ -144,11 +162,23 @@ violation beyond any problems already present in the original. Optional word
 deletion, a grammatical paraphrase, register differences, unusual names, or a
 change of aspect that remains grammatical do not qualify. Breaking a lexical
 word into gibberish does not qualify as an isolated grammatical error either.
-structural_error: yes only if an intact constituent has been displaced in a way
-that violates a specific construction: e.g. the ordering of a preposition and
-its object, a disposal object's position, a relative clause's attachment, or
-the placement of an embedded subject or predicative complement. Identify the
-construction and the violated ordering/attachment requirement in explanation.
+structural_error: yes only if an intact MULTIWORD constituent has been displaced
+in a way that violates a specific construction. It must contain at least two
+linguistic words, including at least one content word: e.g. an expanded noun
+phrase, a prepositional phrase, a relative clause, or a multiword complement.
+Count words, not Chinese characters; a two-character lexical word alone does
+not qualify. Independently identify the exact moved phrase, its original role,
+and the violated ordering/attachment requirement in explanation.
+Set structural_error=no for mere relocation of an isolated word, particle,
+preposition, aspect marker, connective, or classifier, even if grammar_worsened
+is yes. Combining several isolated function-word moves also does not qualify.
+If moving ONE function word while keeping everything else in the same order
+can produce the result, reject it; do not reinterpret this as moving a larger
+neighboring phrase. For example, 是我拿的 -> 是我的拿 (only 的 moves) and
+祭司站在城门口 -> 祭司站城门口在 (only 在 moves) must receive structural_error=no.
+An example at the required scale is 工人在院子里修理那辆旧车 ->
+工人修理那辆在院子里旧车: the intact phrase 在院子里 interrupts the object
+noun phrase 那辆旧车. Phrase size alone is insufficient; verify the actual error.
 Do not accept a merely awkward but grammatical order, permissible topicalization,
 ellipsis, or a subject/object swap that only changes who did what.
 lexical_integrity: yes only if every original lexical word, name, numeral,
@@ -163,11 +193,12 @@ local_error: yes only if the introduced defect is contained within the edited
 clause and does not depend on another clause also being edited. Other clauses
 may independently remain clean or be replaced in later variants.
 
-Use yes, no, or uncertain for each judgment. Here grammar_worsened=yes and
-structural_error=yes mean that an error WAS introduced, not that the edited
-sentence is correct. Explain your analysis first, then ensure each decision
-agrees with that explanation. If your explanation identifies a new constituent
-order violation, do not mark grammar_worsened or structural_error as no.
+Use yes, no, or uncertain for each judgment. grammar_worsened=yes means a new
+grammatical error was introduced, not that the edited sentence is correct.
+structural_error=yes additionally requires the multiword phrase displacement
+defined above. Explain your analysis first, then ensure each decision agrees
+with its own criterion. grammar_worsened=yes with structural_error=no is correct
+for a genuine grammatical error caused only by an excluded token relocation.
 lexical_integrity concerns words, not preservation of their original phrase
 order. meaning_preserved concerns recoverable meaning, not grammaticality.
 local_error does not require a standalone complete sentence: it requires that
@@ -599,7 +630,8 @@ class GPTStructuredClient:
             except ImportError as exc:
                 raise GrammarError("Install the openai package to evaluate grammar edits.") from exc
             # A failed request stops the run; completed judgments are resumable.
-            self.client = OpenAI(timeout=60.0, max_retries=0)
+            # Reasoning models may need more than a minute for a proposal batch.
+            self.client = OpenAI(timeout=180.0, max_retries=0)
         try:
             response = self.client.chat.completions.create(
                 model=self.model,

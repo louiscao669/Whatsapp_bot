@@ -981,8 +981,9 @@ def choose_question_types(chapter_qa: dict, mcq_fraction: float = MCQ_FRACTION, 
 
     types = dict(forced)
     types.update({bid: ("open" if bid in open_ids else "mcq") for bid in free})
-    # guarantee both formats survive in the chapter when the pool allows it
-    if types and free:
+    # guarantee both formats survive in the chapter when the pool allows it -- unless the
+    # caller asked for a single form (mcq_fraction 1.0 = all MCQ, 0.0 = all open).
+    if types and free and 0.0 < mcq_fraction < 1.0:
         if all(q == "mcq" for q in types.values()):
             types[ranked[0]] = "open"
         elif all(q == "open" for q in types.values()):
