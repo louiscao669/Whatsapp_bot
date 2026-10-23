@@ -21,9 +21,11 @@ export function TestParticipantPanel({ onCreated }: { onCreated: () => void }) {
   const [qaSet, setQaSet] = useState('')
   const [whTypeOptions, setWhTypeOptions] = useState<string[]>([])
   const [whTypes, setWhTypes] = useState<string[]>([])
-  // Fluency vs adequacy: which slot conditions each dimension keeps (from the server).
+  // Plan conditions to keep (none ticked = all). Adequacy/fluency are shortcuts that
+  // tick their conditions; what is sent is always the condition list.
   const [dimensionOptions, setDimensionOptions] = useState<Record<string, string[]>>({})
-  const [dimensions, setDimensions] = useState<string[]>([])
+  const [conditionOptions, setConditionOptions] = useState<{ key: string; label: string }[]>([])
+  const [conditions, setConditions] = useState<string[]>([])
   // Test participants answer MCQ only unless this is unticked (server default too).
   const [mcqOnly, setMcqOnly] = useState(true)
   const [submitting, setSubmitting] = useState(false)
@@ -42,6 +44,7 @@ export function TestParticipantPanel({ onCreated }: { onCreated: () => void }) {
         setQaSets(options.qa_sets)
         setWhTypeOptions(options.wh_types ?? [])
         setDimensionOptions(options.quality_dimensions ?? {})
+        setConditionOptions(options.conditions ?? [])
         const keys = options.qa_sets.map((set) => set.key)
         setQaSet(keys.includes(options.default_qa_set) ? options.default_qa_set : keys[0] ?? '')
       })
@@ -62,7 +65,7 @@ export function TestParticipantPanel({ onCreated }: { onCreated: () => void }) {
         qa_set: buildPlan && qaSet ? qaSet : undefined,
         wh_types: buildPlan && whTypes.length ? whTypes : undefined,
         question_forms: mcqOnly ? ['mcq'] : ['mcq', 'open'],
-        quality_dimensions: buildPlan && dimensions.length ? dimensions : undefined,
+        conditions: buildPlan && conditions.length ? conditions : undefined,
       })
       setCreated(result)
       setDisplayName('')
@@ -94,16 +97,35 @@ export function TestParticipantPanel({ onCreated }: { onCreated: () => void }) {
     )
   }
 
-  function toggleDimension(name: string, checked: boolean) {
-    setDimensions((current) =>
-      checked ? [...current.filter((d) => d !== name), name] : current.filter((d) => d !== name),
+  function toggleCondition(key: string, checked: boolean) {
+    setConditions((current) =>
+      checked ? [...current.filter((c) => c !== key), key] : current.filter((c) => c !== key),
     )
   }
 
   const dimensionNames = Object.keys(dimensionOptions)
-  const keptSlotCount = dimensions.length
-    ? new Set(dimensions.flatMap((d) => dimensionOptions[d] ?? [])).size
-    : 0
+  const dimensionTicked = (name: string) =>
+    (dimensionOptions[name] ?? []).every((c) => conditions.includes(c))
+
+  // Ticking a dimension adds its conditions; unticking removes them, except ones that
+  // another still-ticked dimension also needs (the shared clean anchors).
+  function toggleDimension(name: string, checked: boolean) {
+    const own = dimensionOptions[name] ?? []
+    setConditions((current) => {
+      if (checked) return Array.from(new Set([...current, ...own]))
+      const keep = new Set(
+        dimensionNames
+          .filter((other) => other !== name && dimensionTicked(other))
+          .flatMap((other) => dimensionOptions[other] ?? []),
+      )
+      return current.filter((c) => !own.includes(c) || keep.has(c))
+    })
+  }
+
+  const orderedConditions = conditionOptions
+    .map((option) => option.key)
+    .filter((key) => conditions.includes(key))
+  const keptGroupCount = orderedConditions.reduce((n, c) => n + (c === 'clean' ? 2 : 1), 0)
 
   return (
     <details className="detail-card test-participant-panel">
@@ -175,24 +197,38 @@ export function TestParticipantPanel({ onCreated }: { onCreated: () => void }) {
             ) : null}
           </fieldset>
         ) : null}
-        {dimensionNames.length ? (
+        {conditionOptions.length ? (
           <fieldset className="wh-type-options" disabled={!buildPlan}>
-            <legend>Quality dimension (none ticked = all)</legend>
-            {dimensionNames.map((name) => (
-              <label key={name} className="checkbox-label">
+            <legend>Passage conditions (none ticked = all)</legend>
+            {dimensionNames.length ? (
+              <p className="hint">
+                Shortcuts:{' '}
+                {dimensionNames.map((name) => (
+                  <label key={name} className="checkbox-label inline-checkbox">
+                    <input
+                      type="checkbox"
+                      checked={dimensionTicked(name)}
+                      onChange={(event) => toggleDimension(name, event.target.checked)}
+                    />
+                    {name}
+                  </label>
+                ))}
+              </p>
+            ) : null}
+            {conditionOptions.map((option) => (
+              <label key={option.key} className="checkbox-label">
                 <input
                   type="checkbox"
-                  checked={dimensions.includes(name)}
-                  onChange={(event) => toggleDimension(name, event.target.checked)}
+                  checked={conditions.includes(option.key)}
+                  onChange={(event) => toggleCondition(option.key, event.target.checked)}
                 />
-                {name} ({(dimensionOptions[name] ?? []).join(', ')})
+                {option.label}
               </label>
             ))}
-            {dimensions.length && keptSlotCount ? (
+            {orderedConditions.length ? (
               <p className="hint">
-                Only {dimensions.join('/')} conditions: the plan keeps the cells for those
-                conditions (clean anchors included) and drops the rest, so the participant
-                sees fewer than 8 window groups.
+                Only {orderedConditions.join(', ')}: the plan keeps those conditions'
+                window groups ({keptGroupCount} of 8) and drops the rest.
               </p>
             ) : null}
           </fieldset>
@@ -227,8 +263,8 @@ export function TestParticipantPanel({ onCreated }: { onCreated: () => void }) {
             {created.wh_types?.length
               ? `, ${created.wh_types.join('/')} questions only (${created.wh_question_count ?? 0})`
               : ''}
-            {created.quality_dimensions?.length
-              ? `, ${created.quality_dimensions.join('/')} conditions only (${created.plan.length} groups)`
+            {created.conditions?.length
+              ? `, ${created.conditions.join('/')} only (${created.plan.length} groups)`
               : ''}
             {created.question_forms?.length === 1 ? `, ${created.question_forms[0].toUpperCase()} only` : ''}
             {created.block_index !== null ? ` (slot rotation ${created.block_index})` : ''}.

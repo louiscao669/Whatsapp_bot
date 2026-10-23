@@ -74,6 +74,38 @@ def dimension_conditions(dimensions):
     return {c for d in dimensions for c in QUALITY_DIMENSIONS[d]}
 
 
+# Individual conditions a test participant can be restricted to (e.g. clean +
+# mistranslation only). Order and labels are what the admin form shows.
+CONDITION_LABELS = {
+    "clean": "Clean (2 anchor groups)",
+    "omission15": "Omission 15%",
+    "omission30": "Omission 30%",
+    "mistranslation15": "Mistranslation 15%",
+    "mistranslation30": "Mistranslation 30%",
+    "grammar30": "Grammar 30%",
+    "wbw": "Word-by-word (Google)",
+}
+PARTICIPANT_CONDITIONS_KEY = "conditions"
+
+
+def parse_conditions(value):
+    """None / "" / [] -> []; "clean,mistranslation30" / [...] -> list in slot order.
+
+    Unknown names are refused, since a typo would otherwise silently shrink the plan.
+    """
+    if value is None:
+        return []
+    if isinstance(value, str):
+        value = value.replace(",", " ").split()
+    names = {str(v).strip().lower() for v in value if str(v).strip()}
+    unknown = names - set(SLOTS)
+    if unknown:
+        raise ValueError(
+            f"unknown condition(s) {sorted(unknown)}; known: {', '.join(dict.fromkeys(SLOTS))}"
+        )
+    return [c for c in dict.fromkeys(SLOTS) if c in names]
+
+
 # ``chapter`` in the legacy schema now stores the balanced window-group index.
 GROUPS = list(range(1, 9))
 LANGUAGE = "zh"
@@ -248,7 +280,7 @@ def write_participant_plan(db, participant, block_index: int, language: str = LA
     if conditions is not None:
         cells = [cell for cell in cells if cell[1] in conditions]
         if not cells:
-            raise ExperimentPlanError("No plan conditions match the chosen quality dimension")
+            raise ExperimentPlanError("None of the plan's conditions were chosen")
     for chapter, condition, seq in cells:
         db.add(ExperimentPlanCell(
             participant_id=participant.id,

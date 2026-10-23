@@ -18,12 +18,18 @@ A test participant can also be limited to one quality dimension -- ``adequacy``
 (clean + omission + mistranslation) or ``fluency`` (clean + grammar30 + wbw) -- see
 ``eten_shared.experiment_plan.QUALITY_DIMENSIONS``. Only that dimension's plan cells
 are written; the choice is stored as ``dashboard_preferences["quality_dimensions"]``.
+
+Finer still, ``conditions`` picks individual conditions (e.g. ``["clean",
+"mistranslation15", "mistranslation30"]``); it overrides ``quality_dimensions`` and is
+stored as ``dashboard_preferences["conditions"]``.
 """
 
 from sqlalchemy import delete, func, select
 
 from eten_shared.experiment_plan import (
+    CONDITION_LABELS,
     DEFAULT_QA_SET,
+    PARTICIPANT_CONDITIONS_KEY,
     PARTICIPANT_QUALITY_DIMENSIONS_KEY,
     QA_SETS,
     QUALITY_DIMENSIONS,
@@ -34,6 +40,7 @@ from eten_shared.experiment_plan import (
     dimension_conditions,
     is_test_participant,
     next_test_block_index,
+    parse_conditions,
     parse_quality_dimensions,
     qa_set_wh_type_counts,
     write_participant_plan,
@@ -85,6 +92,7 @@ def test_participant_options(db):
         "question_forms": list(QUESTION_FORMS),
         "default_question_forms": sorted(TEST_PARTICIPANT_DEFAULT_FORMS),
         "quality_dimensions": {k: list(v) for k, v in QUALITY_DIMENSIONS.items()},
+        "conditions": [{"key": k, "label": v} for k, v in CONDITION_LABELS.items()],
         "qa_sets": [
             {
                 "key": key,
@@ -129,9 +137,16 @@ def _parse_quality_dimensions(value):
         raise TestParticipantError(f"Quality dimension: {exc}") from None
 
 
+def _parse_conditions(value):
+    try:
+        return parse_conditions(value)
+    except ValueError as exc:
+        raise TestParticipantError(f"Conditions: {exc}") from None
+
+
 def create_test_participant(db, *, display_name=None, language=None, build_plan=True,
                             qa_set=None, wh_types=None, question_forms=None,
-                            quality_dimensions=None):
+                            quality_dimensions=None, conditions=None):
     """Stage a flagged participant (+ plan). Caller commits; rollback on error.
 
     ``wh_types`` (e.g. ["why"]) restricts the participant to questions whose stem asks
@@ -139,7 +154,9 @@ def create_test_participant(db, *, display_name=None, language=None, build_plan=
     skipped at serving time, so the participant sees fewer than 8 conditions.
 
     ``quality_dimensions`` (["adequacy"] or ["fluency"]; none or both = all) keeps only
-    that dimension's plan cells.
+    that dimension's plan cells. ``conditions`` (e.g. ["clean", "mistranslation30"])
+    picks individual conditions instead and overrides ``quality_dimensions``; choosing
+    every condition, or none, means the full plan.
 
     ``question_forms`` defaults to MCQ-only; "all" (or ["mcq", "open"]) serves both.
     The choice is always stored explicitly, so later changes to the default do not
@@ -158,6 +175,15 @@ def create_test_participant(db, *, display_name=None, language=None, build_plan=
         dim_list = []  # both ticked = the full plan
     if dim_list and not build_plan:
         raise TestParticipantError("A quality-dimension restriction needs a pilot plan")
+    cond_list = _parse_conditions(conditions)
+    if cond_list:
+        dim_list = []  # explicit conditions win over the dimension shortcut
+    elif dim_list:
+        cond_list = [c for c in dict.fromkeys(SLOTS) if c in dimension_conditions(dim_list)]
+    if set(cond_list) == set(SLOTS):
+        cond_list = []  # every condition = the full plan
+    if cond_list and not build_plan:
+        raise TestParticipantError("A condition restriction needs a pilot plan")
 
     language_code = canonical_language_code(language or DEFAULT_LANGUAGE)
     if not language_code:
@@ -172,6 +198,7 @@ def create_test_participant(db, *, display_name=None, language=None, build_plan=
             TEST_PARTICIPANT_KEY: True,
             **({PARTICIPANT_WH_TYPES_KEY: wh_list} if wh_list else {}),
             **({PARTICIPANT_QUALITY_DIMENSIONS_KEY: dim_list} if dim_list else {}),
+            **({PARTICIPANT_CONDITIONS_KEY: cond_list} if cond_list else {}),
             PARTICIPANT_QUESTION_FORMS_KEY: form_list,
         },
     )
@@ -183,7 +210,7 @@ def create_test_participant(db, *, display_name=None, language=None, build_plan=
         try:
             cells = write_participant_plan(
                 db, participant, block_index, language_code, qa_set=qa_set,
-                conditions=dimension_conditions(dim_list),
+                conditions=set(cond_list) or None,
             )
         except ExperimentPlanError as exc:
             raise TestParticipantError(f"Could not build the pilot plan: {exc}") from exc
@@ -217,6 +244,7 @@ def create_test_participant(db, *, display_name=None, language=None, build_plan=
         "wh_question_count": wh_question_count,
         "question_forms": form_list,
         "quality_dimensions": dim_list,
+        "conditions": cond_list,
         "slot_count": len(SLOTS),
         "plan": plan,
         "pilot_path": f"/pilot/{participant.id}" if build_plan else None,

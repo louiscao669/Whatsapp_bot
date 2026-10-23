@@ -723,6 +723,66 @@ class QualityDimensionTests(unittest.TestCase):
             with self.assertRaisesRegex(TestParticipantError, "needs a pilot plan"):
                 create_test_participant(db, quality_dimensions=["fluency"], build_plan=False)
 
+    def test_specific_conditions_clean_plus_mistranslation(self):
+        with self.factory() as db:
+            _import_legacy_passages(db)
+            created = create_test_participant(
+                db, conditions=["mistranslation30", "clean", "mistranslation15"])
+            pid = created["participant_id"]
+            cells = self._cells(db, pid)
+            self.assertEqual(sorted(c.condition for c in cells),
+                             ["clean", "clean", "mistranslation15", "mistranslation30"])
+            full = build_cells(pid, created["block_index"])
+            keep = {"clean", "mistranslation15", "mistranslation30"}
+            self.assertEqual(
+                sorted((c.chapter, c.condition, c.sequence_index) for c in cells),
+                sorted(c for c in full if c[1] in keep),
+            )
+            # stored and echoed in slot order
+            self.assertEqual(created["conditions"], ["clean", "mistranslation15", "mistranslation30"])
+            participant = db.get(Participant, pid)
+            self.assertEqual(participant.dashboard_preferences["conditions"],
+                             ["clean", "mistranslation15", "mistranslation30"])
+
+    def test_single_defect_condition_without_clean(self):
+        with self.factory() as db:
+            _import_legacy_passages(db)
+            created = create_test_participant(db, conditions="grammar30")
+            self.assertEqual([c.condition for c in self._cells(db, created["participant_id"])],
+                             ["grammar30"])
+
+    def test_conditions_override_dimension_and_all_means_full(self):
+        with self.factory() as db:
+            _import_legacy_passages(db)
+            created = create_test_participant(
+                db, quality_dimensions=["fluency"], conditions=["omission30"])
+            self.assertEqual(created["quality_dimensions"], [])
+            self.assertEqual([c.condition for c in self._cells(db, created["participant_id"])],
+                             ["omission30"])
+            created = create_test_participant(db, conditions=list(set(SLOTS)))
+            self.assertEqual(created["conditions"], [])
+            self.assertEqual(len(self._cells(db, created["participant_id"])), 8)
+
+    def test_dimension_still_records_its_conditions(self):
+        with self.factory() as db:
+            _import_legacy_passages(db)
+            created = create_test_participant(db, quality_dimensions=["fluency"])
+            self.assertEqual(created["conditions"], ["clean", "grammar30", "wbw"])
+
+    def test_condition_refusals(self):
+        with self.factory() as db:
+            _import_legacy_passages(db)
+            with self.assertRaisesRegex(TestParticipantError, "unknown condition"):
+                create_test_participant(db, conditions=["mistranslation20"])
+            with self.assertRaisesRegex(TestParticipantError, "needs a pilot plan"):
+                create_test_participant(db, conditions=["clean"], build_plan=False)
+
+    def test_options_expose_conditions(self):
+        from backend.admin.services.test_participants_service import test_participant_options
+        with self.factory() as db:
+            keys = [c["key"] for c in test_participant_options(db)["conditions"]]
+            self.assertEqual(keys, list(dict.fromkeys(SLOTS)))
+
     def test_options_expose_dimensions(self):
         from backend.admin.services.test_participants_service import test_participant_options
         with self.factory() as db:
