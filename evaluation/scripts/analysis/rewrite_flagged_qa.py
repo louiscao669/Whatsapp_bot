@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Propose targeted QA revisions and accept only after repeated full rechecks.
 
-Consumes one or more completed review_qa_items.py output directories. Writes a
-separate proposal/review audit and accepted cases; never edits source datasets.
+Consumes one or more completed review_qa_items.py output directories. Saves final
+outcomes and accepted cases; --keep-attempts also saves intermediate reviews.
+Never edits source datasets.
 """
 from __future__ import annotations
 
@@ -10,9 +11,11 @@ import argparse
 import copy
 import json
 import sys
+from contextlib import nullcontext
 from collections import Counter
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
+from tempfile import TemporaryDirectory
 from typing import Literal
 
 from pydantic import Field
@@ -328,19 +331,47 @@ def prepare_output(output, directories, manifest, selected, inventory):
     review.write_json(output / "selected_inputs.json", selected)
 
 
+def compact_result(result):
+    """Retain the final outcome without proposals or intermediate model traces."""
+    final = {k: v for k, v in result.items() if k != "attempts"}
+    steps = result.get("attempts", [])
+    if steps:
+        last = steps[-1]
+        proposal = last.get("proposal", {})
+        if isinstance(proposal, dict) and proposal.get("note"):
+            final["note"] = proposal["note"]
+        if last.get("error"):
+            final["error"] = last["error"]
+        if result["status"] == "ACCEPTED":
+            checks = last.get("checks", [])
+            final["validation"] = {
+                "review_passes": len(checks),
+                "all_checks_passed": accepted(checks, len(checks)),
+                "validation_type": "model_review",
+            }
+    return final
+
+
 def write_report(output, results):
     lines = ["# Targeted QA rewrite results", "",
              "Accepted means all model preservation, content, structure and burden checks passed in every repeat. "
              "It is not a human validation result. Original datasets were not edited.", "",
-             "| Item | Status | Attempts |", "|---|---|---:|"]
-    lines += [f"| {r['id']} | {r['status']} | {len(r['attempts'])} |" for r in results]
+             "| Item | Status |", "|---|---|"]
+    lines += [f"| {r['id']} | {r['status']} |" for r in results]
     for result in results:
         original = result["original"]
         lines += ["", "## " + result["id"], "", "Original: " + original["question"], ""]
         lines += [f"- {k}. {v}" for k, v in original["options"].items()]
         if result.get("error"):
             lines += ["", "Error: " + result["error"]]
-        for attempt in result["attempts"]:
+        if "attempts" not in result:
+            revised = result.get("accepted_case")
+            if revised:
+                lines += ["", "Accepted wording: " + revised["question"], ""]
+                lines += [f"- {k}. {v}" for k, v in revised["options"].items()]
+            if result.get("note"):
+                lines += ["", result["note"]]
+        for attempt in result.get("attempts", []):
             lines += ["", f"### Attempt {attempt['attempt']}: {attempt['status']}", ""]
             proposal = attempt.get("proposal", {})
             if not isinstance(proposal, dict):
@@ -386,6 +417,8 @@ def main(argv=None):
     parser.add_argument("--limit", type=int)
     parser.add_argument("--env-file", type=Path)
     parser.add_argument("--prepare-only", action="store_true")
+    parser.add_argument("--keep-attempts", action="store_true",
+                        help="Keep intermediate proposals and review traces (default: final outcomes only)")
     args = parser.parse_args(argv)
     if args.max_attempts < 1 or args.review_repeats < 2 or args.workers < 1 or (args.limit is not None and args.limit < 1):
         parser.error("Need positive attempts/workers/limit and at least two review repeats")
@@ -400,7 +433,8 @@ def main(argv=None):
                         config_hash=review.digest(config), prompt_hashes={k: review.digest(v) for k, v in prompts.items()},
                         source_hashes={p.name: review.digest(p.read_text()) for p in (Path(__file__), Path(review.__file__))},
                         schema_hashes={c.__name__: review.digest(c.model_json_schema()) for c in (Proposal, Preservation)},
-                        policy="accept only unanimous KEEP plus all preservation checks pass; export separately")
+                        policy="accept only unanimous KEEP plus all preservation checks pass; export separately",
+                        keep_attempts=args.keep_attempts)
         prepare_output(args.output_dir, args.review_dir, manifest, selected, inventory)
     except (ValueError, KeyError, OSError) as exc:
         parser.error(str(exc))
@@ -415,10 +449,18 @@ def main(argv=None):
 
     def run_one(index, record):
         folder = args.output_dir / "items" / f"item_{index:04d}"
+        checkpoint = folder / "result.json"
+        if not args.keep_attempts and checkpoint.exists():
+            saved = read(checkpoint)
+            if saved["input_hash"] != review.digest(record["case"]) or saved["original"] != record["case"]:
+                raise ValueError("Saved outcome belongs to different input")
+            if saved["status"] in ("ACCEPTED", "DECLINED", "UNRESOLVED"):
+                return index, compact_result(saved)
         try:
-            with OpenAI(max_retries=1, timeout=180) as client:
+            cache = nullcontext(folder) if args.keep_attempts else TemporaryDirectory(prefix="qa-rewrite-")
+            with cache as cache_dir, OpenAI(max_retries=1, timeout=180) as client:
                 def call(stage, payload, attempt, repeat):
-                    path = folder / f"attempt_{attempt}" / f"r{repeat}_{stage}.json"
+                    path = Path(cache_dir) / f"attempt_{attempt}" / f"r{repeat}_{stage}.json"
                     if stage in ("rewrite", "preservation"):
                         return request_json(client, writer if stage == "rewrite" else judge, stage,
                                             payload, prompts[stage], path,
@@ -431,6 +473,8 @@ def main(argv=None):
                           original=record["case"], source_review_dir=record["source_review_dir"],
                           status="ERROR", accepted_case=None, attempts=[],
                           error=type(exc).__name__ + ": " + str(exc)[:400])
+        if not args.keep_attempts:
+            result = compact_result(result)
         review.write_json(folder / "result.json", result)
         print(record["case"]["id"] + ": " + result["status"], flush=True)
         return index, result

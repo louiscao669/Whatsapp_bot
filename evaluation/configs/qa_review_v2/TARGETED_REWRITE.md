@@ -98,14 +98,22 @@ error rather than a silently empty run. `--review-repeats` must be at least two.
 
 - `selection.json`: selection reason for every input form.
 - `selected_inputs.json`: frozen original items and baseline evidence.
-- `items/item_NNNN/attempt_N/`: cached model responses for each attempt and repeat.
-- `results.json`: every item, proposal, decision, and review, including failures.
+- `items/item_NNNN/result.json`: final outcome for each item, used to resume.
+- `results.json`: original items, final outcomes, accepted wording, and validation summaries.
 - `accepted_cases.json`: **only** candidates that passed every check, in the
   existing review-input format. This is a separate file, not a dataset promotion.
 - `summary.json`: counts of accepted, unresolved, declined, and error outcomes.
-- `report.md`: readable before/after wording, option changes, and evidence.
+- `report.md`: readable before/after wording, option changes, and final explanations.
 
-Rerun the exact command to resume from matching response caches. Fingerprints bind
+Intermediate proposals and review traces are discarded by default. Temporary
+response caches are removed when each item finishes, including on handled errors.
+Use `--keep-attempts` in a new output directory only when detailed debugging is
+needed; it preserves `items/item_NNNN/attempt_N/` and full review histories. These
+debug directories are ignored by Git for `qa_targeted_rewrite_*` reports.
+
+Rerun the exact command to reuse completed item outcomes. Without `--keep-attempts`,
+an interrupted or errored item starts again; its partial model responses are not
+retained. With the flag, matching response caches can resume individual stages. Fingerprints bind
 inputs, models, prompts, review code, schemas, and settings; changed criteria require
 a new output directory. The output must be separate from the source review
 directories, and an unrelated nonempty directory is rejected. Original datasets

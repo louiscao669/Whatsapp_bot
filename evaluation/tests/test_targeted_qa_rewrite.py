@@ -318,7 +318,8 @@ def test_missing_credentials_are_reported_without_exporting_acceptances(tmp_path
     assert rewrite.read(output / "summary.json")["statuses"] == {"ERROR": 1}
 
 
-def test_cli_rechecks_exports_and_resumes_from_bound_cache(tmp_path, monkeypatch):
+@pytest.mark.parametrize("keep_attempts", [False, True])
+def test_cli_rechecks_exports_and_resumes_from_bound_cache(tmp_path, monkeypatch, keep_attempts):
     source = baseline_directory(tmp_path / "source")
     output = tmp_path / "output"
     calls = []
@@ -338,11 +339,23 @@ def test_cli_rechecks_exports_and_resumes_from_bound_cache(tmp_path, monkeypatch
                                    id=f"response{len(calls)}", usage=SimpleNamespace(model_dump=lambda: {}))
     monkeypatch.setitem(sys.modules, "openai", SimpleNamespace(OpenAI=Client))
     argv = ["--review-dir", str(source), "--output-dir", str(output), "--workers", "1"]
+    if keep_attempts:
+        argv.append("--keep-attempts")
     assert rewrite.main(argv) == 0
     assert len(calls) == 9
     assert rewrite.read(output / "summary.json")["accepted"] == 1
     assert rewrite.read(output / "accepted_cases.json")[0]["expected_answer"] == "Paul"
     assert rewrite.read(source / "cases.json")[0]["question"] == "Who left?"
+    result = rewrite.read(output / "results.json")[0]
+    checkpoint = rewrite.read(output / "items/item_0000/result.json")
+    assert result == checkpoint
+    assert ("attempts" in result) == keep_attempts
+    assert bool(list(output.glob("items/*/attempt_*"))) == keep_attempts
+    assert ("### Attempt" in (output / "report.md").read_text()) == keep_attempts
+    if not keep_attempts:
+        assert result["validation"]["all_checks_passed"] is True
+        assert result["validation"]["review_passes"] == 2
+        assert "Accepted wording: Which person left?" in (output / "report.md").read_text()
     assert rewrite.main(argv) == 0
     assert len(calls) == 9, "A resumed run must reuse exactly matching cached responses"
 

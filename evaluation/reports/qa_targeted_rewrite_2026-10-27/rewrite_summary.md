@@ -136,13 +136,13 @@ The missing determiners in “did captain” and “Ordered guard” can be corr
 
 “呼叫……听他的话”和“是为了什么结果”的搭配确实生硬，但本题还有无法仅靠措辞解决的内容问题：经文表达的是“愿神也听你们的话”这一祝愿，并未确立它是约坦呼吁众首领听话的目的或结果。若改问约坦表达了什么祝愿，会改变原题所考查的目的关系；若保留该关系，固定答案D仍缺乏经文支持，且E仍可成立。因此，在不能更改考查关系、答案或经文窗口的限制下，无法作出合规修订。
 
-## Verification and detailed records
+## Verification and final records
 
 All 42 source file hashes still match the baseline. Every accepted record has two complete passing reviews, and fixed metadata and option-label order were verified.
 
-One model request timed out during the initial run. Its error result is preserved in execution_recovery/. The identical run was resumed from cached responses; prompts, thresholds, models, and completed quality judgments were unchanged.
+One model request timed out during the initial run and the run completed after resuming. Intermediate proposals, review traces, and recovery files were subsequently removed at user request; final outcomes and accepted wording are retained.
 
 - accepted_cases.json: accepted normalized QA records only.
-- report.md: every attempt, option, and review explanation.
-- results.json: complete machine-readable audit.
+- report.md: original and accepted wording, final outcomes, and explanations.
+- results.json: final machine-readable outcomes and validation summaries.
 - verification.json: counts and integrity checks.
