@@ -28,6 +28,15 @@ legacy experiments.
 | `analysis/review_qa_items.py` | Utility | Review final source or translated QAs with separate content validity and language accessibility checks; see [workflow and prompts](../configs/qa_review_v2/README.md). |
 | `analysis/rewrite_flagged_qa.py` | Utility | Rewrite flagged question/option wording using review evidence; require repeated preservation and full QA checks before exporting accepted revisions. See [usage](../configs/qa_review_v2/TARGETED_REWRITE.md). |
 | `analysis/simplify_qa_items.py` | Utility | Simplify unnecessary setup before compact verification; freeze the intended target and use detailed burden diagnosis only for failures. See [usage and validation](../configs/qa_simplify_v3/README.md). |
+| `campaigns/current/rerun_rewritten_qa.py` | Utility | Replay the 16 accepted Gold/Hard rewritten forms across saved model configurations and conditions; publish revised result copies while retaining original runs. |
+| `analysis/report_rewritten_qa_models.py` | Utility | Compare the verified rewrite replay against matching saved results; export condition totals, question comparisons, and before/after figures. |
+
+The October 27 rewrite replay uses `--phase prepare`, `--phase run`, and
+`--phase publish`. Preparation freezes question translations, exact passage
+windows, model settings, and source hashes. Only changed forms are generated;
+identical model inputs reuse a response with that reuse recorded. Published
+copies preserve all untouched rows. Newly evaluated forms stay separate from
+existing full-set totals. The report uses the default dated replay directory.
 
 ### Full six-dose rerun
 

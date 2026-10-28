@@ -963,8 +963,14 @@ def record_telegram_answer_receipt(
                 provider_message_id=question_message_id,
             )
         assignment = db.get(Assignment, assignment_id) if assignment_id else mapped_assignment
-        if assignment_id and mapped_assignment and mapped_assignment.id != assignment_id:
-            assignment = None
+        if assignment_id and (
+            assignment is None
+            or (mapped_assignment and mapped_assignment.id != assignment_id)
+        ):
+            # A button tap names its own question. Never re-target it at the
+            # participant's current question (that recorded a tap on an old
+            # message as the answer to the new one). Treat it as stale.
+            return None
         if assignment is None:
             participant_session = get_or_create_participant_session(db, participant)
             assignment = db.get(Assignment, participant_session.current_assignment_id)
@@ -1058,40 +1064,200 @@ def next_prompt_after_telegram_receipt(chat_id, display_name, workflow_result):
 
     Receipts only hand back a *prepared* successor (the next assignment in a
     pre-built batch chain). Designed (Latin-square) assignment creates one
-    assignment at a time, so after every pilot answer there is no successor and
-    the participant was left waiting -- a later message only got "No question
-    has been delivered yet". Here the receipt is projected immediately (the
-    same idempotent drain the background thread runs; SKIP LOCKED keeps the two
-    from double-processing) and the normal selection path picks the next cell.
+    assignment at a time, so after every pilot answer there is no successor.
+
+    One transaction: lock THIS receipt (waiting if the background drain holds
+    it -- skipping it left the session "awaiting response" and stalled the
+    participant), project it if still pending, then select and create the next
+    assignment. Reminders and badges for the new question are NOT computed
+    here: the answer's ``answer_postprocess_requested`` outbox job is pointed at
+    the new assignment and the outbox poller does them off the critical path.
 
     Returns a WorkflowResult to send, or None when nothing more is needed.
+    ``chat_id``/``display_name`` are kept for call-site compatibility.
     """
 
     if workflow_result is None or workflow_result.prompt is not None:
         return None
     if not workflow_result.response_id or workflow_result.status_message:
         return None
-    process_pending_answer_receipts()
-    follow_up = record_telegram_text_message(
-        chat_id=chat_id,
-        display_name=display_name,
-        message_id=None,
-        message_text="",
-        record_response=False,
+
+    session_factory = get_session_factory()
+    with session_factory() as db:
+        receipt = db.scalar(
+            select(AnswerReceipt)
+            .where(AnswerReceipt.id == workflow_result.response_id)
+            .with_for_update()
+        )
+        if receipt is None:
+            return None
+        postprocess = (
+            _project_receipt(db, receipt, add_postprocess=False)
+            if receipt.status == "pending"
+            else None
+        )
+        if receipt.status != "processed":
+            db.commit()
+            return None
+
+        participant = db.get(Participant, receipt.participant_id)
+        participant.last_seen_at = utc_now()
+        participant_session = get_or_create_participant_session(db, participant)
+        prompt, batch_completed, completed_batch_size = create_assignment_prompt(
+            db, participant, participant_session
+        )
+        if batch_completed:
+            # Parity with the generic path: start the next batch at once.
+            from app.engagement.batch_continuation import (
+                cancel_pending_next_batch_schedules,
+            )
+
+            cancel_pending_next_batch_schedules(
+                db,
+                participant.id,
+                reason="Bot starts the next batch immediately after completion",
+            )
+            prompt, _, _ = create_assignment_prompt(db, participant, participant_session)
+
+        if postprocess is not None:
+            # Added only now so it is written once, already pointing at the new
+            # question (the outbox job creates that question's reminders).
+            if prompt is not None:
+                payload = dict(postprocess.payload or {})
+                payload["next_assignment_id"] = prompt.assignment_id
+                postprocess.payload = payload
+            db.add(postprocess)
+        if prompt is not None:
+            if postprocess is None:
+                # The background drain projected the answer first; its outbox
+                # job does not know about this assignment, so schedule here.
+                new_assignment = db.get(Assignment, prompt.assignment_id)
+                if new_assignment is not None:
+                    create_assignment_reminders(db, new_assignment, participant)
+
+        status_message = None
+        if (
+            prompt is None
+            and experiment_assignment_enabled()
+            and participant_session.state == SessionState.IDLE.value
+            and db.scalar(
+                select(Assignment.id).where(
+                    Assignment.participant_id == participant.id,
+                    Assignment.status == AssignmentStatus.ASSIGNED.value,
+                ).limit(1)
+            ) is None
+        ):
+            # Plan exhausted: say so instead of going silent after the last answer.
+            status_message = TELEGRAM_PLAN_COMPLETE_MESSAGE
+
+        db.commit()
+        return WorkflowResult(
+            participant_id=participant.id,
+            session_id=participant_session.id,
+            session_state=participant_session.state,
+            prompt=prompt,
+            batch_completed=batch_completed,
+            completed_batch_size=completed_batch_size,
+            status_message=status_message,
+            engagement_deferred=True,
+        )
+
+
+def _project_receipt(db, receipt, *, add_postprocess=True):
+    """Turn one pending receipt into a ParticipantResponse (same transaction).
+
+    Returns the queued ``answer_postprocess_requested`` OutboxNotification (so a
+    caller that assigns the next question in the same transaction can point its
+    ``next_assignment_id`` at it), or None when nothing new was projected.
+    """
+
+    assignment = db.get(Assignment, receipt.assignment_id)
+    participant = db.get(Participant, receipt.participant_id)
+    if not assignment or not participant:
+        receipt.status = "failed"
+        receipt.failure_reason = "Assignment or participant no longer exists"
+        return None
+    existing = db.scalar(
+        select(ParticipantResponse).where(
+            ParticipantResponse.assignment_id == assignment.id
+        )
     )
-    if (
-        experiment_assignment_enabled()
-        and follow_up.prompt is None
-        and not follow_up.status_message
-        and not follow_up.batch_completed
-    ):
-        # Plan exhausted: say so instead of going silent after the last answer.
-        follow_up.status_message = TELEGRAM_PLAN_COMPLETE_MESSAGE
-    return follow_up
+    if existing:
+        receipt.response_id = existing.id
+        receipt.status = "processed"
+        receipt.processed_at = utc_now()
+        return None
+
+    participant_session = get_or_create_participant_session(db, participant)
+    participant_session.current_assignment_id = assignment.id
+    participant_session.current_batch_id = assignment.batch_id
+    participant_session.state = SessionState.AWAITING_RESPONSE.value
+    response = save_response_for_current_assignment(
+        db,
+        participant,
+        participant_session,
+        response_text=receipt.raw_answer,
+        response_type=receipt.response_type,
+        provider=receipt.provider,
+    )
+    if response is None:
+        receipt.status = "failed"
+        receipt.failure_reason = "Assignment could not be completed"
+        return None
+
+    batch_completed, completed_batch_size = complete_current_batch_if_needed(
+        db, participant, participant_session
+    )
+    successor = db.get(Assignment, assignment.next_assignment_id) \
+        if assignment.next_assignment_id else None
+    if successor and successor.status == AssignmentStatus.ASSIGNED.value:
+        participant_session.current_assignment_id = successor.id
+        participant_session.current_batch_id = successor.batch_id
+        participant_session.state = SessionState.AWAITING_RESPONSE.value
+    else:
+        participant_session.current_assignment_id = None
+        participant_session.current_batch_id = None
+        participant_session.state = SessionState.IDLE.value
+    postprocess = OutboxNotification(
+        participant_id=participant.id,
+        notification_type="answer_postprocess_requested",
+        payload={
+            "response_id": response.id,
+            "next_assignment_id": successor.id if successor else None,
+            "batch_completed": batch_completed,
+            "completed_batch_size": completed_batch_size,
+            "completed_count_at_response": participant.completed_count,
+            "source": receipt.provider,
+        },
+        status=OutboxStatus.PENDING.value,
+    )
+    if add_postprocess:
+        db.add(postprocess)
+    if receipt.provider == "user_dashboard":
+        db.add(OutboxNotification(
+            participant_id=participant.id,
+            notification_type="dashboard_answer_synced",
+            payload={
+                "response_id": response.id,
+                "assignment_id": assignment.id,
+                "qa_item_id": assignment.qa_item_id,
+                "batch_id": assignment.batch_id,
+                "batch_completed": batch_completed,
+                "completed_batch_size": completed_batch_size,
+                "next_assignment_id": successor.id if successor else None,
+            },
+            status=OutboxStatus.PENDING.value,
+        ))
+    receipt.response_id = response.id
+    receipt.status = "processed"
+    receipt.processed_at = utc_now()
+    return postprocess
 
 
 def process_pending_answer_receipts(limit=50):
-    """Project immutable receipts into the existing response lifecycle."""
+    """Background drain: project pending receipts (SKIP LOCKED, so the
+    Telegram fast path in ``next_prompt_after_telegram_receipt`` and this loop
+    never process the same receipt twice)."""
 
     session_factory = get_session_factory()
     processed = 0
@@ -1104,86 +1270,9 @@ def process_pending_answer_receipts(limit=50):
             .with_for_update(skip_locked=True)
         ).all()
         for receipt in receipts:
-            assignment = db.get(Assignment, receipt.assignment_id)
-            participant = db.get(Participant, receipt.participant_id)
-            if not assignment or not participant:
-                receipt.status = "failed"
-                receipt.failure_reason = "Assignment or participant no longer exists"
-                continue
-            existing = db.scalar(
-                select(ParticipantResponse).where(
-                    ParticipantResponse.assignment_id == assignment.id
-                )
-            )
-            if existing:
-                receipt.response_id = existing.id
-                receipt.status = "processed"
-                receipt.processed_at = utc_now()
+            _project_receipt(db, receipt)
+            if receipt.status == "processed":
                 processed += 1
-                continue
-
-            participant_session = get_or_create_participant_session(db, participant)
-            participant_session.current_assignment_id = assignment.id
-            participant_session.current_batch_id = assignment.batch_id
-            participant_session.state = SessionState.AWAITING_RESPONSE.value
-            response = save_response_for_current_assignment(
-                db,
-                participant,
-                participant_session,
-                response_text=receipt.raw_answer,
-                response_type=receipt.response_type,
-                provider=receipt.provider,
-            )
-            if response is None:
-                receipt.status = "failed"
-                receipt.failure_reason = "Assignment could not be completed"
-                continue
-
-            batch_completed, completed_batch_size = complete_current_batch_if_needed(
-                db, participant, participant_session
-            )
-            successor = db.get(Assignment, assignment.next_assignment_id) \
-                if assignment.next_assignment_id else None
-            if successor and successor.status == AssignmentStatus.ASSIGNED.value:
-                participant_session.current_assignment_id = successor.id
-                participant_session.current_batch_id = successor.batch_id
-                participant_session.state = SessionState.AWAITING_RESPONSE.value
-            else:
-                participant_session.current_assignment_id = None
-                participant_session.current_batch_id = None
-                participant_session.state = SessionState.IDLE.value
-            db.add(OutboxNotification(
-                participant_id=participant.id,
-                notification_type="answer_postprocess_requested",
-                payload={
-                    "response_id": response.id,
-                    "next_assignment_id": successor.id if successor else None,
-                    "batch_completed": batch_completed,
-                    "completed_batch_size": completed_batch_size,
-                    "completed_count_at_response": participant.completed_count,
-                    "source": receipt.provider,
-                },
-                status=OutboxStatus.PENDING.value,
-            ))
-            if receipt.provider == "user_dashboard":
-                db.add(OutboxNotification(
-                    participant_id=participant.id,
-                    notification_type="dashboard_answer_synced",
-                    payload={
-                        "response_id": response.id,
-                        "assignment_id": assignment.id,
-                        "qa_item_id": assignment.qa_item_id,
-                        "batch_id": assignment.batch_id,
-                        "batch_completed": batch_completed,
-                        "completed_batch_size": completed_batch_size,
-                        "next_assignment_id": successor.id if successor else None,
-                    },
-                    status=OutboxStatus.PENDING.value,
-                ))
-            receipt.response_id = response.id
-            receipt.status = "processed"
-            receipt.processed_at = utc_now()
-            processed += 1
         db.commit()
     return processed
 

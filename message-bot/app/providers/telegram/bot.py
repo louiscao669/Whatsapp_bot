@@ -4,6 +4,7 @@ import logging
 import sys
 from pathlib import Path
 
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import (
     Application,
     CallbackQueryHandler,
@@ -33,6 +34,7 @@ from app.messaging.workflow import (
 )
 from app.providers.telegram.messaging import (
     MCQ_CALLBACK_PREFIX,
+    MCQ_DONE_CALLBACK,
     parse_mcq_callback_data,
     send_workflow_result,
 )
@@ -242,9 +244,38 @@ async def mcq_button_tap(update, context):
     await query.answer()
 
     contact_input = contact_input_from_update(update)
+    chat_id = query.message.chat_id
+
+    # Lock the question at once: swap the keyboard for a single tick on the
+    # chosen option, so later taps (while the next question loads) have nothing
+    # to hit, and show "typing..." while the bot works. Only the FIRST tap on a
+    # question is ever recorded (unique receipt per assignment).
+    chosen_label = None
+    try:
+        rows = query.message.reply_markup.inline_keyboard if query.message.reply_markup else []
+        chosen_label = rows[choice_index][0].text if choice_index < len(rows) else None
+    except Exception:
+        chosen_label = None
+
+    async def lock_keyboard():
+        try:
+            if chosen_label:
+                await query.edit_message_reply_markup(
+                    reply_markup=InlineKeyboardMarkup(
+                        [[InlineKeyboardButton(f"✓ {chosen_label}", callback_data=MCQ_DONE_CALLBACK)]]
+                    )
+                )
+            else:
+                await query.edit_message_reply_markup(reply_markup=None)
+        except Exception:
+            pass
+
+    lock_task = asyncio.create_task(lock_keyboard())
+    typing_task = asyncio.create_task(_send_typing(context, chat_id))
 
     try:
-        workflow_result = record_telegram_answer_receipt(
+        workflow_result = await asyncio.to_thread(
+            record_telegram_answer_receipt,
             chat_id=contact_input.chat_id,
             display_name=contact_input.display_name,
             update_id=update.update_id,
@@ -254,39 +285,50 @@ async def mcq_button_tap(update, context):
         )
     except Exception:
         logging.exception(
-            "Failed to record inline-keyboard answer for chat %s assignment %s",
-            contact_input.chat_id,
-            assignment_id,
+            "Failed to record inline-keyboard answer for assignment %s", assignment_id
         )
+        await lock_task
+        try:
+            await query.edit_message_reply_markup(reply_markup=query.message.reply_markup)
+        except Exception:
+            pass
         await context.bot.send_message(
-            chat_id=query.message.chat_id,
+            chat_id=chat_id,
             text="Sorry, something went wrong recording your answer. Please try again.",
         )
         return
 
-    if workflow_result is None:
-        # Stale tap: the button belongs to a question that is no longer current.
-        await context.bot.send_message(
-            chat_id=query.message.chat_id, text="This question was already answered."
-        )
+    await lock_task
+    if workflow_result is None or workflow_result.status_message:
+        # Stale or duplicate tap: the answer recorded earlier stands. Drop the
+        # optimistic tick so it cannot suggest this later choice was saved.
         try:
             await query.edit_message_reply_markup(reply_markup=None)
         except Exception:
             pass
+        await context.bot.send_message(
+            chat_id=chat_id,
+            text=(workflow_result.status_message if workflow_result else None)
+            or "This question was already answered.",
+        )
+        await typing_task
         return
 
-    # Remove the old keyboard concurrently. Delivery of the next question must
-    # not wait for this separate Telegram API request.
-    async def remove_old_keyboard():
-        try:
-            await query.edit_message_reply_markup(reply_markup=None)
-        except Exception:
-            pass
-
-    keyboard_task = asyncio.create_task(remove_old_keyboard())
     await send_workflow_result(context.bot, contact_input.chat_id, workflow_result)
     await send_next_prompt_if_needed(context, contact_input.chat_id, None, workflow_result)
-    await keyboard_task
+    await typing_task
+
+
+async def _send_typing(context, chat_id):
+    try:
+        await context.bot.send_chat_action(chat_id=chat_id, action="typing")
+    except Exception:
+        pass
+
+
+async def mcq_done_tap(update, context):
+    """The tick left on an answered question: acknowledge, do nothing."""
+    await update.callback_query.answer("Answer already recorded.")
 
 
 def build_application():
@@ -299,6 +341,7 @@ def build_application():
     app.add_handler(
         CallbackQueryHandler(mcq_button_tap, pattern=rf"^{MCQ_CALLBACK_PREFIX}:")
     )
+    app.add_handler(CallbackQueryHandler(mcq_done_tap, pattern=rf"^{MCQ_DONE_CALLBACK}$"))
     return app
 
 

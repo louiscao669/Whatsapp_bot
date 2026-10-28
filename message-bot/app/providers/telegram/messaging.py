@@ -21,7 +21,10 @@ from eten_shared.mcq import (
 from eten_shared.answer_receipts import record_assignment_delivery
 from eten_shared.database import get_session_factory
 
+from eten_shared.mcq import MCQ_LABELS
+
 MCQ_CALLBACK_PREFIX = "mcq"
+MCQ_DONE_CALLBACK = "mcqdone"  # the tick left on an answered question
 MCQ_BUTTON_LABEL_MAX_CHARS = 60
 
 
@@ -49,7 +52,9 @@ def parse_mcq_callback_data(data):
     if not assignment_id or not raw_index.isdigit():
         return None
     choice_index = int(raw_index)
-    if choice_index > 3:
+    # Five buttons A-E (E = "cannot tell" on tier-1 items). The old "> 3" cap
+    # silently dropped every tap on E.
+    if choice_index >= len(MCQ_LABELS):
         return None
     return assignment_id, choice_index
 

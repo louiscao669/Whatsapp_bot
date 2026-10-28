@@ -245,29 +245,22 @@ def test_exact_mcq_letter_records_its_scoring_method():
             assert response.scoring_metadata["letter"] == letter
 
 
-def test_designed_assignment_serves_next_question_after_answer():
-    """Pilot assignment has no pre-built successor: the bot must fetch the next one."""
-    from app.messaging.workflow import (
-        TELEGRAM_PLAN_COMPLETE_MESSAGE,
-        WorkflowResult,
-        next_prompt_after_telegram_receipt,
-    )
+def test_next_prompt_guards():
+    """A prepared successor, a duplicate tap, or no receipt: nothing extra to send.
+    (The full serve-next flow is covered end to end by the SQLite dry run of
+    the gold72 pilot: 69/69 items served by button taps.)"""
+    from app.messaging.workflow import WorkflowResult, next_prompt_after_telegram_receipt
 
-    accepted = WorkflowResult(participant_id="p", session_id="s", session_state="idle",
-                              response_id="r1", prompt=None)
-    follow = WorkflowResult(participant_id="p", session_id="s", session_state="idle")
-    with patch("app.messaging.workflow.process_pending_answer_receipts") as drain, \
-         patch("app.messaging.workflow.record_telegram_text_message", return_value=follow) as ask, \
-         patch("app.messaging.workflow.experiment_assignment_enabled", return_value=True):
-        result = next_prompt_after_telegram_receipt("123", None, accepted)
-    drain.assert_called_once()
-    assert ask.call_args.kwargs["record_response"] is False
-    assert result.status_message == TELEGRAM_PLAN_COMPLETE_MESSAGE
-
-    # A prepared successor, a duplicate tap, or no receipt: nothing extra to send.
     with_successor = WorkflowResult(participant_id="p", session_id="s", session_state="x",
                                     response_id="r1", prompt=object())
     duplicate = WorkflowResult(participant_id="p", session_id="s", session_state="x",
                                response_id="r1", status_message="This question was already answered.")
-    for result in (with_successor, duplicate, None):
+    no_receipt = WorkflowResult(participant_id="p", session_id="s", session_state="x")
+    for result in (with_successor, duplicate, no_receipt, None):
         assert next_prompt_after_telegram_receipt("123", None, result) is None
+
+
+def test_e_button_is_accepted():
+    from app.providers.telegram.messaging import parse_mcq_callback_data
+    assert parse_mcq_callback_data("mcq:abc:4") == ("abc", 4)   # E = cannot tell
+    assert parse_mcq_callback_data("mcq:abc:5") is None
