@@ -1,0 +1,75 @@
+{
+  "request_hash": "c5a1853ccb0326714310f9977caa31b3d30c170e2c6f1145d92b86f631c074b4",
+  "model": "gpt-6.1-sol",
+  "response_id": "resp_0acba7283ca8c733006ae12f77f21887d1b13b8a0a6c5c6d2f",
+  "usage": {
+    "input_tokens": 1579,
+    "input_tokens_details": {
+      "cached_tokens": 1103,
+      "cache_write_tokens": 473
+    },
+    "output_tokens": 692,
+    "output_tokens_details": {
+      "reasoning_tokens": 37
+    },
+    "total_tokens": 2271
+  },
+  "parsed": {
+    "id": "item",
+    "contract_validity": {
+      "status": "pass",
+      "evidence": "契约符合显式目标和短文：识别吃饭前离开的小林，并保留与吃饭后离开的小周的时间区别。所需答案为“小林”，不必在作答中复述整个对照。"
+    },
+    "same_target": {
+      "status": "pass",
+      "evidence": "候选与原题完全相同，保留“吃饭前”的时间条件及“谁离开了”的身份识别目标。"
+    },
+    "removals_justified": {
+      "status": "pass",
+      "evidence": "候选未删除或改动原题、短文中的任何信息。"
+    },
+    "same_language": {
+      "status": "pass",
+      "evidence": "问题仍为中文；本题没有选项。"
+    },
+    "option_meanings": [],
+    "content": {
+      "question_support": {
+        "status": "pass",
+        "evidence": "短文明确记载“吃饭前，小林离开了”，支持问题及其有人在饭前离开的预设。"
+      },
+      "answer_support": {
+        "status": "pass",
+        "evidence": "固定答案“小林”由短文第一句直接支持。"
+      },
+      "answer_uniqueness": {
+        "status": "pass",
+        "evidence": "短文中只有小林被描述为饭前离开；小周是在饭后离开，不满足问题的时间条件。"
+      },
+      "context_sufficiency": {
+        "status": "pass",
+        "evidence": "当前短文提供两位人物及各自离开的时间，无须外部知识即可确定答案。"
+      },
+      "answer_leakage": {
+        "status": "pass",
+        "evidence": "问题没有点名答案或附加提示；答案出现在作为阅读依据的短文中，属于正常的文本支持。"
+      },
+      "mcq_validity": {
+        "status": "not_applicable",
+        "evidence": "本题为开放题，没有选项或选择题答案键。"
+      }
+    },
+    "naturalness": {
+      "score": 0,
+      "evidence": "短文和“吃饭前，谁离开了？”均自然、直接，无需修补理解。"
+    },
+    "processing": {
+      "score": 0,
+      "evidence": "两句使用平行结构，人物明确；只需匹配问题中的“吃饭前”与第一句。"
+    },
+    "context_economy": {
+      "score": 0,
+      "evidence": "第一句提供答案，第二句提供显式目标所需的饭后对照；没有多余叙事或指代链。"
+    }
+  }
+}

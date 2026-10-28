@@ -1,0 +1,4383 @@
+{
+  "manifest": {
+    "configuration": {
+      "dataset_sha256": "a7f1288da00d8cb57bc2b026e4dca0f1309ebb35adfaa58390ac6ce323cbc687",
+      "prompt_sha256": {
+        "baseline": "b7c9868704e29c70e16d236520c4de4800b352e71e3ae4ea15ac335e3e3fcb3f",
+        "revised": "710d52b8945d965d68775a411de6abc5543010775247b16f5b9a92c4275a06ca"
+      },
+      "schema_sha256": "5fa920642b474382900cb35cd4cea1669a30f9717edb84a60aec124f26c3b82d",
+      "model": "gpt-6-sol",
+      "repeats": 3,
+      "api": "responses",
+      "max_output_tokens": 8192,
+      "temperature": "model default",
+      "reasoning_effort": "model default",
+      "order_seed": 20261022
+    },
+    "model": "gpt-6-sol",
+    "frozen_at_utc": "2026-10-23T02:09:41.035631+00:00"
+  },
+  "records": [
+    {
+      "id": "context_integrity_n1",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "主人打了仆人一下，随后打算返回家中。",
+        "replacement_claim": "第一处替换后，主人踢了仆人一下；第二处替换后成为“随后踢算返回家中”，无法表达明确意思。",
+        "explanation": "“打了仆人”改为“踢了仆人”改变了动作，但“打”也出现在“打算”中。系统性替换会产生不通顺的“踢算”，因此不能在所有匹配处成立。",
+        "meaning_changed": "uncertain",
+        "fluent": "no",
+        "substitution_only": "no",
+        "localized": "no",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "336d254677220f0ce5e2587efd2072745418868048a70b7e56020b4de16540c5",
+      "response_id": "resp_069a0dbb8ab781c9006adac22be6c087d1ac94cff7b52cf357",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 880,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 405,
+        "output_tokens_details": {
+          "reasoning_tokens": 241
+        },
+        "total_tokens": 1285
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_1/context_integrity_n1.json"
+    },
+    {
+      "id": "context_integrity_n1",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "主人打了仆人一下，随后打算返回家中。",
+        "replacement_claim": "主人踢了仆人一下，随后“踢算”返回家中；后半句无法正常理解。",
+        "explanation": "第一处将“打仆人”改为“踢仆人”，动作明确改变。但系统替换也命中“打算”，生成不成词的“踢算”，破坏了原本的回家计划这一表述。因此并非所有匹配处都构成通顺、局部的事实替换。",
+        "meaning_changed": "uncertain",
+        "fluent": "no",
+        "substitution_only": "no",
+        "localized": "no",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "4f40ed6658d05e4206a414b9be73be896ec97a7521ce90bdd714bd8ece52194d",
+      "response_id": "resp_054782b3d95c6511006adac20cdc6487d18c45f47cdea6bcf4",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1173,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1170
+        },
+        "output_tokens": 372,
+        "output_tokens_details": {
+          "reasoning_tokens": 200
+        },
+        "total_tokens": 1545
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_1/context_integrity_n1.json"
+    },
+    {
+      "id": "context_integrity_n2",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "孩子削了一个苹果，把果皮扔进篮子。",
+        "replacement_claim": "孩子喝了一个苹果，把果皮扔进篮子。",
+        "explanation": "“喝了一个苹果”中“喝”与整个苹果搭配不自然，句子不通顺；虽然试图改变动作，但不符合流畅性要求。",
+        "meaning_changed": "yes",
+        "fluent": "no",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "5618230e5956b190e2af9f7c7dc0248ed9f149cb5989bdf819d0e37eb08a9671",
+      "response_id": "resp_085a751cf3892197006adac1fce8a487d180b3457d128260df",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 822,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 119,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 941
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_1/context_integrity_n2.json"
+    },
+    {
+      "id": "context_integrity_n2",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "孩子削了一个苹果。",
+        "replacement_claim": "孩子喝了一个苹果。",
+        "explanation": "动作由“削”变为“喝”，但“喝了一个苹果”搭配不自然，不符合通顺中文的要求。",
+        "meaning_changed": "yes",
+        "fluent": "no",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "dc5b2dc11ad5df9cdb8c235f2d5d59888c242e7b1f7ea89f46d69c7d45dbb665",
+      "response_id": "resp_0877674d4077c88d006adac220469887d180d59915cc07827f",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1115,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1112
+        },
+        "output_tokens": 154,
+        "output_tokens_details": {
+          "reasoning_tokens": 57
+        },
+        "total_tokens": 1269
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_1/context_integrity_n2.json"
+    },
+    {
+      "id": "context_integrity_p1",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "长老坐在门的左边，仆人也把箱子放在门的左边。",
+        "replacement_claim": "长老坐在门的右边，仆人也把箱子放在门的右边。",
+        "explanation": "两处“左边”均表示相对于门的方位；替换后均变为“右边”。每处都只改变一个方位信息，句子自然，且两处出现均适用。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "9f591405df29b2ba5badf2761cae5d892835bd416e50e504d4056cccd2392f8c",
+      "response_id": "resp_0bcf4e9f7da39897006adac241532c87d1827e1fd5d8e6378a",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 873,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 197,
+        "output_tokens_details": {
+          "reasoning_tokens": 48
+        },
+        "total_tokens": 1070
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_1/context_integrity_p1.json"
+    },
+    {
+      "id": "context_integrity_p1",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "长老坐在门的左边，仆人也把箱子放在门的左边。",
+        "replacement_claim": "长老坐在门的右边，仆人也把箱子放在门的右边。",
+        "explanation": "两处都将相对于门的位置从左边改为右边，方向事实明确改变；句子通顺，且每处只替换了位置。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "bb2f98273c9f03bf78e9d45909873fa738285f191851a7a32ae3476f0dec869e",
+      "response_id": "resp_0afad2a7785aa5d3006adac21d1d3487d18a9a3aab169ef259",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1166,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1163
+        },
+        "output_tokens": 187,
+        "output_tokens_details": {
+          "reasoning_tokens": 50
+        },
+        "total_tokens": 1353
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_1/context_integrity_p1.json"
+    },
+    {
+      "id": "context_integrity_p2",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "商人在港口买了布匹，第二天又买了谷物。",
+        "replacement_claim": "商人在港口卖了布匹，第二天又卖了谷物。",
+        "explanation": "两处都将交易行为由“买”改为“卖”，改变了商人的行为；其余人物、货物和时间地点未变，两个句子均自然通顺。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "c0358e380e9145e9a145712268c5436d2eb4bb1353d92c315ff5d7f6d4bd9eee",
+      "response_id": "resp_046d673cc15a0ab4006adac210129087d1884f92d06e655053",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 858,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 175,
+        "output_tokens_details": {
+          "reasoning_tokens": 44
+        },
+        "total_tokens": 1033
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_1/context_integrity_p2.json"
+    },
+    {
+      "id": "context_integrity_p2",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "商人在港口买了布匹，第二天又买了谷物。",
+        "replacement_claim": "商人在港口卖了布匹，第二天又卖了谷物。",
+        "explanation": "两处都将商人的交易行为由买入改为卖出，交易方向明确改变；句子自然，其余信息保留。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "877cd2714a760557ce69bdd59e6fe840f17559c122658a5146ef2d449ead6ae0",
+      "response_id": "resp_070feba9334d4202006adac253d3a087d1b03e96d9073e7a26",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1151,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1148
+        },
+        "output_tokens": 137,
+        "output_tokens_details": {
+          "reasoning_tokens": 17
+        },
+        "total_tokens": 1288
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_1/context_integrity_p2.json"
+    },
+    {
+      "id": "context_n1",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "夕阳落下时，一小批船只驶入港口。",
+        "replacement_claim": "夕阳落下时，几艘船驶入港口。",
+        "explanation": "“一小批船只”和“几艘船”都表示少量船只，未改变可辨认的事实。替换后的句子自然，且只涉及这一处表述，但不构成实质性误译。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "2a9c6d2c7789629b0529d52a861d3659ae683ef92747b037f692bb8d39d57b2d",
+      "response_id": "resp_0057c45ebfa8ed31006adac247a36c87d1b22307b82c85b02f",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 851,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 278,
+        "output_tokens_details": {
+          "reasoning_tokens": 140
+        },
+        "total_tokens": 1129
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_1/context_n1.json"
+    },
+    {
+      "id": "context_n1",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "夕阳落下时，一小批船只驶入港口。",
+        "replacement_claim": "夕阳落下时，几艘船驶入港口。",
+        "explanation": "“一小批船只”和“几艘船”都可指数量不多的多艘船，不能确定两者在此处所指数量不同；替换后的句子通顺，但只是换了一种数量表述。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "1ede4d0b0fa0d899f89235dfdb0e27500788f704a27a9b087d4822eba0d6424a",
+      "response_id": "resp_07ea72d752f38cb1006adac23ff84c87d186c72ad0d27226c5",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1144,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1141
+        },
+        "output_tokens": 137,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 1281
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_1/context_n1.json"
+    },
+    {
+      "id": "context_n2",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "巡逻者接近日落时分才回来。",
+        "replacement_claim": "巡逻者接近傍晚才回来。",
+        "explanation": "“傍晚”是比“日落时分”更宽泛的时间描述，并未明确改成一个不同的时间事实，只是淡化了原文的时间细节。句子通顺，改动也集中在时间短语，但不符合实质性替换的要求。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "no",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "f1d19f0cd3d2bb6bcd506f58fa27971e0d1bbb1a50825ca470db6781f1432ba8",
+      "response_id": "resp_0e80c8be2d4f6328006adac2355dec87d182dca833625e18bb",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 834,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 382,
+        "output_tokens_details": {
+          "reasoning_tokens": 239
+        },
+        "total_tokens": 1216
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_1/context_n2.json"
+    },
+    {
+      "id": "context_n2",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "巡逻者接近日落时分才回来，随后交还武器。",
+        "replacement_claim": "巡逻者接近傍晚才回来，随后交还武器。",
+        "explanation": "原文说回来时间接近日落，替换后说接近傍晚。日落时分与傍晚在此语境下可以指同一时段，读者无法确定回来时间发生了事实变化。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "c61ecf5621376de223f27f9e1c4513cf999d0eab57d513fcdb9d24faaff384bd",
+      "response_id": "resp_0bf0ec52b544641a006adac22580e087d1a2698d166e785d16",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1127,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1124
+        },
+        "output_tokens": 213,
+        "output_tokens_details": {
+          "reasoning_tokens": 73
+        },
+        "total_tokens": 1340
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_1/context_n2.json"
+    },
+    {
+      "id": "context_p1",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "当日上午到港的是小批船只。",
+        "replacement_claim": "当日上午到港的是大批船只。",
+        "explanation": "将到港船只的批次由“小批”改为“大批”，改变了一个明确事实；句子自然，其他信息未变。该词组在原文中仅出现一次。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "b0e7be8f55ebd9d63d91395be26a1f2fcfb999ddbdfb05f5a610873e5f019a36",
+      "response_id": "resp_0a0b5c3e01cd991c006adac211bb5087d19beb7bbf4fa5ee51",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 840,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 192,
+        "output_tokens_details": {
+          "reasoning_tokens": 73
+        },
+        "total_tokens": 1032
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_1/context_p1.json"
+    },
+    {
+      "id": "context_p1",
+      "arm": "baseline",
+      "trial": 2,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "当日上午到港的船只属于“小批”，即一至五艘。",
+        "replacement_claim": "当日上午到港的船只属于“大批”，即六至十艘。",
+        "explanation": "替换改变了到港船只所属的数量类别；句子自然，且只改动这一处类别。原文中该来源短语仅出现一次。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "b0e7be8f55ebd9d63d91395be26a1f2fcfb999ddbdfb05f5a610873e5f019a36",
+      "response_id": "resp_0bcd68ac51f11545006adac2207ff887d19c04c418a469af05",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 840,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 178,
+        "output_tokens_details": {
+          "reasoning_tokens": 50
+        },
+        "total_tokens": 1018
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_2/context_p1.json"
+    },
+    {
+      "id": "context_p1",
+      "arm": "baseline",
+      "trial": 3,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "当日上午到港的是小批船只，即一至五艘。",
+        "replacement_claim": "当日上午到港的是大批船只，即六至十艘。",
+        "explanation": "替换改变了到港船只所属的数量类别；句子通顺，仅替换这一处类别表述，原文中也只有这一处完整匹配。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "b0e7be8f55ebd9d63d91395be26a1f2fcfb999ddbdfb05f5a610873e5f019a36",
+      "response_id": "resp_0d828f169e29e02c006adac222262887d197a3cd259235f1d9",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 840,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 210,
+        "output_tokens_details": {
+          "reasoning_tokens": 85
+        },
+        "total_tokens": 1050
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_3/context_p1.json"
+    },
+    {
+      "id": "context_p1",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "当日上午到港的船只属“小批”，即一至五艘。",
+        "replacement_claim": "当日上午到港的船只属“大批”，即六至十艘。",
+        "explanation": "名册明确区分两类船只的数量范围；替换把当日上午到港船只的类别从一至五艘改为六至十艘。句子自然，且只替换了这一类别。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "c932d4aeae01ab42214c6a92a7ef27dd55ce22c7a83e39e963c1250f38a3df9c",
+      "response_id": "resp_092e589f09094e17006adac237d59c87d18fc063e395a373a1",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1133,
+        "input_tokens_details": {
+          "cached_tokens": 1130,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 176,
+        "output_tokens_details": {
+          "reasoning_tokens": 34
+        },
+        "total_tokens": 1309
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_1/context_p1.json"
+    },
+    {
+      "id": "context_p1",
+      "arm": "revised",
+      "trial": 2,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "当日上午到港的船只属于名册定义的“小批”，即一至五艘。",
+        "replacement_claim": "当日上午到港的船只属于名册定义的“大批”，即六至十艘。",
+        "explanation": "原文明确规定两种批次对应不同且不重叠的数量范围；替换改变了到港船只的批次及数量范围。替换仅涉及这一处，句子自然，其他信息不变。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "c932d4aeae01ab42214c6a92a7ef27dd55ce22c7a83e39e963c1250f38a3df9c",
+      "response_id": "resp_08d8868027d53ff4006adac20292f887d1b110c556a9523aba",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1133,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1130
+        },
+        "output_tokens": 189,
+        "output_tokens_details": {
+          "reasoning_tokens": 39
+        },
+        "total_tokens": 1322
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_2/context_p1.json"
+    },
+    {
+      "id": "context_p1",
+      "arm": "revised",
+      "trial": 3,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "当日上午到港的船只属于名册所定义的“小批”，即一至五艘。",
+        "replacement_claim": "当日上午到港的船只属于名册所定义的“大批”，即六至十艘。",
+        "explanation": "名册明确规定了两类互不重叠的数量范围；替换改变了到港船只的数量类别。该短语仅出现一次，替换后语句自然，其余信息未变。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "c932d4aeae01ab42214c6a92a7ef27dd55ce22c7a83e39e963c1250f38a3df9c",
+      "response_id": "resp_0aa522f55cbeabd9006adac257f51487d1b2a4647b1162dd94",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1133,
+        "input_tokens_details": {
+          "cached_tokens": 1130,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 190,
+        "output_tokens_details": {
+          "reasoning_tokens": 41
+        },
+        "total_tokens": 1323
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_3/context_p1.json"
+    },
+    {
+      "id": "context_p2",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "渔夫参加了早班。",
+        "replacement_claim": "渔夫参加了晚班。",
+        "explanation": "将渔夫参加的班次由早班改为晚班，改变了一个明确事实；替换后的句子通顺，且原文中只有这一处匹配。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "a149f114f10c70a5d9c8122efc6b72ad569f62cb78786c0ae848506c9f147505",
+      "response_id": "resp_0b84f92d135f09b9006adac23a9c9487d1b68b219b1ca604ec",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 828,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 143,
+        "output_tokens_details": {
+          "reasoning_tokens": 31
+        },
+        "total_tokens": 971
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_1/context_p2.json"
+    },
+    {
+      "id": "context_p2",
+      "arm": "baseline",
+      "trial": 2,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "渔夫参加了早班。",
+        "replacement_claim": "渔夫参加了晚班。",
+        "explanation": "将渔夫参加的班次从早班改为晚班，改变了一个明确事实；句子自然通顺，其他信息未变，且唯一匹配处适用。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "a149f114f10c70a5d9c8122efc6b72ad569f62cb78786c0ae848506c9f147505",
+      "response_id": "resp_0cf73eebd2fb73d4006adac22f1cb087d18d1e8999348c827f",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 828,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 136,
+        "output_tokens_details": {
+          "reasoning_tokens": 23
+        },
+        "total_tokens": 964
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_2/context_p2.json"
+    },
+    {
+      "id": "context_p2",
+      "arm": "baseline",
+      "trial": 3,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "渔夫参加了从六时开始的早班。",
+        "replacement_claim": "渔夫参加了从十八时开始的晚班。",
+        "explanation": "将渔夫参加的班次由早班改为晚班，改变了一个明确事实；句子自然通顺，且仅替换了班次。所列匹配处均适用。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "a149f114f10c70a5d9c8122efc6b72ad569f62cb78786c0ae848506c9f147505",
+      "response_id": "resp_0daa35a20ebbb5d8006adac208b51087d19c9e8a7f23f4a09c",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 828,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 125,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 953
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_3/context_p2.json"
+    },
+    {
+      "id": "context_p2",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "渔夫参加了六时开始的早班。",
+        "replacement_claim": "渔夫参加了十八时开始的晚班。",
+        "explanation": "原文明确区分早班和晚班的开始时间；替换后，渔夫参加的班次由早班变为晚班。句子通顺，仅替换了这一项事实，所示来源仅出现一次。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "6d558a7d58af582f68f58605b17adf01753502440b1b1e8fc9f7b5bd57ef01a7",
+      "response_id": "resp_0b61bc6df84478f1006adac25a73bc87d1bb2540e45abdf4ce",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1121,
+        "input_tokens_details": {
+          "cached_tokens": 1118,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 159,
+        "output_tokens_details": {
+          "reasoning_tokens": 27
+        },
+        "total_tokens": 1280
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_1/context_p2.json"
+    },
+    {
+      "id": "context_p2",
+      "arm": "revised",
+      "trial": 2,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "渔夫参加了六时开始的早班。",
+        "replacement_claim": "渔夫参加了十八时开始的晚班。",
+        "explanation": "原文断言渔夫参加早班，替换后断言他参加晚班；两种班次在文中明确区分。替换只改变所参加的班次，句子自然，所示匹配处适用。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "6d558a7d58af582f68f58605b17adf01753502440b1b1e8fc9f7b5bd57ef01a7",
+      "response_id": "resp_096d36f61fce1d01006adac206de8c87d189ebac5f9dfe9543",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1121,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1118
+        },
+        "output_tokens": 132,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 1253
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_2/context_p2.json"
+    },
+    {
+      "id": "context_p2",
+      "arm": "revised",
+      "trial": 3,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "渔夫参加了从六时开始的早班。",
+        "replacement_claim": "渔夫参加了从十八时开始的晚班。",
+        "explanation": "原文断言渔夫参加早班，替换后断言他参加晚班；文中明确区分两班的开始时间。仅替换班次，句子自然通顺，所列匹配处均成立。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "6d558a7d58af582f68f58605b17adf01753502440b1b1e8fc9f7b5bd57ef01a7",
+      "response_id": "resp_06b1618f22cf5692006adac23bc35087d1ab112f058db08b95",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1121,
+        "input_tokens_details": {
+          "cached_tokens": 1118,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 157,
+        "output_tokens_details": {
+          "reasoning_tokens": 23
+        },
+        "total_tokens": 1278
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_3/context_p2.json"
+    },
+    {
+      "id": "equivalence_n1",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "工匠承诺在十二个月之内完成修缮。",
+        "replacement_claim": "工匠承诺在一年之内完成修缮。",
+        "explanation": "合同已规定每年按十二个月计算，因此“十二个月之内”和“一年之内”表示相同的期限，未改变承诺的内容。替换在该处通顺且局部，但不构成实质性误译。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "8ed7f40ac11d41dd6a56f641ca4c59240131ad1a52b4bb83e1239ac64f8009ba",
+      "response_id": "resp_0ef257e49576abda006adac207aff087d1a2d24ea5f130c004",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 836,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 242,
+        "output_tokens_details": {
+          "reasoning_tokens": 103
+        },
+        "total_tokens": 1078
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_1/equivalence_n1.json"
+    },
+    {
+      "id": "equivalence_n1",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "工匠承诺在十二个月之内完成修缮。",
+        "replacement_claim": "工匠承诺在一年之内完成修缮。",
+        "explanation": "合同明确规定一年按十二个月计算，因此两种期限在此处相同，没有可确定的事实变化。替换本身通顺且局部，但不构成误译。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "7f4eebc94512c01414b5e929a9dea7a6d0930e890a7b90d12261f2832eecdbce",
+      "response_id": "resp_0f5c06b545d7a3da006adac24ccfa087d188a7bf93208bf11e",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1129,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1126
+        },
+        "output_tokens": 179,
+        "output_tokens_details": {
+          "reasoning_tokens": 54
+        },
+        "total_tokens": 1308
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_1/equivalence_n1.json"
+    },
+    {
+      "id": "equivalence_n2",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "管家把仓库里一半的麦子分给了村民。",
+        "replacement_claim": "管家把仓库里百分之五十的麦子分给了村民。",
+        "explanation": "“一半”与“百分之五十”数量相同，只是表达方式不同，没有改变原句事实，因此不构成有效的误译。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "e5134c576feb043a63825548d962b87312f9d5c0d3218ab1d282a7cc8fd94b51",
+      "response_id": "resp_0e64694ebfab6019006adac25d156487d1822fadcb3d8c5dce",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 835,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 190,
+        "output_tokens_details": {
+          "reasoning_tokens": 65
+        },
+        "total_tokens": 1025
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_1/equivalence_n2.json"
+    },
+    {
+      "id": "equivalence_n2",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "管家把仓库里一半的麦子分给了村民。",
+        "replacement_claim": "管家把仓库里百分之五十的麦子分给了村民。",
+        "explanation": "“一半”就是“百分之五十”，分给村民的麦子比例没有改变。表述自然，替换范围局部，但不构成事实变化。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "f410b4fcc6c28234e36192dbe45c59cf09bb01cc78e9170b272c87fdd85869f3",
+      "response_id": "resp_014f697c071a36f5006adac2535f4c87d19b6a18cbe2ce5678",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1128,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1125
+        },
+        "output_tokens": 188,
+        "output_tokens_details": {
+          "reasoning_tokens": 58
+        },
+        "total_tokens": 1316
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_1/equivalence_n2.json"
+    },
+    {
+      "id": "equivalence_p1",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "管家把仓库里三分之一的麦子交给商队。",
+        "replacement_claim": "管家把仓库里三分之二的麦子交给商队。",
+        "explanation": "只将交给商队的麦子比例由三分之一改为三分之二；句子自然，其他信息不变，且原文仅有这一处匹配。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "12c20898ca2ef1769162fe3a065b9d0afe48eb3ef833ea0fee3a42fdb96e5f8f",
+      "response_id": "resp_09eefbf2c7fcc762006adac2107c9087d195b56ed430cc18a0",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 835,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 129,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 964
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_1/equivalence_p1.json"
+    },
+    {
+      "id": "equivalence_p1",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "管家把仓库里三分之一的麦子交给商队。",
+        "replacement_claim": "管家把仓库里三分之二的麦子交给商队。",
+        "explanation": "交给商队的麦子由仓库麦子的三分之一变为三分之二，数量有明确差别。替换只改变这一比例，句子自然，且原文中只有这一处匹配。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "f66e1a269188bb50f1e9b4386b37a77e37df974c277b2040c6afe4f39936e005",
+      "response_id": "resp_031e4c6cacaf3a8e006adac2231d7087d1a424ad13d0edcb77",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1128,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1125
+        },
+        "output_tokens": 162,
+        "output_tokens_details": {
+          "reasoning_tokens": 22
+        },
+        "total_tokens": 1290
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_1/equivalence_p1.json"
+    },
+    {
+      "id": "equivalence_p2",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "守卫比弟弟年长。",
+        "replacement_claim": "守卫比弟弟年幼。",
+        "explanation": "年龄比较被反转，属于实质性改变；但在“兄弟二人”的语境中，“弟弟”指守卫的弟弟，说守卫比弟弟年幼在句内自相矛盾，不是自然成立的表述。",
+        "meaning_changed": "yes",
+        "fluent": "no",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "ee4f0cfd6db94b581cbb4ef0af8070541c28fba1c016fb2037762389e2ab6274",
+      "response_id": "resp_05ade6b9e80cd902006adac2492fb887d1865f19f153cdb3e1",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 843,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 371,
+        "output_tokens_details": {
+          "reasoning_tokens": 242
+        },
+        "total_tokens": 1214
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_1/equivalence_p2.json"
+    },
+    {
+      "id": "equivalence_p2",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "守卫比弟弟年长。",
+        "replacement_claim": "守卫比弟弟年幼。",
+        "explanation": "年龄关系由年长变为年幼，事实明确改变；但“弟弟”已表明此人比守卫年幼，说守卫“比弟弟年幼”在本句中自相矛盾，不是自然通顺的表述。",
+        "meaning_changed": "yes",
+        "fluent": "no",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "2145e45778e29f45549fe37444992b7e856178f3c0960d5a38d0d6ed826c360e",
+      "response_id": "resp_0bc68a4cbdbd3449006adac240bad487d19bef4271caa85a40",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1136,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1133
+        },
+        "output_tokens": 410,
+        "output_tokens_details": {
+          "reasoning_tokens": 281
+        },
+        "total_tokens": 1546
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_1/equivalence_p2.json"
+    },
+    {
+      "id": "frequency_n1",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "这个寡妇常常把食物送给城外的穷人。",
+        "replacement_claim": "这个寡妇经常把食物送给城外的穷人。",
+        "explanation": "“常常”和“经常”在此都表示频繁发生，替换后没有改变所断言的事实。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "957bf71e406a861456f628bae1f1617247524841229f3492f5b5828986cc07dc",
+      "response_id": "resp_0ff235069fe30bdb006adac24ef24087d18dced816c64cf70e",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 834,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 117,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 951
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_1/frequency_n1.json"
+    },
+    {
+      "id": "frequency_n1",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "这个寡妇常常把食物送给城外的穷人。",
+        "replacement_claim": "这个寡妇经常把食物送给城外的穷人。",
+        "explanation": "“常常”和“经常”在此都是表示频繁，读者无法据此确定送食物的频率发生了事实变化。替换自然且只涉及一处，但不构成误译。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "d20193c6d24389d8e9582993f0a47fa00914e8545ac9cd805e3d9a2416666ab9",
+      "response_id": "resp_017788f19623419a006adac24f787487d18fc126e91d93496d",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1127,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1124
+        },
+        "output_tokens": 137,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 1264
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_1/frequency_n1.json"
+    },
+    {
+      "id": "frequency_n2",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "少年时常到河边替父亲洗渔网。",
+        "replacement_claim": "少年经常到河边替父亲洗渔网。",
+        "explanation": "“时常”和“经常”都表示频繁发生，替换后没有改变所断言的事实；其余形式自然且仅替换了该词，但不构成实质性误译。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "354523d810786d9f09b2fe9a0b78c909b4ee367f283a386078fe8506f484af50",
+      "response_id": "resp_07f24cf8c7ab5e8c006adac22bbe4c87d1991b1f76ed8118b6",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 822,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 128,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 950
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_1/frequency_n2.json"
+    },
+    {
+      "id": "frequency_n2",
+      "arm": "baseline",
+      "trial": 2,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "少年时常到河边替父亲洗渔网。",
+        "replacement_claim": "少年经常到河边替父亲洗渔网。",
+        "explanation": "“时常”与“经常”都表示经常性发生，未改变所述事实；替换后的句子自然，且只替换了这一处用词。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "354523d810786d9f09b2fe9a0b78c909b4ee367f283a386078fe8506f484af50",
+      "response_id": "resp_0c95f441cb3ef05b006adac244207087d1969e586c7766a716",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 822,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 121,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 943
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_2/frequency_n2.json"
+    },
+    {
+      "id": "frequency_n2",
+      "arm": "baseline",
+      "trial": 3,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "少年经常到河边替父亲洗渔网。",
+        "replacement_claim": "少年经常到河边替父亲洗渔网。",
+        "explanation": "“时常”和“经常”在此语境中意义相同，只是同义替换，没有改变所述事实。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "354523d810786d9f09b2fe9a0b78c909b4ee367f283a386078fe8506f484af50",
+      "response_id": "resp_052633b8da4589a7006adac236445887d18b0b8c6c31a0bb1a",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 822,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 110,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 932
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_3/frequency_n2.json"
+    },
+    {
+      "id": "frequency_n2",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "少年时常到河边替父亲洗渔网。",
+        "replacement_claim": "少年经常到河边替父亲洗渔网。",
+        "explanation": "“时常”和“经常”都表示频繁发生，不能确定洗渔网的频率有事实上的变化。替换后语句自然，且只替换了一处频率表述。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "6aab78bbdcd4e8e3efafc72c159fb00f2aeaf5e4c64c592302856b7452e973f2",
+      "response_id": "resp_03bccf835fd57f2d006adac256481487d187974a32b4152aa4",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1115,
+        "input_tokens_details": {
+          "cached_tokens": 1112,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 128,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 1243
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_1/frequency_n2.json"
+    },
+    {
+      "id": "frequency_n2",
+      "arm": "revised",
+      "trial": 2,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "少年时常到河边替父亲洗渔网。",
+        "replacement_claim": "少年经常到河边替父亲洗渔网。",
+        "explanation": "“时常”和“经常”都表示频繁发生，读者无法据此确定洗渔网的频率发生了事实性变化。替换后的句子自然，且只替换了这一处词语。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "6aab78bbdcd4e8e3efafc72c159fb00f2aeaf5e4c64c592302856b7452e973f2",
+      "response_id": "resp_092cd849bab3738d006adac25686fc87d18d5261be2e296496",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1115,
+        "input_tokens_details": {
+          "cached_tokens": 1112,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 132,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 1247
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_2/frequency_n2.json"
+    },
+    {
+      "id": "frequency_n2",
+      "arm": "revised",
+      "trial": 3,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "少年时常到河边替父亲洗渔网。",
+        "replacement_claim": "少年经常到河边替父亲洗渔网。",
+        "explanation": "“时常”和“经常”都表示频繁发生，不能据此确定洗渔网的频率有事实性差别。替换自然、局部，且唯一出现处适用，但不构成误译。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "6aab78bbdcd4e8e3efafc72c159fb00f2aeaf5e4c64c592302856b7452e973f2",
+      "response_id": "resp_0b66717ee48b91b9006adac21e368c87d183376583a3b05eb4",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1115,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1112
+        },
+        "output_tokens": 133,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 1248
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_3/frequency_n2.json"
+    },
+    {
+      "id": "frequency_p1",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "村民每隔七天到井旁领取一次粮食。",
+        "replacement_claim": "村民每隔两天到井旁领取一次粮食。",
+        "explanation": "只将领取粮食的间隔由七天改为两天；句子自然通顺，其他信息保持不变，且原文只有这一处匹配。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "a9cf25e06f7bbef24c52c2301e7ae930370b09199c7de48ab0397c4a3b551719",
+      "response_id": "resp_0f57bd22b52be0d8006adac224c20087d1990c02c85b34f110",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 826,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 119,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 945
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_1/frequency_p1.json"
+    },
+    {
+      "id": "frequency_p1",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "村民每隔七天到井旁领取一次粮食。",
+        "replacement_claim": "村民每隔两天到井旁领取一次粮食。",
+        "explanation": "领取粮食的间隔由七天改为两天，明确改变了领取频率；句子通顺，且只替换了这一时间间隔。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "a60fb62eba9d5d87029f56b3c3b7126eb0d533b320296d0ba450f31793ddfdec",
+      "response_id": "resp_0cb700bb2c13378d006adac20ad97c87d182d6e28855b98940",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1119,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1116
+        },
+        "output_tokens": 166,
+        "output_tokens_details": {
+          "reasoning_tokens": 46
+        },
+        "total_tokens": 1285
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_1/frequency_p1.json"
+    },
+    {
+      "id": "frequency_p2",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "这个守卫从不向过路人索取钱财。",
+        "replacement_claim": "这个守卫总是向过路人索取钱财。",
+        "explanation": "将索取钱财的频率从“从不”改为“总是”，反转了同一行为的断言；句子通顺，其余信息未变，且原文仅有这一处匹配。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "42fc517a0d197520da8502fe8a0a1537b738f11579f55a84dca60d69de7920b0",
+      "response_id": "resp_0066ba5662d2fb3d006adac21a734487d183bb3e22f0ab17c9",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 822,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 131,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 953
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_1/frequency_p2.json"
+    },
+    {
+      "id": "frequency_p2",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "这个守卫从不向过路人索取钱财。",
+        "replacement_claim": "这个守卫总是向过路人索取钱财。",
+        "explanation": "原文断言守卫从未索取钱财，替换后断言他总是索取钱财；同一行为的频率发生明确反转。替换处只有一处，句子通顺，其他信息未变。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "9f7943efe51f83d0bf2c2eb0ea8a908957f0fb37b60e040fce363d4797e6f5fd",
+      "response_id": "resp_0dc4b134bfbc3296006adac1fcd91087d18c142571164220ec",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1115,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1112
+        },
+        "output_tokens": 154,
+        "output_tokens_details": {
+          "reasoning_tokens": 16
+        },
+        "total_tokens": 1269
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_1/frequency_p2.json"
+    },
+    {
+      "id": "lexical_n1",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "宴席结束后，客人在院中观看歌舞。",
+        "replacement_claim": "宴席结束后，客人在院中观赏歌舞。",
+        "explanation": "“观赏”在观看歌舞的语境中只是更强调欣赏意味，未改变客人的行为事实；替换虽通顺且局部，但不构成实质性误译。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "6b92f181b1d25ba56b589178fdcf21d729367da6b362ac6d8ae5347117af575d",
+      "response_id": "resp_043d3e91692ab1a2006adac2027c0c87d1adac8e0bb33d65e3",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 819,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 125,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 944
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_1/lexical_n1.json"
+    },
+    {
+      "id": "lexical_n1",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "宴席结束后，客人在院中观看歌舞。",
+        "replacement_claim": "宴席结束后，客人在院中观赏歌舞。",
+        "explanation": "“观看”和“观赏”在此都表示客人看歌舞；后者仅带有欣赏的语气，没有改变可确定的事实。替换本身自然、局部，且原文只有这一处匹配。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "acbedd82c6a171eb31d308b69e910fadb6515c367bc0ceda58a87b35372457a4",
+      "response_id": "resp_0587fbbedbca3e1a006adac2310cf887d19b5109c7e378c8d8",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1112,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1109
+        },
+        "output_tokens": 133,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 1245
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_1/lexical_n1.json"
+    },
+    {
+      "id": "lexical_n2",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "收获结束时，农夫把借来的镰刀归还给邻居。",
+        "replacement_claim": "收获结束时，农夫把借来的镰刀交还给邻居。",
+        "explanation": "“归还”和“交还”在此都表示把借来的镰刀还给邻居，没有改变所述事实。替换后的句子通顺，也只涉及这一处用词，但不构成实质性误译。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "248d3618142e3589edc93105d58b06f9b92694ed320ea50af8ca73c7cf6591f1",
+      "response_id": "resp_094713afc5d809fd006adac230289087d19b6fe28a74a7e622",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 837,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 144,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 981
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_1/lexical_n2.json"
+    },
+    {
+      "id": "lexical_n2",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "农夫把借来的镰刀归还给邻居。",
+        "replacement_claim": "农夫把借来的镰刀交还给邻居。",
+        "explanation": "“归还”和“交还”在此都表示把借来的镰刀还给邻居，没有可确定的事实差异。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "ebd4819dab8d7e636661b5b4b076cae39d0441ce3565edcaf24e6704f611f57f",
+      "response_id": "resp_0db875cff7e8fe0c006adac231369c87d1874e49bb864c19ef",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1130,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1127
+        },
+        "output_tokens": 257,
+        "output_tokens_details": {
+          "reasoning_tokens": 143
+        },
+        "total_tokens": 1387
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_1/lexical_n2.json"
+    },
+    {
+      "id": "lexical_p1",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "夜里，仆人关上院门后回到自己的房间。",
+        "replacement_claim": "夜里，仆人打开院门后回到自己的房间。",
+        "explanation": "仅将仆人对院门的动作由“关上”改为“打开”，其余信息不变；改后语句自然，且原文只有这一处匹配。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "53c90e3e61eb6e6a3c7daa54d0db27daedcfc268a48f031569b297aa3160166b",
+      "response_id": "resp_0e0ee08d3215838f006adac2122ef887d18414b8bab8f42baf",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 829,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 149,
+        "output_tokens_details": {
+          "reasoning_tokens": 19
+        },
+        "total_tokens": 978
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_1/lexical_p1.json"
+    },
+    {
+      "id": "lexical_p1",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "夜里，仆人关上院门，然后回到自己的房间。",
+        "replacement_claim": "夜里，仆人打开院门，然后回到自己的房间。",
+        "explanation": "原文说仆人关门，替换后说仆人开门；院门的动作明确相反，其余信息未变。唯一匹配处语句自然。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "7c72b5fd473eba54844babb664b57ce4c339aab1fe4652363afc4e6cebb905e1",
+      "response_id": "resp_0e90a6166aa792b5006adac2426c5487d19142c5ece9277a36",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1122,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1119
+        },
+        "output_tokens": 152,
+        "output_tokens_details": {
+          "reasoning_tokens": 23
+        },
+        "total_tokens": 1274
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_1/lexical_p1.json"
+    },
+    {
+      "id": "lexical_p2",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "商人正在市场上出售布匹。",
+        "replacement_claim": "商人正在市场上购买布匹。",
+        "explanation": "将商人的交易行为由卖布匹改为买布匹，改变了一项事实；句子通顺，账册等其他信息保持不变，且原词只出现一次。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "a7b8d9e5cc3031d383e325989531d1c4b881e3312ad6fa43a25167d5101953d1",
+      "response_id": "resp_062921bae5d82d9f006adac23997c487d1a2d679a8c899bb5b",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 829,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 113,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 942
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_1/lexical_p2.json"
+    },
+    {
+      "id": "lexical_p2",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "商人正在市场上出售布匹。",
+        "replacement_claim": "商人正在市场上购买布匹。",
+        "explanation": "原文称商人卖布，替换后称商人买布；同一交易行为的方向发生明确变化。句子通顺，只替换了这一处行为，且原文仅有一处“出售”。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "e68203f9f59b07662b7deae86fa22a490f068eb5f26e8aaa0d36eaa75d21ffbd",
+      "response_id": "resp_09dddb7c28c23095006adac2214c1c87d191dec624c7a357ea",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1122,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1119
+        },
+        "output_tokens": 121,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 1243
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_1/lexical_p2.json"
+    },
+    {
+      "id": "modality_n1",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "船队也许明天回来。",
+        "replacement_claim": "船队或许明天回来。",
+        "explanation": "“也许”和“或许”都是表示可能性的近义词，替换后没有改变所断言的事实或可能性。句子通顺，且只替换了一处词语，但不构成实质性误译。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "5fc06c04bc1d294229aa0e8d04794bbd0d1197422394fbb3509a63f4acc2e6ed",
+      "response_id": "resp_0bdafbb10f064b62006adac25afe5087d1a198873367f3865d",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 831,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 123,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 954
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_1/modality_n1.json"
+    },
+    {
+      "id": "modality_n1",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "管家说船队也许明天回来。",
+        "replacement_claim": "管家说船队或许明天回来。",
+        "explanation": "“也许”和“或许”在此都表示船队明天回来的可能性，没有可确定的事实差异。替换本身通顺、局部，但不构成误译。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "c6d2065b7035ed90fc92884418062ecc81e9852ed36cffa7ac3dc851ccd48015",
+      "response_id": "resp_0cfe03c60b514865006adac21752dc87d19d0eb2e6af0bd8e8",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1124,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1121
+        },
+        "output_tokens": 177,
+        "output_tokens_details": {
+          "reasoning_tokens": 55
+        },
+        "total_tokens": 1301
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_1/modality_n1.json"
+    },
+    {
+      "id": "modality_n2",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "仆人猜测，那位陌生人大概是从北方来的。",
+        "replacement_claim": "仆人猜测，那位陌生人很可能是从北方来的。",
+        "explanation": "“多半”和“很可能”都表示较高的可能性，此处只是近义表达，并未改变所断言的事实。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "aacca1cf988e57a4a84f2e0210e56b9892b5bb52aea24f537695eaf176ab0476",
+      "response_id": "resp_066c7f0bf73e7b91006adac204744887d183e6113e0b8dc694",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 834,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 119,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 953
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_1/modality_n2.json"
+    },
+    {
+      "id": "modality_n2",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "仆人猜测，那位陌生人多半是从北方来的。",
+        "replacement_claim": "仆人猜测，那位陌生人很可能是从北方来的。",
+        "explanation": "“多半”和“很可能”在此都表示较高的可能性，读者无法据此确定概率或其他事实发生了变化。替换后的句子通顺，但不构成明确的事实误译。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "ca3029589c7bc0ac5348838537754e4bccac5b3e46e579f9e539d5b2acf71d28",
+      "response_id": "resp_044f9aaf9a9bedbe006adac24d816087d19c19e6cdbc0c4b97",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1127,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1124
+        },
+        "output_tokens": 230,
+        "output_tokens_details": {
+          "reasoning_tokens": 89
+        },
+        "total_tokens": 1357
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_1/modality_n2.json"
+    },
+    {
+      "id": "modality_p1",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "书记提醒仆人，这份记录必须在月底交还。",
+        "replacement_claim": "书记提醒仆人，这份记录可以在月底交还。",
+        "explanation": "“必须”表示交还记录是义务，“可以”表示交还是被允许的；替换改变了这一义务关系，句子仍通顺，其他信息未变。原文只有这一处匹配。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "1682f2ade89608ab11e32e95eb2564bbd62b5d8f667d1552454b86aeb52dad95",
+      "response_id": "resp_0c93d749e53cc19b006adac21ccf5487d1baab83764ebdd867",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 823,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 162,
+        "output_tokens_details": {
+          "reasoning_tokens": 30
+        },
+        "total_tokens": 985
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_1/modality_p1.json"
+    },
+    {
+      "id": "modality_p1",
+      "arm": "baseline",
+      "trial": 2,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "书记提醒仆人，这份记录必须在月底交还。",
+        "replacement_claim": "书记提醒仆人，这份记录可以在月底交还。",
+        "explanation": "“必须”表示交还记录是义务，“可以”表示交还是被允许的；只改变了这一情态含义，句子自然通顺，且唯一匹配处符合要求。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "1682f2ade89608ab11e32e95eb2564bbd62b5d8f667d1552454b86aeb52dad95",
+      "response_id": "resp_0669444fe6f6e8ba006adac20ea1cc87d1b3cd3864bad996f9",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 823,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 196,
+        "output_tokens_details": {
+          "reasoning_tokens": 69
+        },
+        "total_tokens": 1019
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_2/modality_p1.json"
+    },
+    {
+      "id": "modality_p1",
+      "arm": "baseline",
+      "trial": 3,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "这份记录必须在月底交还。",
+        "replacement_claim": "这份记录可以在月底交还。",
+        "explanation": "“必须”表示交还义务，“可以”表示许可；替换只改变这一情态含义，句子自然通顺，且原文仅有这一处匹配。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "1682f2ade89608ab11e32e95eb2564bbd62b5d8f667d1552454b86aeb52dad95",
+      "response_id": "resp_08576afbb9d94241006adac233a74c87d1a0e05f8d948cf18e",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 823,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 153,
+        "output_tokens_details": {
+          "reasoning_tokens": 39
+        },
+        "total_tokens": 976
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_3/modality_p1.json"
+    },
+    {
+      "id": "modality_p1",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "书记提醒仆人，这份记录必须在月底交还。",
+        "replacement_claim": "书记提醒仆人，这份记录可以在月底交还。",
+        "explanation": "“必须”规定月底交还的义务，“可以”只表示允许月底交还；义务变为许可。替换处仅出现一次，句子自然，其他信息未变。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "983bfc93b6abba94c55c80a54016198a57907f4d849918726fc7e95cb6fc8978",
+      "response_id": "resp_09b924af922d3497006adac1fce3e887d1a16b71d856d346d0",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1116,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1113
+        },
+        "output_tokens": 177,
+        "output_tokens_details": {
+          "reasoning_tokens": 51
+        },
+        "total_tokens": 1293
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_1/modality_p1.json"
+    },
+    {
+      "id": "modality_p1",
+      "arm": "revised",
+      "trial": 2,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "书记提醒仆人，这份记录必须在月底交还。",
+        "replacement_claim": "书记提醒仆人，这份记录可以在月底交还。",
+        "explanation": "原句规定月底交还记录是必须履行的要求；替换后只表示月底交还是允许的，不再是必须的。两者对交还义务的断言不同，且替换在唯一出现处语法自然、范围局限。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "983bfc93b6abba94c55c80a54016198a57907f4d849918726fc7e95cb6fc8978",
+      "response_id": "resp_03e07e773316c8a2006adac23d2e3c87d18a66bad68d07ccf9",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1116,
+        "input_tokens_details": {
+          "cached_tokens": 1113,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 203,
+        "output_tokens_details": {
+          "reasoning_tokens": 62
+        },
+        "total_tokens": 1319
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_2/modality_p1.json"
+    },
+    {
+      "id": "modality_p1",
+      "arm": "revised",
+      "trial": 3,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "书记提醒仆人，这份记录必须在月底交还。",
+        "replacement_claim": "书记提醒仆人，这份记录可以在月底交还。",
+        "explanation": "原句要求月底交还记录；替换后仅表示允许月底交还，不再表示有此义务。只改变了交还的义务性质，句子通顺，且原文只有这一处匹配。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "983bfc93b6abba94c55c80a54016198a57907f4d849918726fc7e95cb6fc8978",
+      "response_id": "resp_0530598f7d988d76006adac214ba1887d18cea7a585a1b5424",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1116,
+        "input_tokens_details": {
+          "cached_tokens": 1113,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 158,
+        "output_tokens_details": {
+          "reasoning_tokens": 25
+        },
+        "total_tokens": 1274
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_3/modality_p1.json"
+    },
+    {
+      "id": "modality_p2",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "商人说船队明天可能抵达，但他们还不能确定。",
+        "replacement_claim": "商人说船队明天一定会抵达，但他们还不能确定。",
+        "explanation": "“可能会”改为“一定会”改变了抵达的确定程度，且只替换了这一处信息。但“一定会抵达”与紧接着的“我们还不能确定”在同一句中直接冲突，使整句表达不自然。",
+        "meaning_changed": "yes",
+        "fluent": "no",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "5ed169e398b530dadc3832efc8cf05fc9e24b3c3576e162f600429df787d500f",
+      "response_id": "resp_0b0bd1d36ce4a458006adac214bf0487d1bdec3f83aa6b0c06",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 840,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 411,
+        "output_tokens_details": {
+          "reasoning_tokens": 264
+        },
+        "total_tokens": 1251
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_1/modality_p2.json"
+    },
+    {
+      "id": "modality_p2",
+      "arm": "baseline",
+      "trial": 2,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "商人说，船队明天可能抵达，但他们还不能确定。",
+        "replacement_claim": "商人说，船队明天一定抵达，但他们还不能确定。",
+        "explanation": "将抵达的可能性改为确定性，改变了一个明确的断言。后半句因此与前半句矛盾，但句子本身仍通顺；仅这一处匹配，且未改动其他信息。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "5ed169e398b530dadc3832efc8cf05fc9e24b3c3576e162f600429df787d500f",
+      "response_id": "resp_07c139e600fa4aa0006adac23fcc0487d1aae4da8bdd5155bc",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 840,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 306,
+        "output_tokens_details": {
+          "reasoning_tokens": 164
+        },
+        "total_tokens": 1146
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_2/modality_p2.json"
+    },
+    {
+      "id": "modality_p2",
+      "arm": "baseline",
+      "trial": 3,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "商人说船队明天可能抵达，但他们还不能确定。",
+        "replacement_claim": "商人说船队明天一定抵达，但他们还不能确定。",
+        "explanation": "“可能会”改为“一定会”改变了抵达的确定程度，且只替换了这一处信息。但“一定会抵达”与紧接着的“我们还不能确定”在同一句中直接冲突，使表述不自然。",
+        "meaning_changed": "yes",
+        "fluent": "no",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "5ed169e398b530dadc3832efc8cf05fc9e24b3c3576e162f600429df787d500f",
+      "response_id": "resp_0f1a2e65208b7df1006adac229b18887d1b458a50ece1d3b16",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 840,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 428,
+        "output_tokens_details": {
+          "reasoning_tokens": 283
+        },
+        "total_tokens": 1268
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_3/modality_p2.json"
+    },
+    {
+      "id": "modality_p2",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "商人说船队明天可能抵达，但他们还不能确定。",
+        "replacement_claim": "商人说船队明天一定抵达，却又说他们还不能确定。",
+        "explanation": "“可能会”改为“一定会”明确改变了对抵达的确定程度，且只替换了这一处信息。但“一定会抵达”与紧接着的“我们还不能确定”在同一句话中直接矛盾，使表述不自然，因此不符合所有要求。",
+        "meaning_changed": "yes",
+        "fluent": "no",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "d9a1b415a90c572510e40ffd02ec1e46a66de4fa78dcf3c5c1cc3a5c44c366e9",
+      "response_id": "resp_0d969cc93ae2ab05006adac22bcae887d1be75f7f9163dcc81",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1133,
+        "input_tokens_details": {
+          "cached_tokens": 1130,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 379,
+        "output_tokens_details": {
+          "reasoning_tokens": 223
+        },
+        "total_tokens": 1512
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_1/modality_p2.json"
+    },
+    {
+      "id": "modality_p2",
+      "arm": "revised",
+      "trial": 2,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "商人说，明天船队可能抵达，但他们还不能确定。",
+        "replacement_claim": "商人说，明天船队一定会抵达，但他们还不能确定。",
+        "explanation": "“可能会”改为“一定会”，明确改变了对船队抵达的确定程度。不过，同一句紧接着说“我们还不能确定”，与“一定会抵达”直接冲突；若不再改动后文，整句不自然。",
+        "meaning_changed": "yes",
+        "fluent": "no",
+        "substitution_only": "yes",
+        "localized": "no",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "d9a1b415a90c572510e40ffd02ec1e46a66de4fa78dcf3c5c1cc3a5c44c366e9",
+      "response_id": "resp_05278cedf65ae8d2006adac2174b3c87d1a95b007b0b51ced4",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1133,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1130
+        },
+        "output_tokens": 456,
+        "output_tokens_details": {
+          "reasoning_tokens": 307
+        },
+        "total_tokens": 1589
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_2/modality_p2.json"
+    },
+    {
+      "id": "modality_p2",
+      "arm": "revised",
+      "trial": 3,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "商人说船队明天可能抵达，尚不能确定。",
+        "replacement_claim": "商人说船队明天一定抵达，但又说尚不能确定。",
+        "explanation": "“可能会”改为“一定会”明确改变了对抵达的确定程度，且只替换了这一处信息。但“一定会抵达”与紧接着的“我们还不能确定”在同一句话中直接矛盾，表达不自然。",
+        "meaning_changed": "yes",
+        "fluent": "no",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "d9a1b415a90c572510e40ffd02ec1e46a66de4fa78dcf3c5c1cc3a5c44c366e9",
+      "response_id": "resp_0073ba0693dcaed8006adac21ccb3887d1a2627611465b5bd4",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1133,
+        "input_tokens_details": {
+          "cached_tokens": 1130,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 406,
+        "output_tokens_details": {
+          "reasoning_tokens": 258
+        },
+        "total_tokens": 1539
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_3/modality_p2.json"
+    },
+    {
+      "id": "polarity_n1",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "长老没有答应商人的要求。",
+        "replacement_claim": "长老未曾答应商人的要求。",
+        "explanation": "“未曾答应”与“没有答应”表达同一否定事实，只是措辞不同，并未替换任何事实信息。句子通顺，改动范围也仅限于这一处。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "no",
+        "localized": "no",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "573c10a776cd33c8027cee0a06bb3f90c0d339c2c41d06c3e294b53ccc00c48a",
+      "response_id": "resp_0018f693c679ea60006adac203138487d1bc988bf3281037c6",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 832,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 214,
+        "output_tokens_details": {
+          "reasoning_tokens": 93
+        },
+        "total_tokens": 1046
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_1/polarity_n1.json"
+    },
+    {
+      "id": "polarity_n1",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "长老没有答应商人的要求。",
+        "replacement_claim": "长老未曾答应商人的要求。",
+        "explanation": "“没有答应”和“未曾答应”在此都表示长老未同意商人的要求，没有明确的事实差异。句子通顺，改动局限于这一处，但不构成有效的误译。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "9e7a6aaf24988f5aaf24a41dc8f33a784d5f9834aa6b2f6de3b8048d6a03d9df",
+      "response_id": "resp_095c77d92695a369006adac24d6b5087d1a3905edb29d8dc41",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1125,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1122
+        },
+        "output_tokens": 206,
+        "output_tokens_details": {
+          "reasoning_tokens": 80
+        },
+        "total_tokens": 1331
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_1/polarity_n1.json"
+    },
+    {
+      "id": "polarity_n2",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "使者尚未启程。",
+        "replacement_claim": "使者还没有启程。",
+        "explanation": "“尚未启程”和“还没有启程”意思相同，只是措辞不同，没有改变事实。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "53516c6e4042406fe183a7fdbff04992c26b55998b2ed100e9146817dd9f9bd3",
+      "response_id": "resp_091ef8e16b0d6d97006adac1ffc7a087d1b18a0d4af7275212",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 835,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 92,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 927
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_1/polarity_n2.json"
+    },
+    {
+      "id": "polarity_n2",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "使者尚未启程。",
+        "replacement_claim": "使者还没有启程。",
+        "explanation": "“尚未启程”与“还没有启程”都表示使者尚未出发，事实没有变化。替换后语句通顺，且仅替换了这一处表述。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "a04d18a7d14884811820ba3662363628d8a9ff1a3033703afa0ca42bfeddb61d",
+      "response_id": "resp_012c3738ab55d15a006adac23a79d887d1a6f8b12bb1fc01dc",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1128,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1125
+        },
+        "output_tokens": 112,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 1240
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_1/polarity_n2.json"
+    },
+    {
+      "id": "polarity_p1",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "城主准许商队在广场上出售粮食。",
+        "replacement_claim": "城主禁止商队在广场上出售粮食。",
+        "explanation": "将城主对商队售粮的许可改为禁止，反转了同一行为的许可关系；句子通顺，仅改变一处事实，且原文中只有这一处匹配。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "3e9c470ed495bfcb453f072f56b56d5e1f19f536075964291f90397ef0bd000f",
+      "response_id": "resp_058cbfee07493e96006adac24b41a487d1a8de46c18a617e94",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 820,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 125,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 945
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_1/polarity_p1.json"
+    },
+    {
+      "id": "polarity_p1",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "城主准许商队在广场上出售粮食。",
+        "replacement_claim": "城主禁止商队在广场上出售粮食。",
+        "explanation": "“准许”改为“禁止”，明确反转了城主对同一售粮行为的态度；句子通顺，仅替换这一处语义，且原文只有一处匹配。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "1f88973e88596048dc32f45a44bc633939ef697fb52bb60dd77bbea7a8ab13d3",
+      "response_id": "resp_0824c1055ac3d026006adac23b042887d1b8637a8641e8d237",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1113,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1110
+        },
+        "output_tokens": 127,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 1240
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_1/polarity_p1.json"
+    },
+    {
+      "id": "polarity_p2",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "风暴过后，仆人发现仓库的屋顶完好无损。",
+        "replacement_claim": "风暴过后，仆人发现仓库的屋顶破损不堪。",
+        "explanation": "将屋顶的状态由完好改为严重破损，改变了同一项事实；句子自然通顺，其他信息未变，且原词仅出现一次。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "d95c2760ff64395c05dc59741b19283d7473db9ba06a9bf1b3d1346fb159e801",
+      "response_id": "resp_00cb662c2ef18b08006adac1ffc5a887d1b194a4c8c8e2e364",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 843,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 132,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 975
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_1/polarity_p2.json"
+    },
+    {
+      "id": "polarity_p2",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "风暴过后，仆人发现仓库的屋顶完好无损。",
+        "replacement_claim": "风暴过后，仆人发现仓库的屋顶破损不堪。",
+        "explanation": "原文断言屋顶没有受损，替换后断言屋顶严重破损；屋顶的状况明确改变。替换仅涉及这一处，句子自然通顺。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "c533956f52f6fadc2c66def646cb3441fa01def30756e4051bbeb9484380cc28",
+      "response_id": "resp_05862d2a4e2b04a3006adac20058a887d1a0738eb00a7b3e32",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1136,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1133
+        },
+        "output_tokens": 135,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 1271
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_1/polarity_p2.json"
+    },
+    {
+      "id": "quantity_n1",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "商队把不少箱子卸在院子里。",
+        "replacement_claim": "商队把好些箱子卸在院子里。",
+        "explanation": "“不少”和“好些”在此都表示数量较多，没有改变所断言的事实；句子仍通顺，改动也仅限于数量表述，但不构成有效误译。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "499564eaa1a09eceeda18aa090af831368c8b4d3ca6306373d452a2f55e2edec",
+      "response_id": "resp_005b3698067f93b2006adac253a68087d1a6a4428ac6c44264",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 838,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 304,
+        "output_tokens_details": {
+          "reasoning_tokens": 178
+        },
+        "total_tokens": 1142
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_1/quantity_n1.json"
+    },
+    {
+      "id": "quantity_n1",
+      "arm": "baseline",
+      "trial": 2,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "商队把不少箱子卸在院子里。",
+        "replacement_claim": "商队把好些箱子卸在院子里。",
+        "explanation": "“不少”和“好些”都表示数量较多，没有改变可辨认的事实；替换虽自然且仅涉及一处，却只是近义表达。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "499564eaa1a09eceeda18aa090af831368c8b4d3ca6306373d452a2f55e2edec",
+      "response_id": "resp_0716dbd2cced6bf6006adac212a73887d192395d8c6bdf2e29",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 838,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 114,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 952
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_2/quantity_n1.json"
+    },
+    {
+      "id": "quantity_n1",
+      "arm": "baseline",
+      "trial": 3,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "商队把不少箱子卸在院子里。",
+        "replacement_claim": "商队把好些箱子卸在院子里。",
+        "explanation": "“不少”和“好些”都表示数量较多，替换后只是近义表达，没有改变箱子的数量事实。句子通顺，替换位置明确，且仅有这一处匹配，但不构成实质性误译。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "499564eaa1a09eceeda18aa090af831368c8b4d3ca6306373d452a2f55e2edec",
+      "response_id": "resp_050cde549f91d500006adac217f93887d1b84617f06de052d1",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 838,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 133,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 971
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_3/quantity_n1.json"
+    },
+    {
+      "id": "quantity_n1",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "商队把不少箱子卸在院子里。",
+        "replacement_claim": "商队把好些箱子卸在院子里。",
+        "explanation": "“不少”和“好些”都表示数量较多，所指数量可以重合；读者无法据此确定箱子数量发生了事实性变化。替换后的句子自然，且仅替换了这一处数量表述。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "1feb7c7504c0577ab48b7bf9aa8412bebd6aebe957f3038566564d7de5241737",
+      "response_id": "resp_0ca6c079ed6f57af006adac229578887d1b0f9aca354d82f52",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1131,
+        "input_tokens_details": {
+          "cached_tokens": 1128,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 132,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 1263
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_1/quantity_n1.json"
+    },
+    {
+      "id": "quantity_n1",
+      "arm": "revised",
+      "trial": 2,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "商队把不少箱子卸在院子里。",
+        "replacement_claim": "商队把好些箱子卸在院子里。",
+        "explanation": "“不少”和“好些”都表示数量较多，语境中的数量范围可以重合，无法确定箱子数量这一事实发生了变化。替换后的句子自然通顺，且只替换了这一处表达。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "1feb7c7504c0577ab48b7bf9aa8412bebd6aebe957f3038566564d7de5241737",
+      "response_id": "resp_02e6c51da4d9c641006adac2275f3c87d1bc3f97cef0b96910",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1131,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1128
+        },
+        "output_tokens": 130,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 1261
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_2/quantity_n1.json"
+    },
+    {
+      "id": "quantity_n1",
+      "arm": "revised",
+      "trial": 3,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "商队把不少箱子卸在院子里。",
+        "replacement_claim": "商队把好些箱子卸在院子里。",
+        "explanation": "“不少”和“好些”都表示数量较多，所指数量可以重合，不能确定箱子数量发生了事实变化。替换后语句通顺，且只涉及这一处数量表述。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "1feb7c7504c0577ab48b7bf9aa8412bebd6aebe957f3038566564d7de5241737",
+      "response_id": "resp_0267dc6217f460cc006adac22de95c87d1ae5e6f68d4f355df",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1131,
+        "input_tokens_details": {
+          "cached_tokens": 1128,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 126,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 1257
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_3/quantity_n1.json"
+    },
+    {
+      "id": "quantity_n2",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "祭司看见广场上有一大批人在等候。",
+        "replacement_claim": "祭司看见广场上有许多人在等候。",
+        "explanation": "两者都表示等候的人很多；“许多人”只是较笼统的说法，未明确改变人数这一事实，且弱化了“一大批”的程度信息。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "no",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "c306824ecfdb73b65ec6947a67590a4f31c25bae0a5404ea2b32deaad8c5f98a",
+      "response_id": "resp_07f49744da26f8b2006adac258e80887d1bc442d07edc6db4b",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 828,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 276,
+        "output_tokens_details": {
+          "reasoning_tokens": 151
+        },
+        "total_tokens": 1104
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_1/quantity_n2.json"
+    },
+    {
+      "id": "quantity_n2",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "祭司看见一大批人在广场等候。",
+        "replacement_claim": "祭司看见许多人在广场等候。",
+        "explanation": "“一大批人”和“许多人”都可描述同一群等候的人，没有明确的数量差异；仅有一处匹配，但该处不构成确定的事实改变。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "cf798cc06ce2b14b7ab02083843a8be3de054b5d8f3a8d0028534fb8d6f10df8",
+      "response_id": "resp_00e0fdd10952d620006adac250b0c887d1a6a744cf55998bc6",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1121,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1118
+        },
+        "output_tokens": 189,
+        "output_tokens_details": {
+          "reasoning_tokens": 65
+        },
+        "total_tokens": 1310
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_1/quantity_n2.json"
+    },
+    {
+      "id": "quantity_p1",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "旅人把两袋盐放进仓库。",
+        "replacement_claim": "旅人把四袋盐放进仓库。",
+        "explanation": "仅将盐的数量由两袋改为四袋；句子自然通顺，其他信息不变，且原文中只有这一处匹配。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "e6c4f0e6d52aeece6ba92b5f225e46dea09f250eefcd842c40fd8049e2c34769",
+      "response_id": "resp_04845d944f8a09bf006adac2386b2087d18a22d1ce7d87290a",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 833,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 110,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 943
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_1/quantity_p1.json"
+    },
+    {
+      "id": "quantity_p1",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "旅人把两袋盐放进仓库。",
+        "replacement_claim": "旅人把四袋盐放进仓库。",
+        "explanation": "盐的数量由两袋变为四袋，明确改变了同一动作中的数量；句子通顺，只替换了这一处数量，且原文仅有这一处匹配。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "0167b23dd72b3f777e238aff5db499edcb8b15343958df5252e0cd92a1ecde0e",
+      "response_id": "resp_0136f331e52634b4006adac20ac17c87d1a1eb2ca882473a01",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1126,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1123
+        },
+        "output_tokens": 137,
+        "output_tokens_details": {
+          "reasoning_tokens": 17
+        },
+        "total_tokens": 1263
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_1/quantity_p1.json"
+    },
+    {
+      "id": "quantity_p2",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "暴风过后，有不少船只停在港湾里。",
+        "replacement_claim": "暴风过后，有一艘船停在港湾里。",
+        "explanation": "将停在港湾里的船只数量从“不少”改为“一艘”，改变了明确的数量信息；替换后语句通顺，且只改动这一处数量信息。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "09e684e90bd3401b5e8384e5f8a5c69643c2a724be02461e204ab44f971a4caa",
+      "response_id": "resp_0d2fc7311ef0fb84006adac212687087d1a33a8c1ea8ca31a7",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 825,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 126,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 951
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_1/quantity_p2.json"
+    },
+    {
+      "id": "quantity_p2",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "暴风过去后，不少船只停在港湾里。",
+        "replacement_claim": "暴风过去后，一艘船停在港湾里。",
+        "explanation": "原文断言停在港湾里的船不止一艘，替换后断言只有一艘；数量发生明确变化。替换后的句子自然通顺，且只改动这一处数量信息。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "fc3b97b32825904a47e6f287f678d2e92fee949c3dc19c9cb492b4ba2b579a9c",
+      "response_id": "resp_0b78bbb345509b90006adac2307dcc87d18437a3e4b08613c3",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1118,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1115
+        },
+        "output_tokens": 163,
+        "output_tokens_details": {
+          "reasoning_tokens": 30
+        },
+        "total_tokens": 1281
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_1/quantity_p2.json"
+    },
+    {
+      "id": "referent_n1",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "王安把包裹交给哥哥。",
+        "replacement_claim": "王安把包裹交给王平。",
+        "explanation": "原文已说明王平就是王安的哥哥，因此两种说法指向同一个人，没有改变所断言的事实。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "d7c02f6ce0bd6019a8115f5f508d482b76d48165bbcac421de0cb7d89476e1c8",
+      "response_id": "resp_0c52b58e5280f531006adac236523887d1a147fc72e9bb76f2",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 845,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 226,
+        "output_tokens_details": {
+          "reasoning_tokens": 120
+        },
+        "total_tokens": 1071
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_1/referent_n1.json"
+    },
+    {
+      "id": "referent_n1",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "王安把包裹交给哥哥。",
+        "replacement_claim": "王安把包裹交给王平。",
+        "explanation": "前文明确说王安的哥哥名叫王平，因此两句的收件人是同一人，只是称谓不同，没有改变事实。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "a75a2cc0b5f07dd72a61b1e1b34da03c5fd82acbc14bfe13c44d29c292f423a7",
+      "response_id": "resp_037dc71aa2756a55006adac223f0f087d1bb3ca7eaa162e4c7",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1138,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1135
+        },
+        "output_tokens": 189,
+        "output_tokens_details": {
+          "reasoning_tokens": 80
+        },
+        "total_tokens": 1327
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_1/referent_n1.json"
+    },
+    {
+      "id": "referent_n2",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "老李带来了种子。",
+        "replacement_claim": "李禾带来了种子。",
+        "explanation": "前文已说明“老李”是李禾的称呼，因此两句指同一个人带来了种子，只是换了称谓，没有改变所述事实。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "e71154febe9c29b0db048bfdecbe292a0b9c2ac2a54fa95486a000073e8eb414",
+      "response_id": "resp_0cf5368ec433b47e006adac25b1f1487d185b2832d6db6d01b",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 841,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 189,
+        "output_tokens_details": {
+          "reasoning_tokens": 82
+        },
+        "total_tokens": 1030
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_1/referent_n2.json"
+    },
+    {
+      "id": "referent_n2",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "老李带来了种子。",
+        "replacement_claim": "李禾带来了种子。",
+        "explanation": "前文明确说明村里人称李禾为“老李”，因此两句说的是同一个人带来种子，没有改变可辨认的事实。替换本身通顺且局部，但唯一匹配处不构成误译。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "fb7c65f3d8a8420b4109d3448c43b24e70b637e356f4dea4baa8735567f80ae9",
+      "response_id": "resp_0faf5e297a8843fd006adac243fe8c87d19da83be37cea7253",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1134,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1131
+        },
+        "output_tokens": 260,
+        "output_tokens_details": {
+          "reasoning_tokens": 135
+        },
+        "total_tokens": 1394
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_1/referent_n2.json"
+    },
+    {
+      "id": "referent_p1",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "村长请他的侄子抄写那封信。",
+        "replacement_claim": "村长请他的叔父抄写那封信。",
+        "explanation": "把受托抄信者与村长的关系从侄子改为叔父；句子自然，其余信息未变，且原词仅出现一次。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "dd7402663b5a2523ae807bc12617cf5ea9d1fc3f94169e4ca8257a4a5ccab0be",
+      "response_id": "resp_0eddf65f0346f115006adac2353b5487d1bd1bd84a9854def7",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 837,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 145,
+        "output_tokens_details": {
+          "reasoning_tokens": 25
+        },
+        "total_tokens": 982
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_1/referent_p1.json"
+    },
+    {
+      "id": "referent_p1",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "村长请他的侄子抄写那封信。",
+        "replacement_claim": "村长请他的叔父抄写那封信。",
+        "explanation": "受请托抄信的人从村长的侄子变成了村长的叔父，亲属关系明确不同；句子自然，且仅替换这一处关系。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "eddbac7bd7fecaa505b85f9aeeab0b29c600c654a63676ec5324b955d4bb3483",
+      "response_id": "resp_055909c5ddea4c2b006adac20d9d2087d1bb24c2a352cfcbb6",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1130,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1127
+        },
+        "output_tokens": 165,
+        "output_tokens_details": {
+          "reasoning_tokens": 41
+        },
+        "total_tokens": 1295
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_1/referent_p1.json"
+    },
+    {
+      "id": "referent_p2",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "商人把钥匙交给木匠。",
+        "replacement_claim": "商人把钥匙交给石匠。",
+        "explanation": "钥匙的接收者由木匠变为石匠；原文中的其他人物、动作及信息保持不变，替换后语句自然，且该片段只有一处匹配。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "5d33a1da82a90a6267dca9630f4bab47c847e2304d61cd76790cf2b95eb3ea47",
+      "response_id": "resp_04838a16fd09b55a006adac206918c87d1a3c6a8a9f4e8834c",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 833,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 122,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 955
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_1/referent_p2.json"
+    },
+    {
+      "id": "referent_p2",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "商人把钥匙交给木匠。",
+        "replacement_claim": "商人把钥匙交给石匠。",
+        "explanation": "钥匙的接收者由木匠变为石匠；两人在原文中是不同的人物。改动仅替换接收者，句子自然通顺，且原文中该片段只出现一次。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "1bf22a6c7da4d1da5abc33f47dfa4ae1c6ab6eeb46391cc7a81ee4a3949032d0",
+      "response_id": "resp_04edf22e45ffa83c006adac24acff487d1bea395aff6db0325",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1126,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1123
+        },
+        "output_tokens": 146,
+        "output_tokens_details": {
+          "reasoning_tokens": 16
+        },
+        "total_tokens": 1272
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_1/referent_p2.json"
+    },
+    {
+      "id": "scope_n1",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "船上装着麦子和豆子。",
+        "replacement_claim": "船上装着麦子。",
+        "explanation": "替换后只删去了豆子这一货物，并未用其他信息取代；虽然语句通顺、改动范围有限，但属于遗漏。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "no",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "79df376fc226afef84859d1d12865fe5dcaac14947e00d7812a2683dae98acaa",
+      "response_id": "resp_003b79fe74f1c086006adac258179087d18d99ff07e7452c91",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 834,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 104,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 938
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_1/scope_n1.json"
+    },
+    {
+      "id": "scope_n1",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "船上装着麦子和豆子。",
+        "replacement_claim": "船上装着麦子。",
+        "explanation": "替换后只是删去了装有豆子的信息，并未断言船上没有豆子；两句话可以同时为真。这是删减清单项目，不是替换一项事实。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "no",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "9eff64f5aee8627d157ae98171d988cd86f12ab8bfa104944a95c4d37da487c0",
+      "response_id": "resp_00cf842af6a5ddda006adac25239c087d1bfa36dcfb986b168",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1127,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1124
+        },
+        "output_tokens": 257,
+        "output_tokens_details": {
+          "reasoning_tokens": 142
+        },
+        "total_tokens": 1384
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_1/scope_n1.json"
+    },
+    {
+      "id": "scope_n2",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "哥哥清晨乘船出发，邻居在岸边送行。",
+        "replacement_claim": "妹妹夜里骑马归来，邻居在岸边送行。",
+        "explanation": "替换同时改变了人物、时间、交通方式和出行方向，不是只改动一个事实；“骑马归来”与邻居“在岸边送行”也不自然。",
+        "meaning_changed": "yes",
+        "fluent": "no",
+        "substitution_only": "yes",
+        "localized": "no",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "7cdcdaf276616f4bb4fabe0e67f5e63f82374f71f07360f86678e1f09bd55527",
+      "response_id": "resp_0581774b949c03cb006adac2259d0087d1a6f1b5b176f3b485",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 841,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 255,
+        "output_tokens_details": {
+          "reasoning_tokens": 124
+        },
+        "total_tokens": 1096
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_1/scope_n2.json"
+    },
+    {
+      "id": "scope_n2",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "哥哥清晨乘船出发，邻居在岸边送行。",
+        "replacement_claim": "妹妹夜里骑马归来，邻居在岸边送行。",
+        "explanation": "替换明确改变了人物、时间、交通方式和出发／归来方向，并非只改变一个事实；“骑马归来”与岸边送行连用也不自然。",
+        "meaning_changed": "yes",
+        "fluent": "no",
+        "substitution_only": "yes",
+        "localized": "no",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "63be0d9a7e46c9a8c5e5c802e0785b257cefd5c0303fbd8d2f9b250f7df0aa12",
+      "response_id": "resp_0316611910bf40b3006adac232bcb487d1b2a3d44020fb0da1",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1134,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1131
+        },
+        "output_tokens": 236,
+        "output_tokens_details": {
+          "reasoning_tokens": 106
+        },
+        "total_tokens": 1370
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_1/scope_n2.json"
+    },
+    {
+      "id": "scope_p1",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "使者清晨乘船出发。",
+        "replacement_claim": "使者清晨骑马出发。",
+        "explanation": "将使者出发时的交通方式从乘船改为骑马，改变了一项明确事实；句子自然通顺，其余信息未变，且原文仅有这一处匹配。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "5ef31b0ff164ff3da8543043dd35a33f6ad9928ea0c1f300ea7faee832c93fe9",
+      "response_id": "resp_0d6f4e6cddf1852c006adac2489f4887d1a8556892342e06b2",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 831,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 116,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 947
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_1/scope_p1.json"
+    },
+    {
+      "id": "scope_p1",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "使者清晨乘船出发。",
+        "replacement_claim": "使者清晨骑马出发。",
+        "explanation": "出发方式由乘船变为骑马，是明确的事实变化；句子自然，仅替换这一处交通方式。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "2100d1215877d88803f11eba64b4a3be7aaff172adb30794a208635f1403d1fe",
+      "response_id": "resp_016899cb2f1dadab006adac21f6a3487d1a3944c6fdab6d279",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1124,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1121
+        },
+        "output_tokens": 99,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 1223
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_1/scope_p1.json"
+    },
+    {
+      "id": "scope_p2",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "仓库里装着麦子和豆子。",
+        "replacement_claim": "仓库里装着麦子和芝麻。",
+        "explanation": "将仓库所装的一种粮食由豆子改为芝麻，其余信息不变；替换后的句子自然通顺，且原词组仅出现一次。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "0ef87feaf9c282553b6e777407c61cb0d83f858e2e5c066f18acc8e7bdd58c52",
+      "response_id": "resp_0e1697ebcc0461ce006adac23d9c1487d18f97f7933e08f407",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 840,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 141,
+        "output_tokens_details": {
+          "reasoning_tokens": 24
+        },
+        "total_tokens": 981
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_1/scope_p2.json"
+    },
+    {
+      "id": "scope_p2",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "仓库里装着麦子和豆子。",
+        "replacement_claim": "仓库里装着麦子和芝麻。",
+        "explanation": "仓库所装的第二种作物由豆子变为芝麻，明确改变了一项事实；句子自然，且只替换了这一项。原文中该词组仅出现一次。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "5a8672f054914b06788aaea383fbe20aa8a55b3294817833af48af4f2f2e7657",
+      "response_id": "resp_0fa36cdc5b15197e006adac207af5c87d1a9bc7231c5f85580",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1133,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1130
+        },
+        "output_tokens": 121,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 1254
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_1/scope_p2.json"
+    },
+    {
+      "id": "specificity_n1",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "信放在一张桃木桌上。",
+        "replacement_claim": "信放在一张木桌上。",
+        "explanation": "“木桌”只是“桃木桌”的笼统说法，删去了木材种类，并未替换成另一种具体材质。句子通顺，改动范围也小，但不符合以新信息替换原信息的要求。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "no",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "149316240f59f60bb0886edef132d3555fe12ced3edbe6d304f98cc501f2f5b1",
+      "response_id": "resp_078ea01534b9cad6006adac23c576c87d18cc4a2f72993c43b",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 843,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 196,
+        "output_tokens_details": {
+          "reasoning_tokens": 65
+        },
+        "total_tokens": 1039
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_1/specificity_n1.json"
+    },
+    {
+      "id": "specificity_n1",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "信放在一张桃木桌上。",
+        "replacement_claim": "信放在一张木桌上。",
+        "explanation": "桃木桌本身就是木桌；替换只删去了木材种类的信息，没有断言不同的事实。句子通顺，改动范围局部，但唯一出现处也不符合明确改变事实及信息替换的要求。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "no",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "74cd2416c2dc0bed41230a12c62c1530583f1cdf5e9d7ba09dbabe89d3694d93",
+      "response_id": "resp_0941d4e113bcc482006adac21a76f887d1b5a814f812a0a85a",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1136,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1133
+        },
+        "output_tokens": 207,
+        "output_tokens_details": {
+          "reasoning_tokens": 79
+        },
+        "total_tokens": 1343
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_1/specificity_n1.json"
+    },
+    {
+      "id": "specificity_n2",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "仆人端来一壶葡萄酒。",
+        "replacement_claim": "仆人端来一壶酒，未说明酒的种类。",
+        "explanation": "“酒”只是“葡萄酒”的泛称，删去了种类信息，并未换成另一种酒；句子通顺，但不符合以替换方式改变具体事实的要求。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "no",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "12b89f8ade1d6350e3f56e1695cb30c53fc4a9c8eff2489d843347ab8942a892",
+      "response_id": "resp_09ba25e426646679006adac20adaec87d18f5f39d59ea0ab11",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 835,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 225,
+        "output_tokens_details": {
+          "reasoning_tokens": 98
+        },
+        "total_tokens": 1060
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_1/specificity_n2.json"
+    },
+    {
+      "id": "specificity_n2",
+      "arm": "baseline",
+      "trial": 2,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "仆人端来一壶葡萄酒，放在客人面前。",
+        "replacement_claim": "仆人端来一壶酒，放在客人面前。",
+        "explanation": "“酒”只是更笼统的说法，删去了“葡萄”这一种类信息，没有换成另一种酒。句子通顺，改动位置也集中，但不构成合格的事实替换。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "no",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "12b89f8ade1d6350e3f56e1695cb30c53fc4a9c8eff2489d843347ab8942a892",
+      "response_id": "resp_09f11caeaff77eb8006adac1ffbcf887d18573a33b721baa51",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 835,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 199,
+        "output_tokens_details": {
+          "reasoning_tokens": 57
+        },
+        "total_tokens": 1034
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_2/specificity_n2.json"
+    },
+    {
+      "id": "specificity_n2",
+      "arm": "baseline",
+      "trial": 3,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "仆人端来一壶葡萄酒，放在客人面前。",
+        "replacement_claim": "仆人端来一壶酒，放在客人面前。",
+        "explanation": "“酒”只是“葡萄酒”的概括说法，删去了酒的种类，并未替换成另一项具体信息。句子通顺，改动范围也有限，但不符合实质性替换的要求。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "no",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "12b89f8ade1d6350e3f56e1695cb30c53fc4a9c8eff2489d843347ab8942a892",
+      "response_id": "resp_008340e5f0379b49006adac209393087d1b6c5a2748167dd3e",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 835,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 222,
+        "output_tokens_details": {
+          "reasoning_tokens": 79
+        },
+        "total_tokens": 1057
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_3/specificity_n2.json"
+    },
+    {
+      "id": "specificity_n2",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "仆人端来一壶葡萄酒，放在客人面前。",
+        "replacement_claim": "仆人端来一壶酒，放在客人面前。",
+        "explanation": "“酒”仍可指葡萄酒；替换只是去掉了酒的种类信息，未断言一个与原文不同的事实。句子自然，但不构成信息替换。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "no",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "4b299fdd3ca79ef6deb3293c507e8e4caf62cbf971a502307b425b81f49023ac",
+      "response_id": "resp_0e079e925a9cbc94006adac2460dc887d1ad6e54d9cf08a20b",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1128,
+        "input_tokens_details": {
+          "cached_tokens": 1125,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 179,
+        "output_tokens_details": {
+          "reasoning_tokens": 43
+        },
+        "total_tokens": 1307
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_1/specificity_n2.json"
+    },
+    {
+      "id": "specificity_n2",
+      "arm": "revised",
+      "trial": 2,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "仆人端来一壶葡萄酒，放在客人面前。",
+        "replacement_claim": "仆人端来一壶酒，放在客人面前。",
+        "explanation": "“酒”是上位称呼，仍可指葡萄酒；替换只去掉了酒的种类信息，没有断言不同的事实。句子通顺，但属于删减具体信息，而非替换为另一事实。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "no",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "4b299fdd3ca79ef6deb3293c507e8e4caf62cbf971a502307b425b81f49023ac",
+      "response_id": "resp_05ee9cfda8c05989006adac1fcd53c87d1b06df8e9c5e48895",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1128,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1125
+        },
+        "output_tokens": 142,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 1270
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_2/specificity_n2.json"
+    },
+    {
+      "id": "specificity_n2",
+      "arm": "revised",
+      "trial": 3,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "仆人端来一壶葡萄酒，放在客人面前。",
+        "replacement_claim": "仆人端来一壶酒，放在客人面前。",
+        "explanation": "原文明确酒是葡萄酒；替换后只称为酒，仍可能是葡萄酒。它仅删去了酒的种类信息，没有断言不同的酒，因此不构成明确的事实改变。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "no",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "4b299fdd3ca79ef6deb3293c507e8e4caf62cbf971a502307b425b81f49023ac",
+      "response_id": "resp_0644d332af42fb67006adac21991d487d186f47715d89661a4",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1128,
+        "input_tokens_details": {
+          "cached_tokens": 1125,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 201,
+        "output_tokens_details": {
+          "reasoning_tokens": 61
+        },
+        "total_tokens": 1329
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_3/specificity_n2.json"
+    },
+    {
+      "id": "specificity_p1",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "使者把银杯放进袋子，带到城主面前。",
+        "replacement_claim": "使者把铜杯放进袋子，带到城主面前。",
+        "explanation": "仅将杯子的材质由银改为铜；动作、人物及其他细节不变。替换后语句通顺，且唯一匹配处适用。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "f331068961a9fa98e238febd0149b3051d9cff3a9584764b58ba935b0c9148c4",
+      "response_id": "resp_0e1a2fe8a80f1320006adac20274d487d1ba84e4083e9c6db4",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 831,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 126,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 957
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_1/specificity_p1.json"
+    },
+    {
+      "id": "specificity_p1",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "使者把银杯放进袋子，带到城主面前。",
+        "replacement_claim": "使者把铜杯放进袋子，带到城主面前。",
+        "explanation": "杯子的材质由银变为铜，是明确的事实变化；其余动作和人物未变。替换后语句自然，且唯一匹配处符合要求。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "f22a9b3315ab393a0d596d8ede6fa9efd65090b81392eac6d080874ed062e279",
+      "response_id": "resp_04e2794324802050006adac251305487d1bcdab5d3dd572c40",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1124,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1121
+        },
+        "output_tokens": 150,
+        "output_tokens_details": {
+          "reasoning_tokens": 22
+        },
+        "total_tokens": 1274
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_1/specificity_p1.json"
+    },
+    {
+      "id": "specificity_p2",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "女子用白布包好饼，交给准备出门的孩子。",
+        "replacement_claim": "女子用黑布包好饼，交给准备出门的孩子。",
+        "explanation": "仅将包饼所用布的颜色由白色改为黑色；动作、人物及其他信息不变，句子自然，且原文中仅有这一处匹配。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "14583dd447ee6f9001f1e7950f81b81cf55883aa225a2279b3aa4e984345b4fb",
+      "response_id": "resp_05457c0677d3a100006adac214bc8887d1822987fec231d3bb",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 831,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 130,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 961
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_1/specificity_p2.json"
+    },
+    {
+      "id": "specificity_p2",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "女子用白布包好饼，交给准备出门的孩子。",
+        "replacement_claim": "女子用黑布包好饼，交给准备出门的孩子。",
+        "explanation": "包饼所用布的颜色从白色变为黑色；其余动作和人物不变，替换后的句子自然通顺，且原文仅有这一处匹配。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "9d94fc0fed7a70479719804694172a7ec26005531bc95114bf63d7a6ac6e5855",
+      "response_id": "resp_0df18acbfb5f48c2006adac2292c2887d19b9a477007637cfe",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1124,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1121
+        },
+        "output_tokens": 131,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 1255
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_1/specificity_p2.json"
+    },
+    {
+      "id": "time_n1",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "使者在傍晚抵达城门。",
+        "replacement_claim": "使者在黄昏抵达城门。",
+        "explanation": "“黄昏”与“傍晚”在此都是指日暮时分，未改变抵达时间这一事实；替换虽通顺且局部，仍不构成实质性误译。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "a7363148d5fbe55cdfe5a3fcdcce4df298c0936601dcddaef5ec24fe4fa74554",
+      "response_id": "resp_01c474f5d3da5d84006adac23323ec87d1976041a447f4a1e8",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 836,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 123,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 959
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_1/time_n1.json"
+    },
+    {
+      "id": "time_n1",
+      "arm": "baseline",
+      "trial": 2,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "使者傍晚抵达城门。",
+        "replacement_claim": "使者黄昏抵达城门。",
+        "explanation": "“傍晚”与“黄昏”在此都指天将黑的时段，未改变所断言的抵达时间；其余替换形式自然且局限于时间词，但不构成实质误译。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "a7363148d5fbe55cdfe5a3fcdcce4df298c0936601dcddaef5ec24fe4fa74554",
+      "response_id": "resp_03c66f648ca8e41f006adac2493d1087d1808cd18f759d5061",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 836,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 234,
+        "output_tokens_details": {
+          "reasoning_tokens": 105
+        },
+        "total_tokens": 1070
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_2/time_n1.json"
+    },
+    {
+      "id": "time_n1",
+      "arm": "baseline",
+      "trial": 3,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "使者在傍晚抵达城门。",
+        "replacement_claim": "使者在黄昏抵达城门。",
+        "explanation": "“黄昏”与“傍晚”在此语境中指相近的时间，没有改变所断言的事实，因此不构成有效的错译。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "a7363148d5fbe55cdfe5a3fcdcce4df298c0936601dcddaef5ec24fe4fa74554",
+      "response_id": "resp_00e4824fb98b6b3b006adac244f12487d1ba1341ab912519d7",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 836,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 176,
+        "output_tokens_details": {
+          "reasoning_tokens": 61
+        },
+        "total_tokens": 1012
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_3/time_n1.json"
+    },
+    {
+      "id": "time_n1",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "使者傍晚抵达城门。",
+        "replacement_claim": "使者黄昏抵达城门。",
+        "explanation": "“傍晚”和“黄昏”在此均指日落前后的时段，读者无法据此确定抵达时间发生了事实变化。句子通顺，替换也仅涉及时间表述，但不构成明确误译。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "58837c67cf98fe6cd27c13a178920cd50c78265246f21a6596746cc0b83f7ed4",
+      "response_id": "resp_00c570281074f962006adac214b0a487d1902ea8e41bd82b28",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1129,
+        "input_tokens_details": {
+          "cached_tokens": 1126,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 181,
+        "output_tokens_details": {
+          "reasoning_tokens": 49
+        },
+        "total_tokens": 1310
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_1/time_n1.json"
+    },
+    {
+      "id": "time_n1",
+      "arm": "revised",
+      "trial": 2,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "使者傍晚抵达城门。",
+        "replacement_claim": "使者黄昏抵达城门。",
+        "explanation": "“傍晚”和“黄昏”在此都可指同一时段，读者无法据此确定抵达时间发生了事实变化。替换本身通顺且局部，但不构成有效误译。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "58837c67cf98fe6cd27c13a178920cd50c78265246f21a6596746cc0b83f7ed4",
+      "response_id": "resp_08a2dbb64933b3cb006adac251043487d19e8726013c30ac7a",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1129,
+        "input_tokens_details": {
+          "cached_tokens": 1126,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 169,
+        "output_tokens_details": {
+          "reasoning_tokens": 42
+        },
+        "total_tokens": 1298
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_2/time_n1.json"
+    },
+    {
+      "id": "time_n1",
+      "arm": "revised",
+      "trial": 3,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "使者在傍晚抵达城门。",
+        "replacement_claim": "使者在黄昏抵达城门。",
+        "explanation": "“傍晚”和“黄昏”在此都可指天将黑的时段，无法确定抵达时间发生了事实变化。替换本身自然，且只涉及这一处时间表述。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "58837c67cf98fe6cd27c13a178920cd50c78265246f21a6596746cc0b83f7ed4",
+      "response_id": "resp_05333e5c5f4710a1006adac204fe0487d1939fc2644b244f14",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1129,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1126
+        },
+        "output_tokens": 123,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 1252
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_3/time_n1.json"
+    },
+    {
+      "id": "time_n2",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "长老把信放在桌上，片刻之后离开了房间。",
+        "replacement_claim": "长老把信放在桌上，过了一会儿离开了房间。",
+        "explanation": "“片刻之后”和“过了一会儿”都表示经过短暂时间后，属于近义表达，未改变所断言的事实。替换后的句子通顺，且只涉及这一处时间表述。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "3e6d5ac712163b383d381ef963c8e55b41c675ea6fe630e099e9926010bcdebc",
+      "response_id": "resp_0429eae3bbcf8e51006adac23eb04087d1a33e10b385b866e8",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 841,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 140,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 981
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_1/time_n2.json"
+    },
+    {
+      "id": "time_n2",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "长老把信放在桌上，片刻之后离开房间。",
+        "replacement_claim": "长老把信放在桌上，过了一会儿离开房间。",
+        "explanation": "“片刻之后”和“过了一会儿”都表示短暂时间后；此处没有明确的时间差异，不能认定事实发生变化。替换在唯一出现处通顺，且只替换了时间表达。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "619cac066fd7cc1da15c76c98b82c645058a1be7cce2903fb9eda8cfd884d669",
+      "response_id": "resp_00916179025fe056006adac246123887d18dcfdd81894d8ac2",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1134,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1131
+        },
+        "output_tokens": 140,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 1274
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_1/time_n2.json"
+    },
+    {
+      "id": "time_p1",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "守卫在正午敲响钟。",
+        "replacement_claim": "守卫在深夜敲响钟。",
+        "explanation": "仅将敲钟时间由正午改为深夜，改变了明确的时间事实；句子自然，其余信息未变，且唯一匹配处适用。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "4c5f4eeded4a1682acaaf6f3a8af6a98b8a60f53d3ebf5a9e824a9677d253f54",
+      "response_id": "resp_0343cd6aa9ad5cfe006adac205914c87d191b5b8651e56c579",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 834,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 112,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 946
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_1/time_p1.json"
+    },
+    {
+      "id": "time_p1",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "守卫在正午敲响钟。",
+        "replacement_claim": "守卫在深夜敲响钟。",
+        "explanation": "敲钟的时间由白天的正午变为夜间的深夜，时间事实明确改变；句子通顺，且只替换了这一处时间信息。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "6c30b49386eca693c5a816e760238b6c6dddcb301c85c995a0978d9d03fc9934",
+      "response_id": "resp_05fa3f68d37b52e5006adac20d648887d19eed0d347e035dec",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1127,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1124
+        },
+        "output_tokens": 131,
+        "output_tokens_details": {
+          "reasoning_tokens": 16
+        },
+        "total_tokens": 1258
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_1/time_p1.json"
+    },
+    {
+      "id": "time_p2",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "船夫在日出之前出港。",
+        "replacement_claim": "船夫在日落之后出港。",
+        "explanation": "将出港时间从日出前改为日落后，改变了一项明确事实；句子通顺，其余信息保持不变，且原文只有这一处匹配。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "1b611c86345ce600ecf0f6806fe48f5fd4840e38de0cf8b3489ca6e7af7103e3",
+      "response_id": "resp_00b4f280e2cb0031006adac2590c6887d18a740b4834fa6fcb",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 830,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 112,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 942
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/baseline/trial_1/time_p2.json"
+    },
+    {
+      "id": "time_p2",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "船夫在日出之前出港。",
+        "replacement_claim": "船夫在日落之后出港。",
+        "explanation": "两种时间描述可能指同一次夜间出港：既在前一日日落之后，也在次日日出之前。上下文未限定日期，无法确定出港时间发生了事实变化。替换本身通顺，且仅涉及出港时间。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "ab32b597909ad35be763c5e9c7c250a0f70e9d1ffc9d9b4cca4e947052ca857a",
+      "response_id": "resp_069c4f01d69e2077006adac226da3487d184837c038dc93546",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1123,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1120
+        },
+        "output_tokens": 279,
+        "output_tokens_details": {
+          "reasoning_tokens": 148
+        },
+        "total_tokens": 1402
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/cache/revised/trial_1/time_p2.json"
+    }
+  ],
+  "summary": {
+    "baseline": {
+      "true_accept": 22,
+      "true_reject": 24,
+      "false_accept": 0,
+      "false_reject": 2,
+      "scored_cases": 48,
+      "expected_cases": 48,
+      "accuracy": 0.9583333333333334,
+      "false_accept_rate": 0.0,
+      "false_reject_rate": 0.08333333333333333,
+      "families": {
+        "context": {
+          "true_accept": 2,
+          "true_reject": 2
+        },
+        "context_integrity": {
+          "true_reject": 2,
+          "true_accept": 2
+        },
+        "equivalence": {
+          "true_reject": 2,
+          "true_accept": 1,
+          "false_reject": 1
+        },
+        "frequency": {
+          "true_accept": 2,
+          "true_reject": 2
+        },
+        "lexical": {
+          "true_reject": 2,
+          "true_accept": 2
+        },
+        "modality": {
+          "true_reject": 2,
+          "false_reject": 1,
+          "true_accept": 1
+        },
+        "polarity": {
+          "true_accept": 2,
+          "true_reject": 2
+        },
+        "quantity": {
+          "true_accept": 2,
+          "true_reject": 2
+        },
+        "referent": {
+          "true_accept": 2,
+          "true_reject": 2
+        },
+        "scope": {
+          "true_reject": 2,
+          "true_accept": 2
+        },
+        "specificity": {
+          "true_accept": 2,
+          "true_reject": 2
+        },
+        "time": {
+          "true_accept": 2,
+          "true_reject": 2
+        }
+      },
+      "misclassifications": [
+        {
+          "id": "equivalence_p2",
+          "expected": "accept",
+          "actual": "reject",
+          "explanation": "年龄比较被反转，属于实质性改变；但在“兄弟二人”的语境中，“弟弟”指守卫的弟弟，说守卫比弟弟年幼在句内自相矛盾，不是自然成立的表述。"
+        },
+        {
+          "id": "modality_p2",
+          "expected": "accept",
+          "actual": "reject",
+          "explanation": "“可能会”改为“一定会”改变了抵达的确定程度，且只替换了这一处信息。但“一定会抵达”与紧接着的“我们还不能确定”在同一句中直接冲突，使整句表达不自然。"
+        }
+      ],
+      "repeat_decisions": {
+        "context_p1": [
+          "accept",
+          "accept",
+          "accept"
+        ],
+        "context_p2": [
+          "accept",
+          "accept",
+          "accept"
+        ],
+        "frequency_n2": [
+          "reject",
+          "reject",
+          "reject"
+        ],
+        "modality_p1": [
+          "accept",
+          "accept",
+          "accept"
+        ],
+        "modality_p2": [
+          "reject",
+          "accept",
+          "reject"
+        ],
+        "quantity_n1": [
+          "reject",
+          "reject",
+          "reject"
+        ],
+        "specificity_n2": [
+          "reject",
+          "reject",
+          "reject"
+        ],
+        "time_n1": [
+          "reject",
+          "reject",
+          "reject"
+        ]
+      },
+      "repeat_flips": [
+        "modality_p2"
+      ],
+      "errors": 0
+    },
+    "revised": {
+      "true_accept": 21,
+      "true_reject": 24,
+      "false_accept": 0,
+      "false_reject": 3,
+      "scored_cases": 48,
+      "expected_cases": 48,
+      "accuracy": 0.9375,
+      "false_accept_rate": 0.0,
+      "false_reject_rate": 0.125,
+      "families": {
+        "context": {
+          "true_reject": 2,
+          "true_accept": 2
+        },
+        "context_integrity": {
+          "true_reject": 2,
+          "true_accept": 2
+        },
+        "equivalence": {
+          "true_accept": 1,
+          "false_reject": 1,
+          "true_reject": 2
+        },
+        "frequency": {
+          "true_accept": 2,
+          "true_reject": 2
+        },
+        "lexical": {
+          "true_accept": 2,
+          "true_reject": 2
+        },
+        "modality": {
+          "true_accept": 1,
+          "true_reject": 2,
+          "false_reject": 1
+        },
+        "polarity": {
+          "true_accept": 2,
+          "true_reject": 2
+        },
+        "quantity": {
+          "true_accept": 2,
+          "true_reject": 2
+        },
+        "referent": {
+          "true_accept": 2,
+          "true_reject": 2
+        },
+        "scope": {
+          "true_accept": 2,
+          "true_reject": 2
+        },
+        "specificity": {
+          "true_reject": 2,
+          "true_accept": 2
+        },
+        "time": {
+          "true_accept": 1,
+          "true_reject": 2,
+          "false_reject": 1
+        }
+      },
+      "misclassifications": [
+        {
+          "id": "equivalence_p2",
+          "expected": "accept",
+          "actual": "reject",
+          "explanation": "年龄关系由年长变为年幼，事实明确改变；但“弟弟”已表明此人比守卫年幼，说守卫“比弟弟年幼”在本句中自相矛盾，不是自然通顺的表述。"
+        },
+        {
+          "id": "modality_p2",
+          "expected": "accept",
+          "actual": "reject",
+          "explanation": "“可能会”改为“一定会”明确改变了对抵达的确定程度，且只替换了这一处信息。但“一定会抵达”与紧接着的“我们还不能确定”在同一句话中直接矛盾，使表述不自然，因此不符合所有要求。"
+        },
+        {
+          "id": "time_p2",
+          "expected": "accept",
+          "actual": "reject",
+          "explanation": "两种时间描述可能指同一次夜间出港：既在前一日日落之后，也在次日日出之前。上下文未限定日期，无法确定出港时间发生了事实变化。替换本身通顺，且仅涉及出港时间。"
+        }
+      ],
+      "repeat_decisions": {
+        "context_p1": [
+          "accept",
+          "accept",
+          "accept"
+        ],
+        "context_p2": [
+          "accept",
+          "accept",
+          "accept"
+        ],
+        "frequency_n2": [
+          "reject",
+          "reject",
+          "reject"
+        ],
+        "modality_p1": [
+          "accept",
+          "accept",
+          "accept"
+        ],
+        "modality_p2": [
+          "reject",
+          "reject",
+          "reject"
+        ],
+        "quantity_n1": [
+          "reject",
+          "reject",
+          "reject"
+        ],
+        "specificity_n2": [
+          "reject",
+          "reject",
+          "reject"
+        ],
+        "time_n1": [
+          "reject",
+          "reject",
+          "reject"
+        ]
+      },
+      "repeat_flips": [],
+      "errors": 0
+    },
+    "complete": true,
+    "completed_responses": 128,
+    "planned_responses": 128,
+    "usage": {
+      "input_tokens": 125636,
+      "output_tokens": 23350,
+      "total_tokens": 148986,
+      "reasoning_tokens": 6960,
+      "cached_input_tokens": 17964
+    },
+    "revised_passes_screening_gate": false
+  }
+}

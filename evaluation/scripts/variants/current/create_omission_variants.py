@@ -146,9 +146,18 @@ def choose_omissions(units: list[dict], rate: float, seed: int) -> set[int]:
     return selected
 
 
-def apply_omissions(text: str, *, rate: float, seed: int) -> tuple[str, dict]:
+def apply_omissions(text: str, *, rate: float, seed: int,
+                    selected_unit_indices: list[int] | None = None) -> tuple[str, dict]:
     units = passage_units(text)
-    selected = choose_omissions(units, rate, seed)
+    if selected_unit_indices is None:
+        selected = choose_omissions(units, rate, seed)
+    else:
+        if (len(set(selected_unit_indices)) != len(selected_unit_indices)
+            or any(type(i) is not int or not 0 <= i < len(units)
+                   or not units[i]["omittable"] for i in selected_unit_indices)
+            or (rate == 0 and selected_unit_indices)):
+            raise OmissionError("Invalid planned omission selection")
+        selected = set(selected_unit_indices)
     output = []
     omitted_units = []
     total_chars = sum(
@@ -210,6 +219,7 @@ def create_variant(
     rate: float,
     seed: int,
     force: bool,
+    selections: dict[str, list[int]] | None = None,
 ) -> Path:
     variant_name = format_rate(rate)
     variant_dir = output_dir / variant_name
@@ -232,14 +242,16 @@ def create_variant(
         copy_if_exists(source_method_dir / filename, variant_dir / filename)
 
     raw_text = load_text(source_method_dir / "passage_target.txt")
-    raw_omitted, raw_meta = apply_omissions(raw_text, rate=rate, seed=seed)
+    raw_omitted, raw_meta = apply_omissions(raw_text, rate=rate, seed=seed,
+        selected_unit_indices=selections["passage_target.txt"] if selections is not None else None)
     write_text(variant_dir / "passage_target.txt", raw_omitted)
     metadata["files"]["passage_target"] = raw_meta
 
     decan_path = source_method_dir / "passage_target_decanonicalized.txt"
     if decan_path.exists():
         decan_text = load_text(decan_path)
-        decan_omitted, decan_meta = apply_omissions(decan_text, rate=rate, seed=seed)
+        decan_omitted, decan_meta = apply_omissions(decan_text, rate=rate, seed=seed,
+            selected_unit_indices=selections["passage_target_decanonicalized.txt"] if selections is not None else None)
         write_text(variant_dir / "passage_target_decanonicalized.txt", decan_omitted)
         metadata["files"]["passage_target_decanonicalized"] = decan_meta
 

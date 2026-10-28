@@ -1,0 +1,32 @@
+{
+  "kind": "fresh_diagnostic_replay_not_original_trace",
+  "original_cell": "mistranslation/qwen3:1.7b/t1_acts23/mistranslation/10%",
+  "id": "uw-t1_acts23:2b9c-mcq",
+  "question": "军长吩咐谁去预备护送的队伍？",
+  "local_passage": "23 随后，他叫了两个百夫长，说：“你们预备二百步兵，七十骑兵，二百枪兵，夜间三更时分往该撒利亚去，\n24 给保罗备好马匹，安全送他到总督希律那里。”",
+  "started_at": 1792840637.4164631,
+  "attempts": 1,
+  "request": {
+    "model": "qwen3:1.7b",
+    "messages": [
+      {
+        "role": "system",
+        "content": "Answer from the translated passage only. Do not include verse numbers, guess, or use outside knowledge. Do not repeat or echo the passage text in the answer. Do not echo the question. Do not output markdown or explanations. Return only the raw answer text."
+      },
+      {
+        "role": "user",
+        "content": "Read the passage and answer the question using only the passage.\nGive only the shortest phrase or sentence that directly answers the question.\nDo not include verse numbers.\nDo not copy a verse span or passage excerpt.\nDo not repeat or echo the question.\nDo not add labels, numbering, explanations, markdown, or extra text.\nUse Simplified Chinese.\nReturn only the answer text.\nFor multiple choice, choose the option best supported by explicit passage evidence.\nReturn only one uppercase letter: A, B, C, or D.\n\nPassage:\n23 随后，他叫了两个百夫长，说：“你们预备二百步兵，七十骑兵，二百枪兵，夜间三更时分往该撒利亚去，\n24 给保罗备好马匹，安全送他到总督希律那里。”\n\nQuestion:\n军长吩咐谁去预备护送的队伍？\n\nChoices:\nA. 二百步兵\nB. 两个百夫长\nC. 七十骑兵\nD. 长老们"
+      }
+    ],
+    "stream": false,
+    "options": {
+      "temperature": 0,
+      "num_ctx": 8192,
+      "num_predict": 2500
+    }
+  },
+  "timeout_seconds": 150.0,
+  "error_type": "GenerationError",
+  "error": "Could not reach Ollama at http://localhost:11434. Is `ollama serve` running?",
+  "finished_at": 1792840637.416694
+}

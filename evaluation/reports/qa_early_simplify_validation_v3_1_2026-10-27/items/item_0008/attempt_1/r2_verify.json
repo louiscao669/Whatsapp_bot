@@ -1,0 +1,78 @@
+{
+  "request_hash": "a0f545df8a6ab467e2a2ab376c9e05c6654b966d0f541ba1a35d9517b079c813",
+  "model": "gpt-6.1-sol",
+  "response_id": "resp_0e8cd5ef78dd7a6e006ae130e4ccd487d19cf07f21cb6f31bb",
+  "usage": {
+    "input_tokens": 1751,
+    "input_tokens_details": {
+      "cached_tokens": 1748,
+      "cache_write_tokens": 0
+    },
+    "output_tokens": 575,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 2326
+  },
+  "parsed": {
+    "id": "item",
+    "contract_validity": {
+      "status": "pass",
+      "evidence": "The contract correctly identifies the target as the person who left before the meal. Its temporal condition and departure-role relation match the original question, explicit intended target, and passage. The required answer is 小林, distinguished from 小周, who left afterward."
+    },
+    "same_target": {
+      "status": "pass",
+      "evidence": "The candidate preserves the original question exactly, including 吃饭前, which is essential to selecting the correct departure event."
+    },
+    "removals_justified": {
+      "status": "pass",
+      "evidence": "No information was removed."
+    },
+    "same_language": {
+      "status": "pass",
+      "evidence": "The question remains in Chinese. There are no options."
+    },
+    "option_meanings": [],
+    "content": {
+      "question_support": {
+        "status": "pass",
+        "evidence": "The passage explicitly establishes that someone left before the meal: 吃饭前，小林离开了。"
+      },
+      "answer_support": {
+        "status": "pass",
+        "evidence": "The current passage directly supports the fixed expected answer 小林."
+      },
+      "answer_uniqueness": {
+        "status": "pass",
+        "evidence": "Only 小林 is described as leaving before the meal; 小周 leaves after it."
+      },
+      "context_sufficiency": {
+        "status": "pass",
+        "evidence": "The passage supplies both departure events and their timing, allowing the question to be answered without outside knowledge."
+      },
+      "answer_leakage": {
+        "status": "pass",
+        "evidence": "The question does not name or otherwise disclose the answer; it requires identifying the relevant person from the passage."
+      },
+      "mcq_validity": {
+        "status": "not_applicable",
+        "evidence": "This is an open question with no answer choices."
+      }
+    },
+    "naturalness": {
+      "score": 0,
+      "evidence": "The Chinese question is idiomatic and direct.",
+      "quotes": []
+    },
+    "processing": {
+      "score": 0,
+      "evidence": "The question has a simple temporal modifier followed by a clear request to identify the person who left.",
+      "quotes": []
+    },
+    "context_economy": {
+      "score": 0,
+      "evidence": "There is no dispensable setup. The before-meal condition is necessary to distinguish the two departures.",
+      "quotes": []
+    }
+  }
+}

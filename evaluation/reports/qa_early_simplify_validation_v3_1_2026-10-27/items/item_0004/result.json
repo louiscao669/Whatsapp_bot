@@ -1,0 +1,312 @@
+{
+  "id": "transfer:handkerchief:original:zh",
+  "original": {
+    "id": "transfer:handkerchief:original:zh",
+    "question": "当触摸过保罗的手帕和围裙被带到病人那里时发生了什么？",
+    "passage": "11 神借着保罗的手行了非凡的奇迹，  \n12 甚至连摸过他的手帕和围裙都被带到病人那里，疾病和邪灵就离开了他们。  \n13 当时有几个流动的犹太驱魔师试图用主耶稣的名给那些被邪灵附着的人驱魔。他们说：“我奉保罗所传的耶稣的名，吩咐你们。”  \n14 这事是犹太大祭司士基瓦的七个儿子做的。  \n15 有一天，邪灵回答说：“耶稣我认识，保罗我也知道，你们是谁？”  \n16 那附着邪灵的人跳到他们身上，制服了他们所有人。攻击如此猛烈，以致他们赤身裸体、受伤逃出房子。  \n17 这事传遍了住在以弗所的犹太人和希腊人，众人都害怕。于是主耶稣的名被尊为至高。  \n18 许多信了的人都出来，承认并公开他们的行为。  \n19 那些行邪术的人拿出他们的书，在众人面前烧掉。书的价值合计五万德拉克马。  \n20 主的话大有能力，继续兴旺起来，得胜前行。",
+    "expected_answer": "疾病和邪灵离开了病人",
+    "form": "mcq",
+    "options": {
+      "A": "病人陷入了深度睡眠",
+      "B": "疾病和邪灵离开了病人",
+      "C": "犹太驱魔师给病人驱魔",
+      "D": "病人变得无法说话",
+      "E": "根据这段文字无法判断"
+    },
+    "correct_option": "B",
+    "intended_target": "What happened to the sick people (illnesses and evil spirits leaving), not which objects touched Paul or where the objects were taken.",
+    "original_question": "",
+    "original_answer": ""
+  },
+  "input_hash": "21e4af8175474d6334c5622cb71f0440d9a92d6fecdff64e58e53458141f4306",
+  "status": "SIMPLIFIED",
+  "accepted_case": {
+    "id": "transfer:handkerchief:original:zh",
+    "question": "当手帕和围裙被带到病人那里时，病人发生了什么变化？",
+    "passage": "11 神借着保罗的手行了非凡的奇迹，  \n12 甚至连摸过他的手帕和围裙都被带到病人那里，疾病和邪灵就离开了他们。  \n13 当时有几个流动的犹太驱魔师试图用主耶稣的名给那些被邪灵附着的人驱魔。他们说：“我奉保罗所传的耶稣的名，吩咐你们。”  \n14 这事是犹太大祭司士基瓦的七个儿子做的。  \n15 有一天，邪灵回答说：“耶稣我认识，保罗我也知道，你们是谁？”  \n16 那附着邪灵的人跳到他们身上，制服了他们所有人。攻击如此猛烈，以致他们赤身裸体、受伤逃出房子。  \n17 这事传遍了住在以弗所的犹太人和希腊人，众人都害怕。于是主耶稣的名被尊为至高。  \n18 许多信了的人都出来，承认并公开他们的行为。  \n19 那些行邪术的人拿出他们的书，在众人面前烧掉。书的价值合计五万德拉克马。  \n20 主的话大有能力，继续兴旺起来，得胜前行。",
+    "expected_answer": "疾病和邪灵离开了病人",
+    "form": "mcq",
+    "options": {
+      "A": "病人陷入了深度睡眠",
+      "B": "疾病和邪灵离开了病人",
+      "C": "犹太驱魔师给病人驱魔",
+      "D": "病人变得无法说话",
+      "E": "根据这段文字无法判断"
+    },
+    "correct_option": "B",
+    "intended_target": "What happened to the sick people (illnesses and evil spirits leaving), not which objects touched Paul or where the objects were taken.",
+    "original_question": "当触摸过保罗的手帕和围裙被带到病人那里时发生了什么？",
+    "original_answer": "疾病和邪灵离开了病人"
+  },
+  "contract": {
+    "id": "item",
+    "status": "ready",
+    "target": "What happened to the sick people (illnesses and evil spirits leaving), not which objects touched Paul or where the objects were taken.",
+    "basis": "explicit",
+    "required_answer_components": [
+      "疾病离开了病人。",
+      "邪灵也离开了病人。"
+    ],
+    "relations": [
+      {
+        "id": "r1",
+        "quote": "当触摸过保罗的手帕和围裙被带到病人那里时发生了什么？",
+        "meaning": "询问所述物品被带到病人那里时，病人身上发生的结果；需要同时识别疾病离开和邪灵离开。",
+        "role": "tested",
+        "reason": "问题要求恢复这一特定事件中的结果，而不是其他驱魔事件的结果。“当……时”的事件范围限定结果所属的情境，但不要求额外推断因果机制。"
+      },
+      {
+        "id": "r2",
+        "quote": "手帕和围裙被带到病人那里",
+        "meaning": "以物品被送至病人处这一事件定位所问的结果。",
+        "role": "anchor",
+        "reason": "这一区分线索将问题定位于第12节，而非后文犹太驱魔师驱魔及遭受攻击的事件。物品名称和送达地点是事件定位信息，不是要求回答的独立知识点。"
+      },
+      {
+        "id": "r3",
+        "quote": "触摸过保罗的",
+        "meaning": "说明这些手帕和围裙此前与保罗有过接触。",
+        "role": "removable",
+        "reason": "这是物品到达病人处之前的背景描述。本文只有一次手帕和围裙被带到病人处的事件，保留该送达事件即可唯一定位所问结果；明确目标也排除了考查哪些物品接触过保罗。"
+      }
+    ],
+    "note": "第12节明确记载，物品被带到病人那里后，“疾病和邪灵就离开了他们”。因此固定答案及选项B均有直接依据。目标由 supplied intended_target 明确给定；两个并列结果均须保留，不能只回答疾病离开或只回答邪灵离开。"
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "proposal": {
+        "id": "item",
+        "status": "revised",
+        "question": "当手帕和围裙被带到病人那里时，病人发生了什么变化？",
+        "options": [
+          {
+            "label": "A",
+            "text": "病人陷入了深度睡眠"
+          },
+          {
+            "label": "B",
+            "text": "疾病和邪灵离开了病人"
+          },
+          {
+            "label": "C",
+            "text": "犹太驱魔师给病人驱魔"
+          },
+          {
+            "label": "D",
+            "text": "病人变得无法说话"
+          },
+          {
+            "label": "E",
+            "text": "根据这段文字无法判断"
+          }
+        ],
+        "removed_relation_ids": [
+          "r3"
+        ],
+        "note": "删除物品此前接触过保罗的背景描述，保留物品被带到病人那里的事件锚点，并直接询问病人的变化。"
+      },
+      "candidate": {
+        "id": "transfer:handkerchief:original:zh",
+        "question": "当手帕和围裙被带到病人那里时，病人发生了什么变化？",
+        "passage": "11 神借着保罗的手行了非凡的奇迹，  \n12 甚至连摸过他的手帕和围裙都被带到病人那里，疾病和邪灵就离开了他们。  \n13 当时有几个流动的犹太驱魔师试图用主耶稣的名给那些被邪灵附着的人驱魔。他们说：“我奉保罗所传的耶稣的名，吩咐你们。”  \n14 这事是犹太大祭司士基瓦的七个儿子做的。  \n15 有一天，邪灵回答说：“耶稣我认识，保罗我也知道，你们是谁？”  \n16 那附着邪灵的人跳到他们身上，制服了他们所有人。攻击如此猛烈，以致他们赤身裸体、受伤逃出房子。  \n17 这事传遍了住在以弗所的犹太人和希腊人，众人都害怕。于是主耶稣的名被尊为至高。  \n18 许多信了的人都出来，承认并公开他们的行为。  \n19 那些行邪术的人拿出他们的书，在众人面前烧掉。书的价值合计五万德拉克马。  \n20 主的话大有能力，继续兴旺起来，得胜前行。",
+        "expected_answer": "疾病和邪灵离开了病人",
+        "form": "mcq",
+        "options": {
+          "A": "病人陷入了深度睡眠",
+          "B": "疾病和邪灵离开了病人",
+          "C": "犹太驱魔师给病人驱魔",
+          "D": "病人变得无法说话",
+          "E": "根据这段文字无法判断"
+        },
+        "correct_option": "B",
+        "intended_target": "What happened to the sick people (illnesses and evil spirits leaving), not which objects touched Paul or where the objects were taken.",
+        "original_question": "当触摸过保罗的手帕和围裙被带到病人那里时发生了什么？",
+        "original_answer": "疾病和邪灵离开了病人"
+      },
+      "checks": [
+        {
+          "repeat": 1,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "契约符合明确目标及第12节：考查物品被带到病人那里时，病人身上发生的结果，必须包含疾病和邪灵都离开病人。送达事件用于定位；物品此前接触保罗并非独立考点。"
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "候选题仍询问手帕和围裙被带到病人那里时病人的变化，保留同一事件范围及两个必要结果，没有转成物品名称、去向或其他驱魔事件的考查。"
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "删除的“触摸过保罗的”仅补充物品此前的接触背景。当前篇章只有一次手帕和围裙被带到病人那里的事件，保留的送达情境足以唯一定位；删除后没有引入竞争事件或答案。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "候选问题和A至E各选项均保持原来的简体中文。"
+            },
+            "option_meanings": [
+              {
+                "status": "pass",
+                "evidence": "文字未改，仍指病人陷入深度睡眠。",
+                "label": "A"
+              },
+              {
+                "status": "pass",
+                "evidence": "文字未改，仍同时断言疾病和邪灵离开病人。",
+                "label": "B"
+              },
+              {
+                "status": "pass",
+                "evidence": "文字未改，仍指犹太驱魔师给病人驱魔，施事和受事保持不变。",
+                "label": "C"
+              },
+              {
+                "status": "pass",
+                "evidence": "文字未改，仍指病人变得无法说话。",
+                "label": "D"
+              },
+              {
+                "status": "pass",
+                "evidence": "文字未改，仍表示无法根据这段文字判断。",
+                "label": "E"
+              }
+            ],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "第12节明确叙述手帕和围裙被带到病人那里，并记载病人随后出现的变化，支持问题及其前提。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "第12节“疾病和邪灵就离开了他们”直接支持固定答案及选项B；“他们”指前面的病人。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "只有B对应所问送达事件的结果。A、D没有文本依据；C涉及后文另一驱魔事件，不能回答本题；E与第12节的明确记载不符。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "当前篇章完整提供事件及两个结果，无须借助外部圣经知识，也无须补回被删除的接触背景才能作答。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "题干仅提供事件定位，没有说出疾病或邪灵离开的结果，也没有通过额外提示标出正确选项。"
+              },
+              "mcq_validity": {
+                "status": "pass",
+                "evidence": "选项标签完整，固定键B受到文本支持，且仅有一个选项能够回答所限定事件中的病人变化。"
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "题干是自然、直接的中文问句，各选项表达清楚，不需要语义修补。",
+              "quotes": []
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "题干只有一个清楚的时间情境和一个结果问题；“病人”的重复明确了变化主体，选项之间也容易比较。",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "保留的物品送达情境能将目标事件与后文驱魔事件区分开，属于有用定位信息；没有多余的事件叙述或指代链。",
+              "quotes": []
+            }
+          }
+        },
+        {
+          "repeat": 2,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "契约符合明确的预期目标及第12节：所问是物品被带到病人那里时的结果，答案必须同时包括疾病离开和邪灵离开。送达事件用于定位，物品此前接触保罗不是独立考点。"
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "候选仍询问同一送达事件中病人的变化，保留了结果关系、病人这一对象及两个必需的答案成分，没有改为询问物品或地点。"
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "删去的“触摸过保罗的”仅说明物品此前的接触背景。当前经文只有一次手帕和围裙被带到病人那里的事件，保留的事件描述足以唯一定位，不会引入另一竞争事件或答案。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "候选问题及A至E全部选项均保持原来的中文。"
+            },
+            "option_meanings": [
+              {
+                "status": "pass",
+                "evidence": "文字未变，仍表示病人陷入深度睡眠。",
+                "label": "A"
+              },
+              {
+                "status": "pass",
+                "evidence": "文字未变，完整保留疾病和邪灵均离开病人的并列结果。",
+                "label": "B"
+              },
+              {
+                "status": "pass",
+                "evidence": "文字未变，仍表示犹太驱魔师给病人驱魔，施事与对象均未改变。",
+                "label": "C"
+              },
+              {
+                "status": "pass",
+                "evidence": "文字未变，仍表示病人变得无法说话。",
+                "label": "D"
+              },
+              {
+                "status": "pass",
+                "evidence": "文字未变，仍为根据本段无法判断的弃答选项。",
+                "label": "E"
+              }
+            ],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "第12节明确记载手帕和围裙被带到病人那里，并记载病人随后发生的变化，问题的事件预设有依据。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "第12节“疾病和邪灵就离开了他们”直接支持固定答案及选项B。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "只有B符合该事件的明确结果。A和D未被记载；C涉及后文另一起驱魔事件；经文已提供答案，故E不成立。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "当前经文提供了送达事件、病人及疾病和邪灵离开的完整信息，无须借助外部知识。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "问题仅提供必要的事件定位，没有直接给出疾病或邪灵离开的结果，也没有额外标示正确选项。"
+              },
+              "mcq_validity": {
+                "status": "pass",
+                "evidence": "五个选项含一个有直接经文依据的正确答案，键值B正确，其余选项不构成同一问题的另一正确答案。"
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "问题的时间从句与结果问句搭配自然，选项表达清楚，无需修补语意。",
+              "quotes": []
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "单一时间从句直接定位事件，主句明确询问病人的变化；没有复杂指代、角色转换或选项比较负担。",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "手帕和围裙的送达事件是有用的定位线索，能将目标与后文驱魔事件区分开；问题没有保留额外背景叙述或不必要的指代链。",
+              "quotes": []
+            }
+          }
+        }
+      ],
+      "status": "SIMPLIFIED"
+    }
+  ]
+}

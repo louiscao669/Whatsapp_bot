@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "records": {
+    "c932d4aeae01ab42214c6a92a7ef27dd55ce22c7a83e39e963c1250f38a3df9c": {
+      "identity": {
+        "model": "gpt-6-sol",
+        "prompt_sha256": "710d52b8945d965d68775a411de6abc5543010775247b16f5b9a92c4275a06ca",
+        "schema_sha256": "5fa920642b474382900cb35cd4cea1669a30f9717edb84a60aec124f26c3b82d",
+        "max_output_tokens": 8192,
+        "api": "responses"
+      },
+      "request": {
+        "original_passage": "港口名册把一至五艘船记为“小批”，六至十艘记为“大批”。当日上午到港的是小批船只。",
+        "source": "小批船只",
+        "replacement": "大批船只",
+        "mode": "contextual",
+        "occurrences": [
+          {
+            "start": 36,
+            "end": 40,
+            "original_context": "当日上午到港的是小批船只。",
+            "edited_context": "当日上午到港的是大批船只。"
+          }
+        ]
+      },
+      "response": {
+        "source_claim": "当日上午到港的船只属于名册定义的“小批”，即一至五艘。",
+        "replacement_claim": "当日上午到港的船只属于名册定义的“大批”，即六至十艘。",
+        "explanation": "原文明确规定两种批次对应不同且不重叠的数量范围；替换改变了到港船只的批次及数量范围。替换仅涉及这一处，句子自然，其他信息不变。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "response_id": "resp_08d8868027d53ff4006adac20292f887d1b110c556a9523aba",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1133,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1130
+        },
+        "output_tokens": 189,
+        "output_tokens_details": {
+          "reasoning_tokens": 39
+        },
+        "total_tokens": 1322
+      },
+      "completed_at_unix": 1792721413
+    }
+  }
+}

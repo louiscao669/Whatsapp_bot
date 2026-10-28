@@ -1,0 +1,224 @@
+{
+  "prompt": "independent_dimensions",
+  "repeat": 1,
+  "batch": 3,
+  "request_hash": "0c475f8744514253c15c560c43ca00e670f8b27c7e7a108bba3cac0374563a76",
+  "model": "gpt-6.1-sol",
+  "response_id": "resp_0d07f3cebb959b98006ae05431772c87d1a578514a6a1ccf9d",
+  "elapsed_seconds": 29.404021978378296,
+  "usage": {
+    "input_tokens": 4253,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 4250
+    },
+    "output_tokens": 2172,
+    "output_tokens_details": {
+      "reasoning_tokens": 80
+    },
+    "total_tokens": 6425
+  },
+  "threshold_mismatches": [],
+  "items": [
+    {
+      "id": "gold:t1_1kgs13:nntp:open",
+      "decision": "REWRITE",
+      "target": "Identify the old prophet's invitation to come home with him and eat.",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“What does the old prophet say” is idiomatic and direct."
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "The question has straightforward speaker and listener roles, without complex modifiers."
+      },
+      "context": {
+        "score": 2,
+        "evidence": "Missing disambiguation: the old prophet speaks to the man of God several times, including an identity question, an invitation, a false claim, and a judgment. Nothing locates the intended invitation."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "The question does not supply the content of the invitation."
+      },
+      "alternative": "",
+      "target_preservation": "preserved",
+      "reason": "The wording is easy to read but needs an event anchor to distinguish the intended speech from the old prophet's other statements."
+    },
+    {
+      "id": "hard:t1_judg9:8e0b:mcq",
+      "decision": "KEEP",
+      "target": "Identify why the olive tree refused to become king of the trees.",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 1,
+        "evidence": "“离开那荣耀神和人的油” is somewhat stiff, but the question “为什么不肯去作树木的王” is natural and understandable."
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "The respondent compares four short reasons; “荣耀神和人的” adds a manageable modifier to “油.”"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“橄榄树” and “不肯去作树木的王” clearly locate the refusal in the supplied passage."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "The question names the refusal without stating its reason; the answer appears only among the choices."
+      },
+      "alternative": "",
+      "target_preservation": "preserved",
+      "reason": "The minor stiffness does not prevent ordinary readers from understanding the question or comparing the reasons."
+    },
+    {
+      "id": "constructed:leak",
+      "decision": "REWRITE",
+      "target": "Identify who moved the books inside.",
+      "target_basis": "explicit",
+      "naturalness": {
+        "score": 0,
+        "evidence": "Both “小林把书搬进屋里” and “是谁把书搬进屋里的” are idiomatic."
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "The repeated action and simple actor question are readily parsed."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "The book-moving event is clearly identified; there is no distracting background."
+      },
+      "leakage": {
+        "score": 3,
+        "evidence": "“小林把书搬进屋里” explicitly identifies 小林 immediately before asking who moved the books."
+      },
+      "alternative": "",
+      "target_preservation": "preserved",
+      "reason": "The introductory statement explicitly gives the identity being tested."
+    },
+    {
+      "id": "hard:t1_1kgs13:8a66:mcq",
+      "decision": "KEEP",
+      "target": "Identify the person killed by the lion on the road.",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“谁在路上被狮子咬死了” is a natural way to ask who was killed."
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "The passive clearly identifies the lion as the attacker; the four person choices are easy to distinguish."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“在路上被狮子咬死” uniquely anchors the event in the passage."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "The question identifies the event but does not name its victim."
+      },
+      "alternative": "",
+      "target_preservation": "preserved",
+      "reason": "The item directly tests the victim's identity with sufficient context and no avoidable burden."
+    },
+    {
+      "id": "hard:t1_judg9:0bd2:mcq",
+      "decision": "KEEP",
+      "target": "Identify what Abimelech intended to do when he came to the tower entrance.",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“来到楼门，是要做什么” and the action choices are idiomatic."
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "The respondent identifies one person's purpose and compares four short, distinct actions."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“亚比米勒来到楼门” provides the necessary person and event anchor."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "Coming to the tower entrance does not itself state the intended action."
+      },
+      "alternative": "",
+      "target_preservation": "preserved",
+      "reason": "The question is direct, sufficiently anchored, and does not disclose the purpose it asks about."
+    },
+    {
+      "id": "gold:t1_acts19:b1be:open",
+      "decision": "KEEP",
+      "target": "Identify what happened to the sick when cloths that had touched Paul were taken to them.",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“What happened when” naturally introduces a question about the outcome of this event."
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "The respondent tracks the cloths touching Paul and then being taken to the sick. These linked details identify the intended event and remain manageable."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“Handkerchiefs and aprons that had touched Paul” distinguishes this event from the passage's other encounters involving evil spirits."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "The question describes the delivery of the cloths, not the resulting cures or departure of evil spirits."
+      },
+      "alternative": "",
+      "target_preservation": "preserved",
+      "reason": "The event description has ordinary reading demands and supplies useful context without giving the outcome."
+    },
+    {
+      "id": "hard:t1_2chr26:723e:mcq",
+      "decision": "REWRITE",
+      "target": "Identify who commanded the army of 307,500 trained soldiers.",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 2,
+        "evidence": "“这三十万七千五百训练有素的军队” unnaturally attaches a bare personnel count to “军队,” requiring readers to mentally supply a counted noun such as soldiers."
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "Readers must interpret the long numerical modifier and connect it to the army before selecting its commanders; the choices themselves are distinct."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "The troop count and “训练有素” sufficiently identify the army whose leadership is being asked about."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "The stem gives the army's size and description, not the identity of its commanders."
+      },
+      "alternative": "",
+      "target_preservation": "preserved",
+      "reason": "The count-and-noun construction needs mental repair, so the naturalness gate fails even though the target is clear."
+    },
+    {
+      "id": "hard:t1_2kgs11:a99f:mcq",
+      "decision": "KEEP",
+      "target": "Identify who hid with his nurse in the Lord's temple for six years.",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“谁和他的奶母……藏了六年” is a natural identity question."
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "“他的” refers straightforwardly to the person being asked about; place and duration fit into a simple event description."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "The nurse, temple, and six-year period clearly locate the hiding event without unrelated family background."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "The stem describes the hiding event but does not name the person sought."
+      },
+      "alternative": "",
+      "target_preservation": "preserved",
+      "reason": "The item asks a clear identity question with useful event anchors and no substantial avoidable burden."
+    }
+  ]
+}

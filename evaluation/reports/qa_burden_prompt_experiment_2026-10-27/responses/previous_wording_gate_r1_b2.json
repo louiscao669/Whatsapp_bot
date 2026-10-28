@@ -1,0 +1,64 @@
+{
+  "prompt": "previous_wording_gate",
+  "repeat": 1,
+  "batch": 2,
+  "request_hash": "7be893fd143ee67cb51661bec34abd805bfd9ce118d9e3107380eb8b9116ea5c",
+  "model": "gpt-6.1-sol",
+  "response_id": "resp_05cba2a361216810006ae053307ed087d18ea603279056c871",
+  "elapsed_seconds": 29.142910957336426,
+  "usage": {
+    "input_tokens": 2704,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 2701
+    },
+    "output_tokens": 1147,
+    "output_tokens_details": {
+      "reasoning_tokens": 516
+    },
+    "total_tokens": 3851
+  },
+  "threshold_mismatches": [],
+  "items": [
+    {
+      "id": "hard:t1_2kgs11:f49c:mcq",
+      "decision": "REWRITE",
+      "reason": "The topic contains the relative modifier “耶何耶大立的” modifying “第一个约,” followed by a question about its parties. In “是在哪些之间立的,” “哪些” lacks a natural nominal head, requiring mental repair; the parties themselves are not unresolved referents."
+    },
+    {
+      "id": "hard:t1_2chr26:4cb0:mcq",
+      "decision": "KEEP",
+      "reason": "A direct subject question with the embedded complement “乌西雅敬畏神” under “教导.” Both named participants are clear, with no unresolved referent."
+    },
+    {
+      "id": "hard:t1_2sam21:de9f:mcq",
+      "decision": "KEEP",
+      "reason": "A single main clause asks for the object of “击杀了.” “亚比筛” is explicit, and there is no embedded modifier or unresolved referent."
+    },
+    {
+      "id": "constructed:ambiguous",
+      "decision": "REWRITE",
+      "reason": "The syntax is a simple subject question, but “把书带走了” leaves the relevant book-moving event unresolved. Both 小林 and 小周 take books somewhere in the passage, and the question supplies neither a destination nor a time to distinguish them."
+    },
+    {
+      "id": "transfer:handkerchief:repair:zh",
+      "decision": "REWRITE",
+      "reason": "The passive setup “摸过保罗的手帕和围裙被带到病人那里” embeds the relative modifier “摸过保罗的” before the main question “病人随后怎么样了？” This requires processing a modified passive subject and then linking “随后” to that setup. “病人” itself has a clear referent, but the relative-clause/passive setup creates the specified wording burden."
+    },
+    {
+      "id": "hard:t1_1kgs13:a6cd:mcq",
+      "decision": "KEEP",
+      "reason": "The setup “王求神人为他祷告” contains one request with an embedded action, followed by the direct question “谁为王祷告了？” “他” clearly refers to the king. The setup identifies the requested actor without itself asserting who actually prayed; there is no second request layer or unresolved referent."
+    },
+    {
+      "id": "hard:t1_judg9:6d68:mcq",
+      "decision": "KEEP",
+      "reason": "The question asks the purpose of an action whose deepest complement is “示剑的众首领听他的话” under “呼叫.” “他” clearly refers to 约坦, and “是为了什么结果” makes the requested purpose/result understandable without additional viewpoint tracking."
+    },
+    {
+      "id": "focus:handkerchief:direct:zh",
+      "decision": "KEEP",
+      "reason": "“根据这段经文” is a simple framing phrase, followed by one direct question about changes in the patients’ condition. There is no embedded clause, and “病人” clearly refers to the patients mentioned in the passage; the options present distinct outcomes."
+    }
+  ]
+}

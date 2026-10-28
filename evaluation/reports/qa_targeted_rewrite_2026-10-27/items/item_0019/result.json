@@ -1,0 +1,285 @@
+{
+  "id": "hard:t1_2chr26:723e:open",
+  "input_hash": "584b609ce67095914ebdd9e230ee49d38eb5f8370d4db5429c79446daa7ef07f",
+  "original": {
+    "id": "hard:t1_2chr26:723e:open",
+    "question": "这三十万七千五百训练有素的军队由谁统领？",
+    "passage": "26:11 乌西雅有一支预备出战的军队，按班次出征，由书记耶列和官长玛西亚在王官哈拿尼雅的指挥下记载。\n26:12 勇士家族的首领共有二千六百人。\n26:13 他们统领的军队共有三十万七千五百名训练有素的士兵，是支持王抵御敌人的强大力量。\n26:14 乌西雅为全军配备了盾牌、枪矛、头盔、铠甲、弓和弹石器。\n26:15 他在耶路撒冷巧妙制造发射箭矢和投掷大石的装置，安置在城楼和城角。因此他的名声远扬，因神大大帮助他，他就变得强盛。",
+    "expected_answer": "the 2,600 family leaders",
+    "form": "open",
+    "options": {},
+    "correct_option": "",
+    "intended_target": "",
+    "original_question": "",
+    "original_answer": ""
+  },
+  "source_review_dir": "/Users/louiscao/whatsapp-bot/eten-whatsapp-bot/evaluation/reports/qa_review_v2_full_2026-10-27/hard",
+  "status": "ACCEPTED",
+  "accepted_case": {
+    "id": "hard:t1_2chr26:723e:open",
+    "question": "这三十万七千五百名训练有素的士兵由谁统领？",
+    "passage": "26:11 乌西雅有一支预备出战的军队，按班次出征，由书记耶列和官长玛西亚在王官哈拿尼雅的指挥下记载。\n26:12 勇士家族的首领共有二千六百人。\n26:13 他们统领的军队共有三十万七千五百名训练有素的士兵，是支持王抵御敌人的强大力量。\n26:14 乌西雅为全军配备了盾牌、枪矛、头盔、铠甲、弓和弹石器。\n26:15 他在耶路撒冷巧妙制造发射箭矢和投掷大石的装置，安置在城楼和城角。因此他的名声远扬，因神大大帮助他，他就变得强盛。",
+    "expected_answer": "the 2,600 family leaders",
+    "form": "open",
+    "options": {},
+    "correct_option": "",
+    "intended_target": "",
+    "original_question": "这三十万七千五百训练有素的军队由谁统领？",
+    "original_answer": "the 2,600 family leaders"
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "proposal": {
+        "id": "item",
+        "status": "revised",
+        "question": "这三十万七千五百名训练有素的士兵由谁统领？",
+        "options": [],
+        "note": "将数量短语改为“三十万七千五百名训练有素的士兵”，明确数字表示士兵人数，而非军队数量，消除量词缺失和数量修饰关系不清造成的理解负担，同时保留人数、训练情况和所问的统领关系。"
+      },
+      "candidate": {
+        "id": "hard:t1_2chr26:723e:open",
+        "question": "这三十万七千五百名训练有素的士兵由谁统领？",
+        "passage": "26:11 乌西雅有一支预备出战的军队，按班次出征，由书记耶列和官长玛西亚在王官哈拿尼雅的指挥下记载。\n26:12 勇士家族的首领共有二千六百人。\n26:13 他们统领的军队共有三十万七千五百名训练有素的士兵，是支持王抵御敌人的强大力量。\n26:14 乌西雅为全军配备了盾牌、枪矛、头盔、铠甲、弓和弹石器。\n26:15 他在耶路撒冷巧妙制造发射箭矢和投掷大石的装置，安置在城楼和城角。因此他的名声远扬，因神大大帮助他，他就变得强盛。",
+        "expected_answer": "the 2,600 family leaders",
+        "form": "open",
+        "options": {},
+        "correct_option": "",
+        "intended_target": "",
+        "original_question": "这三十万七千五百训练有素的军队由谁统领？",
+        "original_answer": "the 2,600 family leaders"
+      },
+      "checks": [
+        {
+          "repeat": 1,
+          "preservation": {
+            "id": "item",
+            "same_target": {
+              "status": "pass",
+              "evidence": "Both questions ask who commanded the same 307,500 trained soldiers. Replacing “军队” with “名…士兵” preserves the commanded group and leadership relationship; verses 26:12–13 identify the commanders as the 2,600 family leaders."
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "Both the original and revised respondent-facing questions are in Chinese."
+            },
+            "option_meanings": []
+          },
+          "review": {
+            "id": "item",
+            "input_hash": "46b113bbe37ff56f2df1b3f6e532291fa5187f5768018a66b8637e6b1dd65c10",
+            "content_validity": {
+              "id": "item",
+              "target": "Identify the 2,600 family leaders as those commanding the 307,500 trained soldiers.",
+              "target_basis": "inferred",
+              "target_preservation": {
+                "status": "pass",
+                "evidence": "The original and final questions both ask who commanded the same force of 307,500 trained soldiers; the expected answer is unchanged."
+              },
+              "question_support": {
+                "status": "pass",
+                "evidence": "26:13 explicitly describes 307,500 trained soldiers as an army commanded by '他们' ('they'), referring to the leaders in 26:12."
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "26:12 identifies 2,600 family leaders, and 26:13 states that they commanded this army, supporting 'the 2,600 family leaders.'"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "The immediate antecedent of '他们' in 26:13 is the 2,600 family leaders. Hananiah's authority in 26:11 concerns the recording arrangement, not the command relation asked about."
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "The distinctive troop total identifies the army in 26:13, and the preceding verse supplies the identity of its commanders."
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "The question identifies the soldiers by their number and training but does not disclose who commanded them."
+              },
+              "mcq_validity": {
+                "status": "not_applicable",
+                "evidence": "This is an open question with no answer choices."
+              },
+              "meaning_profile": {
+                "answer_explicitness": "nearby_connection",
+                "semantic_relation": "Commanders of a specified military force",
+                "answer_scope": "single_component",
+                "passage_span": "nearby"
+              }
+            },
+            "structural_inspection": {
+              "id": "item",
+              "parse_summary": "问句以“这三十万七千五百名训练有素的士兵”为被统领者，用“由谁统领”询问统领者。需将“这”指向经文中的军队，并把“他们统领的军队”中的“他们”回指到前文二千六百名勇士家族的首领。士兵数量和“训练有素”均直接修饰“士兵”，没有多层嵌套。",
+              "features": [
+                {
+                  "kind": "role_tracking",
+                  "quote": "由谁统领",
+                  "required_operations": "区分被统领的士兵与统领他们的首领，确定所问的是统领者。",
+                  "concern": "ordinary",
+                  "reason": "这一角色区分正是识别军队统领者所必需的关系，句式未增加额外角色。"
+                },
+                {
+                  "kind": "reference_chain",
+                  "quote": "这三十万七千五百名训练有素的士兵",
+                  "required_operations": "将“这”与经文中的同一支军队对应，再将经文中的“他们”解析为二千六百名勇士家族的首领。",
+                  "concern": "ordinary",
+                  "reason": "回指链用于确定目标答案；问句以明确的数量和身份描述标识军队，没有额外增加指代层级。"
+                }
+              ]
+            },
+            "language_accessibility": {
+              "id": "item",
+              "naturalness": {
+                "score": 0,
+                "evidence": "“这三十万七千五百名训练有素的士兵由谁统领？”符合自然的中文问法；数量和“训练有素”都清楚地修饰“士兵”，“由谁统领”直接询问统领者，无须修补语意或重组句子。"
+              },
+              "processing": {
+                "score": 1,
+                "evidence": "读者需将“这三十万七千五百名训练有素的士兵”对应到经文中的军队，再追溯“他们统领的军队”中“他们”的所指。这是理解所问统领关系所需的普通跨句指代处理；问句没有增加可避免的角色、修饰层级或选项比较负担。"
+              },
+              "context_economy": {
+                "score": 0,
+                "evidence": "问句没有额外引言或旁支说明。“这三十万七千五百名训练有素的士兵”用于明确所问的军队，属于有用的对象标识，而非多余铺垫。"
+              },
+              "structure_assessments": [
+                {
+                  "feature_index": 0,
+                  "assessment": "manageable",
+                  "reason": "“由谁统领”清楚区分统领者与被统领的士兵；识别这两个角色正是问题所要求的操作，句式本身没有引入额外负担。"
+                },
+                {
+                  "feature_index": 1,
+                  "assessment": "manageable",
+                  "reason": "“这三十万七千五百名训练有素的士兵”以具体数量和身份标识对象；随后将“他们统领的军队”中的“他们”回指前句的首领，是必要且距离较短的指代衔接，没有额外嵌套或含混代称。"
+                }
+              ]
+            },
+            "decision": "KEEP",
+            "content_status": "PASS",
+            "language_status": "PASS",
+            "content_failures": [],
+            "content_uncertainties": [],
+            "language_failures": [],
+            "structural_concerns": [],
+            "unresolved_features": [],
+            "structure_burden_disagreement": false
+          }
+        },
+        {
+          "repeat": 2,
+          "preservation": {
+            "id": "item",
+            "same_target": {
+              "status": "pass",
+              "evidence": "两题都询问谁统领这三十万七千五百名训练有素的士兵；将“军队”改为“名……士兵”未改变所指群体或统领关系。根据26:12–13，答案均为二千六百名勇士家族的首领。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "原题与修订题均使用中文。"
+            },
+            "option_meanings": []
+          },
+          "review": {
+            "id": "item",
+            "input_hash": "46b113bbe37ff56f2df1b3f6e532291fa5187f5768018a66b8637e6b1dd65c10",
+            "content_validity": {
+              "id": "item",
+              "target": "Identify the 2,600 family leaders as those commanding the 307,500 trained soldiers.",
+              "target_basis": "inferred",
+              "target_preservation": {
+                "status": "pass",
+                "evidence": "The original and final questions both ask who commanded the same 307,500 trained soldiers; the expected answer remains the 2,600 family leaders."
+              },
+              "question_support": {
+                "status": "pass",
+                "evidence": "Verse 26:13 explicitly describes 307,500 trained soldiers as an army commanded by '他们', supporting the question's command relationship."
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "Verse 26:12 identifies 2,600 '勇士家族的首领'; '他们' in 26:13 refers back to these leaders as the army's commanders."
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "The immediate antecedent of '他们' is the 2,600 family leaders. The officials named in 26:11 are associated with recording the army, not the specific command relationship stated in 26:13."
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "The supplied passage includes both the uniquely numbered army in 26:13 and the leaders identified immediately before it in 26:12."
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "The question identifies the soldiers by their number and training but does not disclose who commands them."
+              },
+              "mcq_validity": {
+                "status": "not_applicable",
+                "evidence": "This is an open question with no answer choices."
+              },
+              "meaning_profile": {
+                "answer_explicitness": "nearby_connection",
+                "semantic_relation": "Command relationship resolved through a pronoun's antecedent",
+                "answer_scope": "single_component",
+                "passage_span": "nearby"
+              }
+            },
+            "structural_inspection": {
+              "id": "item",
+              "parse_summary": "问句以“这三十万七千五百名训练有素的士兵”为被统领者，以“由谁”询问统领者；数量和“训练有素”共同修饰“士兵”，没有深层嵌套。作答需对应经文中的同一支军队，并将“他们统领”中的“他们”回指到上一节的二千六百名勇士家族首领。",
+              "features": [
+                {
+                  "kind": "role_tracking",
+                  "quote": "士兵由谁统领",
+                  "required_operations": "区分被统领的士兵与统领他们的人，填入“由谁”所询问的施事角色。",
+                  "concern": "ordinary",
+                  "reason": "统领者与被统领者的关系正是考查目标；这一简短结构没有增加可避免的角色转换。"
+                },
+                {
+                  "kind": "reference_chain",
+                  "quote": "这三十万七千五百名训练有素的士兵",
+                  "required_operations": "用人数和描述定位经文中的军队，再把经文“他们统领”中的“他们”关联到二千六百名勇士家族首领。",
+                  "concern": "ordinary",
+                  "reason": "指示语明确对应经文中的同数量军队，代词回指是识别目标统领者所必需的关系。"
+                }
+              ]
+            },
+            "language_accessibility": {
+              "id": "item",
+              "naturalness": {
+                "score": 0,
+                "evidence": "“这三十万七千五百名训练有素的士兵由谁统领？”语序自然，“由谁统领”是常用的询问统领者的表达；数量与“训练有素”修饰“士兵”，搭配清楚，无须修补句意。"
+              },
+              "processing": {
+                "score": 1,
+                "evidence": "读者需要用“三十万七千五百名训练有素的士兵”定位相应军队，再将“他们统领”中的“他们”回指到上一节的“勇士家族的首领”。这是识别统领者所需的普通跨句关联；问句本身没有增加可避免的角色转换或修饰语嵌套。"
+              },
+              "context_economy": {
+                "score": 0,
+                "evidence": "问句没有额外引言；“这三十万七千五百名训练有素的士兵”直接指明所问的军队，是有用且简洁的定位信息，没有无关铺垫。"
+              },
+              "structure_assessments": [
+                {
+                  "feature_index": 0,
+                  "assessment": "manageable",
+                  "reason": "“士兵由谁统领”清楚区分士兵与统领者。“由谁”直接标明待回答的角色，所需角色识别属于问题本身的意义目标，没有额外绕转。"
+                },
+                {
+                  "feature_index": 1,
+                  "assessment": "manageable",
+                  "reason": "“这三十万七千五百名训练有素的士兵”提供明确的定位线索；将“他们统领”回接到前一句的“勇士家族的首领”需要普通的跨句指代处理，但这项关联服务于识别统领者，并非问句措辞引入的可避免负担。"
+                }
+              ]
+            },
+            "decision": "KEEP",
+            "content_status": "PASS",
+            "language_status": "PASS",
+            "content_failures": [],
+            "content_uncertainties": [],
+            "language_failures": [],
+            "structural_concerns": [],
+            "unresolved_features": [],
+            "structure_burden_disagreement": false
+          }
+        }
+      ],
+      "status": "ACCEPTED"
+    }
+  ]
+}

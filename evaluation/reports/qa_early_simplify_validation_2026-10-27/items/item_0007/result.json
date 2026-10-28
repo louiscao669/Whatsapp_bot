@@ -1,0 +1,213 @@
+{
+  "id": "control:escape:required_relation",
+  "original": {
+    "id": "control:escape:required_relation",
+    "question": "被那附着邪灵的人制服以后，谁受伤逃出了那房子？",
+    "passage": "19:13 当时有几个流动的犹太驱魔师试图用主耶稣的名给那些被邪灵附着的人驱魔。他们说：“我奉保罗所传的耶稣的名，吩咐你们。”\n19:14 这事是犹太大祭司士基瓦的七个儿子做的。\n19:15 有一天，邪灵回答说：“耶稣我认识，保罗我也知道，你们是谁？”\n19:16 那附着邪灵的人跳到他们身上，制服了他们所有人。攻击如此猛烈，以致他们赤身裸体、受伤逃出房子。",
+    "expected_answer": "The seven sons of Sceva.",
+    "form": "open",
+    "options": {},
+    "correct_option": "",
+    "intended_target": "Identify the people overpowered by the possessed man who subsequently escaped injured. The link between being overpowered by that man and then escaping injured is explicitly part of the tested relationship and must remain in the question.",
+    "original_question": "",
+    "original_answer": ""
+  },
+  "input_hash": "8a2fc9a575ea31d258c0da9f49a568f1f21c7c77c595b934997936fa3c8a4f15",
+  "status": "KEPT",
+  "accepted_case": {
+    "id": "control:escape:required_relation",
+    "question": "被那附着邪灵的人制服以后，谁受伤逃出了那房子？",
+    "passage": "19:13 当时有几个流动的犹太驱魔师试图用主耶稣的名给那些被邪灵附着的人驱魔。他们说：“我奉保罗所传的耶稣的名，吩咐你们。”\n19:14 这事是犹太大祭司士基瓦的七个儿子做的。\n19:15 有一天，邪灵回答说：“耶稣我认识，保罗我也知道，你们是谁？”\n19:16 那附着邪灵的人跳到他们身上，制服了他们所有人。攻击如此猛烈，以致他们赤身裸体、受伤逃出房子。",
+    "expected_answer": "The seven sons of Sceva.",
+    "form": "open",
+    "options": {},
+    "correct_option": "",
+    "intended_target": "Identify the people overpowered by the possessed man who subsequently escaped injured. The link between being overpowered by that man and then escaping injured is explicitly part of the tested relationship and must remain in the question.",
+    "original_question": "",
+    "original_answer": ""
+  },
+  "contract": {
+    "id": "item",
+    "status": "ready",
+    "target": "Identify the people overpowered by the possessed man who subsequently escaped injured. The link between being overpowered by that man and then escaping injured is explicitly part of the tested relationship and must remain in the question.",
+    "basis": "explicit",
+    "required_answer_components": [
+      "士基瓦的七个儿子。",
+      "须将他们识别为被那附着邪灵的人制服、随后受伤逃出房子的同一群人；不要求答案复述整个事件。"
+    ],
+    "relations": [
+      {
+        "id": "r1",
+        "quote": "被那附着邪灵的人制服以后",
+        "meaning": "所问的人先被那附着邪灵的人制服，随后才受伤逃出房子。",
+        "role": "tested",
+        "reason": "明确目标规定，被制服与随后受伤逃出之间的联系属于测试内容，不能作为可删除的叙事背景。"
+      },
+      {
+        "id": "r2",
+        "quote": "谁",
+        "meaning": "识别经历这些事件的人的身份。",
+        "role": "tested",
+        "reason": "问题要求回答参与者是谁；正确答案必须识别士基瓦的七个儿子，而不只是描述事件。"
+      },
+      {
+        "id": "r3",
+        "quote": "受伤逃出了那房子",
+        "meaning": "同一群人在受伤的状态下逃出了该房子。",
+        "role": "tested",
+        "reason": "受伤及逃出房子共同构成所问事件，且受伤逃出的结果由明确目标指定为测试关系的一部分。"
+      }
+    ],
+    "note": "所供经文19:14将参与者确定为犹太大祭司士基瓦的七个儿子；19:16说明那附着邪灵的人制服了他们所有人，随后他们受伤逃出房子。因此固定答案有经文支持，且与明确目标一致。经文另述他们赤身裸体，但问题和明确目标均未要求这一细节。"
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "proposal": {
+        "id": "item",
+        "status": "unchanged",
+        "question": "被那附着邪灵的人制服以后，谁受伤逃出了那房子？",
+        "options": [],
+        "removed_relation_ids": [],
+        "note": "原问题已简洁直接；被制服、随后受伤逃出房子的关系均为测试内容，没有可删除的铺垫。"
+      },
+      "candidate": {
+        "id": "control:escape:required_relation",
+        "question": "被那附着邪灵的人制服以后，谁受伤逃出了那房子？",
+        "passage": "19:13 当时有几个流动的犹太驱魔师试图用主耶稣的名给那些被邪灵附着的人驱魔。他们说：“我奉保罗所传的耶稣的名，吩咐你们。”\n19:14 这事是犹太大祭司士基瓦的七个儿子做的。\n19:15 有一天，邪灵回答说：“耶稣我认识，保罗我也知道，你们是谁？”\n19:16 那附着邪灵的人跳到他们身上，制服了他们所有人。攻击如此猛烈，以致他们赤身裸体、受伤逃出房子。",
+        "expected_answer": "The seven sons of Sceva.",
+        "form": "open",
+        "options": {},
+        "correct_option": "",
+        "intended_target": "Identify the people overpowered by the possessed man who subsequently escaped injured. The link between being overpowered by that man and then escaping injured is explicitly part of the tested relationship and must remain in the question.",
+        "original_question": "",
+        "original_answer": ""
+      },
+      "checks": [
+        {
+          "repeat": 1,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "契约符合明确目标及经文：19:14确定人物为士基瓦的七个儿子，19:16说明同一群人被附着邪灵的人制服，随后受伤逃出房子。身份、先后关系和受伤逃出的状态均属于有效测试内容。"
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "候选问题与原题完全相同，保留了识别人物的要求，以及被制服后受伤逃出房子的完整关系。"
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "候选没有删除或改写任何题目或经文信息。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "问题仍为原来的中文；本题没有选项。"
+            },
+            "option_meanings": [],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "19:16直接支持问题的前提：附着邪灵的人制服了他们，他们随后受伤逃出房子。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "19:14明确将参与者识别为士基瓦的七个儿子；19:16承接这些人物，支持固定答案“The seven sons of Sceva.”。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "经文中只有士基瓦的七个儿子符合被制服后受伤逃出房子的完整描述，没有另一组符合条件的人物。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "当前经文窗口同时提供人物身份和事件经过，足以完成指代衔接并回答问题，无须外部知识。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "问题没有直接说出士基瓦或他的七个儿子；需结合经文中的身份说明和后续事件确定答案。"
+              },
+              "mcq_validity": {
+                "status": "not_applicable",
+                "evidence": "这是开放式问题，没有选项或选择题答案键。"
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "“被……制服以后，谁受伤逃出了……？”表达自然、直接，时间关系及所问人物清楚。"
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "问题只有一个必要的时间从句和一个身份询问，没有多层指代或修饰语堆叠；经文中的人物衔接清晰。"
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "问题没有额外叙事铺垫。“被那附着邪灵的人制服以后”是明确目标要求保留的测试关系，而非可删背景；受伤和逃出房子也都是目标事件的必要组成部分。"
+            }
+          }
+        },
+        {
+          "repeat": 2,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "契约符合明确目标及经文：19:14确定参与者为士基瓦的七个儿子，19:16说明同一群人被附着邪灵的人制服，随后受伤逃出房子。身份、先后关系及共同参与者均属有效测试内容。"
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "候选问题与原题完全相同，保留了被制服与随后受伤逃出房子的联系，并要求识别经历这些事件的人。"
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "候选未删除或改写原题及经文中的任何信息。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "问题仍为原来的中文；本题没有选项。"
+            },
+            "option_meanings": [],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "19:16明确记载那附着邪灵的人制服了他们所有人，之后他们受伤逃出房子，支持问题的事件及先后关系。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "19:14将做这事的人确定为士基瓦的七个儿子；后续经文中的“他们”承接这群人，支持固定答案。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "窗口中只有士基瓦的七个儿子符合被该人制服、随后受伤逃出房子的完整描述，没有另一组竞争答案。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "所给经文同时提供人物身份和事件经过，无须借助窗口外的圣经知识。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "问题没有直接给出士基瓦或其七个儿子的身份；经文中的身份说明是正常的作答依据，而非额外答案提示。"
+              },
+              "mcq_validity": {
+                "status": "not_applicable",
+                "evidence": "本题为开放问答题，没有选项或选择题答案键。"
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "问题为直接、完整的中文问句，“被……制服以后”与“谁受伤逃出了……”衔接自然。"
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "单句清楚表达施事、受事及事件顺序，没有多层指代链或需要额外解码的结构。"
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "问题没有额外叙事铺垫；前置的被制服关系属于明确规定的测试内容，受伤逃出房子则界定目标事件，均有必要保留。"
+            }
+          }
+        }
+      ],
+      "status": "KEPT"
+    }
+  ]
+}

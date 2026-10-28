@@ -275,6 +275,10 @@ class PassageTranslation(Base):
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
     language: Mapped[str] = mapped_column(String(64), nullable=False, index=True)
     name: Mapped[Optional[str]] = mapped_column(String(255))
+    # Canonical English book name ("luke", "judges", "2 kings"); see
+    # eten_shared.domain.bible_books. NULL = uploaded before the column
+    # existed, read as Luke (LEGACY_TRANSLATION_BOOK).
+    book: Mapped[Optional[str]] = mapped_column(String(64))
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=utc_now, nullable=False
     )
@@ -1224,3 +1228,75 @@ class PilotQuestionTrial(Base):
     assignment: Mapped["Assignment"] = relationship()
     qa_item: Mapped["QAItem"] = relationship()
     answer_receipt: Mapped[Optional["AnswerReceipt"]] = relationship()
+
+
+class PilotQuestionnaireResponse(Base):
+    """One participant's background and eligibility questionnaire.
+
+    Collected on ``/pilot`` after consent and before the first study question
+    (instrument: ``eten_shared.pilot_questionnaire``). One row per participant,
+    filled section by section so a reload resumes where the participant left
+    off. ``status`` is the last section saved: ``eligibility`` once Section A
+    passed, then ``background``, ``religion`` and finally ``familiarity``
+    (= complete, with ``completed_at`` set).
+
+    Only ELIGIBLE participants ever have a row: the screen-out path writes
+    nothing here (administration note: an ineligible participant's responses
+    are deleted and only an anonymous count is kept, in
+    :class:`PilotScreenoutCount`).
+
+    The Section D score is computed and stored server-side; it is never sent
+    to the participant.
+    """
+
+    __tablename__ = "pilot_questionnaire_responses"
+    __table_args__ = (
+        UniqueConstraint("participant_id", name="uq_pilot_questionnaire_participant"),
+        CheckConstraint(
+            "status IN ('eligibility', 'background', 'religion', 'familiarity')",
+            name="ck_pilot_questionnaire_status",
+        ),
+    )
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    participant_id: Mapped[str] = mapped_column(
+        ForeignKey("participants.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    instrument_version: Mapped[str] = mapped_column(String(64), nullable=False)
+    language: Mapped[str] = mapped_column(String(16), nullable=False)
+    status: Mapped[str] = mapped_column(String(16), nullable=False)
+    eligibility_answers: Mapped[dict] = mapped_column(JSON, default=dict, nullable=False)
+    background_answers: Mapped[Optional[dict]] = mapped_column(JSON)
+    # NULL = Section C prompt not reached yet; False = declined (C items stay NULL).
+    religion_consent: Mapped[Optional[bool]] = mapped_column(Boolean)
+    religion_answers: Mapped[Optional[dict]] = mapped_column(JSON)
+    familiarity_answers: Mapped[Optional[dict]] = mapped_column(JSON)
+    familiarity_correct: Mapped[Optional[int]] = mapped_column(Integer)
+    familiarity_answered: Mapped[Optional[int]] = mapped_column(Integer)
+    familiarity_score: Mapped[Optional[float]] = mapped_column(Float)
+    eligible_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utc_now, nullable=False
+    )
+    completed_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utc_now, nullable=False
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utc_now, onupdate=utc_now, nullable=False
+    )
+
+    participant: Mapped["Participant"] = relationship()
+
+
+class PilotScreenoutCount(Base):
+    """Anonymous count of questionnaire screen-outs, per instrument version.
+
+    Deliberately holds nothing else -- no participant id, no answers, no
+    timestamp of the attempt (administration note: "no record of the attempt
+    is kept beyond an anonymous count of screen-outs").
+    """
+
+    __tablename__ = "pilot_screenout_counts"
+
+    instrument_version: Mapped[str] = mapped_column(String(64), primary_key=True)
+    screenouts: Mapped[int] = mapped_column(Integer, default=0, nullable=False)

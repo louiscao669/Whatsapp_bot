@@ -1,0 +1,211 @@
+{
+  "id": "control:necessary_time",
+  "original": {
+    "id": "control:necessary_time",
+    "question": "吃饭前，谁离开了？",
+    "passage": "吃饭前，小林离开了。吃饭后，小周也离开了。",
+    "expected_answer": "小林",
+    "form": "open",
+    "options": {},
+    "correct_option": "",
+    "intended_target": "Identify who left before the meal, preserving the before/after distinction.",
+    "original_question": "",
+    "original_answer": ""
+  },
+  "input_hash": "e1693213c79f6fec444f288624e9e167c3e694612533f36a24dd90b7e48f9401",
+  "status": "KEPT",
+  "accepted_case": {
+    "id": "control:necessary_time",
+    "question": "吃饭前，谁离开了？",
+    "passage": "吃饭前，小林离开了。吃饭后，小周也离开了。",
+    "expected_answer": "小林",
+    "form": "open",
+    "options": {},
+    "correct_option": "",
+    "intended_target": "Identify who left before the meal, preserving the before/after distinction.",
+    "original_question": "",
+    "original_answer": ""
+  },
+  "contract": {
+    "id": "item",
+    "status": "ready",
+    "target": "Identify who left before the meal, preserving the before/after distinction.",
+    "basis": "explicit",
+    "required_answer_components": [
+      "小林：在吃饭前离开的人，而不是吃饭后离开的小周。"
+    ],
+    "relations": [
+      {
+        "id": "r1",
+        "quote": "吃饭前",
+        "meaning": "所问的离开发生在吃饭之前。",
+        "role": "tested",
+        "reason": "明确目标要求保留饭前与饭后的区别；该时间条件也区分了文中的两次离开事件，不能删除。"
+      },
+      {
+        "id": "r2",
+        "quote": "谁离开了",
+        "meaning": "识别指定离开事件中的人物。",
+        "role": "tested",
+        "reason": "问题要求回答离开者的身份，并以离开事件限定所问行为；必须结合饭前这一时间条件确定人物。"
+      }
+    ],
+    "note": "所供短文明确写道“吃饭前，小林离开了”，支持固定答案“小林”；“吃饭后，小周也离开了”构成时间对照。目标与问题及答案一致，没有可删除的描述性铺垫。"
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "proposal": {
+        "id": "item",
+        "status": "unchanged",
+        "question": "吃饭前，谁离开了？",
+        "options": [],
+        "removed_relation_ids": [],
+        "note": "原问题已简洁直接。“吃饭前”是区分两次离开事件的必要时间条件，不能删除；没有可移除的铺垫。"
+      },
+      "candidate": {
+        "id": "control:necessary_time",
+        "question": "吃饭前，谁离开了？",
+        "passage": "吃饭前，小林离开了。吃饭后，小周也离开了。",
+        "expected_answer": "小林",
+        "form": "open",
+        "options": {},
+        "correct_option": "",
+        "intended_target": "Identify who left before the meal, preserving the before/after distinction.",
+        "original_question": "",
+        "original_answer": ""
+      },
+      "checks": [
+        {
+          "repeat": 1,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "合同与明确目标、原题及短文一致：须识别饭前离开的人，保留饭前与饭后的时间区别。答案是小林，不要求另行解释时间对照。"
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "候选题与原题完全相同，保留了人物识别、离开行为及“吃饭前”的必要时间限定。"
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "没有删除任何信息；用于区分两次离开事件的时间条件完整保留。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "候选问题与原题均为中文；本题无选项。"
+            },
+            "option_meanings": [],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "短文明确写道“吃饭前，小林离开了”，支持问题所预设的饭前离开事件。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "当前短文直接支持固定答案“小林”。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "短文中只有小林在饭前离开；小周是在饭后离开，不符合所问时间条件。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "当前短文提供了两位人物各自离开的时间，无须借助外部知识即可作答。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "问题没有透露人物姓名或直接给出答案；答案须从短文中识别。"
+              },
+              "mcq_validity": {
+                "status": "not_applicable",
+                "evidence": "这是开放式问题，没有选项或选择题答案键。"
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "问句中文自然、直接，时间短语与疑问表达搭配顺畅。",
+              "quotes": []
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "问句结构简短清楚，没有指代链、角色混淆或多余修饰；饭前这一条件是目标所必需。",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "问题仅包含必要的时间限定及人物识别要求，没有可删除的叙事铺垫。",
+              "quotes": []
+            }
+          }
+        },
+        {
+          "repeat": 2,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "The contract correctly identifies the target as the person who left before the meal. Its temporal condition and departure-role relation match the original question, explicit intended target, and passage. The required answer is 小林, distinguished from 小周, who left afterward."
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "The candidate preserves the original question exactly, including 吃饭前, which is essential to selecting the correct departure event."
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "No information was removed."
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "The question remains in Chinese. There are no options."
+            },
+            "option_meanings": [],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "The passage explicitly establishes that someone left before the meal: 吃饭前，小林离开了。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "The current passage directly supports the fixed expected answer 小林."
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "Only 小林 is described as leaving before the meal; 小周 leaves after it."
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "The passage supplies both departure events and their timing, allowing the question to be answered without outside knowledge."
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "The question does not name or otherwise disclose the answer; it requires identifying the relevant person from the passage."
+              },
+              "mcq_validity": {
+                "status": "not_applicable",
+                "evidence": "This is an open question with no answer choices."
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "The Chinese question is idiomatic and direct.",
+              "quotes": []
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "The question has a simple temporal modifier followed by a clear request to identify the person who left.",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "There is no dispensable setup. The before-meal condition is necessary to distinguish the two departures.",
+              "quotes": []
+            }
+          }
+        }
+      ],
+      "status": "KEPT"
+    }
+  ]
+}

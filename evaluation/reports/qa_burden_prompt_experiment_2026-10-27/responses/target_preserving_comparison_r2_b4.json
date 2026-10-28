@@ -1,0 +1,224 @@
+{
+  "prompt": "target_preserving_comparison",
+  "repeat": 2,
+  "batch": 4,
+  "request_hash": "db11572bb276fb5612b4b08642bea3cab2d98f44370e859a0f9df308ba151f99",
+  "model": "gpt-6.1-sol",
+  "response_id": "resp_049629cc8de1458b006ae05408b33887d183b16ff547788d4d",
+  "elapsed_seconds": 40.870672941207886,
+  "usage": {
+    "input_tokens": 3300,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 3297
+    },
+    "output_tokens": 2623,
+    "output_tokens_details": {
+      "reasoning_tokens": 395
+    },
+    "total_tokens": 5923
+  },
+  "threshold_mismatches": [],
+  "items": [
+    {
+      "id": "hard:t1_2sam21:de9f:mcq",
+      "decision": "KEEP",
+      "target": "辨认亚比筛击杀的人。",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“亚比筛击杀了谁？”表达自然、直接。"
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "只需辨认动作的对象；四个选项没有额外的结构或比较负担。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“亚比筛击杀”足以定位经文中的事件。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "题干没有说明被击杀者是谁。"
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "问题简明且指向明确，没有值得通过改写消除的负担。"
+    },
+    {
+      "id": "hard:t1_judg9:0bd2:mcq",
+      "decision": "KEEP",
+      "target": "辨认亚比米勒来到楼门的目的。",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“来到楼门，是要做什么？”是自然的目的问法，选项也能顺畅承接。"
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "题干只有人物、地点和目的询问，四个选项均为简短动作。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“来到楼门”提供了区分攻城与烧楼事件的有用定位。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "说明来到楼门，并未透露他准备在那里做什么。"
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "事件定位有用，整体表达直接，无需改写。"
+    },
+    {
+      "id": "hard:t1_judg17_18:1654:mcq",
+      "decision": "KEEP",
+      "target": "辨认来士人富足的原因。",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“来士的人为什么富足？”问法自然，各选项以“因为”承接。"
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "四个选项结构平行，每项只提出一个原因。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“来士的人”明确指出所问的群体，不需要增加背景。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "题干提出富足这一状态，但没有给出所问的原因。"
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "因果询问本身没有造成额外负担，题干和选项均易于理解。"
+    },
+    {
+      "id": "focus:handkerchief:direct:zh",
+      "decision": "KEEP",
+      "target": "辨认病人的情况发生了什么变化，即疾病和邪灵离开了他们；不询问物品或物品被带往何处。",
+      "target_basis": "explicit",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“病人的情况有什么变化？”自然地询问结果，选项表述清楚。"
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "需要阅读五个选项并区分情况变化、他人行动和无法判断，但各项都短且结构简单。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“病人”能够定位经文中疾病和邪灵离开的群体，无需补充手帕、围裙等信息。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "题干没有说明发生了哪一种变化；正确答案出现在选项中不构成泄露。"
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "问题直接保留预定的结果目标，没有引入物品相关的无关负担。"
+    },
+    {
+      "id": "hard:t1_2chr26:723e:mcq",
+      "decision": "REWRITE",
+      "target": "辨认统领三十万七千五百名训练有素士兵的人。",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 2,
+        "evidence": "“这三十万七千五百训练有素的军队”把人数直接接到“军队”上，缺少“名士兵”等成分，需要读者自行修补。"
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "人数、训练状况和统领关系仍可辨认，但读者需先把人数理解为士兵数量，而非军队数量。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "人数和“训练有素”准确定位所问军队，没有无关铺垫。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "题干说明军队规模，但没有给出统领者。"
+      },
+      "alternative": "这三十万七千五百名训练有素的士兵由谁统领？\nA. 哈拿尼雅\nB. 耶列和玛西亚\nC. 乌西雅\nD. 那二千六百个家族首领",
+      "target_preservation": "preserved",
+      "reason": "改写补足人数所修饰的对象，消除明显的搭配问题，同时保留同一支军队、统领关系和答案范围。"
+    },
+    {
+      "id": "hard:t1_1kgs13:8a66:mcq",
+      "decision": "KEEP",
+      "target": "辨认在路上被狮子咬死的人。",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“谁在路上被狮子咬死了？”自然、清楚。"
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "被动结构直接突出所问的人；选项均为简短人物称谓。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“在路上被狮子咬死”足以定位目标事件。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "题干给出事件，但未说明死者身份。"
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "人物询问直接，被动表达没有造成可避免的理解负担。"
+    },
+    {
+      "id": "hard:t1_acts19:7628:mcq",
+      "decision": "KEEP",
+      "target": "辨认被附着邪灵的人制服后，受伤逃出房子的人。",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“被……制服以后，谁受伤逃出了那房子？”语序自然，事件关系清楚。"
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "需将前置的“被……制服以后”与后面的“谁”关联，但只有一个时间关系，选项也容易区分。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "被制服这一背景有助于明确所问的逃跑事件，“那房子”也能从经文定位。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "题干说明遭遇和结果，但没有透露受伤逃跑者的身份。"
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "前置事件提供有用定位，整体只有普通、可管理的阅读要求。"
+    },
+    {
+      "id": "constructed:anchor",
+      "decision": "KEEP",
+      "target": "辨认把书带到图书馆的人。",
+      "target_basis": "explicit",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“谁把书带到图书馆？”是自然、直接的问法。"
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "只需根据目的地辨认人物，没有额外修饰或指代负担。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“图书馆”足以区分两次带书事件，无需再加“下午”。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "题干没有给出人物姓名。"
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "问题已自然且无歧义地询问预定目标，无需改写。"
+    }
+  ]
+}

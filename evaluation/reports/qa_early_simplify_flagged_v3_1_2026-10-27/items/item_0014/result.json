@@ -1,0 +1,319 @@
+{
+  "id": "hard:t1_1kgs13:2f00:mcq",
+  "original": {
+    "id": "hard:t1_1kgs13:2f00:mcq",
+    "question": "带他回来的先知先把神人的尸首带到哪里？",
+    "passage": "13:26 那带他回来的先知听见，就说：“这是违背耶和华命令的神人，耶和华因此把他交给狮子，狮子撕裂杀了他，正如耶和华曾对他说的话。”\n13:27 先知吩咐儿子们说：“给我备驴。”他们就备了驴，\n13:28 他去到路上，看见尸首躺在那里，驴和狮子都站在尸首旁边，狮子没有吃尸首，也没有伤驴。\n13:29 先知就把神人的尸首拾起来，放在驴上，带回自己的城里，为他哀悼，埋葬他。\n13:30 把尸首葬在自己的坟墓里，他们为他哀哭说：“我的兄弟啊！”",
+    "expected_answer": "回到自己的城里。",
+    "form": "mcq",
+    "options": {
+      "A": "到自己的坟墓。",
+      "B": "回到自己的城里。",
+      "C": "到王宫。",
+      "D": "到坛那里。",
+      "E": "根据这段文字无法判断"
+    },
+    "correct_option": "B",
+    "intended_target": "",
+    "original_question": "带他回来的先知先把神人的尸首带到哪里？",
+    "original_answer": "To his own city."
+  },
+  "input_hash": "3d91e940191bd4061ad4ac945dbb368a01d5900aa2dad1a78975ee7c9285c20d",
+  "status": "SIMPLIFIED",
+  "accepted_case": {
+    "id": "hard:t1_1kgs13:2f00:mcq",
+    "question": "先知先把神人的尸首带到哪里？",
+    "passage": "13:26 那带他回来的先知听见，就说：“这是违背耶和华命令的神人，耶和华因此把他交给狮子，狮子撕裂杀了他，正如耶和华曾对他说的话。”\n13:27 先知吩咐儿子们说：“给我备驴。”他们就备了驴，\n13:28 他去到路上，看见尸首躺在那里，驴和狮子都站在尸首旁边，狮子没有吃尸首，也没有伤驴。\n13:29 先知就把神人的尸首拾起来，放在驴上，带回自己的城里，为他哀悼，埋葬他。\n13:30 把尸首葬在自己的坟墓里，他们为他哀哭说：“我的兄弟啊！”",
+    "expected_answer": "回到自己的城里。",
+    "form": "mcq",
+    "options": {
+      "A": "到自己的坟墓。",
+      "B": "回到自己的城里。",
+      "C": "到王宫。",
+      "D": "到坛那里。",
+      "E": "根据这段文字无法判断"
+    },
+    "correct_option": "B",
+    "intended_target": "",
+    "original_question": "带他回来的先知先把神人的尸首带到哪里？",
+    "original_answer": "To his own city."
+  },
+  "contract": {
+    "id": "item",
+    "status": "ready",
+    "target": "辨认先知运回神人尸首时先带到的地点，区别于随后安葬尸首的地点。",
+    "basis": "inferred",
+    "required_answer_components": [
+      "尸首先被带回先知自己的城里。",
+      "所答是运回尸首的先到地点，而不是后来安葬尸首的坟墓。"
+    ],
+    "relations": [
+      {
+        "id": "r1",
+        "quote": "带他回来的",
+        "meaning": "用先知此前带回神人的经历描述这位先知。",
+        "role": "removable",
+        "reason": "这是此前经历的描述，不是本题要求恢复的事实。本段只有一位先知拾起并运回神人的尸首；保留先知、神人的尸首及运送地点的提问，仍能唯一定位13:29的事件。"
+      },
+      {
+        "id": "r2",
+        "quote": "先知",
+        "meaning": "运送尸首这一事件的行动者。",
+        "role": "anchor",
+        "reason": "明确所问的是先知运送尸首的行为，与神人被狮子杀死等其他事件区分。"
+      },
+      {
+        "id": "r3",
+        "quote": "先",
+        "meaning": "要求回答运回与安葬这一叙事顺序中的先到地点。",
+        "role": "tested",
+        "reason": "时间顺序是明确提问的一部分，必须保留；13:29的带回城里与13:30的葬入坟墓不能视为可互换的回答。"
+      },
+      {
+        "id": "r4",
+        "quote": "把神人的尸首带到哪里",
+        "meaning": "询问神人的尸首被运送到的地点。",
+        "role": "tested",
+        "reason": "这是核心地点关系；对象限定为神人的尸首，要求恢复其运送目的地，而不是先知本人前往何处或尸首如何被处理。"
+      }
+    ],
+    "note": "未提供非空的显式研究目标，故目标依据原题、原始答案及本段经文保守推断。13:29明确记载先知把尸首放在驴上，带回自己的城里；13:30随后记载葬在自己的坟墓里。预期答案与原始答案“To his own city.”一致，且均受经文支持。无需另行解释此前带回神人的经过。"
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "proposal": {
+        "id": "item",
+        "status": "revised",
+        "question": "先知先把神人的尸首带到哪里？",
+        "options": [
+          {
+            "label": "A",
+            "text": "到自己的坟墓。"
+          },
+          {
+            "label": "B",
+            "text": "回到自己的城里。"
+          },
+          {
+            "label": "C",
+            "text": "到王宫。"
+          },
+          {
+            "label": "D",
+            "text": "到坛那里。"
+          },
+          {
+            "label": "E",
+            "text": "根据这段文字无法判断"
+          }
+        ],
+        "removed_relation_ids": [
+          "r1"
+        ],
+        "note": "删除描述先知此前经历的“带他回来的”，保留运送者、尸首对象及“先到哪里”的时间顺序要求。"
+      },
+      "candidate": {
+        "id": "hard:t1_1kgs13:2f00:mcq",
+        "question": "先知先把神人的尸首带到哪里？",
+        "passage": "13:26 那带他回来的先知听见，就说：“这是违背耶和华命令的神人，耶和华因此把他交给狮子，狮子撕裂杀了他，正如耶和华曾对他说的话。”\n13:27 先知吩咐儿子们说：“给我备驴。”他们就备了驴，\n13:28 他去到路上，看见尸首躺在那里，驴和狮子都站在尸首旁边，狮子没有吃尸首，也没有伤驴。\n13:29 先知就把神人的尸首拾起来，放在驴上，带回自己的城里，为他哀悼，埋葬他。\n13:30 把尸首葬在自己的坟墓里，他们为他哀哭说：“我的兄弟啊！”",
+        "expected_answer": "回到自己的城里。",
+        "form": "mcq",
+        "options": {
+          "A": "到自己的坟墓。",
+          "B": "回到自己的城里。",
+          "C": "到王宫。",
+          "D": "到坛那里。",
+          "E": "根据这段文字无法判断"
+        },
+        "correct_option": "B",
+        "intended_target": "",
+        "original_question": "带他回来的先知先把神人的尸首带到哪里？",
+        "original_answer": "To his own city."
+      },
+      "checks": [
+        {
+          "repeat": 1,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "原题中的“先”要求辨认运送尸首时先到的地点，而非随后安葬的地点。13:29记载带回自己的城里，13:30记载葬在自己的坟墓里，支持合同的目标、答案组件及关系角色。"
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "候选题保留了行动者“先知”、对象“神人的尸首”、顺序限定“先”和目的地提问，仍测试先带回城里而非随后葬入坟墓的区别。"
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "仅删除“带他回来的”这一身份修饰语。当前经文中只有一位先知拾起并运回神人的尸首，删除后没有新增竞争行动者或运送事件，无须依靠此前经历来定位所问事件。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "候选问题和全部选项均保持原来的中文。"
+            },
+            "option_meanings": [
+              {
+                "status": "pass",
+                "evidence": "文字未变，仍指到先知自己的坟墓。",
+                "label": "A"
+              },
+              {
+                "status": "pass",
+                "evidence": "文字未变，仍指回到先知自己的城里。",
+                "label": "B"
+              },
+              {
+                "status": "pass",
+                "evidence": "文字未变，仍指到王宫。",
+                "label": "C"
+              },
+              {
+                "status": "pass",
+                "evidence": "文字未变，仍指到坛那里。",
+                "label": "D"
+              },
+              {
+                "status": "pass",
+                "evidence": "文字未变，仍表示根据所给文字无法判断。",
+                "label": "E"
+              }
+            ],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "13:29明确记载先知拾起并运送神人的尸首；13:29—30提供运回城里、随后安葬的叙事顺序，支持题目的事件及顺序预设。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "13:29的“带回自己的城里”直接支持固定答案“回到自己的城里。”及正确选项B。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "B对应先运回的地点；A是随后安葬的地点，C、D没有相关记载，E与经文明示的信息不符。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "当前窗口完整提供拾起尸首、带回城里及葬入坟墓的信息，无须借助窗口之外的故事背景。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "题干没有透露城里这一目的地，也未通过额外提示标出正确选项；答案需要从经文中辨认。"
+              },
+              "mcq_validity": {
+                "status": "pass",
+                "evidence": "题干明确询问先到的地点，选项均可作为地点回答或无法判断的回应，且只有B符合经文中的顺序。"
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "问题表达自然直接，“先知先把……”虽相邻出现两个“先”字，但分别属于名词和顺序副词，不妨碍中文理解；选项措辞自然。",
+              "quotes": []
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "单句直接呈现行动者、对象和所问目的地，没有代词链或复杂修饰。区分先运回与后安葬属于必要的目标理解。",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "题干没有额外事件叙述；“先知”和“神人的尸首”定位目标事件，“先”保留必要的顺序区别，整体经济适当。",
+              "quotes": []
+            }
+          }
+        },
+        {
+          "repeat": 2,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "原题明确以“先”询问运送尸首的先到地点，原始答案为先知自己的城。13:29记载带回自己的城里，13:30记载葬在自己的坟墓里。契约正确保留地点及先后关系，并将“带他回来的”视为可删除的身份描述。"
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "候选题保留行动者“先知”、对象“神人的尸首”、地点提问和时间限定“先”，仍要求区分先带回城里与随后葬入坟墓。"
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "只删除了“带他回来的”这一身份修饰。本段只有一位先知拾起并运回神人的尸首；剩余表述足以定位该事件，不会引入另一位运尸者或另一运送事件。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "候选问题与全部选项均保持原来的简体中文。"
+            },
+            "option_meanings": [
+              {
+                "status": "pass",
+                "evidence": "选项未改，仍指到先知自己的坟墓。",
+                "label": "A"
+              },
+              {
+                "status": "pass",
+                "evidence": "选项未改，仍指回到先知自己的城里。",
+                "label": "B"
+              },
+              {
+                "status": "pass",
+                "evidence": "选项未改，仍指到王宫。",
+                "label": "C"
+              },
+              {
+                "status": "pass",
+                "evidence": "选项未改，仍指到坛那里。",
+                "label": "D"
+              },
+              {
+                "status": "pass",
+                "evidence": "选项未改，仍表示依据本段文字无法判断。",
+                "label": "E"
+              }
+            ],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "13:29明确记载先知拾起神人的尸首并带回自己的城里，支持问题关于行动者、对象及运送行为的预设。13:29—30也支持问题中的先后区分。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "13:29的“带回自己的城里”直接支持固定答案“回到自己的城里。”及正确选项B。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "B是文中明确的先到地点；A对应随后安葬的地点，C和D没有运送目的地的文本依据，E与明确记载不符。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "当前经文窗口同时提供运回城里与葬入坟墓的记录，足以确定行动者、目的地和顺序，无需外部圣经知识。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "题干未直接透露城里这一目的地，也没有通过额外提示或选项格式标明正确答案。"
+              },
+              "mcq_validity": {
+                "status": "pass",
+                "evidence": "选项均能作为地点问题的回答或无法判断声明；“先”使城里与坟墓的区别明确，唯一正确选项为B。"
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "问题是自然、直接的中文问句，选项措辞通顺；“先知先”分别表达人物身份和时间顺序，无需语义修补。",
+              "quotes": []
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "题干以单句明确给出行动者、对象和所问地点，没有跨句指代链或复杂修饰；比较先到地点与安葬地点属于必要的理解任务。",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "题干没有额外事件铺陈。保留的先知、尸首和“先”分别用于定位行动者、对象及所测顺序，均有实际作用。",
+              "quotes": []
+            }
+          }
+        }
+      ],
+      "status": "SIMPLIFIED"
+    }
+  ]
+}

@@ -1,0 +1,223 @@
+{
+  "id": "hard:t1_judg9:6d68:open",
+  "original": {
+    "id": "hard:t1_judg9:6d68:open",
+    "question": "约坦呼叫示剑的众首领听他的话，是为了什么结果？",
+    "passage": "9:7 这事传到约坦耳中，他就爬上基利心山顶，扬声喊叫说：“示剑的众首领哪，你们要听我的话，愿神也听你们的话。\n9:8 有一天，树木要膏立一个王治理它们，就对橄榄树说：‘你来作我们的王吧！’",
+    "expected_answer": "So that God listens to the citizens of Shechem.",
+    "form": "open",
+    "options": {},
+    "correct_option": "",
+    "intended_target": "",
+    "original_question": "",
+    "original_answer": ""
+  },
+  "input_hash": "5beb35e34d6dfbfdcc67626e7685556c10ad6e2619855a7aa6dd250bccbb0af1",
+  "status": "KEPT",
+  "accepted_case": {
+    "id": "hard:t1_judg9:6d68:open",
+    "question": "约坦呼叫示剑的众首领听他的话，是为了什么结果？",
+    "passage": "9:7 这事传到约坦耳中，他就爬上基利心山顶，扬声喊叫说：“示剑的众首领哪，你们要听我的话，愿神也听你们的话。\n9:8 有一天，树木要膏立一个王治理它们，就对橄榄树说：‘你来作我们的王吧！’",
+    "expected_answer": "So that God listens to the citizens of Shechem.",
+    "form": "open",
+    "options": {},
+    "correct_option": "",
+    "intended_target": "",
+    "original_question": "",
+    "original_answer": ""
+  },
+  "contract": {
+    "id": "item",
+    "status": "ready",
+    "target": "理解约坦要求示剑的众首领听他的话所期望的结果：愿神也听他们的话。",
+    "basis": "inferred",
+    "required_answer_components": [
+      "指出所期望的结果是神也听示剑众首领的话。",
+      "将这一结果与约坦要求众首领听他的话联系起来，而不是将其表述为已经发生或必然发生的结果。"
+    ],
+    "relations": [
+      {
+        "id": "r1",
+        "quote": "约坦",
+        "meaning": "发出呼吁的人是约坦。",
+        "role": "anchor",
+        "reason": "用于定位发言者；题目并不要求回答呼吁者是谁。"
+      },
+      {
+        "id": "r2",
+        "quote": "呼叫示剑的众首领听他的话",
+        "meaning": "约坦呼吁示剑的众首领听他的话。",
+        "role": "tested",
+        "reason": "这是所问预期结果对应的行动及对象，构成目的关系的必要范围；不能只保留神听人说话这一孤立事实。"
+      },
+      {
+        "id": "r3",
+        "quote": "是为了什么结果",
+        "meaning": "询问上述呼吁所期望达到的结果。",
+        "role": "tested",
+        "reason": "题目明确要求恢复目的或预期结果，答案必须指出愿神也听众首领的话，而不是回答人物身份或复述呼吁本身。"
+      }
+    ],
+    "note": "未提供明确的 intended_target 或更早的原题、原答案，故目标依据当前问题和给定答案保守推断。9:7 的“你们要听我的话，愿神也听你们的话”支持该预期结果；“你们”指示剑的众首领。给定英文答案可由此支持，但应理解为愿望或预期，而非神已经垂听或必然垂听的断言。9:8 的树木立王叙述不构成本题所问结果。"
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "proposal": {
+        "id": "item",
+        "status": "unchanged",
+        "question": "约坦呼叫示剑的众首领听他的话，是为了什么结果？",
+        "options": [],
+        "removed_relation_ids": [],
+        "note": "原题已直接询问约坦发出呼吁所期望的结果；各部分均为必要定位或受测关系，没有可实质删减的铺垫。"
+      },
+      "candidate": {
+        "id": "hard:t1_judg9:6d68:open",
+        "question": "约坦呼叫示剑的众首领听他的话，是为了什么结果？",
+        "passage": "9:7 这事传到约坦耳中，他就爬上基利心山顶，扬声喊叫说：“示剑的众首领哪，你们要听我的话，愿神也听你们的话。\n9:8 有一天，树木要膏立一个王治理它们，就对橄榄树说：‘你来作我们的王吧！’",
+        "expected_answer": "So that God listens to the citizens of Shechem.",
+        "form": "open",
+        "options": {},
+        "correct_option": "",
+        "intended_target": "",
+        "original_question": "",
+        "original_answer": ""
+      },
+      "checks": [
+        {
+          "repeat": 1,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "The original asks for the intended result of Jotham's appeal, not merely who spoke or listened. The contract preserves that relation and correctly treats God's listening as a hoped-for result rather than an accomplished or guaranteed event."
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "The candidate is unchanged and retains the appeal, its audience, and the question about its intended result."
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "No information has been removed from the question or passage."
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "The question remains in Chinese. There are no options."
+            },
+            "option_meanings": [],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "Verse 9:7 identifies Jotham's appeal to Shechem's leaders and immediately expresses the wish that God also hear them, supporting the question's intended-result reading."
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "“愿神也听你们的话” supports the expected answer as a hoped-for result. The answer's 'citizens of Shechem' should be understood as the addressed group identified in this window as 示剑的众首领, not as an additional claim about every resident."
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "God's hearing the addressed people is the only result linked to this appeal in the supplied window. The tree-and-king narrative supplies no competing answer."
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "Verse 9:7 supplies the speaker, audience, appeal, and hoped-for result without requiring outside knowledge."
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "The question identifies the appeal but does not disclose the result being asked for."
+              },
+              "mcq_validity": {
+                "status": "not_applicable",
+                "evidence": "This is an open question with no answer choices."
+              }
+            },
+            "naturalness": {
+              "score": 1,
+              "evidence": "The question is understandable, but the purpose/result formulation is mildly stiff; asking what result he hoped for would be more idiomatic.",
+              "quotes": [
+                "是为了什么结果"
+              ]
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "The single sentence has clear roles and a readily resolved reference to Jotham. Identifying the appeal's intended result requires no avoidable decoding.",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "The speaker, audience, and appeal directly establish the action whose intended result is tested. There is no dispensable event narration or reference chain.",
+              "quotes": []
+            }
+          }
+        },
+        {
+          "repeat": 2,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "原题询问约坦呼吁示剑众首领听他的话所期望的结果。经文将“你们要听我的话”与“愿神也听你们的话”相连，支持契约中的愿望关系，而不支持结果已发生或必然发生的解读。人物和对象的角色划分正确。"
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "候选题与原题完全相同，保留了呼吁的行动、对象以及所期望结果这一目标，没有将目的关系改成简单的人物或事件识别。"
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "候选题未删除或替换原题信息。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "问题保持中文；本题没有选项。"
+            },
+            "option_meanings": [],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "经文明确记载约坦向示剑众首领喊话，要求他们听他的话，并表达“愿神也听你们的话”的愿望。问题中的呼吁及其期望结果均有依据。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "固定答案所指的结果对应“愿神也听你们的话”。其中英文“citizens of Shechem”应按上下文理解为约坦所呼吁的示剑众首领，而不是额外扩大为全城所有居民；“So that”在此表示期望，不表示结果已经实现。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "当前窗口中，只有“愿神也听你们的话”是与该呼吁相连的期望结果；树木立王的叙述不构成另一答案。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "9:7 同时提供发言者、听话对象、呼吁内容和所期望的结果，无须依赖窗口外知识。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "问题没有直接透露神也听他们的话这一答案；答案仅出现在作为理解材料的经文中。"
+              },
+              "mcq_validity": {
+                "status": "not_applicable",
+                "evidence": "本题为开放题，没有选项或选择题答案键。"
+              }
+            },
+            "naturalness": {
+              "score": 1,
+              "evidence": "“是为了什么结果”可以理解，但搭配略显生硬；通常会问“希望有什么结果”或“是为了什么”。不影响目标辨识。",
+              "quotes": [
+                "是为了什么结果"
+              ]
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "问题为直接的单句提问，发言者、对象和所问结果清楚；“他”自然指向约坦，没有明显的额外解析负担。",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "题干仅保留用于定位呼吁及其期望结果的人物、对象和行动。这些内容构成所测关系，没有额外叙事或可省去的指代链。",
+              "quotes": []
+            }
+          }
+        }
+      ],
+      "status": "KEPT"
+    }
+  ]
+}

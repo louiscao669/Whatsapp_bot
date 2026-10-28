@@ -1,0 +1,218 @@
+{
+  "id": "control:necessary_event",
+  "original": {
+    "id": "control:necessary_event",
+    "question": "谁被那个人制服后，受伤逃出了房子？",
+    "passage": "小林在屋里受了伤，逃出了房子。后来，小周被另一个人制服，也受伤逃出了房子。",
+    "expected_answer": "小周",
+    "form": "open",
+    "options": {},
+    "correct_option": "",
+    "intended_target": "",
+    "original_question": "",
+    "original_answer": ""
+  },
+  "input_hash": "6bf409ca2dd4d531a79d4fea4e382818651ae2c48122dc1886f96d185106700d",
+  "status": "KEPT",
+  "accepted_case": {
+    "id": "control:necessary_event",
+    "question": "谁被那个人制服后，受伤逃出了房子？",
+    "passage": "小林在屋里受了伤，逃出了房子。后来，小周被另一个人制服，也受伤逃出了房子。",
+    "expected_answer": "小周",
+    "form": "open",
+    "options": {},
+    "correct_option": "",
+    "intended_target": "",
+    "original_question": "",
+    "original_answer": ""
+  },
+  "contract": {
+    "id": "item",
+    "status": "ready",
+    "target": "识别在被人制服后受伤逃出房子的人。",
+    "basis": "inferred",
+    "required_answer_components": [
+      "指出该人物是小周。"
+    ],
+    "relations": [
+      {
+        "id": "r1",
+        "quote": "谁",
+        "meaning": "要求确定符合题述事件的人物身份。",
+        "role": "tested",
+        "reason": "作答必须指出人物，而不是只复述发生了什么。"
+      },
+      {
+        "id": "r2",
+        "quote": "被那个人制服后",
+        "meaning": "目标人物逃出房子之前曾被人制服。",
+        "role": "anchor",
+        "reason": "这是区分两次受伤逃出房子事件的必要条件：小林和小周都受伤逃出了房子，但只有小周被描述为先被人制服。题目并非单独询问制服事件或时间顺序，但这一限定不能删除。"
+      },
+      {
+        "id": "r3",
+        "quote": "受伤逃出了房子",
+        "meaning": "所求人物是受了伤并逃出房子的人。",
+        "role": "tested",
+        "reason": "这规定了身份识别所针对的事件及人物状态；答案须对应这一事件，并结合被制服的限定确定人物。"
+      }
+    ],
+    "note": "未提供明确的 intended_target，也没有更早的原题或原答案，因此目标为保守推断，而非已获研究者确认的设计意图。所给文本中，小林与小周均受伤逃出房子，只有小周还被描述为被另一个人制服，故固定答案“小周”有文本支持。题中的“那个人”未要求辨认制服者的身份。没有可安全删除的描述性条件。"
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "proposal": {
+        "id": "item",
+        "status": "unchanged",
+        "question": "谁被那个人制服后，受伤逃出了房子？",
+        "options": [],
+        "removed_relation_ids": [],
+        "note": "“被那个人制服后”是区分两名受伤逃出房子者的必要限定，不能删除；原题已简洁直接，无可安全删除的关系。"
+      },
+      "candidate": {
+        "id": "control:necessary_event",
+        "question": "谁被那个人制服后，受伤逃出了房子？",
+        "passage": "小林在屋里受了伤，逃出了房子。后来，小周被另一个人制服，也受伤逃出了房子。",
+        "expected_answer": "小周",
+        "form": "open",
+        "options": {},
+        "correct_option": "",
+        "intended_target": "",
+        "original_question": "",
+        "original_answer": ""
+      },
+      "checks": [
+        {
+          "repeat": 1,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "契约符合原题和文本：须识别被人制服后受伤逃出房子的人。小林和小周均受伤逃出，只有小周被描述为先被制服，因此该限定是必要的区分条件，固定答案为小周。"
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "候选题与原题完全相同，保留了人物识别目标、被制服的先行条件，以及受伤逃出房子的事件范围。"
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "候选题没有删除或改写任何原题信息。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "原题和候选题均为中文；本题没有选项。"
+            },
+            "option_meanings": [],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "文本明确叙述小周被另一个人制服，随后也受伤逃出了房子，支持问题的事件条件。“那个人”可指该制服者，无须确定其姓名。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "“后来，小周被另一个人制服，也受伤逃出了房子”直接支持固定答案“小周”。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "虽然两人都受伤逃出了房子，但只有小周满足文本中的被制服条件，没有第二个同样受支持的答案。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "当前文本提供了两个人物及其事件差异，足以确定答案，无须外部知识。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "问题未透露人物姓名或直接给出答案；必须结合文本中的被制服条件进行识别。"
+              },
+              "mcq_validity": {
+                "status": "not_applicable",
+                "evidence": "本题为开放式问题，没有选择题选项或选项键。"
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "问句符合中文表达习惯，人物、被动关系和后续动作表达直接清楚。",
+              "quotes": []
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "单句即可清楚解析，动作围绕同一待识别人物展开，没有额外的指代链或角色切换。",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "没有额外叙事铺垫；被制服的限定用于区分两个都受伤逃出房子的人，其他描述明确所问事件。",
+              "quotes": []
+            }
+          }
+        },
+        {
+          "repeat": 2,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "契约符合原题及短文：要求识别被人制服后受伤逃出房子的人，答案为小周。小林也受伤逃出房子，因此“被那个人制服后”是必要的区分条件，不能将目标缩减为一般的逃出者识别。"
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "候选题与原题完全相同，保留了人物识别、被制服的限定以及受伤逃出房子的事件范围。"
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "候选题没有删除或改动原题信息。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "候选题保持原题的中文；本题无选项。"
+            },
+            "option_meanings": [],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "短文明确描述小周被另一个人制服，也受伤逃出房子，支持题目所述事件。“那个人”可对应文中的“另一个人”，无需知道制服者的具体身份。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "“后来，小周被另一个人制服，也受伤逃出了房子”直接支持固定答案“小周”。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "虽然小林和小周都受伤逃出房子，但只有小周被描述为先被人制服，因此答案唯一。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "当前短文提供了两个人物及其事件差异，足以作答，无需外部知识。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "题干没有给出“小周”或其他直接揭示答案的提示；必须结合短文中的制服事件确定人物。"
+              },
+              "mcq_validity": {
+                "status": "not_applicable",
+                "evidence": "本题为开放题，无选项或选项键。"
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "题干表达自然，直接询问符合事件条件的人物，没有需要修补理解的措辞。",
+              "quotes": []
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "被动结构和“后”表达的先后关系清楚，整体是简短、易解析的单句提问。",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "题干没有额外叙事或冗余指代链；被制服的条件用于区分两名逃出者，受伤逃出房子则界定目标事件，均有实际作用。",
+              "quotes": []
+            }
+          }
+        }
+      ],
+      "status": "KEPT"
+    }
+  ]
+}

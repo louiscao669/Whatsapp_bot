@@ -1,0 +1,240 @@
+{
+  "request_hash": "6a0b145a5712430c9bb43e7c43b3c3c1a7a79bd632ab1d4f1a7510f240d1c332",
+  "model": "gpt-6.1-sol",
+  "response_id": "resp_04929f174110b47f006ae0d1284d8887d2aab598bbc08c30e2",
+  "usage": {
+    "input_tokens": 3582,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 3579
+    },
+    "output_tokens": 3354,
+    "output_tokens_details": {
+      "reasoning_tokens": 215
+    },
+    "total_tokens": 6936
+  },
+  "parsed": {
+    "items": [
+      {
+        "id": "q0047",
+        "parse_summary": "前半句以“四个长大麻风的人”为主语，“说”带出“坐在这里也必死”的内容；后半句用“之后”和“他们”承接同一群人，询问其随后决定采取的行动。",
+        "features": [
+          {
+            "kind": "layered_speech",
+            "quote": "四个长大麻风的人说坐在这里也必死",
+            "required_operations": "将“坐在这里也必死”识别为四人所说的内容，而不是所问的行动。",
+            "concern": "ordinary",
+            "reason": "这层言说内容用于定位目标决定，嵌入浅且与目标直接相关。"
+          },
+          {
+            "kind": "reference_chain",
+            "quote": "之后他们决定怎么做",
+            "required_operations": "将“他们”接回四个人，将“之后”接到前述言说之后。",
+            "concern": "ordinary",
+            "reason": "人物与时间承接都很近，没有竞争性的指代对象。"
+          }
+        ]
+      },
+      {
+        "id": "q0062",
+        "parse_summary": "问句采用“以利沙称谁为某称谓”的结构，要求确定称谓的所指；选项主要是人物名词短语，C另用“王倚靠的”修饰“那官”。",
+        "features": [
+          {
+            "kind": "role_tracking",
+            "quote": "以利沙称谁为“杀人犯”？",
+            "required_operations": "区分作出称呼的以利沙、被称呼的王以及奉王差遣的使者。",
+            "concern": "ordinary",
+            "reason": "区分发令者与使者正是辨认称谓所指所必需的关系。"
+          }
+        ]
+      },
+      {
+        "id": "q0124",
+        "parse_summary": "“城楼上的”限定所问人群，核心询问死亡方式。选项分别表述进入地点、地点被焚烧以及人遭遇的事件，需要将事件与这群人的死亡联系起来。",
+        "features": [
+          {
+            "kind": "role_tracking",
+            "quote": "内室被点火焚烧",
+            "required_operations": "识别被焚烧的是内室，并联系其中的人因火而死，而非把内室当作问句中的死亡主体。",
+            "concern": "ordinary",
+            "reason": "地点受火与人员死亡之间的关系是目标死亡方式的一部分，单一被动结构并未增加明显负担。"
+          }
+        ]
+      },
+      {
+        "id": "q0061",
+        "parse_summary": "单层“称谁为某称谓”问句，以利沙是称呼者，“谁”是待确定的称谓所指；没有前置背景或额外修饰。",
+        "features": [
+          {
+            "kind": "role_tracking",
+            "quote": "以利沙称谁为“杀人犯”？",
+            "required_operations": "区分称呼者以利沙、发令的王与执行差遣的使者，确定称谓指向谁。",
+            "concern": "ordinary",
+            "reason": "这些角色关系直接构成所测的称谓辨认，没有额外的句法层级。"
+          }
+        ]
+      },
+      {
+        "id": "q0080",
+        "parse_summary": "“埋伏的人”作主语，“动手之前”提供时间界限，核心问句是“还在等什么”。C含“军长同意”以及作为其宾语的“他们的请求”，须将请求者接回埋伏者。",
+        "features": [
+          {
+            "kind": "reference_chain",
+            "quote": "军长同意他们的请求",
+            "required_operations": "将“他们”接回谋害保罗的一方，并把“请求”接到请军长将保罗带到公会的安排。",
+            "concern": "ordinary",
+            "reason": "请求及其提出者是目标等待事项的必要组成部分。"
+          },
+          {
+            "kind": "role_tracking",
+            "quote": "埋伏的人动手之前，还在等什么？",
+            "required_operations": "区分等待行动的埋伏者、作出同意的军长，以及将被带到公会的保罗。",
+            "concern": "ordinary",
+            "reason": "各角色用于区分获准与后续带人等事件，属于目标本身要求的关系。"
+          }
+        ]
+      },
+      {
+        "id": "q0003",
+        "parse_summary": "“王吩咐人捉拿谁”包含命令者、未指名的执行者与待确定的捉拿对象。A、C、D各以地点或动作修饰人物中心语，没有多层嵌套。",
+        "features": [
+          {
+            "kind": "role_tracking",
+            "quote": "王吩咐人捉拿谁？",
+            "required_operations": "区分发令的王、受命捉人的人以及被捉拿的对象，并将经文命令中的“他”对应到神人。",
+            "concern": "ordinary",
+            "reason": "命令者、执行者和对象的区分直接服务于所问对象，结构简短。"
+          }
+        ]
+      },
+      {
+        "id": "q0020",
+        "parse_summary": "问句中神是帮助者，乌西雅是受助并实施攻打的人。A至D均为三个群体的并列名单，其中阿拉伯人或亚玛力人带有“住在某地的”修饰；多个选项重复部分群体并替换局部成分。",
+        "features": [
+          {
+            "kind": "role_tracking",
+            "quote": "神帮助乌西雅攻打哪些人？",
+            "required_operations": "识别神提供帮助、乌西雅实施攻打，而“哪些人”指被攻打的群体。",
+            "concern": "ordinary",
+            "reason": "帮助者、行动者和对象的关系简明，且是题目目标所需。"
+          },
+          {
+            "kind": "nested_modifier",
+            "quote": "非利士人、住在姑珥巴力的阿拉伯人和米乌尼人",
+            "required_operations": "将“住在姑珥巴力的”仅附着于“阿拉伯人”，再把该名词短语与另外两个人群并列。",
+            "concern": "ordinary",
+            "reason": "地点修饰用于识别目标群体，只有一层修饰。"
+          },
+          {
+            "kind": "option_overlap",
+            "quote": "亚扪人、住在姑珥巴力的阿拉伯人和米乌尼人",
+            "required_operations": "与D逐项比较以发现首项替换，再与B比较非利士人、阿拉伯人居住地点及末项的变化。",
+            "concern": "potential_burden",
+            "reason": "完整三项名单反复出现而差异分散，读者须反复扫描并保持各位置的内容；这一选项比较负担超出了识别三个目标群体本身。"
+          }
+        ]
+      },
+      {
+        "id": "q0087",
+        "parse_summary": "“谁”询问咒诅者，“被偷的”是修饰“银子”的单层被动定语。回答须从米迦对母亲说的话中确定“你”的所指。",
+        "features": [
+          {
+            "kind": "role_tracking",
+            "quote": "谁咒诅了被偷的银子？",
+            "required_operations": "区分拿走银子的米迦与咒诅银子的母亲，不把偷取行为的施事当作咒诅者。",
+            "concern": "ordinary",
+            "reason": "两种行为的施事区分是所测内容；“被偷的”本身仅是一层简短修饰。"
+          }
+        ]
+      },
+      {
+        "id": "q0075",
+        "parse_summary": "“他们要请谁”嵌入“把保罗带到公会那里”的行动；“谁”既是受请求者，也是预期带人者。句首“他们”需联系经文中的谋划者及受其嘱托提出请求的人。",
+        "features": [
+          {
+            "kind": "role_tracking",
+            "quote": "他们要请谁把保罗带到公会那里？",
+            "required_operations": "区分提出请求的一方、受请求并负责带人的军长、被带的保罗以及目的地公会。",
+            "concern": "ordinary",
+            "reason": "请求者、受请求者和被带者的关系共同界定目标，不能仅因参与者多而视为负担。"
+          },
+          {
+            "kind": "reference_chain",
+            "quote": "他们要请谁",
+            "required_operations": "结合经文中谋划者对大祭司和长老所说的安排，确定“他们”所承接的请求一方。",
+            "concern": "ordinary",
+            "reason": "需跨说话层次确认指代，但所问受请求者在这些安排中保持不变。"
+          }
+        ]
+      },
+      {
+        "id": "q0108",
+        "parse_summary": "前半句陈述约拿单及其子孙担任但支派祭司，后半句询问这一状态的终止时间。“他的”承接约拿单；D采用“多少日子……多少日子”的对应时长结构。",
+        "features": [
+          {
+            "kind": "reference_chain",
+            "quote": "约拿单和他的子孙",
+            "required_operations": "将“他的”接回约拿单，并把两部分合为担任祭司的共同主体。",
+            "concern": "ordinary",
+            "reason": "所有关系明确且相邻，是确定任职人群所需。"
+          },
+          {
+            "kind": "reference_chain",
+            "quote": "神的殿在示罗多少日子，就到多少日子。",
+            "required_operations": "把后一个“多少日子”对应到神的殿在示罗的持续时间，并将其理解为所问任职时间的候选界限。",
+            "concern": "ordinary",
+            "reason": "该选项包含时长对应关系，但关系单一，且与时间类选项的辨别直接相关。"
+          }
+        ]
+      },
+      {
+        "id": "q0057",
+        "parse_summary": "“她们”合指两名妇人，“另一个妇人的”限定所吃儿子的母亲。回答须沿着妇人向王转述另一妇人话语的层次，区分引语中的“你的儿子”和“我的儿子”，再确定后者的约定时间。",
+        "features": [
+          {
+            "kind": "reference_chain",
+            "quote": "她们约定哪一天吃另一个妇人的儿子？",
+            "required_operations": "将“她们”展开为两名妇人，以向王陈述的妇人为参照识别“另一个妇人”，再把其儿子对应到内层引语中的“我的儿子”。",
+            "concern": "ordinary",
+            "reason": "指代链较长，但区分两位母亲及各自儿子是定位目标时间所必需的。"
+          },
+          {
+            "kind": "layered_speech",
+            "quote": "她们约定哪一天",
+            "required_operations": "从妇人向王报告的话中进入另一妇人的提议，按内层说话者的视角理解约定时间。",
+            "concern": "ordinary",
+            "reason": "时间出现在被转述的提议中，视角转换属于获取目标信息的必要过程。"
+          }
+        ]
+      },
+      {
+        "id": "q0040",
+        "parse_summary": "问句先给出耶何耶大吩咐百夫长的命令关系，再询问杀死的对象。B用“跟随她的”构成人群，C用“被带出去的”修饰女人；两项中的女性指称须与亚他利雅相连。",
+        "features": [
+          {
+            "kind": "role_tracking",
+            "quote": "耶何耶大吩咐百夫长，要杀死哪些人？",
+            "required_operations": "识别耶何耶大是发令者、百夫长是受命者，所问的是命令中的被杀对象。",
+            "concern": "ordinary",
+            "reason": "命令关系直接界定问题，前置内容简短，没有实质性延迟。"
+          },
+          {
+            "kind": "reference_chain",
+            "quote": "凡跟随她的人",
+            "required_operations": "将“她”接到被带出去的亚他利雅，并区分她本人和跟随她的人。",
+            "concern": "ordinary",
+            "reason": "这一区分正是目标人群的核心关系。"
+          },
+          {
+            "kind": "role_tracking",
+            "quote": "被带出去的那女人",
+            "required_operations": "将被动修饰中的受事识别为那女人，并与B中主动跟随她的人相区别。",
+            "concern": "ordinary",
+            "reason": "单层被动修饰用于区分两个候选对象，没有额外嵌套。"
+          }
+        ]
+      }
+    ]
+  }
+}

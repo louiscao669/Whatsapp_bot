@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "records": {
+    "05f07556befd18eb26e67d07bf64d49f44d40819dc2c0a43d069fbd9e595c092": {
+      "identity": {
+        "model": "gpt-6-sol",
+        "prompt_sha256": "f857438a2a18e6f6221c4a199812ef2424055243a155316029daaccb7a0d9162",
+        "schema_sha256": "8319c0cd3900dfdaddc6a5f55bd684c72343c8ac328e12cd2fc660e099093bfa",
+        "max_output_tokens": 8192,
+        "api": "responses"
+      },
+      "request": {
+        "original_passage": "这个裁判在早晨宣布被告无罪。到了午后，他又说被告应当受罚。",
+        "source": "无罪",
+        "replacement": "有罪",
+        "mode": "contextual",
+        "occurrences": [
+          {
+            "start": 11,
+            "end": 13,
+            "original_context": "这个裁判在早晨宣布被告无罪。",
+            "edited_context": "这个裁判在早晨宣布被告有罪。"
+          }
+        ]
+      },
+      "response": {
+        "source_claim": "裁判在早晨宣布被告无罪。",
+        "replacement_claim": "裁判在早晨宣布被告有罪。",
+        "explanation": "早晨的判定由“无罪”变为“有罪”，构成明确的事实反转；午后的陈述未被改动。替换后的句子自然通顺，且只改变这一处判定。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes",
+        "change_basis": "polarity_reversal",
+        "change_dimension": "polarity",
+        "difference_evidence": "原文为“宣布被告无罪”，替换后为“宣布被告有罪”；“无”与“有”明确反转有罪与否。",
+        "needs_repair": "no"
+      },
+      "response_id": "resp_0c3fbcf8bcadb6dd006adacd10260087d1819e979c22308f7b",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1589,
+        "input_tokens_details": {
+          "cached_tokens": 1476,
+          "cache_write_tokens": 110
+        },
+        "output_tokens": 234,
+        "output_tokens_details": {
+          "reasoning_tokens": 45
+        },
+        "total_tokens": 1823
+      },
+      "completed_at_unix": 1792724244
+    }
+  }
+}

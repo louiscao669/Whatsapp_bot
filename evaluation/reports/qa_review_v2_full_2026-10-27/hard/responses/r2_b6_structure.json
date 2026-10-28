@@ -1,0 +1,201 @@
+{
+  "request_hash": "5f39d5be172316e4a0624b998419a30ae8d1840eef1b063a7c014df55ea005f2",
+  "model": "gpt-6.1-sol",
+  "response_id": "resp_0f1f7063a957c5eb006ae0d36096e487d2878aebd1473029f0",
+  "usage": {
+    "input_tokens": 3558,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 3555
+    },
+    "output_tokens": 2961,
+    "output_tokens_details": {
+      "reasoning_tokens": 316
+    },
+    "total_tokens": 6519
+  },
+  "parsed": {
+    "items": [
+      {
+        "id": "q0099",
+        "parse_summary": "疑问词“谁”直接询问“进去拿走”的共同施事，后接四项并列宾语；需在经文中定位五个窥探地的人，没有嵌套从句。",
+        "features": []
+      },
+      {
+        "id": "q0055",
+        "parse_summary": "“百姓”为施事，“在城门口”为地点，“谁”为“践踏”的受事；需从经文中识别被践踏的官员，问句本身无嵌套。",
+        "features": []
+      },
+      {
+        "id": "q0089",
+        "parse_summary": "以“但支派的人”为主语，询问“寻找地业居住”的原因；“居住”说明寻找地业的用途，没有额外报告层或复杂条件。",
+        "features": []
+      },
+      {
+        "id": "q0107",
+        "parse_summary": "先陈述约拿单及其子孙担任但支派祭司，再询问这一任职状态的终止时间；“他的子孙”中的“他”回指约拿单。",
+        "features": [
+          {
+            "kind": "reference_chain",
+            "quote": "约拿单和他的子孙",
+            "required_operations": "将“他”回指约拿单，并把约拿单及其子孙作为共同任职者。",
+            "concern": "ordinary",
+            "reason": "回指对象紧邻且唯一，是表达任职者范围所需的关系。"
+          }
+        ]
+      },
+      {
+        "id": "q0084",
+        "parse_summary": "“这封信”指经文展示的书信，问句询问写信者；需区分信头中的发信人克劳狄·利西亚与收信人费利克斯总督。",
+        "features": [
+          {
+            "kind": "reference_chain",
+            "quote": "这封信是谁写的？",
+            "required_operations": "将“这封信”对应到经文中的书信。",
+            "concern": "ordinary",
+            "reason": "单一、直接的指示关系，没有多级回指。"
+          },
+          {
+            "kind": "role_tracking",
+            "quote": "A. 费利克斯总督；D. 克劳狄·利西亚",
+            "required_operations": "依据书信署名格式区分收信人与写信人，再匹配选项。",
+            "concern": "ordinary",
+            "reason": "两种书信角色的区别正是识别写信人所必需的。"
+          }
+        ]
+      },
+      {
+        "id": "q0098",
+        "parse_summary": "主句询问米迦持有某种判断的理由；“认为”支配“耶和华必向他施恩”，其中“他”指米迦。选项分别提出理由，并多次以“他／他的”保持米迦这一参照。",
+        "features": [
+          {
+            "kind": "layered_speech",
+            "quote": "米迦为什么认为耶和华必向他施恩？",
+            "required_operations": "将施恩判断归属于米迦，并寻找米迦给出的理由，而非另行解释耶和华的行动。",
+            "concern": "ordinary",
+            "reason": "人物的信念及其理由就是目标内容，观点层不可省略。"
+          },
+          {
+            "kind": "reference_chain",
+            "quote": "米迦为什么认为耶和华必向他施恩？",
+            "required_operations": "在嵌入的判断中将“他”回指主句的米迦，而非耶和华。",
+            "concern": "ordinary",
+            "reason": "只有一次明确的人物回指，符合目标中的施恩对象关系。"
+          }
+        ]
+      },
+      {
+        "id": "q0052",
+        "parse_summary": "“承认做得不对以后”为时间背景，其中“做得不对”是“承认”的内容；主句询问同一群大麻风人随后提出的计划。选项是不同动作，没有复杂的交叉条件。",
+        "features": [
+          {
+            "kind": "layered_speech",
+            "quote": "长大麻风的人承认做得不对以后，打算怎么做？",
+            "required_operations": "把对先前行为的承认与随后提出的行动计划区分开，并保持两者主体相同。",
+            "concern": "ordinary",
+            "reason": "承认与计划之间的先后关系直接对应所问事件，结构较短。"
+          }
+        ]
+      },
+      {
+        "id": "q0102",
+        "parse_summary": "以“那些神像”为共同受事询问最早发生的事件；选项用被动式区分毁坏、不同人物拿取及藏匿，需比较五个人与祭司先后拿取的事件。",
+        "features": [
+          {
+            "kind": "reference_chain",
+            "quote": "那些神像最先发生了什么事？",
+            "required_operations": "将“那些神像”对应到经文中列出的相关物件，并在连续事件中保持同一指称。",
+            "concern": "ordinary",
+            "reason": "跨事件追踪同一组物件是判断先后顺序所必需的。"
+          },
+          {
+            "kind": "role_tracking",
+            "quote": "B. 被祭司拿走了；C. 被那五个人从米迦家里拿走了",
+            "required_operations": "把神像保持为受事，分别识别祭司和五个人为不同拿取事件的施事。",
+            "concern": "ordinary",
+            "reason": "施事区别与事件顺序共同构成目标，不能只识别“拿走”这一动作。"
+          },
+          {
+            "kind": "option_overlap",
+            "quote": "B. 被祭司拿走了；C. 被那五个人从米迦家里拿走了",
+            "required_operations": "比较共享“被……拿走了”结构的选项，再依据施事和先后顺序作区分。",
+            "concern": "ordinary",
+            "reason": "重叠部分突出同类动作中的不同事件，是必要的顺序辨别，而非冗余列表比较。"
+          }
+        ]
+      },
+      {
+        "id": "q0008",
+        "parse_summary": "“带他回来的”作定语修饰宣告者“先知”，随后询问宣告内容中尸首所属的人。“他”“谁”“他列祖”需分别解析，并将经文引语中的“你”对应到从犹大来的神人，而非宣告者。",
+        "features": [
+          {
+            "kind": "nested_modifier",
+            "quote": "带他回来的先知宣告",
+            "required_operations": "先解析“先知带某人回来”的修饰关系，再将该先知作为“宣告”的主语。",
+            "concern": "potential_burden",
+            "reason": "在进入实际所问的受宣告者之前，先增加了带回事件及其宾语的解析；这一附加人物关系不是识别尸首所属者的核心。"
+          },
+          {
+            "kind": "reference_chain",
+            "quote": "带他回来的先知宣告，谁的尸首必不得入他列祖的坟墓？",
+            "required_operations": "解析首个“他”为被带回者，并理解“他列祖”的“他”随所问的“谁”确定；再与经文中的第二人称“你”对接。",
+            "concern": "potential_burden",
+            "reason": "同一短问句混用未明示姓名的代词、疑问指称与领属回指，需暂存多个位置并排除先知这一竞争参照。"
+          },
+          {
+            "kind": "layered_speech",
+            "quote": "先知宣告，谁的尸首必不得入他列祖的坟墓？",
+            "required_operations": "区分宣告者和宣告所针对的人，再从引语确定后者。",
+            "concern": "ordinary",
+            "reason": "不能把发出宣告的人误作宣告对象，这一角色区别直接服务于目标。"
+          }
+        ]
+      },
+      {
+        "id": "q0119",
+        "parse_summary": "时间背景包含迦勒第一次报告“有人来”；主句询问西布对迦勒所见之物的解释。“他看见的”指迦勒所见，而不是西布所见，形成两个人物观点的衔接。",
+        "features": [
+          {
+            "kind": "layered_speech",
+            "quote": "迦勒第一次说有人来时，西布说他看见的其实是什么？",
+            "required_operations": "区分迦勒的初次报告与西布对该报告的解释，并只提取后者所指的事物。",
+            "concern": "ordinary",
+            "reason": "两次发言及其观点差异正是目标内容，“第一次”也用于限定报告。"
+          },
+          {
+            "kind": "reference_chain",
+            "quote": "西布说他看见的其实是什么",
+            "required_operations": "越过最近的主语“西布”，将“他”回指前面的迦勒；把“他看见的”理解为所见之物。",
+            "concern": "potential_burden",
+            "reason": "“他”紧随西布出现，却需指向前一分句的迦勒，增加了可避免的参照竞争。"
+          }
+        ]
+      },
+      {
+        "id": "q0114",
+        "parse_summary": "主句询问橄榄树拒绝作王的理由。选项以“它”指橄榄树，其中正确理由包含“那荣耀神和人的油”这一带关系修饰的名词短语；另一个选项保留了“我们的王”的说话者视角。",
+        "features": [
+          {
+            "kind": "reference_chain",
+            "quote": "因为它必须离开那荣耀神和人的油。",
+            "required_operations": "将“它”回指橄榄树，将“那……油”对应到经文中橄榄树所说的油。",
+            "concern": "ordinary",
+            "reason": "人物与油的对应关系清楚，油的修饰内容直接表达拒绝作王的理由。"
+          },
+          {
+            "kind": "layered_speech",
+            "quote": "因为它要来作我们的王。",
+            "required_operations": "在以“它”谈论橄榄树的选项中，将“我们”切换到经文中树木这一说话群体。",
+            "concern": "potential_burden",
+            "reason": "选项未标示引语，却保留第一人称复数，要求额外恢复说话者视角；这不是识别拒绝理由所必需的结构。"
+          }
+        ]
+      },
+      {
+        "id": "q0085",
+        "parse_summary": "“第二天”为时间限定，“谁”为返回兵营的施事；需借经文把返回的士兵与继续护送的骑兵区分开，问句本身无嵌套或代词链。",
+        "features": []
+      }
+    ]
+  }
+}

@@ -25,6 +25,7 @@ from app.engagement.dashboard_nudge import dashboard_link_reply, is_dashboard_co
 from app.engagement.outbox import start_outbox_poller
 from app.engagement.reminders import start_reminder_scheduler
 from app.messaging.workflow import (
+    next_prompt_after_telegram_receipt,
     record_telegram_answer_receipt,
     record_telegram_text_message,
     record_telegram_voice_message,
@@ -73,6 +74,19 @@ async def send_initial_workflow_prompt(context, contact, message_id=None):
         record_response=False,
     )
     await send_workflow_result(context.bot, delivery_address(contact), workflow_result)
+
+
+async def send_next_prompt_if_needed(context, chat_id, display_name, workflow_result):
+    """Pilot (designed) assignment has no pre-built successor: fetch the next one."""
+    try:
+        follow_up = await asyncio.to_thread(
+            next_prompt_after_telegram_receipt, chat_id, display_name, workflow_result
+        )
+    except Exception:
+        logging.exception("Failed to prepare the next Telegram question")
+        return
+    if follow_up is not None:
+        await send_workflow_result(context.bot, chat_id, follow_up)
 
 
 async def start(update, context):
@@ -160,6 +174,9 @@ async def unknown_text(update, context):
         question_message_id=getattr(reply, "message_id", None),
     )
     await send_workflow_result(context.bot, delivery_address(contact), workflow_result)
+    await send_next_prompt_if_needed(
+        context, delivery_address(contact), contact.display_name, workflow_result
+    )
 
 
 async def voice_message(update, context):
@@ -268,6 +285,7 @@ async def mcq_button_tap(update, context):
 
     keyboard_task = asyncio.create_task(remove_old_keyboard())
     await send_workflow_result(context.bot, contact_input.chat_id, workflow_result)
+    await send_next_prompt_if_needed(context, contact_input.chat_id, None, workflow_result)
     await keyboard_task
 
 

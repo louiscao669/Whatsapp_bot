@@ -1,0 +1,304 @@
+{
+  "id": "hard:t1_1kgs13:ec63:mcq",
+  "original": {
+    "id": "hard:t1_1kgs13:ec63:mcq",
+    "question": "带他回来的先知宣告，谁的尸首必不得入他列祖的坟墓？",
+    "passage": "13:20 他们坐席的时候，耶和华的话临到带他回来的先知，\n13:21 先知就向从犹大来的神人喊叫说：“耶和华如此说：‘因为你违背耶和华的话，没有遵守耶和华你神所吩咐你的命令，\n13:22 反倒回去，在他吩咐你不可吃饭喝水的地方吃了饭喝了水，你的尸首必不得入你列祖的坟墓。’”",
+    "expected_answer": "从犹大来的神人",
+    "form": "mcq",
+    "options": {
+      "A": "耶罗波安",
+      "B": "带他回来的先知",
+      "C": "他的列祖",
+      "D": "从犹大来的神人",
+      "E": "根据这段文字无法判断"
+    },
+    "correct_option": "D",
+    "intended_target": "",
+    "original_question": "带他回来的先知宣告，谁的尸首必不得入他列祖的坟墓？",
+    "original_answer": "the man of God from Judah"
+  },
+  "input_hash": "b435155db92fd199db56fe1a14f229f2d5553ce685be77058be0131c6ac545a4",
+  "status": "SIMPLIFIED",
+  "accepted_case": {
+    "id": "hard:t1_1kgs13:ec63:mcq",
+    "question": "谁的尸首必不得入他列祖的坟墓？",
+    "passage": "13:20 他们坐席的时候，耶和华的话临到带他回来的先知，\n13:21 先知就向从犹大来的神人喊叫说：“耶和华如此说：‘因为你违背耶和华的话，没有遵守耶和华你神所吩咐你的命令，\n13:22 反倒回去，在他吩咐你不可吃饭喝水的地方吃了饭喝了水，你的尸首必不得入你列祖的坟墓。’”",
+    "expected_answer": "从犹大来的神人",
+    "form": "mcq",
+    "options": {
+      "A": "耶罗波安",
+      "B": "带他回来的先知",
+      "C": "他的列祖",
+      "D": "从犹大来的神人",
+      "E": "根据这段文字无法判断"
+    },
+    "correct_option": "D",
+    "intended_target": "",
+    "original_question": "带他回来的先知宣告，谁的尸首必不得入他列祖的坟墓？",
+    "original_answer": "the man of God from Judah"
+  },
+  "contract": {
+    "id": "item",
+    "status": "ready",
+    "target": "识别被宣告尸首必不得入自己列祖坟墓的人。",
+    "basis": "inferred",
+    "required_answer_components": [
+      "指出该人是从犹大来的神人，而不是宣告这话的先知。"
+    ],
+    "relations": [
+      {
+        "id": "r1",
+        "quote": "带他回来的先知宣告",
+        "meaning": "宣告者是曾带该人回来的先知。",
+        "role": "removable",
+        "reason": "这是交代宣告来源及人物先前经历的描述，不是本题要求回答的身份。 passage 中只有一项关于尸首不得入列祖坟墓的宣告，后面的完整宣告内容已能唯一定位所问事件，无须依靠带回经历或宣告者身份。"
+      },
+      {
+        "id": "r2",
+        "quote": "谁的尸首必不得入他列祖的坟墓",
+        "meaning": "要求识别尸首被明确宣告必不得进入其自己列祖坟墓的那个人。",
+        "role": "tested",
+        "reason": "这是直接提问的身份关系；“必不得”的否定与确定性，以及“他列祖的坟墓”的归属范围，共同限定所问的宣告，不能仅凭保留同一答案而改变这些含义。"
+      }
+    ],
+    "note": "intended_target 为空，故目标依据现有题目及 earlier original_question/original_answer 保守推断，并非明确提供的研究设计意图。13:21 明说先知向“从犹大来的神人”喊叫，13:22 随后以“你的尸首必不得入你列祖的坟墓”指向这位受话者，支持预期答案及原始答案。违命、返回和吃喝是经文中的因由，但题目未要求解释这些因由。"
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "proposal": {
+        "id": "item",
+        "status": "revised",
+        "question": "谁的尸首必不得入他列祖的坟墓？",
+        "options": [
+          {
+            "label": "A",
+            "text": "耶罗波安"
+          },
+          {
+            "label": "B",
+            "text": "带他回来的先知"
+          },
+          {
+            "label": "C",
+            "text": "他的列祖"
+          },
+          {
+            "label": "D",
+            "text": "从犹大来的神人"
+          },
+          {
+            "label": "E",
+            "text": "根据这段文字无法判断"
+          }
+        ],
+        "removed_relation_ids": [
+          "r1"
+        ],
+        "note": "删去宣告者及其带人回来的背景，保留所问身份、“必不得”的含义和列祖坟墓的归属。"
+      },
+      "candidate": {
+        "id": "hard:t1_1kgs13:ec63:mcq",
+        "question": "谁的尸首必不得入他列祖的坟墓？",
+        "passage": "13:20 他们坐席的时候，耶和华的话临到带他回来的先知，\n13:21 先知就向从犹大来的神人喊叫说：“耶和华如此说：‘因为你违背耶和华的话，没有遵守耶和华你神所吩咐你的命令，\n13:22 反倒回去，在他吩咐你不可吃饭喝水的地方吃了饭喝了水，你的尸首必不得入你列祖的坟墓。’”",
+        "expected_answer": "从犹大来的神人",
+        "form": "mcq",
+        "options": {
+          "A": "耶罗波安",
+          "B": "带他回来的先知",
+          "C": "他的列祖",
+          "D": "从犹大来的神人",
+          "E": "根据这段文字无法判断"
+        },
+        "correct_option": "D",
+        "intended_target": "",
+        "original_question": "带他回来的先知宣告，谁的尸首必不得入他列祖的坟墓？",
+        "original_answer": "the man of God from Judah"
+      },
+      "checks": [
+        {
+          "repeat": 1,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "原题询问尸首被宣告必不得入自己列祖坟墓的人，并未询问原因。经文明确说先知向“从犹大来的神人”喊叫，随后宣告“你的尸首必不得入你列祖的坟墓”，支持契约的目标、答案及人物角色区分。宣告者的带回经历不是被测试的关系。"
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "候选题完整保留身份识别目标，以及“尸首”“必不得入”和“他列祖的坟墓”的否定、确定性与归属范围。"
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "唯一删除的是“带他回来的先知宣告”。当前经文只有一项尸首不得入列祖坟墓的宣告，保留的内容足以定位；删除宣告者及其带回经历不会引入其他候选事件或答案。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "候选问题及全部五个选项均保持原来的中文。"
+            },
+            "option_meanings": [
+              {
+                "status": "pass",
+                "evidence": "“耶罗波安”原样保留，人物指称不变。",
+                "label": "A"
+              },
+              {
+                "status": "pass",
+                "evidence": "“带他回来的先知”原样保留，人物身份及带回关系不变。",
+                "label": "B"
+              },
+              {
+                "status": "pass",
+                "evidence": "“他的列祖”原样保留，亲属关系及指称范围不变。",
+                "label": "C"
+              },
+              {
+                "status": "pass",
+                "evidence": "“从犹大来的神人”原样保留，身份和来源限定不变。",
+                "label": "D"
+              },
+              {
+                "status": "pass",
+                "evidence": "“根据这段文字无法判断”原样保留，无法据文判断的含义不变。",
+                "label": "E"
+              }
+            ],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "13:22明确包含“你的尸首必不得入你列祖的坟墓”，支持问题所预设的宣告及其全部限定。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "13:21说明先知向“从犹大来的神人”喊叫；13:22延续这段直接引语，因此“你的尸首”指向该神人，支持预期答案及D键。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "宣告的受话者明确是从犹大来的神人，而不是宣告的先知或列祖。经文不支持耶罗波安，且已有充分信息，故只有D符合。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "当前经文同时提供宣告者、明确受话者与宣告内容，无须依赖窗外故事或圣经背景知识。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "问题未直接给出目标人物身份，选项也没有额外标记或提示正确答案；作答需要连接经文中的受话者与第二人称宣告。"
+              },
+              "mcq_validity": {
+                "status": "pass",
+                "evidence": "五个选项标签完整、内容互异，只有D受到经文支持，正确键与预期答案一致。"
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "问句直接完整；措辞虽为经文语体，但表达清楚，选项也自然明确。",
+              "quotes": []
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "单句直接询问人物身份，“他”自然回指所问之人；没有多层修饰、额外叙事或需反复比较的选项结构。",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "没有额外事件铺垫；尸首、否定宣告与列祖坟墓均用于准确限定所问内容。",
+              "quotes": []
+            }
+          }
+        },
+        {
+          "repeat": 2,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "原题要求识别被宣告尸首不得入自己列祖坟墓的人，并非询问宣告者或违命原因。契约保留了身份目标、“必不得”的否定与确定性及坟墓的归属关系。经文明确说明先知向从犹大来的神人说话，支持所列答案组件。"
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "候选仍问“谁的尸首必不得入他列祖的坟墓”，完整保留受宣告者的身份目标及原有关系范围，未改为原因、宣告者或其他事实。"
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "仅删除“带他回来的先知宣告”这一宣告来源及人物经历的定位信息。当前经文只有一项尸首不得入列祖坟墓的宣告，保留的内容足以唯一定位，没有产生竞争事件或答案。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "候选问题及全部五个选项均保持原有中文。"
+            },
+            "option_meanings": [
+              {
+                "status": "pass",
+                "evidence": "“耶罗波安”原样保留，人物指称不变。",
+                "label": "A"
+              },
+              {
+                "status": "pass",
+                "evidence": "“带他回来的先知”原样保留，人物及带回关系不变。",
+                "label": "B"
+              },
+              {
+                "status": "pass",
+                "evidence": "“他的列祖”原样保留，亲属关系与指称范围不变。",
+                "label": "C"
+              },
+              {
+                "status": "pass",
+                "evidence": "“从犹大来的神人”原样保留，身份与来源限定不变。",
+                "label": "D"
+              },
+              {
+                "status": "pass",
+                "evidence": "“根据这段文字无法判断”原样保留，无法依据本文判断的弃答含义不变。",
+                "label": "E"
+              }
+            ],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "13:22直接包含“你的尸首必不得入你列祖的坟墓”，支持问题中的宣告内容及其预设。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "13:21说明先知“向从犹大来的神人喊叫说”，随后宣告中的“你”指该受话者，因此固定答案及D项均有当前经文支持。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "这项宣告唯一指向从犹大来的神人；宣告者和列祖分别处于不同角色，耶罗波安未在当前经文中出现。只有D符合。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "当前窗口同时给出受话者身份和针对他的宣告，无须依赖更早的带回经过或外部圣经知识。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "问题没有直接给出受宣告者身份；选项形式无明显答案提示，需依据经文辨认受话者。"
+              },
+              "mcq_validity": {
+                "status": "pass",
+                "evidence": "五个选项保持独立可选，只有D得到经文支持，固定键D正确；无法判断项不成立。"
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "问句简洁完整，用语与经文语域一致；各选项表达清楚，无需修补理解。",
+              "quotes": []
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "单一疑问句直接询问人物。“他列祖”自然回指所问人物，没有额外的指代链或可避免的角色比较负担。",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "候选没有额外叙事铺垫，所保留的尸首、否定宣告及列祖坟墓关系均用于界定目标事件。",
+              "quotes": []
+            }
+          }
+        }
+      ],
+      "status": "SIMPLIFIED"
+    }
+  ]
+}

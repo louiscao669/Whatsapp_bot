@@ -1,0 +1,1003 @@
+[
+  {
+    "id": "gold:t1_acts23:ewf2:mcq",
+    "input_hash": "06c301a4f6c8923b852f41690a314ae77d9a5b01b7fb2b2857a2c78746a78c55",
+    "content_validity": {
+      "id": "q0091",
+      "target": "The condition under which Felix would hear Paul's case: the arrival of Paul's accusers.",
+      "target_basis": "inferred",
+      "target_preservation": {
+        "status": "pass",
+        "evidence": "The original and final questions ask when Felix would hear Paul's case, preserving the same participant, event, and timing condition."
+      },
+      "question_support": {
+        "status": "fail",
+        "evidence": "The passage attributes the statement to 'the governor' but never identifies him as Felix."
+      },
+      "answer_support": {
+        "status": "pass",
+        "evidence": "The stated hearing condition is explicit: 'I will hear your case when your accusers arrive.'"
+      },
+      "answer_uniqueness": {
+        "status": "pass",
+        "evidence": "Only one condition for hearing Paul's case is stated: his accusers' arrival."
+      },
+      "context_sufficiency": {
+        "status": "fail",
+        "evidence": "The displayed passage does not establish that Felix is the governor who makes the promise."
+      },
+      "answer_leakage": {
+        "status": "pass",
+        "evidence": "The question identifies the hearing but does not supply its timing condition."
+      },
+      "mcq_validity": {
+        "status": "fail",
+        "evidence": "A gives the governor's stated condition; B, C, and D are unsupported. However, E is defensible because the passage never identifies the governor as Felix, so the supplied key is not uniquely defensible as worded."
+      },
+      "meaning_profile": {
+        "answer_explicitness": "direct",
+        "semantic_relation": "Condition for a promised hearing",
+        "answer_scope": "single_component",
+        "passage_span": "one_sentence"
+      }
+    },
+    "structural_inspection": {
+      "id": "q0091",
+      "parse_summary": "A direct temporal question asks when Felix will hear Paul's case. The options supply alternative timings or conditions; the accusers in option A are Paul's accusers.",
+      "features": [
+        {
+          "kind": "role_tracking",
+          "quote": "When does Felix plan to hear Paul's case?",
+          "required_operations": "Distinguish Felix as the official hearing the case from Paul as the person whose case is heard.",
+          "concern": "ordinary",
+          "reason": "These roles are directly expressed and necessary to identify the hearing condition."
+        },
+        {
+          "kind": "reference_chain",
+          "quote": "When accusers arrived",
+          "required_operations": "Resolve the unqualified accusers as Paul's accusers using the passage.",
+          "concern": "ordinary",
+          "reason": "This is a short reference link central to the intended answer."
+        }
+      ]
+    },
+    "language_accessibility": {
+      "id": "q0091",
+      "naturalness": {
+        "score": 1,
+        "evidence": "The question is idiomatic, but option A, \"When accusers arrived,\" is less natural than the other timing options: it leaves the accusers unspecified and uses past tense for a planned hearing."
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "Readers must connect \"accusers\" to Paul's accusers and accommodate the shift from \"does Felix plan\" to \"arrived.\" These are small local adjustments, not substantial decoding demands."
+      },
+      "context_economy": {
+        "score": 0,
+        "evidence": "\"When does Felix plan to hear Paul's case?\" directly establishes the requested timing, without unnecessary introductory material."
+      },
+      "structure_assessments": [
+        {
+          "feature_index": 0,
+          "assessment": "manageable",
+          "reason": "\"Felix\" is directly presented as the person hearing \"Paul's case\"; distinguishing their roles requires no complicated tracking."
+        },
+        {
+          "feature_index": 1,
+          "assessment": "manageable",
+          "reason": "Connecting \"accusers\" in \"When accusers arrived\" to Paul is a short reference link. The missing specification and tense mismatch create minor wording friction, but not substantial reference burden."
+        }
+      ]
+    },
+    "decision": "HOLD_CONTENT",
+    "content_status": "HOLD",
+    "language_status": "PASS",
+    "content_failures": [
+      "question_support",
+      "context_sufficiency",
+      "mcq_validity"
+    ],
+    "content_uncertainties": [],
+    "language_failures": [],
+    "structural_concerns": [],
+    "unresolved_features": [],
+    "structure_burden_disagreement": false,
+    "repeat": 1
+  },
+  {
+    "id": "gold:t1_1kgs13:nntp:mcq",
+    "input_hash": "2b756d12c909126038fbe8bb3922a36fe32c5ed34d07b96958c590dcd0cfc040",
+    "content_validity": {
+      "id": "q0009",
+      "target": "The prophet's invitation to the man of God to come home with him and eat.",
+      "target_basis": "inferred",
+      "target_preservation": {
+        "status": "pass",
+        "evidence": "The final question and expected answer preserve the original speaker, addressee, and invitation."
+      },
+      "question_support": {
+        "status": "fail",
+        "evidence": "The passage identifies the speaker as 'the prophet' but does not establish that he is old."
+      },
+      "answer_support": {
+        "status": "pass",
+        "evidence": "The prophet says, 'Come home with me and eat some bread,' directly supporting the expected answer."
+      },
+      "answer_uniqueness": {
+        "status": "pass",
+        "evidence": "Only one invitation from the prophet to the man of God is displayed."
+      },
+      "context_sufficiency": {
+        "status": "pass",
+        "evidence": "Despite the unsupported age descriptor, the passage contains only one prophet speaking to the man of God, so the intended exchange is identifiable."
+      },
+      "answer_leakage": {
+        "status": "pass",
+        "evidence": "The question does not disclose the invitation."
+      },
+      "mcq_validity": {
+        "status": "pass",
+        "evidence": "B matches the prophet's invitation. A, C, and D are not spoken by him, and E is not defensible given the explicit dialogue."
+      },
+      "meaning_profile": {
+        "answer_explicitness": "direct",
+        "semantic_relation": "Content of an invitation",
+        "answer_scope": "multiple_components",
+        "passage_span": "one_sentence"
+      }
+    },
+    "structural_inspection": {
+      "id": "q0009",
+      "parse_summary": "A direct question identifies the old prophet as speaker and the man of God as addressee. The choices present possible utterances, with first-person expressions referring to the prophet.",
+      "features": [
+        {
+          "kind": "reference_chain",
+          "quote": "Come home with me and eat",
+          "required_operations": "Interpret 'me' as the old prophet and the implicit recipient of the commands as the man of God.",
+          "concern": "ordinary",
+          "reason": "The invitation requires these speaker–addressee relationships, which the question states directly."
+        }
+      ]
+    },
+    "language_accessibility": {
+      "id": "q0009",
+      "naturalness": {
+        "score": 0,
+        "evidence": "\"What does the old prophet say to the man of God?\" is idiomatic, and the options read naturally as possible utterances."
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "Readers interpret \"me\" in \"Come home with me and eat\" as the prophet and the commands as addressed to the man of God. This is ordinary speaker–addressee tracking."
+      },
+      "context_economy": {
+        "score": 0,
+        "evidence": "\"The old prophet\" and \"the man of God\" identify the participants economically; there is no extra setup."
+      },
+      "structure_assessments": [
+        {
+          "feature_index": 0,
+          "assessment": "manageable",
+          "reason": "The question explicitly supplies the speaker and addressee, making \"me\" and the implied recipient in \"Come home with me and eat\" straightforward to interpret."
+        }
+      ]
+    },
+    "decision": "HOLD_CONTENT",
+    "content_status": "HOLD",
+    "language_status": "PASS",
+    "content_failures": [
+      "question_support"
+    ],
+    "content_uncertainties": [],
+    "language_failures": [],
+    "structural_concerns": [],
+    "unresolved_features": [],
+    "structure_burden_disagreement": false,
+    "repeat": 1
+  },
+  {
+    "id": "gold:t1_2chr26:tglh:open",
+    "input_hash": "a4062b9f72da994ef85e9e75c30215748902c19e3052c46758df2355f1541ed0",
+    "content_validity": {
+      "id": "q0024",
+      "target": "Uzziah's following his father's example in doing right and seeking God.",
+      "target_basis": "inferred",
+      "target_preservation": {
+        "status": "not_applicable",
+        "evidence": "No original item or explicit intended target is supplied."
+      },
+      "question_support": {
+        "status": "pass",
+        "evidence": "Verse 4 explicitly says he did what was right in the LORD's eyes 'just as his father Amaziah had done.'"
+      },
+      "answer_support": {
+        "status": "fail",
+        "evidence": "Doing right is explicitly compared with his father's conduct. Although Uzziah also sought God, the passage does not say his father sought God, so that component is not supported as a way he followed his father's example."
+      },
+      "answer_uniqueness": {
+        "status": "pass",
+        "evidence": "The passage supplies one explicit father-son comparison: doing what was right in the LORD's eyes."
+      },
+      "context_sufficiency": {
+        "status": "pass",
+        "evidence": "The nearby verses connect Uzziah, his father Amaziah, and the conduct being compared."
+      },
+      "answer_leakage": {
+        "status": "pass",
+        "evidence": "The question states the comparison but does not reveal the conduct."
+      },
+      "mcq_validity": {
+        "status": "not_applicable",
+        "evidence": "This is an open question."
+      },
+      "meaning_profile": {
+        "answer_explicitness": "nearby_connection",
+        "semantic_relation": "Similarity between a son's religious conduct and his father's example",
+        "answer_scope": "multiple_components",
+        "passage_span": "nearby"
+      }
+    },
+    "structural_inspection": {
+      "id": "q0024",
+      "parse_summary": "The how-question asks for Uzziah's actions as a way of following his father's example. The possessive 'his' refers to Uzziah, and the passage identifies the father as Amaziah.",
+      "features": [
+        {
+          "kind": "reference_chain",
+          "quote": "Uzziah follow his father's example",
+          "required_operations": "Attach 'his' to Uzziah and connect the father's example with the conduct being compared.",
+          "concern": "ordinary",
+          "reason": "The possessive has a clear local antecedent, and the comparison is part of the target."
+        }
+      ]
+    },
+    "language_accessibility": {
+      "id": "q0024",
+      "naturalness": {
+        "score": 2,
+        "evidence": "\"Follow his father's example with Yahweh\" is an unnatural combination. \"With Yahweh\" does not clearly express the relationship between the example and Uzziah's religious conduct, so readers must mentally repair that connection."
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "The possessive in \"his father's example\" is straightforward. The avoidable demand is interpreting \"with Yahweh\" as specifying the area of conduct being compared, rather than participation with Yahweh; this remains a local interpretive adjustment."
+      },
+      "context_economy": {
+        "score": 0,
+        "evidence": "The father–son comparison and reference to Yahweh serve the requested comparison. The problem is their wording, not excessive setup."
+      },
+      "structure_assessments": [
+        {
+          "feature_index": 0,
+          "assessment": "manageable",
+          "reason": "\"His\" clearly refers to Uzziah, and comparing his conduct with his father's is necessary to the question. The separate awkwardness of \"with Yahweh\" does not make this possessive chain difficult."
+        }
+      ]
+    },
+    "decision": "HOLD_CONTENT",
+    "content_status": "HOLD",
+    "language_status": "REWRITE",
+    "content_failures": [
+      "answer_support"
+    ],
+    "content_uncertainties": [],
+    "language_failures": [
+      "naturalness"
+    ],
+    "structural_concerns": [],
+    "unresolved_features": [],
+    "structure_burden_disagreement": false,
+    "repeat": 1
+  },
+  {
+    "id": "gold:t1_1kgs13:kcyl:open",
+    "input_hash": "d2865193fa46ddf883812f4f6a78df1426d514c9a28e854e1dd11cd9cf234e54",
+    "content_validity": {
+      "id": "q0002",
+      "target": "The restoration of the king's hand following the man of God's prayer.",
+      "target_basis": "inferred",
+      "target_preservation": {
+        "status": "not_applicable",
+        "evidence": "No original item or explicit intended target is supplied."
+      },
+      "question_support": {
+        "status": "pass",
+        "evidence": "Verse 6 states that the man of God interceded with the LORD and the king's hand was restored."
+      },
+      "answer_support": {
+        "status": "pass",
+        "evidence": "The passage explicitly reports that 'the king's hand was restored to him as it was before.'"
+      },
+      "answer_uniqueness": {
+        "status": "pass",
+        "evidence": "Restoration of the hand is the only outcome reported following the intercession."
+      },
+      "context_sufficiency": {
+        "status": "pass",
+        "evidence": "The passage supplies the withered hand, the king's request, the intercession, and its outcome."
+      },
+      "answer_leakage": {
+        "status": "pass",
+        "evidence": "The question does not state the outcome. The king's request within the passage does not itself establish that restoration occurred."
+      },
+      "mcq_validity": {
+        "status": "not_applicable",
+        "evidence": "This is an open question."
+      },
+      "meaning_profile": {
+        "answer_explicitness": "direct",
+        "semantic_relation": "Outcome following intercession",
+        "answer_scope": "single_component",
+        "passage_span": "one_sentence"
+      }
+    },
+    "structural_inspection": {
+      "id": "q0002",
+      "parse_summary": "A direct outcome question contains one temporal clause, 'when the man of God prays.' It asks for the resulting event without embedding further roles or reports.",
+      "features": []
+    },
+    "language_accessibility": {
+      "id": "q0002",
+      "naturalness": {
+        "score": 0,
+        "evidence": "\"What happens when the man of God prays?\" is a direct, idiomatic outcome question."
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "\"When the man of God prays\" provides a readily parsed event anchor for \"What happens,\" with no competing roles or references within the question."
+      },
+      "context_economy": {
+        "score": 0,
+        "evidence": "The prayer clause is useful for identifying the event whose outcome is requested; there is no unnecessary framing."
+      },
+      "structure_assessments": []
+    },
+    "decision": "KEEP",
+    "content_status": "PASS",
+    "language_status": "PASS",
+    "content_failures": [],
+    "content_uncertainties": [],
+    "language_failures": [],
+    "structural_concerns": [],
+    "unresolved_features": [],
+    "structure_burden_disagreement": false,
+    "repeat": 1
+  },
+  {
+    "id": "gold:t1_judg9:w5fv:open",
+    "input_hash": "089e24d403196c216d50f3076ca92c224f23b9a58d4a1281e5b89bc7e9b5a8f8",
+    "content_validity": {
+      "id": "q0114",
+      "target": "The identity of Abimelech's father.",
+      "target_basis": "inferred",
+      "target_preservation": {
+        "status": "not_applicable",
+        "evidence": "No original item or explicit intended target is supplied."
+      },
+      "question_support": {
+        "status": "pass",
+        "evidence": "The passage introduces 'Abimelech son of Jerubbaal,' supporting the requested parentage relation."
+      },
+      "answer_support": {
+        "status": "pass",
+        "evidence": "'Abimelech son of Jerubbaal' directly identifies Jerubbaal as his father."
+      },
+      "answer_uniqueness": {
+        "status": "pass",
+        "evidence": "Only Jerubbaal is identified as Abimelech's father."
+      },
+      "context_sufficiency": {
+        "status": "pass",
+        "evidence": "The opening sentence explicitly names both Abimelech and his father."
+      },
+      "answer_leakage": {
+        "status": "pass",
+        "evidence": "The question names Abimelech but does not supply his father's name."
+      },
+      "mcq_validity": {
+        "status": "not_applicable",
+        "evidence": "This is an open question."
+      },
+      "meaning_profile": {
+        "answer_explicitness": "direct",
+        "semantic_relation": "Father-son relationship",
+        "answer_scope": "single_component",
+        "passage_span": "one_sentence"
+      }
+    },
+    "structural_inspection": {
+      "id": "q0114",
+      "parse_summary": "A simple identity question asks for the person in the father relationship to Abimelech. There are no embedded clauses or pronoun chains.",
+      "features": []
+    },
+    "language_accessibility": {
+      "id": "q0114",
+      "naturalness": {
+        "score": 0,
+        "evidence": "\"Who is Abimelech's father?\" is an idiomatic identity question."
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "\"Abimelech's father\" states a single family relationship directly, without embedded clauses or ambiguous pronouns."
+      },
+      "context_economy": {
+        "score": 0,
+        "evidence": "The question contains only the person and relationship needed for the requested identification."
+      },
+      "structure_assessments": []
+    },
+    "decision": "KEEP",
+    "content_status": "PASS",
+    "language_status": "PASS",
+    "content_failures": [],
+    "content_uncertainties": [],
+    "language_failures": [],
+    "structural_concerns": [],
+    "unresolved_features": [],
+    "structure_burden_disagreement": false,
+    "repeat": 1
+  },
+  {
+    "id": "gold:t1_2chr26:abwv:open",
+    "input_hash": "71274e4b382ab023d0c7b6d5b0143f076845f630201a5fc922cc4ec60d1f5205",
+    "content_validity": {
+      "id": "q0022",
+      "target": "Uzziah's rebuilding Eloth and restoring it to Judah.",
+      "target_basis": "inferred",
+      "target_preservation": {
+        "status": "not_applicable",
+        "evidence": "No original item or explicit intended target is supplied."
+      },
+      "question_support": {
+        "status": "pass",
+        "evidence": "Verse 2 identifies Uzziah's actions toward Eloth, and verse 3 establishes his kingship."
+      },
+      "answer_support": {
+        "status": "pass",
+        "evidence": "The passage says Uzziah 'rebuilt Eloth and restored it to Judah,' matching both expected actions."
+      },
+      "answer_uniqueness": {
+        "status": "pass",
+        "evidence": "Rebuilding and restoration form the single compound account of what Uzziah did to Eloth."
+      },
+      "context_sufficiency": {
+        "status": "pass",
+        "evidence": "Uzziah, Eloth, and both actions are explicitly identified."
+      },
+      "answer_leakage": {
+        "status": "pass",
+        "evidence": "The question names the actor and city without stating either action."
+      },
+      "mcq_validity": {
+        "status": "not_applicable",
+        "evidence": "This is an open question."
+      },
+      "meaning_profile": {
+        "answer_explicitness": "direct",
+        "semantic_relation": "Actions taken toward a city",
+        "answer_scope": "multiple_components",
+        "passage_span": "one_sentence"
+      }
+    },
+    "structural_inspection": {
+      "id": "q0022",
+      "parse_summary": "A direct action question names Uzziah as actor and Eloth as the affected place. 'As king' supplies Uzziah's capacity rather than introducing another participant.",
+      "features": []
+    },
+    "language_accessibility": {
+      "id": "q0022",
+      "naturalness": {
+        "score": 0,
+        "evidence": "\"What did Uzziah do to Eloth as king?\" is ordinary English for asking about a ruler's actions affecting a place."
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "Readers attach \"as king\" to Uzziah's capacity while treating Eloth as the place affected. The semantic distinction makes this an ordinary, manageable attachment."
+      },
+      "context_economy": {
+        "score": 0,
+        "evidence": "\"As king\" briefly frames Uzziah's actions in his royal capacity and does not introduce substantial extra context."
+      },
+      "structure_assessments": []
+    },
+    "decision": "KEEP",
+    "content_status": "PASS",
+    "language_status": "PASS",
+    "content_failures": [],
+    "content_uncertainties": [],
+    "language_failures": [],
+    "structural_concerns": [],
+    "unresolved_features": [],
+    "structure_burden_disagreement": false,
+    "repeat": 1
+  },
+  {
+    "id": "gold:t1_judg17_18:zd8a:open",
+    "input_hash": "329a5ba8377a3d5cbad444d15971f4755af715ef19337ff2a97b867e93a36d04",
+    "content_validity": {
+      "id": "q0104",
+      "target": "The men's goal of taking possession of the land described in their report.",
+      "target_basis": "inferred",
+      "target_preservation": {
+        "status": "not_applicable",
+        "evidence": "No original item or explicit intended target is supplied."
+      },
+      "question_support": {
+        "status": "fail",
+        "evidence": "The passage describes returning men and their proposal, but does not say there were five, that they were from Dan, or that the land was Laish."
+      },
+      "answer_support": {
+        "status": "pass",
+        "evidence": "The proposed goal is explicit: 'Do not hesitate to go there and take possession of the land!'"
+      },
+      "answer_uniqueness": {
+        "status": "pass",
+        "evidence": "The report presents taking possession of the land as the proposed objective; attacking its inhabitants is part of that objective rather than an incompatible answer."
+      },
+      "context_sufficiency": {
+        "status": "fail",
+        "evidence": "The displayed context does not connect its unnamed men and land to the question's five men from Dan and Laish."
+      },
+      "answer_leakage": {
+        "status": "pass",
+        "evidence": "The question does not disclose the goal of possessing the land."
+      },
+      "mcq_validity": {
+        "status": "not_applicable",
+        "evidence": "This is an open question."
+      },
+      "meaning_profile": {
+        "answer_explicitness": "direct",
+        "semantic_relation": "Goal expressed in a proposal",
+        "answer_scope": "single_component",
+        "passage_span": "one_sentence"
+      }
+    },
+    "structural_inspection": {
+      "id": "q0104",
+      "parse_summary": "A direct goal question has 'five men from Dan' as its subject. 'From Dan' identifies the group, while 'in Laish' locates the goal being asked about; neither creates a nested clause.",
+      "features": []
+    },
+    "language_accessibility": {
+      "id": "q0104",
+      "naturalness": {
+        "score": 1,
+        "evidence": "\"What did five men from Dan want in Laish?\" is grammatical but slightly underspecified: \"want in Laish\" is less direct about asking for a goal than the rest of the wording."
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "Readers must interpret \"what ... want in Laish\" as asking what the men wanted to accomplish, rather than simply what object they wanted there. This is a modest local interpretation."
+      },
+      "context_economy": {
+        "score": 0,
+        "evidence": "\"Five men from Dan\" identifies the group and \"in Laish\" identifies the location; neither amounts to excessive setup."
+      },
+      "structure_assessments": []
+    },
+    "decision": "HOLD_CONTENT",
+    "content_status": "HOLD",
+    "language_status": "PASS",
+    "content_failures": [
+      "question_support",
+      "context_sufficiency"
+    ],
+    "content_uncertainties": [],
+    "language_failures": [],
+    "structural_concerns": [],
+    "unresolved_features": [],
+    "structure_burden_disagreement": false,
+    "repeat": 1
+  },
+  {
+    "id": "gold:t1_judg9:lt0r:mcq",
+    "input_hash": "64b01e3f603741537d34f99e07723c245f5e56bc5d7914a7501e353a9065e57d",
+    "content_validity": {
+      "id": "q0125",
+      "target": "The person targeted by the leaders of Shechem's ambush.",
+      "target_basis": "inferred",
+      "target_preservation": {
+        "status": "pass",
+        "evidence": "The final question preserves the original question's actors, intended ambush, and requested target."
+      },
+      "question_support": {
+        "status": "pass",
+        "evidence": "Verse 25 says the leaders of Shechem 'set up an ambush against Abimelech,' supporting their intention to ambush him."
+      },
+      "answer_support": {
+        "status": "pass",
+        "evidence": "Abimelech is explicitly named as the person against whom the ambush was set."
+      },
+      "answer_uniqueness": {
+        "status": "pass",
+        "evidence": "Although travelers were robbed, only Abimelech is named as the intended target of the ambush."
+      },
+      "context_sufficiency": {
+        "status": "pass",
+        "evidence": "The first sentence identifies the leaders, their action, and its target."
+      },
+      "answer_leakage": {
+        "status": "pass",
+        "evidence": "The question identifies the ambushers but does not name their target."
+      },
+      "mcq_validity": {
+        "status": "pass",
+        "evidence": "D is explicitly supported. A and C are not mentioned, B is introduced separately as someone the leaders trusted, and E conflicts with the explicit identification."
+      },
+      "meaning_profile": {
+        "answer_explicitness": "direct",
+        "semantic_relation": "Target of an ambush",
+        "answer_scope": "single_component",
+        "passage_span": "one_sentence"
+      }
+    },
+    "structural_inspection": {
+      "id": "q0125",
+      "parse_summary": "An object question asks for the intended target of an ambush. Shechem's leaders are the planners and prospective attackers; the options are separate candidate names.",
+      "features": [
+        {
+          "kind": "role_tracking",
+          "quote": "Who do Shechem's leaders plan to ambush?",
+          "required_operations": "Keep Shechem's leaders as the agents of the planned ambush and identify 'who' as its target.",
+          "concern": "ordinary",
+          "reason": "The agent–target distinction is necessary to the intended relationship and is expressed directly."
+        }
+      ]
+    },
+    "language_accessibility": {
+      "id": "q0125",
+      "naturalness": {
+        "score": 0,
+        "evidence": "\"Who do Shechem's leaders plan to ambush?\" is idiomatic, and the name options fit the question directly."
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "Readers distinguish \"Shechem's leaders\" as planners from \"Who\" as the target, then compare individual names. This is ordinary object-question processing."
+      },
+      "context_economy": {
+        "score": 0,
+        "evidence": "The question directly names the agents and action without additional framing."
+      },
+      "structure_assessments": [
+        {
+          "feature_index": 0,
+          "assessment": "manageable",
+          "reason": "\"Shechem's leaders plan to ambush\" expresses the agent–target relationship directly. Identifying the object of the ambush is the necessary task, not avoidable role-tracking load."
+        }
+      ]
+    },
+    "decision": "KEEP",
+    "content_status": "PASS",
+    "language_status": "PASS",
+    "content_failures": [],
+    "content_uncertainties": [],
+    "language_failures": [],
+    "structural_concerns": [],
+    "unresolved_features": [],
+    "structure_burden_disagreement": false,
+    "repeat": 1
+  },
+  {
+    "id": "gold:t1_2kgs11:rvb6:open",
+    "input_hash": "00f1ff60e30eeea1898a52c771eb47c33c2da33e5c1b9071c292ebf40f2d1039",
+    "content_validity": {
+      "id": "q0046",
+      "target": "The people's destruction of Baal's temple and idols after Jehoiada's covenant.",
+      "target_basis": "inferred",
+      "target_preservation": {
+        "status": "not_applicable",
+        "evidence": "No original item or explicit intended target is supplied."
+      },
+      "question_support": {
+        "status": "pass",
+        "evidence": "Verse 17 describes Jehoiada's covenants, followed in verse 18 by the people's actions against Baal's temple."
+      },
+      "answer_support": {
+        "status": "pass",
+        "evidence": "The people tore down Baal's temple and smashed its idols. The answer accurately reports these actions, though the passage also mentions destroying altars and killing Mattan."
+      },
+      "answer_uniqueness": {
+        "status": "pass",
+        "evidence": "The people's actions form one compatible, multi-part response; including the altars and Mattan would expand rather than contradict the expected answer."
+      },
+      "context_sufficiency": {
+        "status": "pass",
+        "evidence": "Both covenant-making and the subsequent actions are displayed together, and the two covenants do not create competing subsequent events."
+      },
+      "answer_leakage": {
+        "status": "pass",
+        "evidence": "The covenant is an event anchor; the question does not reveal the destruction that followed."
+      },
+      "mcq_validity": {
+        "status": "not_applicable",
+        "evidence": "This is an open question."
+      },
+      "meaning_profile": {
+        "answer_explicitness": "nearby_connection",
+        "semantic_relation": "Actions following covenant-making",
+        "answer_scope": "multiple_components",
+        "passage_span": "nearby"
+      }
+    },
+    "structural_inspection": {
+      "id": "q0046",
+      "parse_summary": "A direct action question uses 'after Jehoiada's covenant' as a temporal anchor. People are the actors, and Jehoiada is attached to the preceding covenant rather than to their subsequent actions.",
+      "features": []
+    },
+    "language_accessibility": {
+      "id": "q0046",
+      "naturalness": {
+        "score": 1,
+        "evidence": "\"After Jehoiada's covenant\" is understandable but mildly compressed: a covenant is used as the temporal anchor without explicitly naming its establishment."
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "Readers interpret \"after Jehoiada's covenant\" as after the covenant was made, then identify the people's subsequent action. This is a small, familiar event inference."
+      },
+      "context_economy": {
+        "score": 0,
+        "evidence": "The covenant supplies a useful temporal anchor in \"What did people do after Jehoiada's covenant?\" There is no excess setup."
+      },
+      "structure_assessments": []
+    },
+    "decision": "KEEP",
+    "content_status": "PASS",
+    "language_status": "PASS",
+    "content_failures": [],
+    "content_uncertainties": [],
+    "language_failures": [],
+    "structural_concerns": [],
+    "unresolved_features": [],
+    "structure_burden_disagreement": false,
+    "repeat": 1
+  },
+  {
+    "id": "gold:t1_judg17_18:webl:mcq",
+    "input_hash": "9b54f04bbc75668c75baae57977fce155e0f1f0a1c53727ce34ef70235cc3281",
+    "content_validity": {
+      "id": "q0095",
+      "target": "The priestly role Micah assigned to one of his sons.",
+      "target_basis": "inferred",
+      "target_preservation": {
+        "status": "pass",
+        "evidence": "The final question preserves the original actor, recipient, and assigned-role relation."
+      },
+      "question_support": {
+        "status": "pass",
+        "evidence": "Verse 5 states that Micah ordained one of his sons as his priest."
+      },
+      "answer_support": {
+        "status": "pass",
+        "evidence": "'His priest' directly matches the role stated in the passage."
+      },
+      "answer_uniqueness": {
+        "status": "pass",
+        "evidence": "Only one role is assigned to a son: priest."
+      },
+      "context_sufficiency": {
+        "status": "pass",
+        "evidence": "The passage explicitly identifies Micah, one of his sons, and the role assigned."
+      },
+      "answer_leakage": {
+        "status": "pass",
+        "evidence": "The question asks for the role without naming it."
+      },
+      "mcq_validity": {
+        "status": "pass",
+        "evidence": "B matches the explicit ordination. A, C, and D are unsupported roles, and E is contradicted by the clear statement."
+      },
+      "meaning_profile": {
+        "answer_explicitness": "direct",
+        "semantic_relation": "Assignment of a religious role",
+        "answer_scope": "single_component",
+        "passage_span": "one_sentence"
+      }
+    },
+    "structural_inspection": {
+      "id": "q0095",
+      "parse_summary": "A direct role-assignment question identifies Micah as the assigner and his son as the recipient. The choices name alternative roles using the same possessive pattern.",
+      "features": [
+        {
+          "kind": "role_tracking",
+          "quote": "What role does Micah give his son?",
+          "required_operations": "Distinguish Micah, who assigns the role, from his son, who receives it; interpret the answer 'His priest' as Micah's priest.",
+          "concern": "ordinary",
+          "reason": "The assignment relationship is the semantic target and has no additional embedding."
+        }
+      ]
+    },
+    "language_accessibility": {
+      "id": "q0095",
+      "naturalness": {
+        "score": 0,
+        "evidence": "\"What role does Micah give his son?\" is idiomatic, and \"His guard,\" \"His priest,\" \"His advisor,\" and \"His servant\" form a natural parallel set."
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "Readers distinguish Micah as the assigner from his son as the recipient and interpret \"His\" in the options as referring to Micah. The shared option pattern keeps comparison straightforward."
+      },
+      "context_economy": {
+        "score": 0,
+        "evidence": "The question supplies only the participants and role-assignment relationship needed for the task."
+      },
+      "structure_assessments": [
+        {
+          "feature_index": 0,
+          "assessment": "manageable",
+          "reason": "\"Micah give his son\" clearly separates assigner and recipient. Understanding \"His priest\" as a role serving Micah is an ordinary contextual possessive interpretation."
+        }
+      ]
+    },
+    "decision": "KEEP",
+    "content_status": "PASS",
+    "language_status": "PASS",
+    "content_failures": [],
+    "content_uncertainties": [],
+    "language_failures": [],
+    "structural_concerns": [],
+    "unresolved_features": [],
+    "structure_burden_disagreement": false,
+    "repeat": 1
+  },
+  {
+    "id": "gold:t1_judg17_18:zd8a:mcq",
+    "input_hash": "bd6789fb0e7f55d4c3e55c12034d739fc17c1428818669d5ee7604f14ebc1c2d",
+    "content_validity": {
+      "id": "q0105",
+      "target": "The five men from Dan's goal of taking possession of the land at Laish.",
+      "target_basis": "inferred",
+      "target_preservation": {
+        "status": "pass",
+        "evidence": "The final question preserves the original participants, location, and desired objective; the present-tense formulation does not change the reported goal."
+      },
+      "question_support": {
+        "status": "fail",
+        "evidence": "The displayed passage does not identify the men as five men from Dan or name the land as Laish."
+      },
+      "answer_support": {
+        "status": "pass",
+        "evidence": "The men's stated proposal is to 'take possession of the land,' which supports the content of the expected goal."
+      },
+      "answer_uniqueness": {
+        "status": "pass",
+        "evidence": "Taking possession is the sole proposed objective expressed in the report; the land's goodness and spaciousness are reasons for pursuing it."
+      },
+      "context_sufficiency": {
+        "status": "fail",
+        "evidence": "Nothing in the supplied window establishes the connection between the described men and land and the question's Dan and Laish references."
+      },
+      "answer_leakage": {
+        "status": "pass",
+        "evidence": "The question names participants and a location but does not supply their objective."
+      },
+      "mcq_validity": {
+        "status": "fail",
+        "evidence": "C matches the unnamed men's proposal, while A, B, and D are unsupported. E is also defensible because the passage does not establish that these are the five men from Dan discussing Laish."
+      },
+      "meaning_profile": {
+        "answer_explicitness": "direct",
+        "semantic_relation": "Goal expressed in a proposal",
+        "answer_scope": "single_component",
+        "passage_span": "one_sentence"
+      }
+    },
+    "structural_inspection": {
+      "id": "q0105",
+      "parse_summary": "A direct goal question identifies five men by their origin and locates their goal in Laish. The choices are parallel infinitive phrases expressing distinct possible goals.",
+      "features": []
+    },
+    "language_accessibility": {
+      "id": "q0105",
+      "naturalness": {
+        "score": 1,
+        "evidence": "\"What do five men from Dan want in Laish?\" is mildly indirect about asking for an intended action. The parallel \"To ...\" options make the goal reading more natural."
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "Readers interpret \"want in Laish\" as a goal and compare \"To form,\" \"To trade,\" \"To take,\" and \"To find.\" The options clarify the requested answer type and require only ordinary comparison."
+      },
+      "context_economy": {
+        "score": 0,
+        "evidence": "\"Five men from Dan\" and \"in Laish\" economically identify the group and location, without unnecessary introductory detail."
+      },
+      "structure_assessments": []
+    },
+    "decision": "HOLD_CONTENT",
+    "content_status": "HOLD",
+    "language_status": "PASS",
+    "content_failures": [
+      "question_support",
+      "context_sufficiency",
+      "mcq_validity"
+    ],
+    "content_uncertainties": [],
+    "language_failures": [],
+    "structural_concerns": [],
+    "unresolved_features": [],
+    "structure_burden_disagreement": false,
+    "repeat": 1
+  },
+  {
+    "id": "gold:t1_2kgs11:fn7d:open",
+    "input_hash": "cd0d341bf342517635d55135415a9ea260a4a9692958423cb7538f361cea2ed1",
+    "content_validity": {
+      "id": "q0036",
+      "target": "Joash's survival of Athaliah's attempt to kill the royal heirs.",
+      "target_basis": "inferred",
+      "target_preservation": {
+        "status": "not_applicable",
+        "evidence": "No original item or explicit intended target is supplied."
+      },
+      "question_support": {
+        "status": "pass",
+        "evidence": "Athaliah began annihilating the royal heirs, but Joash was hidden from her and was not killed."
+      },
+      "answer_support": {
+        "status": "pass",
+        "evidence": "Verse 2 names Joash as the child taken away, hidden from Athaliah, and not killed."
+      },
+      "answer_uniqueness": {
+        "status": "pass",
+        "evidence": "Joash is the only royal heir explicitly identified as escaping the killings."
+      },
+      "context_sufficiency": {
+        "status": "pass",
+        "evidence": "The passage includes Athaliah's killings, Joash's rescue, and his continued concealment."
+      },
+      "answer_leakage": {
+        "status": "pass",
+        "evidence": "The question states that someone escaped but does not identify that person."
+      },
+      "mcq_validity": {
+        "status": "not_applicable",
+        "evidence": "This is an open question."
+      },
+      "meaning_profile": {
+        "answer_explicitness": "direct",
+        "semantic_relation": "Identity of the survivor of an attempted killing",
+        "answer_scope": "single_component",
+        "passage_span": "nearby"
+      }
+    },
+    "structural_inspection": {
+      "id": "q0036",
+      "parse_summary": "An object question asks which person falls outside Athaliah's successful killing attempt. 'Unable' scopes over 'to kill,' with Athaliah as the attempted killer and the requested person as the intended victim.",
+      "features": [
+        {
+          "kind": "negation_scope",
+          "quote": "Who was Athaliah unable to kill?",
+          "required_operations": "Interpret inability as applying to the killing event and identify the person who survived rather than someone Athaliah killed.",
+          "concern": "ordinary",
+          "reason": "The single negative scope is necessary to ask about survival and does not interact with another negative."
+        }
+      ]
+    },
+    "language_accessibility": {
+      "id": "q0036",
+      "naturalness": {
+        "score": 0,
+        "evidence": "\"Who was Athaliah unable to kill?\" is a natural English question about an unsuccessful action."
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "Readers apply \"unable\" to \"kill\" and identify the person who survived rather than someone killed. This single negative scope is ordinary and manageable."
+      },
+      "context_economy": {
+        "score": 0,
+        "evidence": "The question contains only the actor and unsuccessful action needed to identify the survivor."
+      },
+      "structure_assessments": [
+        {
+          "feature_index": 0,
+          "assessment": "manageable",
+          "reason": "\"Unable to kill\" has one clear scope, with Athaliah as actor and \"Who\" as the affected person. There are no interacting negatives or additional clauses to decode."
+        }
+      ]
+    },
+    "decision": "KEEP",
+    "content_status": "PASS",
+    "language_status": "PASS",
+    "content_failures": [],
+    "content_uncertainties": [],
+    "language_failures": [],
+    "structural_concerns": [],
+    "unresolved_features": [],
+    "structure_burden_disagreement": false,
+    "repeat": 1
+  }
+]

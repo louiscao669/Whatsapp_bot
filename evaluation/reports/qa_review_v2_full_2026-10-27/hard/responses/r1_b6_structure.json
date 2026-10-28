@@ -1,0 +1,245 @@
+{
+  "request_hash": "71780454b2aebbbefb77825286b7af4aa8e322f5ef66ec1181feb73e9c6b4357",
+  "model": "gpt-6.1-sol",
+  "response_id": "resp_04d3bbd9feb6769f006ae0d17444f487d29aa27345dc88282f",
+  "usage": {
+    "input_tokens": 3581,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 3578
+    },
+    "output_tokens": 3174,
+    "output_tokens_details": {
+      "reasoning_tokens": 180
+    },
+    "total_tokens": 6755
+  },
+  "parsed": {
+    "items": [
+      {
+        "id": "q0031",
+        "parse_summary": "疑问词“谁”与“他的奶母”组成共同参与者，后接地点和时长；“他的”回指待识别的人。",
+        "features": [
+          {
+            "kind": "reference_chain",
+            "quote": "谁和他的奶母",
+            "required_operations": "把“他的”与疑问词“谁”所代表的人关联，而不是另找一名人物。",
+            "concern": "ordinary",
+            "reason": "这是表达目标人物与奶母关系所需的直接回指。"
+          }
+        ]
+      },
+      {
+        "id": "q0097",
+        "parse_summary": "主句询问米迦持有某种看法的原因；“认为”后嵌入“耶和华必向他施恩”，其中施恩者是耶和华，受恩者“他”是米迦。",
+        "features": [
+          {
+            "kind": "layered_speech",
+            "quote": "米迦为什么认为耶和华必向他施恩？",
+            "required_operations": "区分米迦的看法与题目直接断言的事实，并寻找米迦提出的理由。",
+            "concern": "ordinary",
+            "reason": "目标就是识别米迦相信自己会蒙恩的理由，观点层次不可省略。"
+          },
+          {
+            "kind": "reference_chain",
+            "quote": "米迦为什么认为耶和华必向他施恩？",
+            "required_operations": "将嵌入小句中的“他”回指到米迦。",
+            "concern": "ordinary",
+            "reason": "只有一个明确的受恩人物，回指关系直接。"
+          }
+        ]
+      },
+      {
+        "id": "q0023",
+        "parse_summary": "“这三十万七千五百训练有素的军队”整体作受统领者，数量和状态修饰“军队”；句末“由谁统领”询问统领者。",
+        "features": [
+          {
+            "kind": "reference_chain",
+            "quote": "这三十万七千五百训练有素的军队",
+            "required_operations": "用数量和训练状态将“这”所指的军队与经文中的士兵群体对应。",
+            "concern": "ordinary",
+            "reason": "这些限定用于确定目标军队，没有额外的嵌套关系。"
+          },
+          {
+            "kind": "role_tracking",
+            "quote": "军队由谁统领",
+            "required_operations": "将军队理解为被统领的一方，并寻找执行统领的人。",
+            "concern": "ordinary",
+            "reason": "统领者与军队的关系正是识别目标所必需的。"
+          }
+        ]
+      },
+      {
+        "id": "q0004",
+        "parse_summary": "前一分句交代王请求神人为自己祷告，后一分句询问实际祷告者；王是请求者和受益者，神人是被请求者及待识别的行动者。",
+        "features": [
+          {
+            "kind": "role_tracking",
+            "quote": "王求神人为他祷告，谁为王祷告了？",
+            "required_operations": "区分请求者、被请求者与祷告受益者，并把后半句的行动者与前半句角色对应。",
+            "concern": "ordinary",
+            "reason": "虽然两次表达祷告关系，但角色只有两人，且关系保持一致。"
+          },
+          {
+            "kind": "reference_chain",
+            "quote": "王求神人为他祷告",
+            "required_operations": "将“他”理解为王，而非神人。",
+            "concern": "ordinary",
+            "reason": "后半句“为王祷告”随即明确了该回指。"
+          },
+          {
+            "kind": "layered_speech",
+            "quote": "王求神人为他祷告",
+            "required_operations": "把“为他祷告”理解为请求的内容，再区分请求与实际行动。",
+            "concern": "ordinary",
+            "reason": "只有一层请求，且与所问行动直接相关。"
+          }
+        ]
+      },
+      {
+        "id": "q0122",
+        "parse_summary": "“听到什么消息后”是包含疑问成分的时间结构，主干是亚比米勒设下埋伏；选项要求区分收到的消息与后来看到的出城行动。",
+        "features": [
+          {
+            "kind": "layered_speech",
+            "quote": "亚比米勒听到什么消息后设下埋伏？",
+            "required_operations": "识别亚比米勒收到的信息内容，并将收到消息与随后设伏相连。",
+            "concern": "ordinary",
+            "reason": "消息内容及其先后关系就是题目的识别目标。"
+          },
+          {
+            "kind": "option_overlap",
+            "quote": "示剑人出到田间。／有人从城里出来。",
+            "required_operations": "比较两个相关的移动事件描述，区分作为消息传来的事件和设伏后观察到的事件。",
+            "concern": "ordinary",
+            "reason": "两项有事件关联，但没有重叠长列表或复杂从句；比较直接服务于目标。"
+          }
+        ]
+      },
+      {
+        "id": "q0121",
+        "parse_summary": "“听到什么消息后”把待回答的消息嵌入时间结构；亚比米勒同时是听消息者和设伏者，所问不是设伏后的观察内容。",
+        "features": [
+          {
+            "kind": "layered_speech",
+            "quote": "亚比米勒听到什么消息后设下埋伏？",
+            "required_operations": "提取传到亚比米勒耳中的消息，并保持听到消息先于设伏的关系。",
+            "concern": "ordinary",
+            "reason": "单层消息内容与时间联系都是目标所必需的。"
+          }
+        ]
+      },
+      {
+        "id": "q0034",
+        "parse_summary": "题干以被动结构询问受命者，“要为王看守耶和华的殿”是命令内容。选项用班次、安息日值勤状态、地点或职务界定不同群体。",
+        "features": [
+          {
+            "kind": "role_tracking",
+            "quote": "谁被吩咐要为王看守耶和华的殿？",
+            "required_operations": "把“谁”同时理解为受命者和看守行动者，区分受益者王与被看守的殿。",
+            "concern": "ordinary",
+            "reason": "这些角色共同界定所问的任务分配。"
+          },
+          {
+            "kind": "layered_speech",
+            "quote": "被吩咐要为王看守耶和华的殿",
+            "required_operations": "将看守任务理解为吩咐的内容，而非另一个独立叙述。",
+            "concern": "ordinary",
+            "reason": "只有一层命令，且受命身份是目标的一部分。"
+          },
+          {
+            "kind": "negation_scope",
+            "quote": "那两班安息日不值勤的",
+            "required_operations": "将“不”限定于安息日值勤状态，并将整个短语理解为两班人的称谓，而不是不执行看守任务。",
+            "concern": "ordinary",
+            "reason": "否定状态是区分目标班次与值勤班次的必要条件。"
+          }
+        ]
+      },
+      {
+        "id": "q0074",
+        "parse_summary": "“保罗离开之前”设定时间界限，“最后做的”将行动名词化并要求选出界限前的最后一项；各选项是简短行动描述。",
+        "features": []
+      },
+      {
+        "id": "q0019",
+        "parse_summary": "主干为神帮助乌西雅，后接乌西雅执行的“攻打”行动；疑问成分“哪些人”指向攻打对象，而非帮助者或被帮助者。",
+        "features": [
+          {
+            "kind": "role_tracking",
+            "quote": "神帮助乌西雅攻打哪些人？",
+            "required_operations": "区分帮助者神、受帮助且执行攻打的乌西雅，以及需要列出的被攻打群体。",
+            "concern": "ordinary",
+            "reason": "三个角色直接构成目标事件，句中没有额外角色转换。"
+          }
+        ]
+      },
+      {
+        "id": "q0055",
+        "parse_summary": "单一主动问句：百姓是行动者，“在城门口”限定地点，“谁”是被践踏者；没有嵌入小句或代词链。",
+        "features": []
+      },
+      {
+        "id": "q0045",
+        "parse_summary": "前句交代那官怀疑以利沙的话，后句询问以利沙对该官的回答；“那官”需在经文中定位，“他”回指那官，两个分句的主语发生转换。",
+        "features": [
+          {
+            "kind": "reference_chain",
+            "quote": "那官怀疑以利沙的话，以利沙怎样回答他？",
+            "required_operations": "将“那官”对应到经文中的官员，并将句末“他”回指到该官员。",
+            "concern": "ordinary",
+            "reason": "回指距离短，重复出现的以利沙明确标出了回答者。"
+          },
+          {
+            "kind": "role_tracking",
+            "quote": "那官怀疑以利沙的话，以利沙怎样回答他？",
+            "required_operations": "从官员作为怀疑者，切换到以利沙作为回答者、官员作为受话者。",
+            "concern": "ordinary",
+            "reason": "问答双方及角色转换是识别这次回答的必要关系。"
+          },
+          {
+            "kind": "layered_speech",
+            "quote": "那官怀疑以利沙的话，以利沙怎样回答他？",
+            "required_operations": "区分以利沙先前的话、官员对这些话的怀疑，以及随后以利沙的回答。",
+            "concern": "ordinary",
+            "reason": "这些话语层次直接界定所问的回应，没有展开额外引语。"
+          }
+        ]
+      },
+      {
+        "id": "q0008",
+        "parse_summary": "前置报告分句的主语“带他回来的先知”含关系修饰语；其后以“谁的尸首”询问宣告中的人物。“带他回来”的“他”指神人，先知是宣告者，末尾“他列祖”的“他”又指待识别的神人。",
+        "features": [
+          {
+            "kind": "nested_modifier",
+            "quote": "带他回来的先知宣告",
+            "required_operations": "先解析修饰“先知”的带回事件，再把该先知作为宣告者，而不是作为尸首所属者。",
+            "concern": "ordinary",
+            "reason": "该修饰语用于区分宣告者与受宣告者，只有一层关系修饰。"
+          },
+          {
+            "kind": "reference_chain",
+            "quote": "带他回来的先知宣告，谁的尸首必不得入他列祖的坟墓？",
+            "required_operations": "在尚未识别答案时确定首个“他”的所指，并把“谁”和末尾“他”关联到同一人，同时与先知区分。",
+            "concern": "potential_burden",
+            "reason": "开头以未明示先行词的“他”指向待回答人物，结尾再用“他”回指；两个男性角色间的连续代词解析增加了识别尸首所属者之外的负担。"
+          },
+          {
+            "kind": "layered_speech",
+            "quote": "先知宣告，谁的尸首必不得入他列祖的坟墓？",
+            "required_operations": "将尸首不得入墓理解为先知宣告的内容，并识别宣告针对的人。",
+            "concern": "ordinary",
+            "reason": "区分宣告者和宣告对象与目标直接相关。"
+          },
+          {
+            "kind": "negation_scope",
+            "quote": "谁的尸首必不得入他列祖的坟墓",
+            "required_operations": "把“必”理解为对“不得入墓”这一否定结果的确定表达。",
+            "concern": "ordinary",
+            "reason": "这是单一否定结果，没有多重否定或条件交互。"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,253 @@
+{
+  "request_hash": "ac88f1eec3f28e003e8bc29104678145450aa9e1f57dd63c75125aa2c0b07d66",
+  "model": "gpt-6.1-sol",
+  "response_id": "resp_0acce995a6b042e8006ae0d3d6a03c87d2806f519ee264e168",
+  "usage": {
+    "input_tokens": 3734,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 3731
+    },
+    "output_tokens": 3754,
+    "output_tokens_details": {
+      "reasoning_tokens": 452
+    },
+    "total_tokens": 7488
+  },
+  "parsed": {
+    "items": [
+      {
+        "id": "q0087",
+        "parse_summary": "疑问词“谁”询问咒诅者；“被偷的”修饰受咒诅的银子，偷银者与咒诅者不是同一角色。",
+        "features": [
+          {
+            "kind": "nested_modifier",
+            "quote": "谁咒诅了被偷的银子？",
+            "required_operations": "将“被偷的”附着于“银子”，再识别主句所问的咒诅者。",
+            "concern": "ordinary",
+            "reason": "修饰语简短，标明所问银子，没有形成多层嵌套。"
+          },
+          {
+            "kind": "role_tracking",
+            "quote": "谁咒诅了被偷的银子？",
+            "required_operations": "区分偷银子的人、被偷的银子和咒诅银子的人。",
+            "concern": "ordinary",
+            "reason": "区分偷窃者与咒诅者是识别目标人物所需的关系。"
+          }
+        ]
+      },
+      {
+        "id": "q0020",
+        "parse_summary": "主句以神为帮助者、乌西雅为受帮助并实施攻打的人，询问攻打对象。各选项列出三组人，其中部分族名带居住地修饰语。",
+        "features": [
+          {
+            "kind": "role_tracking",
+            "quote": "神帮助乌西雅攻打哪些人？",
+            "required_operations": "理解神帮助乌西雅，而乌西雅攻打问句所指的人群。",
+            "concern": "ordinary",
+            "reason": "帮助者、受帮助者和攻打对象之间的关系是题目目标的一部分。"
+          },
+          {
+            "kind": "nested_modifier",
+            "quote": "非利士人、住在姑珥巴力的阿拉伯人和米乌尼人",
+            "required_operations": "把“住在姑珥巴力的”仅附着于“阿拉伯人”，并将整个选项分成三个人群。",
+            "concern": "ordinary",
+            "reason": "地点修饰语保留了经文中对其中一个人群的限定，结构层次有限。"
+          },
+          {
+            "kind": "option_overlap",
+            "quote": "A：亚扪人、住在姑珥巴力的阿拉伯人和米乌尼人；B：非利士人、住在亚实突的阿拉伯人和亚扪人；D：非利士人、住在姑珥巴力的阿拉伯人和米乌尼人",
+            "required_operations": "逐项比较三个位置上的族名，并检查嵌入第二个人群中的地点是否变化。",
+            "concern": "potential_burden",
+            "reason": "多个长列表重复相同成分，又在族名与内部地点两个层面替换内容，增加反复扫描和暂存比较结果的负担。"
+          }
+        ]
+      },
+      {
+        "id": "q0005",
+        "parse_summary": "前半句叙述王请求神人为自己祷告，后半句询问实际祷告者；“他”与后面的“王”指同一受益者。",
+        "features": [
+          {
+            "kind": "role_tracking",
+            "quote": "王求神人为他祷告，谁为王祷告了？",
+            "required_operations": "区分提出请求的王、被请求的神人和实际执行祷告的人。",
+            "concern": "ordinary",
+            "reason": "请求者与执行者的区分直接对应所问人物，角色数量有限。"
+          },
+          {
+            "kind": "reference_chain",
+            "quote": "王求神人为他祷告，谁为王祷告了？",
+            "required_operations": "把“他”解析为王，并将前后两次“为……祷告”的受益者对应起来。",
+            "concern": "ordinary",
+            "reason": "代词的先行词就在同一短句内，指代链很短。"
+          }
+        ]
+      },
+      {
+        "id": "q0071",
+        "parse_summary": "以保罗为主语，询问持续讲话至午夜这一行为的原因；需要从经文中提取次日准备离开的因果关系。",
+        "features": []
+      },
+      {
+        "id": "q0067",
+        "parse_summary": "句首先给出被制服后的时间框架，其中施事是带有“附着邪灵”修饰语的人，被制服者暂时省略；后面的“谁”同时补足被制服者和受伤逃出者。",
+        "features": [
+          {
+            "kind": "nested_modifier",
+            "quote": "被那附着邪灵的人制服以后",
+            "required_operations": "先组合“那附着邪灵的人”，再将该人物放入被动结构，最后把整个结构作为时间背景。",
+            "concern": "potential_burden",
+            "reason": "识别逃出者之前，读者须先处理人物内部修饰、被动关系和时间框架三层结构；这些层次集中在身份疑问之前。"
+          },
+          {
+            "kind": "role_tracking",
+            "quote": "被那附着邪灵的人制服以后，谁受伤逃出了那房子？",
+            "required_operations": "将制服者与被制服者分开，并把被动句中省略的受事与后句逃出者视为同一组人。",
+            "concern": "ordinary",
+            "reason": "这一角色对应保留了题目要求识别的受伤逃出者与事件之间的必要联系。"
+          },
+          {
+            "kind": "reference_chain",
+            "quote": "那附着邪灵的人",
+            "required_operations": "将带指示词的描述对应到经文中制服士基瓦众子的那个人。",
+            "concern": "ordinary",
+            "reason": "描述与经文中的人物直接对应，没有长距离的多次指代转换。"
+          }
+        ]
+      },
+      {
+        "id": "q0012",
+        "parse_summary": "主语“先知”内含“带他回来的”关系修饰语，随后用“把”字句询问神人尸首的首个目的地；修饰语中的“他”与宾语中的“神人”指同一人。",
+        "features": [
+          {
+            "kind": "nested_modifier",
+            "quote": "带他回来的先知先把神人的尸首带到哪里？",
+            "required_operations": "先解析先知的既往行为以确定主语，再处理该先知运送尸首的行为及其目的地。",
+            "concern": "potential_burden",
+            "reason": "主体修饰语另引入一次“带回来”的事件，而主句又询问“带到哪里”，需要区分两次运送事件，超出单纯定位尸首首个目的地的关系。"
+          },
+          {
+            "kind": "reference_chain",
+            "quote": "带他回来的先知先把神人的尸首带到哪里？",
+            "required_operations": "把“他”对应到神人，保持先知与神人两个人物不混淆，并在经文中将“自己的城里”的领属者解析为先知。",
+            "concern": "potential_burden",
+            "reason": "同一句先用代词、后用名词重指神人，又以另一人物为主语，增加了可避免的先行词回溯。"
+          }
+        ]
+      },
+      {
+        "id": "q0057",
+        "parse_summary": "“她们”指谈话中的两个妇人；问题询问提议中吃另一妇人儿子的日期，需要把转述者所说的“另一个妇人”对应到内层话语中自称“我”的人。",
+        "features": [
+          {
+            "kind": "reference_chain",
+            "quote": "她们约定哪一天吃另一个妇人的儿子？",
+            "required_operations": "确定“她们”包含哪两个人，并将“另一个妇人”的儿子对应到经文内层引语中的“我的儿子”。",
+            "concern": "ordinary",
+            "reason": "人物与儿子的对应是判定所问日期的必要关系，问句本身没有再嵌套引语。"
+          },
+          {
+            "kind": "role_tracking",
+            "quote": "另一个妇人的儿子",
+            "required_operations": "区分向王陈述的妇人及其儿子，与提出次日安排的妇人及其儿子。",
+            "concern": "ordinary",
+            "reason": "两个母子关系必须保持区分，才能识别题目所指的日期。"
+          }
+        ]
+      },
+      {
+        "id": "q0024",
+        "parse_summary": "句首以数量和训练状态限定军队，句末“由谁统领”询问统领者；需要将经文“他们统领”的“他们”回指到二千六百名家族首领，而非此前提到的其他官员。",
+        "features": [
+          {
+            "kind": "nested_modifier",
+            "quote": "这三十万七千五百训练有素的军队",
+            "required_operations": "将数量与“训练有素”都归入军队的限定成分，再处理后面的统领关系。",
+            "concern": "ordinary",
+            "reason": "前置限定虽较长，但用于锁定目标军队，没有嵌入额外事件。"
+          },
+          {
+            "kind": "reference_chain",
+            "quote": "这三十万七千五百训练有素的军队由谁统领？",
+            "required_operations": "以“这”和人数定位经文中的军队，再解析“他们统领”中的代词所指。",
+            "concern": "ordinary",
+            "reason": "回指家族首领正是识别统领者所需的核心关系。"
+          },
+          {
+            "kind": "role_tracking",
+            "quote": "由谁统领？",
+            "required_operations": "区分军队的统领者与经文中负责记载、指挥记载及拥有军队的人。",
+            "concern": "ordinary",
+            "reason": "题目询问特定职责，保留这些角色差别是必要的。"
+          }
+        ]
+      },
+      {
+        "id": "q0003",
+        "parse_summary": "王是发令者，“人”是受命执行捉拿者，“谁”询问捉拿对象；选项中的人物描述没有深层嵌套。",
+        "features": [
+          {
+            "kind": "role_tracking",
+            "quote": "王吩咐人捉拿谁？",
+            "required_operations": "区分下令者、执行者与被捉拿者，并将经文命令中的“他”对应到神人。",
+            "concern": "ordinary",
+            "reason": "三个角色由简短的兼语结构表达，均服务于识别命令对象。"
+          }
+        ]
+      },
+      {
+        "id": "q0101",
+        "parse_summary": "“那些神像”是回指经文中被拿走的相关物件的主题，“最先”限定所问事件在所示叙事中的先后位置。",
+        "features": [
+          {
+            "kind": "reference_chain",
+            "quote": "那些神像最先发生了什么事？",
+            "required_operations": "把“那些神像”对应到经文列举的神像、雕像等相关物件，并追踪它们首次涉及的事件。",
+            "concern": "ordinary",
+            "reason": "物件回指和事件排序都是所述目标的必要组成，问句没有附加复杂结构。"
+          }
+        ]
+      },
+      {
+        "id": "q0034",
+        "parse_summary": "被动问句询问受命看守圣殿的人，“为王”标明服务对象。目标选项以“安息日不值勤”限定“两班”，需与值勤的三分之一等分组区分。",
+        "features": [
+          {
+            "kind": "role_tracking",
+            "quote": "谁被吩咐要为王看守耶和华的殿？",
+            "required_operations": "识别接受吩咐并执行看守的人，不把发令者或受保护的王当作答案。",
+            "concern": "ordinary",
+            "reason": "被动结构直接突出所问的受命者，角色关系与目标一致。"
+          },
+          {
+            "kind": "negation_scope",
+            "quote": "那两班安息日不值勤的",
+            "required_operations": "将“不”限定于安息日值勤状态，而不是理解为不承担题目所问的看守任务。",
+            "concern": "ordinary",
+            "reason": "否定限定是区分目标班次的必要信息，并非额外叠加的否定。"
+          },
+          {
+            "kind": "nested_modifier",
+            "quote": "那两班安息日不值勤的",
+            "required_operations": "把“安息日不值勤的”理解为对两班人员的限定，补足省略的人员中心语。",
+            "concern": "ordinary",
+            "reason": "这是简短的名词化人员描述，没有进一步嵌套。"
+          }
+        ]
+      },
+      {
+        "id": "q0073",
+        "parse_summary": "“保罗离开之前”提供时间界限，后句询问该界限之前最后发生的保罗的行为；两部分共享同一人物。",
+        "features": [
+          {
+            "kind": "reference_chain",
+            "quote": "保罗离开之前，最后做的是什么？",
+            "required_operations": "将后句省略的行为主体延续为保罗，并只在他的行为序列中确定离开前的最后一项。",
+            "concern": "ordinary",
+            "reason": "主语在紧邻的前半句已明确，时间界限与排序要求也是目标所必需的。"
+          }
+        ]
+      }
+    ]
+  }
+}

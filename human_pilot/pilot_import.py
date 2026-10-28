@@ -267,6 +267,16 @@ def load_passage(eval_root: Path, chapter: int, rel: str):
 
 _TIER1_MARKER = re.compile(r"(?<![\w\]\-–—])(\d{1,3})\s+")
 
+# Google's word-by-word arm sometimes renders a verse marker "17" as "17 号"
+# ("No. 17"), so after the marker is split off the verse text starts with a
+# stray "号" (acts19 and 1kgs13 verse 17, in both gold72 and hard66). A verse
+# never legitimately opens with a bare 号 followed by a space.
+_MARKER_NUMBER_WORD = re.compile(r"^号\s+")
+
+
+def clean_tier1_verse_text(text: str) -> str:
+    return _MARKER_NUMBER_WORD.sub("", text, count=1)
+
 
 def load_tier1_metadata(eval_root: Path) -> list[dict]:
     path = eval_root / "datasets" / TIER1_CSV
@@ -727,7 +737,7 @@ def parse_tier1_verses(text: str, metadata: dict) -> list[tuple[str, str]]:
     verses = []
     for index, (label, marker) in enumerate(accepted):
         end = accepted[index + 1][1].start() if index + 1 < len(accepted) else len(text)
-        verse_text = text[marker.end():end].strip()
+        verse_text = clean_tier1_verse_text(text[marker.end():end].strip())
         if not verse_text:
             raise ValueError(f"empty parsed verse {label} for {metadata['id']}")
         verses.append((label, verse_text))

@@ -1,0 +1,220 @@
+{
+  "id": "hard:t1_1kgs13:2f00:open",
+  "original": {
+    "id": "hard:t1_1kgs13:2f00:open",
+    "question": "带他回来的先知先把神人的尸首带到哪里？",
+    "passage": "13:26 那带他回来的先知听见，就说：“这是违背耶和华命令的神人，耶和华因此把他交给狮子，狮子撕裂杀了他，正如耶和华曾对他说的话。”\n13:27 先知吩咐儿子们说：“给我备驴。”他们就备了驴，\n13:28 他去到路上，看见尸首躺在那里，驴和狮子都站在尸首旁边，狮子没有吃尸首，也没有伤驴。\n13:29 先知就把神人的尸首拾起来，放在驴上，带回自己的城里，为他哀悼，埋葬他。\n13:30 把尸首葬在自己的坟墓里，他们为他哀哭说：“我的兄弟啊！”",
+    "expected_answer": "To his own city.",
+    "form": "open",
+    "options": {},
+    "correct_option": "",
+    "intended_target": "",
+    "original_question": "",
+    "original_answer": ""
+  },
+  "input_hash": "225faf397ceecddeb2c44ffaced54e33329742c140e98ea18617f1e597f09589",
+  "status": "SIMPLIFIED",
+  "accepted_case": {
+    "id": "hard:t1_1kgs13:2f00:open",
+    "question": "先知先把神人的尸首带到哪里？",
+    "passage": "13:26 那带他回来的先知听见，就说：“这是违背耶和华命令的神人，耶和华因此把他交给狮子，狮子撕裂杀了他，正如耶和华曾对他说的话。”\n13:27 先知吩咐儿子们说：“给我备驴。”他们就备了驴，\n13:28 他去到路上，看见尸首躺在那里，驴和狮子都站在尸首旁边，狮子没有吃尸首，也没有伤驴。\n13:29 先知就把神人的尸首拾起来，放在驴上，带回自己的城里，为他哀悼，埋葬他。\n13:30 把尸首葬在自己的坟墓里，他们为他哀哭说：“我的兄弟啊！”",
+    "expected_answer": "To his own city.",
+    "form": "open",
+    "options": {},
+    "correct_option": "",
+    "intended_target": "",
+    "original_question": "带他回来的先知先把神人的尸首带到哪里？",
+    "original_answer": "To his own city."
+  },
+  "contract": {
+    "id": "item",
+    "status": "ready",
+    "target": "识别先知搬运神人尸首时首先带回的地点，即先知自己的城，而非后来安葬尸首的坟墓。",
+    "basis": "inferred",
+    "required_answer_components": [
+      "先知自己的城里；“自己的”指这位先知。"
+    ],
+    "relations": [
+      {
+        "id": "r1",
+        "quote": "带他回来的",
+        "meaning": "用先前带神人回来的经历描述这位先知。",
+        "role": "removable",
+        "reason": "这是人物的前情描述，不是本题要求回答的事件。在所给经文中，搬运神人尸首的先知只有一位；保留先知、神人的尸首及首先带到何处的关系，仍能唯一定位13:29的事件。"
+      },
+      {
+        "id": "r2",
+        "quote": "先知",
+        "meaning": "搬运尸首这一行动的施事者。",
+        "role": "anchor",
+        "reason": "指明所问搬运事件的行动者，并明确答案中“自己的城”归属于这位先知；题目并不要求回答先知的身份。"
+      },
+      {
+        "id": "r3",
+        "quote": "先把神人的尸首带到哪里",
+        "meaning": "询问先知搬运神人尸首时首先带到的地点。",
+        "role": "tested",
+        "reason": "这是必须恢复的行动与目的地关系。“神人的尸首”限定搬运对象，“先”限定所问的先后阶段，不能把后来安葬尸首的坟墓当作所问地点。"
+      }
+    ],
+    "note": "未提供明确的intended_target或更早的原题、原答案，因此目标为保守推断，并非已确认的研究设计意图。13:29明确说先知把尸首放在驴上后“带回自己的城里”，支持固定答案；13:30另述葬在自己的坟墓里。放在驴上属于装载动作，不是本题所问的带回地点。"
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "proposal": {
+        "id": "item",
+        "status": "revised",
+        "question": "先知先把神人的尸首带到哪里？",
+        "options": [],
+        "removed_relation_ids": [
+          "r1"
+        ],
+        "note": "删除描述先知先前经历的“带他回来的”，保留行动者、搬运对象及“先”的时间限制。"
+      },
+      "candidate": {
+        "id": "hard:t1_1kgs13:2f00:open",
+        "question": "先知先把神人的尸首带到哪里？",
+        "passage": "13:26 那带他回来的先知听见，就说：“这是违背耶和华命令的神人，耶和华因此把他交给狮子，狮子撕裂杀了他，正如耶和华曾对他说的话。”\n13:27 先知吩咐儿子们说：“给我备驴。”他们就备了驴，\n13:28 他去到路上，看见尸首躺在那里，驴和狮子都站在尸首旁边，狮子没有吃尸首，也没有伤驴。\n13:29 先知就把神人的尸首拾起来，放在驴上，带回自己的城里，为他哀悼，埋葬他。\n13:30 把尸首葬在自己的坟墓里，他们为他哀哭说：“我的兄弟啊！”",
+        "expected_answer": "To his own city.",
+        "form": "open",
+        "options": {},
+        "correct_option": "",
+        "intended_target": "",
+        "original_question": "带他回来的先知先把神人的尸首带到哪里？",
+        "original_answer": "To his own city."
+      },
+      "checks": [
+        {
+          "repeat": 1,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "原题询问先知先把神人的尸首带到哪里。13:29记载带回自己的城里，13:30才记载葬入自己的坟墓；合同保留了行动者、搬运对象、目的地及先后范围，答案归属也正确。"
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "候选题保留“先知”“神人的尸首”和“先……带到哪里”，仍要求回答先知首先把尸首带到的地点，而非后来的安葬地点。"
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "仅删除“带他回来的”这一人物识别修饰语。当前经文中搬运神人尸首的先知唯一，删除后没有新增竞争人物或搬运事件，也未丢失所问的先后关系。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "原题与候选题均为简体中文；本题没有选项。"
+            },
+            "option_meanings": [],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "13:29明确记载先知拾起神人的尸首并带回城里，13:30接着记载安葬；题目的行动、对象和先后预设均有经文支持。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "13:29的“带回自己的城里”直接支持固定答案“To his own city.”，其中“自己”指搬运尸首的先知。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "所问搬运事件的明确目的地只有先知自己的城。放在驴上是装载动作，自己的坟墓则是随后安葬的地点，均不构成同等成立的答案。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "当前经文已交代搬运者、尸首、带回的目的地和后续安葬，足以独立回答，无需外部圣经知识。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "候选题只询问地点，没有透露“自己的城里”或提供其他直接指向答案的提示。"
+              },
+              "mcq_validity": {
+                "status": "not_applicable",
+                "evidence": "本题为开放式问题，没有选项或选择题答案键。"
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "“先知先把神人的尸首带到哪里？”是自然、直接的中文问句，词序和用词均无需修补。",
+              "quotes": []
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "单句清楚呈现行动者、对象和地点疑问；“先”直接限定时间阶段，没有复杂指代或修饰链。",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "没有额外叙事铺垫。先知和神人的尸首用于定位搬运事件，“先”用于区分带回城里与随后安葬，均服务于目标。",
+              "quotes": []
+            }
+          }
+        },
+        {
+          "repeat": 2,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "原题询问先知先把神人的尸首带到何处。13:29明确记载“带回自己的城里”，13:30随后记载葬入坟墓，支持契约对行动者、搬运对象、先后阶段和目的地的界定。“自己的”指搬运尸首的先知。"
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "候选题保留“先知”“先”“神人的尸首”和“带到哪里”，仍测试同一搬运事件的首先到达地点，未改成身份辨认或安葬地点问题。"
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "仅删除人物修饰语“带他回来的”。当前经文中搬运神人尸首的先知只有一位，保留的行动者、对象及搬运动作足以定位13:29；删除此前经历不会引入另一位可能的行动者或另一搬运事件。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "原题与候选题均为简体中文；本题没有选项。"
+            },
+            "option_meanings": [],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "13:29记载先知拾起神人的尸首、放在驴上并带回自己的城里，支持问题预设的搬运事件；13:30提供之后安葬的阶段。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "固定答案“To his own city.”直接对应13:29的“带回自己的城里”。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "经文明确给出的搬运目的地是先知自己的城。放在驴上是装载动作，不是带到的目的地；自己的坟墓是随后记载的安葬地点，不符合题目的“先”。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "当前窗口完整呈现拾起尸首、装载、带回城里及安葬的过程，无须依赖窗口外的人物经历即可回答。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "候选题没有透露“自己的城里”或提供其他直接指向答案的提示；答案须从经文中提取。"
+              },
+              "mcq_validity": {
+                "status": "not_applicable",
+                "evidence": "这是开放式问题，没有选项或选择题答案键。"
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "“先知先把神人的尸首带到哪里？”是自然、直接的中文问句，语序和指代清楚。",
+              "quotes": []
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "单句直接呈现行动者、搬运对象和待回答的地点；“先”保留必要的时间阶段限制，没有额外指代链或嵌套结构。",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "没有额外叙事铺垫。“先知”和“神人的尸首”用于定位目标事件，“先”用于区别后续安葬地点，均具有实际作用。",
+              "quotes": []
+            }
+          }
+        }
+      ],
+      "status": "SIMPLIFIED"
+    }
+  ]
+}

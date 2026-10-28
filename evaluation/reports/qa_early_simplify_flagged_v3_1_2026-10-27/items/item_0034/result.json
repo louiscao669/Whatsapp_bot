@@ -1,0 +1,305 @@
+{
+  "id": "hard:t1_judg9:f36a:mcq",
+  "original": {
+    "id": "hard:t1_judg9:f36a:mcq",
+    "question": "迦勒第一次说有人来时，西布说他看见的其实是什么？",
+    "passage": "9:36 迦勒看见人群，就对西布说：“看哪，有人从山上下来！”西布说：“山上的影子在你眼中好像人。”\n9:37 迦勒又说：“看哪，有人从地中间下来，一队从占卜树那里经过。”",
+    "expected_answer": "山上的影子，不是人。",
+    "form": "mcq",
+    "options": {
+      "A": "伪装的士兵。",
+      "B": "山上的影子，不是人。",
+      "C": "从山上下来的人。",
+      "D": "树林里的野兽。",
+      "E": "根据这段文字无法判断"
+    },
+    "correct_option": "B",
+    "intended_target": "",
+    "original_question": "迦勒第一次说有人来时，西布说他看见的其实是什么？",
+    "original_answer": "Shadows on the hills, not people."
+  },
+  "input_hash": "041f1bc59e4aa19e561e796b1c0ba81efad1a3d249f08a6cc40297148be95f59",
+  "status": "SIMPLIFIED",
+  "accepted_case": {
+    "id": "hard:t1_judg9:f36a:mcq",
+    "question": "西布说迦勒看见的其实是什么？",
+    "passage": "9:36 迦勒看见人群，就对西布说：“看哪，有人从山上下来！”西布说：“山上的影子在你眼中好像人。”\n9:37 迦勒又说：“看哪，有人从地中间下来，一队从占卜树那里经过。”",
+    "expected_answer": "山上的影子，不是人。",
+    "form": "mcq",
+    "options": {
+      "A": "伪装的士兵。",
+      "B": "山上的影子，不是人。",
+      "C": "从山上下来的人。",
+      "D": "树林里的野兽。",
+      "E": "根据这段文字无法判断"
+    },
+    "correct_option": "B",
+    "intended_target": "",
+    "original_question": "迦勒第一次说有人来时，西布说他看见的其实是什么？",
+    "original_answer": "Shadows on the hills, not people."
+  },
+  "contract": {
+    "id": "item",
+    "status": "ready",
+    "target": "理解西布对迦勒所见景象的解释：迦勒看见的是山上的影子，而不是人。",
+    "basis": "inferred",
+    "required_answer_components": [
+      "西布说迦勒看见的是山上的影子。",
+      "明确影子与人的区别：西布认为那不是人。"
+    ],
+    "relations": [
+      {
+        "id": "r1",
+        "quote": "迦勒第一次说有人来时",
+        "meaning": "把西布的解释定位在迦勒第一次报告有人到来的时候，而非后一次报告。",
+        "role": "removable",
+        "reason": "这段文字只有一处西布发言，且唯一内容就是解释迦勒所见的景象。保留所问的西布对所见景象的解释，即可唯一定位该事实；不必另外恢复迦勒首次报告这一叙事步骤。“第一次”在此是定位性背景，不是要求回答的时间关系。"
+      },
+      {
+        "id": "r2",
+        "quote": "西布说他看见的其实是什么",
+        "meaning": "要求回答西布如何解释迦勒所见的景象，并区分其解释中的实际所见与先前以为的人。",
+        "role": "tested",
+        "reason": "核心是恢复西布所说的对象及其纠正性含义：山上的影子，而不是人。必须保留这是西布的解释，不能变成询问 passage 客观确认是否有人下来。"
+      }
+    ],
+    "note": "未提供非空的 intended_target，目标依据原问题、original_question 和 original_answer 保守推定，不代表研究者明确批准的设计意图。9:36 中西布说“山上的影子在你眼中好像人”，支持预期答案；9:37 虽有迦勒再次报告，却没有另一处西布的解释，因此首次报告的背景在此窗口内不承担唯一定位作用。"
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "proposal": {
+        "id": "item",
+        "status": "revised",
+        "question": "西布说迦勒看见的其实是什么？",
+        "options": [
+          {
+            "label": "A",
+            "text": "伪装的士兵。"
+          },
+          {
+            "label": "B",
+            "text": "山上的影子，不是人。"
+          },
+          {
+            "label": "C",
+            "text": "从山上下来的人。"
+          },
+          {
+            "label": "D",
+            "text": "树林里的野兽。"
+          },
+          {
+            "label": "E",
+            "text": "根据这段文字无法判断"
+          }
+        ],
+        "removed_relation_ids": [
+          "r1"
+        ],
+        "note": "删除首次报告的叙事背景，直接询问西布对迦勒所见景象的解释，保留纠正性含义。"
+      },
+      "candidate": {
+        "id": "hard:t1_judg9:f36a:mcq",
+        "question": "西布说迦勒看见的其实是什么？",
+        "passage": "9:36 迦勒看见人群，就对西布说：“看哪，有人从山上下来！”西布说：“山上的影子在你眼中好像人。”\n9:37 迦勒又说：“看哪，有人从地中间下来，一队从占卜树那里经过。”",
+        "expected_answer": "山上的影子，不是人。",
+        "form": "mcq",
+        "options": {
+          "A": "伪装的士兵。",
+          "B": "山上的影子，不是人。",
+          "C": "从山上下来的人。",
+          "D": "树林里的野兽。",
+          "E": "根据这段文字无法判断"
+        },
+        "correct_option": "B",
+        "intended_target": "",
+        "original_question": "迦勒第一次说有人来时，西布说他看见的其实是什么？",
+        "original_answer": "Shadows on the hills, not people."
+      },
+      "checks": [
+        {
+          "repeat": 1,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "原题要求识别西布对迦勒所见景象的解释，而非判断实际是否有人。契约保留了说话者、所见对象以及影子与人的纠正性区别。首次报告仅用于定位；当前经文只有一处西布的解释，可安全视为可移除背景。"
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "候选题仍问西布说迦勒看见的其实是什么，保留了解释者、观看者和纠正性含义，未改为询问客观所见。选项B完整保留所需答案。"
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "删除了“迦勒第一次说有人来时”这一定位背景。虽然经文还有迦勒第二次报告，但没有第二处西布的解释，因此删除后不产生竞争事件或其他可选答案。将“他”明确为“迦勒”也保持了原有指代。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "候选问题及A至E全部选项均保留原有中文语言。"
+            },
+            "option_meanings": [
+              {
+                "status": "pass",
+                "evidence": "“伪装的士兵。”原样保留，命题和范围不变。",
+                "label": "A"
+              },
+              {
+                "status": "pass",
+                "evidence": "“山上的影子，不是人。”原样保留，对象和否定区别均不变。",
+                "label": "B"
+              },
+              {
+                "status": "pass",
+                "evidence": "“从山上下来的人。”原样保留，命题和范围不变。",
+                "label": "C"
+              },
+              {
+                "status": "pass",
+                "evidence": "“树林里的野兽。”原样保留，命题和范围不变。",
+                "label": "D"
+              },
+              {
+                "status": "pass",
+                "evidence": "“根据这段文字无法判断”原样保留，无法判断的范围不变。",
+                "label": "E"
+              }
+            ],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "经文明确记载西布对迦勒说“山上的影子在你眼中好像人”，支持问题所预设的解释行为及人物关系。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "西布把迦勒所认为的人解释为山上的影子，支持预期答案及选项B中的“山上的影子，不是人”。这里的否定属于西布的解释，并非经文对实际情况的独立确认。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "只有B表达西布给出的解释。C是迦勒所报告的内容，A和D没有文本依据，E与经文已提供的明确解释不符。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "当前经文提供了迦勒的报告和西布的直接回应，足以确定人物关系、解释内容及唯一答案，无须外部知识。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "问题没有直接透露影子这一答案，也没有额外标示正确选项；作答需要依据经文区分迦勒的报告与西布的解释。"
+              },
+              "mcq_validity": {
+                "status": "pass",
+                "evidence": "五个选项完整且可区分，只有B符合所问的西布之解释，固定答案与答案键一致。"
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "问题表达自然直接，人物指代明确；各选项均为自然的中文答案形式。",
+              "quotes": []
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "问题只需理解西布对迦勒所见的解释，无多层指代或复杂修饰；选项简短，比较负担低。",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "没有额外叙事铺垫。保留西布与迦勒的角色有助于区分解释者与观看者，“其实”保留所问的纠正性含义。",
+              "quotes": []
+            }
+          }
+        },
+        {
+          "repeat": 2,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "原问题要求识别西布对迦勒所见景象的解释，而非判断实际是否有人。契约保留了说话者、所见者及“山上的影子而不是人”的纠正关系。“第一次”仅定位发言；当前窗口只有一次西布的解释，将其判为可移除背景合理。"
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "候选仍问西布认为迦勒实际看见什么，保留了人物角色、解释归属和“其实”的纠正含义；正确选项仍包含山上的影子及不是人两个答案成分。"
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "删除的是“迦勒第一次说有人来时”这一定位背景。虽然下文有迦勒第二次报告，但没有第二次西布发言，因此删除后没有新增可竞争的解释或答案；直接询问西布的解释已足以定位。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "候选问题与全部选项均保持原来的简体中文。"
+            },
+            "option_meanings": [
+              {
+                "status": "pass",
+                "evidence": "选项原文未变，仍指伪装的士兵。",
+                "label": "A"
+              },
+              {
+                "status": "pass",
+                "evidence": "选项原文未变，仍明确指山上的影子，并否定是人。",
+                "label": "B"
+              },
+              {
+                "status": "pass",
+                "evidence": "选项原文未变，仍指从山上下来的人。",
+                "label": "C"
+              },
+              {
+                "status": "pass",
+                "evidence": "选项原文未变，仍指树林里的野兽。",
+                "label": "D"
+              },
+              {
+                "status": "pass",
+                "evidence": "选项原文未变，仍表示根据所给文字无法判断。",
+                "label": "E"
+              }
+            ],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "经文记载西布对迦勒说“山上的影子在你眼中好像人”，支持问题预设的解释行为及双方角色。问题以“西布说”限定解释来源，没有将其说法冒充叙述者确认的事实。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "“山上的影子在你眼中好像人”支持西布将迦勒所见解释为山上的影子，而非人，符合固定答案及选项B。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "窗口中只有一处西布发言，其内容唯一对应B；其他实体选项不符合他的解释，E也不成立。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "当前窗口提供了迦勒的报告及西布的直接回应，无须外部知识即可回答。后续报告没有带来另一处西布解释。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "问题没有直接给出影子或否定人的答案信息；各选项作为正常选择题答案呈现，仍需依据经文判别。"
+              },
+              "mcq_validity": {
+                "status": "pass",
+                "evidence": "五个选项可正常比较，正确键B与经文支持的答案一致，且没有第二个同样正确的选项。"
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "问题表达自然直接，明确说话者和所见者；选项均为通顺的中文表达。",
+              "quotes": []
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "问题直接使用人物姓名，无须解析代词或跨句指代链；选项简短，比较负担低。",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "问题只保留识别目标所需的解释来源、所见者及纠正性询问，没有多余事件叙述或背景链条。",
+              "quotes": []
+            }
+          }
+        }
+      ],
+      "status": "SIMPLIFIED"
+    }
+  ]
+}

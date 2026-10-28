@@ -1,0 +1,41 @@
+{
+  "request_hash": "905355aee75eda5128868d2acc3b8cd5962642ecc3e58fc7d6bd1ec33fc73b3c",
+  "model": "gpt-6.1-sol",
+  "response_id": "resp_0cfaed04b859cf64006ae0ee4b40c487d180236710e247d124",
+  "usage": {
+    "input_tokens": 1009,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0
+    },
+    "output_tokens": 701,
+    "output_tokens_details": {
+      "reasoning_tokens": 278
+    },
+    "total_tokens": 1710
+  },
+  "parsed": {
+    "items": [
+      {
+        "id": "item",
+        "parse_summary": "问句以“神”为帮助者、“乌西雅”为攻打者，询问攻打的对象，没有嵌套从句或延后出现的提问。A—D各列三个群体，括号中的居住地修饰紧邻的族群名称；作答需同时核对群体名称及阿拉伯人的居住地。",
+        "features": [
+          {
+            "kind": "role_tracking",
+            "quote": "神帮助乌西雅攻打哪些人？",
+            "required_operations": "区分帮助者“神”、攻打者“乌西雅”和被攻打的群体，确定“哪些人”所问的是攻打对象。",
+            "concern": "ordinary",
+            "reason": "参与者关系直接明示，是辨认目标群体所必需的关系，没有额外的角色转换。"
+          },
+          {
+            "kind": "option_overlap",
+            "quote": "A：• 亚扪人\n• 阿拉伯人（住在姑珥巴力）\n• 米乌尼人\nD：• 非利士人\n• 阿拉伯人（住在姑珥巴力）\n• 米乌尼人",
+            "required_operations": "逐项比较三成员名单，识别A与D仅首项不同，并在其他选项中继续核对族群及括号内的居住地。",
+            "concern": "potential_burden",
+            "reason": "相近名单分列呈现，尤其A与D重复两项，可能使读者为确认完整组合而反复扫描、记住已核对的成员；这是名单重复带来的比较负担，而非三个目标群体本身的理解负担。"
+          }
+        ]
+      }
+    ]
+  }
+}

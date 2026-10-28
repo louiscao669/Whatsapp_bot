@@ -1,0 +1,48 @@
+{
+  "request_hash": "be5bfe66e914d6abf45795653f155160364c6406e1dfb94e6edeea7d64923e9c",
+  "model": "gpt-6.1-sol",
+  "response_id": "resp_088e419bdec9d657006ae0f02033cc87d18113755483dde0eb",
+  "usage": {
+    "input_tokens": 907,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0
+    },
+    "output_tokens": 511,
+    "output_tokens_details": {
+      "reasoning_tokens": 117
+    },
+    "total_tokens": 1418
+  },
+  "parsed": {
+    "items": [
+      {
+        "id": "item",
+        "parse_summary": "首句以“被邪灵附身”修饰施事“那个人”，以“一些人”引入被制服者。次句用“这些人”承接被制服者，说明他们随后带伤逃出房子，再以“他们是谁”询问身份。需要区分附身者与被制服者，并将后者对应到经文中的士基瓦的七个儿子。",
+        "features": [
+          {
+            "kind": "nested_modifier",
+            "quote": "那个被邪灵附身的人",
+            "required_operations": "将“被邪灵附身”理解为对“人”的修饰，再将这个人识别为“制服”的施事。",
+            "concern": "ordinary",
+            "reason": "修饰语仅一层，用于辨认事件中的施事，是目标关系所需的信息。"
+          },
+          {
+            "kind": "role_tracking",
+            "quote": "那个被邪灵附身的人制服了一些人。",
+            "required_operations": "区分被邪灵附身的人与被他制服的人，避免把附身关系中的被动角色误作制服事件中的受事。",
+            "concern": "ordinary",
+            "reason": "两组角色关系直接服务于辨认被制服者，句内没有额外嵌套的事件参与者。"
+          },
+          {
+            "kind": "reference_chain",
+            "quote": "一些人。这些人随后带伤逃出了那房子，他们是谁？",
+            "required_operations": "将“一些人”“这些人”和“他们”保持为同一群体，并据经文确定其身份；将“那房子”对应到经文中的房子。",
+            "concern": "ordinary",
+            "reason": "存在跨句承接，但指向相邻且一致，没有竞争性的复数先行词；承接的两项经历正是辨认目标人物的依据。"
+          }
+        ]
+      }
+    ]
+  }
+}

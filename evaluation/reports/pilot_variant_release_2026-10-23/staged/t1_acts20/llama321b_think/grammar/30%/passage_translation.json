@@ -1,0 +1,149 @@
+{
+  "method": "grammar_30%",
+  "source_language": "en",
+  "target_language": "Simplified Chinese",
+  "nllb_dropout_rate": null,
+  "source_texts": [
+    "7 On the first day of the week we came together to break bread. Since Paul was ready to leave the next day, he talked to them and kept on speaking until midnight.\n\n8 Now there were many lamps in the upper room where we were gathered.\n\n9 And a certain young man named Eutychus, seated in the window, was sinking into a deep sleep as Paul talked on and on. When he was sound asleep, he fell from the third story and was picked up dead.\n\n10 But Paul went down, threw himself on the young man, and embraced him. “Do not be alarmed!” he said. “He is still alive!”\n\n11 Then Paul went back upstairs, broke bread, and ate. And after speaking until daybreak, he departed.\n\n12 And the people were greatly relieved to take the boy home alive.\n"
+  ],
+  "translations": [
+    "7 在第一天一周的，我们聚集在一起擘饼。由于保罗第二天准备离开，他与他们交谈，并一直讲到午夜。\n\n8 有许多当时我们聚集的楼上的房间里灯。\n\n9 有一个名叫在窗户边尤提古斯的年轻人坐，保罗不停地讲，他渐渐进入沉睡。当他熟睡时，从三楼坠下，被捡起时已死。\n\n10 但保罗下去，扑到那年轻人身上，抱住他，说：“不要惊慌！他还活着！”\n\n11 然后保罗上楼，擘开饼，吃了。并且讲到天亮才离开。\n\n12 人们非常高兴，带着那活着回家男孩。"
+  ],
+  "grammar_rate": 0.3,
+  "grammar_metadata": {
+    "generation_mode": "validated_bank",
+    "bank_id": "c638d066cfb273f52552c575351d303573d0cb7a246b65d81099b269c2939d30",
+    "edit_style": "llm_structural_v1",
+    "source_sha256": "0ed2c98878be9f1ae8f14d0bb42955dfc1e14727392952bc39a82e67a468b95d",
+    "output_sha256": "5d8ab6dc9cd1b26c7c7cf5f03890df1f58fde9ae9d7c04ef6c4d38eb56208d29",
+    "judge": {
+      "model": "gpt-6.1-sol",
+      "prompt_sha256": "a2abc09beb94299ae5ba0b4d6c363ce481093bce718b9b9608318cce66e6c61e",
+      "schema_sha256": "ad414a52eb96503c0b44a987f2edd0589aa8555bbfea4aacbe8305676de1aa12"
+    },
+    "bank_max_rate": 0.3,
+    "generator": {
+      "model": "gpt-6.1-sol",
+      "prompt_sha256": "1a0fc34ac6e0db5918641db38e16db653909ae5a6a89b418e958e5dc2ba3782b",
+      "schema_sha256": "647d8249f8e5e165094d5f461438de2f36ec7ff8ee75007729e01d3bc3069057"
+    },
+    "requested_rate": 0.3,
+    "actual_affected_rate": 0.31097560975609756,
+    "target_met": true,
+    "shortfall_content_chars": 0,
+    "seed": 40609,
+    "total_content_chars": 164,
+    "affected_content_chars": 51,
+    "affected_unit_count": 4,
+    "operation_count": 4,
+    "protected_terms": 0,
+    "protected_losses": [],
+    "protected_verified": true,
+    "affected_units": [
+      {
+        "unit_index": 8,
+        "verse": 9,
+        "content_chars": 18,
+        "original_text": "9 有一个名叫尤提古斯的年轻人坐在窗户边，",
+        "corrupted_text": "9 有一个名叫在窗户边尤提古斯的年轻人坐，",
+        "operations": [
+          "llm_structural_defect"
+        ],
+        "proposal_id": "1c2a0980752280487c549891aeab188ae0067503a561926537c95a487577246e",
+        "proposal": {
+          "edited_clause": "9 有一个名叫在窗户边尤提古斯的年轻人坐，",
+          "error_type": "介词短语插入命名补语内部",
+          "explanation": "将原来附属于“坐”的处所短语“在窗户边”整体移到“名叫”和“尤提古斯”之间，破坏了命名动词与名称补语之间的连接。"
+        },
+        "judgment_id": "a961a402d18b54018f6e8d366040b4479bcc3703b641d1fceaa29c46eebcd357",
+        "judgment": {
+          "explanation": "原句中“在窗户边”是“坐”的处所补语；编辑将这一完整的多词介词短语移入“名叫尤提古斯”内部，插在“名叫”与其名称补语之间，违反该命名结构的衔接要求。原有词语均保持完整，人物、名字和坐在窗边的含义仍可恢复；错误仅涉及本分句。",
+          "grammar_worsened": "yes",
+          "structural_error": "yes",
+          "lexical_integrity": "yes",
+          "meaning_preserved": "yes",
+          "local_error": "yes",
+          "error_span": "名叫在窗户边尤提古斯"
+        }
+      },
+      {
+        "unit_index": 0,
+        "verse": 7,
+        "content_chars": 7,
+        "original_text": "7 在一周的第一天，",
+        "corrupted_text": "7 在第一天一周的，",
+        "operations": [
+          "llm_structural_defect"
+        ],
+        "proposal_id": "1c2a0980752280487c549891aeab188ae0067503a561926537c95a487577246e",
+        "proposal": {
+          "edited_clause": "7 在第一天一周的，",
+          "error_type": "领属定语后置",
+          "explanation": "将原来修饰“第一天”的领属短语“一周的”整体移到中心语之后，违反了带“的”的领属定语须置于中心语之前的要求。"
+        },
+        "judgment_id": "e791912fd0c01a987022739aba4c89c1d0b4389d415c2a77b1c5532e89fcc8d0",
+        "judgment": {
+          "explanation": "原句中“一周的”是修饰“第一天”的领属定语。替换将这一完整的多词定语移到中心语“第一天”之后，违反此类“的”字定语须置于中心语之前的要求，形成“在第一天一周的”的悬空定语结构。原有词语均保持完整，“一周的第一天”的时间关系仍可恢复；错误局限于本分句。",
+          "grammar_worsened": "yes",
+          "structural_error": "yes",
+          "lexical_integrity": "yes",
+          "meaning_preserved": "yes",
+          "local_error": "yes",
+          "error_span": "在第一天一周的"
+        }
+      },
+      {
+        "unit_index": 28,
+        "verse": 12,
+        "content_chars": 9,
+        "original_text": "带着那男孩活着回家。",
+        "corrupted_text": "带着那活着回家男孩。",
+        "operations": [
+          "llm_structural_defect"
+        ],
+        "proposal_id": "1c2a0980752280487c549891aeab188ae0067503a561926537c95a487577246e",
+        "proposal": {
+          "edited_clause": "带着那活着回家男孩。",
+          "error_type": "谓语短语插入名词短语",
+          "explanation": "将原来位于“那男孩”之后的谓语短语“活着回家”整体移到“那”和“男孩”之间，使其未经定语标记便插入指示名词短语，破坏了该名词短语的内部结构。"
+        },
+        "judgment_id": "652abebfb7dd2bac3ee56c25fd649b3c21e94d6fdbad73c72802727ac5a4c7b0",
+        "judgment": {
+          "explanation": "原句中“活着回家”是“带着那男孩”之后的连谓成分；编辑将这一完整的多词谓语移入“那男孩”内部。该复杂谓语若修饰“男孩”，需要用“的”连接，不能直接构成“那活着回家男孩”，因此引入了局部的结构错误。各词内部保持完整，带着男孩、活着回家的原有事件关系仍可恢复。",
+          "grammar_worsened": "yes",
+          "structural_error": "yes",
+          "lexical_integrity": "yes",
+          "meaning_preserved": "yes",
+          "local_error": "yes",
+          "error_span": "那活着回家男孩"
+        }
+      },
+      {
+        "unit_index": 6,
+        "verse": 8,
+        "content_chars": 17,
+        "original_text": "8 当时我们聚集的楼上的房间里有许多灯。",
+        "corrupted_text": "8 有许多当时我们聚集的楼上的房间里灯。",
+        "operations": [
+          "llm_structural_defect"
+        ],
+        "proposal_id": "d9a27df8a2e5f7307f3c4707bc097da7b857bca1ec23df3017a3d3e19e6adc64",
+        "proposal": {
+          "edited_clause": "8 有许多当时我们聚集的楼上的房间里灯。",
+          "error_type": "处所短语插入数量名词短语",
+          "explanation": "将原作存在句处所成分的完整短语“当时我们聚集的楼上的房间里”移到“许多”和“灯”之间；带方位词“里”的处所短语不能直接插入这一数量名词结构。"
+        },
+        "judgment_id": "b9dacd821d88eeee496ffd59c5b9c86b9ee33628230f765bab649f47f7faa8da",
+        "judgment": {
+          "explanation": "原作存在句处所成分的完整多词短语“当时我们聚集的楼上的房间里”被移入“许多灯”之间。该处所短语不能在没有“的”等连接成分的情况下直接修饰“灯”，因而破坏了数量成分与中心名词的组合。原有词语均保持完整，房间里有许多灯的意思仍可恢复，错误仅涉及本分句。",
+          "grammar_worsened": "yes",
+          "structural_error": "yes",
+          "lexical_integrity": "yes",
+          "meaning_preserved": "yes",
+          "local_error": "yes",
+          "error_span": "许多当时我们聚集的楼上的房间里灯"
+        }
+      }
+    ]
+  }
+}

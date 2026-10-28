@@ -1,0 +1,315 @@
+{
+  "id": "hard:t1_2kgs11:f49c:mcq",
+  "original": {
+    "id": "hard:t1_2kgs11:f49c:mcq",
+    "question": "耶何耶大立的第一个约，是在哪些之间立的？",
+    "passage": "11:17 耶何耶大与耶和华、王和百姓立约，众人都作耶和华的子民。他又与王和百姓立约。\n11:18 地上的众人都去拆毁巴力的殿，打碎坛和偶像，在坛前杀了巴力的祭司玛坦。祭司耶何耶大为耶和华的殿设立守卫。",
+    "expected_answer": "耶和华、王和百姓",
+    "form": "mcq",
+    "options": {
+      "A": "耶和华、王和百姓",
+      "B": "王和百夫长",
+      "C": "耶和华和守卫",
+      "D": "王和百姓",
+      "E": "根据这段文字无法判断"
+    },
+    "correct_option": "A",
+    "intended_target": "",
+    "original_question": "耶何耶大立的第一个约，是在哪些之间立的？",
+    "original_answer": "the Lord, the king, and the people"
+  },
+  "input_hash": "36affb23a3575c8fd36adfa659b73c46ca91f1315bf1d54d66c8c577425787bf",
+  "status": "KEPT",
+  "accepted_case": {
+    "id": "hard:t1_2kgs11:f49c:mcq",
+    "question": "耶何耶大立的第一个约，是在哪些之间立的？",
+    "passage": "11:17 耶何耶大与耶和华、王和百姓立约，众人都作耶和华的子民。他又与王和百姓立约。\n11:18 地上的众人都去拆毁巴力的殿，打碎坛和偶像，在坛前杀了巴力的祭司玛坦。祭司耶何耶大为耶和华的殿设立守卫。",
+    "expected_answer": "耶和华、王和百姓",
+    "form": "mcq",
+    "options": {
+      "A": "耶和华、王和百姓",
+      "B": "王和百夫长",
+      "C": "耶和华和守卫",
+      "D": "王和百姓",
+      "E": "根据这段文字无法判断"
+    },
+    "correct_option": "A",
+    "intended_target": "",
+    "original_question": "耶何耶大立的第一个约，是在哪些之间立的？",
+    "original_answer": "the Lord, the king, and the people"
+  },
+  "contract": {
+    "id": "item",
+    "status": "ready",
+    "target": "识别耶何耶大所立的第一个约涉及哪些立约方，并与随后他同王和百姓所立的约相区分。",
+    "basis": "inferred",
+    "required_answer_components": [
+      "耶和华",
+      "王",
+      "百姓"
+    ],
+    "relations": [
+      {
+        "id": "r1",
+        "quote": "耶何耶大立的",
+        "meaning": "将所问的约限定为耶何耶大所立的约。",
+        "role": "anchor",
+        "reason": "交代立约事件的主体，用于定位经文中的立约叙述；题目并非要求回答是谁立约。"
+      },
+      {
+        "id": "r2",
+        "quote": "第一个约",
+        "meaning": "询问范围是经文先叙述的约，而非随后他与王和百姓所立的约。",
+        "role": "tested",
+        "reason": "先后限定是必要的事件范围：经文连续记载两个约，且所列立约方不同，不能删除这一限定而仍保证测试同一事实。"
+      },
+      {
+        "id": "r3",
+        "quote": "是在哪些之间立的",
+        "meaning": "要求识别该约涉及的各立约方。",
+        "role": "tested",
+        "reason": "这是题目直接询问的关系，须完整识别耶和华、王和百姓，不能仅回答其中部分，也不能只列第二个约中的王和百姓。"
+      }
+    ],
+    "note": "未提供非空的 intended_target；本目标依据原题、original_question 和 original_answer 保守推定，不代表已获研究者确认的设计意图。所供经文11:17先记“耶何耶大与耶和华、王和百姓立约”，随后记“他又与王和百姓立约”，支持固定答案及“第一个”的区别作用。题目中没有可安全归为冗余叙事铺垫的关系。"
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "proposal": {
+        "id": "item",
+        "status": "unchanged",
+        "question": "耶何耶大立的第一个约，是在哪些之间立的？",
+        "options": [
+          {
+            "label": "A",
+            "text": "耶和华、王和百姓"
+          },
+          {
+            "label": "B",
+            "text": "王和百夫长"
+          },
+          {
+            "label": "C",
+            "text": "耶和华和守卫"
+          },
+          {
+            "label": "D",
+            "text": "王和百姓"
+          },
+          {
+            "label": "E",
+            "text": "根据这段文字无法判断"
+          }
+        ],
+        "removed_relation_ids": [],
+        "note": "原题已直接询问立约方；“耶何耶大”和“第一个约”都是必要限定，没有可删除的叙事铺垫，保持原题。"
+      },
+      "candidate": {
+        "id": "hard:t1_2kgs11:f49c:mcq",
+        "question": "耶何耶大立的第一个约，是在哪些之间立的？",
+        "passage": "11:17 耶何耶大与耶和华、王和百姓立约，众人都作耶和华的子民。他又与王和百姓立约。\n11:18 地上的众人都去拆毁巴力的殿，打碎坛和偶像，在坛前杀了巴力的祭司玛坦。祭司耶何耶大为耶和华的殿设立守卫。",
+        "expected_answer": "耶和华、王和百姓",
+        "form": "mcq",
+        "options": {
+          "A": "耶和华、王和百姓",
+          "B": "王和百夫长",
+          "C": "耶和华和守卫",
+          "D": "王和百姓",
+          "E": "根据这段文字无法判断"
+        },
+        "correct_option": "A",
+        "intended_target": "",
+        "original_question": "耶何耶大立的第一个约，是在哪些之间立的？",
+        "original_answer": "the Lord, the king, and the people"
+      },
+      "checks": [
+        {
+          "repeat": 1,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "The inferred contract matches the original question and passage: identify the parties in the first covenant, distinguishing it from the subsequent covenant with the king and people. The three required answer components are explicitly named in 11:17."
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "The candidate is unchanged. It preserves the covenant-making anchor, the essential first-covenant restriction, and the request to identify its parties."
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "No information or options were removed."
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "The question and every option remain in their original Chinese wording."
+            },
+            "option_meanings": [
+              {
+                "status": "pass",
+                "evidence": "Unchanged: identifies the Lord, the king, and the people.",
+                "label": "A"
+              },
+              {
+                "status": "pass",
+                "evidence": "Unchanged: identifies the king and the commanders of hundreds.",
+                "label": "B"
+              },
+              {
+                "status": "pass",
+                "evidence": "Unchanged: identifies the Lord and the guards.",
+                "label": "C"
+              },
+              {
+                "status": "pass",
+                "evidence": "Unchanged: identifies the king and the people, without the Lord.",
+                "label": "D"
+              },
+              {
+                "status": "pass",
+                "evidence": "Unchanged: states that the answer cannot be determined from this passage.",
+                "label": "E"
+              }
+            ],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "The passage describes Jehoiada making a covenant and then another covenant, supporting the question's local distinction between the first and subsequent covenants."
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "“耶何耶大与耶和华、王和百姓立约” explicitly supports the fixed answer and option A."
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "Only A supplies the full set named for the first covenant. D gives the parties named for the subsequent covenant; B and C do not match either complete list."
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "The clean window supplies both covenant statements and their order. No outside biblical knowledge is needed."
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "The question identifies the covenant but does not reveal its parties or signal the correct option."
+              },
+              "mcq_validity": {
+                "status": "pass",
+                "evidence": "The options provide one supported complete answer, distinct distractors, and an abstention option. The key A agrees with the passage."
+              }
+            },
+            "naturalness": {
+              "score": 1,
+              "evidence": "“哪些之间” is understandable but slightly elliptical: 哪些 lacks an explicit noun such as 人 or 立约方. This is minor stiffness rather than a substantive ambiguity.",
+              "quotes": [
+                "是在哪些之间立的"
+              ]
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "The question directly asks for the parties to one identified covenant. The ordinal restriction and short, parallel answer lists are readily parsed.",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "There is no unnecessary narrated setup. Naming Jehoiada anchors the event, and “第一个约” usefully distinguishes the two covenants in the passage.",
+              "quotes": []
+            }
+          }
+        },
+        {
+          "repeat": 2,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "原题询问第一个约的立约方。经文先列耶和华、王和百姓，随后另述他与王和百姓立约；合同正确保留立约方识别及“第一个”的范围限定，也正确将耶何耶大视为事件定位信息。"
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "候选题与原题完全相同，保留第一个约的限定及完整立约方识别要求。"
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "题干、选项及经文均未删改，没有丢失信息。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "题干与全部选项均保持原有中文。"
+            },
+            "option_meanings": [
+              {
+                "status": "pass",
+                "evidence": "原样保留耶和华、王和百姓三个立约方。",
+                "label": "A"
+              },
+              {
+                "status": "pass",
+                "evidence": "原样保留王和百夫长这一组合。",
+                "label": "B"
+              },
+              {
+                "status": "pass",
+                "evidence": "原样保留耶和华和守卫这一组合。",
+                "label": "C"
+              },
+              {
+                "status": "pass",
+                "evidence": "原样保留王和百姓这一组合。",
+                "label": "D"
+              },
+              {
+                "status": "pass",
+                "evidence": "原样保留根据所给文字无法判断的弃答含义。",
+                "label": "E"
+              }
+            ],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "经文先叙述耶何耶大立约，再以“他又”引出另一个约，支持题目对第一个约的询问。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "“耶何耶大与耶和华、王和百姓立约”直接支持固定答案及选项A。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "只有A完整列出第一个约所涉及的耶和华、王和百姓；D对应随后所述约的组合，其他选项也不能完整回答。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "当前经文同时提供两个约的先后顺序和各自涉及的对象，无须外部知识。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "题干没有给出所问的立约方，也没有以措辞提示正确选项；答案须从经文识别。"
+              },
+              "mcq_validity": {
+                "status": "pass",
+                "evidence": "五个选项含一个完整且受经文支持的答案，干扰项与无法判断选项均可排除，答案键A正确。"
+              }
+            },
+            "naturalness": {
+              "score": 1,
+              "evidence": "整体意思清楚，但“哪些”后缺少指称立约方的名词，使“在哪些之间”略显生硬；“在哪些立约方之间”等表达更自然。",
+              "quotes": [
+                "是在哪些之间立的"
+              ]
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "题干只有一个直接问题，没有复杂指代或修饰链；辨别第一个约以及比较各组选项均属于必要的理解任务。",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "题干没有额外故事铺垫；耶何耶大用于定位立约事件，“第一个约”用于区分紧接着出现的另一个约，均为有用限定。",
+              "quotes": []
+            }
+          }
+        }
+      ],
+      "status": "KEPT"
+    }
+  ]
+}

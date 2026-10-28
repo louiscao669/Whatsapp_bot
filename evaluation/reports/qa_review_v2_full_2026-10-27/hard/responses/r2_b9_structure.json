@@ -1,0 +1,217 @@
+{
+  "request_hash": "25b1b4cb55b4461b3c148279ac6efe157395835109035167803d048c844d6af9",
+  "model": "gpt-6.1-sol",
+  "response_id": "resp_09e416bd22c1d81e006ae0d3dbd34c87d2baa8ae073a8eaaa3",
+  "usage": {
+    "input_tokens": 3623,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 3620
+    },
+    "output_tokens": 2921,
+    "output_tokens_details": {
+      "reasoning_tokens": 281
+    },
+    "total_tokens": 6544
+  },
+  "parsed": {
+    "items": [
+      {
+        "id": "q0044",
+        "parse_summary": "题干直接询问城中安静的原因；选项均作为原因补足语。B中的被动句以亚他利雅为受事，不要求辨认施事。",
+        "features": [
+          {
+            "kind": "role_tracking",
+            "quote": "因为亚他利雅在王宫被杀了。",
+            "required_operations": "将亚他利雅理解为被杀的人，将王宫理解为事件地点。",
+            "concern": "ordinary",
+            "reason": "被动关系直接表达目标原因，没有额外的参与者转换。"
+          }
+        ]
+      },
+      {
+        "id": "q0028",
+        "parse_summary": "题干以“乌西雅自己”限定所问行动者，询问他主动急忙出去的原因。选项中的“他”均回指乌西雅；D另引入使他患病的施事耶和华。",
+        "features": [
+          {
+            "kind": "role_tracking",
+            "quote": "乌西雅自己为什么急忙出去？",
+            "required_operations": "区分乌西雅自己出去与祭司把他赶出去这两个相关行动。",
+            "concern": "ordinary",
+            "reason": "行动者的区分是目标所必需，“自己”提供了明确提示。"
+          },
+          {
+            "kind": "reference_chain",
+            "quote": "因为耶和华使他患病",
+            "required_operations": "把“他”对应到题干中的乌西雅，并区分使其患病者与患病者。",
+            "concern": "ordinary",
+            "reason": "回指对象明确，指代链短。"
+          }
+        ]
+      },
+      {
+        "id": "q0094",
+        "parse_summary": "题干询问少年利未人离开伯利恒的目的，四个实质选项均以“为了”引出目的。C中的“以法莲山地的”修饰米迦家，没有更深的从句嵌套。",
+        "features": [
+          {
+            "kind": "reference_chain",
+            "quote": "那少年利未人为什么离开伯利恒？",
+            "required_operations": "将“那少年利未人”对应到经文中离开伯利恒、寻找居所的人。",
+            "concern": "ordinary",
+            "reason": "指示性称谓指向单一人物，没有竞争性的指代对象。"
+          }
+        ]
+      },
+      {
+        "id": "q0082",
+        "parse_summary": "题干包含“军长吩咐谁去预备……”的命令补语结构，“谁”既是受命者，也是预备队伍的行动者；“护送的”修饰队伍。选项同时列出受命者和队伍成员。",
+        "features": [
+          {
+            "kind": "role_tracking",
+            "quote": "军长吩咐谁去预备护送的队伍？",
+            "required_operations": "区分下令的军长、受命预备的百夫长，以及被预备的步兵和骑兵。",
+            "concern": "ordinary",
+            "reason": "这些角色的区分正是所问目标，题干的命令结构直接标明角色关系。"
+          },
+          {
+            "kind": "nested_modifier",
+            "quote": "吩咐谁去预备护送的队伍",
+            "required_operations": "在命令补语内，将“护送的”附着于“队伍”，而不是将其理解为受命者。",
+            "concern": "ordinary",
+            "reason": "修饰语短，且用于说明所预备队伍的用途。"
+          }
+        ]
+      },
+      {
+        "id": "q0060",
+        "parse_summary": "题干要求确定两个妇人先吃的孩子属于谁。C用“向王呼喊的”限定妇人，再以“那个妇人的”限定孩子，需要把经文第一人称讲述者与选项中的第三人称称谓对应起来。",
+        "features": [
+          {
+            "kind": "nested_modifier",
+            "quote": "向王呼喊的那个妇人的孩子",
+            "required_operations": "先用“向王呼喊的”识别妇人，再确定“孩子”与该妇人的所属关系。",
+            "concern": "ordinary",
+            "reason": "两层修饰用于区分两个妇人及其各自的孩子，是目标所需关系。"
+          },
+          {
+            "kind": "reference_chain",
+            "quote": "另一个妇人的孩子",
+            "required_operations": "以讲述此事的妇人为参照确定“另一个妇人”，并与C所指的母子关系比较。",
+            "concern": "ordinary",
+            "reason": "需要在第一人称叙述和第三人称选项间转换，但这种对应是辨认孩子归属所必需的。"
+          }
+        ]
+      },
+      {
+        "id": "q0122",
+        "parse_summary": "题干以“听到什么消息后”限定设伏之前的信息事件，所问内容嵌在时间关系中。C与D都涉及出城的人，但分别表述到田间和从城里出来，需要结合消息与后续观察的先后关系区分。",
+        "features": [
+          {
+            "kind": "layered_speech",
+            "quote": "亚比米勒听到什么消息后设下埋伏？",
+            "required_operations": "区分消息所报告的事件、亚比米勒获知消息，以及其后设伏的行动。",
+            "concern": "ordinary",
+            "reason": "只有一层获知关系，且它是题目要识别的事件联系。"
+          },
+          {
+            "kind": "option_overlap",
+            "quote": "示剑人出到田间。／有人从城里出来。",
+            "required_operations": "比较两个都描述人员外出的选项，区分设伏前传来的消息与设伏后看见的行动。",
+            "concern": "ordinary",
+            "reason": "选项意义有交集，但比较直接服务于目标的事件定位。"
+          }
+        ]
+      },
+      {
+        "id": "q0015",
+        "parse_summary": "题干先给出“犹大全体百姓立乌西雅”这一行动，再询问目的；施事与受事均明示。没有选项，也没有嵌套修饰或多层转述。",
+        "features": []
+      },
+      {
+        "id": "q0128",
+        "parse_summary": "题干是被动疑问句，“谁”为被刺死者；“他的甲士”是施事，其中“他”与待确定的死者同指。",
+        "features": [
+          {
+            "kind": "role_tracking",
+            "quote": "谁被他的甲士刺死了？",
+            "required_operations": "将甲士识别为刺杀者，将“谁”识别为被刺死者。",
+            "concern": "ordinary",
+            "reason": "施受关系正是目标内容，被动标记明确。"
+          },
+          {
+            "kind": "reference_chain",
+            "quote": "他的甲士",
+            "required_operations": "将“他”与疑问对象联系起来，再用经文确定该人物是亚比米勒。",
+            "concern": "ordinary",
+            "reason": "所属关系用于识别自己的甲士杀死其主人的事件，没有额外的指代层级。"
+          }
+        ]
+      },
+      {
+        "id": "q0046",
+        "parse_summary": "前一分句交代官员怀疑以利沙的话，后一分句询问以利沙对该官员的回答。选项混列不同说话者的话，C内部又以“却”连接看见与不得吃的对照。",
+        "features": [
+          {
+            "kind": "reference_chain",
+            "quote": "那官怀疑以利沙的话，以利沙怎样回答他？",
+            "required_operations": "将“那官”对应到经文中的官员，将句末“他”回指该官员，并保持以利沙为回答者。",
+            "concern": "ordinary",
+            "reason": "回指距离短，重复出现的“以利沙”明确标出了回答者。"
+          },
+          {
+            "kind": "layered_speech",
+            "quote": "那官怀疑以利沙的话，以利沙怎样回答他？",
+            "required_operations": "区分先前的话、官员的质疑和以利沙随后的回答，并给各选项分配说话者与轮次。",
+            "concern": "ordinary",
+            "reason": "辨认回答所属的对话轮次就是题目的必要操作。"
+          },
+          {
+            "kind": "negation_scope",
+            "quote": "你必亲眼看见，却不得吃",
+            "required_operations": "理解肯定的“看见”与否定的“吃”分别成立，不能让否定扩展到前一分句。",
+            "concern": "ordinary",
+            "reason": "对照表达是目标回答本身，否定范围清楚。"
+          }
+        ]
+      },
+      {
+        "id": "q0054",
+        "parse_summary": "题干先用“百姓出去掠夺叙利亚营之前”设定时间界点，再以“刚”要求选择紧接在前的事件。A、C、D涉及同一侦察过程的不同阶段。",
+        "features": [
+          {
+            "kind": "reference_chain",
+            "quote": "王打发他们追赶叙利亚军",
+            "required_operations": "将“他们”对应到侦察者，而不是被追赶的叙利亚军。",
+            "concern": "ordinary",
+            "reason": "经文提供明确的指代对象，施事与追赶对象也有显式区分。"
+          },
+          {
+            "kind": "option_overlap",
+            "quote": "王打发他们追赶叙利亚军／侦察者追赶叙利亚人到约旦河／侦察者回来告诉王",
+            "required_operations": "区分派遣、追赶到达和返回报告三个阶段，按“之前，刚”选择最近的前一事件。",
+            "concern": "ordinary",
+            "reason": "共同参与者带来一定比较需求，但事件排序是目标本身。"
+          }
+        ]
+      },
+      {
+        "id": "q0063",
+        "parse_summary": "题干是直接的主动宾语疑问句，亚比筛为击杀者，“谁”为被击杀者；没有附加设置、选项或嵌套结构。",
+        "features": []
+      },
+      {
+        "id": "q0123",
+        "parse_summary": "题干用“城楼上的”这一地点修饰语确定人群，再直接询问死亡方式。该称谓对应经文中进入内室、最后被烧死的同一群人。",
+        "features": [
+          {
+            "kind": "reference_chain",
+            "quote": "城楼上的人",
+            "required_operations": "将这一群体称谓与经文中进入神庙内室并被烧死的人对应，保持其身份不因地点变化而改变。",
+            "concern": "ordinary",
+            "reason": "群体称谓沿用经文表述，没有新增的嵌套指代。"
+          }
+        ]
+      }
+    ]
+  }
+}

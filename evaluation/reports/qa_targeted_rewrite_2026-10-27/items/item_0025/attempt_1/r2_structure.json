@@ -1,0 +1,41 @@
+{
+  "request_hash": "5693d75b6036a831b0b07623054f29dfc30ef5b7661d2c73da07fcf8f26ea9f0",
+  "model": "gpt-6.1-sol",
+  "response_id": "resp_0f0097c73d4bcc8d006ae0eff8162887d181b2911204eddb4f",
+  "usage": {
+    "input_tokens": 780,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0
+    },
+    "output_tokens": 537,
+    "output_tokens_details": {
+      "reasoning_tokens": 189
+    },
+    "total_tokens": 1317
+  },
+  "parsed": {
+    "items": [
+      {
+        "id": "item",
+        "parse_summary": "主干是“他们请谁”，其中“谁”也是“为他们求问神”的行动者；后接“看看这趟行程是否顺利”，说明求问目的，并嵌入“是否”疑问。两处“他们”指同一批行路者，“这趟行程”对应经文中的“我们行这路”。需从祭司的回应识别被请求的人。",
+        "features": [
+          {
+            "kind": "role_tracking",
+            "quote": "他们请谁为他们求问神",
+            "required_operations": "区分提出请求的行路者、代为求问的人和求问对象神，并识别题目询问的是中间的代求者。",
+            "concern": "ordinary",
+            "reason": "这些角色关系直接构成识别被请求者的目标，没有额外的角色转换。"
+          },
+          {
+            "kind": "reference_chain",
+            "quote": "他们请谁为他们求问神，看看这趟行程是否顺利？",
+            "required_operations": "将两处“他们”关联到同一批行路者，并将“这趟行程”关联到经文中的“我们行这路”。",
+            "concern": "ordinary",
+            "reason": "指称链短且稳定，是把问题与经文中的请求对应起来所必需的。"
+          }
+        ]
+      }
+    ]
+  }
+}

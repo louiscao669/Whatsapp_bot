@@ -1,0 +1,302 @@
+{
+  "id": "hard:t1_judg17_18:c2d9:mcq",
+  "original": {
+    "id": "hard:t1_judg17_18:c2d9:mcq",
+    "question": "谁进去拿走了雕像、以弗得、家用神像和熔铸的偶像？",
+    "passage": "18:14 那五个窥探来士地的人对弟兄说：“你们知道这几家中有以弗得、家用神像、雕像和熔铸的偶像吗？你们想想该怎么办。”\n18:15 他们就转向那里，进了那少年利未人的住处，就是米迦的家，向他问安。\n18:16 六百带兵器的但人站在城门口。\n18:17 那五个窥探地的人进去，拿了雕像、以弗得、家用神像和熔铸的偶像，祭司站在城门口，带着六百带兵器的人。",
+    "expected_answer": "那五个窥探地的人",
+    "form": "mcq",
+    "options": {
+      "A": "六百带兵器的但人",
+      "B": "那少年利未人",
+      "C": "那五个窥探地的人",
+      "D": "米迦和他的家人",
+      "E": "根据这段文字无法判断"
+    },
+    "correct_option": "C",
+    "intended_target": "",
+    "original_question": "谁进去拿走了雕像、以弗得、家用神像和熔铸的偶像？",
+    "original_answer": "the five men who had spied out the land"
+  },
+  "input_hash": "114daffa7e5c96fc9696146fa37d7dbce7f3245a0c0d6d175d9ad08b592c8672",
+  "status": "KEPT",
+  "accepted_case": {
+    "id": "hard:t1_judg17_18:c2d9:mcq",
+    "question": "谁进去拿走了雕像、以弗得、家用神像和熔铸的偶像？",
+    "passage": "18:14 那五个窥探来士地的人对弟兄说：“你们知道这几家中有以弗得、家用神像、雕像和熔铸的偶像吗？你们想想该怎么办。”\n18:15 他们就转向那里，进了那少年利未人的住处，就是米迦的家，向他问安。\n18:16 六百带兵器的但人站在城门口。\n18:17 那五个窥探地的人进去，拿了雕像、以弗得、家用神像和熔铸的偶像，祭司站在城门口，带着六百带兵器的人。",
+    "expected_answer": "那五个窥探地的人",
+    "form": "mcq",
+    "options": {
+      "A": "六百带兵器的但人",
+      "B": "那少年利未人",
+      "C": "那五个窥探地的人",
+      "D": "米迦和他的家人",
+      "E": "根据这段文字无法判断"
+    },
+    "correct_option": "C",
+    "intended_target": "",
+    "original_question": "谁进去拿走了雕像、以弗得、家用神像和熔铸的偶像？",
+    "original_answer": "the five men who had spied out the land"
+  },
+  "contract": {
+    "id": "item",
+    "status": "ready",
+    "target": "识别在所述进入并拿走雕像、以弗得、家用神像和熔铸的偶像这一事件中，实施行动的是哪一群人。",
+    "basis": "inferred",
+    "required_answer_components": [
+      "指出行动者是那五个窥探地的人；答案须能识别这一特定群体，而非泛指但人。"
+    ],
+    "relations": [
+      {
+        "id": "r1",
+        "quote": "谁进去拿走了",
+        "meaning": "询问进入并拿走所述物品的行动者身份。",
+        "role": "tested",
+        "reason": "问题要求恢复这一行动与其实施者之间的关系；不是询问物品名称、地点或行动原因。“进去”与“拿走”属于题目所指的同一行动事件。"
+      },
+      {
+        "id": "r2",
+        "quote": "雕像、以弗得、家用神像和熔铸的偶像",
+        "meaning": "用四类被拿走的物品定位所问的行动事件。",
+        "role": "anchor",
+        "reason": "这些物品将问题定位到18:17的拿取事件，区别于18:14提及物品和18:15进入住处问安的事件。它们不是要求作答者另行列举的答案成分，但构成所问行动的明确对象。"
+      }
+    ],
+    "note": "未提供非空的 intended_target，因此目标依据原题和早期 original_question/original_answer 保守推断，不代表已获研究者明确确认的设计意图。所供经文18:17直接说明，那五个窥探地的人进去拿了所列物品，支持预期答案，并与原始英文答案一致。题目没有可单独认定为冗余的前置叙事。"
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "proposal": {
+        "id": "item",
+        "status": "unchanged",
+        "question": "谁进去拿走了雕像、以弗得、家用神像和熔铸的偶像？",
+        "options": [
+          {
+            "label": "A",
+            "text": "六百带兵器的但人"
+          },
+          {
+            "label": "B",
+            "text": "那少年利未人"
+          },
+          {
+            "label": "C",
+            "text": "那五个窥探地的人"
+          },
+          {
+            "label": "D",
+            "text": "米迦和他的家人"
+          },
+          {
+            "label": "E",
+            "text": "根据这段文字无法判断"
+          }
+        ],
+        "removed_relation_ids": [],
+        "note": "原题已直接询问行动者，没有可删的前置叙事。“进去拿走”是所测行动，四类物品是定位该事件的必要锚点，故保持不变。"
+      },
+      "candidate": {
+        "id": "hard:t1_judg17_18:c2d9:mcq",
+        "question": "谁进去拿走了雕像、以弗得、家用神像和熔铸的偶像？",
+        "passage": "18:14 那五个窥探来士地的人对弟兄说：“你们知道这几家中有以弗得、家用神像、雕像和熔铸的偶像吗？你们想想该怎么办。”\n18:15 他们就转向那里，进了那少年利未人的住处，就是米迦的家，向他问安。\n18:16 六百带兵器的但人站在城门口。\n18:17 那五个窥探地的人进去，拿了雕像、以弗得、家用神像和熔铸的偶像，祭司站在城门口，带着六百带兵器的人。",
+        "expected_answer": "那五个窥探地的人",
+        "form": "mcq",
+        "options": {
+          "A": "六百带兵器的但人",
+          "B": "那少年利未人",
+          "C": "那五个窥探地的人",
+          "D": "米迦和他的家人",
+          "E": "根据这段文字无法判断"
+        },
+        "correct_option": "C",
+        "intended_target": "",
+        "original_question": "谁进去拿走了雕像、以弗得、家用神像和熔铸的偶像？",
+        "original_answer": "the five men who had spied out the land"
+      },
+      "checks": [
+        {
+          "repeat": 1,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "原题询问进去并拿走所列物品的行动者。18:17明确将这一行动归于“那五个窥探地的人”，与原始英文答案一致。契约正确区分了被测的行动者关系和用于定位事件的物品清单。"
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "候选题与原题完全相同，保留了行动者识别目标、进入并拿取的事件范围及全部物品锚点。"
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "问题和各选项均未删改，没有信息损失或由删除造成的竞争事件。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "问题和A至E各选项均保留原有中文表述。"
+            },
+            "option_meanings": [
+              {
+                "status": "pass",
+                "evidence": "原文未变，仍指六百名带兵器的但人。",
+                "label": "A"
+              },
+              {
+                "status": "pass",
+                "evidence": "原文未变，仍指那位少年利未人。",
+                "label": "B"
+              },
+              {
+                "status": "pass",
+                "evidence": "原文未变，仍指那五个窥探地的人这一特定群体。",
+                "label": "C"
+              },
+              {
+                "status": "pass",
+                "evidence": "原文未变，仍指米迦及其家人。",
+                "label": "D"
+              },
+              {
+                "status": "pass",
+                "evidence": "原文未变，仍表示依据所给文字无法判断。",
+                "label": "E"
+              }
+            ],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "18:17记载有人进去并拿了题目所列四类物品，支持问题的事件预设。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "18:17直接写明“那五个窥探地的人进去，拿了雕像、以弗得、家用神像和熔铸的偶像”，支持预期答案及C键。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "所给文字只将该拿取行动明确归于那五个窥探地的人；其他选项均不是这一行动的所述实施者。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "当前经文窗口直接提供行动、物品和行动者，无需借助窗口以外的圣经知识。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "题干没有透露行动者，选项也没有答案标记；必须依据经文确定C。"
+              },
+              "mcq_validity": {
+                "status": "pass",
+                "evidence": "五个选项可明确区分，只有C得到所述行动的直接支持；无法判断选项不成立，正确键设置有效。"
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "题干是自然直接的中文疑问句，各选项表达完整，无需语言修补。",
+              "quotes": []
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "单句直接询问行动者，物品并列清楚，没有跨句指代链、角色嵌套或复杂选项比较。",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "没有额外叙事铺垫；进入并拿取的动作及物品清单共同明确所问事件，题干保持直接。",
+              "quotes": []
+            }
+          }
+        },
+        {
+          "repeat": 2,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "合同准确识别了原题所问的行动者身份，并保留“进去拿走”与四类物品所定位的同一事件。18:17直接支持所需答案“那五个窥探地的人”；物品清单是事件锚点，而非另需回答的成分。"
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "候选题与原题完全相同，仍要求识别进去拿走所列物品的特定群体，没有改变事件、行动关系或答案范围。"
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "候选题及全部选项均未删除或改写原题信息，不存在信息移除导致的范围变化或竞争答案。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "问题及A至E选项均保留原有中文表述。"
+            },
+            "option_meanings": [
+              {
+                "status": "pass",
+                "evidence": "原样保留“六百带兵器的但人”，群体身份、人数及限定均未变化。",
+                "label": "A"
+              },
+              {
+                "status": "pass",
+                "evidence": "原样保留“那少年利未人”，人物指称及范围不变。",
+                "label": "B"
+              },
+              {
+                "status": "pass",
+                "evidence": "原样保留“那五个窥探地的人”，保留正确答案的特定群体身份。",
+                "label": "C"
+              },
+              {
+                "status": "pass",
+                "evidence": "原样保留“米迦和他的家人”，仍指米迦及其家人这一群体。",
+                "label": "D"
+              },
+              {
+                "status": "pass",
+                "evidence": "原样保留“根据这段文字无法判断”，仍表示无法依据所给文字确定答案。",
+                "label": "E"
+              }
+            ],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "18:17明确记载有人进去拿了题目所列的四类物品，问题的事件及其预设均有文本依据。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "18:17写明“那五个窥探地的人进去，拿了雕像、以弗得、家用神像和熔铸的偶像”，直接支持预期答案及正确选项C。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "所问拿取事件的行动者被明确指定为五个窥探地的人。文本没有将其他选项中的人物或群体列为该行动的实施者。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "当前经文窗口包含完整的行动者、动作和物品信息，无需借助外部圣经知识即可作答。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "问题只描述待识别的行动事件，没有直接给出行动者，也没有通过选项外的提示泄露正确答案。经文中的明确陈述是正常的理解依据。"
+              },
+              "mcq_validity": {
+                "status": "pass",
+                "evidence": "五个选项均可作为身份题的回答或无法判断选项；C有直接文本支持，其他选项不构成同样成立的答案，且没有重复的正确选项。"
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "问题是自然、直接的中文身份问句；选项均为清晰的名词短语或常规的无法判断表述。",
+              "quotes": []
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "问题仅包含一个行动者问项及其动作、并列宾语，没有跨句指代链或复杂角色转换。物品名称虽属经文用语，但不需要额外解码即可定位事件。",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "问题没有额外的前置叙事或人物关系铺垫；动作及物品清单直接定位所问事件，选项中的限定用于区分人物群体。",
+              "quotes": []
+            }
+          }
+        }
+      ],
+      "status": "KEPT"
+    }
+  ]
+}

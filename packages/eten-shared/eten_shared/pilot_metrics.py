@@ -19,7 +19,12 @@ from typing import Iterable, List, Optional, Sequence
 
 from sqlalchemy import select
 
-from .mcq import choice_response_letter, is_choice_scored_item
+from .mcq import (
+    EXACT_CHOICE_METHOD,
+    EXACT_CHOICE_SCALE,
+    choice_response_letter,
+    is_choice_scored_item,
+)
 from .models import (
     AnswerReceipt,
     ParticipantResponse,
@@ -146,6 +151,18 @@ def collect_pilot_rows(db, participant_ids=None) -> List[dict]:
         is_scored, is_correct, score_value = resolve_correctness(
             bucket, response, scoring_metadata
         )
+        if (
+            bucket != "open"
+            and is_scored
+            and not scoring_metadata.get("method")
+            and (getattr(response, "is_correct", "") or "").strip().lower().endswith("(auto)")
+        ):
+            # Responses scored before 2026-10-26 by exact letter match carry no
+            # metadata (that path wrote none). An auto label with no method can
+            # only have come from that path -- the LLM paths always record theirs.
+            scoring_metadata.update(
+                {"method": EXACT_CHOICE_METHOD, "scale": EXACT_CHOICE_SCALE}
+            )
 
         rows.append(
             {

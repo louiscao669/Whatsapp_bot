@@ -52,6 +52,7 @@ from eten_shared.mcq import (
     normalize_labeled_choices,
     parse_mcq_correct_letter,
     question_type_value,
+    exact_choice_scoring_metadata,
 )
 from eten_shared.transcription import (
     is_transcription_enabled,
@@ -161,6 +162,8 @@ def score_response_row(db, response, retranscribe: bool):
         else:
             correct_letter = parse_mcq_correct_letter(qa_item.mcq_correct_choice)
             choice_correct = parsed_letter == correct_letter
+            if not scoring_metadata:  # read straight from the reply, no LLM
+                scoring_metadata = exact_choice_scoring_metadata(parsed_letter)
             correctness_score = 1.0 if choice_correct else 0.0
             is_correct = "yes (auto)" if choice_correct else "no (auto)"
             review_status = ReviewStatus.AUTO.value

@@ -1,0 +1,52 @@
+{
+  "prompt": "wording_only_transfer",
+  "repeat": 2,
+  "batch": 0,
+  "model": "gpt-6.1-sol",
+  "response_id": "resp_0ed8f667b4b78f24006ae050769cc887d19d4c89b565972f0d",
+  "elapsed_seconds": 12.380373001098633,
+  "usage": {
+    "input_tokens": 2762,
+    "input_tokens_details": {
+      "cached_tokens": 2759,
+      "cache_write_tokens": 0
+    },
+    "output_tokens": 650,
+    "output_tokens_details": {
+      "reasoning_tokens": 76
+    },
+    "total_tokens": 3412
+  },
+  "items": [
+    {
+      "id": "transfer:handkerchief:original:zh",
+      "decision": "REWRITE",
+      "reason": "The main question “发生了什么” follows the passive temporal clause “当……被带到病人那里时,” which contains the relative modifier “触摸过保罗的” modifying “手帕和围裙.” No referent is unresolved, but embedding this modifier inside the temporal/passive setup creates the specified wording burden."
+    },
+    {
+      "id": "transfer:handkerchief:repair:zh",
+      "decision": "KEEP",
+      "reason": "The declarative setup contains the relative modifier “摸过保罗的” modifying “手帕和围裙,” followed by the passive “被带到病人那里.” The separate main question “病人随后怎么样了” is direct; “随后” clearly links to that event, with no unresolved referent or embedded temporal setup."
+    },
+    {
+      "id": "transfer:handkerchief:repair:en",
+      "decision": "KEEP",
+      "reason": "The declarative setup has one relative clause, “that had touched Paul,” modifying “Cloths,” followed by a simple passive. The separate question “What happened to the sick?” clearly refers back to “the sick”; no referent is unresolved."
+    },
+    {
+      "id": "transfer:exorcists:original:zh",
+      "decision": "REWRITE",
+      "reason": "The passive temporal setup “被那附着邪灵的人制服以后” contains the actor description “附着邪灵的” modifying “人,” before the queried participant “谁” appears in the main clause. “那……人” is clear in context, but this modified-actor passive setup delays the queried participant and requires revision."
+    },
+    {
+      "id": "transfer:exorcists:repair:zh",
+      "decision": "KEEP",
+      "reason": "The main question “谁受伤逃出了那房子” has no subordinate clause; “受伤” describes the condition accompanying escape. “那房子” is identifiable from the passage, and the option modifier “附着邪灵的” is straightforward. No referent is unresolved."
+    },
+    {
+      "id": "transfer:passive:control:zh",
+      "decision": "KEEP",
+      "reason": "The question is a single clause with the location phrase “在路上” and simple passive “被狮子咬死了.” The option “从犹大来的神人” contains one ordinary modifier; there is no nested setup or unresolved referent."
+    }
+  ]
+}

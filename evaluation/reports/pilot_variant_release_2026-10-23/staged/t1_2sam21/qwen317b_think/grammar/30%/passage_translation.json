@@ -1,0 +1,201 @@
+{
+  "method": "grammar_30%",
+  "source_language": "en",
+  "target_language": "Simplified Chinese",
+  "nllb_dropout_rate": null,
+  "source_texts": [
+    "15 Once again the Philistines waged war against Israel, and David and his servants went down and fought against the Philistines. But David became exhausted.\n\n16 Then Ishbi-benob, a descendant of Rapha, whose bronze spear weighed three hundred shekels and who was bearing a new sword, resolved to kill David.\n\n17 But Abishai son of Zeruiah came to his aid, struck the Philistine, and killed him. Then David’s men swore to him, “You must never again go out with us to battle, so that the lamp of Israel may not be extinguished.”\n\n18 Some time later at Gob, there was another battle with the Philistines. At that time Sibbecai the Hushathite killed Saph, a descendant of Rapha.\n\n19 Once again there was a battle with the Philistines at Gob, and Elhanan son of Jair the Bethlehemite killed the brother of Goliath the Gittite, the shaft of whose spear was like a weaver’s beam.\n\n20 And there was also a battle at Gath, where there was a man of great stature with six fingers on each hand and six toes on each foot—twenty-four in all. He too was descended from Rapha,\n\n21 and when he taunted Israel, Jonathan the son of David’s brother Shimei killed him.\n\n22 So these four descendants of Rapha in Gath fell at the hands of David and his servants.\n"
+  ],
+  "translations": [
+    "15 非利士人再次争战与以色列，大卫和他的与非利士人仆人下去作战。但大卫疲惫不堪。\n\n16 那时，拉法的后裔以施比·比拿，拿重三百舍客勒的着一根铜矛，带着一把新剑，想要杀大卫。\n\n17 但洗鲁雅的儿子亚比筛来帮助大卫，击杀了那非利士人。于是大卫的向他众人起誓说：“你不可再和我们同去打仗，免得以色列的灯灭了。”\n\n18 过了些日子，发生了另一场与在迦百非利士人的战斗。那时，户沙人西比该杀了拉法的后裔撒弗。\n\n19 又在迦百与非利士人争战，伯利恒人睚珥的儿子伊勒哈难杀了迦特人歌利亚的弟弟，他的矛杆像织布机的机轴。\n\n20 又在迦特有一场战斗，那里有一个身材高大的男子，手指和脚趾各有六个，共二十四个。他也是拉法的后裔，\n\n21 他嘲笑以色列时，大卫兄弟示米的儿子约拿单杀了他。\n\n22 这样，在迦特的这四个拉法的后裔都被杀死大卫和他的仆人了。"
+  ],
+  "grammar_rate": 0.3,
+  "grammar_metadata": {
+    "generation_mode": "validated_bank",
+    "bank_id": "f53c75b465bc686916fbda5ebcaf3fd3084d0d704f26b03e424879012d9e5a8e",
+    "edit_style": "llm_structural_v1",
+    "source_sha256": "815b153f098f3d25e266e040c760d26c223c7a482a615bb7e37c289065a2e0cd",
+    "output_sha256": "8ce7a0355c5ae77d5886d8a92845c5573515a6594cf7820a1261ef046f38fdca",
+    "judge": {
+      "model": "gpt-6.1-sol",
+      "prompt_sha256": "a2abc09beb94299ae5ba0b4d6c363ce481093bce718b9b9608318cce66e6c61e",
+      "schema_sha256": "ad414a52eb96503c0b44a987f2edd0589aa8555bbfea4aacbe8305676de1aa12"
+    },
+    "bank_max_rate": 0.3,
+    "generator": {
+      "model": "gpt-6.1-sol",
+      "prompt_sha256": "1a0fc34ac6e0db5918641db38e16db653909ae5a6a89b418e958e5dc2ba3782b",
+      "schema_sha256": "647d8249f8e5e165094d5f461438de2f36ec7ff8ee75007729e01d3bc3069057"
+    },
+    "requested_rate": 0.3,
+    "actual_affected_rate": 0.31125827814569534,
+    "target_met": true,
+    "shortfall_content_chars": 0,
+    "seed": 51063,
+    "total_content_chars": 302,
+    "affected_content_chars": 94,
+    "affected_unit_count": 6,
+    "operation_count": 6,
+    "protected_terms": 0,
+    "protected_losses": [],
+    "protected_verified": true,
+    "affected_units": [
+      {
+        "unit_index": 6,
+        "verse": 16,
+        "content_chars": 13,
+        "original_text": "拿着一根重三百舍客勒的铜矛，",
+        "corrupted_text": "拿重三百舍客勒的着一根铜矛，",
+        "operations": [
+          "llm_structural_defect"
+        ],
+        "proposal_id": "b24f03dd9b0f55dcece515431018550998e56356e6c22ddc8a27a7068e94b3a0",
+        "proposal": {
+          "edited_clause": "拿重三百舍客勒的着一根铜矛，",
+          "error_type": "动词与体标记之间插入多词定语",
+          "explanation": "将原本修饰“铜矛”的多词定语“重三百舍客勒的”整体移到“拿”和“着”之间，破坏体标记“着”紧接动词的附着要求。"
+        },
+        "judgment_id": "450734ece831e35cfa7cabb199ea3e2a475eccc1eab0e7d2b70ea8ce2f9f1195",
+        "judgment": {
+          "explanation": "原作定语的多词短语“重三百舍客勒的”修饰“铜矛”，现被移到“拿”与体标记“着”之间，破坏了“拿着”的动词—体标记连接，且不能在该位置合法修饰后面的名词。这不是单个虚词的移位。原有词语、数量及人物动作关系仍可恢复，错误仅限于本分句。",
+          "grammar_worsened": "yes",
+          "structural_error": "yes",
+          "lexical_integrity": "yes",
+          "meaning_preserved": "yes",
+          "local_error": "yes",
+          "error_span": "拿重三百舍客勒的着一根铜矛"
+        }
+      },
+      {
+        "unit_index": 1,
+        "verse": 15,
+        "content_chars": 16,
+        "original_text": "大卫和他的仆人下去与非利士人作战。",
+        "corrupted_text": "大卫和他的与非利士人仆人下去作战。",
+        "operations": [
+          "llm_structural_defect"
+        ],
+        "proposal_id": "b24f03dd9b0f55dcece515431018550998e56356e6c22ddc8a27a7068e94b3a0",
+        "proposal": {
+          "edited_clause": "大卫和他的与非利士人仆人下去作战。",
+          "error_type": "介词短语插入领属定语与中心语之间",
+          "explanation": "将原本修饰“作战”的多词介词短语“与非利士人”整体移到“他的”和“仆人”之间，使作战对象介词短语侵入领属名词短语，破坏“他的”与中心语“仆人”的定中连接。"
+        },
+        "judgment_id": "91cf90ea802f32791fbf9427148fb273c2a8e38c0459beeb59ed6a3f1f7b35dc",
+        "judgment": {
+          "explanation": "原作战对象介词短语“与非利士人”被整体移到“他的”与中心名词“仆人”之间。该短语包含介词和人名，不能直接嵌入这一领属名词短语充当定语，因而造成新的结构错误。原有词语均保持完整，大卫及其仆人与非利士人作战的关系仍可恢复；错误仅在本分句内。",
+          "grammar_worsened": "yes",
+          "structural_error": "yes",
+          "lexical_integrity": "yes",
+          "meaning_preserved": "yes",
+          "local_error": "yes",
+          "error_span": "他的与非利士人仆人"
+        }
+      },
+      {
+        "unit_index": 0,
+        "verse": 15,
+        "content_chars": 12,
+        "original_text": "15 非利士人再次与以色列争战，",
+        "corrupted_text": "15 非利士人再次争战与以色列，",
+        "operations": [
+          "llm_structural_defect"
+        ],
+        "proposal_id": "32f85d689bdfec7ed34efd084016fcc06fb781d482bcf9b84a8932564bfaf728",
+        "proposal": {
+          "edited_clause": "15 非利士人再次争战与以色列，",
+          "error_type": "介词短语后置",
+          "explanation": "将原作争战对象状语的多词介词短语“与以色列”整体移到“争战”之后，违反该介词短语须置于谓语前的语序要求。"
+        },
+        "judgment_id": "9116c2c6fee089f41a5359e445232da1e42360033a1b057c68651450c260bd7b",
+        "judgment": {
+          "explanation": "完整介词短语“与以色列”原作“争战”的交战对象状语，被移至动词之后。“争战”不能直接后接这一介词短语作为补语，此处违反了该状语须置于谓语前的语序要求。原有词语均保持完整，交战双方及“再次”的含义仍可恢复，错误仅限于本分句。",
+          "grammar_worsened": "yes",
+          "structural_error": "yes",
+          "lexical_integrity": "yes",
+          "meaning_preserved": "yes",
+          "local_error": "yes",
+          "error_span": "争战与以色列"
+        }
+      },
+      {
+        "unit_index": 17,
+        "verse": 18,
+        "content_chars": 17,
+        "original_text": "在迦百发生了另一场与非利士人的战斗。",
+        "corrupted_text": "发生了另一场与在迦百非利士人的战斗。",
+        "operations": [
+          "llm_structural_defect"
+        ],
+        "proposal_id": "32f85d689bdfec7ed34efd084016fcc06fb781d482bcf9b84a8932564bfaf728",
+        "proposal": {
+          "edited_clause": "发生了另一场与在迦百非利士人的战斗。",
+          "error_type": "介词宾语结构被插断",
+          "explanation": "将原作地点状语的多词介词短语“在迦百”整体移入“与非利士人”，插在“与”和其宾语之间，破坏介词与宾语的组合结构。"
+        },
+        "judgment_id": "bf6b37d2ee442ce23c13cb1164b4fec1091ab383717a8ae77f71f8e491f0d4e3",
+        "judgment": {
+          "explanation": "原作地点状语的介词短语“在迦百”被整体移入“与非利士人”内部，插在“与”和其名词宾语“非利士人”之间，破坏了该介词结构的连接关系。该短语包含介词和地名，属于多词成分；原有词语均未拆分，战斗地点及交战对象仍可恢复，错误仅限于本分句。",
+          "grammar_worsened": "yes",
+          "structural_error": "yes",
+          "lexical_integrity": "yes",
+          "meaning_preserved": "yes",
+          "local_error": "yes",
+          "error_span": "与在迦百非利士人"
+        }
+      },
+      {
+        "unit_index": 35,
+        "verse": 22,
+        "content_chars": 24,
+        "original_text": "在迦特的这四个拉法的后裔都被大卫和他的仆人杀死了。",
+        "corrupted_text": "在迦特的这四个拉法的后裔都被杀死大卫和他的仆人了。",
+        "operations": [
+          "llm_structural_defect"
+        ],
+        "proposal_id": "32f85d689bdfec7ed34efd084016fcc06fb781d482bcf9b84a8932564bfaf728",
+        "proposal": {
+          "edited_clause": "在迦特的这四个拉法的后裔都被杀死大卫和他的仆人了。",
+          "error_type": "被动句施事短语错位",
+          "explanation": "将原作被动句施事的多词名词短语“大卫和他的仆人”整体移到“杀死”之后，违反该施事须位于“被”与被动谓语之间的语序要求。"
+        },
+        "judgment_id": "b4e22d3f1d26940ba95ed216cce8cdaa0c9b9259261a9ffd5026bcb6382c5966",
+        "judgment": {
+          "explanation": "原句中“大卫和他的仆人”是“被”引出的施事名词短语；编辑后，该完整多词短语被移到“杀死”之后，违反了此处“被＋施事＋谓语”的被动结构顺序。“被杀死”也不能再以该短语作宾语。原有词语均保持完整，施事、受事及杀死事件仍可恢复，错误局限于本分句。",
+          "grammar_worsened": "yes",
+          "structural_error": "yes",
+          "lexical_integrity": "yes",
+          "meaning_preserved": "yes",
+          "local_error": "yes",
+          "error_span": "被杀死大卫和他的仆人了"
+        }
+      },
+      {
+        "unit_index": 12,
+        "verse": 17,
+        "content_chars": 12,
+        "original_text": "于是大卫的众人向他起誓说：",
+        "corrupted_text": "于是大卫的向他众人起誓说：",
+        "operations": [
+          "llm_structural_defect"
+        ],
+        "proposal_id": "32f85d689bdfec7ed34efd084016fcc06fb781d482bcf9b84a8932564bfaf728",
+        "proposal": {
+          "edited_clause": "于是大卫的向他众人起誓说：",
+          "error_type": "名词短语内部插入状语",
+          "explanation": "将原作起誓对象状语的多词介词短语“向他”整体移到“大卫的”和“众人”之间，破坏定语与名词中心语的组合结构。"
+        },
+        "judgment_id": "6de80e8dd46ceb73c83cc11d1d1b1ad761023382b29fa4954bf2f8c444547d7b",
+        "judgment": {
+          "explanation": "原句中的“向他”是由介词“向”和代词“他”组成的介词短语，作“起誓说”的状语。替换将该完整短语移入“大卫的众人”内部，隔开定语“大卫的”与中心语“众人”；“向他”在此也不能直接充当“众人”的定语，因此引入了新的语法错误。原有词语均保持完整，起誓者及起誓对象仍可恢复，错误仅限于本分句。",
+          "grammar_worsened": "yes",
+          "structural_error": "yes",
+          "lexical_integrity": "yes",
+          "meaning_preserved": "yes",
+          "local_error": "yes",
+          "error_span": "大卫的向他众人"
+        }
+      }
+    ]
+  }
+}

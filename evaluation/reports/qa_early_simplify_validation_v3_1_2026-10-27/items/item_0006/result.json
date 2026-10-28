@@ -1,0 +1,292 @@
+{
+  "id": "hard:t1_acts20:f988:mcq",
+  "original": {
+    "id": "hard:t1_acts20:f988:mcq",
+    "question": "保罗为什么一直讲到午夜？",
+    "passage": "20:7 7 在一周的第一天，我们聚集在一起擘饼。由于保罗第二天准备离开，他与他们交谈，并一直讲到午夜。\n20:8 8 当时我们聚集的楼上的房间里有许多灯。\n20:9 9 有一个名叫尤提古斯的年轻人坐在窗户边，保罗不停地讲，他渐渐进入沉睡。当他熟睡时，从三楼坠下，被捡起时已死。",
+    "expected_answer": "因为他打算第二天离开",
+    "form": "mcq",
+    "options": {
+      "A": "因为他打算第二天离开",
+      "B": "因为他在庆祝节期",
+      "C": "因为他在等人",
+      "D": "因为楼上的房间里有许多灯"
+    },
+    "correct_option": "A",
+    "intended_target": "",
+    "original_question": "",
+    "original_answer": ""
+  },
+  "input_hash": "76759c9b5b3262353d26e24e9120270c82699ad30df213681f38ae0a894691bd",
+  "status": "KEPT",
+  "accepted_case": {
+    "id": "hard:t1_acts20:f988:mcq",
+    "question": "保罗为什么一直讲到午夜？",
+    "passage": "20:7 7 在一周的第一天，我们聚集在一起擘饼。由于保罗第二天准备离开，他与他们交谈，并一直讲到午夜。\n20:8 8 当时我们聚集的楼上的房间里有许多灯。\n20:9 9 有一个名叫尤提古斯的年轻人坐在窗户边，保罗不停地讲，他渐渐进入沉睡。当他熟睡时，从三楼坠下，被捡起时已死。",
+    "expected_answer": "因为他打算第二天离开",
+    "form": "mcq",
+    "options": {
+      "A": "因为他打算第二天离开",
+      "B": "因为他在庆祝节期",
+      "C": "因为他在等人",
+      "D": "因为楼上的房间里有许多灯"
+    },
+    "correct_option": "A",
+    "intended_target": "",
+    "original_question": "",
+    "original_answer": ""
+  },
+  "contract": {
+    "id": "item",
+    "status": "ready",
+    "target": "理解保罗一直讲到午夜的原因是他准备第二天离开。",
+    "basis": "inferred",
+    "required_answer_components": [
+      "指出保罗准备第二天离开，并将这一计划作为他一直讲到午夜的原因。"
+    ],
+    "relations": [
+      {
+        "id": "r1",
+        "quote": "为什么",
+        "meaning": "要求解释保罗一直讲到午夜的原因。",
+        "role": "tested",
+        "reason": "问题明确询问因果关系；回答必须说明原因，而非仅指出人物或复述讲谈事件。"
+      },
+      {
+        "id": "r2",
+        "quote": "一直讲到午夜",
+        "meaning": "需要解释的是讲谈持续至午夜这一事件，包括持续性与结束时间。",
+        "role": "tested",
+        "reason": "这是因果问题所指定的结果及其时间范围；仅解释保罗为何交谈，不能完整保留当前问题的目标。"
+      },
+      {
+        "id": "r3",
+        "quote": "保罗",
+        "meaning": "所问讲谈事件的行动者是保罗。",
+        "role": "anchor",
+        "reason": "用于确定被询问的讲谈事件及其行动者；问题并非要求辨认讲谈者是谁。"
+      }
+    ],
+    "note": "未提供非空的 intended_target、original_question 或 original_answer，因此目标依据当前问题与预期答案保守推断，不代表已获研究者明确确认的设计意图。所供经文20:7明确说：由于保罗第二天准备离开，他与他们交谈，并一直讲到午夜。这支持预期答案及所问因果关系。问题中没有可安全归为可删除描述性铺垫的内容。"
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "proposal": {
+        "id": "item",
+        "status": "unchanged",
+        "question": "保罗为什么一直讲到午夜？",
+        "options": [
+          {
+            "label": "A",
+            "text": "因为他打算第二天离开"
+          },
+          {
+            "label": "B",
+            "text": "因为他在庆祝节期"
+          },
+          {
+            "label": "C",
+            "text": "因为他在等人"
+          },
+          {
+            "label": "D",
+            "text": "因为楼上的房间里有许多灯"
+          }
+        ],
+        "removed_relation_ids": [],
+        "note": "原问题已简洁直接；人物、因果提问及“一直讲到午夜”的时间范围均须保留，没有可安全删除的铺垫。"
+      },
+      "candidate": {
+        "id": "hard:t1_acts20:f988:mcq",
+        "question": "保罗为什么一直讲到午夜？",
+        "passage": "20:7 7 在一周的第一天，我们聚集在一起擘饼。由于保罗第二天准备离开，他与他们交谈，并一直讲到午夜。\n20:8 8 当时我们聚集的楼上的房间里有许多灯。\n20:9 9 有一个名叫尤提古斯的年轻人坐在窗户边，保罗不停地讲，他渐渐进入沉睡。当他熟睡时，从三楼坠下，被捡起时已死。",
+        "expected_answer": "因为他打算第二天离开",
+        "form": "mcq",
+        "options": {
+          "A": "因为他打算第二天离开",
+          "B": "因为他在庆祝节期",
+          "C": "因为他在等人",
+          "D": "因为楼上的房间里有许多灯"
+        },
+        "correct_option": "A",
+        "intended_target": "",
+        "original_question": "",
+        "original_answer": ""
+      },
+      "checks": [
+        {
+          "repeat": 1,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "契约准确保留原题的因果目标：解释保罗为何一直讲到午夜，而非只辨认人物或时间。经文20:7明确将第二天准备离开与交谈持续到午夜联系起来。"
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "候选题与原题完全相同，保留保罗这一行动者、讲到午夜这一结果，以及询问原因的关系；正确答案仍包含第二天离开的计划。"
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "候选题未删除或改动原题及选项中的信息，不存在因删减造成的范围变化或竞争事件。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "问题和全部选项均保持原有中文表述。"
+            },
+            "option_meanings": [
+              {
+                "status": "pass",
+                "evidence": "与原选项完全相同，表示因打算第二天离开而讲到午夜。",
+                "label": "A"
+              },
+              {
+                "status": "pass",
+                "evidence": "与原选项完全相同，表示讲到午夜是因为正在庆祝节期。",
+                "label": "B"
+              },
+              {
+                "status": "pass",
+                "evidence": "与原选项完全相同，表示讲到午夜是因为正在等人。",
+                "label": "C"
+              },
+              {
+                "status": "pass",
+                "evidence": "与原选项完全相同，将楼上房间里有许多灯作为讲到午夜的原因。",
+                "label": "D"
+              }
+            ],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "经文明确记载保罗“一直讲到午夜”，并用“由于保罗第二天准备离开”交代原因，支持问题及其预设。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "预期答案及A项“因为他打算第二天离开”直接对应经文“由于保罗第二天准备离开”。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "只有A项得到经文的因果支持。经文未提及庆祝节期或等人；许多灯虽被提及，却未被说成讲到午夜的原因。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "当前经文窗口同时提供讲谈事件、持续到午夜的时间范围及第二天离开的原因，无须依赖外部知识。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "题干只询问原因，没有预先透露第二天离开的计划；选项以平行的原因表述呈现，没有额外标注或提示正确答案。"
+              },
+              "mcq_validity": {
+                "status": "pass",
+                "evidence": "四个选项均可作为原因回答，标签完整，且仅A项得到经文支持；指定正确选项A无误。"
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "题干中文自然直接，四个选项均以“因为”引出原因，表达流畅。",
+              "quotes": []
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "题干明确指出人物和目标事件，选项结构简明平行，没有复杂指代或修饰关系需要解码。",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "题干没有附加故事铺垫；人物、持续性和午夜时间均用于界定所问的因果事件，选项也无多余叙述。",
+              "quotes": []
+            }
+          }
+        },
+        {
+          "repeat": 2,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "契约准确保留原题的因果目标：解释保罗为何持续讲到午夜，原因是他准备第二天离开。经文20:7明确支持这一关系；保罗是事件主体而非待辨认的答案。"
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "候选题与原题完全一致，保留了原因问法、讲谈持续到午夜的结果事件，以及第二天准备离开的必需答案内容。"
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "候选题未删除或改写原题及选项中的任何信息。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "问题及四个选项均保持原来的中文，文字未变。"
+            },
+            "option_meanings": [
+              {
+                "status": "pass",
+                "evidence": "与原选项完全一致，均将保罗计划第二天离开作为原因。",
+                "label": "A"
+              },
+              {
+                "status": "pass",
+                "evidence": "与原选项完全一致，均将庆祝节期作为原因。",
+                "label": "B"
+              },
+              {
+                "status": "pass",
+                "evidence": "与原选项完全一致，均将等人作为原因。",
+                "label": "C"
+              },
+              {
+                "status": "pass",
+                "evidence": "与原选项完全一致，均将楼上房间里有许多灯作为原因。",
+                "label": "D"
+              }
+            ],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "经文明确记载保罗“一直讲到午夜”，并以“由于保罗第二天准备离开”提供原因，问题的事件预设和因果询问均有依据。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "固定答案及正确选项A中的“打算第二天离开”与经文“第二天准备离开”等义。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "只有A得到经文的因果支持。经文未提到庆祝节期或等人；房间里有许多灯虽为经文事实，却没有被说明为讲到午夜的原因。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "当前经文窗口直接包含所问事件及其原因，无须外部背景即可选择A。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "题干没有直接给出原因或提示正确选项；各选项均以“因为”表述，答案需依据经文判断。"
+              },
+              "mcq_validity": {
+                "status": "pass",
+                "evidence": "四个选项均可作为原因回答，正确键A与经文一致，且无第二个得到支持的正确选项。"
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "问句简洁自然，四个原因选项表达通顺，无需语言修补。",
+              "quotes": []
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "题干直接指定人物、事件和时间终点；选项结构平行，没有复杂指代或额外关系比较负担。",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "题干只包含确定因果目标所需的人物和事件，没有多余叙事或铺垫。“一直讲到午夜”是所问结果的必要范围。",
+              "quotes": []
+            }
+          }
+        }
+      ],
+      "status": "KEPT"
+    }
+  ]
+}

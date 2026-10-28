@@ -50,11 +50,13 @@ from eten_shared.mcq import (
     choice_response_is_correct,
     choice_response_letter,
     is_choice_scored_item,
+    exact_choice_scoring_metadata,
 )
 from eten_shared.media_storage import (
     store_provider_audio_bytes,
     store_whatsapp_audio,
 )
+from eten_shared.participant_identity import blind_index
 from eten_shared.models import (
     AnswerReceipt,
     Assignment,
@@ -339,6 +341,7 @@ def save_response_for_current_assignment(
         parsed_letter = choice_response_letter(qa_item, analysis_text)
         if parsed_letter is not None:
             choice_answer_correct = choice_response_is_correct(qa_item, analysis_text)
+            scoring_metadata = exact_choice_scoring_metadata(parsed_letter)
         elif unusable_audio_transcript or not (analysis_text or "").strip():
             # Nothing to resolve. Held, not scored 0 -- see the open branch.
             choice_answer_correct = None
@@ -825,7 +828,10 @@ def get_participant_by_provider_contact(provider, external_user_id):
         contact = db.scalars(
             select(ParticipantProviderContact).where(
                 ParticipantProviderContact.provider == provider,
-                ParticipantProviderContact.external_user_id == str(external_user_id),
+                # Contacts store a blind index, never the platform id (identity
+                # protection, 2026-08-30); comparing the raw id never matched.
+                ParticipantProviderContact.external_user_id
+                == blind_index(provider, str(external_user_id)),
                 ParticipantProviderContact.opted_out_at.is_(None),
             )
         ).first()
@@ -940,7 +946,8 @@ def record_telegram_answer_receipt(
         contact = db.scalar(
             select(ParticipantProviderContact).where(
                 ParticipantProviderContact.provider == "telegram",
-                ParticipantProviderContact.external_user_id == str(chat_id),
+                ParticipantProviderContact.external_user_id
+                == blind_index("telegram", str(chat_id)),
                 ParticipantProviderContact.opted_out_at.is_(None),
             )
         )
@@ -1039,6 +1046,48 @@ def record_telegram_answer_receipt(
             engagement_deferred=True,
             status_message=None if created else "This question was already answered.",
         )
+
+
+TELEGRAM_PLAN_COMPLETE_MESSAGE = (
+    "That was the last question. Thank you for taking part in the study!"
+)
+
+
+def next_prompt_after_telegram_receipt(chat_id, display_name, workflow_result):
+    """Serve the next question after an accepted Telegram answer that had no successor.
+
+    Receipts only hand back a *prepared* successor (the next assignment in a
+    pre-built batch chain). Designed (Latin-square) assignment creates one
+    assignment at a time, so after every pilot answer there is no successor and
+    the participant was left waiting -- a later message only got "No question
+    has been delivered yet". Here the receipt is projected immediately (the
+    same idempotent drain the background thread runs; SKIP LOCKED keeps the two
+    from double-processing) and the normal selection path picks the next cell.
+
+    Returns a WorkflowResult to send, or None when nothing more is needed.
+    """
+
+    if workflow_result is None or workflow_result.prompt is not None:
+        return None
+    if not workflow_result.response_id or workflow_result.status_message:
+        return None
+    process_pending_answer_receipts()
+    follow_up = record_telegram_text_message(
+        chat_id=chat_id,
+        display_name=display_name,
+        message_id=None,
+        message_text="",
+        record_response=False,
+    )
+    if (
+        experiment_assignment_enabled()
+        and follow_up.prompt is None
+        and not follow_up.status_message
+        and not follow_up.batch_completed
+    ):
+        # Plan exhausted: say so instead of going silent after the last answer.
+        follow_up.status_message = TELEGRAM_PLAN_COMPLETE_MESSAGE
+    return follow_up
 
 
 def process_pending_answer_receipts(limit=50):

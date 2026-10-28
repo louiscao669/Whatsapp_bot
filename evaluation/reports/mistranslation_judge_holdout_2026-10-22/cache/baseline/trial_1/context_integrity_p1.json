@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "records": {
+    "9f591405df29b2ba5badf2761cae5d892835bd416e50e504d4056cccd2392f8c": {
+      "identity": {
+        "model": "gpt-6-sol",
+        "prompt_sha256": "b7c9868704e29c70e16d236520c4de4800b352e71e3ae4ea15ac335e3e3fcb3f",
+        "schema_sha256": "5fa920642b474382900cb35cd4cea1669a30f9717edb84a60aec124f26c3b82d",
+        "max_output_tokens": 8192,
+        "api": "responses"
+      },
+      "request": {
+        "original_passage": "长老坐在门的左边。仆人也把箱子放在门的左边。",
+        "source": "左边",
+        "replacement": "右边",
+        "mode": "systematic",
+        "occurrences": [
+          {
+            "start": 6,
+            "end": 8,
+            "original_context": "长老坐在门的左边。",
+            "edited_context": "长老坐在门的右边。"
+          },
+          {
+            "start": 19,
+            "end": 21,
+            "original_context": "仆人也把箱子放在门的左边。",
+            "edited_context": "仆人也把箱子放在门的右边。"
+          }
+        ]
+      },
+      "response": {
+        "source_claim": "长老坐在门的左边，仆人也把箱子放在门的左边。",
+        "replacement_claim": "长老坐在门的右边，仆人也把箱子放在门的右边。",
+        "explanation": "两处“左边”均表示相对于门的方位；替换后均变为“右边”。每处都只改变一个方位信息，句子自然，且两处出现均适用。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "response_id": "resp_0bcf4e9f7da39897006adac241532c87d1827e1fd5d8e6378a",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 873,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 197,
+        "output_tokens_details": {
+          "reasoning_tokens": 48
+        },
+        "total_tokens": 1070
+      },
+      "completed_at_unix": 1792721475
+    }
+  }
+}

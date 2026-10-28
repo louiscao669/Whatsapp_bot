@@ -1,0 +1,210 @@
+{
+  "request_hash": "9a35e22d96f4d44d7c22e69244ac0d47c13a24cb54304ea231c55f1cebeaf2ab",
+  "model": "gpt-6.1-sol",
+  "response_id": "resp_0226a7f149addb77006ae0d2d5ab9c87d2a443c8fc6e63cd1c",
+  "usage": {
+    "input_tokens": 3475,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 3472
+    },
+    "output_tokens": 2794,
+    "output_tokens_details": {
+      "reasoning_tokens": 269
+    },
+    "total_tokens": 6269
+  },
+  "parsed": {
+    "items": [
+      {
+        "id": "q0064",
+        "parse_summary": "问句以亚比筛为施事，以“谁”询问击杀对象；选项以姓名或身份指称候选对象，无嵌套从句。",
+        "features": []
+      },
+      {
+        "id": "q0010",
+        "parse_summary": "“谁”是被咬死的受事，“狮子”是施事，“在路上”限定事件地点；问句只有一层被动关系。",
+        "features": [
+          {
+            "kind": "role_tracking",
+            "quote": "谁在路上被狮子咬死了？",
+            "required_operations": "按“被”字结构区分受害者与狮子，回答受害者身份。",
+            "concern": "ordinary",
+            "reason": "被动结构直接对应所问的受害者，没有额外角色转换。"
+          }
+        ]
+      },
+      {
+        "id": "q0062",
+        "parse_summary": "“以利沙称谁为‘杀人犯’”是称谓结构，要求识别被以利沙如此称呼的人；须区分说话者、被称呼者及使者。",
+        "features": [
+          {
+            "kind": "layered_speech",
+            "quote": "以利沙称谁为“杀人犯”？",
+            "required_operations": "将引号中的称谓归于以利沙的话，并从经文中确定该称谓指向谁。",
+            "concern": "ordinary",
+            "reason": "称谓的说话者和指向对象正是识别目标所需的关系。"
+          }
+        ]
+      },
+      {
+        "id": "q0045",
+        "parse_summary": "前一分句交代官员对以利沙话语的态度，后一分句询问以利沙向该官员作出的回答；“他”回指“那官”。",
+        "features": [
+          {
+            "kind": "layered_speech",
+            "quote": "那官怀疑以利沙的话，以利沙怎样回答他？",
+            "required_operations": "区分以利沙原先的话、官员的怀疑和以利沙随后的回答，提取最后一层回应。",
+            "concern": "ordinary",
+            "reason": "问句明确标示回应方向，话语层次用于定位目标回答。"
+          },
+          {
+            "kind": "reference_chain",
+            "quote": "那官怀疑以利沙的话，以利沙怎样回答他？",
+            "required_operations": "把“那官”对应到经文中的官员，并将末尾“他”回指该官员。",
+            "concern": "ordinary",
+            "reason": "回指距离短，且两个参与者的身份清楚。"
+          }
+        ]
+      },
+      {
+        "id": "q0004",
+        "parse_summary": "前句中，王是请求者，神人是被请求祷告的人，“他”指王；后句转问实际祷告者，王仍是祷告所为的对象。",
+        "features": [
+          {
+            "kind": "role_tracking",
+            "quote": "王求神人为他祷告，谁为王祷告了？",
+            "required_operations": "区分请求者、受请求者和祷告所为的对象，再识别实际执行祷告的人。",
+            "concern": "ordinary",
+            "reason": "虽涉及请求与执行两个层次，但人物少，后句明确重述了祷告对象。"
+          },
+          {
+            "kind": "reference_chain",
+            "quote": "王求神人为他祷告",
+            "required_operations": "将“他”理解为王，而非紧邻的神人。",
+            "concern": "ordinary",
+            "reason": "后句“为王祷告”直接帮助确定代词指向，未形成长距离回指。"
+          }
+        ]
+      },
+      {
+        "id": "q0091",
+        "parse_summary": "“他们”是请求者，“谁”是受请求者；“为他们求问这趟行程”说明所请求的行动，第二个“他们”仍指请求者。",
+        "features": [
+          {
+            "kind": "role_tracking",
+            "quote": "他们请谁为他们求问这趟行程？",
+            "required_operations": "区分提出请求的人、代为求问的人及求问所涉及的行程。",
+            "concern": "ordinary",
+            "reason": "请求关系是目标本身，问句没有加入无关参与者。"
+          },
+          {
+            "kind": "reference_chain",
+            "quote": "他们请谁为他们求问这趟行程？",
+            "required_operations": "将两处“他们”理解为同一群人，并把“这趟行程”对应到经文所说的行路。",
+            "concern": "ordinary",
+            "reason": "同句内的重复代词指向一致，行程指称也直接对应经文。"
+          }
+        ]
+      },
+      {
+        "id": "q0100",
+        "parse_summary": "“谁”统领“进去”和“拿走”两个连续动作，宾语是四项并列物品；选项中的人数、装备和窥探活动修饰各候选人物群体。",
+        "features": [
+          {
+            "kind": "role_tracking",
+            "quote": "谁进去拿走了雕像、以弗得、家用神像和熔铸的偶像？",
+            "required_operations": "将进入和拿取两项动作归于同一群体，并与其他在场人物区分。",
+            "concern": "ordinary",
+            "reason": "两个动作共同确定目标人物，四项物品构成并列宾语而非嵌套关系。"
+          },
+          {
+            "kind": "nested_modifier",
+            "quote": "那五个窥探地的人",
+            "required_operations": "把“窥探地”作为“人”的修饰成分，与“那五个”共同识别人物群体。",
+            "concern": "ordinary",
+            "reason": "选项内的修饰语直接提供目标身份，没有多层修饰或长距离依附。"
+          }
+        ]
+      },
+      {
+        "id": "q0056",
+        "parse_summary": "问句直接询问百姓践踏的对象；目标选项用“王派去管理城门”修饰“那官”，其中王是派遣者，官是被派遣并执行管理的人。",
+        "features": [
+          {
+            "kind": "nested_modifier",
+            "quote": "王派去管理城门的那官",
+            "required_operations": "将“王派去管理城门”整体附着于“那官”，并理解官员承担管理城门的任务。",
+            "concern": "ordinary",
+            "reason": "修饰成分用于明确官员身份，内部关系清楚且与目标直接相关。"
+          },
+          {
+            "kind": "role_tracking",
+            "quote": "百姓在城门口践踏了谁？",
+            "required_operations": "确定百姓是践踏者，并把所问受事与选项中受王派遣的官员对应。",
+            "concern": "ordinary",
+            "reason": "问句施受关系直接，无被动转换或额外事件嵌套。"
+          }
+        ]
+      },
+      {
+        "id": "q0017",
+        "parse_summary": "“谁”询问教导者；乌西雅既是被教导者，也是“敬畏神”这一行为的承担者，神是敬畏的对象。",
+        "features": [
+          {
+            "kind": "role_tracking",
+            "quote": "谁教导乌西雅敬畏神？",
+            "required_operations": "区分教导者、受教者及敬畏的对象，并理解敬畏神的是乌西雅。",
+            "concern": "ordinary",
+            "reason": "兼语关系简短，且是表达所问教导内容所必需的结构。"
+          }
+        ]
+      },
+      {
+        "id": "q0074",
+        "parse_summary": "句首“保罗离开之前”设定时间界限，主句询问该界限前最后进行的活动；选项是不同动作，需按保罗的行动次序定位。",
+        "features": []
+      },
+      {
+        "id": "q0050",
+        "parse_summary": "主句以叙利亚人为判断主体，“谁要来攻击他们”是其所想内容，“他们”回指叙利亚人；前三个选项均以两组诸王并列，其中部分名称重复。",
+        "features": [
+          {
+            "kind": "layered_speech",
+            "quote": "叙利亚人以为谁要来攻击他们？",
+            "required_operations": "回答叙利亚人所相信的攻击者，而非将该信念当作实际发生的攻击。",
+            "concern": "ordinary",
+            "reason": "信念层次是题目的必要语义目标，“以为”已明确标出。"
+          },
+          {
+            "kind": "reference_chain",
+            "quote": "叙利亚人以为谁要来攻击他们？",
+            "required_operations": "将内嵌内容中的“他们”回指主句的叙利亚人。",
+            "concern": "ordinary",
+            "reason": "回指短且指向明确，不需维持额外人物链。"
+          },
+          {
+            "kind": "option_overlap",
+            "quote": "赫人的诸王和埃及的诸王；赫人的诸王和摩押的诸王；埃及的诸王和以东的诸王",
+            "required_operations": "逐项比较两组名称，既核对第一组也核对第二组，避免仅凭一个相同名称选答。",
+            "concern": "potential_burden",
+            "reason": "前三项重复完整并列框架并交叉复用名称，增加了反复核对组合的负荷；该负荷来自选项重叠，而非识别双方这一必要目标。"
+          }
+        ]
+      },
+      {
+        "id": "q0031",
+        "parse_summary": "“谁和他的奶母”构成共同藏身的参与者，“他的”回指待识别的人；地点和六年时长共同限定藏身事件。",
+        "features": [
+          {
+            "kind": "reference_chain",
+            "quote": "谁和他的奶母在耶和华的殿里藏了六年？",
+            "required_operations": "把“他的奶母”中的“他”与“谁”对应，识别与自己的奶母共同藏身的人。",
+            "concern": "ordinary",
+            "reason": "代词在同一并列主语内建立所属关系，关系局部且为定位目标所需。"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,224 @@
+{
+  "prompt": "whole_item_rubric",
+  "repeat": 1,
+  "batch": 2,
+  "request_hash": "8cdce56661e788f9c75e18d77c6c34105c75631d9f73dfc73a70f39a73da0f68",
+  "model": "gpt-6.1-sol",
+  "response_id": "resp_0b0f4f55b1796919006ae05366cefc87d1a78260a30ab7d265",
+  "elapsed_seconds": 38.23019027709961,
+  "usage": {
+    "input_tokens": 2951,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 2948
+    },
+    "output_tokens": 2560,
+    "output_tokens_details": {
+      "reasoning_tokens": 331
+    },
+    "total_tokens": 5511
+  },
+  "threshold_mismatches": [],
+  "items": [
+    {
+      "id": "hard:t1_2kgs11:f49c:mcq",
+      "decision": "REWRITE",
+      "target": "指出耶何耶大所立第一个约的参与方。",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 2,
+        "evidence": "“在哪些之间立的”缺少“哪些人／哪些方”等中心词，表达不完整，需要读者自行补足。"
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "需区分经文中的两个约，但“第一个约”定位明确，选项比较负担可控。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“耶何耶大”和“第一个约”足以定位所问事件，无多余背景。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "题干没有列出立约各方；正确答案出现在选项中不构成泄露。"
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "需改写“哪些之间”这一不完整表达；其余定位和选项负担可接受。"
+    },
+    {
+      "id": "hard:t1_2chr26:4cb0:mcq",
+      "decision": "KEEP",
+      "target": "指出教导乌西雅敬畏神的人。",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“谁教导乌西雅敬畏神”自然、直接。"
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "只需辨认一个教导者，四个姓名选项没有额外结构负担。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“乌西雅”和“教导……敬畏神”准确定位经文中的关系。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "题干未提供教导者的姓名。"
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "问题直接，背景充分，没有明显可避免的理解负担。"
+    },
+    {
+      "id": "hard:t1_2sam21:de9f:mcq",
+      "decision": "KEEP",
+      "target": "指出亚比筛击杀的人。",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“亚比筛击杀了谁”是自然明确的问法。"
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "仅询问一个动作的对象，选项易于比较；姓名本身不构成额外负担。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "经文中亚比筛的击杀事件明确，无须增加背景。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "题干没有透露被击杀者的身份。"
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "措辞简洁，事件定位清楚，可保留。"
+    },
+    {
+      "id": "constructed:ambiguous",
+      "decision": "REWRITE",
+      "target": "指出把书带到图书馆的人。",
+      "target_basis": "explicit",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“谁把书带走了”作为独立问句自然通顺。"
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "句式简单，但读者需在小林和小周两次带书事件之间猜测所指。"
+      },
+      "context": {
+        "score": 2,
+        "evidence": "缺少消歧信息：两人都把书带到某处，题干没有用“图书馆”或“下午”限定目标事件。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "题干没有提供所问人物的身份。"
+      },
+      "alternative": "",
+      "target_preservation": "uncertain",
+      "reason": "明确目标是辨认把书带到图书馆的人，但当前问题未区分两次带书事件，需要补足事件限定。"
+    },
+    {
+      "id": "transfer:handkerchief:repair:zh",
+      "decision": "REWRITE",
+      "target": "说明病人随后发生的变化，即疾病和邪灵离开了他们。",
+      "target_basis": "explicit",
+      "naturalness": {
+        "score": 2,
+        "evidence": "“摸过保罗的手帕和围裙被带到……”容易先读成有人“摸过保罗的手帕和围裙”，读到“被带到”才需改析句子。"
+      },
+      "processing": {
+        "score": 2,
+        "evidence": "开头的“摸过保罗的”与后续名词、被动结构形成可避免的切分负担；即使末句简短，也需先修复整句的角色关系。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "物品被带到病人处是相关事件锚点，没有大量无关铺垫。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "铺垫只交代物品被带到病人那里，没有说明病人的变化。"
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "问题目标明确，但前置说明造成可避免的句法重析负担，应改写。"
+    },
+    {
+      "id": "hard:t1_1kgs13:a6cd:mcq",
+      "decision": "KEEP",
+      "target": "指出实际为王祷告的人。",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 1,
+        "evidence": "“祷告”连续出现两次略显重复，但整句仍自然可懂。"
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "需区分王提出请求与有人实际祷告，两者衔接直接，人物关系清楚。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“王求神人为他祷告”提供相关事件背景，有助于定位。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "说王请求神人祷告，并未断言神人实际照做，因此没有直接给出所问事实。"
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "虽有轻微重复，但请求与实际行动的区别清楚，负担可接受。"
+    },
+    {
+      "id": "hard:t1_judg9:6d68:mcq",
+      "decision": "REWRITE",
+      "target": "指出约坦要求示剑众首领听他的话所期望的结果，即神也听他们的话。",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 2,
+        "evidence": "“呼叫……听他的话”搭配生硬，“是为了什么结果”又混合了目的和结果的问法，需要读者自行理顺。"
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "人物和所求结果的关系可以理解，选项也较短；主要困难是措辞，而非复杂结构。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "约坦、示剑众首领及听他说话的要求，足以定位相关话语。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "题干没有说明神也听他们的话这一所问结果。"
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "目标本身可以保留，但动词搭配和目的／结果问法明显生硬，应改写。"
+    },
+    {
+      "id": "focus:handkerchief:direct:zh",
+      "decision": "KEEP",
+      "target": "说明病人发生的变化，即疾病和邪灵离开了他们。",
+      "target_basis": "explicit",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“病人的情况有什么变化”是自然直接的问法。"
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "题干无需解析物品的修饰关系，选项均为简短、易比较的陈述。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "经文中“病人”的指向明确，“根据这段经文”提供了足够范围。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "题干只询问变化，没有预先说明疾病和邪灵离开。"
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "直接询问预定目标，不加入与目标无关的解析负担，可保留。"
+    }
+  ]
+}

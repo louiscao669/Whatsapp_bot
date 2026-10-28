@@ -1,0 +1,224 @@
+{
+  "prompt": "target_preserving_comparison",
+  "repeat": 1,
+  "batch": 2,
+  "request_hash": "dfc060f52ddb8c3ff43c23cc65c33e75ae6b595f46a24dd657e2acd3346a5e66",
+  "model": "gpt-6.1-sol",
+  "response_id": "resp_0aa3e214d4604f49006ae053c4bb3487d189eb27e9d38c33d2",
+  "elapsed_seconds": 44.73146104812622,
+  "usage": {
+    "input_tokens": 3067,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 3064
+    },
+    "output_tokens": 2840,
+    "output_tokens_details": {
+      "reasoning_tokens": 477
+    },
+    "total_tokens": 5907
+  },
+  "threshold_mismatches": [],
+  "items": [
+    {
+      "id": "hard:t1_2kgs11:f49c:mcq",
+      "decision": "REWRITE",
+      "target": "辨认耶何耶大所立第一个约涉及的各方。",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 2,
+        "evidence": "“在哪些之间立的”缺少“人”或“各方”等中心语，需要读者补足。"
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "需要区分第一个约和第二个约，并比较选项中的参与方；这是目标本身所需的普通负担。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“耶何耶大”和“第一个约”足以定位所问的约。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "题干没有说明第一个约涉及哪些方；正确组合只出现在选项中。"
+      },
+      "alternative": "耶何耶大立的第一个约包括哪几方？",
+      "target_preservation": "preserved",
+      "reason": "替代表述保留第一个约及其参与方这一目标，消除了“哪些之间”的不自然表达。"
+    },
+    {
+      "id": "hard:t1_2chr26:4cb0:mcq",
+      "decision": "KEEP",
+      "target": "辨认教导乌西雅敬畏神的人。",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“谁教导乌西雅敬畏神”表达直接自然。"
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "只需辨认一个教导者；四个人名选项不增加额外的关系判断。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "乌西雅及“教导……敬畏神”明确定位经文中的关系。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "题干未透露教导者的身份。"
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "表述已清楚简洁，没有可明显减轻且仍保持目标的负担。"
+    },
+    {
+      "id": "hard:t1_2sam21:de9f:mcq",
+      "decision": "KEEP",
+      "target": "辨认亚比筛击杀的人。",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“亚比筛击杀了谁”是自然、直接的人物提问。"
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "只涉及施事与被杀者的单一关系；选项容易逐一理解。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "在所给经文中，亚比筛的击杀事件明确，无须补充背景。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "题干未提供被杀者的身份。"
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "问题已经直接询问目标关系，没有明显可移除的负担。"
+    },
+    {
+      "id": "constructed:ambiguous",
+      "decision": "REWRITE",
+      "target": "辨认把书带到图书馆的人。",
+      "target_basis": "explicit",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“谁把书带走了”本身是自然的中文问句。"
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "句子结构简单，没有额外的记忆或嵌套负担。"
+      },
+      "context": {
+        "score": 2,
+        "evidence": "缺少“图书馆”这一必要限定；小林和小周都把书带到了别处，“带走”不能唯一指向目标事件。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "题干没有透露带书者的身份。"
+      },
+      "alternative": "谁把书带到了图书馆？",
+      "target_preservation": "preserved",
+      "reason": "补出目标中的目的地即可消除歧义，不改变所问人物或事件。"
+    },
+    {
+      "id": "transfer:handkerchief:repair:zh",
+      "decision": "REWRITE",
+      "target": "说明病人后来发生的变化，即疾病和邪灵离开他们。",
+      "target_basis": "explicit",
+      "naturalness": {
+        "score": 2,
+        "evidence": "“摸过保罗的手帕和围裙”容易被读成有人摸过保罗的物品；作为后续“被带到”的主语时，需要重新理解修饰关系。"
+      },
+      "processing": {
+        "score": 2,
+        "evidence": "读者须先判断“摸过”的施事及“保罗的”的归属，才能接到“被带到病人那里”。直接交代物品被带去这一事件即可保留所问的病人变化。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "物品被带到病人那里为“随后”提供了有用的事件锚点，没有缺少定位信息。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "开头只交代物品被送去，并未说明病人是否康复或邪灵是否离开。"
+      },
+      "alternative": "保罗的手帕和围裙被带到病人那里后，病人怎么样了？",
+      "target_preservation": "preserved",
+      "reason": "替代表述保留病人、物品被带去之后的时间关系及变化的答案范围，去除了非目标性的触摸关系解析负担。"
+    },
+    {
+      "id": "hard:t1_1kgs13:a6cd:mcq",
+      "decision": "KEEP",
+      "target": "辨认实际为王祷告的人。",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“王求神人为他祷告，谁为王祷告了”是自然可懂的事件提问。"
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "需要区分王提出请求与有人实际祷告；两个短分句的关系容易掌握。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "王的请求提供相关事件背景，重复“为王祷告”没有造成实质负担。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "“王求神人”只说明请求对象，并未断言该对象实际为王祷告。"
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "请求与实际行动的区别清楚，背景有助于定位事件，无须仅因重复而改写。"
+    },
+    {
+      "id": "hard:t1_judg9:6d68:mcq",
+      "decision": "REWRITE",
+      "target": "辨认约坦叫示剑众首领听他的话所希望得到的结果，即神也听他们的话。",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 2,
+        "evidence": "“是为了什么结果”把“为了什么目的”和“希望得到什么结果”两种表达混在一起，搭配明显生硬。"
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "需要联系约坦的呼吁与所希望的结果；这属于目标所需的关系理解，选项没有复杂嵌套。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "约坦、示剑众首领及“听他的话”足以定位经文中的呼吁。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "题干只提供呼吁内容，没有说出希望神也听他们的话。"
+      },
+      "alternative": "约坦叫示剑的众首领听他的话，是希望得到什么结果？",
+      "target_preservation": "preserved",
+      "reason": "保留呼吁者、听众、呼吁内容和所求结果，修复目的与结果表达的生硬搭配。"
+    },
+    {
+      "id": "focus:handkerchief:direct:zh",
+      "decision": "KEEP",
+      "target": "说明病人的情况发生的变化，即疾病和邪灵离开他们。",
+      "target_basis": "explicit",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“病人的情况有什么变化”自然直接，选项也均可理解。"
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "只需查明病人的变化；五个选项不要求比较多层条件或角色关系。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "所给经文中“病人”明确指向第12节的群体，不必重述手帕和围裙的背景。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "题干没有说明变化的具体内容；正确答案作为选项出现不构成泄露。"
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "问题直接针对病人的变化，现有语境足以消除歧义，没有明显可减轻的负担。"
+    }
+  ]
+}

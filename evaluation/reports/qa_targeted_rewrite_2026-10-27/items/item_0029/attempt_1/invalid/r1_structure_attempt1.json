@@ -1,0 +1,41 @@
+{
+  "request_hash": "402a1faf5ac7a542d3ea561c7fc236ebbe5bd67f38ce7c6d37fc1688793713d5",
+  "model": "gpt-6.1-sol",
+  "response_id": "resp_0c56a9f38b3965ad006ae0f3865ff887d1a46f728452b6e963",
+  "usage": {
+    "input_tokens": 905,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0
+    },
+    "output_tokens": 734,
+    "output_tokens_details": {
+      "reasoning_tokens": 302
+    },
+    "total_tokens": 1639
+  },
+  "parsed": {
+    "items": [
+      {
+        "id": "item",
+        "parse_summary": "问句以“为什么”询问“没有人搭救来士的人”的原因；“来士的人”是搭救的对象。A以“因为”引出两个并列原因，“那城”指来士，后半句承接该城作为结盟的一方。B、C、D以但人为行动者，C的“他们”指来士居民，D的“那里”指重建的城邑。整体没有多层从句或延迟出现的提问。",
+        "features": [
+          {
+            "kind": "role_tracking",
+            "quote": "为什么没有人搭救来士的人？",
+            "required_operations": "区分未出现的搭救者与作为受助对象的来士居民，并与选项中作为夺取、杀灭和重建行动者的但人对应。",
+            "concern": "ordinary",
+            "reason": "这些角色关系直接服务于理解谁未获搭救及相关事件，未出现额外的被动转换或多层角色嵌套。"
+          },
+          {
+            "kind": "reference_chain",
+            "quote": "A：因为那城远离西顿，也没有与人结盟。\nC：因为但人用刀杀灭他们\nD：因为但人重建城邑，在那里居住",
+            "required_operations": "将“那城”对应到来士，将“他们”对应到来士居民，将“那里”对应到重建的城邑；理解A中“也没有与人结盟”承接前面的城邑主体。",
+            "concern": "ordinary",
+            "reason": "指代可由题干和经文直接确定，链条较短；A的主体承接保留了目标所需的两个并列原因。"
+          }
+        ]
+      }
+    ]
+  }
+}

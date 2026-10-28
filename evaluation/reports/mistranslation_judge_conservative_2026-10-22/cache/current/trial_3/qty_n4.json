@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "records": {
+    "049a7881b3cf0cfd3d96d8e5f5c049a0743f760c416a12dc5387366b1c14e68c": {
+      "identity": {
+        "model": "gpt-6-sol",
+        "prompt_sha256": "b7c9868704e29c70e16d236520c4de4800b352e71e3ae4ea15ac335e3e3fcb3f",
+        "schema_sha256": "5fa920642b474382900cb35cd4cea1669a30f9717edb84a60aec124f26c3b82d",
+        "max_output_tokens": 8192,
+        "api": "responses"
+      },
+      "request": {
+        "original_passage": "村口站着大群百姓，等候官员。",
+        "source": "大群百姓",
+        "replacement": "少数百姓",
+        "mode": "contextual",
+        "occurrences": [
+          {
+            "start": 4,
+            "end": 8,
+            "original_context": "村口站着大群百姓，等候官员。",
+            "edited_context": "村口站着少数百姓，等候官员。"
+          }
+        ]
+      },
+      "response": {
+        "source_claim": "村口站着一大群百姓，等候官员。",
+        "replacement_claim": "村口只站着少数百姓，等候官员。",
+        "explanation": "把等候官员的百姓从“大群”改为“少数”，改变了人数规模；其余事件未变，替换后语句通顺，且原文仅有这一处匹配。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "response_id": "resp_0be86b57b89818f9006adacd42cf3487d18c8586c548028d4e",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 826,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 246,
+        "output_tokens_details": {
+          "reasoning_tokens": 113
+        },
+        "total_tokens": 1072
+      },
+      "completed_at_unix": 1792724295
+    }
+  }
+}

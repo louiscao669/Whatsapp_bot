@@ -1,0 +1,207 @@
+{
+  "id": "focus:escape:original:inferred",
+  "original": {
+    "id": "focus:escape:original:inferred",
+    "question": "被那附着邪灵的人制服以后，谁受伤逃出了那房子？",
+    "passage": "19:13 当时有几个流动的犹太驱魔师试图用主耶稣的名给那些被邪灵附着的人驱魔。他们说：“我奉保罗所传的耶稣的名，吩咐你们。”\n19:14 这事是犹太大祭司士基瓦的七个儿子做的。\n19:15 有一天，邪灵回答说：“耶稣我认识，保罗我也知道，你们是谁？”\n19:16 那附着邪灵的人跳到他们身上，制服了他们所有人。攻击如此猛烈，以致他们赤身裸体、受伤逃出房子。",
+    "expected_answer": "The seven sons of Sceva.",
+    "form": "open",
+    "options": {},
+    "correct_option": "",
+    "intended_target": "",
+    "original_question": "",
+    "original_answer": ""
+  },
+  "input_hash": "dd9f11f68f3fec206df675e61767c567ddce71e73f85e645fef1fe83759de0b3",
+  "status": "SIMPLIFIED",
+  "accepted_case": {
+    "id": "focus:escape:original:inferred",
+    "question": "谁受伤逃出了那房子？",
+    "passage": "19:13 当时有几个流动的犹太驱魔师试图用主耶稣的名给那些被邪灵附着的人驱魔。他们说：“我奉保罗所传的耶稣的名，吩咐你们。”\n19:14 这事是犹太大祭司士基瓦的七个儿子做的。\n19:15 有一天，邪灵回答说：“耶稣我认识，保罗我也知道，你们是谁？”\n19:16 那附着邪灵的人跳到他们身上，制服了他们所有人。攻击如此猛烈，以致他们赤身裸体、受伤逃出房子。",
+    "expected_answer": "The seven sons of Sceva.",
+    "form": "open",
+    "options": {},
+    "correct_option": "",
+    "intended_target": "",
+    "original_question": "被那附着邪灵的人制服以后，谁受伤逃出了那房子？",
+    "original_answer": "The seven sons of Sceva."
+  },
+  "contract": {
+    "id": "item",
+    "status": "ready",
+    "target": "识别这段经文中受伤逃出房子的人是士基瓦的七个儿子。",
+    "basis": "inferred",
+    "required_answer_components": [
+      "指出逃出房子的人是士基瓦的儿子们，并明确为七个儿子。"
+    ],
+    "relations": [
+      {
+        "id": "r1",
+        "quote": "被那附着邪灵的人制服以后",
+        "meaning": "逃离房子之前，这些人被附着邪灵的人制服。",
+        "role": "removable",
+        "reason": "这是对所问事件之前经过的叙述，问题并未要求回答事件顺序或制服者的身份。本段只有一次受伤逃出房子的事件，保留该逃离事件即可唯一定位所问人物，无须依赖此前被制服的经过。"
+      },
+      {
+        "id": "r2",
+        "quote": "谁受伤逃出了那房子",
+        "meaning": "确定在所述事件中受伤并逃出房子的人是谁。",
+        "role": "tested",
+        "reason": "这是问题直接要求恢复的人物与事件的对应关系；受伤及逃出房子共同界定所问事件。所需答案是这些人的身份，而不是其受伤原因或逃离时间。"
+      }
+    ],
+    "note": "未提供明确的 intended_target，也未提供更早的原始问答，因此目标为保守推断，并非已获确认的研究设计意图。19:14 将相关人物明确为士基瓦的七个儿子；19:16 以“他们”承接这些人，叙述他们被制服并受伤逃出房子，支持给定答案。"
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "proposal": {
+        "id": "item",
+        "status": "revised",
+        "question": "谁受伤逃出了那房子？",
+        "options": [],
+        "removed_relation_ids": [
+          "r1"
+        ],
+        "note": "删除被制服的前情，保留受伤并逃出房子的事件及人物识别目标。"
+      },
+      "candidate": {
+        "id": "focus:escape:original:inferred",
+        "question": "谁受伤逃出了那房子？",
+        "passage": "19:13 当时有几个流动的犹太驱魔师试图用主耶稣的名给那些被邪灵附着的人驱魔。他们说：“我奉保罗所传的耶稣的名，吩咐你们。”\n19:14 这事是犹太大祭司士基瓦的七个儿子做的。\n19:15 有一天，邪灵回答说：“耶稣我认识，保罗我也知道，你们是谁？”\n19:16 那附着邪灵的人跳到他们身上，制服了他们所有人。攻击如此猛烈，以致他们赤身裸体、受伤逃出房子。",
+        "expected_answer": "The seven sons of Sceva.",
+        "form": "open",
+        "options": {},
+        "correct_option": "",
+        "intended_target": "",
+        "original_question": "被那附着邪灵的人制服以后，谁受伤逃出了那房子？",
+        "original_answer": "The seven sons of Sceva."
+      },
+      "checks": [
+        {
+          "repeat": 1,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "原题询问受伤逃出房子者的身份，并非询问被制服的原因或事件顺序。经文19:14明确相关人物是士基瓦的七个儿子，19:16叙述他们受伤逃出房子。契约对目标、答案组成及关系角色的判断符合原题和经文。"
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "候选题保留了“谁”“受伤”“逃出了那房子”，仍要求识别同一事件中的人物，完整答案仍为士基瓦的七个儿子。"
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "仅删除“被那附着邪灵的人制服以后”这一前情限定。当前经文只有一次受伤逃出房子的事件，删除后没有新增竞争人物或事件，也未删除题目要求回答的关系。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "原题和候选题均为中文；没有选项。"
+            },
+            "option_meanings": [],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "19:16明确记载有人受伤逃出房子，支持候选题所预设的事件。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "19:14将驱魔者明确为士基瓦的七个儿子；19:15—16的对话及“他们”承接这些人，支持固定答案。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "经文中唯一被叙述为受伤逃出房子的群体是士基瓦的七个儿子，没有其他符合该事件描述的人物。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "当前经文同时提供人物身份和逃出房子的事件，足以解析“他们”的指代并作答，无须外部知识。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "候选问题未透露士基瓦或七个儿子的身份；答案需通过经文中的人物承接关系确定。"
+              },
+              "mcq_validity": {
+                "status": "not_applicable",
+                "evidence": "本题为开放题，无选项或选项键。"
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "“谁受伤逃出了那房子？”是自然、直接的中文问句，“那房子”可由经文中的房子定位。"
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "问题结构简短，没有额外前情、嵌套修饰或人物指代链；阅读经文后即可直接确定所问人物。"
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "候选题没有额外铺陈；“受伤逃出了那房子”直接界定目标事件，未保留可删的制服经过。"
+            }
+          }
+        },
+        {
+          "repeat": 2,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "The original asks who escaped wounded, not why they escaped or who overpowered them. The inferred identity target is valid. Verse 19:14 identifies the participants as Sceva’s seven sons, and 19:16 describes their escape. The preceding overpowering clause functions as an event identifier rather than a separately tested relation."
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "The candidate retains both defining actions, being wounded and escaping the house, and still asks for the people’s identity. It preserves the target and supports the complete expected answer."
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "The only removed information is “被那附着邪灵的人制服以后.” The passage contains just one wounded escape from a house, so removing this preceding-event identifier introduces no competing event or answer. No explicit intended target requires testing the sequence or the overpowering relation."
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "Both questions are in Chinese. There are no displayed options."
+            },
+            "option_meanings": [],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "Verse 19:16 explicitly states that the people escaped the house wounded, supporting the question and its presupposition."
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "Verse 19:14 identifies the actors as “士基瓦的七个儿子”; the following exchange and attack continue with these participants, and 19:16 says they escaped wounded."
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "Only Sceva’s seven sons are described as escaping the house wounded. No other group performs that action in the supplied window."
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "The supplied verses establish both the group’s identity and the escape event. No outside biblical knowledge is needed."
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "The question does not name the sons or otherwise reveal the answer. Their identification in the source passage is ordinary evidence for comprehension."
+              },
+              "mcq_validity": {
+                "status": "not_applicable",
+                "evidence": "This is an open question with no choices or answer key label."
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "“谁受伤逃出了那房子？” is idiomatic, direct Chinese. The house reference is readily understood from the passage."
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "The question has a straightforward who–action structure without embedded clauses or an added reference chain. Identifying the passage’s participants requires only clear, local reference resolution."
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "The candidate adds no event narration or identifying setup. The retained wounded-escape description usefully specifies the target event."
+            }
+          }
+        }
+      ],
+      "status": "SIMPLIFIED"
+    }
+  ]
+}

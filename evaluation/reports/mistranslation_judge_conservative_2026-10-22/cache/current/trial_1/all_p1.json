@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "records": {
+    "31bc23094dc6be9910c27174b2587d006f4a7fcf8012a2ecfb0df6eec8f16b26": {
+      "identity": {
+        "model": "gpt-6-sol",
+        "prompt_sha256": "b7c9868704e29c70e16d236520c4de4800b352e71e3ae4ea15ac335e3e3fcb3f",
+        "schema_sha256": "5fa920642b474382900cb35cd4cea1669a30f9717edb84a60aec124f26c3b82d",
+        "max_output_tokens": 8192,
+        "api": "responses"
+      },
+      "request": {
+        "original_passage": "仆人拿走了钥匙。过了一会儿，管家拿走了木箱。",
+        "source": "拿走",
+        "replacement": "留下",
+        "mode": "systematic",
+        "occurrences": [
+          {
+            "start": 2,
+            "end": 4,
+            "original_context": "仆人拿走了钥匙。",
+            "edited_context": "仆人留下了钥匙。"
+          },
+          {
+            "start": 16,
+            "end": 18,
+            "original_context": "过了一会儿，管家拿走了木箱。",
+            "edited_context": "过了一会儿，管家留下了木箱。"
+          }
+        ]
+      },
+      "response": {
+        "source_claim": "仆人拿走了钥匙；过了一会儿，管家拿走了木箱。",
+        "replacement_claim": "仆人留下了钥匙；过了一会儿，管家留下了木箱。",
+        "explanation": "两处都将“拿走”改为“留下”，分别改变了钥匙和木箱的去向。两处替换后的句子均自然通顺，且各自只改变了这一动作。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "response_id": "resp_0af5118ab0cdebe8006adacd7c13fc87d19a19f59da4ebd010",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 867,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 196,
+        "output_tokens_details": {
+          "reasoning_tokens": 52
+        },
+        "total_tokens": 1063
+      },
+      "completed_at_unix": 1792724351
+    }
+  }
+}

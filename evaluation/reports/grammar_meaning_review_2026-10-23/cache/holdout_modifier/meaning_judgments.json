@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "reviews": {
+    "a834b032b82dc8c7f58234a7264ff20bfa67e7a215664c55dac511d78597ed8b": {
+      "reviewer": {
+        "policy": "source_blind_reading_v1",
+        "reader": {
+          "model": "gpt-6.1-sol",
+          "prompt_sha256": "fb8be39193ad42a4a899c93a73966f4f563cceec3b13b2637be26a30cebe45d7",
+          "schema_sha256": "c0bff0fe9ca0ac0ae2790f5ec01573f1335a0ff178afc6be9c2d72d9e4c2159d"
+        },
+        "judge": {
+          "model": "gpt-6.1-sol",
+          "prompt_sha256": "65ac136b58ee49062543842181a9d52b42cf97f82a5da527f3e841f10a700e3f",
+          "schema_sha256": "1212873bed97eb86ed4570777326a91477cbe9b01f421809ab1e9c5d4def5f57"
+        }
+      },
+      "request": {
+        "original_passage": "1 工人在仓库里修理那辆旧车。",
+        "clause_start": 0,
+        "original_clause": "1 工人在仓库里修理那辆旧车。",
+        "edited_clause": "1 工人修理那辆在仓库里旧车。"
+      },
+      "review": {
+        "candidate_reading": {
+          "primary_reading": "工人修理那辆位于仓库里的旧车。",
+          "participant_roles": "工人是修理者；那辆旧车是修理的对象。“仓库”是车所在的地点。文中未说明车或仓库归谁所有，也未明确工人的人数。",
+          "event_structure": "文本陈述修理这一动作，没有否定，也没有明确标示动作发生的时间、是否正在进行或是否已经完成；不涉及移动或持续状态的明确变化。",
+          "modifier_scope": "“那辆”指认一辆特定的车；“旧”描述车；“在仓库里”修饰车，说明车的位置。开头的“1”按条目编号理解，不作为工人的数量。",
+          "interpretation_status": "clear",
+          "alternative_readings": []
+        },
+        "judgment": {
+          "explanation": "原句的“在仓库里”限定修理动作发生的地点；记录的编辑句读法则将其理解为旧车所在的地点。工人仍是修理者，旧车仍是修理对象，但地点修饰范围从动作转移到车辆，不能据此保证修理也发生在仓库里。因此，参与者角色保持，地点关系及修饰范围未保持，并产生了新的合理读法。",
+          "participant_roles_preserved": "yes",
+          "event_structure_preserved": "no",
+          "modifier_scope_preserved": "no",
+          "no_new_plausible_meaning": "no",
+          "risk_spans": [
+            "那辆在仓库里旧车"
+          ]
+        }
+      }
+    }
+  }
+}

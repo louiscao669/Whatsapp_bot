@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "records": {
+    "726a7e54325074441b37e6e23b5566ded384b3e168d31fb0aed5994a9015c1fc": {
+      "identity": {
+        "model": "gpt-6-sol",
+        "prompt_sha256": "f857438a2a18e6f6221c4a199812ef2424055243a155316029daaccb7a0d9162",
+        "schema_sha256": "8319c0cd3900dfdaddc6a5f55bd684c72343c8ac328e12cd2fc660e099093bfa",
+        "max_output_tokens": 8192,
+        "api": "responses"
+      },
+      "request": {
+        "original_passage": "士兵烧了屋顶。仆人正在发烧。",
+        "source": "烧",
+        "replacement": "吃",
+        "mode": "systematic",
+        "occurrences": [
+          {
+            "start": 2,
+            "end": 3,
+            "original_context": "士兵烧了屋顶。",
+            "edited_context": "士兵吃了屋顶。"
+          },
+          {
+            "start": 12,
+            "end": 13,
+            "original_context": "仆人正在发烧。",
+            "edited_context": "仆人正在发吃。"
+          }
+        ]
+      },
+      "response": {
+        "source_claim": "士兵烧了屋顶；仆人正在发烧。",
+        "replacement_claim": "士兵吃了屋顶；“仆人正在发吃”不能构成自然、明确的陈述。",
+        "explanation": "第一处把“烧屋顶”改成“吃屋顶”，动作不同。第二处却把“发烧”改成不通顺的“发吃”。系统性替换须在每一处都成立，因此不合格。",
+        "meaning_changed": "no",
+        "fluent": "no",
+        "substitution_only": "yes",
+        "localized": "no",
+        "valid_in_all_contexts": "no",
+        "change_basis": "different_action_or_referent",
+        "change_dimension": "action",
+        "difference_evidence": "“士兵烧了屋顶”与“士兵吃了屋顶”的动作明确不同；但“发吃”不是自然表达，无法在第二处确立清楚的替换事实。",
+        "needs_repair": "yes"
+      },
+      "response_id": "resp_0ae0d41ed6ff421f006adacd4c691087d193748c0fb5d1f80f",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1604,
+        "input_tokens_details": {
+          "cached_tokens": 1476,
+          "cache_write_tokens": 125
+        },
+        "output_tokens": 505,
+        "output_tokens_details": {
+          "reasoning_tokens": 289
+        },
+        "total_tokens": 2109
+      },
+      "completed_at_unix": 1792724309
+    }
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "records": {
+    "d9a1b415a90c572510e40ffd02ec1e46a66de4fa78dcf3c5c1cc3a5c44c366e9": {
+      "identity": {
+        "model": "gpt-6-sol",
+        "prompt_sha256": "710d52b8945d965d68775a411de6abc5543010775247b16f5b9a92c4275a06ca",
+        "schema_sha256": "5fa920642b474382900cb35cd4cea1669a30f9717edb84a60aec124f26c3b82d",
+        "max_output_tokens": 8192,
+        "api": "responses"
+      },
+      "request": {
+        "original_passage": "商人对同伴说：明天船队可能会抵达，我们还不能确定。",
+        "source": "可能会",
+        "replacement": "一定会",
+        "mode": "contextual",
+        "occurrences": [
+          {
+            "start": 11,
+            "end": 14,
+            "original_context": "商人对同伴说：明天船队可能会抵达，我们还不能确定。",
+            "edited_context": "商人对同伴说：明天船队一定会抵达，我们还不能确定。"
+          }
+        ]
+      },
+      "response": {
+        "source_claim": "商人说船队明天可能抵达，但他们还不能确定。",
+        "replacement_claim": "商人说船队明天一定抵达，却又说他们还不能确定。",
+        "explanation": "“可能会”改为“一定会”明确改变了对抵达的确定程度，且只替换了这一处信息。但“一定会抵达”与紧接着的“我们还不能确定”在同一句话中直接矛盾，使表述不自然，因此不符合所有要求。",
+        "meaning_changed": "yes",
+        "fluent": "no",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "response_id": "resp_0d969cc93ae2ab05006adac22bcae887d1be75f7f9163dcc81",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1133,
+        "input_tokens_details": {
+          "cached_tokens": 1130,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 379,
+        "output_tokens_details": {
+          "reasoning_tokens": 223
+        },
+        "total_tokens": 1512
+      },
+      "completed_at_unix": 1792721456
+    }
+  }
+}

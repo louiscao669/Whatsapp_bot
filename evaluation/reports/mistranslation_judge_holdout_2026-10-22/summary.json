@@ -1,0 +1,264 @@
+{
+  "baseline": {
+    "true_accept": 22,
+    "true_reject": 24,
+    "false_accept": 0,
+    "false_reject": 2,
+    "scored_cases": 48,
+    "expected_cases": 48,
+    "accuracy": 0.9583333333333334,
+    "false_accept_rate": 0.0,
+    "false_reject_rate": 0.08333333333333333,
+    "families": {
+      "context": {
+        "true_accept": 2,
+        "true_reject": 2
+      },
+      "context_integrity": {
+        "true_reject": 2,
+        "true_accept": 2
+      },
+      "equivalence": {
+        "true_reject": 2,
+        "true_accept": 1,
+        "false_reject": 1
+      },
+      "frequency": {
+        "true_accept": 2,
+        "true_reject": 2
+      },
+      "lexical": {
+        "true_reject": 2,
+        "true_accept": 2
+      },
+      "modality": {
+        "true_reject": 2,
+        "false_reject": 1,
+        "true_accept": 1
+      },
+      "polarity": {
+        "true_accept": 2,
+        "true_reject": 2
+      },
+      "quantity": {
+        "true_accept": 2,
+        "true_reject": 2
+      },
+      "referent": {
+        "true_accept": 2,
+        "true_reject": 2
+      },
+      "scope": {
+        "true_reject": 2,
+        "true_accept": 2
+      },
+      "specificity": {
+        "true_accept": 2,
+        "true_reject": 2
+      },
+      "time": {
+        "true_accept": 2,
+        "true_reject": 2
+      }
+    },
+    "misclassifications": [
+      {
+        "id": "equivalence_p2",
+        "expected": "accept",
+        "actual": "reject",
+        "explanation": "年龄比较被反转，属于实质性改变；但在“兄弟二人”的语境中，“弟弟”指守卫的弟弟，说守卫比弟弟年幼在句内自相矛盾，不是自然成立的表述。"
+      },
+      {
+        "id": "modality_p2",
+        "expected": "accept",
+        "actual": "reject",
+        "explanation": "“可能会”改为“一定会”改变了抵达的确定程度，且只替换了这一处信息。但“一定会抵达”与紧接着的“我们还不能确定”在同一句中直接冲突，使整句表达不自然。"
+      }
+    ],
+    "repeat_decisions": {
+      "context_p1": [
+        "accept",
+        "accept",
+        "accept"
+      ],
+      "context_p2": [
+        "accept",
+        "accept",
+        "accept"
+      ],
+      "frequency_n2": [
+        "reject",
+        "reject",
+        "reject"
+      ],
+      "modality_p1": [
+        "accept",
+        "accept",
+        "accept"
+      ],
+      "modality_p2": [
+        "reject",
+        "accept",
+        "reject"
+      ],
+      "quantity_n1": [
+        "reject",
+        "reject",
+        "reject"
+      ],
+      "specificity_n2": [
+        "reject",
+        "reject",
+        "reject"
+      ],
+      "time_n1": [
+        "reject",
+        "reject",
+        "reject"
+      ]
+    },
+    "repeat_flips": [
+      "modality_p2"
+    ],
+    "errors": 0
+  },
+  "revised": {
+    "true_accept": 21,
+    "true_reject": 24,
+    "false_accept": 0,
+    "false_reject": 3,
+    "scored_cases": 48,
+    "expected_cases": 48,
+    "accuracy": 0.9375,
+    "false_accept_rate": 0.0,
+    "false_reject_rate": 0.125,
+    "families": {
+      "context": {
+        "true_reject": 2,
+        "true_accept": 2
+      },
+      "context_integrity": {
+        "true_reject": 2,
+        "true_accept": 2
+      },
+      "equivalence": {
+        "true_accept": 1,
+        "false_reject": 1,
+        "true_reject": 2
+      },
+      "frequency": {
+        "true_accept": 2,
+        "true_reject": 2
+      },
+      "lexical": {
+        "true_accept": 2,
+        "true_reject": 2
+      },
+      "modality": {
+        "true_accept": 1,
+        "true_reject": 2,
+        "false_reject": 1
+      },
+      "polarity": {
+        "true_accept": 2,
+        "true_reject": 2
+      },
+      "quantity": {
+        "true_accept": 2,
+        "true_reject": 2
+      },
+      "referent": {
+        "true_accept": 2,
+        "true_reject": 2
+      },
+      "scope": {
+        "true_accept": 2,
+        "true_reject": 2
+      },
+      "specificity": {
+        "true_reject": 2,
+        "true_accept": 2
+      },
+      "time": {
+        "true_accept": 1,
+        "true_reject": 2,
+        "false_reject": 1
+      }
+    },
+    "misclassifications": [
+      {
+        "id": "equivalence_p2",
+        "expected": "accept",
+        "actual": "reject",
+        "explanation": "年龄关系由年长变为年幼，事实明确改变；但“弟弟”已表明此人比守卫年幼，说守卫“比弟弟年幼”在本句中自相矛盾，不是自然通顺的表述。"
+      },
+      {
+        "id": "modality_p2",
+        "expected": "accept",
+        "actual": "reject",
+        "explanation": "“可能会”改为“一定会”明确改变了对抵达的确定程度，且只替换了这一处信息。但“一定会抵达”与紧接着的“我们还不能确定”在同一句话中直接矛盾，使表述不自然，因此不符合所有要求。"
+      },
+      {
+        "id": "time_p2",
+        "expected": "accept",
+        "actual": "reject",
+        "explanation": "两种时间描述可能指同一次夜间出港：既在前一日日落之后，也在次日日出之前。上下文未限定日期，无法确定出港时间发生了事实变化。替换本身通顺，且仅涉及出港时间。"
+      }
+    ],
+    "repeat_decisions": {
+      "context_p1": [
+        "accept",
+        "accept",
+        "accept"
+      ],
+      "context_p2": [
+        "accept",
+        "accept",
+        "accept"
+      ],
+      "frequency_n2": [
+        "reject",
+        "reject",
+        "reject"
+      ],
+      "modality_p1": [
+        "accept",
+        "accept",
+        "accept"
+      ],
+      "modality_p2": [
+        "reject",
+        "reject",
+        "reject"
+      ],
+      "quantity_n1": [
+        "reject",
+        "reject",
+        "reject"
+      ],
+      "specificity_n2": [
+        "reject",
+        "reject",
+        "reject"
+      ],
+      "time_n1": [
+        "reject",
+        "reject",
+        "reject"
+      ]
+    },
+    "repeat_flips": [],
+    "errors": 0
+  },
+  "complete": true,
+  "completed_responses": 128,
+  "planned_responses": 128,
+  "usage": {
+    "input_tokens": 125636,
+    "output_tokens": 23350,
+    "total_tokens": 148986,
+    "reasoning_tokens": 6960,
+    "cached_input_tokens": 17964
+  },
+  "revised_passes_screening_gate": false
+}

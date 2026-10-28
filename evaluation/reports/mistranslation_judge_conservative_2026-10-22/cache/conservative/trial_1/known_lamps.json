@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "records": {
+    "1a09ab0f67b090ae88066a5eb62639feb7fb1dbf24a57b57ce62f7b68a99b2c1": {
+      "identity": {
+        "model": "gpt-6-sol",
+        "prompt_sha256": "f857438a2a18e6f6221c4a199812ef2424055243a155316029daaccb7a0d9162",
+        "schema_sha256": "8319c0cd3900dfdaddc6a5f55bd684c72343c8ac328e12cd2fc660e099093bfa",
+        "max_output_tokens": 8192,
+        "api": "responses"
+      },
+      "request": {
+        "original_passage": "当时我们聚集的楼上的房间里有许多灯。",
+        "source": "许多灯",
+        "replacement": "几盏灯",
+        "mode": "contextual",
+        "occurrences": [
+          {
+            "start": 14,
+            "end": 17,
+            "original_context": "当时我们聚集的楼上的房间里有许多灯。",
+            "edited_context": "当时我们聚集的楼上的房间里有几盏灯。"
+          }
+        ]
+      },
+      "response": {
+        "source_claim": "当时聚集的楼上房间里有许多灯。",
+        "replacement_claim": "当时聚集的楼上房间里有几盏灯。",
+        "explanation": "改动的是灯的数量描述，但“许多”和“几盏”都未给出明确数量；仅凭通常语感不能认定两者在此处表达了确定不同的事实。编辑后的句子自然，且只替换了这一处数量描述，但不符合明确改变事实的要求。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no",
+        "change_basis": "vague_contrast",
+        "change_dimension": "quantity",
+        "difference_evidence": "原文为“许多灯”，替换后为“几盏灯”；上下文没有界定两者互不重合的数量范围。",
+        "needs_repair": "no"
+      },
+      "response_id": "resp_09ddf626997729a6006adacd10391c87d186e96927c8478976",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1592,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1589
+        },
+        "output_tokens": 268,
+        "output_tokens_details": {
+          "reasoning_tokens": 56
+        },
+        "total_tokens": 1860
+      },
+      "completed_at_unix": 1792724245
+    }
+  }
+}

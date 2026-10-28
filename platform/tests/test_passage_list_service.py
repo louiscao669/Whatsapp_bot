@@ -44,6 +44,7 @@ class PassageListServiceTests(unittest.TestCase):
                         "id": translation.id,
                         "language": "cmn",
                         "translation_name": "Method X",
+                        "book": "luke",
                         "chapter_number": 2,
                         "verse_count": 2,
                         "verses": "1, 3",

@@ -47,6 +47,25 @@ from eten_shared.models import (
 from eten_shared.pilot_trials import PILOT_PROVIDER
 
 
+# These suites test question serving. The background questionnaire that now
+# precedes the first question is switched off here and covered on its own in
+# test_pilot_questionnaire.py (including the gate in get_pilot_state).
+_QUESTIONNAIRE_OFF = None
+
+
+def setUpModule():
+    global _QUESTIONNAIRE_OFF
+    import os
+    from unittest.mock import patch as _patch
+
+    _QUESTIONNAIRE_OFF = _patch.dict(os.environ, {"PILOT_QUESTIONNAIRE_ENABLED": "0"})
+    _QUESTIONNAIRE_OFF.start()
+
+
+def tearDownModule():
+    _QUESTIONNAIRE_OFF.stop()
+
+
 class PilotServiceTestCase(unittest.TestCase):
     def setUp(self):
         self.engine = create_engine("sqlite://")
@@ -260,7 +279,7 @@ class PilotPassageRenderingTests(PilotServiceTestCase):
         self.db.flush()
         return translation
 
-    def test_a_joined_window_is_split_back_into_its_verses(self):
+    def test_a_clean_window_is_not_split_into_verses(self):
         translation = self._translation([("3", "Verse three."), ("4", "Verse four."),
                                          ("5", "Verse five.")])
         self.first.passage_translation_id = translation.id
@@ -270,14 +289,13 @@ class PilotPassageRenderingTests(PilotServiceTestCase):
 
         question = get_pilot_state(self.db, self.participant.id)["question"]
 
-        self.assertEqual(
-            question["passage_lines"],
-            ["Verse three.", "Verse four.", "Verse five."],
-        )
+        # Clean text renders as ONE paragraph too: splitting it while a
+        # defective variant stayed a block made the layout reveal the condition.
+        self.assertEqual(question["passage_lines"], ["Verse three. Verse four. Verse five."])
         # The joined form is still reported, unchanged.
         self.assertEqual(question["passage_text"], "Verse three. Verse four. Verse five.")
 
-    def test_a_multi_line_variant_is_split_as_delivered_without_verse_numbers(self):
+    def test_a_multi_line_variant_is_rejoined_without_verse_numbers(self):
         self.first.passage_verse_numbers = ["3", "4", "5"]
         self.first.passage_text = "3 Variant three.\n4 Variant four.\n5 Variant five."
         self.db.flush()
@@ -285,9 +303,40 @@ class PilotPassageRenderingTests(PilotServiceTestCase):
         question = get_pilot_state(self.db, self.participant.id)["question"]
 
         self.assertEqual(
-            question["passage_lines"],
-            ["Variant three.", "Variant four.", "Variant five."],
+            question["passage_lines"], ["Variant three. Variant four. Variant five."]
         )
+
+    def test_an_omission_cut_does_not_show_as_a_line_break(self):
+        """Regression (2026-10-26 hard66 run): an omission that deletes the start
+        of a verse leaves the source file's line break inside the stored text.
+        It must render exactly like an ordinary verse boundary."""
+        self.first.passage_verse_numbers = ["7", "8"]
+        self.first.passage_text = (
+            "有一个少年利未人，是犹大伯利恒人，住在犹大族中。\n寻找居所，来到以法莲山地米迦家里。"
+        )
+        self.db.flush()
+
+        question = get_pilot_state(self.db, self.participant.id)["question"]
+
+        self.assertEqual(
+            question["passage_lines"],
+            ["有一个少年利未人，是犹大伯利恒人，住在犹大族中。 寻找居所，来到以法莲山地米迦家里。"],
+        )
+        self.assertNotIn("\n", question["passage_text"])
+
+    def test_every_condition_gets_the_same_layout(self):
+        layouts = []
+        for text in (
+            "Verse three. Verse four. Verse five.",  # clean, joined
+            "3 Verse three.\n5 Verse five.",  # omission, marker lines
+            "Verse three. Verse\nfive.",  # omission, cut mid-verse
+        ):
+            self.first.passage_verse_numbers = ["3", "4", "5"]
+            self.first.passage_text = text
+            self.db.flush()
+            question = get_pilot_state(self.db, self.participant.id)["question"]
+            layouts.append(len(question["passage_lines"]))
+        self.assertEqual(layouts, [1, 1, 1])
 
     def test_a_defective_variant_is_never_replaced_by_clean_verses(self):
         """The guard that matters: an omission-condition passage must not be
@@ -842,3 +891,78 @@ class PilotResultsTests(PilotServiceTestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class PilotLastSeenTests(PilotServiceTestCase):
+    """Regression (2026-10-26 hard66 run): the admin "Last seen" stayed blank
+    for /pilot participants because nothing on the pilot path set it."""
+
+    def test_participant_actions_stamp_last_seen(self):
+        self.assertIsNone(self.participant.last_seen_at)
+        get_pilot_state(self.db, self.participant.id)
+        first_seen = self.participant.last_seen_at
+        self.assertIsNotNone(first_seen)
+
+        mark_pilot_question_viewed(self.db, self.participant.id, self.first.id)
+        submit_pilot_answer(
+            self.db, self.participant.id, self.first.id,
+            submission_id="seen-1", answer="Free text", active_time_ms=1_000,
+        )
+        self.assertGreaterEqual(self.participant.last_seen_at, first_seen)
+
+    def test_background_premint_does_not_count_as_activity(self):
+        from backend.pilot.service import premint_next_assignment
+
+        get_pilot_state(self.db, self.participant.id)
+        self.participant.last_seen_at = None
+        self.db.flush()
+        premint_next_assignment(self.db, self.participant.id)
+        self.assertIsNone(self.participant.last_seen_at)
+
+
+class PilotScoringMethodTests(PilotServiceTestCase):
+    def _answer(self, assignment, answer, submission_id):
+        get_pilot_state(self.db, self.participant.id)
+        mark_pilot_question_viewed(self.db, self.participant.id, assignment.id)
+        return submit_pilot_answer(
+            self.db, self.participant.id, assignment.id,
+            submission_id=submission_id, answer=answer, active_time_ms=1_000,
+        )
+
+    def test_legacy_exact_letter_rows_report_their_method(self):
+        """MCQs scored before the fix have empty metadata; the report fills it in."""
+        self.db.delete(self.first)
+        self.db.flush()
+        self._answer(self.second, "A", "mcq-legacy")
+        self.db.add(ParticipantResponse(
+            participant_id=self.participant.id,
+            qa_item_id=self.mcq_item.id,
+            assignment_id=self.second.id,
+            response_text="A",
+            is_correct="yes (auto)",
+            review_status=ReviewStatus.AUTO.value,
+            scoring_metadata={},
+        ))
+        self.db.flush()
+
+        trial = get_pilot_results(self.db)["trials"][0]
+        self.assertEqual(trial["scoring_method"], "exact_letter")
+        self.assertEqual(trial["scoring_version"], "0/1")
+
+    def test_an_llm_resolved_choice_keeps_its_own_method(self):
+        self.db.delete(self.first)
+        self.db.flush()
+        self._answer(self.second, "A", "mcq-llm")
+        self.db.add(ParticipantResponse(
+            participant_id=self.participant.id,
+            qa_item_id=self.mcq_item.id,
+            assignment_id=self.second.id,
+            response_text="the first one",
+            is_correct="yes (auto)",
+            review_status=ReviewStatus.AUTO.value,
+            scoring_metadata={"method": "llm_choice_resolution", "status": "complete"},
+        ))
+        self.db.flush()
+
+        trial = get_pilot_results(self.db)["trials"][0]
+        self.assertEqual(trial["scoring_method"], "llm_choice_resolution")

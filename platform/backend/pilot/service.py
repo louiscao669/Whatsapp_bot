@@ -20,7 +20,6 @@ is accepted.
 """
 
 import os
-import re
 from datetime import timezone
 
 from eten_shared.answer_receipts import create_answer_receipt
@@ -46,7 +45,6 @@ from eten_shared.models import (
     AssignmentStatus,
     ExperimentPlanCell,
     Participant,
-    PassageVerse,
     PilotQuestionTrial,
     PilotSession,
     PilotTrialStatus,
@@ -83,6 +81,12 @@ from backend.shared.assignment_selection import (  # noqa: E402
     experiment_assignment_kwargs,
     select_next_participant_qa_item,
 )
+from backend.pilot.questionnaire import (  # noqa: E402
+    COMPLETE as QUESTIONNAIRE_COMPLETE,
+    NOT_REQUIRED as QUESTIONNAIRE_NOT_REQUIRED,
+    SCREENED_OUT as QUESTIONNAIRE_SCREENED_OUT,
+    questionnaire_status,
+)
 
 
 class PilotError(Exception):
@@ -115,6 +119,19 @@ def _participant(db, participant_id):
     if not participant:
         raise PilotNotFoundError("Participant not found")
     return participant
+
+
+def _seen(participant):
+    """Stamp ``participants.last_seen_at`` (the admin "Last seen" column).
+
+    Called only from participant-driven requests -- consent, loading a
+    question, the visibility/checkpoint beacons, submitting an answer, the
+    background questionnaire. Never from the server's own background work
+    (pre-minting, deferred timing events), which would otherwise make an absent
+    participant look active.
+    """
+
+    participant.last_seen_at = utc_now()
 
 
 def get_or_create_pilot_session(db, participant, consent_version=None) -> PilotSession:
@@ -190,6 +207,7 @@ def record_consent(db, participant_id, agreed, version=None):
     """
 
     participant = _participant(db, participant_id)
+    _seen(participant)
     version = version or DEFAULT_CONSENT_VERSION
     if _consent_text(version) is None:  # pragma: no cover - guarded above
         raise PilotError("Unknown consent version")
@@ -459,63 +477,30 @@ def _progress(db, participant, pilot_session):
     return {"questions_presented": int(presented or 0), "questions_answered": int(answered or 0)}
 
 
-def _normalized(text):
-    return " ".join(str(text or "").split())
+def _passage_lines(delivered_text):
+    """The delivered passage as ONE paragraph, for every condition.
 
+    This used to split one verse per line when it could. In practice the split
+    only ever fired in two situations, and both told a participant something
+    about the condition:
 
-def _window_verse_texts(db, assignment):
-    """The delivered window's verses, one string each, in reading order."""
+      * omission variants: when an omission deletes the start of a verse it
+        takes the verse-number marker with it, so the importer's slice to the
+        next marker carries the source file's line break into the verse text.
+        Those passages broke into lines exactly at the cut points, sometimes
+        mid-sentence (found in the 2026-10-26 hard66 run: 12/16 omission
+        passages split, 0/49 others).
+      * translation-linked assignments: clean text could be matched back to its
+        verses and was split; a defective text could not and stayed one block.
 
-    translation_id = assignment.passage_translation_id
-    verse_numbers = [str(n).strip() for n in (assignment.passage_verse_numbers or [])]
-    if not translation_id or not verse_numbers:
-        return []
-    verses = db.scalars(
-        select(PassageVerse)
-        .where(
-            PassageVerse.translation_id == translation_id,
-            PassageVerse.verse_number.in_(verse_numbers),
-        )
-        .order_by(PassageVerse.position)
-    ).all()
-    return [v.text.strip() for v in verses if v.text and v.text.strip()]
-
-
-def _strip_verse_prefix(line, verse_numbers):
-    match = re.match(r"^(\d+)\s+(.+)$", line.strip())
-    if match and match.group(1) in verse_numbers:
-        return match.group(2).strip()
-    return line.strip()
-
-
-def _passage_lines(db, assignment, qa_item, delivered_text):
-    """The delivered passage split one verse per line, for readability.
-
-    Splitting is only ever a re-rendering of the text that was actually
-    delivered -- never a re-fetch. The guard matters: an experiment assignment
-    carries the CONDITION's variant passage, so recovering verses from the
-    clean translation whenever they happened to line up would quietly serve
-    undefective text to someone in a defect arm. So:
-
-      1. a multi-line snapshot is split as delivered (the variant path already
-         stores one verse per line, with a verse-number prefix);
-      2. a single joined blob is split into the window's verses ONLY when those
-         verses reassemble to exactly the delivered text;
-      3. otherwise it stays one paragraph, because any split would be a guess.
+    So the layout is uniform now: one paragraph. ``delivered_text`` comes from
+    ``assignment_passage_snapshot``, which already drops verse-number prefixes
+    and rejoins any lines with a single space -- the same separator used between
+    ordinary verses, so a cut point looks like any other verse boundary.
     """
 
-    raw = str(assignment.passage_text or "").strip()
-    verse_numbers = {str(n).strip() for n in (assignment.passage_verse_numbers or [])}
-
-    raw_lines = [line for line in raw.splitlines() if line.strip()]
-    if len(raw_lines) > 1:
-        return [_strip_verse_prefix(line, verse_numbers) for line in raw_lines]
-
-    verses = _window_verse_texts(db, assignment)
-    if verses and _normalized(" ".join(verses)) == _normalized(delivered_text):
-        return verses
-
-    return [delivered_text] if delivered_text else []
+    text = " ".join(str(delivered_text or "").split())
+    return [text] if text else []
 
 
 def _serialize_question(db, participant, assignment, qa_item, trial):
@@ -550,8 +535,9 @@ def _serialize_question(db, participant, assignment, qa_item, trial):
         "choices": choices,
         "passage_reference": qa_item.passage_reference,
         "passage_text": passage_text,
-        # Same delivered text, split one verse per line for readability.
-        "passage_lines": _passage_lines(db, assignment, qa_item, passage_text),
+        # Same delivered text as one paragraph (see _passage_lines: a per-verse
+        # split leaked the omission condition).
+        "passage_lines": _passage_lines(passage_text),
         "status": trial.status,
         "started_at": _iso(trial.started_at),
         # Server-side checkpoint so a reload resumes from the durable total
@@ -640,7 +626,26 @@ def get_pilot_state(db, participant_id, consent_version=None):
     """
 
     participant = _participant(db, participant_id)
+    _seen(participant)
     pilot_session = get_or_create_pilot_session(db, participant, consent_version)
+
+    # The background questionnaire sits between consent and the first
+    # question. Enforced here, not only in the client: until it is complete,
+    # no assignment is minted and no study material is returned.
+    questionnaire = questionnaire_status(db, participant)
+    if questionnaire not in (QUESTIONNAIRE_COMPLETE, QUESTIONNAIRE_NOT_REQUIRED):
+        return {
+            "state": "screened_out" if questionnaire == QUESTIONNAIRE_SCREENED_OUT else "questionnaire",
+            "questionnaire_status": questionnaire,
+            "session": {
+                "pilot_session_id": pilot_session.id,
+                "participant_id": participant.id,
+                "consent_version": pilot_session.consent_version,
+                "consented_at": _iso(pilot_session.consented_at),
+            },
+            "question": None,
+            "progress": _progress(db, participant, pilot_session),
+        }
 
     assignment = None
     open_assignments = _open_pilot_assignments(db, participant)
@@ -699,6 +704,7 @@ def mark_pilot_question_viewed(
     """
 
     participant = _participant(db, participant_id)
+    _seen(participant)
     assignment, trial = _trial_for_assignment(db, participant, assignment_id)
 
     started_now = False
@@ -765,6 +771,7 @@ def record_pilot_activity_checkpoint(
         raise PilotError("event_type must be question_visible or question_hidden")
 
     participant = _participant(db, participant_id)
+    _seen(participant)
     assignment, trial = _trial_for_assignment(db, participant, assignment_id)
 
     try:
@@ -860,6 +867,7 @@ def submit_pilot_answer(
         raise PilotError("Answer is required")
 
     participant = _participant(db, participant_id)
+    _seen(participant)
     assignment, trial = _trial_for_assignment(db, participant, assignment_id)
     qa_item = assignment.qa_item or db.get(QAItem, assignment.qa_item_id)
     if qa_item is None:

@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "records": {
+    "dd5fa6c9515609244f803af927beb3977ea8ec4516d4f6b0f93a82870f58d492": {
+      "identity": {
+        "model": "gpt-6-sol",
+        "prompt_sha256": "710d52b8945d965d68775a411de6abc5543010775247b16f5b9a92c4275a06ca",
+        "schema_sha256": "5fa920642b474382900cb35cd4cea1669a30f9717edb84a60aec124f26c3b82d",
+        "max_output_tokens": 8192,
+        "api": "responses"
+      },
+      "request": {
+        "original_passage": "士兵烧了屋顶。仆人正在发烧。",
+        "source": "烧",
+        "replacement": "吃",
+        "mode": "systematic",
+        "occurrences": [
+          {
+            "start": 2,
+            "end": 3,
+            "original_context": "士兵烧了屋顶。",
+            "edited_context": "士兵吃了屋顶。"
+          },
+          {
+            "start": 12,
+            "end": 13,
+            "original_context": "仆人正在发烧。",
+            "edited_context": "仆人正在发吃。"
+          }
+        ]
+      },
+      "response": {
+        "source_claim": "士兵烧了屋顶；仆人正在发烧。",
+        "replacement_claim": "士兵吃了屋顶；仆人正在“发吃”。",
+        "explanation": "第一处将士兵的动作从烧改为吃，事实不同；但第二处把“发烧”改成不成词的“发吃”，无法形成自然、明确的对应事实。系统性替换并非在所有出现处都有效。",
+        "meaning_changed": "uncertain",
+        "fluent": "no",
+        "substitution_only": "yes",
+        "localized": "no",
+        "valid_in_all_contexts": "no"
+      },
+      "response_id": "resp_0afb143492c8b56c006adacd47a20087d184a5d9d5280c344a",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1137,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1134
+        },
+        "output_tokens": 268,
+        "output_tokens_details": {
+          "reasoning_tokens": 126
+        },
+        "total_tokens": 1405
+      },
+      "completed_at_unix": 1792724301
+    }
+  }
+}

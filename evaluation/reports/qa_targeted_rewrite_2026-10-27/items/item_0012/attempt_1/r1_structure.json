@@ -1,0 +1,55 @@
+{
+  "request_hash": "3edc65b6a1a8908a65f0dbd13522efdfc928831667d8688d2fd56a129a6e2681",
+  "model": "gpt-6.1-sol",
+  "response_id": "resp_074dc75c5b49e56a006ae0edb8680087d186d98a252260763d",
+  "usage": {
+    "input_tokens": 933,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0
+    },
+    "output_tokens": 729,
+    "output_tokens_details": {
+      "reasoning_tokens": 166
+    },
+    "total_tokens": 1662
+  },
+  "parsed": {
+    "items": [
+      {
+        "id": "item",
+        "parse_summary": "题干以“坐席时”限定时间，主句“先知宣告”后接宣告内容，疑问词“谁”位于“谁的尸首”这一领属结构中。作答须区分宣告者与被宣告者，并将“自己的祖坟”的领属者对应到被宣告者。选项“带他回来的先知”中的“他”也指向“从犹大来的神人”。",
+        "features": [
+          {
+            "kind": "role_tracking",
+            "quote": "先知宣告谁的尸首必定不能葬在自己的祖坟里？",
+            "required_operations": "区分发出宣告的先知与宣告所针对的人，并从尸首的领属者确定所问人物，而不是选择宣告者。",
+            "concern": "ordinary",
+            "reason": "这一区分正是辨认宣告对象所必需的参与者关系，题干没有叠加额外角色。"
+          },
+          {
+            "kind": "reference_chain",
+            "quote": "自己的祖坟里",
+            "required_operations": "将“自己”回指到“谁的尸首”中的“谁”，而不是主句中的“先知”。",
+            "concern": "ordinary",
+            "reason": "领属回指是理解所宣告后果的必要关系，链条较短。"
+          },
+          {
+            "kind": "reference_chain",
+            "quote": "带他回来的先知",
+            "required_operations": "结合经文，将“他”解析为从犹大来的神人，并识别整个短语指带神人回来的先知。",
+            "concern": "ordinary",
+            "reason": "选项沿用经文中的人物区分方式，虽需解析代词，但没有形成多层回指。"
+          },
+          {
+            "kind": "negation_scope",
+            "quote": "必定不能葬在自己的祖坟里",
+            "required_operations": "理解“必定”强调不能入葬这一否定结果，否定范围是葬入自己的祖坟，而非否定尸首所属的人。",
+            "concern": "ordinary",
+            "reason": "只有一层否定及其确定性修饰，属于目标宣告本身的必要内容。"
+          }
+        ]
+      }
+    ]
+  }
+}

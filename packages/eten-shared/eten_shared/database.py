@@ -254,6 +254,9 @@ def _run_startup_migrations(engine: Engine):
             text("ALTER TABLE qa_items ADD COLUMN IF NOT EXISTS passage_text text")
         )
         connection.execute(
+            text("ALTER TABLE passage_translations ADD COLUMN IF NOT EXISTS book varchar(64)")
+        )
+        connection.execute(
             text(
                 "ALTER TABLE qa_items ADD COLUMN IF NOT EXISTS original_question_text text"
             )
@@ -613,6 +616,43 @@ def _run_startup_migrations(engine: Engine):
             "passage_onscreen_ms integer NOT NULL DEFAULT 0",
             "ALTER TABLE pilot_question_trials ADD COLUMN IF NOT EXISTS "
             "focus_change_count integer NOT NULL DEFAULT 0",
+            # Background & eligibility questionnaire; see
+            # supabase/migrations/pilot_background_questionnaire.sql.
+            """
+            CREATE TABLE IF NOT EXISTS pilot_questionnaire_responses (
+                id text PRIMARY KEY DEFAULT gen_random_uuid()::text,
+                participant_id text NOT NULL
+                    REFERENCES participants(id) ON DELETE CASCADE,
+                instrument_version varchar(64) NOT NULL,
+                language varchar(16) NOT NULL,
+                status varchar(16) NOT NULL,
+                eligibility_answers jsonb NOT NULL DEFAULT '{}'::jsonb,
+                background_answers jsonb,
+                religion_consent boolean,
+                religion_answers jsonb,
+                familiarity_answers jsonb,
+                familiarity_correct integer,
+                familiarity_answered integer,
+                familiarity_score double precision,
+                eligible_at timestamptz NOT NULL DEFAULT now(),
+                completed_at timestamptz,
+                created_at timestamptz NOT NULL DEFAULT now(),
+                updated_at timestamptz NOT NULL DEFAULT now(),
+                CONSTRAINT uq_pilot_questionnaire_participant UNIQUE (participant_id),
+                CONSTRAINT ck_pilot_questionnaire_status
+                    CHECK (status IN ('eligibility', 'background', 'religion', 'familiarity'))
+            )
+            """,
+            "CREATE INDEX IF NOT EXISTS ix_pilot_questionnaire_responses_participant_id "
+            "ON pilot_questionnaire_responses(participant_id)",
+            "ALTER TABLE pilot_questionnaire_responses ENABLE ROW LEVEL SECURITY",
+            """
+            CREATE TABLE IF NOT EXISTS pilot_screenout_counts (
+                instrument_version varchar(64) PRIMARY KEY,
+                screenouts integer NOT NULL DEFAULT 0
+            )
+            """,
+            "ALTER TABLE pilot_screenout_counts ENABLE ROW LEVEL SECURITY",
             # Admin sign-in. These live in supabase/schema.sql too, but a
             # database created before they were added to it has neither, and
             # the failure mode is that nobody can log in to the platform at

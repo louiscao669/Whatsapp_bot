@@ -1,0 +1,32 @@
+{
+  "kind": "fresh_diagnostic_replay_not_original_trace",
+  "original_cell": "mistranslation/qwen3:1.7b/t1_acts20/mistranslation/30%",
+  "id": "uw-t1_acts20:f988-open",
+  "question": "保罗为什么一直讲到午夜？",
+  "local_passage": "7 在一周的最后一天，我们聚集在一起饮酒。由于保罗当天准备留下，他与他们争吵，并一直讲到正午。\n8 当时我们聚集的楼下的房间里有一盏灯。\n9 有一个名叫尤提古斯的年轻人坐在门口，保罗不停地唱，他渐渐进入沉睡。当他清醒时，从二楼坠下，被捡起时昏迷。",
+  "started_at": 1792840637.415591,
+  "attempts": 1,
+  "request": {
+    "model": "qwen3:1.7b",
+    "messages": [
+      {
+        "role": "system",
+        "content": "Answer from the translated passage only. Do not include verse numbers, guess, or use outside knowledge. Do not repeat or echo the passage text in the answer. Do not echo the question. Do not output markdown or explanations. Return only the raw answer text."
+      },
+      {
+        "role": "user",
+        "content": "Read the passage and answer the question using only the passage.\nGive only the shortest phrase or sentence that directly answers the question.\nDo not include verse numbers.\nDo not copy a verse span or passage excerpt.\nDo not repeat or echo the question.\nDo not add labels, numbering, explanations, markdown, or extra text.\nUse Simplified Chinese.\nReturn only the answer text.\n\nPassage:\n7 在一周的最后一天，我们聚集在一起饮酒。由于保罗当天准备留下，他与他们争吵，并一直讲到正午。\n8 当时我们聚集的楼下的房间里有一盏灯。\n9 有一个名叫尤提古斯的年轻人坐在门口，保罗不停地唱，他渐渐进入沉睡。当他清醒时，从二楼坠下，被捡起时昏迷。\n\nQuestion:\n保罗为什么一直讲到午夜？"
+      }
+    ],
+    "stream": false,
+    "options": {
+      "temperature": 0,
+      "num_ctx": 8192,
+      "num_predict": 2500
+    }
+  },
+  "timeout_seconds": 150.0,
+  "error_type": "GenerationError",
+  "error": "Could not reach Ollama at http://localhost:11434. Is `ollama serve` running?",
+  "finished_at": 1792840637.4158678
+}

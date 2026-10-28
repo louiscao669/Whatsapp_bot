@@ -86,7 +86,8 @@ PAIRS=(
 # scores*, so re-seeding never overwrites results already produced.
 ARTIFACTS=(passage_source_decanonicalized.txt passage_target.txt
            passage_target_decanonicalized.txt passage_translation.json
-           qa_target.json qa_target_decanonicalized.json)
+           qa_target.json qa_target_decanonicalized.json decanonicalized_metadata.json
+           omission_metadata.json grammar_metadata.json mistranslation_metadata.json)
 
 ran=0; skipped=0
 for pair in "${PAIRS[@]}"; do
@@ -149,7 +150,7 @@ for pair in "${PAIRS[@]}"; do
           done
         fi
 
-        cmd=(python evaluation/main.py
+        cmd=("${PYTHON_BIN:-python}" evaluation/main.py
              "$PASSAGE_DIR/$name" "$QA_DIR/${pid}_all_formats.json"
              --output-dir "$OUT_ROOT/$pid/$slug"
              --run-name "${pid}_${slug}"

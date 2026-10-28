@@ -205,6 +205,25 @@ def choice_response_letter(qa_item, response_text: str) -> Optional[str]:
     )
 
 
+#: ``scoring_metadata["method"]`` for a choice answer whose letter was read
+#: directly from the reply (no LLM involved). Before 2026-10-26 this path wrote
+#: no metadata at all, so exports showed a blank scoring method for nearly
+#: every MCQ answer.
+EXACT_CHOICE_METHOD = "exact_letter"  # same label export_pilot_responses already used
+EXACT_CHOICE_SCALE = "0/1"
+
+
+def exact_choice_scoring_metadata(letter: str) -> dict:
+    """Scoring metadata for an MCQ/TF answer scored by exact letter match."""
+
+    return {
+        "method": EXACT_CHOICE_METHOD,
+        "scale": EXACT_CHOICE_SCALE,
+        "status": "complete",
+        "letter": letter,
+    }
+
+
 def choice_response_is_correct(qa_item, response_text: str) -> bool:
     """True if the reply matches the stored correct letter; False if wrong or unparseable."""
     selected_letter = choice_response_letter(qa_item, response_text)

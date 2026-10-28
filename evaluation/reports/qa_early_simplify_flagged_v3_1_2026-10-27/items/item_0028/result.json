@@ -1,0 +1,225 @@
+{
+  "id": "hard:t1_judg17_18:3162:open",
+  "original": {
+    "id": "hard:t1_judg17_18:3162:open",
+    "question": "那些神像最先发生了什么事？",
+    "passage": "18:17 那五个窥探地的人进去，拿了雕像、以弗得、家用神像和熔铸的偶像，祭司站在城门口，带着六百带兵器的人。\n18:18 他们进了米迦家，拿了雕像、以弗得、家用神像和熔铸的偶像，祭司问他们说：“你们做什么呢？”\n18:19 他们说：“安静，不要出声，把手捂口，跟我们去作我们的父亲和祭司。你作一个人家的祭司好呢？还是作以色列一个支派一个家族的祭司好呢？”\n18:20 祭司就喜悦，拿了以弗得、家用神像和雕像，跟着他们去了。\n18:21 他们将小孩、牲畜和财物放在前面，转身离开。",
+    "expected_answer": "the five men take them from Micah’s house",
+    "form": "open",
+    "options": {},
+    "correct_option": "",
+    "intended_target": "",
+    "original_question": "",
+    "original_answer": ""
+  },
+  "input_hash": "96be52bfc617ce4a297a7256541a540890e0c8db24f5063380a1bba80c1de264",
+  "status": "KEPT",
+  "accepted_case": {
+    "id": "hard:t1_judg17_18:3162:open",
+    "question": "那些神像最先发生了什么事？",
+    "passage": "18:17 那五个窥探地的人进去，拿了雕像、以弗得、家用神像和熔铸的偶像，祭司站在城门口，带着六百带兵器的人。\n18:18 他们进了米迦家，拿了雕像、以弗得、家用神像和熔铸的偶像，祭司问他们说：“你们做什么呢？”\n18:19 他们说：“安静，不要出声，把手捂口，跟我们去作我们的父亲和祭司。你作一个人家的祭司好呢？还是作以色列一个支派一个家族的祭司好呢？”\n18:20 祭司就喜悦，拿了以弗得、家用神像和雕像，跟着他们去了。\n18:21 他们将小孩、牲畜和财物放在前面，转身离开。",
+    "expected_answer": "the five men take them from Micah’s house",
+    "form": "open",
+    "options": {},
+    "correct_option": "",
+    "intended_target": "",
+    "original_question": "",
+    "original_answer": ""
+  },
+  "contract": {
+    "id": "item",
+    "status": "ready",
+    "target": "识别所给经文中那些神像最先遭遇的事：五个窥探地的人从米迦家拿走了它们，而不是后来祭司拿着它们跟随众人离开。",
+    "basis": "inferred",
+    "required_answer_components": [
+      "发生的事是神像被拿走。",
+      "拿走神像的是那五个窥探地的人。",
+      "神像是从米迦家拿走的。",
+      "所指的是这段经文中最先发生的取走事件，不是后来祭司携带神像离开的事件。"
+    ],
+    "relations": [
+      {
+        "id": "r1",
+        "quote": "那些神像",
+        "meaning": "指定所问事件涉及的对象为经文中的神像。",
+        "role": "anchor",
+        "reason": "这一指称将问题限定于神像的遭遇，而非同段中祭司、小孩、牲畜或其他财物的行动与处置；不要求逐项列出各种宗教物件。"
+      },
+      {
+        "id": "r2",
+        "quote": "最先",
+        "meaning": "要求找出所给经文叙述顺序中神像最早遭遇的事件。",
+        "role": "tested",
+        "reason": "时间先后是明确被问及的内容，也用于区分五人先取走神像与祭司随后携带神像离开，不能删除。"
+      },
+      {
+        "id": "r3",
+        "quote": "发生了什么事",
+        "meaning": "要求说明神像遭遇的具体事件，而不是只说出人物或物件名称。",
+        "role": "tested",
+        "reason": "结合固定答案，须恢复五个窥探地的人从米迦家拿走神像这一事件，包括行动、行动者和来源地点。"
+      }
+    ],
+    "note": "未提供明确的 intended_target，也没有更早的 original_question 或 original_answer；目标依据当前问题和固定答案保守推断。18:17记载五个窥探地的人拿了神像等物，18:18说明他们进入米迦家取物，支持固定答案；18:20另记祭司拿着神像等物跟随他们离开，因此“最先”有实质性的辨别作用。此时间范围仅限于所给经文，不推断神像在此前的经历。"
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "proposal": {
+        "id": "item",
+        "status": "unchanged",
+        "question": "那些神像最先发生了什么事？",
+        "options": [],
+        "removed_relation_ids": [],
+        "note": "原问题已简短直接；“那些神像”限定对象，“最先”保留必要的先后区分，“发生了什么事”要求说明事件，没有可删去的铺垫或关系。"
+      },
+      "candidate": {
+        "id": "hard:t1_judg17_18:3162:open",
+        "question": "那些神像最先发生了什么事？",
+        "passage": "18:17 那五个窥探地的人进去，拿了雕像、以弗得、家用神像和熔铸的偶像，祭司站在城门口，带着六百带兵器的人。\n18:18 他们进了米迦家，拿了雕像、以弗得、家用神像和熔铸的偶像，祭司问他们说：“你们做什么呢？”\n18:19 他们说：“安静，不要出声，把手捂口，跟我们去作我们的父亲和祭司。你作一个人家的祭司好呢？还是作以色列一个支派一个家族的祭司好呢？”\n18:20 祭司就喜悦，拿了以弗得、家用神像和雕像，跟着他们去了。\n18:21 他们将小孩、牲畜和财物放在前面，转身离开。",
+        "expected_answer": "the five men take them from Micah’s house",
+        "form": "open",
+        "options": {},
+        "correct_option": "",
+        "intended_target": "",
+        "original_question": "",
+        "original_answer": ""
+      },
+      "checks": [
+        {
+          "repeat": 1,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "契约符合原题及固定答案：询问神像最先遭遇的事件，答案为五个窥探地的人从米迦家拿走神像。“最先”是实际测试的时间关系，不能简化成泛问谁拿了神像。"
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "候选题与原题完全相同，保留了神像这一对象、最先发生的时间限定以及对具体事件的询问。"
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "未删除或改写任何题目信息，不存在因移除限定而引入竞争事件的问题。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "原题与候选题均使用中文，且文字完全相同；本题没有选项。"
+            },
+            "option_meanings": [],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "经文确实记载神像先被五个窥探地的人拿走，随后祭司又拿着神像跟随众人离开，支持询问最先发生的事。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "18:17明确行动者为五个窥探地的人，并记载他们拿了神像等物；18:18说明他们进入米迦家取物，支持固定答案中的行动、行动者和来源地点。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "最早的取物事件由五个窥探地的人实施。18:17—18对这一取物事件的叙述不构成不同答案；18:20祭司携带神像离开属于后续事件，被“最先”排除。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "当前经文窗口提供了神像、取物者、米迦家以及先后次序，无须依赖窗口之外的圣经知识。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "题目仅指定对象和时间关系，没有透露取物者、地点或取走这一答案事件。"
+              },
+              "mcq_validity": {
+                "status": "not_applicable",
+                "evidence": "本题为开放题，没有选项或选择题答案键。"
+              }
+            },
+            "naturalness": {
+              "score": 1,
+              "evidence": "以“神像”直接搭配“发生了什么事”略显生硬，但所问含义清楚，不影响理解。",
+              "quotes": [
+                "那些神像最先发生了什么事？"
+              ]
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "题目是简短的单句问句，只有必要的对象指称和时间限定，没有额外的角色链、修饰链或选项比较负担。",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "题内没有多余的事件铺垫。“那些神像”用于确定对象，“最先”用于区分前后取物事件，均服务于固定目标。",
+              "quotes": []
+            }
+          }
+        },
+        {
+          "repeat": 2,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "The original question explicitly tests what happened to the idols first. The fixed answer supplies the action, agents, and source location. Verses 18:17–18 support the five scouts taking the objects from Micah’s house, while 18:20 supplies a later carrying event. The contract correctly preserves this temporal distinction."
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "The candidate is unchanged and preserves the idols as the target objects, the earliest-event requirement, and the request to identify what happened."
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "No question or passage information was removed."
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "The question remains in Chinese. There are no answer options."
+            },
+            "option_meanings": [],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "The passage describes the idols being taken by the five scouts and subsequently carried by the priest, supporting the question’s objects and temporal presupposition."
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "18:17 identifies the five scouts as taking the objects; 18:18 identifies Micah’s house as the place they entered to take them. Together these support the fixed answer."
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "The earliest described event affecting the idols is their taking by the five scouts. The priest’s taking them in 18:20 occurs later. The overlapping descriptions in 18:17–18 do not introduce a competing answer."
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "The supplied window contains the agents, action, source location, and event order needed to answer without outside biblical knowledge."
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "The question identifies the objects and asks about event order without revealing who took them, what happened, or where they were taken from."
+              },
+              "mcq_validity": {
+                "status": "not_applicable",
+                "evidence": "This is an open question with no options."
+              }
+            },
+            "naturalness": {
+              "score": 1,
+              "evidence": "The wording is understandable but slightly stiff: attaching “发生了什么事” directly to the idols is less idiomatic than asking what happened to them or how they were handled.",
+              "quotes": [
+                "那些神像最先发生了什么事？"
+              ]
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "The question is short and readily parsed. Resolving the idols against the passage and identifying the earliest event are necessary comprehension demands, not avoidable processing burdens.",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "There is no narrated setup or dispensable reference chain. The object reference and temporal qualifier both serve the target directly.",
+              "quotes": []
+            }
+          }
+        }
+      ],
+      "status": "KEPT"
+    }
+  ]
+}

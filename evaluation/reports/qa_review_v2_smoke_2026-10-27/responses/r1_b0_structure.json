@@ -1,0 +1,206 @@
+{
+  "request_hash": "9e3678ccd2cad0b2ffb1966e77f04637ac635248e2076e23f8ab8d8bdde415e7",
+  "model": "gpt-6.1-sol",
+  "response_id": "resp_0b68820065d412f0006ae0b3cca62087d19d599ca2bef3c210",
+  "usage": {
+    "input_tokens": 4704,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 4701
+    },
+    "output_tokens": 2874,
+    "output_tokens_details": {
+      "reasoning_tokens": 186
+    },
+    "total_tokens": 7578
+  },
+  "parsed": {
+    "items": [
+      {
+        "id": "q0003",
+        "parse_summary": "A direct object question asks what Uzziah built; the location phrase identifies the building site. There is one named actor and no embedded clause.",
+        "features": []
+      },
+      {
+        "id": "q0010",
+        "parse_summary": "“谁”直接询问“把书带到图书馆”这一动作的施事；“书”是移动对象，“图书馆”是目的地，没有嵌套从句。",
+        "features": []
+      },
+      {
+        "id": "q0002",
+        "parse_summary": "问句直接询问保罗讲到午夜的原因。各选项都是“因为”引出的原因分句；A、B、C中的“他”均指保罗，D另以楼上房间的灯为主语。",
+        "features": [
+          {
+            "kind": "reference_chain",
+            "quote": "因为他打算第二天离开",
+            "required_operations": "将选项中的“他”回指问句中的保罗，并将“第二天”定位于聚会的次日。",
+            "concern": "ordinary",
+            "reason": "回指对象明确，时间关系是识别所问原因的一部分。"
+          }
+        ]
+      },
+      {
+        "id": "q0001",
+        "parse_summary": "前置时间分句省略受事主语，以“那附着邪灵的人”为“制服”的施事；主句的“谁”同时指被制服者和受伤逃出房子者。选项要求区分攻击者与逃出者。",
+        "features": [
+          {
+            "kind": "nested_modifier",
+            "quote": "被那附着邪灵的人制服以后",
+            "required_operations": "先将“附着邪灵的”与“人”结合，再把整个名词短语识别为被动分句中的施事。",
+            "concern": "ordinary",
+            "reason": "修饰语用于识别攻击者，结构较短，并服务于所问事件关系。"
+          },
+          {
+            "kind": "role_tracking",
+            "quote": "被那附着邪灵的人制服以后，谁受伤逃出了那房子？",
+            "required_operations": "将“谁”同时理解为“制服”的受事和“逃出”的施事，不把选项A中的攻击者当作逃出者。",
+            "concern": "ordinary",
+            "reason": "角色转换正是题目要求识别的关系；被动结构本身不构成额外负担。"
+          },
+          {
+            "kind": "reference_chain",
+            "quote": "那附着邪灵的人",
+            "required_operations": "根据经文识别该人物，并把经文中被制服、逃出的“他们”对应到士基瓦的七个儿子。",
+            "concern": "ordinary",
+            "reason": "人物与群体的对应是回答此题所必需的指称关系。"
+          }
+        ]
+      },
+      {
+        "id": "q0007",
+        "parse_summary": "“根据这段经文”是简短的依据提示；主问直接询问病人的情况变化。选项均为独立陈述，没有多层从句或需要交叉拆分的列表。",
+        "features": []
+      },
+      {
+        "id": "q0006",
+        "parse_summary": "The introduction contains a relative clause identifying cloths by their contact with Paul, inside a passive clause about their movement to the sick. The following question shifts the focus from the cloths to what happened to the sick people.",
+        "features": [
+          {
+            "kind": "nested_modifier",
+            "quote": "Cloths that had touched Paul were taken to the sick.",
+            "required_operations": "Resolve the relative clause modifying “Cloths,” then integrate that noun phrase as the subject of the passive transport clause.",
+            "concern": "potential_burden",
+            "reason": "The object-identifying relative clause adds an embedded relationship that is not itself being tested; the target is the sick people's outcome."
+          },
+          {
+            "kind": "role_tracking",
+            "quote": "Cloths that had touched Paul were taken to the sick. What happened to the sick?",
+            "required_operations": "Track cloths as the things touching Paul and being transported, Paul as the person touched, and the sick as recipients who then become the question's focus.",
+            "concern": "potential_burden",
+            "reason": "The setup introduces several object and participant roles before a question that only asks about the sick people's change."
+          },
+          {
+            "kind": "delayed_query",
+            "quote": "Cloths that had touched Paul were taken to the sick. What happened to the sick?",
+            "required_operations": "Process the contact and transport setup before learning that the requested information is the outcome for the sick.",
+            "concern": "potential_burden",
+            "reason": "Splitting the setup and question does not remove the need to process the additional relationships before the actual ask."
+          }
+        ]
+      },
+      {
+        "id": "q0011",
+        "parse_summary": "“谁”直接询问“把书带走”这一动作的施事；“书”是受影响的对象，“了”标记动作完成，没有嵌套结构。",
+        "features": []
+      },
+      {
+        "id": "q0004",
+        "parse_summary": "“当……时”时间分句置于主问之前；分句内部，“触摸过保罗的”修饰并列名词“手帕和围裙”，整个名词短语又是“被带到病人那里”的受事。主问随后才询问发生了什么。",
+        "features": [
+          {
+            "kind": "nested_modifier",
+            "quote": "当触摸过保罗的手帕和围裙被带到病人那里时",
+            "required_operations": "把“触摸过保罗的”附着到“手帕和围裙”，再将整个名词短语整合进被动分句及外层时间结构。",
+            "concern": "potential_burden",
+            "reason": "物品修饰、被动运输和时间框架层层嵌套，而目标只要求识别病人的变化。"
+          },
+          {
+            "kind": "role_tracking",
+            "quote": "触摸过保罗的手帕和围裙被带到病人那里",
+            "required_operations": "区分物品作为触摸者和被运送对象、保罗作为被触摸者，以及病人作为接收地点所指的人群。",
+            "concern": "potential_burden",
+            "reason": "需先处理目标之外的物品关系和角色转换，才能转向病人的结果。"
+          },
+          {
+            "kind": "delayed_query",
+            "quote": "当触摸过保罗的手帕和围裙被带到病人那里时发生了什么？",
+            "required_operations": "处理完整的前置时间分句后，才获知主问要求报告事件结果。",
+            "concern": "potential_burden",
+            "reason": "主问之前集中放置了多项关系，增加了识别实际所问内容之前的处理量。"
+          }
+        ]
+      },
+      {
+        "id": "q0000",
+        "parse_summary": "“耶何耶大立的”修饰话题中心“第一个约”，主句询问该约涉及哪些参与方。“第一个”需要与经文中的后一个约区分；选项采用部分重合的参与者列表。",
+        "features": [
+          {
+            "kind": "nested_modifier",
+            "quote": "耶何耶大立的第一个约",
+            "required_operations": "将“耶何耶大立的”识别为修饰“约”的关系分句，并保留“第一个”的顺序限定。",
+            "concern": "ordinary",
+            "reason": "修饰结构较短，立约者与顺序限定共同确定所问的约。"
+          },
+          {
+            "kind": "reference_chain",
+            "quote": "第一个约",
+            "required_operations": "把顺序指称对应到经文中先出现的立约事件，而非“他又与王和百姓立约”的事件。",
+            "concern": "ordinary",
+            "reason": "区分两次立约是题目语义目标所需的关系。"
+          },
+          {
+            "kind": "option_overlap",
+            "quote": "耶和华、王和百姓",
+            "required_operations": "将A与D“王和百姓”比较，检查是否包含“耶和华”，同时区分其他选项替换的参与者。",
+            "concern": "ordinary",
+            "reason": "列表较短，重合部分对应两次立约之间需要辨认的参与方差异。"
+          }
+        ]
+      },
+      {
+        "id": "q0005",
+        "parse_summary": "首句以带修饰语的“手帕和围裙”为被动句主语，描述其被带到病人那里；第二句以病人为主语，“随后”承接前一事件并询问结果。分句虽已分句号，物品关系与焦点转换仍需处理。",
+        "features": [
+          {
+            "kind": "nested_modifier",
+            "quote": "摸过保罗的手帕和围裙被带到病人那里。",
+            "required_operations": "把“摸过保罗的”与“手帕和围裙”结合，再将整个名词短语识别为“被带到”的受事。",
+            "concern": "potential_burden",
+            "reason": "物品接触保罗这一嵌入关系并非所测目标，却仍需在读到结果问句前解析。"
+          },
+          {
+            "kind": "role_tracking",
+            "quote": "摸过保罗的手帕和围裙被带到病人那里。病人随后怎么样了？",
+            "required_operations": "区分物品、保罗和病人的角色，再从物品的移动转换到病人的状态变化。",
+            "concern": "potential_burden",
+            "reason": "目标只询问病人的结果，但前句要求先跟踪额外的接触和运输关系。"
+          },
+          {
+            "kind": "delayed_query",
+            "quote": "摸过保罗的手帕和围裙被带到病人那里。病人随后怎么样了？",
+            "required_operations": "先处理完整的物品事件，再通过“随后”将结果问句接到该事件。",
+            "concern": "potential_burden",
+            "reason": "句号没有消除前置关系的处理量；实际所问内容仍出现在整段设置之后。"
+          },
+          {
+            "kind": "reference_chain",
+            "quote": "病人随后怎么样了？",
+            "required_operations": "将“随后”定位为手帕和围裙被带到病人那里之后。",
+            "concern": "ordinary",
+            "reason": "时间承接明确，直接连接所问结果与前述事件。"
+          }
+        ]
+      },
+      {
+        "id": "q0008",
+        "parse_summary": "首句直接陈述小林搬书进屋，第二句用“是谁……的”询问同一动作的施事。两句重复同一动作关系，没有嵌套从句或复杂指称。",
+        "features": []
+      },
+      {
+        "id": "q0009",
+        "parse_summary": "“是谁……的”聚焦询问搬书进屋的施事；“把书”标明移动对象，“进屋里”标明方向和目的地，整体是单一动作结构。",
+        "features": []
+      }
+    ]
+  }
+}

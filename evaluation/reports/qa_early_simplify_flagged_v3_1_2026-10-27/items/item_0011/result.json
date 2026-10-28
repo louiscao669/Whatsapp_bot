@@ -1,0 +1,213 @@
+{
+  "id": "hard:t1_1kgs13:ec63:open",
+  "original": {
+    "id": "hard:t1_1kgs13:ec63:open",
+    "question": "带他回来的先知宣告，谁的尸首必不得入他列祖的坟墓？",
+    "passage": "13:20 他们坐席的时候，耶和华的话临到带他回来的先知，\n13:21 先知就向从犹大来的神人喊叫说：“耶和华如此说：‘因为你违背耶和华的话，没有遵守耶和华你神所吩咐你的命令，\n13:22 反倒回去，在他吩咐你不可吃饭喝水的地方吃了饭喝了水，你的尸首必不得入你列祖的坟墓。’”",
+    "expected_answer": "the man of God from Judah",
+    "form": "open",
+    "options": {},
+    "correct_option": "",
+    "intended_target": "",
+    "original_question": "",
+    "original_answer": ""
+  },
+  "input_hash": "710038cd81278971e787039311693f6d077d973853838b491b6e28b0018735ac",
+  "status": "SIMPLIFIED",
+  "accepted_case": {
+    "id": "hard:t1_1kgs13:ec63:open",
+    "question": "谁的尸首必不得入他列祖的坟墓？",
+    "passage": "13:20 他们坐席的时候，耶和华的话临到带他回来的先知，\n13:21 先知就向从犹大来的神人喊叫说：“耶和华如此说：‘因为你违背耶和华的话，没有遵守耶和华你神所吩咐你的命令，\n13:22 反倒回去，在他吩咐你不可吃饭喝水的地方吃了饭喝了水，你的尸首必不得入你列祖的坟墓。’”",
+    "expected_answer": "the man of God from Judah",
+    "form": "open",
+    "options": {},
+    "correct_option": "",
+    "intended_target": "",
+    "original_question": "带他回来的先知宣告，谁的尸首必不得入他列祖的坟墓？",
+    "original_answer": "the man of God from Judah"
+  },
+  "contract": {
+    "id": "item",
+    "status": "ready",
+    "target": "识别被宣告其尸首必不得入自己列祖坟墓的人，即从犹大来的神人。",
+    "basis": "inferred",
+    "required_answer_components": [
+      "指出被宣告这一结局的人是从犹大来的神人。"
+    ],
+    "relations": [
+      {
+        "id": "r1",
+        "quote": "带他回来的先知宣告",
+        "meaning": "这项宣告出自把神人带回来的先知。",
+        "role": "removable",
+        "reason": "这是宣告者的身份及先前行动背景，不是问题要求回答的事实。本段只有一项关于尸首不得入列祖坟墓的宣告；保留该结局及对其所属者的询问，即可唯一定位所问的人，无须依靠带回事件或宣告者身份。"
+      },
+      {
+        "id": "r2",
+        "quote": "谁的尸首必不得入他列祖的坟墓",
+        "meaning": "询问哪一个人的尸首被断言必不能进入其自己列祖的坟墓。",
+        "role": "tested",
+        "reason": "这是必须恢复的人物与结局之间的关系。“必不得”的确定性、否定含义，以及“他列祖的坟墓”的归属范围共同界定所问结局；所需答案是该结局所指的人，而不是宣告者或受罚原因。"
+      }
+    ],
+    "note": "未提供明确的 intended_target，也无较早的 original_question 或 original_answer，因此目标为保守推断，并非已获研究者确认的设计意图。13:21明确说明先知向“从犹大来的神人”喊叫，13:22继续以“你的尸首”宣告结局，支持给定答案。违命及吃饭喝水的原因关系虽见于经文，但题目没有要求回答。"
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "proposal": {
+        "id": "item",
+        "status": "revised",
+        "question": "谁的尸首必不得入他列祖的坟墓？",
+        "options": [],
+        "removed_relation_ids": [
+          "r1"
+        ],
+        "note": "删去宣告者的身份及带回事件背景，保留人物与所宣告结局之间的关系。"
+      },
+      "candidate": {
+        "id": "hard:t1_1kgs13:ec63:open",
+        "question": "谁的尸首必不得入他列祖的坟墓？",
+        "passage": "13:20 他们坐席的时候，耶和华的话临到带他回来的先知，\n13:21 先知就向从犹大来的神人喊叫说：“耶和华如此说：‘因为你违背耶和华的话，没有遵守耶和华你神所吩咐你的命令，\n13:22 反倒回去，在他吩咐你不可吃饭喝水的地方吃了饭喝了水，你的尸首必不得入你列祖的坟墓。’”",
+        "expected_answer": "the man of God from Judah",
+        "form": "open",
+        "options": {},
+        "correct_option": "",
+        "intended_target": "",
+        "original_question": "带他回来的先知宣告，谁的尸首必不得入他列祖的坟墓？",
+        "original_answer": "the man of God from Judah"
+      },
+      "checks": [
+        {
+          "repeat": 1,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "原题询问被宣告尸首不得入自己列祖坟墓的人，并非询问宣告者或受罚原因。契约保留了人物与这一否定结局的关系；经文明确将宣告对象标为“从犹大来的神人”。"
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "候选题仍询问同一结局所属的人，保留“尸首”“必不得”及“他列祖的坟墓”的范围和归属，所需答案仍是从犹大来的神人。"
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "仅删除“带他回来的先知宣告”这一宣告者及其先前行动的背景。当前经文只有一项尸首不得入列祖坟墓的宣告，删除后没有产生竞争事件或竞争答案，也没有删除题目所测试的关系。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "原题和候选题均为中文；两者均无选项。"
+            },
+            "option_meanings": [],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "经文13:22明确包含“你的尸首必不得入你列祖的坟墓”，支持候选题所询问的结局及其预设。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "13:21说明先知向“从犹大来的神人”喊叫，随后引语中的“你”延续指向该神人，因此支持固定答案“the man of God from Judah”。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "当前片段只有从犹大来的神人被宣告这一结局；宣告者与宣告对象有明确区分，没有第二个同样符合的人。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "所给片段同时提供宣告对象和完整结局，可直接建立二者关系，无需外部背景。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "候选题仅描述待识别人物的结局，未提供“从犹大来的神人”这一答案身份，也没有额外答案提示。"
+              },
+              "mcq_validity": {
+                "status": "not_applicable",
+                "evidence": "本题为开放题，无选项或选项键。"
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "问句完整直接，虽采用经文语体，但表达连贯，“他”自然回指所询问的人，无须修补理解。",
+              "quotes": []
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "仅需识别一个人物与其被宣告结局的对应关系，没有多层指代、角色转换或选项比较负担。",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "没有保留额外事件背景；尸首、否定结局及列祖坟墓的归属均直接界定所问内容。",
+              "quotes": []
+            }
+          }
+        },
+        {
+          "repeat": 2,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "原题询问不得入列祖坟墓的尸首属于谁，并未询问宣告者或受罚原因。契约保留了人物与这一否定结局的关系，所需答案与经文一致。"
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "候选题完整保留“谁的尸首必不得入他列祖的坟墓”，未改变确定性、否定含义或坟墓归属；答案仍是从犹大来的神人。"
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "删去的“带他回来的先知宣告”仅标明宣告者及其先前行动。当前经文只有一项尸首不得入列祖坟墓的宣告，删除该背景不会引入其他人物或事件作为竞争答案。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "原题与候选题均为中文；本题无选项。"
+            },
+            "option_meanings": [],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "13:22明确包含“你的尸首必不得入你列祖的坟墓”，支持候选题所询问的结局及其预设。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "13:21说明先知向“从犹大来的神人”喊叫，随后引述的“你的尸首”指向该神人，支持固定答案。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "经文明确区分宣告的先知与受宣告的神人；只有从犹大来的神人被告知这一结局。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "当前窗口同时提供受话者身份与对其尸首的宣告，无须依赖窗口外的带回经过或其他背景。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "候选题仅给出所问结局，没有透露人物身份；答案须从经文中的受话关系确定。"
+              },
+              "mcq_validity": {
+                "status": "not_applicable",
+                "evidence": "本题为开放题，没有选项或选项键。"
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "问句完整、直接；“尸首”“列祖”等措辞虽偏经文语体，但搭配自然，含义清楚。",
+              "quotes": []
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "单句直接询问尸首所属的人，“他”自然回指所问人物，没有多层指代或额外角色比较。",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "候选题没有额外事件铺垫；保留的结局、否定与归属均用于界定所问对象。",
+              "quotes": []
+            }
+          }
+        }
+      ],
+      "status": "SIMPLIFIED"
+    }
+  ]
+}

@@ -1,0 +1,224 @@
+{
+  "prompt": "target_preserving_comparison",
+  "repeat": 1,
+  "batch": 3,
+  "request_hash": "25b9c97391ed9e9b2f5477359c1fb1ca848ce27aecc6c664decf3f2899b0f73d",
+  "model": "gpt-6.1-sol",
+  "response_id": "resp_07b4513862f6edf0006ae053ccffa487d189e32de9d55a1128",
+  "elapsed_seconds": 31.20699191093445,
+  "usage": {
+    "input_tokens": 4233,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 4230
+    },
+    "output_tokens": 2377,
+    "output_tokens_details": {
+      "reasoning_tokens": 137
+    },
+    "total_tokens": 6610
+  },
+  "threshold_mismatches": [],
+  "items": [
+    {
+      "id": "gold:t1_1kgs13:nntp:open",
+      "decision": "REWRITE",
+      "target": "Identify the old prophet's invitation to the man of God to come home with him and eat.",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“What does the old prophet say” is idiomatic and direct."
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "The question has a simple structure and clearly names both participants."
+      },
+      "context": {
+        "score": 2,
+        "evidence": "Missing event anchoring: the old prophet speaks to the man of God several times, including asking his identity, inviting him home, lying about an angel, and announcing judgment. The question does not identify the intended exchange."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "The question does not supply the invitation."
+      },
+      "alternative": "When the old prophet finds the man of God sitting under an oak tree, what does he invite him to do?",
+      "target_preservation": "preserved",
+      "reason": "The alternative locates the intended invitation without giving its content; the original leaves several exchanges available."
+    },
+    {
+      "id": "hard:t1_judg9:8e0b:mcq",
+      "decision": "KEEP",
+      "target": "Identify why the olive tree refuses kingship: it would have to leave its oil that honors God and people.",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 1,
+        "evidence": "“那荣耀神和人的油” is somewhat formal, but the question and choices remain understandable Chinese."
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "Readers must compare four short reasons and understand “荣耀神和人的” as modifying “油”; this is manageable and relevant to the target."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“橄榄树” and “作树木的王” clearly locate the refusal in the supplied passage."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "The question states the refusal, not its reason; the answer's presence among the choices is not leakage."
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "The item directly tests the reason for refusal without substantial avoidable burden."
+    },
+    {
+      "id": "constructed:leak",
+      "decision": "REWRITE",
+      "target": "Identify who moved the books inside.",
+      "target_basis": "explicit",
+      "naturalness": {
+        "score": 0,
+        "evidence": "Both “小林把书搬进屋里” and “是谁把书搬进屋里的” are natural Chinese."
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "The repeated action is easy to parse and creates no substantial memory demand."
+      },
+      "context": {
+        "score": 1,
+        "evidence": "The introductory statement repeats the event already identified in the question and is removable."
+      },
+      "leakage": {
+        "score": 3,
+        "evidence": "“小林把书搬进屋里” explicitly names the person the following question asks respondents to identify."
+      },
+      "alternative": "是谁把书搬进屋里的？",
+      "target_preservation": "preserved",
+      "reason": "Removing the introductory answer preserves the actor-identification target and eliminates explicit leakage."
+    },
+    {
+      "id": "hard:t1_1kgs13:8a66:mcq",
+      "decision": "KEEP",
+      "target": "Identify the man of God from Judah as the person killed by the lion on the road.",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“谁在路上被狮子咬死了” is a natural, direct question."
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "The question asks for one participant, and the choices are short person descriptions."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“在路上被狮子咬死” uniquely anchors the relevant event."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "The question gives the event but does not identify its victim."
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "The wording provides sufficient event context with no meaningful avoidable burden."
+    },
+    {
+      "id": "hard:t1_judg9:0bd2:mcq",
+      "decision": "KEEP",
+      "target": "Identify Abimelech's purpose in coming to the tower entrance: to set the tower on fire.",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“来到楼门，是要做什么” naturally asks about the purpose of his approach."
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "The four choices are short actions with parallel “去” phrasing."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "Naming “亚比米勒” and “楼门” distinguishes this moment from the earlier attack on the city."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "The approach to the entrance is an event anchor and does not state the intended burning."
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "The item directly and unambiguously asks about the intended action."
+    },
+    {
+      "id": "gold:t1_acts19:b1be:open",
+      "decision": "KEEP",
+      "target": "Identify what happened to the sick when cloths that had touched Paul were brought to them: healing and the departure of evil spirits.",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“What happened when” introduces the event naturally, and “that had touched Paul” clearly describes the cloths."
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "The reader follows the cloths' contact with Paul and their transfer to the sick. These linked details identify the necessary circumstances rather than adding avoidable load."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "The handkerchiefs, aprons, and contact with Paul distinguish this event from the passage's other encounters involving evil spirits."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "The question describes the circumstances but does not state the healing or departure of spirits."
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "The event description is useful for locating the intended outcome; shortening it offers no meaningful burden reduction without losing specificity."
+    },
+    {
+      "id": "hard:t1_2chr26:723e:mcq",
+      "decision": "REWRITE",
+      "target": "Identify the 2,600 family leaders as those commanding the force of 307,500 trained soldiers.",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 2,
+        "evidence": "“这三十万七千五百训练有素的军队” places a headcount directly before “训练有素的军队,” requiring readers to mentally supply “名士兵” or reinterpret “军队.”"
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "The number and description require a small attachment repair, but the commander question and four short choices are otherwise manageable."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "The headcount clearly identifies the force whose commanders are being asked about."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "Neither the headcount nor “训练有素” supplies the commanders' identity."
+      },
+      "alternative": "这支由三十万七千五百名训练有素的士兵组成的军队由谁统领？\nA. 哈拿尼雅\nB. 耶列和玛西亚\nC. 乌西雅\nD. 那二千六百个家族首领",
+      "target_preservation": "preserved",
+      "reason": "The alternative explicitly connects the headcount to soldiers while preserving the same force, command relation, and answer choices."
+    },
+    {
+      "id": "hard:t1_2kgs11:a99f:mcq",
+      "decision": "KEEP",
+      "target": "Identify Joash as the person who hid with his nurse in the Lord's temple for six years.",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“谁和他的奶母……藏了六年” is a natural way to ask which person hid with his nurse."
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "“他的” readily refers to the person being asked about; the location, duration, and name choices are easy to follow."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“耶和华的殿里” and “六年” clearly identify the hiding episode."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "The question supplies the hiding circumstances but not the person's name."
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "The item identifies the relevant episode clearly without unnecessary framing or difficult wording."
+    }
+  ]
+}

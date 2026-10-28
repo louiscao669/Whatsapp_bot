@@ -1,0 +1,224 @@
+{
+  "prompt": "target_preserving_comparison",
+  "repeat": 1,
+  "batch": 1,
+  "request_hash": "16949f80397c25d7b3283787cfbda93dbb19e927d9cd1578716f770b9f3cdbb2",
+  "model": "gpt-6.1-sol",
+  "response_id": "resp_065fa7b7220c5fc5006ae053b77fe087d1b87ea51a3724708d",
+  "elapsed_seconds": 36.276228189468384,
+  "usage": {
+    "input_tokens": 6451,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 6448
+    },
+    "output_tokens": 2547,
+    "output_tokens_details": {
+      "reasoning_tokens": 225
+    },
+    "total_tokens": 8998
+  },
+  "threshold_mismatches": [],
+  "items": [
+    {
+      "id": "constructed:direct",
+      "decision": "KEEP",
+      "target": "Identify who moved the books inside.",
+      "target_basis": "explicit",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“是谁把书搬进屋里的？”是自然、直接的问法。"
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "只需识别“把书搬进屋里”这一动作的执行者。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“把书搬进屋里”准确定位了原文中的动作，无需补充背景。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "题目没有说出搬书的人是谁。"
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "问法自然明确，没有可通过改写消除的实质负担。"
+    },
+    {
+      "id": "gold:t1_judg17_18:qysg:open",
+      "decision": "KEEP",
+      "target": "Identify what Micah stole.",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“What did Micah steal?” is idiomatic and direct."
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "The reader only needs to identify the object of Micah’s theft."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "Naming Micah and the theft sufficiently locates the relevant event."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "The question does not identify the stolen property."
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "The question already expresses its narrow target clearly and economically."
+    },
+    {
+      "id": "hard:t1_judg17_18:1654:mcq",
+      "decision": "KEEP",
+      "target": "指出来士的人富足的原因。",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“来士的人为什么富足？”及各个“因为”选项都自然通顺。"
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "需比较四个简短的原因选项；各选项结构平行，没有额外的指代或修饰负担。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“来士的人”明确限定了所问的人群和事件。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "题干只提出富足的原因，没有提前提供该原因；答案出现在选项中不构成泄露。"
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "原因问题及选项易于理解，没有明显可避免的措辞负担。"
+    },
+    {
+      "id": "gold:t1_2kgs6_7:lxi8:open",
+      "decision": "KEEP",
+      "target": "Identify what prompted the Arameans to think Israel had hired Hittites and Egyptians.",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 1,
+        "evidence": "“Why did Arameans” is slightly clipped; “the Arameans” would be more idiomatic here."
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "The reader must distinguish the Arameans’ belief from the evidence prompting it, but that relationship is the target itself."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "The belief that Israel hired Hittites and Egyptians uniquely anchors the relevant episode."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "The question states the belief being explained, not the sounds that prompted it."
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "The missing article is minor; the causal question is otherwise clear, with no meaningful burden reduction needed."
+    },
+    {
+      "id": "hard:t1_acts20:f988:mcq",
+      "decision": "KEEP",
+      "target": "指出保罗一直讲到午夜的原因。",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“保罗为什么一直讲到午夜？”自然直接，四个选项也都通顺。"
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "四个简短的“因为”选项只要求比较可能的原因，没有复杂的角色或指代关系。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“保罗”和“一直讲到午夜”足以定位所问的事件。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "题干没有说明他第二天准备离开；正确原因仅作为选项出现。"
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "整题表达清楚，选项比较属于正常且必要的作答要求。"
+    },
+    {
+      "id": "gold:t1_acts23:xj40:open",
+      "decision": "REWRITE",
+      "target": "Describe the commander’s protective response to learning of the plot to kill Paul.",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 1,
+        "evidence": "“How did captain respond” is clipped because “captain” lacks an article."
+      },
+      "processing": {
+        "score": 2,
+        "evidence": "“The plan” requires the reader to select a referent among the assassination plot, the proposed request to the commander, and the later transport arrangements. Naming the assassination plot removes this avoidable resolution step."
+      },
+      "context": {
+        "score": 2,
+        "evidence": "Insufficient disambiguation: “the plan” does not identify which plan prompted the response, although the intended event can be named directly."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "The question does not state the commander’s protective response."
+      },
+      "alternative": "How did the commander respond when he learned of the plot to kill Paul?",
+      "target_preservation": "preserved",
+      "reason": "Explicitly identifying the plot preserves the intended response target while removing avoidable uncertainty about the event."
+    },
+    {
+      "id": "hard:t1_acts19:7628:mcq",
+      "decision": "KEEP",
+      "target": "指出被附着邪灵的人制服后，受伤逃出房子的是谁。",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“被……制服以后，谁受伤逃出了……”是自然明确的问法。"
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "需区分制服他人的人和受伤逃走的人；这一角色关系表达清楚，四个选项也都是简短的人物名称。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“被那附着邪灵的人制服以后”提供了有用的事件定位，没有无关铺垫。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "题干没有说出受伤逃走者的身份；该身份仅出现在选项中。"
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "被动结构和时间关系均清楚，事件背景有助于限定问题，不构成实质性的额外负担。"
+    },
+    {
+      "id": "transfer:handkerchief:original:zh",
+      "decision": "REWRITE",
+      "target": "指出病人发生了什么变化，即疾病和邪灵离开了他们，而非辨认物品或物品被送到的地点。",
+      "target_basis": "explicit",
+      "naturalness": {
+        "score": 1,
+        "evidence": "“当触摸过保罗的手帕和围裙被带到病人那里时”读起来略显拗口，修饰语边界不够醒目。"
+      },
+      "processing": {
+        "score": 2,
+        "evidence": "读者需先把“触摸过保罗的”解析为修饰“手帕和围裙”，再接上“被带到”及整个“当……时”结构。直接以保罗的物品定位事件，再问病人的变化，可免去这层不服务于目标的修饰语解析；五个选项本身较简单。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "物品被带到病人那里的事件提供了充分定位，没有缺少必要背景。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "题干没有说明疾病和邪灵离开了病人；这一结果仅出现在选项中。"
+      },
+      "alternative": "保罗的手帕和围裙被带到病人那里后，病人怎么样了？\nA. 病人陷入了深度睡眠\nB. 疾病和邪灵离开了病人\nC. 犹太驱魔师给病人驱魔\nD. 病人变得无法说话\nE. 根据这段文字无法判断",
+      "target_preservation": "preserved",
+      "reason": "改写保留同一事件、时间关系和病人变化的答案范围，去掉非目标性的接触修饰语，降低题干的解析负担。"
+    }
+  ]
+}

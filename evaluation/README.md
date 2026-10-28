@@ -218,9 +218,12 @@ with same-role alternatives. The script copies the QA files and writes
 `mistranslation_metadata.json` with both the requested and actual changed
 content percentages.
 
-For chapter-specific coverage, first generate LLM-assisted banks. This uses the
-LLM only to propose substitutions; the generated JSON is then validated and
-frozen. Entries are categorized as:
+For chapter-specific coverage, first generate and independently review banks.
+Both stages now default to `gpt-6-sol`. Only candidates approved for a substantive
+meaning change, fluency, pure substitution, locality, and validity in every
+matched context enter the final bank. See [the script guide](scripts/README.md#gpt-6-sol-mistranslation-banks-and-independent-review)
+for Tier 1 commands, review-only mode for existing banks, and cached/offline runs.
+Entries are categorized as:
 
 - `systematic`: when selected, all occurrences of that source phrase are
   replaced.
@@ -232,20 +235,23 @@ python evaluation/scripts/variants/banks/generate_mistranslation_banks.py \
   --chapters 1 2 3 4 5 6 7 8 \
   --source-model-dir 1.7b \
   --source-method llm_prompt_high \
-  --force
+  --generator-model gpt-6-sol --judge-model gpt-6-sol \
+  --output-name mistranslation_bank_sol_judged_zh.json
 ```
 
 Then create deterministic variants. When `--bank` is omitted, the script uses
-each chapter's generated
-`<source-model-dir>/_shared/mistranslation_bank_zh.json` if present; otherwise
-it falls back to the built-in bank.
+each chapter's bank named by `--chapter-bank-name`. Use `--require-judged-bank`
+to require independent approvals and exact source/candidate bindings, and
+`--require-bank` to prohibit the built-in fallback.
 
 ```bash
 python evaluation/scripts/variants/current/create_mistranslation_variants.py \
   --chapters 1 2 3 4 5 6 7 8 \
   --source-model-dir 1.7b \
   --source-method llm_prompt_high \
-  --output-model-dir mistranslation \
+  --chapter-bank-name mistranslation_bank_sol_judged_zh.json \
+  --output-model-dir mistranslation_sol_judged \
+  --require-bank --require-judged-bank \
   --rates 0% 5% 10% 15% 20% 30%
 ```
 

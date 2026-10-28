@@ -1,0 +1,365 @@
+{
+  "id": "gold:t1_acts20:jxkk#2:open",
+  "original": {
+    "id": "gold:t1_acts20:jxkk#2:open",
+    "question": "What happens after Paul stretches on the young man?",
+    "passage": "20:8 Now there were many lamps in the upper room where we were gathered.\n20:9 And a certain young man named Eutychus, seated in the window, was sinking into a deep sleep as Paul talked on and on. When he was sound asleep, he fell from the third story and was picked up dead.\n20:10 But Paul went down, threw himself on the young man, and embraced him. “Do not be alarmed!” he said. “He is still alive!”",
+    "expected_answer": "He comes back to life.",
+    "form": "open",
+    "options": {},
+    "correct_option": "",
+    "intended_target": "",
+    "original_question": "",
+    "original_answer": ""
+  },
+  "input_hash": "75f74a7121314c6f240da36e55f510b4d0b9e4a7123da3e95ee0cf8653278bfd",
+  "status": "SIMPLIFIED",
+  "accepted_case": {
+    "id": "gold:t1_acts20:jxkk#2:open",
+    "question": "What happens to the young man after Paul throws himself on him?",
+    "passage": "20:8 Now there were many lamps in the upper room where we were gathered.\n20:9 And a certain young man named Eutychus, seated in the window, was sinking into a deep sleep as Paul talked on and on. When he was sound asleep, he fell from the third story and was picked up dead.\n20:10 But Paul went down, threw himself on the young man, and embraced him. “Do not be alarmed!” he said. “He is still alive!”",
+    "expected_answer": "He comes back to life.",
+    "form": "open",
+    "options": {},
+    "correct_option": "",
+    "intended_target": "",
+    "original_question": "What happens after Paul stretches on the young man?",
+    "original_answer": "He comes back to life."
+  },
+  "contract": {
+    "id": "item",
+    "status": "ready",
+    "target": "Identify the young man's return to life as the outcome following Paul's action of throwing himself on him.",
+    "basis": "inferred",
+    "required_answer_components": [
+      "The young man comes back to life or is found to be alive following Paul's action."
+    ],
+    "relations": [
+      {
+        "id": "r1",
+        "quote": "What happens after",
+        "meaning": "Requests the outcome subsequent to the specified action.",
+        "role": "tested",
+        "reason": "The temporal outcome is explicitly requested; identifying only the participants or Paul's action would not answer the question."
+      },
+      {
+        "id": "r2",
+        "quote": "Paul stretches on the young man",
+        "meaning": "Identifies Paul's throwing himself on the young man as the reference event.",
+        "role": "anchor",
+        "reason": "This identifies the unique action whose subsequent outcome is requested. The passage describes Paul throwing himself on and embracing the young man."
+      }
+    ],
+    "note": "No explicit intended target or earlier question-and-answer metadata is supplied. The target is inferred from the current question and expected answer. Verse 20:9 reports that the young man was picked up dead; verse 20:10 describes Paul's action and his declaration, “He is still alive!” Together these support the expected answer as a narrative inference, although the passage does not explicitly use the wording “comes back to life.”"
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "proposal": {
+        "id": "item",
+        "status": "revised",
+        "question": "What happens after Paul throws himself on the young man?",
+        "options": [],
+        "removed_relation_ids": [],
+        "note": "Replaced the unnatural phrase “stretches on” with the passage’s wording, preserving the reference action and the requested outcome."
+      },
+      "candidate": {
+        "id": "gold:t1_acts20:jxkk#2:open",
+        "question": "What happens after Paul throws himself on the young man?",
+        "passage": "20:8 Now there were many lamps in the upper room where we were gathered.\n20:9 And a certain young man named Eutychus, seated in the window, was sinking into a deep sleep as Paul talked on and on. When he was sound asleep, he fell from the third story and was picked up dead.\n20:10 But Paul went down, threw himself on the young man, and embraced him. “Do not be alarmed!” he said. “He is still alive!”",
+        "expected_answer": "He comes back to life.",
+        "form": "open",
+        "options": {},
+        "correct_option": "",
+        "intended_target": "",
+        "original_question": "What happens after Paul stretches on the young man?",
+        "original_answer": "He comes back to life."
+      },
+      "checks": [
+        {
+          "repeat": 1,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "The inferred contract preserves the original temporal-outcome target and the young man's return to life as the required answer. The passage's sequence from being picked up dead to being declared alive supports that outcome as a narrative inference."
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "The candidate retains the question about what follows Paul's action on the young man. Replacing 'stretches on' with 'throws himself on' matches the passage without changing the target or required answer."
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "No substantive information or relation was removed. The only change is a source-aligned replacement of the wording describing Paul's action."
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "Both questions are in English. There are no options."
+            },
+            "option_meanings": [],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "The passage explicitly states that Paul threw himself on the young man and describes subsequent actions and speech."
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "The young man is first described as 'picked up dead'; after Paul's intervention, Paul says, 'He is still alive!' This supports the expected return-to-life answer by narrative inference, although the revival itself is not explicitly narrated."
+              },
+              "answer_uniqueness": {
+                "status": "fail",
+                "evidence": "The unrestricted wording 'What happens after' also admits other explicit subsequent events: Paul embraces the young man and tells the others not to be alarmed. The question does not specify that it seeks what happens to the young man's life."
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "The clean window supplies the fall, the report of death, Paul's intervention, and his declaration that the young man is alive. No outside knowledge is needed to infer the expected answer."
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "The candidate question identifies Paul's action but does not disclose the young man's subsequent condition."
+              },
+              "mcq_validity": {
+                "status": "not_applicable",
+                "evidence": "This is an open question with no answer options."
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "The question is grammatical, idiomatic, and direct.",
+              "quotes": []
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "The single temporal clause has clear participants and requires no difficult reference resolution or syntactic unpacking.",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "Paul's action is a useful temporal anchor for the target outcome. The question contains no dispensable setup or repeated reference chain.",
+              "quotes": []
+            }
+          }
+        },
+        {
+          "repeat": 2,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "The inferred contract preserves the original temporal-outcome target and identifies Paul's action as its anchor. The passage's progression from being picked up dead to being declared alive supports the required outcome as a narrative inference."
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "The candidate retains the question about what happens after Paul's action. Replacing 'stretches on' with the passage's 'throws himself on' clarifies the same reference event."
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "No setup, answer component, or temporal relation was removed. The only substantive edit replaces the description of Paul's action with the passage's wording."
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "The question remains in English. There are no options."
+            },
+            "option_meanings": [],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "The passage explicitly states that Paul threw himself on the young man and narrates subsequent actions and speech."
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "The young man is first described as 'picked up dead'; after Paul's intervention, Paul says, 'He is still alive!' This supports 'He comes back to life' inferentially, though a return to life is not explicitly narrated."
+              },
+              "answer_uniqueness": {
+                "status": "fail",
+                "evidence": "The unrestricted question 'What happens after' also admits the explicitly narrated answers that Paul embraces the young man or tells the others not to be alarmed. It does not specify that the requested outcome concerns the young man's condition."
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "The supplied window contains both the report of death and Paul's subsequent declaration that the young man is alive, sufficient to infer the fixed expected answer without outside knowledge."
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "The question identifies Paul's action but does not disclose that the young man is alive or returns to life."
+              },
+              "mcq_validity": {
+                "status": "not_applicable",
+                "evidence": "This is an open question with no answer choices."
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "The question is grammatical, idiomatic, and direct.",
+              "quotes": []
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "The single temporal clause and clearly named actor are readily parsed, with no burdensome reference chain or modifier structure.",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "Paul's action is a useful anchor for the tested temporal relation. The question contains no dispensable event narration or identifying setup.",
+              "quotes": []
+            }
+          }
+        }
+      ],
+      "status": "NOT_ACCEPTED"
+    },
+    {
+      "attempt": 2,
+      "proposal": {
+        "id": "item",
+        "status": "revised",
+        "question": "What happens to the young man after Paul throws himself on him?",
+        "options": [],
+        "removed_relation_ids": [],
+        "note": "Clarifies whose outcome is requested and uses the passage’s wording for Paul’s action. Both the temporal relation and its necessary anchor are preserved."
+      },
+      "candidate": {
+        "id": "gold:t1_acts20:jxkk#2:open",
+        "question": "What happens to the young man after Paul throws himself on him?",
+        "passage": "20:8 Now there were many lamps in the upper room where we were gathered.\n20:9 And a certain young man named Eutychus, seated in the window, was sinking into a deep sleep as Paul talked on and on. When he was sound asleep, he fell from the third story and was picked up dead.\n20:10 But Paul went down, threw himself on the young man, and embraced him. “Do not be alarmed!” he said. “He is still alive!”",
+        "expected_answer": "He comes back to life.",
+        "form": "open",
+        "options": {},
+        "correct_option": "",
+        "intended_target": "",
+        "original_question": "What happens after Paul stretches on the young man?",
+        "original_answer": "He comes back to life."
+      },
+      "checks": [
+        {
+          "repeat": 1,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "The original asks for the outcome after Paul's action, not merely the action or participants. The contract preserves that temporal relation and the expected outcome. Being picked up dead and subsequently declared alive supports return to life as a narrative inference."
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "The candidate still asks what happens to the young man following Paul's action. 'Throws himself on him' matches the passage and clarifies the original's 'stretches on the young man.'"
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "No substantive information or tested relation was removed. The candidate explicitly identifies the young man as the person whose outcome is requested."
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "Both questions are in English. There are no options."
+            },
+            "option_meanings": [],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "The passage explicitly says Paul 'threw himself on the young man,' supporting the question's reference event and participants."
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "The young man is first 'picked up dead'; after Paul's action, Paul declares, 'He is still alive!' This supports the fixed answer as an inference from the narrative, although return to life is not explicitly described."
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "The dead-to-alive transition supplies the clear substantive outcome for the young man. Paul's embrace is an accompanying action rather than a competing outcome of comparable relevance."
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "The supplied window includes the young man's reported death, Paul's action, and the subsequent declaration that he is alive."
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "The question identifies the reference action but does not disclose the young man's survival or return to life."
+              },
+              "mcq_validity": {
+                "status": "not_applicable",
+                "evidence": "This is an open question with no answer choices."
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "The question is grammatical, idiomatic, and direct.",
+              "quotes": []
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "The temporal clause is readily parsed, and 'him' clearly refers to the young man.",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "Paul's action is a useful anchor for the tested subsequent outcome. The question contains no unnecessary event narration or reference chain.",
+              "quotes": []
+            }
+          }
+        },
+        {
+          "repeat": 2,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "The inferred contract correctly identifies the young man's outcome after Paul's action as the target. The passage moves from his being 'picked up dead' to Paul's declaration that he is alive, supporting return to life as a narrative inference. The contract preserves the temporal relation without requiring a causal explanation."
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "The candidate retains Paul's action as the temporal anchor and asks for the subsequent outcome. Specifying 'to the young man' clarifies the original target rather than changing it."
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "No substantive setup or tested relation is removed. 'Throws himself on him' replaces 'stretches on the young man' with the passage's wording, while the young man remains explicitly identified."
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "The original and candidate questions are both in English. There are no options."
+            },
+            "option_meanings": [],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "The passage explicitly describes Paul throwing himself on the young man and then declaring him alive, supporting the question's event and temporal framing."
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "The fixed answer, 'He comes back to life,' is supported inferentially by the contrast between 'was picked up dead' and the subsequent declaration 'He is still alive!'"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "Being alive again is the sole stated change in the young man's condition following Paul's action. Paul's embrace and speech are actions by Paul, not competing outcomes for the young man."
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "The clean window supplies both the initial report of death and the subsequent declaration of life, together with Paul's intervening action."
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "The question identifies the reference event but does not disclose the young man's subsequent condition."
+              },
+              "mcq_validity": {
+                "status": "not_applicable",
+                "evidence": "This is an open question with no answer choices."
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "The question is idiomatic and direct, using the passage's description of Paul's action.",
+              "quotes": []
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "The temporal clause is straightforward, and 'him' clearly refers to the young man. No substantial reference or role-tracking burden is present.",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "The retained temporal anchor is needed to preserve the tested outcome-after-action relation. There is no dispensable event narration or reference chain.",
+              "quotes": []
+            }
+          }
+        }
+      ],
+      "status": "SIMPLIFIED"
+    }
+  ]
+}

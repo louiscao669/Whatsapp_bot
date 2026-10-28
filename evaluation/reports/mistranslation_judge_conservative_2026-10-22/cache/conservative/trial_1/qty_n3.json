@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "records": {
+    "f5342bd8dc12475c89aa2d80b6e26190a9069c0be5836e25aa3602ef34641a2c": {
+      "identity": {
+        "model": "gpt-6-sol",
+        "prompt_sha256": "f857438a2a18e6f6221c4a199812ef2424055243a155316029daaccb7a0d9162",
+        "schema_sha256": "8319c0cd3900dfdaddc6a5f55bd684c72343c8ac328e12cd2fc660e099093bfa",
+        "max_output_tokens": 8192,
+        "api": "responses"
+      },
+      "request": {
+        "original_passage": "院子里住着二十来名旅客。",
+        "source": "二十来名",
+        "replacement": "二十几名",
+        "mode": "contextual",
+        "occurrences": [
+          {
+            "start": 5,
+            "end": 9,
+            "original_context": "院子里住着二十来名旅客。",
+            "edited_context": "院子里住着二十几名旅客。"
+          }
+        ]
+      },
+      "response": {
+        "source_claim": "院子里住着二十来名旅客。",
+        "replacement_claim": "院子里住着二十几名旅客。",
+        "explanation": "两者都是对旅客人数的模糊表述。原文没有给出互不重叠的数量范围，因此不能认定人数事实发生了明确变化。替换后的句子通顺，且仅替换了人数表述，但不构成合格的事实性误译。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no",
+        "change_basis": "vague_contrast",
+        "change_dimension": "quantity",
+        "difference_evidence": "“二十来名”与“二十几名”均未在原文中被界定为互不重叠的数量范围；仅凭通常语感不足以确定两者所指人数不同。",
+        "needs_repair": "no"
+      },
+      "response_id": "resp_0d67499c12a3c91c006adacd529e8c87d1b6b95c4a01e6e3fb",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1580,
+        "input_tokens_details": {
+          "cached_tokens": 1476,
+          "cache_write_tokens": 101
+        },
+        "output_tokens": 304,
+        "output_tokens_details": {
+          "reasoning_tokens": 87
+        },
+        "total_tokens": 1884
+      },
+      "completed_at_unix": 1792724312
+    }
+  }
+}

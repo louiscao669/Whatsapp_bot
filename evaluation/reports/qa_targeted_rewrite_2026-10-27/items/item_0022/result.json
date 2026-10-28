@@ -1,0 +1,400 @@
+{
+  "id": "hard:t1_2kgs11:f49c:mcq",
+  "input_hash": "36affb23a3575c8fd36adfa659b73c46ca91f1315bf1d54d66c8c577425787bf",
+  "original": {
+    "id": "hard:t1_2kgs11:f49c:mcq",
+    "question": "耶何耶大立的第一个约，是在哪些之间立的？",
+    "passage": "11:17 耶何耶大与耶和华、王和百姓立约，众人都作耶和华的子民。他又与王和百姓立约。\n11:18 地上的众人都去拆毁巴力的殿，打碎坛和偶像，在坛前杀了巴力的祭司玛坦。祭司耶何耶大为耶和华的殿设立守卫。",
+    "expected_answer": "耶和华、王和百姓",
+    "form": "mcq",
+    "options": {
+      "A": "耶和华、王和百姓",
+      "B": "王和百夫长",
+      "C": "耶和华和守卫",
+      "D": "王和百姓",
+      "E": "根据这段文字无法判断"
+    },
+    "correct_option": "A",
+    "intended_target": "",
+    "original_question": "耶何耶大立的第一个约，是在哪些之间立的？",
+    "original_answer": "the Lord, the king, and the people"
+  },
+  "source_review_dir": "/Users/louiscao/whatsapp-bot/eten-whatsapp-bot/evaluation/reports/qa_review_v2_full_2026-10-27/hard",
+  "status": "ACCEPTED",
+  "accepted_case": {
+    "id": "hard:t1_2kgs11:f49c:mcq",
+    "question": "第一次立约时，耶何耶大是与谁立约的？",
+    "passage": "11:17 耶何耶大与耶和华、王和百姓立约，众人都作耶和华的子民。他又与王和百姓立约。\n11:18 地上的众人都去拆毁巴力的殿，打碎坛和偶像，在坛前杀了巴力的祭司玛坦。祭司耶何耶大为耶和华的殿设立守卫。",
+    "expected_answer": "耶和华、王和百姓",
+    "form": "mcq",
+    "options": {
+      "A": "耶和华、王和百姓",
+      "B": "王和百夫长",
+      "C": "耶和华和守卫",
+      "D": "王和百姓",
+      "E": "根据这段文字无法判断"
+    },
+    "correct_option": "A",
+    "intended_target": "",
+    "original_question": "耶何耶大立的第一个约，是在哪些之间立的？",
+    "original_answer": "the Lord, the king, and the people"
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "proposal": {
+        "id": "item",
+        "status": "revised",
+        "question": "第一次立约时，耶何耶大是与谁立约的？",
+        "options": [
+          {
+            "label": "A",
+            "text": "耶和华、王和百姓"
+          },
+          {
+            "label": "B",
+            "text": "王和百夫长"
+          },
+          {
+            "label": "C",
+            "text": "耶和华和守卫"
+          },
+          {
+            "label": "D",
+            "text": "王和百姓"
+          },
+          {
+            "label": "E",
+            "text": "根据这段文字无法判断"
+          }
+        ],
+        "note": "将生硬的“在哪些之间”改为自然的“与谁立约”，保留第一次立约的事件限定。明确询问与耶何耶大立约的其他各方，而非所有参与者，解决原问法与答案名单范围不一致的问题；不将耶何耶大改作仅仅居间立约的人。"
+      },
+      "candidate": {
+        "id": "hard:t1_2kgs11:f49c:mcq",
+        "question": "第一次立约时，耶何耶大是与谁立约的？",
+        "passage": "11:17 耶何耶大与耶和华、王和百姓立约，众人都作耶和华的子民。他又与王和百姓立约。\n11:18 地上的众人都去拆毁巴力的殿，打碎坛和偶像，在坛前杀了巴力的祭司玛坦。祭司耶何耶大为耶和华的殿设立守卫。",
+        "expected_answer": "耶和华、王和百姓",
+        "form": "mcq",
+        "options": {
+          "A": "耶和华、王和百姓",
+          "B": "王和百夫长",
+          "C": "耶和华和守卫",
+          "D": "王和百姓",
+          "E": "根据这段文字无法判断"
+        },
+        "correct_option": "A",
+        "intended_target": "",
+        "original_question": "耶何耶大立的第一个约，是在哪些之间立的？",
+        "original_answer": "the Lord, the king, and the people"
+      },
+      "checks": [
+        {
+          "repeat": 1,
+          "preservation": {
+            "id": "item",
+            "same_target": {
+              "status": "pass",
+              "evidence": "两题均询问耶何耶大第一次立约所涉及的对象；原始答案元数据明确为“耶和华、王和百姓”，修订保留了这一关系及第一次立约的时间限定。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "修订后的问题仍为中文，所有选项也均保留原来的中文表述。"
+            },
+            "option_meanings": [
+              {
+                "status": "pass",
+                "evidence": "选项未变，仍指耶和华、王和百姓三方。",
+                "label": "A"
+              },
+              {
+                "status": "pass",
+                "evidence": "选项未变，仍指王和百夫长。",
+                "label": "B"
+              },
+              {
+                "status": "pass",
+                "evidence": "选项未变，仍指耶和华和守卫。",
+                "label": "C"
+              },
+              {
+                "status": "pass",
+                "evidence": "选项未变，仍指王和百姓。",
+                "label": "D"
+              },
+              {
+                "status": "pass",
+                "evidence": "选项未变，仍表示根据所给文字无法判断。",
+                "label": "E"
+              }
+            ]
+          },
+          "review": {
+            "id": "item",
+            "input_hash": "2418825c22f224e5f3e3d0ef5a02cfc710cde5d0b7ae48351632bd63e2588965",
+            "content_validity": {
+              "id": "item",
+              "target": "辨认耶何耶大第一次立约的对象：耶和华、王和百姓。",
+              "target_basis": "inferred",
+              "target_preservation": {
+                "status": "pass",
+                "evidence": "原题询问第一个约的立约各方，原答案为耶和华、王和百姓；现题仍询问耶何耶大第一次与谁立约，保留了事件、先后次序和完整答案范围。"
+              },
+              "question_support": {
+                "status": "pass",
+                "evidence": "11:17先记载耶何耶大与耶和华、王和百姓立约，随后说他“又与王和百姓立约”；题目以“第一次”区分这两次立约，符合经文。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "经文直接说“耶何耶大与耶和华、王和百姓立约”，支持预期答案“耶和华、王和百姓”。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "第一次立约的对象被明确列出，完整答案只有耶和华、王和百姓这一组；第二次立约的对象不构成第一次立约的另一种完整答案。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "所给11:17包含前后两次立约，并用“又”标明后一次，足以确定题目所指的第一次立约及其对象。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "题目只提供耶何耶大和第一次立约这一事件定位，没有给出立约对象；正确答案出现在选项中不属于答案泄露。"
+              },
+              "mcq_validity": {
+                "status": "pass",
+                "evidence": "A完整对应第一次立约的对象，且为指定答案。B中的百夫长未被列为立约对象；C中的守卫属于设立守卫的另一事件；D只列王和百姓，是第二次立约的对象，也遗漏第一次中的耶和华；经文已明确提供答案，因此E不成立。"
+              },
+              "meaning_profile": {
+                "answer_explicitness": "direct",
+                "semantic_relation": "第一次立约的参与对象",
+                "answer_scope": "multiple_components",
+                "passage_span": "one_sentence"
+              }
+            },
+            "structural_inspection": {
+              "id": "item",
+              "parse_summary": "句首“第一次立约时”限定所问的立约事件，主句以“耶何耶大”为立约者，以“与谁”询问立约对象，无深层嵌套。需将“第一次”对应到经文前一次立约，并区分两次立约的对象；选项A包含选项D的全部成员，但另有“耶和华”。",
+              "features": [
+                {
+                  "kind": "reference_chain",
+                  "quote": "第一次立约时",
+                  "required_operations": "根据经文中两次立约的叙述顺序，确定问题指向前一次事件。",
+                  "concern": "ordinary",
+                  "reason": "事件定位直接服务于辨认第一次立约对象的目标，时间限定简短明确。"
+                },
+                {
+                  "kind": "role_tracking",
+                  "quote": "耶何耶大是与谁立约的？",
+                  "required_operations": "保持耶何耶大作为立约者的角色，从经文中提取与他立约的各方。",
+                  "concern": "ordinary",
+                  "reason": "立约者与立约对象的区分是目标所需的核心关系，问句没有额外的角色转换。"
+                },
+                {
+                  "kind": "option_overlap",
+                  "quote": "A：耶和华、王和百姓；D：王和百姓",
+                  "required_operations": "比较两个共享“王和百姓”的选项，确认第一次立约的对象还包括耶和华。",
+                  "concern": "ordinary",
+                  "reason": "选项虽有包含关系，但列表短，差异直接对应两次立约对象的必要区分。"
+                }
+              ]
+            },
+            "language_accessibility": {
+              "id": "item",
+              "naturalness": {
+                "score": 0,
+                "evidence": "“第一次立约时，耶何耶大是与谁立约的？”表达自然，“是与谁……的”是常见的询问方式。选项“耶和华、王和百姓”等列举简洁，“根据这段文字无法判断”也符合中文习惯。"
+              },
+              "processing": {
+                "score": 1,
+                "evidence": "读者需将“第一次立约时”对应到前一次立约，保持“耶何耶大”为立约者，再比较“耶和华、王和百姓”与“王和百姓”的成员差别。这些操作直接服务于所问对象的辨认；问句没有复杂嵌套，选项较短，属于普通且可管理的处理需求。"
+              },
+              "context_economy": {
+                "score": 0,
+                "evidence": "题目没有额外引言；“第一次立约时”用于限定所问事件，“耶何耶大”明确立约者，均有实际作用，没有多余的背景铺陈。"
+              },
+              "structure_assessments": [
+                {
+                  "feature_index": 0,
+                  "assessment": "manageable",
+                  "reason": "“第一次立约时”要求按叙述顺序定位前一次事件，限定简短，且是区分两次立约所必需的，不构成可避免的指代负担。"
+                },
+                {
+                  "feature_index": 1,
+                  "assessment": "manageable",
+                  "reason": "“耶何耶大是与谁立约的？”直接标明立约者并询问其他参与方，读者无需在多个角色之间反复转换。"
+                },
+                {
+                  "feature_index": 2,
+                  "assessment": "manageable",
+                  "reason": "“耶和华、王和百姓”与“王和百姓”虽有重合，但列表短，差别集中在是否包括“耶和华”，比较负担有限，且直接对应所需的事件区分。"
+                }
+              ]
+            },
+            "decision": "KEEP",
+            "content_status": "PASS",
+            "language_status": "PASS",
+            "content_failures": [],
+            "content_uncertainties": [],
+            "language_failures": [],
+            "structural_concerns": [],
+            "unresolved_features": [],
+            "structure_burden_disagreement": false
+          }
+        },
+        {
+          "repeat": 2,
+          "preservation": {
+            "id": "item",
+            "same_target": {
+              "status": "pass",
+              "evidence": "两题都询问耶何耶大第一次立约所涉及的对象；原始答案明确为“耶和华、王和百姓”。修订保留了耶何耶大、第一次立约的时间限定及全部所问对象。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "修订后的问题及全部选项均保持中文，与原对应字段的语言一致。"
+            },
+            "option_meanings": [
+              {
+                "status": "pass",
+                "evidence": "选项未改动，仍为“耶和华、王和百姓”。",
+                "label": "A"
+              },
+              {
+                "status": "pass",
+                "evidence": "选项未改动，仍为“王和百夫长”。",
+                "label": "B"
+              },
+              {
+                "status": "pass",
+                "evidence": "选项未改动，仍为“耶和华和守卫”。",
+                "label": "C"
+              },
+              {
+                "status": "pass",
+                "evidence": "选项未改动，仍为“王和百姓”。",
+                "label": "D"
+              },
+              {
+                "status": "pass",
+                "evidence": "选项未改动，仍表示根据所给文字无法判断。",
+                "label": "E"
+              }
+            ]
+          },
+          "review": {
+            "id": "item",
+            "input_hash": "2418825c22f224e5f3e3d0ef5a02cfc710cde5d0b7ae48351632bd63e2588965",
+            "content_validity": {
+              "id": "item",
+              "target": "辨认耶何耶大第一次立约时的立约对象：耶和华、王和百姓。",
+              "target_basis": "inferred",
+              "target_preservation": {
+                "status": "pass",
+                "evidence": "原题与原答案针对第一个约的参与方；现题仍询问耶何耶大第一次与谁立约，保留了人物、先后顺序及所求对象范围。"
+              },
+              "question_support": {
+                "status": "pass",
+                "evidence": "11:17先说耶何耶大“与耶和华、王和百姓立约”，随后说“他又与王和百姓立约”，支持区分第一次和后一次立约。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "预期答案“耶和华、王和百姓”与11:17第一句列出的立约对象完全一致。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "第一处立约明确列出耶和华、王和百姓；后一句的王和百姓属于另一次立约，不构成同样完整的竞争答案。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "所给经文包含两次立约，并用“又”标明后一次，足以确定题目所指的第一次立约及其对象。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "题干只限定第一次立约，没有透露立约对象；正确答案出现在选项中不构成泄漏。"
+              },
+              "mcq_validity": {
+                "status": "pass",
+                "evidence": "A完整对应第一次立约的对象。B的百夫长未被提及；C将守卫误作立约对象；D仅列王和百姓，遗漏第一次立约中的耶和华，且对应后一句；经文能够判断，故E不成立。唯一正确项为所给答案A。"
+              },
+              "meaning_profile": {
+                "answer_explicitness": "direct",
+                "semantic_relation": "第一次立约的对象",
+                "answer_scope": "multiple_components",
+                "passage_span": "one_sentence"
+              }
+            },
+            "structural_inspection": {
+              "id": "item",
+              "parse_summary": "问句以“第一次立约时”限定事件，主句询问耶何耶大的立约对象，“谁”对应“与”的宾语，无嵌套从句。需将“第一次”对应到经文前一次立约，并区分选项中完整的三方名单与仅含王和百姓的名单。",
+              "features": [
+                {
+                  "kind": "reference_chain",
+                  "quote": "第一次立约时",
+                  "required_operations": "将序次表达对应到经文中的前一次立约，而非“他又与王和百姓立约”所述的后一次。",
+                  "concern": "ordinary",
+                  "reason": "事件定位直接服务于辨认第一次立约对象的目标，未增加额外的指代层级。"
+                },
+                {
+                  "kind": "role_tracking",
+                  "quote": "耶何耶大是与谁立约的？",
+                  "required_operations": "固定耶何耶大为问句已知参与者，提取与他立约的其他参与者。",
+                  "concern": "ordinary",
+                  "reason": "立约参与者关系是本题所测内容，句中角色分配直接，无被动转换或多层角色嵌套。"
+                },
+                {
+                  "kind": "option_overlap",
+                  "quote": "A：耶和华、王和百姓；D：王和百姓",
+                  "required_operations": "比较两个名单，注意A比D多出“耶和华”，并按第一次立约的参与者选择完整名单。",
+                  "concern": "ordinary",
+                  "reason": "名单重叠对应经文两次立约的实际区别，比较范围短且与目标直接相关。"
+                }
+              ]
+            },
+            "language_accessibility": {
+              "id": "item",
+              "naturalness": {
+                "score": 0,
+                "evidence": "“第一次立约时，耶何耶大是与谁立约的？”是自然的中文问法；“是与谁……的”明确询问参与者。各选项均为简短名单或常见的判断表述，没有不自然的修饰关系或需要心智修补的措辞。"
+              },
+              "processing": {
+                "score": 1,
+                "evidence": "读者需将“第一次立约时”对应到前一次立约，再比较“耶和华、王和百姓”与“王和百姓”的名单差别。这是与辨认立约对象直接相关的普通定位和比较操作；问句角色明确，选项简短，没有显著可避免的解析或记忆负担。"
+              },
+              "context_economy": {
+                "score": 0,
+                "evidence": "题目没有额外引言；“第一次立约时”用于限定所问事件，“耶何耶大”用于明确参与者，均有必要。选项直接呈现待比较的对象，没有多余背景铺陈。"
+              },
+              "structure_assessments": [
+                {
+                  "feature_index": 0,
+                  "assessment": "manageable",
+                  "reason": "“第一次立约时”要求把序次词对应到前一次立约，而非“他又与王和百姓立约”。这一定位直接服务于题目目标，未引入额外指代链或不必要的时间推算。"
+                },
+                {
+                  "feature_index": 1,
+                  "assessment": "manageable",
+                  "reason": "“耶何耶大是与谁立约的？”明确给出已知参与者，以“与谁”询问其他参与者。读者无需转换主被动关系，也无需重新分配多层角色。"
+                },
+                {
+                  "feature_index": 2,
+                  "assessment": "manageable",
+                  "reason": "“耶和华、王和百姓”与“王和百姓”虽有重叠，但名单短，差别集中在是否包含“耶和华”。这一比较正是区分所问立约对象所需的操作，不构成可避免的选项负担。"
+                }
+              ]
+            },
+            "decision": "KEEP",
+            "content_status": "PASS",
+            "language_status": "PASS",
+            "content_failures": [],
+            "content_uncertainties": [],
+            "language_failures": [],
+            "structural_concerns": [],
+            "unresolved_features": [],
+            "structure_burden_disagreement": false
+          }
+        }
+      ],
+      "status": "ACCEPTED"
+    }
+  ]
+}

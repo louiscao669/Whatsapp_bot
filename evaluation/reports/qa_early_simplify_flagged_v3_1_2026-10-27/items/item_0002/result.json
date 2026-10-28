@@ -1,0 +1,205 @@
+{
+  "id": "gold:t1_2chr26:tglh:open",
+  "original": {
+    "id": "gold:t1_2chr26:tglh:open",
+    "question": "How did Uzziah follow his father's example with Yahweh?",
+    "passage": "26:4 And he did what was right in the eyes of the LORD, just as his father Amaziah had done.\n26:5 He sought God throughout the days of Zechariah, who instructed him in the fear of God. And as long as he sought the LORD, God gave him success.\n26:6 Uzziah went out to wage war against the Philistines, and he tore down the walls of Gath, Jabneh, and Ashdod. Then he built cities near Ashdod and among the Philistines.",
+    "expected_answer": "Did right and sought God.",
+    "form": "open",
+    "options": {},
+    "correct_option": "",
+    "intended_target": "",
+    "original_question": "",
+    "original_answer": ""
+  },
+  "input_hash": "8f2328e339126a47cd36df96083722a6bfa452f31069a52db2bdad818ab4b2e7",
+  "status": "HOLD_TARGET",
+  "accepted_case": null,
+  "contract": {
+    "id": "item",
+    "status": "ready",
+    "target": "Identify how Uzziah's conduct toward Yahweh followed his father's example: he did what was right and sought God.",
+    "basis": "inferred",
+    "required_answer_components": [
+      "Uzziah did what was right in Yahweh's eyes.",
+      "Uzziah sought God."
+    ],
+    "relations": [
+      {
+        "id": "r1",
+        "quote": "How did Uzziah follow his father's example",
+        "meaning": "Recover the conduct through which Uzziah followed his father's example, rather than merely identify Uzziah or his father.",
+        "role": "tested",
+        "reason": "The question explicitly asks how Uzziah followed that example. The comparison is part of the requested understanding, not incidental setup."
+      },
+      {
+        "id": "r2",
+        "quote": "with Yahweh",
+        "meaning": "Restrict the requested conduct to Uzziah's relationship with and conduct toward Yahweh.",
+        "role": "tested",
+        "reason": "This scope excludes Uzziah's military actions in verse 6 and directs the answer to doing right and seeking God."
+      }
+    ],
+    "note": "No explicit intended target or earlier question/answer metadata is supplied, so the target is inferred from the question and expected answer. Verse 4 explicitly compares Uzziah's doing right with Amaziah's conduct; verse 5 supplies Uzziah's seeking God. Both expected answer components are supported, but the passage does not independently state that Amaziah sought God."
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "proposal": {
+        "id": "item",
+        "status": "unchanged",
+        "question": "How did Uzziah follow his father's example with Yahweh?",
+        "options": [],
+        "removed_relation_ids": [],
+        "note": "The question is already direct. Both the comparison with his father and the focus on Yahweh are tested relations that must remain."
+      },
+      "candidate": {
+        "id": "gold:t1_2chr26:tglh:open",
+        "question": "How did Uzziah follow his father's example with Yahweh?",
+        "passage": "26:4 And he did what was right in the eyes of the LORD, just as his father Amaziah had done.\n26:5 He sought God throughout the days of Zechariah, who instructed him in the fear of God. And as long as he sought the LORD, God gave him success.\n26:6 Uzziah went out to wage war against the Philistines, and he tore down the walls of Gath, Jabneh, and Ashdod. Then he built cities near Ashdod and among the Philistines.",
+        "expected_answer": "Did right and sought God.",
+        "form": "open",
+        "options": {},
+        "correct_option": "",
+        "intended_target": "",
+        "original_question": "",
+        "original_answer": ""
+      },
+      "checks": [
+        {
+          "repeat": 1,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "fail",
+              "evidence": "The father–son comparison and religious scope are valid targets. However, the contract overreaches by requiring seeking God as part of the conduct copied from his father. Verse 4 explicitly compares their doing right; verse 5 says Uzziah sought God but does not establish that his father did."
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "The candidate is unchanged and preserves the valid core target: how Uzziah followed his father's example in conduct toward Yahweh."
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "No information was removed."
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "The question remains in English. There are no options."
+            },
+            "option_meanings": [],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "Verse 4 supports the question's premise that Uzziah followed his father's example by doing what was right in the LORD's eyes."
+              },
+              "answer_support": {
+                "status": "fail",
+                "evidence": "Both expected actions are stated about Uzziah, but only doing right is explicitly linked to his father's example. Requiring 'sought God' as an additional answer to this comparison is not supported by the window."
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "Doing what was right in the LORD's eyes is the sole conduct explicitly compared with his father's. No competing father–son comparison is supplied."
+              },
+              "context_sufficiency": {
+                "status": "fail",
+                "evidence": "The window suffices for the narrower answer 'He did what was right in the LORD's eyes,' but not for establishing that seeking God also followed his father's example, as the fixed answer and contract require."
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "The question does not reveal the requested conduct."
+              },
+              "mcq_validity": {
+                "status": "not_applicable",
+                "evidence": "This is an open question."
+              }
+            },
+            "naturalness": {
+              "score": 1,
+              "evidence": "The phrase 'example with Yahweh' is mildly awkward; the intended sense is his father's example in conduct toward Yahweh.",
+              "quotes": [
+                "follow his father's example with Yahweh"
+              ]
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "The single short question has readily identifiable participants and a straightforward comparison.",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "The father's example is the tested relation, and the reference to Yahweh usefully restricts the conduct being asked about. There is no unnecessary narrative setup.",
+              "quotes": []
+            }
+          }
+        },
+        {
+          "repeat": 2,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "fail",
+              "evidence": "The comparison target is valid, but the contract overextends it by requiring seeking God as conduct copied from Uzziah's father. Verse 4 explicitly compares their doing right; verse 5 says Uzziah sought God without attributing that conduct to his father."
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "The candidate is identical to the original and preserves the comparison question, its scope toward Yahweh, and the expected answer components. The contract's unsupported extension is inherited, not introduced by the candidate."
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "No information was removed."
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "The question remains in English. There are no options."
+            },
+            "option_meanings": [],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "Verse 4 supports the question's presupposition that Uzziah followed his father's example in conduct toward God: he did what was right, just as Amaziah had done."
+              },
+              "answer_support": {
+                "status": "fail",
+                "evidence": "Both actions in the fixed answer are stated about Uzziah, but only doing right is identified as following his father's example. The full answer 'Did right and sought God' is therefore not supported under the question's comparison relation."
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "Doing what was right is the sole conduct explicitly compared with his father's conduct. No competing example-following event is supplied; the problem is the additional required answer component, not competing answers."
+              },
+              "context_sufficiency": {
+                "status": "fail",
+                "evidence": "The window supports answering that Uzziah did what was right, but does not establish that seeking God also followed his father's example. It is insufficient for the full fixed answer in the requested relation."
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "The question does not disclose either expected action."
+              },
+              "mcq_validity": {
+                "status": "not_applicable",
+                "evidence": "This is an open question with no options."
+              }
+            },
+            "naturalness": {
+              "score": 1,
+              "evidence": "The phrase 'with Yahweh' is a mildly awkward way to specify the domain in which Uzziah followed his father's example, although the intended meaning is understandable.",
+              "quotes": [
+                "follow his father's example with Yahweh"
+              ]
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "The short question presents one readily understood comparison, with no burdensome reference chain or competing roles.",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "There is no extraneous setup. The father comparison is the tested relation, and naming Yahweh usefully limits the conduct being asked about.",
+              "quotes": []
+            }
+          }
+        }
+      ],
+      "status": "NOT_ACCEPTED"
+    }
+  ]
+}

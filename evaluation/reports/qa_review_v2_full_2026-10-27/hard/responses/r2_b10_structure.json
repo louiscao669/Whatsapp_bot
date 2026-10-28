@@ -1,0 +1,186 @@
+{
+  "request_hash": "026413b4272f42daf0adcede4db6fa0216405eafc0dfb2da4a4d291ab9c208de",
+  "model": "gpt-6.1-sol",
+  "response_id": "resp_0987959aeb6018e9006ae0d41b656c87d2870e4c5058156ba3",
+  "usage": {
+    "input_tokens": 2824,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 2821
+    },
+    "output_tokens": 2506,
+    "output_tokens_details": {
+      "reasoning_tokens": 183
+    },
+    "total_tokens": 5330
+  },
+  "parsed": {
+    "items": [
+      {
+        "id": "q0104",
+        "parse_summary": "问句以“是什么使……”询问但人转身的触发事件。选项A把但人置于被追上的受事位置，选项D把附近的人置于呼叫的施事位置，其中“他们”指但人。",
+        "features": [
+          {
+            "kind": "role_tracking",
+            "quote": "被米迦家附近的人追上",
+            "required_operations": "补出被追上的人是但人，区分追赶者与被追赶者，并与选项D的呼叫事件比较。",
+            "concern": "ordinary",
+            "reason": "施受关系直接服务于区分两个候选触发事件，省略的受事可由问句恢复。"
+          },
+          {
+            "kind": "reference_chain",
+            "quote": "米迦家附近的人在后面呼叫他们",
+            "required_operations": "将“他们”对应到问句中的但人，而不是呼叫者。",
+            "concern": "ordinary",
+            "reason": "指代距离短，且施事与受事的关系正是目标事件的一部分。"
+          }
+        ]
+      },
+      {
+        "id": "q0049",
+        "parse_summary": "“以为”统领“谁要来攻击他们”这一内容小句；叙利亚人是持有判断者及预期受攻击者，“谁”询问他们设想的攻击方。",
+        "features": [
+          {
+            "kind": "layered_speech",
+            "quote": "叙利亚人以为谁要来攻击他们？",
+            "required_operations": "在叙利亚人的判断范围内寻找攻击者，而不是判断实际是否有人来攻击。",
+            "concern": "ordinary",
+            "reason": "信念层次是辨认其所设想攻击方所必需的。"
+          },
+          {
+            "kind": "reference_chain",
+            "quote": "谁要来攻击他们",
+            "required_operations": "将“他们”回指叙利亚人，并把疑问词“谁”识别为攻击者。",
+            "concern": "ordinary",
+            "reason": "回指对象就在问句开头，没有额外的指代竞争。"
+          }
+        ]
+      },
+      {
+        "id": "q0075",
+        "parse_summary": "“他们要请谁……”包含请求者、被请求者和被带领者三种角色；“谁”既是“请”的对象，也是把保罗带到公会的执行者。“他们”需结合经文中的阴谋者、大祭司和长老确定其所指层级。",
+        "features": [
+          {
+            "kind": "role_tracking",
+            "quote": "他们要请谁把保罗带到公会那里？",
+            "required_operations": "区分提出请求的人、接受请求并带人的人、保罗以及目的地公会，确定所问的是执行带领的人。",
+            "concern": "ordinary",
+            "reason": "请求者与执行者的区分是此题语义目标本身，不能仅按出现的人名作答。"
+          },
+          {
+            "kind": "reference_chain",
+            "quote": "他们要请谁",
+            "required_operations": "从经文的“他们”“我们”“你们”之间切换，判断问句“他们”对应阴谋者还是被要求出面请求的大祭司、长老和公会。",
+            "concern": "potential_burden",
+            "reason": "问句未明确请求者，而经文把策划请求和实际出面请求分配给不同群体；辨认军长之外，还需额外处理这一可避免的指代竞争。"
+          }
+        ]
+      },
+      {
+        "id": "q0097",
+        "parse_summary": "问句在米迦的判断之上询问理由：“为什么”修饰“认为”，而“耶和华必向他施恩”是判断内容。“他”指米迦，耶和华是预期施恩者。",
+        "features": [
+          {
+            "kind": "layered_speech",
+            "quote": "米迦为什么认为耶和华必向他施恩？",
+            "required_operations": "区分米迦认为会蒙恩的理由与耶和华实际施恩的原因，并从米迦的话中提取理由。",
+            "concern": "ordinary",
+            "reason": "保留米迦的判断视角是题目所问理由的必要范围。"
+          },
+          {
+            "kind": "reference_chain",
+            "quote": "耶和华必向他施恩",
+            "required_operations": "把“他”对应到米迦，而非经文中的利未人。",
+            "concern": "ordinary",
+            "reason": "问句已明确以米迦为判断主体，局部指代关系清楚。"
+          }
+        ]
+      },
+      {
+        "id": "q0127",
+        "parse_summary": "“谁”占据被动句的受事位置，“他的甲士”是施事；其中“他”与待求的“谁”同指，要求找出被自己的甲士刺死的人。",
+        "features": [
+          {
+            "kind": "role_tracking",
+            "quote": "谁被他的甲士刺死了？",
+            "required_operations": "区分刺杀者甲士与死者，返回被刺死者而不是持剑者。",
+            "concern": "ordinary",
+            "reason": "被动结构直接表达目标中的受事关系，句子短且角色明确。"
+          },
+          {
+            "kind": "reference_chain",
+            "quote": "谁被他的甲士",
+            "required_operations": "将“他的”与疑问词“谁”绑定，并借经文末句把死者确定为亚比米勒。",
+            "concern": "ordinary",
+            "reason": "所有关系用于限定甲士与死者的关联，没有额外嵌套。"
+          }
+        ]
+      },
+      {
+        "id": "q0032",
+        "parse_summary": "“谁”和“他的奶母”构成共同藏身的参与者，“他的”回指待求人物；地点与六年时长共同限定藏身事件，选项均为单个人名或无法判断。",
+        "features": [
+          {
+            "kind": "reference_chain",
+            "quote": "谁和他的奶母在耶和华的殿里藏了六年？",
+            "required_operations": "理解奶母属于待求人物，并将这一人物与经文中的约阿施对应，而非负责藏人的约示巴。",
+            "concern": "ordinary",
+            "reason": "问句内部的所属关系简短，地点和时长用于定位目标事件。"
+          }
+        ]
+      },
+      {
+        "id": "q0042",
+        "parse_summary": "句首名词组“耶何耶大立的第一个约”以关系修饰语和序数限定目标，后半句询问该约的参与方。选项A包含选项D的“王和百姓”，需按第一个约比较完整名单。",
+        "features": [
+          {
+            "kind": "nested_modifier",
+            "quote": "耶何耶大立的第一个约",
+            "required_operations": "先用“耶何耶大立的”确定约的关联人物，再用“第一个”在两个立约事件中选定目标。",
+            "concern": "ordinary",
+            "reason": "两个限定共同识别所问的约，修饰层次浅且服务于目标区分。"
+          },
+          {
+            "kind": "option_overlap",
+            "quote": "A：耶和华、王和百姓；D：王和百姓",
+            "required_operations": "比较包含关系，检查完整参与方，而不是看到“王和百姓”便停止匹配。",
+            "concern": "ordinary",
+            "reason": "名单重叠对应经文中两个约的参与方差别，是辨认第一个约所需的比较。"
+          }
+        ]
+      },
+      {
+        "id": "q0115",
+        "parse_summary": "“在做什么的时候”构成时间框架，询问咒诅事件发生时众人正在进行的活动；众人同时是该活动和咒诅的主体，亚比米勒是咒诅对象。",
+        "features": []
+      },
+      {
+        "id": "q0065",
+        "parse_summary": "句首受事名词组以“在迦特的”限定地点，以“这四个”回指经文概括的群体，并以“拉法的后裔”标明身份；“被谁杀死”询问集体施事，而不是其中一场战斗的单个杀人者。",
+        "features": [
+          {
+            "kind": "nested_modifier",
+            "quote": "在迦特的这四个拉法的后裔",
+            "required_operations": "将地点修饰语、指示数量成分和祖属关系整合为同一个受事群体。",
+            "concern": "ordinary",
+            "reason": "这些限定共同保留经文概括的四人群体，虽有多层限定，但没有额外插入分句。"
+          },
+          {
+            "kind": "reference_chain",
+            "quote": "这四个拉法的后裔",
+            "required_operations": "把“这四个”对应到经文末句的概括群体，不仅指前一句的高大男子。",
+            "concern": "ordinary",
+            "reason": "群体回指是辨认集体施事所需的范围限定。"
+          },
+          {
+            "kind": "role_tracking",
+            "quote": "被谁杀死了",
+            "required_operations": "将四个后裔识别为受事，寻找杀死他们的集体施事大卫和他的仆人。",
+            "concern": "ordinary",
+            "reason": "被动句直接标明目标角色，没有增加不必要的角色转换。"
+          }
+        ]
+      }
+    ]
+  }
+}

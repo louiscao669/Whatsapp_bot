@@ -1,0 +1,1202 @@
+[
+  {
+    "id": "hard:t1_acts23:9035:open",
+    "input_hash": "de49b445700ca31e1a83e38ee397130a407dfd0e630a7d34fdc0a311ddda3b87",
+    "content_validity": {
+      "id": "q0083",
+      "target": "Identify the writer of the displayed letter as Claudius Lysias.",
+      "target_basis": "inferred",
+      "target_preservation": {
+        "status": "not_applicable",
+        "evidence": "No original question, original answer, or explicit intended target is supplied."
+      },
+      "question_support": {
+        "status": "pass",
+        "evidence": "23:25 introduces a written letter, and 23:26 supplies its sender and recipient."
+      },
+      "answer_support": {
+        "status": "pass",
+        "evidence": "The heading '克劳狄·利西亚致尊敬的费利克斯总督' identifies Claudius Lysias as the sender."
+      },
+      "answer_uniqueness": {
+        "status": "pass",
+        "evidence": "Claudius Lysias is the only identified sender; Felix is identified as the recipient."
+      },
+      "context_sufficiency": {
+        "status": "pass",
+        "evidence": "The introduction and letter heading identify the relevant letter and its writer without requiring earlier verses."
+      },
+      "answer_leakage": {
+        "status": "pass",
+        "evidence": "The question asks who wrote the letter without naming its writer."
+      },
+      "mcq_validity": {
+        "status": "not_applicable",
+        "evidence": "This is an open question."
+      },
+      "meaning_profile": {
+        "answer_explicitness": "direct",
+        "semantic_relation": "letter authorship",
+        "answer_scope": "single_component",
+        "passage_span": "nearby"
+      }
+    },
+    "structural_inspection": {
+      "id": "q0083",
+      "parse_summary": "“这封信”指向所展示的书信；“谁”询问写信者，不是收信者。句子没有嵌套从句。",
+      "features": [
+        {
+          "kind": "reference_chain",
+          "quote": "这封信",
+          "required_operations": "将指示语与经文中的书信对应，并根据署名确定写信者。",
+          "concern": "ordinary",
+          "reason": "这是识别所展示书信作者所需的直接指称。"
+        }
+      ]
+    },
+    "language_accessibility": {
+      "id": "q0083",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“这封信是谁写的？”是自然、直接的作者身份问句。"
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "只需把“这封信”对应到展示的书信，再确定写信者；句内没有额外的角色或修饰关系。"
+      },
+      "context_economy": {
+        "score": 0,
+        "evidence": "“这封信”简洁地限定所问对象，没有多余铺垫。"
+      },
+      "structure_assessments": [
+        {
+          "feature_index": 0,
+          "assessment": "manageable",
+          "reason": "“这封信”直接指向展示的书信，是确定提问对象所需的普通指称，不形成额外负担。"
+        }
+      ]
+    },
+    "decision": "KEEP",
+    "content_status": "PASS",
+    "language_status": "PASS",
+    "content_failures": [],
+    "content_uncertainties": [],
+    "language_failures": [],
+    "structural_concerns": [],
+    "unresolved_features": [],
+    "structure_burden_disagreement": false,
+    "repeat": 2
+  },
+  {
+    "id": "hard:t1_judg9:c232:mcq",
+    "input_hash": "7fce9fee79b4678b6af9e00b47756808bf7f8c9725d188ecc7ebc1678b0d1b5d",
+    "content_validity": {
+      "id": "q0110",
+      "target": "Identify Abimelech's maternal uncles and his mother's entire clan as those asked to convey his question to Shechem's leaders.",
+      "target_basis": "inferred",
+      "target_preservation": {
+        "status": "pass",
+        "evidence": "The final question repeats the original question and retains the same intermediaries and recipient group."
+      },
+      "question_support": {
+        "status": "pass",
+        "evidence": "9:1 identifies those Abimelech addresses; 9:2 asks them to question Shechem's leaders."
+      },
+      "answer_support": {
+        "status": "pass",
+        "evidence": "'对他们和他母亲的全家族说' connects the request to his mother's brothers and her entire clan."
+      },
+      "answer_uniqueness": {
+        "status": "pass",
+        "evidence": "The two named groups jointly constitute the audience receiving the request, not competing answers."
+      },
+      "context_sufficiency": {
+        "status": "pass",
+        "evidence": "Both the audience and the request appear in the displayed verses."
+      },
+      "answer_leakage": {
+        "status": "pass",
+        "evidence": "The question names Abimelech and the intended recipients of the message, but not the intermediaries being tested."
+      },
+      "mcq_validity": {
+        "status": "pass",
+        "evidence": "C matches the addressed group. A substitutes paternal relatives; B names the message's recipients; D overgeneralizes; E is contradicted by the explicit audience."
+      },
+      "meaning_profile": {
+        "answer_explicitness": "nearby_connection",
+        "semantic_relation": "requester and message intermediaries",
+        "answer_scope": "multiple_components",
+        "passage_span": "nearby"
+      }
+    },
+    "structural_inspection": {
+      "id": "q0110",
+      "parse_summary": "主句以亚比米勒为请求者，“谁”为受请求的传话者；“把他的话转告示剑的众首领”进一步区分话语来源、传话者和接收者。选项中的“他”回指亚比米勒。",
+      "features": [
+        {
+          "kind": "role_tracking",
+          "quote": "亚比米勒请谁把他的话转告示剑的众首领？",
+          "required_operations": "区分发出请求的亚比米勒、接受请求并传话的人，以及最终听话的示剑众首领。",
+          "concern": "ordinary",
+          "reason": "三种角色的区别就是本题所要识别的关系。"
+        },
+        {
+          "kind": "reference_chain",
+          "quote": "他母亲的弟兄们和他母亲的全家族",
+          "required_operations": "将两个“他”都解释为亚比米勒，并合并两个并列的亲属群体。",
+          "concern": "ordinary",
+          "reason": "亲属关系及两个群体都是目标答案的必要组成部分。"
+        },
+        {
+          "kind": "layered_speech",
+          "quote": "请谁把他的话转告",
+          "required_operations": "理解亚比米勒先向一组人提出请求，再由他们向另一组人转达话语。",
+          "concern": "ordinary",
+          "reason": "转述层次直接构成所问的传话关系。"
+        }
+      ]
+    },
+    "language_accessibility": {
+      "id": "q0110",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“请谁把他的话转告示剑的众首领”符合汉语表达习惯；选项中的亲属称谓也清楚自然。"
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "需要区分“亚比米勒”、受请求的传话者和“示剑的众首领”，并把选项中的“他”回指亚比米勒。这些操作直接服务于所问的传话关系，负担可控。"
+      },
+      "context_economy": {
+        "score": 0,
+        "evidence": "题干中的“他的话”和“示剑的众首领”交代话语来源与接收者，都是定位传话角色的有用信息。"
+      },
+      "structure_assessments": [
+        {
+          "feature_index": 0,
+          "assessment": "manageable",
+          "reason": "“亚比米勒请谁把他的话转告示剑的众首领？”用明确语序区分请求者、传话者与接收者；这些角色正是提问关系的组成部分。"
+        },
+        {
+          "feature_index": 1,
+          "assessment": "manageable",
+          "reason": "“他母亲的弟兄们和他母亲的全家族”中的两个“他”指向一致，并列群体的边界清楚；重复称谓不需要复杂回溯。"
+        },
+        {
+          "feature_index": 2,
+          "assessment": "manageable",
+          "reason": "“请谁把他的话转告”只有一层请求与转达关系，没有嵌套引语；保留这一层次是理解传话者角色所必需的。"
+        }
+      ]
+    },
+    "decision": "KEEP",
+    "content_status": "PASS",
+    "language_status": "PASS",
+    "content_failures": [],
+    "content_uncertainties": [],
+    "language_failures": [],
+    "structural_concerns": [],
+    "unresolved_features": [],
+    "structure_burden_disagreement": false,
+    "repeat": 2
+  },
+  {
+    "id": "hard:t1_judg9:c5c7:mcq",
+    "input_hash": "30753a470a88a367502324101e488eb1c3e005fe0ac0f34b14f29466546dd8a6",
+    "content_validity": {
+      "id": "q0116",
+      "target": "Identify eating and drinking at the feast as the activity during which the people cursed Abimelech.",
+      "target_basis": "inferred",
+      "target_preservation": {
+        "status": "pass",
+        "evidence": "The question is unchanged, and the answer preserves the original eating-and-drinking circumstance."
+      },
+      "question_support": {
+        "status": "pass",
+        "evidence": "9:27 explicitly says '吃喝的时候，咒诅亚比米勒'."
+      },
+      "answer_support": {
+        "status": "pass",
+        "evidence": "The verse describes setting a feast and then cursing Abimelech while eating and drinking."
+      },
+      "answer_uniqueness": {
+        "status": "pass",
+        "evidence": "Eating and drinking is the activity explicitly simultaneous with the cursing; grape gathering occurs earlier."
+      },
+      "context_sufficiency": {
+        "status": "pass",
+        "evidence": "9:27 contains the activity and the cursing in the same sentence."
+      },
+      "answer_leakage": {
+        "status": "pass",
+        "evidence": "The question supplies the cursing event but does not supply the accompanying activity."
+      },
+      "mcq_validity": {
+        "status": "pass",
+        "evidence": "A matches the explicit timing. C names an earlier activity; B and D are unsupported; E is false because the timing is stated."
+      },
+      "meaning_profile": {
+        "answer_explicitness": "direct",
+        "semantic_relation": "activity simultaneous with cursing",
+        "answer_scope": "single_component",
+        "passage_span": "one_sentence"
+      }
+    },
+    "structural_inspection": {
+      "id": "q0116",
+      "parse_summary": "“众人”为咒诅的施事，亚比米勒为对象；“在做什么的时候”询问与咒诅同时发生的活动。各实质选项都是活动加时间标记的平行结构。",
+      "features": []
+    },
+    "language_accessibility": {
+      "id": "q0116",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“众人在做什么的时候咒诅亚比米勒？”是自然的同时活动问句，选项也采用常见的活动表达。"
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "需要将“在做什么的时候”理解为询问咒诅发生时的活动，并比较“吃喝”“出兵打仗”“摘葡萄”等选项；时间关系和选项结构均清楚，属于普通需求。"
+      },
+      "context_economy": {
+        "score": 0,
+        "evidence": "题干只交代参与者、咒诅行为和所问时间关系，没有额外背景。"
+      },
+      "structure_assessments": []
+    },
+    "decision": "KEEP",
+    "content_status": "PASS",
+    "language_status": "PASS",
+    "content_failures": [],
+    "content_uncertainties": [],
+    "language_failures": [],
+    "structural_concerns": [],
+    "unresolved_features": [],
+    "structure_burden_disagreement": false,
+    "repeat": 2
+  },
+  {
+    "id": "hard:t1_acts23:058f:mcq",
+    "input_hash": "45d0428fe89bff3d2e9bf318f4e8ccdbcc57e588ffb59694618015e028fda0d0",
+    "content_validity": {
+      "id": "q0086",
+      "target": "Identify the soldiers as those who returned to the barracks the next day.",
+      "target_basis": "inferred",
+      "target_preservation": {
+        "status": "pass",
+        "evidence": "The final question and expected answer retain the original return event, time, and returning group."
+      },
+      "question_support": {
+        "status": "pass",
+        "evidence": "23:32 states that they returned to the barracks the next day."
+      },
+      "answer_support": {
+        "status": "pass",
+        "evidence": "'他们' in 23:32 refers back to the soldiers in 23:31; the cavalry are distinguished as continuing the escort."
+      },
+      "answer_uniqueness": {
+        "status": "pass",
+        "evidence": "The passage contrasts the returning soldiers with the cavalry who continued onward."
+      },
+      "context_sufficiency": {
+        "status": "pass",
+        "evidence": "The preceding verse supplies the antecedent for '他们', and the following action distinguishes the cavalry."
+      },
+      "answer_leakage": {
+        "status": "pass",
+        "evidence": "The question gives the return's time and destination but not the returning group's identity."
+      },
+      "mcq_validity": {
+        "status": "pass",
+        "evidence": "A matches the returning soldiers. B continued escorting Paul; C and D are not identified as returning; E is contradicted by the available antecedent."
+      },
+      "meaning_profile": {
+        "answer_explicitness": "nearby_connection",
+        "semantic_relation": "agent of a return journey",
+        "answer_scope": "single_component",
+        "passage_span": "nearby"
+      }
+    },
+    "structural_inspection": {
+      "id": "q0086",
+      "parse_summary": "句首“第二天”限定时间，“谁”询问回兵营的主体。作答需将经文中回兵营的“他们”与前文士兵对应，并与继续护送的骑兵区分。",
+      "features": [
+        {
+          "kind": "reference_chain",
+          "quote": "第二天谁回到了兵营？",
+          "required_operations": "定位次日的行动，将经文中的“他们”回接到士兵。",
+          "concern": "ordinary",
+          "reason": "回指解析是识别该行动主体所必需的。"
+        },
+        {
+          "kind": "role_tracking",
+          "quote": "A：士兵们；B：骑兵",
+          "required_operations": "区分返回兵营与继续护送两种行动分别对应的人员。",
+          "concern": "ordinary",
+          "reason": "选项间的人员区别直接对应目标事件中的行动分配。"
+        }
+      ]
+    },
+    "language_accessibility": {
+      "id": "q0086",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“第二天谁回到了兵营？”简洁自然，各人物选项也没有不顺畅的措辞。"
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "需要依据“第二天”和“回到了兵营”确定行动主体，并区分选项“士兵们”与“骑兵”。这是目标事件本身的人员区分，题干未增加额外解析步骤。"
+      },
+      "context_economy": {
+        "score": 0,
+        "evidence": "“第二天”用于限定目标事件，是有用的时间提示，没有多余设置。"
+      },
+      "structure_assessments": [
+        {
+          "feature_index": 0,
+          "assessment": "manageable",
+          "reason": "“第二天谁回到了兵营？”本身不含含混代词；与所述事件中的“他们”对应，是识别行动主体所需的普通衔接。"
+        },
+        {
+          "feature_index": 1,
+          "assessment": "manageable",
+          "reason": "“士兵们”与“骑兵”的比较围绕返回和继续护送两种行动展开，属于目标所需的角色区分，不是选项措辞造成的额外负担。"
+        }
+      ]
+    },
+    "decision": "KEEP",
+    "content_status": "PASS",
+    "language_status": "PASS",
+    "content_failures": [],
+    "content_uncertainties": [],
+    "language_failures": [],
+    "structural_concerns": [],
+    "unresolved_features": [],
+    "structure_burden_disagreement": false,
+    "repeat": 2
+  },
+  {
+    "id": "hard:t1_2kgs6_7:9cf3:mcq",
+    "input_hash": "841f9450df8369aea87a4682732d06c275a2e2c78b1bb4077ca536f1685ef3ac",
+    "content_validity": {
+      "id": "q0048",
+      "target": "Identify the four men's decision to go to the camp and surrender after considering their prospect of death.",
+      "target_basis": "inferred",
+      "target_preservation": {
+        "status": "pass",
+        "evidence": "The final question repeats the original and retains its expected decision, including the surrender component."
+      },
+      "question_support": {
+        "status": "pass",
+        "evidence": "7:4 records their statement that remaining means death, followed by their proposal to go to the Syrian camp."
+      },
+      "answer_support": {
+        "status": "fail",
+        "evidence": "The passage supports '往叙利亚营去', but does not state that they decided to surrender. Considering whether the camp's occupants will spare or kill them does not establish that additional action."
+      },
+      "answer_uniqueness": {
+        "status": "pass",
+        "evidence": "Their stated decision has one destination: the Syrian camp. Entering the city and remaining where they are are rejected alternatives."
+      },
+      "context_sufficiency": {
+        "status": "pass",
+        "evidence": "The displayed discussion fully identifies the men and their proposed next action; no earlier event is needed."
+      },
+      "answer_leakage": {
+        "status": "pass",
+        "evidence": "The question repeats their assessment of remaining in place, not their chosen next action."
+      },
+      "mcq_validity": {
+        "status": "fail",
+        "evidence": "Key C adds an unsupported surrender component. A and B are unsupported, D is rejected in the passage, and E is not appropriate because their decision to go to the camp is stated. There is no fully supported option."
+      },
+      "meaning_profile": {
+        "answer_explicitness": "uncertain",
+        "semantic_relation": "decision following consideration of alternatives",
+        "answer_scope": "multiple_components",
+        "passage_span": "one_sentence"
+      }
+    },
+    "structural_inspection": {
+      "id": "q0048",
+      "parse_summary": "前半句以“四个长大麻风的人”为说话者，嵌入“坐在这里也必死”的话语内容；后半句以“之后”衔接并用“他们”延续同一群体，询问其决定。选项为简短行动短语。",
+      "features": [
+        {
+          "kind": "layered_speech",
+          "quote": "四个长大麻风的人说坐在这里也必死",
+          "required_operations": "将死亡判断理解为四人所说的内容，再与其后作出的行动决定区分。",
+          "concern": "ordinary",
+          "reason": "所述判断是目标中作出决定的前置考虑，并未增加额外话语层级。"
+        },
+        {
+          "kind": "reference_chain",
+          "quote": "坐在这里也必死，之后他们决定怎么做？",
+          "required_operations": "将“这里”对应到四人所在的城门口，将“他们”回指四人，并维持先考虑、后决定的顺序。",
+          "concern": "ordinary",
+          "reason": "指称和时间衔接均服务于识别同一群体随后的决定。"
+        }
+      ]
+    },
+    "language_accessibility": {
+      "id": "q0048",
+      "naturalness": {
+        "score": 1,
+        "evidence": "“长大麻风的人”带有较明显的旧式表达色彩；“说坐在这里也必死，之后他们决定怎么做”把话语内容与后续提问直接连接，略显生硬，但意思仍可直接理解。"
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "需要把“坐在这里也必死”归为四人的判断，再把“他们”与四人对应并转向后续决定。只有一个人物群体和一层话语内容，选项均为短行动短语，负担可控。"
+      },
+      "context_economy": {
+        "score": 0,
+        "evidence": "“坐在这里也必死”保留了所问决定的前置考虑，“之后”说明顺序，均服务于本题的意义目标。"
+      },
+      "structure_assessments": [
+        {
+          "feature_index": 0,
+          "assessment": "manageable",
+          "reason": "“四个长大麻风的人说坐在这里也必死”只有一层话语报告；区分死亡判断与后续决定是所问关系的一部分。"
+        },
+        {
+          "feature_index": 1,
+          "assessment": "manageable",
+          "reason": "“这里”保持四人的说话视角，“他们”紧接同一群体，“之后”明确时间顺序，没有人物切换或较长回指距离。"
+        }
+      ]
+    },
+    "decision": "HOLD_CONTENT",
+    "content_status": "HOLD",
+    "language_status": "PASS",
+    "content_failures": [
+      "answer_support",
+      "mcq_validity"
+    ],
+    "content_uncertainties": [],
+    "language_failures": [],
+    "structural_concerns": [],
+    "unresolved_features": [],
+    "structure_burden_disagreement": false,
+    "repeat": 2
+  },
+  {
+    "id": "hard:t1_judg9:1246:open",
+    "input_hash": "a1860c6084316530712a1e8f2370f7065eda376244afa5fe351aacd503f9af57",
+    "content_validity": {
+      "id": "q0117",
+      "target": "Identify Zebul, the official of Shechem, as the person who secretly sent messengers to Abimelech.",
+      "target_basis": "inferred",
+      "target_preservation": {
+        "status": "not_applicable",
+        "evidence": "No original question, original answer, or explicit intended target is supplied."
+      },
+      "question_support": {
+        "status": "pass",
+        "evidence": "9:31 explicitly describes someone secretly sending people to Abimelech."
+      },
+      "answer_support": {
+        "status": "pass",
+        "evidence": "'他' in 9:31 refers to '示剑的官西布' in 9:30, matching Zebul and his official role."
+      },
+      "answer_uniqueness": {
+        "status": "pass",
+        "evidence": "Zebul is the identified subject whose anger is followed by the secret dispatch."
+      },
+      "context_sufficiency": {
+        "status": "pass",
+        "evidence": "9:30 supplies both the name and office needed to resolve the subject of 9:31."
+      },
+      "answer_leakage": {
+        "status": "pass",
+        "evidence": "The question names the recipient Abimelech but does not name the sender."
+      },
+      "mcq_validity": {
+        "status": "not_applicable",
+        "evidence": "This is an open question."
+      },
+      "meaning_profile": {
+        "answer_explicitness": "nearby_connection",
+        "semantic_relation": "sender of secret messengers",
+        "answer_scope": "single_component",
+        "passage_span": "nearby"
+      }
+    },
+    "structural_inspection": {
+      "id": "q0117",
+      "parse_summary": "“谁”为打发者，“人”为被派出者，亚比米勒为会见对象；“去见亚比米勒”说明被派出者的任务。",
+      "features": [
+        {
+          "kind": "role_tracking",
+          "quote": "谁暗暗打发人去见亚比米勒？",
+          "required_operations": "区分派遣者、被派遣的人和受访者，并回答派遣者而不是另两种角色。",
+          "concern": "ordinary",
+          "reason": "使令结构中的角色区别是识别派遣者所必需的。"
+        }
+      ]
+    },
+    "language_accessibility": {
+      "id": "q0117",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“谁暗暗打发人去见亚比米勒？”表达完整；“打发人去见”虽带书面色彩，仍是通顺、可理解的常见使令表达。"
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "需要区分“谁”所问的派遣者、“人”所指的被派遣者及“亚比米勒”这个会见对象。语序清楚，属于使令关系的普通解析需求。"
+      },
+      "context_economy": {
+        "score": 0,
+        "evidence": "“暗暗”和“去见亚比米勒”简洁地限定派遣事件，没有独立的冗余铺垫。"
+      },
+      "structure_assessments": [
+        {
+          "feature_index": 0,
+          "assessment": "manageable",
+          "reason": "“谁暗暗打发人去见亚比米勒？”通过“打发人去见”的常规结构标明三种角色，所问派遣者的位置明确。"
+        }
+      ]
+    },
+    "decision": "KEEP",
+    "content_status": "PASS",
+    "language_status": "PASS",
+    "content_failures": [],
+    "content_uncertainties": [],
+    "language_failures": [],
+    "structural_concerns": [],
+    "unresolved_features": [],
+    "structure_burden_disagreement": false,
+    "repeat": 2
+  },
+  {
+    "id": "hard:t1_2chr26:723e:open",
+    "input_hash": "e8d50fbb3173d29f095465ab0f8e6293fed09d1725b8bf66c784a7a7672c7ecf",
+    "content_validity": {
+      "id": "q0023",
+      "target": "Identify the 2,600 family leaders as commanders of the 307,500 trained soldiers.",
+      "target_basis": "inferred",
+      "target_preservation": {
+        "status": "not_applicable",
+        "evidence": "No original question, original answer, or explicit intended target is supplied."
+      },
+      "question_support": {
+        "status": "pass",
+        "evidence": "26:13 describes 307,500 trained soldiers as an army commanded by '他们'."
+      },
+      "answer_support": {
+        "status": "pass",
+        "evidence": "'他们' refers to the 2,600 family leaders identified immediately beforehand in 26:12."
+      },
+      "answer_uniqueness": {
+        "status": "pass",
+        "evidence": "The immediate antecedent identifies the commanders. The officials in 26:11 are described as recording the army, not as the referent of this command statement."
+      },
+      "context_sufficiency": {
+        "status": "pass",
+        "evidence": "26:12–13 supplies the leaders, their number, and their command relationship to this specific army."
+      },
+      "answer_leakage": {
+        "status": "pass",
+        "evidence": "The question identifies the army by size and training but does not identify its commanders."
+      },
+      "mcq_validity": {
+        "status": "not_applicable",
+        "evidence": "This is an open question."
+      },
+      "meaning_profile": {
+        "answer_explicitness": "nearby_connection",
+        "semantic_relation": "commanders of an army",
+        "answer_scope": "single_component",
+        "passage_span": "nearby"
+      }
+    },
+    "structural_inspection": {
+      "id": "q0023",
+      "parse_summary": "“这三十万七千五百训练有素的军队”是前置受事名词组，包含指示、数量和性质限定；“由谁统领”询问统领者。需将经文中的“他们”回接到上一节的家族首领。",
+      "features": [
+        {
+          "kind": "role_tracking",
+          "quote": "这三十万七千五百训练有素的军队由谁统领？",
+          "required_operations": "把军队识别为受统领的一方，并找出实施统领的人。",
+          "concern": "ordinary",
+          "reason": "“由谁”明确标示所问角色，没有额外的施受转换。"
+        },
+        {
+          "kind": "reference_chain",
+          "quote": "这三十万七千五百训练有素的军队",
+          "required_operations": "根据数量和训练情况定位军队，再解析经文中统领者“他们”的前文指称。",
+          "concern": "ordinary",
+          "reason": "这些限定及回指共同确定目标军队与其统领者。"
+        }
+      ]
+    },
+    "language_accessibility": {
+      "id": "q0023",
+      "naturalness": {
+        "score": 2,
+        "evidence": "“这三十万七千五百训练有素的军队”中的数词直接连接“训练有素的军队”，缺少与人数相配的量词和人员名词，容易先被读成在数若干支军队，需要读者修复名词组。"
+      },
+      "processing": {
+        "score": 2,
+        "evidence": "读者必须先把“三十万七千五百”重新理解为军队中的人数，而不是军队的数量，才能稳定解析“由谁统领”。这一数字与中心名词的连接问题是可避免的，并非识别统领者所必需。"
+      },
+      "context_economy": {
+        "score": 0,
+        "evidence": "数量和“训练有素”用于标识所问军队，有定位作用；问题在其组合方式，而不是背景信息过多。"
+      },
+      "structure_assessments": [
+        {
+          "feature_index": 0,
+          "assessment": "manageable",
+          "reason": "“由谁统领”明确询问统领者，军队作为受统领对象的角色也清楚；这种角色安排本身不构成负担。"
+        },
+        {
+          "feature_index": 1,
+          "assessment": "avoidable_burden",
+          "reason": "虽然用数量定位军队以及对应统领者属于必要操作，但“这三十万七千五百训练有素的军队”的数词与名词连接不自然，额外要求读者补出人数关系。结构检查未充分反映这一可避免的修复负担。"
+        }
+      ]
+    },
+    "decision": "REWRITE",
+    "content_status": "PASS",
+    "language_status": "REWRITE",
+    "content_failures": [],
+    "content_uncertainties": [],
+    "language_failures": [
+      "naturalness",
+      "processing"
+    ],
+    "structural_concerns": [],
+    "unresolved_features": [],
+    "structure_burden_disagreement": false,
+    "repeat": 2
+  },
+  {
+    "id": "hard:t1_1kgs13:ec63:mcq",
+    "input_hash": "284d2f117d670a3f5021da94148e02306d79823940161a2174f5219e37696219",
+    "content_validity": {
+      "id": "q0009",
+      "target": "Identify the man of God from Judah as the person whose body would not enter his ancestors' tomb.",
+      "target_basis": "inferred",
+      "target_preservation": {
+        "status": "pass",
+        "evidence": "The final question retains the original speaker, predicted exclusion from burial, and person to be identified."
+      },
+      "question_support": {
+        "status": "pass",
+        "evidence": "13:21–22 records the returning prophet addressing the man of God and announcing that his body would not enter his ancestors' tomb."
+      },
+      "answer_support": {
+        "status": "pass",
+        "evidence": "The addressee is explicitly '从犹大来的神人'; '你的尸首' refers to that addressee."
+      },
+      "answer_uniqueness": {
+        "status": "pass",
+        "evidence": "The prophet's addressee is explicitly identified, distinguishing him from the prophet speaking."
+      },
+      "context_sufficiency": {
+        "status": "pass",
+        "evidence": "The displayed speech introduction resolves whose body the prediction concerns, even without the earlier return narrative."
+      },
+      "answer_leakage": {
+        "status": "pass",
+        "evidence": "The question identifies the announcing prophet and the prediction, not the affected man's identity."
+      },
+      "mcq_validity": {
+        "status": "pass",
+        "evidence": "D is the identified addressee. A is not named in the passage; B is the speaker; C names the ancestors rather than the person threatened; E is contradicted by the explicit addressee."
+      },
+      "meaning_profile": {
+        "answer_explicitness": "nearby_connection",
+        "semantic_relation": "person affected by a burial prohibition",
+        "answer_scope": "single_component",
+        "passage_span": "nearby"
+      }
+    },
+    "structural_inspection": {
+      "id": "q0009",
+      "parse_summary": "开头的宣告者名词组含关系修饰语“带他回来的”，其中“他”指神人；宣告内容中的“谁的尸首”询问受宣告者，“他列祖”又回指该人。两个先知性人物须保持区分，否定作用于尸首进入祖墓。",
+      "features": [
+        {
+          "kind": "nested_modifier",
+          "quote": "带他回来的先知宣告",
+          "required_operations": "先在修饰语中确定带回者与被带回者，再将整个名词组作为“宣告”的主语。",
+          "concern": "potential_burden",
+          "reason": "询问受宣告者时，另以前置关系修饰语标识宣告者，增加了一组并非答案关系本身所需的参与者解析。"
+        },
+        {
+          "kind": "reference_chain",
+          "quote": "带他回来的先知宣告，谁的尸首必不得入他列祖的坟墓？",
+          "required_operations": "解析首个“他”为被带回的神人，将“谁”确定为受宣告者，再使末尾“他”与该受宣告者对应。",
+          "concern": "potential_burden",
+          "reason": "同一句中两个“他”分别依赖关系修饰语和疑问领属结构，且中间出现另一位先知，增加了可避免的回指保持负担。"
+        },
+        {
+          "kind": "layered_speech",
+          "quote": "先知宣告，谁的尸首必不得入他列祖的坟墓？",
+          "required_operations": "区分宣告者与宣告所针对的人，并将经文引语中的第二人称对应为答案人物。",
+          "concern": "ordinary",
+          "reason": "识别受宣告者需要保留说话者与受话者的区别。"
+        },
+        {
+          "kind": "negation_scope",
+          "quote": "必不得入他列祖的坟墓",
+          "required_operations": "理解被否定的是尸首进入祖墓，而不是人物身份或祖墓的归属。",
+          "concern": "ordinary",
+          "reason": "这是目标宣告本身的单一否定，没有叠加否定或条件。"
+        }
+      ]
+    },
+    "language_accessibility": {
+      "id": "q0009",
+      "naturalness": {
+        "score": 1,
+        "evidence": "“尸首必不得入他列祖的坟墓”采用较浓的古雅书面表达，“他列祖”的领属形式也不如现代日常汉语直接；整句仍可理解。"
+      },
+      "processing": {
+        "score": 2,
+        "evidence": "在“带他回来的先知宣告，谁的尸首必不得入他列祖的坟墓？”中，读者先要解析修饰语里的带回者与被带回者，再转到“谁”，并确定末尾“他”的归属。对两个人物连续使用未直接命名的关系和代词，增加了可避免的回指保持与角色切换负担。"
+      },
+      "context_economy": {
+        "score": 0,
+        "evidence": "“先知宣告”用于限定所问的宣告事件，没有大段无关背景；主要问题是人物标识方式，而不是设置过量。"
+      },
+      "structure_assessments": [
+        {
+          "feature_index": 0,
+          "assessment": "avoidable_burden",
+          "reason": "“带他回来的”要求在进入“宣告”这一主干前，先确定另一组施受关系；其代词又尚未在题干中明确指认，给识别受宣告者增加了可避免的前置解析。"
+        },
+        {
+          "feature_index": 1,
+          "assessment": "avoidable_burden",
+          "reason": "“带他回来”中的“他”与“他列祖”中的“他”之间隔着“先知”和“谁”，读者需要跨越角色转换维持指称。使用这种连续的间接人物标识并非表达目标关系所必需。"
+        },
+        {
+          "feature_index": 2,
+          "assessment": "manageable",
+          "reason": "“先知宣告，谁的尸首……”要求区分宣告者与宣告所针对的人，这是提问本身需要保留的区别；单层话语报告并不额外复杂。"
+        },
+        {
+          "feature_index": 3,
+          "assessment": "manageable",
+          "reason": "“必不得入”只有一个清楚的否定范围，即不能进入祖墓；不需要处理双重否定或相互交叠的条件。"
+        }
+      ]
+    },
+    "decision": "REWRITE",
+    "content_status": "PASS",
+    "language_status": "REWRITE",
+    "content_failures": [],
+    "content_uncertainties": [],
+    "language_failures": [
+      "processing"
+    ],
+    "structural_concerns": [
+      0,
+      1
+    ],
+    "unresolved_features": [],
+    "structure_burden_disagreement": false,
+    "repeat": 2
+  },
+  {
+    "id": "hard:t1_judg17_18:1654:open",
+    "input_hash": "ede9a6838fe36be2c02ed25c9b889a7dccf9c10a5c2ea848cf96bbfa88dca4e0",
+    "content_validity": {
+      "id": "q0095",
+      "target": "Explain the prosperity of the people of Laish through their land's lack of shortages.",
+      "target_basis": "inferred",
+      "target_preservation": {
+        "status": "not_applicable",
+        "evidence": "No original question, original answer, or explicit intended target is supplied."
+      },
+      "question_support": {
+        "status": "pass",
+        "evidence": "18:7 describes the inhabitants as living securely and their land as lacking nothing, supporting the question's characterization of prosperity."
+      },
+      "answer_support": {
+        "status": "pass",
+        "evidence": "'地上也无所缺乏' provides a reasonable explanation of their material prosperity, although the verse does not explicitly mark it as a cause."
+      },
+      "answer_uniqueness": {
+        "status": "pass",
+        "evidence": "The absence of shortages is the stated material condition explaining prosperity. Quiet living and freedom from oppression describe their security rather than a competing explicit explanation of material abundance."
+      },
+      "context_sufficiency": {
+        "status": "pass",
+        "evidence": "18:7 identifies Laish's inhabitants and describes the relevant condition of their land."
+      },
+      "answer_leakage": {
+        "status": "pass",
+        "evidence": "The question mentions prosperity but does not supply the land's lack of shortages as its explanation."
+      },
+      "mcq_validity": {
+        "status": "not_applicable",
+        "evidence": "This is an open question."
+      },
+      "meaning_profile": {
+        "answer_explicitness": "inference",
+        "semantic_relation": "material condition explaining prosperity",
+        "answer_scope": "single_component",
+        "passage_span": "one_sentence"
+      }
+    },
+    "structural_inspection": {
+      "id": "q0095",
+      "parse_summary": "“来士的人”为主语，“为什么”询问富足的原因；地名直接限定人群，没有嵌套报告、代词链或多重作用域。",
+      "features": []
+    },
+    "language_accessibility": {
+      "id": "q0095",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“来士的人为什么富足？”是自然、完整的原因问句，“来士的人”的地名修饰关系清楚。"
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "题干只有人物群体“来士的人”和所问状态“富足”，不含代词链、复杂修饰或选项比较。"
+      },
+      "context_economy": {
+        "score": 0,
+        "evidence": "题干直接提出原因问题，没有额外背景或重复信息。"
+      },
+      "structure_assessments": []
+    },
+    "decision": "KEEP",
+    "content_status": "PASS",
+    "language_status": "PASS",
+    "content_failures": [],
+    "content_uncertainties": [],
+    "language_failures": [],
+    "structural_concerns": [],
+    "unresolved_features": [],
+    "structure_burden_disagreement": false,
+    "repeat": 2
+  },
+  {
+    "id": "hard:t1_2kgs6_7:9cf3:open",
+    "input_hash": "9626a2b8a97f0070439ef1deaf66340c102ceb1015b7f4c1f00850dd25dbc671",
+    "content_validity": {
+      "id": "q0047",
+      "target": "Identify the four men's decision to go to the camp and surrender after considering their prospect of death.",
+      "target_basis": "inferred",
+      "target_preservation": {
+        "status": "not_applicable",
+        "evidence": "No original question, original answer, or explicit intended target is supplied."
+      },
+      "question_support": {
+        "status": "pass",
+        "evidence": "7:4 places their proposal to go to the Syrian camp after their statement that remaining where they are means death."
+      },
+      "answer_support": {
+        "status": "fail",
+        "evidence": "The passage states their decision to go to the camp, but does not state a decision to surrender. Their willingness to risk being spared or killed does not by itself establish surrender."
+      },
+      "answer_uniqueness": {
+        "status": "pass",
+        "evidence": "The stated next action is uniquely going to the camp; entering the city and remaining in place are rejected."
+      },
+      "context_sufficiency": {
+        "status": "pass",
+        "evidence": "The men, their deliberation, and their proposed next action are all supplied. The unsupported surrender component is an answer-support issue, not a missing-reference issue."
+      },
+      "answer_leakage": {
+        "status": "pass",
+        "evidence": "The question supplies their assessment of staying, but not the action they propose afterward."
+      },
+      "mcq_validity": {
+        "status": "not_applicable",
+        "evidence": "This is an open question."
+      },
+      "meaning_profile": {
+        "answer_explicitness": "uncertain",
+        "semantic_relation": "decision following consideration of alternatives",
+        "answer_scope": "multiple_components",
+        "passage_span": "one_sentence"
+      }
+    },
+    "structural_inspection": {
+      "id": "q0047",
+      "parse_summary": "前半句报告四人关于留在原处必死的判断，后半句用“之后”和“他们”连接到同一群体随后的决定；疑问焦点是决定采取的行动。",
+      "features": [
+        {
+          "kind": "layered_speech",
+          "quote": "四个长大麻风的人说坐在这里也必死",
+          "required_operations": "把死亡判断归于四人的话语，并区分这一判断与其后采取的决定。",
+          "concern": "ordinary",
+          "reason": "报告内容保留了目标所涉及的决定背景，只有一层话语嵌入。"
+        },
+        {
+          "kind": "reference_chain",
+          "quote": "坐在这里也必死，之后他们决定怎么做？",
+          "required_operations": "将“这里”定位到城门口，将“他们”回指四人，并理解决定发生在上述考虑之后。",
+          "concern": "ordinary",
+          "reason": "这些指称维持同一群体及其行动顺序，没有额外人物切换。"
+        }
+      ]
+    },
+    "language_accessibility": {
+      "id": "q0047",
+      "naturalness": {
+        "score": 1,
+        "evidence": "“长大麻风的人”带有旧式表达色彩；“说坐在这里也必死，之后他们决定怎么做”在话语报告与后续提问之间的连接略显生硬，但不妨碍理解。"
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "需要把“坐在这里也必死”理解为四人的判断，再将“他们”回接四人并识别后续决定。指称集中于同一群体，时间顺序明确，属于可管理的普通需求。"
+      },
+      "context_economy": {
+        "score": 0,
+        "evidence": "死亡判断和“之后”保留了先考虑处境、再作决定的关系，没有超出所问目标的额外铺垫。"
+      },
+      "structure_assessments": [
+        {
+          "feature_index": 0,
+          "assessment": "manageable",
+          "reason": "“四个长大麻风的人说坐在这里也必死”只包含一层话语内容；判断与决定的区分直接服务于本题目标。"
+        },
+        {
+          "feature_index": 1,
+          "assessment": "manageable",
+          "reason": "“这里”沿用四人的视角，“他们”紧接四人，“之后”明确顺序；没有额外人物切换或远距离回指。"
+        }
+      ]
+    },
+    "decision": "HOLD_CONTENT",
+    "content_status": "HOLD",
+    "language_status": "PASS",
+    "content_failures": [
+      "answer_support"
+    ],
+    "content_uncertainties": [],
+    "language_failures": [],
+    "structural_concerns": [],
+    "unresolved_features": [],
+    "structure_burden_disagreement": false,
+    "repeat": 2
+  },
+  {
+    "id": "hard:t1_2chr26:9aab:mcq",
+    "input_hash": "eead5efeef66cc74b011094363ca999b4d8329127f5ea8f0b9e6ce6152891f6a",
+    "content_validity": {
+      "id": "q0016",
+      "target": "Identify succeeding his father Amaziah as king as the purpose of the people's appointment of Uzziah.",
+      "target_basis": "inferred",
+      "target_preservation": {
+        "status": "pass",
+        "evidence": "The final question repeats the original and preserves the intended royal succession answer."
+      },
+      "question_support": {
+        "status": "pass",
+        "evidence": "26:1 says the people appointed Uzziah to succeed his father Amaziah as king."
+      },
+      "answer_support": {
+        "status": "pass",
+        "evidence": "'立……乌西雅接替他父亲亚玛谢作王' directly supports the expected purpose."
+      },
+      "answer_uniqueness": {
+        "status": "pass",
+        "evidence": "Kingship in Amaziah's place is the specified role for which Uzziah was appointed; rebuilding Eloth is a later action, not a stated appointment purpose."
+      },
+      "context_sufficiency": {
+        "status": "pass",
+        "evidence": "26:1 contains the appointing people, the appointee, and the intended royal role."
+      },
+      "answer_leakage": {
+        "status": "pass",
+        "evidence": "The question mentions the appointment but omits the royal role and predecessor being tested."
+      },
+      "mcq_validity": {
+        "status": "pass",
+        "evidence": "B matches 26:1. A reverses the succession; C turns a later achievement into an unstated purpose; D is unsupported; E is contradicted by the explicit appointment."
+      },
+      "meaning_profile": {
+        "answer_explicitness": "direct",
+        "semantic_relation": "purpose and role of an appointment",
+        "answer_scope": "single_component",
+        "passage_span": "one_sentence"
+      }
+    },
+    "structural_inspection": {
+      "id": "q0016",
+      "parse_summary": "问题以百姓为立王者、乌西雅为被立者，询问任立的目的。选项B含“使他接替他父亲亚玛谢作王”的使令与接替关系；A保留父亲继续作王，C则提出后续行动。",
+      "features": [
+        {
+          "kind": "role_tracking",
+          "quote": "为要使他接替他父亲亚玛谢作王",
+          "required_operations": "区分任立者、继任者乌西雅与被接替的父亲亚玛谢，并理解作王者是乌西雅。",
+          "concern": "ordinary",
+          "reason": "接替关系中的角色区别就是本题的语义目标。"
+        },
+        {
+          "kind": "reference_chain",
+          "quote": "为要使他接替他父亲亚玛谢作王",
+          "required_operations": "将两个“他”均回指乌西雅，并将“亚玛谢”理解为其父亲的名字。",
+          "concern": "ordinary",
+          "reason": "回指一致，且用于表达必要的父子继位关系。"
+        },
+        {
+          "kind": "option_overlap",
+          "quote": "A：为要使他父亲亚玛谢继续作王；B：为要使他接替他父亲亚玛谢作王",
+          "required_operations": "比较相同人物和相近句式，辨别“父亲继续作王”与“儿子接替父亲作王”。",
+          "concern": "ordinary",
+          "reason": "重合部分较短，差别集中在目标所需的继位关系。"
+        }
+      ]
+    },
+    "language_accessibility": {
+      "id": "q0016",
+      "naturalness": {
+        "score": 1,
+        "evidence": "“犹大全体百姓立乌西雅”中的“立”省去了所任职位，独立看略显不完整；选项反复采用“为要使……”也稍显书面，但整体意思可理解。"
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "需要把“立乌西雅”理解为任立，并比较“他父亲亚玛谢继续作王”与“他接替他父亲亚玛谢作王”。选项中的角色差异明确，两个“他”也都指向乌西雅，负担可控。"
+      },
+      "context_economy": {
+        "score": 0,
+        "evidence": "题干只交代任立者、被任立者及目的问题，没有多余背景。"
+      },
+      "structure_assessments": [
+        {
+          "feature_index": 0,
+          "assessment": "manageable",
+          "reason": "“使他接替他父亲亚玛谢作王”中的任立者、继任者和父亲需要区分，但这些角色正是继位关系的必要组成。"
+        },
+        {
+          "feature_index": 1,
+          "assessment": "manageable",
+          "reason": "两个“他”均指乌西雅，“父亲亚玛谢”的同位关系也直接，没有竞争性指称。"
+        },
+        {
+          "feature_index": 2,
+          "assessment": "manageable",
+          "reason": "A与B虽共享“为要使”和人物称谓，但“继续作王”与“接替……作王”的差异集中且清楚，比较服务于目标关系，而非无谓的文字辨认。"
+        }
+      ]
+    },
+    "decision": "KEEP",
+    "content_status": "PASS",
+    "language_status": "PASS",
+    "content_failures": [],
+    "content_uncertainties": [],
+    "language_failures": [],
+    "structural_concerns": [],
+    "unresolved_features": [],
+    "structure_burden_disagreement": false,
+    "repeat": 2
+  },
+  {
+    "id": "hard:t1_2kgs11:df0e:mcq",
+    "input_hash": "4ee15c560a00c984d6011f5852e4fa4852a24e2bf797d79122c07d82644cffc9",
+    "content_validity": {
+      "id": "q0040",
+      "target": "Identify everyone following the woman as those Jehoiada commanded the captains to kill.",
+      "target_basis": "inferred",
+      "target_preservation": {
+        "status": "pass",
+        "evidence": "The final question and keyed answer repeat the original question and its intended group of followers."
+      },
+      "question_support": {
+        "status": "pass",
+        "evidence": "11:15 explicitly reports Jehoiada instructing the captains to kill anyone following her."
+      },
+      "answer_support": {
+        "status": "pass",
+        "evidence": "'跟随她的都要杀死' directly supports the expected answer."
+      },
+      "answer_uniqueness": {
+        "status": "fail",
+        "evidence": "The broad question also admits the woman herself: Jehoiada says not to kill her in the temple, orders her taken out, and 11:16 reports her execution. Her intended killing is therefore defensible alongside the explicit order concerning followers."
+      },
+      "context_sufficiency": {
+        "status": "pass",
+        "evidence": "The order and its execution are displayed, and 11:16 identifies the woman as Athaliah. No additional context is needed to interpret the event."
+      },
+      "answer_leakage": {
+        "status": "pass",
+        "evidence": "The question names the commander and captains but does not identify the people to be killed."
+      },
+      "mcq_validity": {
+        "status": "fail",
+        "evidence": "B is explicitly supported, but C is also defensible from the instruction not to kill the woman in the temple and her subsequent execution outside it. A and D are unsupported, and E is false. The key is not the only defensible option."
+      },
+      "meaning_profile": {
+        "answer_explicitness": "direct",
+        "semantic_relation": "targets of an execution order",
+        "answer_scope": "single_component",
+        "passage_span": "one_sentence"
+      }
+    },
+    "structural_inspection": {
+      "id": "q0040",
+      "parse_summary": "耶何耶大是命令者，百夫长是受命执行者；“要杀死哪些人”询问命令中的受事。选项B用“跟随她”限定目标群体，C用被动修饰语标识女人，二者须区分。",
+      "features": [
+        {
+          "kind": "role_tracking",
+          "quote": "耶何耶大吩咐百夫长，要杀死哪些人？",
+          "required_operations": "区分命令者、执行者和被杀对象，并把后半句省略的执行主体理解为百夫长。",
+          "concern": "ordinary",
+          "reason": "命令与执行的角色分配是确定所问对象的必要关系。"
+        },
+        {
+          "kind": "layered_speech",
+          "quote": "吩咐百夫长，要杀死哪些人",
+          "required_operations": "将杀人的要求归入耶何耶大的命令内容，而非仅按后续实际发生的杀人事件作答。",
+          "concern": "ordinary",
+          "reason": "题目明确以命令内容为目标，单层命令报告保留了必要区别。"
+        },
+        {
+          "kind": "reference_chain",
+          "quote": "凡跟随她的人",
+          "required_operations": "将“她”对应到经文中的女人，并区分该女人与跟随她的人。",
+          "concern": "ordinary",
+          "reason": "该指称及群体限定直接构成目标答案。"
+        }
+      ]
+    },
+    "language_accessibility": {
+      "id": "q0040",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“耶何耶大吩咐百夫长，要杀死哪些人？”表达通顺；“凡跟随她的人”和“被带出去的那女人”等选项也都是完整、可理解的人物短语。"
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "需要区分命令者“耶何耶大”、执行者“百夫长”和被杀对象，并将“跟随她的人”与女人本人区别开来。这些操作属于命令内容的必要角色解析，题干未增加复杂嵌套。"
+      },
+      "context_economy": {
+        "score": 0,
+        "evidence": "“吩咐百夫长”用于限定所问命令，而非泛问后续事件，是有用且简洁的设置。"
+      },
+      "structure_assessments": [
+        {
+          "feature_index": 0,
+          "assessment": "manageable",
+          "reason": "“吩咐百夫长，要杀死哪些人”中的执行主体虽在后半句省略，但按常规使令结构可直接承接百夫长，三种角色的区别符合目标需要。"
+        },
+        {
+          "feature_index": 1,
+          "assessment": "manageable",
+          "reason": "“吩咐”明确把后半句限定为命令内容；区分命令与后来发生的事件是必要理解，不是额外的话语嵌套负担。"
+        },
+        {
+          "feature_index": 2,
+          "assessment": "manageable",
+          "reason": "“凡跟随她的人”只需将“她”对应到所述女人，再识别其跟随者；修饰关系短而清楚，直接表达所问群体。"
+        }
+      ]
+    },
+    "decision": "HOLD_CONTENT",
+    "content_status": "HOLD",
+    "language_status": "PASS",
+    "content_failures": [
+      "answer_uniqueness",
+      "mcq_validity"
+    ],
+    "content_uncertainties": [],
+    "language_failures": [],
+    "structural_concerns": [],
+    "unresolved_features": [],
+    "structure_burden_disagreement": false,
+    "repeat": 2
+  }
+]

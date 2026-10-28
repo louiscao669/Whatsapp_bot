@@ -63,6 +63,7 @@ export function PassagesListPage() {
               <tr>
                 <th>Language</th>
                 <th>Translation</th>
+                <th>Book</th>
                 <th>Chapter</th>
                 <th>Verse count</th>
                 <th>Available verses</th>
@@ -81,6 +82,7 @@ export function PassagesListPage() {
                 >
                   <td>{item.language}</td>
                   <td>{item.translation_name ?? 'Unnamed'}</td>
+                  <td style={{ textTransform: 'capitalize' }}>{item.book}</td>
                   <td>{item.chapter_number}</td>
                   <td>{item.verse_count}</td>
                   <td>{item.verses}</td>

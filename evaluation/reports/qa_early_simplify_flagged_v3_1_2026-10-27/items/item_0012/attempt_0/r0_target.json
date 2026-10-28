@@ -1,0 +1,43 @@
+{
+  "request_hash": "902783085198d9322bf2e082c0b728fd14022b17e65f87ccb7bf2543e64d0b16",
+  "model": "gpt-6.1-sol",
+  "response_id": "resp_0a25e8a7debba1d4006ae135547e4887d1ad417e3a541fe3ac",
+  "usage": {
+    "input_tokens": 1007,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0
+    },
+    "output_tokens": 771,
+    "output_tokens_details": {
+      "reasoning_tokens": 301
+    },
+    "total_tokens": 1778
+  },
+  "parsed": {
+    "id": "item",
+    "status": "ready",
+    "target": "识别被宣告尸首必不得入自己列祖坟墓的人。",
+    "basis": "inferred",
+    "required_answer_components": [
+      "指出该人是从犹大来的神人，而不是宣告这话的先知。"
+    ],
+    "relations": [
+      {
+        "id": "r1",
+        "quote": "带他回来的先知宣告",
+        "meaning": "宣告者是曾带该人回来的先知。",
+        "role": "removable",
+        "reason": "这是交代宣告来源及人物先前经历的描述，不是本题要求回答的身份。 passage 中只有一项关于尸首不得入列祖坟墓的宣告，后面的完整宣告内容已能唯一定位所问事件，无须依靠带回经历或宣告者身份。"
+      },
+      {
+        "id": "r2",
+        "quote": "谁的尸首必不得入他列祖的坟墓",
+        "meaning": "要求识别尸首被明确宣告必不得进入其自己列祖坟墓的那个人。",
+        "role": "tested",
+        "reason": "这是直接提问的身份关系；“必不得”的否定与确定性，以及“他列祖的坟墓”的归属范围，共同限定所问的宣告，不能仅凭保留同一答案而改变这些含义。"
+      }
+    ],
+    "note": "intended_target 为空，故目标依据现有题目及 earlier original_question/original_answer 保守推断，并非明确提供的研究设计意图。13:21 明说先知向“从犹大来的神人”喊叫，13:22 随后以“你的尸首必不得入你列祖的坟墓”指向这位受话者，支持预期答案及原始答案。违命、返回和吃喝是经文中的因由，但题目未要求解释这些因由。"
+  }
+}

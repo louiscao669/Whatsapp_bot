@@ -1,0 +1,316 @@
+{
+  "id": "transfer:handkerchief:original:zh",
+  "original": {
+    "id": "transfer:handkerchief:original:zh",
+    "question": "当触摸过保罗的手帕和围裙被带到病人那里时发生了什么？",
+    "passage": "11 神借着保罗的手行了非凡的奇迹，  \n12 甚至连摸过他的手帕和围裙都被带到病人那里，疾病和邪灵就离开了他们。  \n13 当时有几个流动的犹太驱魔师试图用主耶稣的名给那些被邪灵附着的人驱魔。他们说：“我奉保罗所传的耶稣的名，吩咐你们。”  \n14 这事是犹太大祭司士基瓦的七个儿子做的。  \n15 有一天，邪灵回答说：“耶稣我认识，保罗我也知道，你们是谁？”  \n16 那附着邪灵的人跳到他们身上，制服了他们所有人。攻击如此猛烈，以致他们赤身裸体、受伤逃出房子。  \n17 这事传遍了住在以弗所的犹太人和希腊人，众人都害怕。于是主耶稣的名被尊为至高。  \n18 许多信了的人都出来，承认并公开他们的行为。  \n19 那些行邪术的人拿出他们的书，在众人面前烧掉。书的价值合计五万德拉克马。  \n20 主的话大有能力，继续兴旺起来，得胜前行。",
+    "expected_answer": "疾病和邪灵离开了病人",
+    "form": "mcq",
+    "options": {
+      "A": "病人陷入了深度睡眠",
+      "B": "疾病和邪灵离开了病人",
+      "C": "犹太驱魔师给病人驱魔",
+      "D": "病人变得无法说话",
+      "E": "根据这段文字无法判断"
+    },
+    "correct_option": "B",
+    "intended_target": "",
+    "original_question": "",
+    "original_answer": ""
+  },
+  "input_hash": "10de29ee8e0a00810508bf1065ecb068614e0eececb283817916cfdff849efe5",
+  "status": "KEPT",
+  "accepted_case": {
+    "id": "transfer:handkerchief:original:zh",
+    "question": "当触摸过保罗的手帕和围裙被带到病人那里时发生了什么？",
+    "passage": "11 神借着保罗的手行了非凡的奇迹，  \n12 甚至连摸过他的手帕和围裙都被带到病人那里，疾病和邪灵就离开了他们。  \n13 当时有几个流动的犹太驱魔师试图用主耶稣的名给那些被邪灵附着的人驱魔。他们说：“我奉保罗所传的耶稣的名，吩咐你们。”  \n14 这事是犹太大祭司士基瓦的七个儿子做的。  \n15 有一天，邪灵回答说：“耶稣我认识，保罗我也知道，你们是谁？”  \n16 那附着邪灵的人跳到他们身上，制服了他们所有人。攻击如此猛烈，以致他们赤身裸体、受伤逃出房子。  \n17 这事传遍了住在以弗所的犹太人和希腊人，众人都害怕。于是主耶稣的名被尊为至高。  \n18 许多信了的人都出来，承认并公开他们的行为。  \n19 那些行邪术的人拿出他们的书，在众人面前烧掉。书的价值合计五万德拉克马。  \n20 主的话大有能力，继续兴旺起来，得胜前行。",
+    "expected_answer": "疾病和邪灵离开了病人",
+    "form": "mcq",
+    "options": {
+      "A": "病人陷入了深度睡眠",
+      "B": "疾病和邪灵离开了病人",
+      "C": "犹太驱魔师给病人驱魔",
+      "D": "病人变得无法说话",
+      "E": "根据这段文字无法判断"
+    },
+    "correct_option": "B",
+    "intended_target": "",
+    "original_question": "",
+    "original_answer": ""
+  },
+  "contract": {
+    "id": "item",
+    "status": "ready",
+    "target": "理解摸过保罗的手帕和围裙被带到病人那里时所发生的结果：疾病和邪灵都离开了病人。",
+    "basis": "inferred",
+    "required_answer_components": [
+      "疾病离开了病人。",
+      "邪灵离开了病人。"
+    ],
+    "relations": [
+      {
+        "id": "r1",
+        "quote": "当触摸过保罗的手帕和围裙被带到病人那里时",
+        "meaning": "将所问结果限定于摸过保罗的手帕和围裙被带到病人那里这一事件。",
+        "role": "tested",
+        "reason": "这是问题明确设定的结果发生情境，限定了必须理解的事件与结果之间的联系；不能只保留一个脱离该事件的结果。它不要求回答手帕和围裙此前如何接触保罗。"
+      },
+      {
+        "id": "r2",
+        "quote": "触摸过保罗的手帕和围裙",
+        "meaning": "以与保罗接触过的手帕和围裙识别所问事件中的物品。",
+        "role": "anchor",
+        "reason": "该细节把问题定位于第12节的事件，区别于后文犹太驱魔师尝试驱魔的事件；不另行考查这些物品接触保罗的经过。"
+      },
+      {
+        "id": "r3",
+        "quote": "发生了什么",
+        "meaning": "要求恢复上述事件中病人身上出现的结果，包括疾病离开和邪灵离开两个方面。",
+        "role": "tested",
+        "reason": "这是问题直接请求的信息。固定答案包含两个并列结果，只回答其中一个不足以完整表达所测理解。"
+      }
+    ],
+    "note": "未提供非空的 intended_target、original_question 或 original_answer，因此目标依据当前问题和固定答案保守推断，并非已确认的研究设计意图。干净参与者篇章第12节明确记载物品被带到病人那里后，疾病和邪灵离开了他们，支持固定答案及其两个组成部分。"
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "proposal": {
+        "id": "item",
+        "status": "unchanged",
+        "question": "当触摸过保罗的手帕和围裙被带到病人那里时发生了什么？",
+        "options": [
+          {
+            "label": "A",
+            "text": "病人陷入了深度睡眠"
+          },
+          {
+            "label": "B",
+            "text": "疾病和邪灵离开了病人"
+          },
+          {
+            "label": "C",
+            "text": "犹太驱魔师给病人驱魔"
+          },
+          {
+            "label": "D",
+            "text": "病人变得无法说话"
+          },
+          {
+            "label": "E",
+            "text": "根据这段文字无法判断"
+          }
+        ],
+        "removed_relation_ids": [],
+        "note": "原题已直接询问指定事件的结果，未包含可删除的叙事铺垫。保留事件限定和物品识别信息，以维持所测联系。"
+      },
+      "candidate": {
+        "id": "transfer:handkerchief:original:zh",
+        "question": "当触摸过保罗的手帕和围裙被带到病人那里时发生了什么？",
+        "passage": "11 神借着保罗的手行了非凡的奇迹，  \n12 甚至连摸过他的手帕和围裙都被带到病人那里，疾病和邪灵就离开了他们。  \n13 当时有几个流动的犹太驱魔师试图用主耶稣的名给那些被邪灵附着的人驱魔。他们说：“我奉保罗所传的耶稣的名，吩咐你们。”  \n14 这事是犹太大祭司士基瓦的七个儿子做的。  \n15 有一天，邪灵回答说：“耶稣我认识，保罗我也知道，你们是谁？”  \n16 那附着邪灵的人跳到他们身上，制服了他们所有人。攻击如此猛烈，以致他们赤身裸体、受伤逃出房子。  \n17 这事传遍了住在以弗所的犹太人和希腊人，众人都害怕。于是主耶稣的名被尊为至高。  \n18 许多信了的人都出来，承认并公开他们的行为。  \n19 那些行邪术的人拿出他们的书，在众人面前烧掉。书的价值合计五万德拉克马。  \n20 主的话大有能力，继续兴旺起来，得胜前行。",
+        "expected_answer": "疾病和邪灵离开了病人",
+        "form": "mcq",
+        "options": {
+          "A": "病人陷入了深度睡眠",
+          "B": "疾病和邪灵离开了病人",
+          "C": "犹太驱魔师给病人驱魔",
+          "D": "病人变得无法说话",
+          "E": "根据这段文字无法判断"
+        },
+        "correct_option": "B",
+        "intended_target": "",
+        "original_question": "",
+        "original_answer": ""
+      },
+      "checks": [
+        {
+          "repeat": 1,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "The contract correctly identifies the result of the cloths being brought to the sick as the target. Both required components—diseases leaving and evil spirits leaving—are supported by verse 12. The event restriction is tested context, while contact with Paul identifies the cloths."
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "The candidate is unchanged from the original and preserves the event-to-result relation and both required answer components."
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "No question or option information was removed."
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "The question and every option remain in Chinese, with their original wording."
+            },
+            "option_meanings": [
+              {
+                "status": "pass",
+                "evidence": "Unchanged: the patients fell into deep sleep.",
+                "label": "A"
+              },
+              {
+                "status": "pass",
+                "evidence": "Unchanged: both diseases and evil spirits left the patients.",
+                "label": "B"
+              },
+              {
+                "status": "pass",
+                "evidence": "Unchanged: Jewish exorcists performed exorcism on the patients.",
+                "label": "C"
+              },
+              {
+                "status": "pass",
+                "evidence": "Unchanged: the patients became unable to speak.",
+                "label": "D"
+              },
+              {
+                "status": "pass",
+                "evidence": "Unchanged: the answer cannot be determined from the passage.",
+                "label": "E"
+              }
+            ],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "Verse 12 supports the question's premise that cloths that had touched Paul were brought to sick people."
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "Verse 12 explicitly states “疾病和邪灵就离开了他们,” supporting the fixed answer and option B."
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "Only B states the reported result. The later exorcism attempt is a separate event and does not make C correct for this question."
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "The supplied passage includes the complete event and both outcomes; no outside biblical knowledge is required."
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "The stem identifies the event without stating its outcome or otherwise signaling B."
+              },
+              "mcq_validity": {
+                "status": "pass",
+                "evidence": "There is one supported answer, B. The remaining options are distinct distractors or an abstention option, and none is also correct for the specified event."
+              }
+            },
+            "naturalness": {
+              "score": 1,
+              "evidence": "The question is understandable, but “触摸过保罗” is slightly stiff when modifying inanimate cloths; wording expressing contact rather than active touching would be more idiomatic. The options are natural.",
+              "quotes": [
+                "触摸过保罗的手帕和围裙"
+              ]
+            },
+            "processing": {
+              "score": 1,
+              "evidence": "The reader must parse a relative modifier within a passive temporal clause before reaching the outcome question. This is ordinary, manageable demand rather than substantial decoding.",
+              "quotes": [
+                "当触摸过保罗的手帕和围裙被带到病人那里时发生了什么？"
+              ]
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "The stem directly identifies the target event and asks for its result. The cloths, Paul, and the sick recipients provide useful event identification, without unrelated narration or a dispensable reference chain.",
+              "quotes": []
+            }
+          }
+        },
+        {
+          "repeat": 2,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "The original asks for the result when the cloths associated with Paul were brought to sick people. Verse 12 supports both required components: diseases and evil spirits left them. The contract appropriately preserves the event–result relation and treats contact with Paul as an identifying anchor, not a separate requested answer."
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "The candidate retains the original question and options verbatim, preserving the specified event, its result, and both required answer components."
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "No information was removed from the question or options."
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "The question and every option remain in Chinese, unchanged from the original."
+            },
+            "option_meanings": [
+              {
+                "status": "pass",
+                "evidence": "Unchanged: the sick people fell into a deep sleep.",
+                "label": "A"
+              },
+              {
+                "status": "pass",
+                "evidence": "Unchanged: both diseases and evil spirits left the sick people.",
+                "label": "B"
+              },
+              {
+                "status": "pass",
+                "evidence": "Unchanged: Jewish exorcists performed exorcism on the sick people.",
+                "label": "C"
+              },
+              {
+                "status": "pass",
+                "evidence": "Unchanged: the sick people became unable to speak.",
+                "label": "D"
+              },
+              {
+                "status": "pass",
+                "evidence": "Unchanged: the answer cannot be determined from the passage.",
+                "label": "E"
+              }
+            ],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "Verse 12 supplies the event presupposed by the question: the handkerchiefs and aprons were brought to sick people."
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "Verse 12 explicitly states “疾病和邪灵就离开了他们,” supporting the expected answer and option B."
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "Only B gives the stated result of this event. The later account of Jewish exorcists concerns a different event and does not support C as an answer."
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "The supplied passage includes the complete event and both outcomes; no outside biblical knowledge is needed."
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "The question identifies the event without stating its outcome. No annotation or wording outside the normal answer choices reveals the key."
+              },
+              "mcq_validity": {
+                "status": "pass",
+                "evidence": "The five options are distinct and intelligible, and B is the single supported answer. The abstention option is invalidated by the explicit information in verse 12."
+              }
+            },
+            "naturalness": {
+              "score": 1,
+              "evidence": "The question is understandable and direct, but using “触摸” for cloths contacting a person is slightly stiff; “接触过保罗的” would be more natural for these inanimate objects.",
+              "quotes": [
+                "触摸过保罗的手帕和围裙"
+              ]
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "The single temporal clause clearly identifies the event, followed by a direct request for its result. The choices are short and require no substantial reference or role tracking.",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "The retained event description usefully identifies the specific outcome being tested and distinguishes it from the later exorcism episode. There is no dispensable narrative setup or repeated reference chain.",
+              "quotes": []
+            }
+          }
+        }
+      ],
+      "status": "KEPT"
+    }
+  ]
+}

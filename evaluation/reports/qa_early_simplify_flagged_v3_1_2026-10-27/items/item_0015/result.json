@@ -1,0 +1,212 @@
+{
+  "id": "hard:t1_2chr26:9aab:open",
+  "original": {
+    "id": "hard:t1_2chr26:9aab:open",
+    "question": "犹大全体百姓立乌西雅，是为了什么？",
+    "passage": "26:1 犹大全体百姓立年仅十六岁的乌西雅接替他父亲亚玛谢作王。\n26:2 乌西雅在亚玛谢王与列祖同睡后，重建了以禄并使其归于犹大。\n26:3 乌西雅登基时年十六岁，在耶路撒冷作王五十二年。他母亲名叫耶哥利雅，是耶路撒冷人。",
+    "expected_answer": "To make him king in his father Amaziah’s place.",
+    "form": "open",
+    "options": {},
+    "correct_option": "",
+    "intended_target": "",
+    "original_question": "",
+    "original_answer": ""
+  },
+  "input_hash": "5414c66543a492516289a0d6b5b961bdc956cf069c8ab6876ae6f890b01ada81",
+  "status": "KEPT",
+  "accepted_case": {
+    "id": "hard:t1_2chr26:9aab:open",
+    "question": "犹大全体百姓立乌西雅，是为了什么？",
+    "passage": "26:1 犹大全体百姓立年仅十六岁的乌西雅接替他父亲亚玛谢作王。\n26:2 乌西雅在亚玛谢王与列祖同睡后，重建了以禄并使其归于犹大。\n26:3 乌西雅登基时年十六岁，在耶路撒冷作王五十二年。他母亲名叫耶哥利雅，是耶路撒冷人。",
+    "expected_answer": "To make him king in his father Amaziah’s place.",
+    "form": "open",
+    "options": {},
+    "correct_option": "",
+    "intended_target": "",
+    "original_question": "",
+    "original_answer": ""
+  },
+  "contract": {
+    "id": "item",
+    "status": "ready",
+    "target": "理解犹大全体百姓拥立乌西雅的目的：让他接替父亲亚玛谢作王。",
+    "basis": "inferred",
+    "required_answer_components": [
+      "让乌西雅作王。",
+      "让他接替父亲亚玛谢。"
+    ],
+    "relations": [
+      {
+        "id": "r1",
+        "quote": "犹大全体百姓立乌西雅",
+        "meaning": "所问的是犹大全体百姓拥立乌西雅这一事件。",
+        "role": "anchor",
+        "reason": "这段描述定位26:1中的拥立事件，区别于后文乌西雅重建以禄及其在位情况；问题并非要求回答拥立者或被拥立者的身份。"
+      },
+      {
+        "id": "r2",
+        "quote": "是为了什么",
+        "meaning": "要求说明这次拥立的目的，即让乌西雅接替父亲亚玛谢作王。",
+        "role": "tested",
+        "reason": "目的关系是问题直接询问的内容，不能仅保留乌西雅的身份或登基这一事实，而省略他接替父亲作王的意义。"
+      }
+    ],
+    "note": "未提供明确的 intended_target，也无更早的原始问答元数据，因此目标依据现有问题、预期答案及所给经文保守推断。26:1明确记载百姓立乌西雅接替父亲亚玛谢作王，支持预期答案；无需推测经文未说明的政治动机。"
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "proposal": {
+        "id": "item",
+        "status": "unchanged",
+        "question": "犹大全体百姓立乌西雅，是为了什么？",
+        "options": [],
+        "removed_relation_ids": [],
+        "note": "原问题已直接询问拥立乌西雅的目的，仅包含必要的事件定位和所测目的关系，没有可实质删减的内容。"
+      },
+      "candidate": {
+        "id": "hard:t1_2chr26:9aab:open",
+        "question": "犹大全体百姓立乌西雅，是为了什么？",
+        "passage": "26:1 犹大全体百姓立年仅十六岁的乌西雅接替他父亲亚玛谢作王。\n26:2 乌西雅在亚玛谢王与列祖同睡后，重建了以禄并使其归于犹大。\n26:3 乌西雅登基时年十六岁，在耶路撒冷作王五十二年。他母亲名叫耶哥利雅，是耶路撒冷人。",
+        "expected_answer": "To make him king in his father Amaziah’s place.",
+        "form": "open",
+        "options": {},
+        "correct_option": "",
+        "intended_target": "",
+        "original_question": "",
+        "original_answer": ""
+      },
+      "checks": [
+        {
+          "repeat": 1,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "The original question asks the purpose of appointing Uzziah. The expected answer and 26:1 support both required components: making him king and having him succeed his father Amaziah. The contract correctly distinguishes the appointment-event anchor from the tested purpose, without inventing a further political motive."
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "The candidate question is identical to the original and preserves the purpose question, its participants, and the required succession relationship."
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "No information was removed from the question or passage."
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "The question remains in Chinese. There are no options."
+            },
+            "option_meanings": [],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "26:1 explicitly states that all the people of Judah appointed Uzziah to succeed his father Amaziah as king, supporting the question's event and participants."
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "The phrase “接替他父亲亚玛谢作王” directly supports the fixed expected answer."
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "The passage gives one stated role and succession outcome for this appointment: Uzziah was to become king in Amaziah's place. It supplies no competing purpose for the people's action."
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "26:1 supplies the appointing group, Uzziah's identity, the kingship, and the father he succeeded; no outside knowledge is required."
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "The question identifies the appointment but does not disclose that Uzziah was to succeed his father Amaziah as king. That information must be retrieved from the passage."
+              },
+              "mcq_validity": {
+                "status": "not_applicable",
+                "evidence": "This is an open question with no answer choices."
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "The Chinese question is grammatical, idiomatic, and direct. “立乌西雅” is appropriate to the biblical appointment context.",
+              "quotes": []
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "A single short question names the actors and action directly, with no reference chain, nested modifiers, or choice-comparison burden.",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "The appointment clause is a useful anchor for the purpose being asked about. There is no additional event narration or dispensable setup.",
+              "quotes": []
+            }
+          }
+        },
+        {
+          "repeat": 2,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "The contract correctly identifies the question as asking the purpose of appointing Uzziah, not the identities of the people involved. Verse 26:1 supports both required components: making him king and having him succeed his father Amaziah. No unstated political motive is required."
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "The candidate question is identical to the original and preserves the purpose relation and both required answer components."
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "No information was removed: the question and passage are unchanged."
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "The question remains in Chinese. There are no options."
+            },
+            "option_meanings": [],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "Verse 26:1 explicitly states that all the people of Judah appointed Uzziah to succeed his father as king, supporting the event presupposed by the question."
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "The fixed answer is directly supported by “接替他父亲亚玛谢作王” in verse 26:1."
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "The passage gives one relevant purpose for this appointment: Uzziah was to succeed Amaziah as king. The later rebuilding and reign details do not supply competing purposes."
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "The supplied passage identifies the appointment, the kingship, and the father whom Uzziah succeeded. No outside knowledge is needed."
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "The question names the appointment event but does not state the requested succession or kingship answer. The answer appears appropriately in the comprehension passage."
+              },
+              "mcq_validity": {
+                "status": "not_applicable",
+                "evidence": "This is an open question with no answer choices."
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "The question is direct and idiomatic in its biblical context; its wording requires no mental repair.",
+              "quotes": []
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "A single short question identifies the actor and appointment event, then asks its purpose. There is no reference chain or competing role structure.",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "The appointment clause is a useful anchor for the purpose question. There is no extra event narration or dispensable setup.",
+              "quotes": []
+            }
+          }
+        }
+      ],
+      "status": "KEPT"
+    }
+  ]
+}

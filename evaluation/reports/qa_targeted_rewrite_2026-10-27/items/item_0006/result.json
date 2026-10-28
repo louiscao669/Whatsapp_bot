@@ -1,0 +1,261 @@
+{
+  "id": "gold:t1_2kgs6_7:pb1x:open",
+  "input_hash": "c80b41070a12d0029f7427255a214b13b0c444b8e913c3c1b19bf3552d83cee4",
+  "original": {
+    "id": "gold:t1_2kgs6_7:pb1x:open",
+    "question": "What did the captain say to Elisha's prophecy?",
+    "passage": "7:18 It happened just as the man of God had told the king: “About this time tomorrow at the gate of Samaria, two seahs of barley will sell for a shekel, and a seah of fine flour will sell for a shekel.”\n7:19 And the officer had answered the man of God, “Look, even if the LORD were to make windows in heaven, could this really happen?” So Elisha had replied, “You will see it with your own eyes, but you will not eat any of it!”\n7:20 And that is just what happened to him. The people trampled him in the gateway, and he died.",
+    "expected_answer": "Impossible even if Yahweh helped.",
+    "form": "open",
+    "options": {},
+    "correct_option": "",
+    "intended_target": "",
+    "original_question": "",
+    "original_answer": ""
+  },
+  "source_review_dir": "/Users/louiscao/whatsapp-bot/eten-whatsapp-bot/evaluation/reports/qa_review_v2_full_2026-10-27/gold",
+  "status": "ACCEPTED",
+  "accepted_case": {
+    "id": "gold:t1_2kgs6_7:pb1x:open",
+    "question": "What did the officer say in response to Elisha's prophecy?",
+    "passage": "7:18 It happened just as the man of God had told the king: “About this time tomorrow at the gate of Samaria, two seahs of barley will sell for a shekel, and a seah of fine flour will sell for a shekel.”\n7:19 And the officer had answered the man of God, “Look, even if the LORD were to make windows in heaven, could this really happen?” So Elisha had replied, “You will see it with your own eyes, but you will not eat any of it!”\n7:20 And that is just what happened to him. The people trampled him in the gateway, and he died.",
+    "expected_answer": "Impossible even if Yahweh helped.",
+    "form": "open",
+    "options": {},
+    "correct_option": "",
+    "intended_target": "",
+    "original_question": "What did the captain say to Elisha's prophecy?",
+    "original_answer": "Impossible even if Yahweh helped."
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "proposal": {
+        "id": "item",
+        "status": "revised",
+        "question": "What did the officer say in response to Elisha's prophecy?",
+        "options": [],
+        "note": "Replaces the unnatural “say to ... prophecy” with “say in response to” and uses the passage’s label “officer” instead of “captain,” while preserving the requested response and its connection to Elisha’s prophecy."
+      },
+      "candidate": {
+        "id": "gold:t1_2kgs6_7:pb1x:open",
+        "question": "What did the officer say in response to Elisha's prophecy?",
+        "passage": "7:18 It happened just as the man of God had told the king: “About this time tomorrow at the gate of Samaria, two seahs of barley will sell for a shekel, and a seah of fine flour will sell for a shekel.”\n7:19 And the officer had answered the man of God, “Look, even if the LORD were to make windows in heaven, could this really happen?” So Elisha had replied, “You will see it with your own eyes, but you will not eat any of it!”\n7:20 And that is just what happened to him. The people trampled him in the gateway, and he died.",
+        "expected_answer": "Impossible even if Yahweh helped.",
+        "form": "open",
+        "options": {},
+        "correct_option": "",
+        "intended_target": "",
+        "original_question": "What did the captain say to Elisha's prophecy?",
+        "original_answer": "Impossible even if Yahweh helped."
+      },
+      "checks": [
+        {
+          "repeat": 1,
+          "preservation": {
+            "id": "item",
+            "same_target": {
+              "status": "pass",
+              "evidence": "Both questions ask what the same official said in response to Elisha's prophecy. Replacing 'captain' with the passage's 'officer' preserves the participant and the requested response."
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "Both the original and revised questions are in English."
+            },
+            "option_meanings": []
+          },
+          "review": {
+            "id": "item",
+            "input_hash": "c75f12e7695fcd0226a27cf1c9f69640df9fd2ab7eb07df469b03830b91f7890",
+            "content_validity": {
+              "id": "item",
+              "target": "The officer's skeptical response that the predicted event could not happen even with extraordinary intervention by the LORD.",
+              "target_basis": "inferred",
+              "target_preservation": {
+                "status": "pass",
+                "evidence": "The original and final questions both ask for the officer's response to Elisha's prophecy. Changing 'captain' to the passage's 'officer' preserves the participant and relation."
+              },
+              "question_support": {
+                "status": "pass",
+                "evidence": "Verse 7:19 explicitly gives the officer's answer to the man of God; the following clause identifies Elisha as the person replying to him."
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "The officer asks, 'even if the LORD were to make windows in heaven, could this really happen?' The expected answer summarizes this rhetorical expression of disbelief, including its concession of extraordinary divine intervention."
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "The passage supplies one response from the officer. Quoting his rhetorical question or paraphrasing its disbelief expresses the same answer."
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "The displayed passage includes the prophecy, the officer's response, and Elisha's reply, making the event and participants identifiable."
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "The question identifies the exchange but does not reveal what the officer said."
+              },
+              "mcq_validity": {
+                "status": "not_applicable",
+                "evidence": "This is an open question with no answer choices."
+              },
+              "meaning_profile": {
+                "answer_explicitness": "direct",
+                "semantic_relation": "The officer's skeptical verbal response to a prophecy",
+                "answer_scope": "single_component",
+                "passage_span": "one_sentence"
+              }
+            },
+            "structural_inspection": {
+              "id": "item",
+              "parse_summary": "A direct wh-question asks for the content of the officer's speech. The phrase “in response to Elisha's prophecy” identifies the earlier speech event and distinguishes Elisha as the prophet from the officer as the respondent; there are no embedded clauses.",
+              "features": [
+                {
+                  "kind": "role_tracking",
+                  "quote": "the officer say in response to Elisha's prophecy",
+                  "required_operations": "Distinguish the officer, whose response is requested, from Elisha, whose prophecy prompted that response.",
+                  "concern": "ordinary",
+                  "reason": "Tracking these two speech roles is necessary to identify the targeted skeptical response rather than Elisha's prediction or subsequent reply."
+                }
+              ]
+            },
+            "language_accessibility": {
+              "id": "item",
+              "naturalness": {
+                "score": 0,
+                "evidence": "“What did the officer say in response to Elisha's prophecy?” is idiomatic, direct English. “In response to” naturally identifies the speech being requested."
+              },
+              "processing": {
+                "score": 1,
+                "evidence": "Readers must distinguish “the officer,” whose words are requested, from “Elisha,” whose prophecy prompted them. This is ordinary, necessary speaker tracking; the question adds no avoidable modifier or reference load."
+              },
+              "context_economy": {
+                "score": 0,
+                "evidence": "“In response to Elisha's prophecy” economically identifies the relevant speech event. There is no separate introduction or unnecessary setup."
+              },
+              "structure_assessments": [
+                {
+                  "feature_index": 0,
+                  "assessment": "manageable",
+                  "reason": "In “the officer say in response to Elisha's prophecy,” the officer is clearly the speaker and Elisha the source of the preceding prophecy. Distinguishing these two roles is necessary to understand the question and does not require syntactic repair."
+                }
+              ]
+            },
+            "decision": "KEEP",
+            "content_status": "PASS",
+            "language_status": "PASS",
+            "content_failures": [],
+            "content_uncertainties": [],
+            "language_failures": [],
+            "structural_concerns": [],
+            "unresolved_features": [],
+            "structure_burden_disagreement": false
+          }
+        },
+        {
+          "repeat": 2,
+          "preservation": {
+            "id": "item",
+            "same_target": {
+              "status": "pass",
+              "evidence": "Both questions ask what the same official said in response to Elisha's prophecy. Replacing 'captain' with the passage's 'officer' preserves the participant and the requested response."
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "The original and revised questions are both in English."
+            },
+            "option_meanings": []
+          },
+          "review": {
+            "id": "item",
+            "input_hash": "c75f12e7695fcd0226a27cf1c9f69640df9fd2ab7eb07df469b03830b91f7890",
+            "content_validity": {
+              "id": "item",
+              "target": "The officer's expression of disbelief in response to Elisha's prophecy, even supposing extraordinary intervention by the LORD.",
+              "target_basis": "inferred",
+              "target_preservation": {
+                "status": "pass",
+                "evidence": "The original and final questions both ask for the officer's response to Elisha's prophecy. Changing 'captain' to 'officer' preserves the participant, relation, and answer scope."
+              },
+              "question_support": {
+                "status": "pass",
+                "evidence": "Verse 7:18 gives the prophecy, and 7:19 explicitly reports the officer's answer to the man of God, whom the same verse identifies as Elisha."
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "The officer asks, 'Even if the LORD were to make windows in heaven, could this really happen?' The expected answer paraphrases his incredulity even under the supposition of divine intervention."
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "The passage supplies one response by the officer: his skeptical question about whether the prophecy could happen even if the LORD made windows in heaven."
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "The displayed passage includes the prophecy and the officer's immediately associated response, uniquely identifying the exchange."
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "The question identifies the speaker and occasion but does not disclose what the officer said."
+              },
+              "mcq_validity": {
+                "status": "not_applicable",
+                "evidence": "This is an open question with no answer choices."
+              },
+              "meaning_profile": {
+                "answer_explicitness": "direct",
+                "semantic_relation": "Speaker's skeptical response to a prophecy",
+                "answer_scope": "single_component",
+                "passage_span": "one_sentence"
+              }
+            },
+            "structural_inspection": {
+              "id": "item",
+              "parse_summary": "A direct what-question asks for the officer's speech. The phrase “in response to Elisha's prophecy” identifies which speech is sought, distinguishing the officer's response from Elisha's prophecy and subsequent reply.",
+              "features": [
+                {
+                  "kind": "role_tracking",
+                  "quote": "What did the officer say in response to Elisha's prophecy?",
+                  "required_operations": "Identify the officer as the responding speaker and Elisha as the source of the prophecy; select the officer's response rather than Elisha's later reply.",
+                  "concern": "ordinary",
+                  "reason": "The two-speaker relationship is necessary to identify the target utterance and is expressed without additional embedding."
+                }
+              ]
+            },
+            "language_accessibility": {
+              "id": "item",
+              "naturalness": {
+                "score": 0,
+                "evidence": "“What did the officer say in response to Elisha's prophecy?” is an idiomatic, direct English question. “In response to” naturally expresses the relationship between the prophecy and the officer's words."
+              },
+              "processing": {
+                "score": 1,
+                "evidence": "“The officer” identifies the speaker sought, while “Elisha's prophecy” identifies what he was responding to. Readers must distinguish the officer's response from Elisha's subsequent reply, but this is ordinary, necessary speaker tracking rather than avoidable wording load."
+              },
+              "context_economy": {
+                "score": 0,
+                "evidence": "There is no added introductory framing. “In response to Elisha's prophecy” economically identifies the relevant speech; the question contains no unnecessary setup."
+              },
+              "structure_assessments": [
+                {
+                  "feature_index": 0,
+                  "assessment": "manageable",
+                  "reason": "In “What did the officer say in response to Elisha's prophecy?”, the officer is clearly the responding speaker and Elisha the source of the prophecy. Tracking these two roles is necessary to identify the requested utterance and does not require resolving awkward attachments or embedded clauses."
+                }
+              ]
+            },
+            "decision": "KEEP",
+            "content_status": "PASS",
+            "language_status": "PASS",
+            "content_failures": [],
+            "content_uncertainties": [],
+            "language_failures": [],
+            "structural_concerns": [],
+            "unresolved_features": [],
+            "structure_burden_disagreement": false
+          }
+        }
+      ],
+      "status": "ACCEPTED"
+    }
+  ]
+}

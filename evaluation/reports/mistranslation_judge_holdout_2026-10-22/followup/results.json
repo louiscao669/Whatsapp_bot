@@ -1,0 +1,1147 @@
+{
+  "manifest": {
+    "configuration": {
+      "dataset_sha256": "0c866443688d3dc02569b054926fa06e74d17e6275c38d687a47f1e3bd9e4153",
+      "prompt_sha256": {
+        "baseline": "b7c9868704e29c70e16d236520c4de4800b352e71e3ae4ea15ac335e3e3fcb3f",
+        "revised": "710d52b8945d965d68775a411de6abc5543010775247b16f5b9a92c4275a06ca"
+      },
+      "schema_sha256": "5fa920642b474382900cb35cd4cea1669a30f9717edb84a60aec124f26c3b82d",
+      "model": "gpt-6-sol",
+      "repeats": 1,
+      "api": "responses",
+      "max_output_tokens": 8192,
+      "temperature": "model default",
+      "reasoning_effort": "model default",
+      "order_seed": 20261022
+    },
+    "model": "gpt-6-sol",
+    "frozen_at_utc": "2026-10-23T02:15:40.045126+00:00"
+  },
+  "records": [
+    {
+      "id": "diagnostic_p1",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "管家说船队明天可能会抵达，表示抵达尚不确定。",
+        "replacement_claim": "管家说船队明天一定会抵达，表示抵达是确定的。",
+        "explanation": "将“可能会”换成“一定会”改变了对船队明天抵达的确定程度；句子通顺，且只替换了这一处信息。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "2b148a631c337163dc139a77b9aed9bf0e8b603e609283531c4c2efb381730c2",
+      "response_id": "resp_0f70ad529d559868006adac412579087d1bfba1d2ffef51f82",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 819,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 160,
+        "output_tokens_details": {
+          "reasoning_tokens": 28
+        },
+        "total_tokens": 979
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/followup/cache/baseline/trial_1/diagnostic_p1.json"
+    },
+    {
+      "id": "diagnostic_p1",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "管家说船队明天可能抵达，抵达并不确定。",
+        "replacement_claim": "管家说船队明天一定抵达。",
+        "explanation": "将管家对船队明天抵达的预测由可能改为确定，改变了同一断言的确定性。替换后语句自然，且仅有一处匹配。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "1754c345ffb3fe954170ea12d8c25a108baf32e2911b15cbef69865b15156816",
+      "response_id": "resp_069d577fee97f880006adac41cfbd487d1ae8e8f5906c9827a",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1112,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1109
+        },
+        "output_tokens": 176,
+        "output_tokens_details": {
+          "reasoning_tokens": 49
+        },
+        "total_tokens": 1288
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/followup/cache/revised/trial_1/diagnostic_p1.json"
+    },
+    {
+      "id": "diagnostic_p2",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "船夫在五月初三日出之前出港。",
+        "replacement_claim": "船夫在五月初三日落之后出港。",
+        "explanation": "出港时间从日出前改为日落后，改变了一处明确的时间信息；替换后的句子自然通顺，且原文只有这一处匹配。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "b8e760f774470c86a8848e883e152cdf25880dade0ba336941b81164d9c0b069",
+      "response_id": "resp_02ec63d21b71531d006adac402cfdc87d18680f6f5b7486a04",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 833,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 117,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 950
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/followup/cache/baseline/trial_1/diagnostic_p2.json"
+    },
+    {
+      "id": "diagnostic_p2",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "船夫在五月初三日出之前出港。",
+        "replacement_claim": "船夫在五月初三日落之后出港。",
+        "explanation": "出港时间从当日日出之前变为当日日落之后，时间范围明确不同。替换仅改变出港时间，句子自然；原文中该词组只有这一处。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "cd4a783250dd84b369cd5fb678ccd3047562b332c82802307fcf9a91c5a3d26f",
+      "response_id": "resp_0264573dd3afade1006adac40f8e6c87d1a329f5b4ecf1cbd5",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1126,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1123
+        },
+        "output_tokens": 150,
+        "output_tokens_details": {
+          "reasoning_tokens": 28
+        },
+        "total_tokens": 1276
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/followup/cache/revised/trial_1/diagnostic_p2.json"
+    },
+    {
+      "id": "diagnostic_p3",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "韩宁比周安年长。",
+        "replacement_claim": "韩宁比周安年幼。",
+        "explanation": "将两人的年龄大小关系反转；其余信息不变，替换后的句子通顺，且原文中该片段只出现一次。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "350b07a4c7cebe77f6d2409571eac6c1e8664fb8dc46169d2f8f091734e9c889",
+      "response_id": "resp_026d0933614222a6006adac411507c87d1864be572b4ac82cc",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 844,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 177,
+        "output_tokens_details": {
+          "reasoning_tokens": 71
+        },
+        "total_tokens": 1021
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/followup/cache/baseline/trial_1/diagnostic_p3.json"
+    },
+    {
+      "id": "diagnostic_p3",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "韩宁比周安年长。",
+        "replacement_claim": "韩宁比周安年幼。",
+        "explanation": "将韩宁与周安的年龄关系由“年长”改为“年幼”，明确反转了同一事实；句子通顺，仅替换了这一处年龄关系。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "6ae9a17f06c84d7b652d6b88d45b9f3f5e7be6323af6ab073a44ec7d0fa33f93",
+      "response_id": "resp_0aa425b1f6a75da7006adac406cd6c87d1900872adadc979d6",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1137,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1134
+        },
+        "output_tokens": 162,
+        "output_tokens_details": {
+          "reasoning_tokens": 49
+        },
+        "total_tokens": 1299
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/followup/cache/revised/trial_1/diagnostic_p3.json"
+    },
+    {
+      "id": "new_n1",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "领主派来大批士兵守住桥头。",
+        "replacement_claim": "领主派来几名士兵守住桥头。",
+        "explanation": "将守桥士兵的数量从“大批”改为“几名”，其余信息不变；替换后的句子自然通顺，且原文只有这一处匹配。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "7a81dec98eb9ab85e105ae65de8f9c0a61e9ad90df90c1aaf49b01f798e2c966",
+      "response_id": "resp_06492415614cf071006adac414ac2487d18242814eff71b7d4",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 823,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 158,
+        "output_tokens_details": {
+          "reasoning_tokens": 35
+        },
+        "total_tokens": 981
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/followup/cache/baseline/trial_1/new_n1.json"
+    },
+    {
+      "id": "new_n1",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "领主派来大批士兵守住桥头。",
+        "replacement_claim": "领主派来几名士兵守住桥头。",
+        "explanation": "“大批士兵”指人数众多的一批士兵，“几名士兵”指少数几人；两者在此处有明确的人数规模差别。句子通顺，只替换了派来士兵的人数描述，且来源词只出现一次。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "5a5ee9c74ced16ad573198dfe7b3cd26160e70f6b4a16b34a6571dfbaeb05e92",
+      "response_id": "resp_02f00df314b24d3a006adac41b00a087d187743bbd057fa264",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1116,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1113
+        },
+        "output_tokens": 365,
+        "output_tokens_details": {
+          "reasoning_tokens": 221
+        },
+        "total_tokens": 1481
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/followup/cache/revised/trial_1/new_n1.json"
+    },
+    {
+      "id": "new_n2",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "仓库门前坐着大约十个工人。",
+        "replacement_claim": "仓库门前坐着十几个工人，即十一到十九个。",
+        "explanation": "“十来个”表示约十个，“十几个”表示多于十个、不满二十个，人数范围发生了变化。替换后的句子自然通顺，只改动了工人人数；原词在 passage 中仅出现一次。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "1750d64a481619e2f88c593ada347bf1c0e208ca924fb8b278a595849053ea29",
+      "response_id": "resp_0ae4f1133005718e006adac40aa3fc87d189513c6b8475c86b",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 840,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 340,
+        "output_tokens_details": {
+          "reasoning_tokens": 200
+        },
+        "total_tokens": 1180
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/followup/cache/baseline/trial_1/new_n2.json"
+    },
+    {
+      "id": "new_n2",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "仓库门前坐着十来个工人。",
+        "replacement_claim": "仓库门前坐着十几个工人。",
+        "explanation": "“十来个”和“十几个”都表示十余人，在此语境下人数可能相同；无法确定工人数量这一事实发生了变化。替换本身通顺且局部，但唯一匹配处不满足明确改变含义的要求。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "9501d6e9113368bb8762a3bdd05d2361d48b26e776c15f4dc903f53c97f0cbe1",
+      "response_id": "resp_016004bb0c01ee57006adac40e200087d19827f0cce28f9b75",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1133,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1130
+        },
+        "output_tokens": 219,
+        "output_tokens_details": {
+          "reasoning_tokens": 82
+        },
+        "total_tokens": 1352
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/followup/cache/revised/trial_1/new_n2.json"
+    },
+    {
+      "id": "new_n3",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "商队打算在城里停留两三天，再继续赶路。",
+        "replacement_claim": "商队打算在城里停留几天，再继续赶路。",
+        "explanation": "“几天”只是把“两三天”的具体时长说得更笼统，丢失了数量信息，并未替换为另一明确数量。句子通顺，改动也局限于时长，但不符合所要求的事实替换。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "no",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "7906b807614686e349382c9a0e183c8eb1025601804970063b0ff809474caddc",
+      "response_id": "resp_0d81e3078c4bab0e006adac413922c87d18cf0c957c346e2f1",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 831,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 259,
+        "output_tokens_details": {
+          "reasoning_tokens": 112
+        },
+        "total_tokens": 1090
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/followup/cache/baseline/trial_1/new_n3.json"
+    },
+    {
+      "id": "new_n3",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "商队打算在城里停留两三天，再继续赶路。",
+        "replacement_claim": "商队打算在城里停留几天，再继续赶路。",
+        "explanation": "“几天”在此也可以指两三天，读者无法确定停留时间发生了事实变化。替换后的句子自然，且只替换了一处时间表述，但不构成明确的误译。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "f2d7c4ec4d937a53086e243e1d5ac10a0b3e7058e0e71640c40ab0fb6a712a63",
+      "response_id": "resp_06bb97ff119953f0006adac41b447887d191a0269b4884ef25",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1124,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1121
+        },
+        "output_tokens": 174,
+        "output_tokens_details": {
+          "reasoning_tokens": 35
+        },
+        "total_tokens": 1298
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/followup/cache/revised/trial_1/new_n3.json"
+    },
+    {
+      "id": "new_n4",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "老人经常到村口看望守卫。",
+        "replacement_claim": "老人有时到村口看望守卫。",
+        "explanation": "“经常”表示频繁，“有时”表示偶尔，改变了探望守卫的频率；句子通顺，其余信息未变，且原文仅有这一处匹配。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "35523fb2dba088fcb5aa75d0a7ce1e20ed3c9bf975b3e950cfa8d14cbfc81d93",
+      "response_id": "resp_0703abcf59d3980b006adac4116d7487d18297fa0786ce9815",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 813,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 148,
+        "output_tokens_details": {
+          "reasoning_tokens": 25
+        },
+        "total_tokens": 961
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/followup/cache/baseline/trial_1/new_n4.json"
+    },
+    {
+      "id": "new_n4",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "老人经常到村口看望守卫。",
+        "replacement_claim": "老人有时到村口看望守卫。",
+        "explanation": "“经常”和“有时”暗示的频率不同，但都是模糊的频率表达；同一探望情况也可能被两者描述，无法确定具体事实发生了改变。替换在原句中通顺，且只涉及这一处。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "7c8d3cf1b8ae9c114ee5c3aa5824468336e002f4aec676d9aaded1b765a206d8",
+      "response_id": "resp_022b228beeada3ab006adac4180c7c87d19285d47a6013517b",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1106,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1103
+        },
+        "output_tokens": 244,
+        "output_tokens_details": {
+          "reasoning_tokens": 107
+        },
+        "total_tokens": 1350
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/followup/cache/revised/trial_1/new_n4.json"
+    },
+    {
+      "id": "new_n5",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "管家取出一大笔银子交给工匠，银子数量很大。",
+        "replacement_claim": "管家取出一些银子交给工匠，数量未明确。",
+        "explanation": "“一些银子”只是把“大笔”这一数量信息泛化，并未断言银子不多；属于删弱细节，不是明确替换成另一事实。句子通顺，改动范围局限于数量表述。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "no",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "b0fa7f91e25b584149c06a244a3208568fcfaeca115851ffe4a6b0943b8541ce",
+      "response_id": "resp_0c5de5dcd4e338c5006adac409770087d1921ace3caebcfd62",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 842,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 302,
+        "output_tokens_details": {
+          "reasoning_tokens": 155
+        },
+        "total_tokens": 1144
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/followup/cache/baseline/trial_1/new_n5.json"
+    },
+    {
+      "id": "new_n5",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "管家从箱子里取出一大笔银子交给工匠。",
+        "replacement_claim": "管家从箱子里取出一些银子交给工匠。",
+        "explanation": "“一大笔”强调数量多，“一些”未限定数量，也可以指同一笔银子；无法确定交付的银子数量发生了事实变化。表达自然，改动仅涉及数量描述，但不构成明确的错译。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "98a1348a4e18922ca91855a15f5dd89fae346be781bf267bbb1ab2ad9b7d60fe",
+      "response_id": "resp_007905a2a6c2784a006adac41d017887d19661ffad301be03d",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1135,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1132
+        },
+        "output_tokens": 193,
+        "output_tokens_details": {
+          "reasoning_tokens": 47
+        },
+        "total_tokens": 1328
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/followup/cache/revised/trial_1/new_n5.json"
+    },
+    {
+      "id": "new_n6",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "粮仓外聚集着大量村民，等待分发粮食。",
+        "replacement_claim": "粮仓外聚集着若干村民，等待分发粮食。",
+        "explanation": "“大量”明确表示人数多；“若干”只表示人数不确定，并未明确表示人数少。这是把具体的数量信息模糊化，而非替换为另一项明确事实。句子通顺，改动范围也仅限于人数描述，但不符合有效替换的要求。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "no",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "af922f7864519c88dd17ea8106cfbc8f9482298edf56379fbde641ebd3554fdd",
+      "response_id": "resp_0d01a85e9c13933f006adac402d7ac87d1b8b0bd349f500d9a",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 832,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 364,
+        "output_tokens_details": {
+          "reasoning_tokens": 208
+        },
+        "total_tokens": 1196
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/followup/cache/baseline/trial_1/new_n6.json"
+    },
+    {
+      "id": "new_n6",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "粮仓外聚集着大量村民，等待分发粮食。",
+        "replacement_claim": "粮仓外聚集着若干村民，等待分发粮食。",
+        "explanation": "“大量”强调人数多，“若干”只表示人数不确定；两者在此处可能指同一群村民，不能确定人数这一事实发生了变化。替换后的句子通顺，且只替换了一处数量表述，但不构成明确的事实误译。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "ba04761aeda1437af63686be497d4b7a9682d036194c312af0a23056e37515e4",
+      "response_id": "resp_0b0fcf6185bcf6da006adac40dc56887d187101676d4e846ec",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1125,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1122
+        },
+        "output_tokens": 230,
+        "output_tokens_details": {
+          "reasoning_tokens": 76
+        },
+        "total_tokens": 1355
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/followup/cache/revised/trial_1/new_n6.json"
+    },
+    {
+      "id": "new_n7",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "旅人离开山洞后，很快回到了村里。",
+        "replacement_claim": "旅人离开山洞后，不久就回到了村里。",
+        "explanation": "“很快”和“不久”都表示间隔时间短，此处只是近义改述，没有改变实质事实。替换后的句子通顺，且只涉及这一处，但不构成有效的错译。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "9b544e5dd8734a8421fb6e48f10fb183e1f0ade190711394a1aa8eb16f55f58c",
+      "response_id": "resp_07a92b0b932a8932006adac40b064487d1a9b9187c893b0549",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 828,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 131,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 959
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/followup/cache/baseline/trial_1/new_n7.json"
+    },
+    {
+      "id": "new_n7",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "旅人离开山洞后，很快回到了村里。",
+        "replacement_claim": "旅人离开山洞后，不久回到了村里。",
+        "explanation": "“很快”和“不久”在此都可表示离开山洞后过了较短时间便回村，不能确定读者会理解出不同的事实。替换本身通顺，且只涉及这一处时间表述，但不构成明确的误译。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "7704562a99debc189166d1e45c14c3d9ca1810c115bc90f07be2d60ea70ad52c",
+      "response_id": "resp_049e78b2b92f5922006adac407d8ec87d1a7e1425bdd754111",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1121,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1118
+        },
+        "output_tokens": 197,
+        "output_tokens_details": {
+          "reasoning_tokens": 52
+        },
+        "total_tokens": 1318
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/followup/cache/revised/trial_1/new_n7.json"
+    },
+    {
+      "id": "new_n8",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "这个孩子几乎每天都到井边打水。",
+        "replacement_claim": "这个孩子常常都到井边打水。",
+        "explanation": "“常常”只把“几乎每天”的频率说得更笼统，没有替换成另一项明确事实；“常常都到”也略显别扭。",
+        "meaning_changed": "no",
+        "fluent": "uncertain",
+        "substitution_only": "no",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "de96beec7f49cee65a20ea75071c94b08862d307b084a52b4b1f99b69bbd5e36",
+      "response_id": "resp_048bc088671904f6006adac402cdc087d1b9c0526d54ec3718",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 816,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 270,
+        "output_tokens_details": {
+          "reasoning_tokens": 149
+        },
+        "total_tokens": 1086
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/followup/cache/baseline/trial_1/new_n8.json"
+    },
+    {
+      "id": "new_n8",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "这个孩子几乎每天都到井边打水。",
+        "replacement_claim": "这个孩子常常到井边打水。",
+        "explanation": "“几乎每天”强调频率接近每天，“常常”表示经常；在此语境中，两者可以描述同一种打水频率，不能确定地认定事实发生了变化。",
+        "meaning_changed": "no",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "70dee462a1522db073f9444ea6d970b2d5c9c5a4c3f489e79ecb03543feaf587",
+      "response_id": "resp_01590b6151eb75be006adac40b1d1487d18ced8090cbee24bf",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1109,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1106
+        },
+        "output_tokens": 222,
+        "output_tokens_details": {
+          "reasoning_tokens": 99
+        },
+        "total_tokens": 1331
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/followup/cache/revised/trial_1/new_n8.json"
+    },
+    {
+      "id": "new_p1",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "正午，城门外站着大批士兵。",
+        "replacement_claim": "正午，城门外站着一名士兵。",
+        "explanation": "将士兵的数量由“大批”改为“一名”，改变了一个明确事实；替换后的句子自然通顺，其余信息未变。原文中只有这一处匹配。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "01dafbda2d2ce155f54332ee02fb391351deb1ae3319c7b477700a7f49c5b5e7",
+      "response_id": "resp_0304eb4fdf78f48a006adac402d2a087d18415979c4136189e",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 841,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 150,
+        "output_tokens_details": {
+          "reasoning_tokens": 25
+        },
+        "total_tokens": 991
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/followup/cache/baseline/trial_1/new_p1.json"
+    },
+    {
+      "id": "new_p1",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "正午，城门外站着大批士兵。",
+        "replacement_claim": "正午，城门外站着一名士兵。",
+        "explanation": "原文断言城门外站着多名士兵，替换后断言只有一名士兵；人数发生明确变化，句子自然，其余信息未变，且仅有这一处匹配。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "fe0984c1d5fd827832422941e95bb10ba77e5e6cfc877c2d55a39a48e4523e0e",
+      "response_id": "resp_0f235cc11e479e01006adac41497fc87d185adb55e0bf9f392",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1134,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1131
+        },
+        "output_tokens": 127,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 1261
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/followup/cache/revised/trial_1/new_p1.json"
+    },
+    {
+      "id": "new_p2",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "园子里有十来个工人正在摘果子。",
+        "replacement_claim": "园子里有五十个工人正在摘果子。",
+        "explanation": "将工人数从约十人改为五十人，只改变数量；句子通顺，且原文仅有这一处匹配。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "4727f48c244bf37417647c883cb37acc4bdd950b014c625fe5d80319c10b0e3c",
+      "response_id": "resp_074bb26bfee478ae006adac41e1de087d19fcc6344f46e8b37",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 824,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 113,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 937
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/followup/cache/baseline/trial_1/new_p2.json"
+    },
+    {
+      "id": "new_p2",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "园子里有十来个工人正在摘果子。",
+        "replacement_claim": "园子里有五十个工人正在摘果子。",
+        "explanation": "原文称摘果子的工人约十人，替换后称五十人；两者人数有明确差别。替换只改变人数，句子自然，且原词仅出现一次。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "3b637d5c1f71b527724a9b83f6bc7777c56904ab6be7d7c2de057bd3e1678a46",
+      "response_id": "resp_016f90e2d32c2a9e006adac4085f7887d19adfb6f8b5fa036a",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1117,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1114
+        },
+        "output_tokens": 149,
+        "output_tokens_details": {
+          "reasoning_tokens": 20
+        },
+        "total_tokens": 1266
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/followup/cache/revised/trial_1/new_p2.json"
+    },
+    {
+      "id": "new_p3",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "船夫准备在码头停留两三天。",
+        "replacement_claim": "船夫准备在码头停留十天。",
+        "explanation": "仅将预计停留的时长由两三天改为十天，数量事实发生变化；句子通顺，其他信息未变，且原文只有这一处匹配。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "767fe20e40d2420a17a68fa38470b88f54e23e6cc4f127303041dda3dc9d553d",
+      "response_id": "resp_013596273aa1118f006adac4054fa487d18b9afa178999585f",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 816,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 118,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 934
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/followup/cache/baseline/trial_1/new_p3.json"
+    },
+    {
+      "id": "new_p3",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "船夫准备在码头停留两三天。",
+        "replacement_claim": "船夫准备在码头停留十天。",
+        "explanation": "停留时间由约两三天变为十天，天数有明确区别；句子通顺，只替换了这一处时间信息，且原文仅有一处匹配。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "e7ecd9f953508ff6a321104f9b81d62bcb0e1c9414f115c931f30d511f13e484",
+      "response_id": "resp_06d8c6e771fbf17c006adac405512487d1af7d16e026eecf51",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1109,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1106
+        },
+        "output_tokens": 146,
+        "output_tokens_details": {
+          "reasoning_tokens": 25
+        },
+        "total_tokens": 1255
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/followup/cache/revised/trial_1/new_p3.json"
+    },
+    {
+      "id": "new_p4",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "长老经常到河边向渔夫讲故事。",
+        "replacement_claim": "长老从不到河边向渔夫讲故事。",
+        "explanation": "“经常”改为“从不”，将讲故事的频率由经常发生改为完全不发生；其余人物、地点和行为不变。替换后的句子自然通顺，且原词仅出现一次。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "a24b8ea52f6fd4cff809e6ac6c2c6814b4d48ec9f1fc40b53ebd5ff4c74c5743",
+      "response_id": "resp_00ba1f004cd5453c006adac42009bc87d18aeb7a0d9c815c04",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 821,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 163,
+        "output_tokens_details": {
+          "reasoning_tokens": 28
+        },
+        "total_tokens": 984
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/followup/cache/baseline/trial_1/new_p4.json"
+    },
+    {
+      "id": "new_p4",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "长老经常到河边向渔夫讲故事。",
+        "replacement_claim": "长老从不到河边向渔夫讲故事。",
+        "explanation": "原文断言这件事经常发生，替换后断言它一次也不发生；频率由经常变为从不，事实差异明确。替换在唯一出现处语句自然，且只改变这一项断言。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "9fd6137227529d3a76edf37a7be4f3b7161571d1f483ca80fbc0bd71353b752a",
+      "response_id": "resp_0b746b62c788e652006adac4076fa887d19c047bd14dfb4ea7",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1114,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1111
+        },
+        "output_tokens": 192,
+        "output_tokens_details": {
+          "reasoning_tokens": 54
+        },
+        "total_tokens": 1306
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/followup/cache/revised/trial_1/new_p4.json"
+    },
+    {
+      "id": "new_p5",
+      "arm": "baseline",
+      "trial": 1,
+      "decision": "reject",
+      "judgment": {
+        "source_claim": "管家几乎每天都要清点仓库中的粮食。",
+        "replacement_claim": "管家每月一次都要清点仓库中的粮食。",
+        "explanation": "清点频率由“几乎每天”变为“每月一次”，是明确的事实变化，且只改动了频率。但“每月一次都要清点”语序生硬，不够自然。",
+        "meaning_changed": "yes",
+        "fluent": "no",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no"
+      },
+      "judgment_id": "3daf2d08449503f138f04e86bb88c2548f03135fd0884623d247cf8244d539d0",
+      "response_id": "resp_0f83a2335ba0c3e8006adac416d06087d1bc416d25acd2752b",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 827,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 376,
+        "output_tokens_details": {
+          "reasoning_tokens": 242
+        },
+        "total_tokens": 1203
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/followup/cache/baseline/trial_1/new_p5.json"
+    },
+    {
+      "id": "new_p5",
+      "arm": "revised",
+      "trial": 1,
+      "decision": "accept",
+      "judgment": {
+        "source_claim": "管家几乎每天都要清点仓库中的粮食。",
+        "replacement_claim": "管家每月一次都要清点仓库中的粮食。",
+        "explanation": "清点的频率由几乎每天变为每月一次，两者有明确区别；其余人物、动作和对象未变。替换后句子通顺，且原文只有这一处匹配。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "judgment_id": "90a7f54e3231560da458b3829f57026cf61f2731e6a88091cf07f0cc76420094",
+      "response_id": "resp_01b2bd43a5e9358d006adac41712d087d1b5f203d2c647dc83",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1120,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1117
+        },
+        "output_tokens": 505,
+        "output_tokens_details": {
+          "reasoning_tokens": 372
+        },
+        "total_tokens": 1625
+      },
+      "cache_file": "evaluation/reports/mistranslation_judge_holdout_2026-10-22/followup/cache/revised/trial_1/new_p5.json"
+    }
+  ],
+  "summary": {
+    "baseline": {
+      "true_accept": 7,
+      "true_reject": 5,
+      "false_accept": 3,
+      "false_reject": 1,
+      "scored_cases": 16,
+      "expected_cases": 16,
+      "accuracy": 0.75,
+      "false_accept_rate": 0.375,
+      "false_reject_rate": 0.125,
+      "families": {
+        "clarified_context": {
+          "true_accept": 3
+        },
+        "clear_control": {
+          "true_accept": 4,
+          "false_reject": 1
+        },
+        "harder_vague_wording": {
+          "true_reject": 5,
+          "false_accept": 3
+        }
+      },
+      "misclassifications": [
+        {
+          "id": "new_n1",
+          "expected": "reject",
+          "actual": "accept",
+          "explanation": "将守桥士兵的数量从“大批”改为“几名”，其余信息不变；替换后的句子自然通顺，且原文只有这一处匹配。"
+        },
+        {
+          "id": "new_n2",
+          "expected": "reject",
+          "actual": "accept",
+          "explanation": "“十来个”表示约十个，“十几个”表示多于十个、不满二十个，人数范围发生了变化。替换后的句子自然通顺，只改动了工人人数；原词在 passage 中仅出现一次。"
+        },
+        {
+          "id": "new_n4",
+          "expected": "reject",
+          "actual": "accept",
+          "explanation": "“经常”表示频繁，“有时”表示偶尔，改变了探望守卫的频率；句子通顺，其余信息未变，且原文仅有这一处匹配。"
+        },
+        {
+          "id": "new_p5",
+          "expected": "accept",
+          "actual": "reject",
+          "explanation": "清点频率由“几乎每天”变为“每月一次”，是明确的事实变化，且只改动了频率。但“每月一次都要清点”语序生硬，不够自然。"
+        }
+      ],
+      "repeat_decisions": {},
+      "repeat_flips": [],
+      "errors": 0
+    },
+    "revised": {
+      "true_accept": 8,
+      "true_reject": 7,
+      "false_accept": 1,
+      "false_reject": 0,
+      "scored_cases": 16,
+      "expected_cases": 16,
+      "accuracy": 0.9375,
+      "false_accept_rate": 0.125,
+      "false_reject_rate": 0.0,
+      "families": {
+        "clarified_context": {
+          "true_accept": 3
+        },
+        "clear_control": {
+          "true_accept": 5
+        },
+        "harder_vague_wording": {
+          "true_reject": 7,
+          "false_accept": 1
+        }
+      },
+      "misclassifications": [
+        {
+          "id": "new_n1",
+          "expected": "reject",
+          "actual": "accept",
+          "explanation": "“大批士兵”指人数众多的一批士兵，“几名士兵”指少数几人；两者在此处有明确的人数规模差别。句子通顺，只替换了派来士兵的人数描述，且来源词只出现一次。"
+        }
+      ],
+      "repeat_decisions": {},
+      "repeat_flips": [],
+      "errors": 0
+    },
+    "complete": true,
+    "completed_responses": 32,
+    "planned_responses": 32,
+    "usage": {
+      "input_tokens": 31188,
+      "output_tokens": 6797,
+      "total_tokens": 37985,
+      "reasoning_tokens": 2594,
+      "cached_input_tokens": 0
+    },
+    "revised_passes_screening_gate": null
+  }
+}

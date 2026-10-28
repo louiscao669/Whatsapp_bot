@@ -1,0 +1,267 @@
+{
+  "scope": "Qwen3 1.7B runs underlying the recent Hard66 charts; no new inference was performed.",
+  "method": "Screened saved reasoning text for explicit memory claims, Bible/book references, and outside-looking names/details; manually compared candidate findings with question, choices, and local verse excerpts reconstructed from the saved files and the runner verse-window function. This is a qualitative screen, not a causal test or a fully adjudicated prevalence estimate.",
+  "available_thinking_traces": {
+    "total": 828,
+    "mcq": 454,
+    "open": 374,
+    "unique_texts": 390
+  },
+  "unavailable_traces": "The older clean, omission, mistranslation, and Google WBW thinking runs retained thinking lengths but no text; no reasoning text was found in their campaign logs. Grammar 5–30% has one failed MCQ generation without a saved trace.",
+  "no_thinking_checks": [
+    {
+      "run": "hard66_omission_mcq_qwen317b_nothink_2026-10-26",
+      "responses_including_reused_clean": 455,
+      "saved_thinking_texts": 0,
+      "thinking_chars": 0
+    },
+    {
+      "run": "hard66_mistranslation_mcq_qwen317b_nothink_2026-10-26",
+      "responses_including_reused_clean": 455,
+      "saved_thinking_texts": 0,
+      "thinking_chars": 0
+    },
+    {
+      "run": "hard66_grammar_mcq_qwen317b_nothink_2026-10-26",
+      "responses_including_reused_clean": 455,
+      "saved_thinking_texts": 0,
+      "thinking_chars": 0
+    },
+    {
+      "run": "hard66_google_word_by_word_mcq_qwen317b_nothink_2026-10-26",
+      "responses_including_reused_clean": 130,
+      "saved_thinking_texts": 0,
+      "thinking_chars": 0
+    },
+    {
+      "run": "hard66_grammar_sentence_all_mcq_qwen317b_nothink_2026-10-25",
+      "responses_including_reused_clean": 65,
+      "saved_thinking_texts": 0,
+      "thinking_chars": 0
+    }
+  ],
+  "conclusion": "There is evidence of unsupported biblical associations in the saved traces, including a Babylonian-exile identification in an open-ended answer and unsupported genealogy in an MCQ trace. These findings do not establish accurate Bible recall, the true internal source of the additions, or a causal benefit to MCQ accuracy.",
+  "findings": [
+    {
+      "index": 138,
+      "classification": "unsupported biblical association",
+      "trace_quote": "until the captivity, which is the Babylonian exile",
+      "assessment": "The supplied excerpt says only until the captivity; neither the passage nor question identifies Babylon. This is outside-passage elaboration, compatible with learned biblical association or hallucination. It does not prove faithful recall or influence on a final MCQ answer.",
+      "recurring_indices": [
+        138,
+        159,
+        181,
+        202,
+        224
+      ],
+      "answer_effect": "Open-ended response; final answer remains until the captivity. Not part of the MCQ chart.",
+      "evidence": {
+        "run": "/Users/louiscao/whatsapp-bot/eten-whatsapp-bot/evaluation/runs/hard66_grammar_full_2026-10-24",
+        "condition": "grammar/5%",
+        "passage": "t1_judg17_18",
+        "id": "uw-t1_judg17_18:97e8-open",
+        "q_type": "open",
+        "question": "约拿单和他的子孙作但支派的祭司，直到什么时候？",
+        "choices": null,
+        "verse_window": [
+          [
+            18,
+            29
+          ],
+          [
+            18,
+            30
+          ],
+          [
+            18,
+            31
+          ]
+        ],
+        "supplied_passage": "29 他们给城起名叫但，照着他们祖先但的名字，原名来士。\n30 但人为自己立偶像，摩西的孙子、革顺的儿子约拿单和他的儿子祭司但支派的作，直到被掳之日。\n31 神的殿在示罗多少日子，他们为自己设立的米迦的在那里雕像多少日子也。",
+        "thinking_text": "Okay, let's see. The user is asking about when Jobab and his descendants served as priests in the But tribe. The passage mentions that Jobab was the son of Rehoboam and the grandson of Moses. The text says that the But tribe's priests were appointed until the captivity. So the answer should be the time until the captivity, which is the Babylonian exile. The passage states \"直到被掳之日\" which translates to \"until the captivity.\" So the answer is \"直到被掳之日.\"\n",
+        "generated_answer": "直到被掳之日",
+        "selected_choice": null,
+        "correct_choice": null,
+        "direct_correct": null,
+        "source_file": "/Users/louiscao/whatsapp-bot/eten-whatsapp-bot/evaluation/runs/hard66_grammar_full_2026-10-24/t1_judg17_18/qwen317b_think/grammar/5%/generated_answers_target_llama.json"
+      },
+      "source_line": 520
+    },
+    {
+      "index": 247,
+      "classification": "unsupported genealogy and name insertion",
+      "trace_quote": "the son of Moses and the grandson of Levi",
+      "assessment": "The supplied text says grandson of Moses and son of Gershom; Levi is absent from the passage, question, and choices. This is unsupported reconstruction. The origin could be learned association, mistranslation, or hallucination, so it is not proof of accurate Bible recall.",
+      "answer_effect": "MCQ A selected correctly. The requested time, until the captivity, is directly present in the excerpt; this addition is not necessary to answer.",
+      "evidence": {
+        "run": "/Users/louiscao/whatsapp-bot/eten-whatsapp-bot/evaluation/runs/hard66_grammar_full_2026-10-24",
+        "condition": "grammar/30%",
+        "passage": "t1_judg17_18",
+        "id": "uw-t1_judg17_18:97e8-mcq",
+        "q_type": "mcq",
+        "question": "约拿单和他的子孙作但支派的祭司，直到什么时候？",
+        "choices": {
+          "A": "直到被掳之日。",
+          "B": "直到他们给城起名叫但。",
+          "C": "直到但人为自己立偶像。",
+          "D": "神的殿在示罗多少日子，就到多少日子。",
+          "E": "根据这段文字无法判断"
+        },
+        "verse_window": [
+          [
+            18,
+            29
+          ],
+          [
+            18,
+            30
+          ],
+          [
+            18,
+            31
+          ]
+        ],
+        "supplied_passage": "29 他们给城起名叫但，照着名字他们祖先但的，原名来士。\n30 为自己但人偶像立，摩西的孙子、革顺的儿子约拿单和他的儿子祭司但支派的作，直到被掳之日。\n31 神的殿在示罗多少日子，他们为自己设立的米迦的在那里雕像多少日子也。",
+        "thinking_text": "Okay, let's see. The question is asking when Yonatan and his descendants served as priests for the But tribe. The passage mentions that Yonatan, who was the son of Moses and the grandson of Levi, and his sons served as priests until the captivity. The answer choices are A to E.\n\nLooking at the passage: verse 30 says \"他们为自己但人偶像立，摩西的孙子、革顺的儿子约拿单和他的儿子祭司但支派的作，直到被掳之日。\" So the key part here is \"直到被掳之日,\" which translates to \"until the captivity.\" The answer options include A as \"直到被掳之日,\" which matches exactly. The other options either refer to different times or are not mentioned. So the correct answer should be A.\n",
+        "generated_answer": "直到被掳之日。",
+        "selected_choice": "A",
+        "correct_choice": "A",
+        "direct_correct": true,
+        "source_file": "/Users/louiscao/whatsapp-bot/eten-whatsapp-bot/evaluation/runs/hard66_grammar_full_2026-10-24/t1_judg17_18/qwen317b_think/grammar/30%/generated_answers_target_llama.json"
+      },
+      "source_line": 571
+    },
+    {
+      "index": 813,
+      "classification": "possible background biblical categorization",
+      "trace_quote": "eighty brave Levitical priests",
+      "assessment": "The excerpt calls them priests of the LORD and mentions descendants of Aaron; it never explicitly says Levitical. The extra category is consistent with background biblical association, but this is weaker evidence because the religious context supports an association.",
+      "answer_effect": "MCQ B (Uzziah) selected correctly. Uzziah is explicitly present in the excerpt; no demonstrated score benefit from the additional category.",
+      "evidence": {
+        "run": "/Users/louiscao/whatsapp-bot/eten-whatsapp-bot/evaluation/runs/hard66_grammar_sentence_all_mcq_models_2026-10-25/qwen317b",
+        "condition": "grammar/max_approved",
+        "passage": "t1_2chr26",
+        "id": "uw-t1_2chr26:eb1d-mcq",
+        "q_type": "mcq",
+        "question": "祭司亚撒利亚和八十位祭司跟随谁进了耶和华的殿？",
+        "choices": {
+          "A": "亚伦",
+          "B": "乌西雅",
+          "C": "约坦",
+          "D": "亚撒利亚",
+          "E": "根据这段文字无法判断"
+        },
+        "verse_window": [
+          [
+            26,
+            16
+          ],
+          [
+            26,
+            17
+          ],
+          [
+            26,
+            18
+          ]
+        ],
+        "supplied_passage": "16 但乌西雅强盛之后，骄傲自毁。他背叛了耶和华他的神，耶和华的擅自殿进入，在香坛上焚香。\n17 跟随他进去祭司亚撒利亚和八十位勇敢的耶和华祭司。\n18 他们站在说面前乌西雅王：“乌西雅，你献香无权向耶和华，只有亚伦的子孙祭司才蒙圣别献香。你圣所吧离开，因为你行了不忠诚的事，必不耶和华神的荣耀蒙。”",
+        "thinking_text": "Okay, let's see. The question is asking who the priests Azariah and eighty others followed into the House of God. The passage mentions that after Uzziah became strong and arrogant, he turned against the Lord, and the priests Azariah and eighty brave Levitical priests followed him into the temple. Wait, the passage says \"他们站在说面前乌西雅王\" which means they stood before Uzziah. Then the priest Azariah and the eighty priests followed him into the temple. So the answer should be B. Uzziah. But let me check the choices. The options are A. Aaron, B. Uzziah, C. Joathan, D. Azariah, E. Cannot determine. The passage says the priests Azariah and eighty were following Uzziah into the temple. So the answer is B. Uzziah.\n",
+        "generated_answer": "乌西雅",
+        "selected_choice": "B",
+        "correct_choice": "B",
+        "direct_correct": true,
+        "source_file": "/Users/louiscao/whatsapp-bot/eten-whatsapp-bot/evaluation/runs/hard66_grammar_sentence_all_mcq_models_2026-10-25/qwen317b/t1_2chr26/qwen317b_think/grammar/max_approved/generated_answers_target_llama.json"
+      },
+      "source_line": 185
+    },
+    {
+      "index": 9,
+      "classification": "ambiguous name substitution; not counted as confirmed memory use",
+      "trace_quote": "the people in Jericho trying to rebel against Abimelech",
+      "assessment": "The supplied text names Shechem, not Jericho. This can be a translation/name confusion or hallucination; it is not evidence of correct memorized Bible content.",
+      "answer_effect": "MCQ B selected correctly using the passage.",
+      "evidence": {
+        "run": "/Users/louiscao/whatsapp-bot/eten-whatsapp-bot/evaluation/runs/hard66_grammar_full_2026-10-24",
+        "condition": "grammar/5%",
+        "passage": "t1_judg9",
+        "id": "uw-t1_judg9:1246-mcq",
+        "q_type": "mcq",
+        "question": "谁暗暗打发人去见亚比米勒？",
+        "choices": {
+          "A": "亚比米勒的母亲。",
+          "B": "示剑的官西布。",
+          "C": "约坦。",
+          "D": "耶比底的儿子迦勒。",
+          "E": "根据这段文字无法判断"
+        },
+        "verse_window": [
+          [
+            9,
+            30
+          ],
+          [
+            9,
+            31
+          ],
+          [
+            9,
+            32
+          ],
+          [
+            9,
+            33
+          ]
+        ],
+        "supplied_passage": "30 示剑的官西布听见迦勒的话，心里甚是恼怒。\n31 他暗暗打发人去见亚比米勒，说：“看哪，耶比底的儿子迦勒和他的弟兄来到示剑，正在挑动城里的民反对你。\n32 你和跟随你的人今晚要埋伏在田间。\n33 早晨日出的时候，你要起来攻击城里的人。迦勒和他的众人出来迎战，你就尽力攻击他们。”",
+        "thinking_text": "Okay, let's see. The question is asking who secretly sent someone to see Abimelech. The passage has several verses. Let me check them again.\n\nVerse 31 says, \"他暗暗打发人去见亚比米勒，说...\" The pronoun \"他\" here refers to the person who sent the messenger. The context is about the people in Jericho trying to rebel against Abimelech. The names mentioned are Abimelech, his brothers, and others. The person who sent the messenger is mentioned as \"他\" in the verse. Now, looking at the choices, option B is 示剑的官西布, which is the same as \"他\" in the passage. So the answer should be B. The other options are not mentioned in the passage. So the correct answer is B.\n",
+        "generated_answer": "示剑的官西布。",
+        "selected_choice": "B",
+        "correct_choice": "B",
+        "direct_correct": true,
+        "source_file": "/Users/louiscao/whatsapp-bot/eten-whatsapp-bot/evaluation/runs/hard66_grammar_full_2026-10-24/t1_judg9/qwen317b_think/grammar/5%/generated_answers_target_llama.json"
+      },
+      "source_line": 259
+    },
+    {
+      "index": 700,
+      "classification": "grounded comparison example",
+      "trace_quote": "the letter's author is specified as",
+      "assessment": "Claudius Lysias is explicitly named in the supplied excerpt and answer choices. Recognizing or translating this name is not evidence of using information outside the prompt.",
+      "answer_effect": "MCQ D selected correctly from explicit text.",
+      "evidence": {
+        "run": "/Users/louiscao/whatsapp-bot/eten-whatsapp-bot/evaluation/runs/hard66_grammar_full_2026-10-24",
+        "condition": "grammar/5%",
+        "passage": "t1_acts23",
+        "id": "uw-t1_acts23:9035-mcq",
+        "q_type": "mcq",
+        "question": "这封信是谁写的？",
+        "choices": {
+          "A": "费利克斯总督",
+          "B": "大祭司",
+          "C": "保罗",
+          "D": "克劳狄·利西亚",
+          "E": "根据这段文字无法判断"
+        },
+        "verse_window": [
+          [
+            23,
+            25
+          ],
+          [
+            23,
+            26
+          ]
+        ],
+        "supplied_passage": "25 他写了这封信：\n26 克劳狄·利西亚致尊敬的费利克斯总督：问安。",
+        "thinking_text": "Okay, let's see. The question is asking who wrote the letter mentioned in the passage. The passage says \"25 他写了这封信：26 克劳狄·利西亚致尊敬的费利克斯总督：问安。\" So the first number (25) is probably the speaker, and the letter is written by \"他\" which is \"he\" in Chinese. Then the letter's author is specified as \"克劳狄·利西亚\" which is Claudius Lycius. The options are A to E. The answer should be D, since the passage directly states that it's Claudius Lycius. The other options don't match. The passage doesn't mention any other names, so E would be correct if there's no info, but here there is info. So D is the answer.\n",
+        "generated_answer": "克劳狄·利西亚",
+        "selected_choice": "D",
+        "correct_choice": "D",
+        "direct_correct": true,
+        "source_file": "/Users/louiscao/whatsapp-bot/eten-whatsapp-bot/evaluation/runs/hard66_grammar_full_2026-10-24/t1_acts23/qwen317b_think/grammar/5%/generated_answers_target_llama.json"
+      },
+      "source_line": 259
+    }
+  ]
+}

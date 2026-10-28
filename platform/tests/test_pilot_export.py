@@ -38,6 +38,25 @@ from export_pilot_metrics import (  # noqa: E402
 from export_pilot_responses import CONDITION_TO_EVAL  # noqa: E402
 
 
+# These suites test question serving. The background questionnaire that now
+# precedes the first question is switched off here and covered on its own in
+# test_pilot_questionnaire.py (including the gate in get_pilot_state).
+_QUESTIONNAIRE_OFF = None
+
+
+def setUpModule():
+    global _QUESTIONNAIRE_OFF
+    import os
+    from unittest.mock import patch as _patch
+
+    _QUESTIONNAIRE_OFF = _patch.dict(os.environ, {"PILOT_QUESTIONNAIRE_ENABLED": "0"})
+    _QUESTIONNAIRE_OFF.start()
+
+
+def tearDownModule():
+    _QUESTIONNAIRE_OFF.stop()
+
+
 class ConditionSlateTests(unittest.TestCase):
     def test_pilot_defect_map_agrees_with_the_response_export(self):
         """Two exports, one slate. A condition present in one but not the other

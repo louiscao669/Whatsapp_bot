@@ -1,0 +1,219 @@
+{
+  "id": "gold:t1_2kgs11:otua:open",
+  "original": {
+    "id": "gold:t1_2kgs11:otua:open",
+    "question": "What did non-serving groups do on the Sabbath?",
+    "passage": "11:5 and commanded them, “This is what you are to do: A third of you who come on duty on the Sabbath shall guard the royal palace,\n11:6 a third shall be at the gate of Sur, and a third at the gate behind the guards. You are to take turns guarding the temple—\n11:7 the two divisions that would go off duty on the Sabbath are to guard the house of the LORD for the king.",
+    "expected_answer": "Guard the house of Yahweh.",
+    "form": "open",
+    "options": {},
+    "correct_option": "",
+    "intended_target": "",
+    "original_question": "",
+    "original_answer": ""
+  },
+  "input_hash": "814b3bb540c26fb0a168dec844a3ace34863d11d5b0dae2fc1e8e4c585e49684",
+  "status": "SIMPLIFIED",
+  "accepted_case": {
+    "id": "gold:t1_2kgs11:otua:open",
+    "question": "What were the divisions going off duty on the Sabbath told to do?",
+    "passage": "11:5 and commanded them, “This is what you are to do: A third of you who come on duty on the Sabbath shall guard the royal palace,\n11:6 a third shall be at the gate of Sur, and a third at the gate behind the guards. You are to take turns guarding the temple—\n11:7 the two divisions that would go off duty on the Sabbath are to guard the house of the LORD for the king.",
+    "expected_answer": "Guard the house of Yahweh.",
+    "form": "open",
+    "options": {},
+    "correct_option": "",
+    "intended_target": "",
+    "original_question": "What did non-serving groups do on the Sabbath?",
+    "original_answer": "Guard the house of Yahweh."
+  },
+  "contract": {
+    "id": "item",
+    "status": "ready",
+    "target": "Identify what the divisions going off duty on the Sabbath were assigned to do: guard the house of the LORD.",
+    "basis": "inferred",
+    "required_answer_components": [
+      "The assigned action was to guard.",
+      "The place guarded was the house of the LORD (Yahweh)."
+    ],
+    "relations": [
+      {
+        "id": "r1",
+        "quote": "What did",
+        "meaning": "Requests the groups' assigned action.",
+        "role": "tested",
+        "reason": "The respondent must recover what the specified groups were to do, not merely identify the groups."
+      },
+      {
+        "id": "r2",
+        "quote": "non-serving groups",
+        "meaning": "The two divisions that would go off duty, rather than the divisions coming on duty.",
+        "role": "anchor",
+        "reason": "This identifies the relevant divisions in verse 7 and distinguishes them from the incoming divisions with other assignments in verses 5–6."
+      },
+      {
+        "id": "r3",
+        "quote": "on the Sabbath",
+        "meaning": "The requested assignment concerns the divisions going off duty on the Sabbath.",
+        "role": "tested",
+        "reason": "This supplies the temporal scope of the requested action and connects it to the Sabbath duty transition described in the passage."
+      }
+    ],
+    "note": "No explicit intended target or earlier question/answer metadata is supplied; the target is inferred. Verse 11:7 directly supports the expected answer: the two divisions going off duty on the Sabbath were to guard the house of the LORD for the king. 'Non-serving' is understood as going off duty, not as having no assigned task. The passage states an instruction rather than reporting its subsequent execution."
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "proposal": {
+        "id": "item",
+        "status": "revised",
+        "question": "What were the divisions going off duty on the Sabbath told to do?",
+        "options": [],
+        "removed_relation_ids": [],
+        "note": "Clarifies “non-serving groups” as the divisions going off duty and asks about their instruction rather than implying that they carried it out. All tested relations and anchors are preserved."
+      },
+      "candidate": {
+        "id": "gold:t1_2kgs11:otua:open",
+        "question": "What were the divisions going off duty on the Sabbath told to do?",
+        "passage": "11:5 and commanded them, “This is what you are to do: A third of you who come on duty on the Sabbath shall guard the royal palace,\n11:6 a third shall be at the gate of Sur, and a third at the gate behind the guards. You are to take turns guarding the temple—\n11:7 the two divisions that would go off duty on the Sabbath are to guard the house of the LORD for the king.",
+        "expected_answer": "Guard the house of Yahweh.",
+        "form": "open",
+        "options": {},
+        "correct_option": "",
+        "intended_target": "",
+        "original_question": "What did non-serving groups do on the Sabbath?",
+        "original_answer": "Guard the house of Yahweh."
+      },
+      "checks": [
+        {
+          "repeat": 1,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "The inferred target matches the original question and verse 11:7: identify the guarding assignment of the divisions going off duty on the Sabbath, distinguished from those coming on duty. Guarding and the house of the LORD are the required answer components. The passage describes an instruction, not completed action."
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "The candidate preserves the requested action, the off-duty divisions, and the Sabbath scope. 'Told to do' accurately expresses the assignment stated in the passage."
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "No substantive identifying information or tested relation is removed. 'Non-serving groups' is replaced with the passage's clearer description, 'divisions going off duty,' without introducing another eligible group."
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "Both questions are in English. Neither version has options."
+            },
+            "option_meanings": [],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "Verse 11:7 explicitly assigns a task to the divisions that would go off duty on the Sabbath, supporting the candidate's wording and presupposition."
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "The passage says these divisions 'are to guard the house of the LORD for the king,' directly supporting the expected answer, 'Guard the house of Yahweh.'"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "The off-duty divisions have one stated assignment: guarding the house of the LORD. The palace and gate assignments concern the incoming divisions."
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "The supplied window identifies both the relevant divisions and their assignment; no outside narrative context is needed."
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "The question identifies the divisions but does not disclose their assigned action or the place they were to guard."
+              },
+              "mcq_validity": {
+                "status": "not_applicable",
+                "evidence": "This is an open question with no answer choices."
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "The question is grammatical, idiomatic, and direct. 'Told to do' naturally asks about the stated instruction.",
+              "quotes": []
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "The question has a straightforward action request and a readily parsed description of the relevant divisions, with no reference chain or competing roles to decode.",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "The off-duty description and Sabbath reference are useful anchors to the relevant assignment. There is no unnecessary event narration or separate setup.",
+              "quotes": []
+            }
+          }
+        },
+        {
+          "repeat": 2,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "The original asks for the specified groups' action on the Sabbath. Verse 11:7 identifies those groups as the divisions going off duty and assigns them to guard the house of the LORD. The contract preserves the action, location, group distinction, and temporal scope."
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "The candidate asks for the same guarding assignment. Replacing 'non-serving groups' with 'divisions going off duty' clarifies the source referent, and 'told to do' accurately reflects an instruction rather than an account of completed action."
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "No substantive identifying information or tested relation is removed. The candidate retains the off-duty group distinction and the Sabbath scope."
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "The original and candidate questions are both in English; neither has options."
+            },
+            "option_meanings": [],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "Verse 11:7 explicitly gives an instruction to the divisions going off duty on the Sabbath, supporting the question and its presuppositions."
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "The instruction is to 'guard the house of the LORD,' supporting the expected answer 'Guard the house of Yahweh.'"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "The off-duty divisions have one stated assignment: guarding the house of the LORD for the king. The other posts belong to divisions coming on duty."
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "The supplied passage identifies the relevant divisions and states their assignment directly; no outside narrative context is needed."
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "The question identifies the relevant divisions without revealing their assigned action or the place they must guard."
+              },
+              "mcq_validity": {
+                "status": "not_applicable",
+                "evidence": "This is an open question with no answer options."
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "The question is idiomatic and direct, with a natural construction for asking about an assigned task.",
+              "quotes": []
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "The group description is readily parsed and distinguishes the requested divisions without an avoidable reference chain.",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "The off-duty description and Sabbath reference are useful anchors for selecting the correct assignment from the passage. There is no unnecessary event narration or setup.",
+              "quotes": []
+            }
+          }
+        }
+      ],
+      "status": "SIMPLIFIED"
+    }
+  ]
+}

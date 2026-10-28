@@ -18,9 +18,10 @@
 // Sub-module imports carry the same ?v= as the entry point in index.html.
 // Everything under /pilot/static/ is served immutable for a year, so an
 // unversioned module URL would pin participants to a stale build forever.
-// Bump all three together when the frontend changes.
-import { createPilotApi, parseParticipantIdFromLocation } from "./api.js?v=20261016a";
-import { createAttentionTimers, createTrialStore, resumeActiveMs } from "./timing.js?v=20261016a";
+// Bump all of them together when the frontend changes.
+import { createPilotApi, parseParticipantIdFromLocation } from "./api.js?v=20261026a";
+import { createAttentionTimers, createTrialStore, resumeActiveMs } from "./timing.js?v=20261026a";
+import { renderQuestionnaire, renderScreenedOut } from "./questionnaire.js?v=20261026a";
 
 const root = document.querySelector("#pilot");
 const participantId = parseParticipantIdFromLocation();
@@ -169,9 +170,10 @@ function renderQuestion(question) {
     card.append(renderTestInfo(question.test_info));
   }
 
-  // One line per verse. `passage_lines` is the same delivered text the server
-  // split on verse boundaries; it falls back to the whole block when the text
-  // could not be split without guessing.
+  // `passage_lines` is the delivered text as one paragraph, the same layout for
+  // every condition (a per-verse split used to break omission passages exactly
+  // where text had been cut). Kept as a list so the server can change layout
+  // without a client change.
   const lines =
     question.passage_lines && question.passage_lines.length
       ? question.passage_lines
@@ -293,6 +295,14 @@ async function loadQuestion() {
     state = await api.getState();
   } catch (error) {
     renderMessage("Something went wrong", error.message);
+    return;
+  }
+
+  if (state.state === "questionnaire" || state.state === "screened_out") {
+    // The server holds questions back until the background questionnaire is
+    // done; hand over to it (it calls loadQuestion again when complete).
+    trial = null;
+    await startQuestionnaire();
     return;
   }
 
@@ -578,7 +588,7 @@ function renderConsent(consent) {
       return;
     }
     if (agreed) {
-      await loadQuestion();
+      await startQuestionnaire();
     } else {
       renderDeclined();
     }
@@ -591,11 +601,51 @@ function renderConsent(consent) {
   root.append(card);
 }
 
+/**
+ * Background questionnaire, between consent and the first question. Renders
+ * the section that is due, or goes straight to the questions when there is
+ * nothing to ask (already complete, or not required for this participant).
+ */
+async function startQuestionnaire() {
+  let state;
+  try {
+    state = await api.getQuestionnaire();
+  } catch (error) {
+    renderMessage("Something went wrong", error.message);
+    return;
+  }
+  if (state.status === "screened_out") {
+    renderScreenedOut(root, state.ui);
+    return;
+  }
+  if (!state.required) {
+    await loadQuestion();
+    return;
+  }
+  renderQuestionnaire(root, api, state, {
+    onDone: () => loadQuestion(),
+    onScreenedOut: (ui) => renderScreenedOut(root, ui)
+  });
+}
+
+function renderLinkInactive() {
+  renderMessage(
+    "This link is no longer active",
+    "There is nothing more to do here. You can close this page. " +
+      "If you think this is a mistake, contact the study team."
+  );
+}
+
 async function start() {
   let consent;
   try {
     consent = await api.getConsent();
   } catch (error) {
+    if (error.status === 404) {
+      // e.g. a participant who was screened out: their record no longer exists.
+      renderLinkInactive();
+      return;
+    }
     renderMessage("Something went wrong", error.message);
     return;
   }
@@ -607,7 +657,7 @@ async function start() {
     renderConsent(consent);
     return;
   }
-  await loadQuestion();
+  await startQuestionnaire();
 }
 
 document.addEventListener("visibilitychange", onVisibilityChange);

@@ -23,7 +23,7 @@ def verdict(candidate, **overrides):
 
 
 @pytest.fixture(autouse=True)
-def clear_protection(monkeypatch):
+def clear_protection(monkeypatch, fake_meaning_models):
     monkeypatch.setattr(grammar, "EXTRA_PROTECTED", None)
 
 
@@ -184,8 +184,57 @@ def test_changed_inputs_do_not_reuse_stale_bank(tmp_path, proposals, monkeypatch
     ("祭司站城门口在。", [grammar.LLM_OPERATION] * 2),
     ("祭司。站城门口在", [grammar.LLM_OPERATION]),
 ])
-def test_hard_checks_reject_filler_deletions_legacy_and_stacked_edits(candidate, operations):
+def test_hard_checks_reject_filler_deletions_legacy_and_duplicate_markers(candidate, operations):
     assert not grammar.valid_structural_candidate("祭司站在城门口。", candidate, operations)
+
+
+@pytest.mark.parametrize("original,edited", [
+    ("15 非利士人再次与以色列争战，", "15 非利士人与以色列争战再次，"),
+    ("17 于是大卫的众人向他起誓说：", "17 于是大卫的向他众人说起誓："),
+    ("16 拿着一根重三百舍客勒的铜矛，", "16 拿重三百舍客勒的着一根铜矛，"),
+])
+def test_compound_and_severe_single_edits_export_and_replay(tmp_path, monkeypatch, original, edited):
+    # Linguistic decisions are stubbed: this verifies preservation, storage and
+    # replay of the complete replacement, including multiple whole-word moves.
+    monkeypatch.setattr(grammar.GPTGrammarProposer, "__call__", lambda self, request:
+        response_for(request, lambda clause: [proposal(edited)]))
+    calls = []
+    def evaluate(request):
+        calls.append(request)
+        assert request["original_clause"] == original
+        assert request["edited_clause"] == edited
+        return verdict(edited)
+    cache = grammar.GrammarJudgmentCache(tmp_path / "judgments.json", model="test", evaluator=evaluate)
+    bank = build(tmp_path, cache, text=original, rate=1)
+    result, meta = grammar.apply_grammar_bank(original, rate=1, seed=42, bank=bank)
+    assert result == edited
+    assert grammar.Counter(original) == grammar.Counter(result)
+    assert meta["rearrangement_policy"] == grammar.REARRANGEMENT_POLICY
+    # This is one complete replacement, not a count of linguistic movements.
+    assert meta["operation_count"] == meta["affected_unit_count"] == 1
+    offline = grammar.GrammarJudgmentCache(tmp_path / "judgments.json", model="test", offline=True)
+    assert build(tmp_path, offline, text=original, rate=1) == bank
+    assert len(calls) == 1
+
+
+@pytest.mark.parametrize("original,rejected,accepted,decision", [
+    ("15 非利士人再次与以色列争战，", "15 非利士人再次争战与以色列，",
+     "15 非利士人与以色列争战再次，", "structural_error"),
+    ("15 大卫和他的仆人下去与非利士人作战。", "15 大卫与非利士人和他的仆人下去作战。",
+     "15 大卫和他的下去仆人作战与非利士人。", "meaning_preserved"),
+])
+def test_rejected_strength_or_role_change_does_not_enter_bank(tmp_path, monkeypatch, original, rejected, accepted, decision):
+    monkeypatch.setattr(grammar.GPTGrammarProposer, "__call__", lambda self, request:
+        response_for(request, lambda clause: [proposal(rejected), proposal(accepted)]))
+    calls = []
+    def evaluate(request):
+        candidate = request["edited_clause"]
+        calls.append(candidate)
+        return verdict(candidate, **{decision: "no" if candidate == rejected else "yes"})
+    cache = grammar.GrammarJudgmentCache(tmp_path / "judgments.json", model="test", evaluator=evaluate)
+    bank = build(tmp_path, cache, text=original, rate=1)
+    assert calls == [rejected, accepted]
+    assert [entry["corrupted_text"] for entry in bank["entries"]] == [accepted]
 
 
 def test_unsafe_llm_proposals_do_not_reach_judge(tmp_path, monkeypatch):
@@ -248,7 +297,7 @@ def test_duplicate_and_unchanged_llm_candidates_are_skipped(tmp_path, monkeypatc
         cache=make_cache(tmp_path, calls), max_candidates=3)
     assert bank["entries"] == []
     assert len(calls) == 20
-    assert bank["duplicate_or_noop_candidate_count"] == 40
+    assert bank["duplicate_or_noop_candidate_count"] == 20 * (2 + 3 * grammar.DEFAULT_RETRY_ROUNDS)
     assert all("带着五个人" in c["original_clause"] for c in calls)
 
 
@@ -262,7 +311,7 @@ def test_empty_llm_proposals_are_cached_and_never_fall_back(tmp_path, monkeypatc
     calls = []
     bank = build(tmp_path, make_cache(tmp_path, calls))
     assert bank["exhausted"]
-    assert len(generated) == 3
+    assert len(generated) == 3 * (1 + grammar.DEFAULT_RETRY_ROUNDS)
     assert calls == []
     (tmp_path / f"bank_{bank['bank_id']}.json").unlink()
     generated.clear()
@@ -400,6 +449,39 @@ def test_real_sdk_request_contract_without_network():
     assert sent["messages"][0]["content"] == grammar.JUDGE_PROMPT
     assert json.loads(sent["messages"][1]["content"]) == request_data
     assert sent["response_format"]["json_schema"]["schema"] == grammar.JUDGE_SCHEMA
+
+
+def test_lazy_client_recovers_from_timeout_without_changing_judgment(monkeypatch):
+    openai = pytest.importorskip("openai")
+    httpx = pytest.importorskip("httpx")
+    monkeypatch.setenv("OPENAI_API_KEY", "test-only-not-a-real-key")
+    request_data = {"original_passage": "1 我来了。", "original_clause": "1 我来了。",
+                    "edited_clause": "1 我了来。", "clause_start": 0}
+    expected = verdict(request_data["edited_clause"])
+    requests = []
+
+    def handle(request):
+        requests.append(json.loads(request.content))
+        if len(requests) == 1:
+            raise httpx.ReadTimeout("simulated timeout", request=request)
+        return httpx.Response(200, json={
+            "id": "test-retry", "object": "chat.completion", "created": 0,
+            "model": "test-model", "choices": [{
+                "index": 0, "finish_reason": "stop",
+                "message": {"role": "assistant", "content": json.dumps(expected)},
+            }],
+        })
+
+    factory = openai.OpenAI
+    with httpx.Client(transport=httpx.MockTransport(handle)) as http:
+        monkeypatch.setattr(openai, "OpenAI", lambda **kwargs: factory(http_client=http, **kwargs))
+        judge = grammar.GPTGrammarJudge("test-model")
+        try:
+            assert judge(request_data) == expected
+        finally:
+            judge.client.close()
+    assert len(requests) == 2
+    assert requests[0] == requests[1]
 
 
 def cli_args(tmp_path, monkeypatch, extra=()):
@@ -569,7 +651,7 @@ def test_unfinished_generation_resumes_completed_batches(tmp_path, monkeypatch):
         return response_for(request, lambda original: [])
     monkeypatch.setattr(grammar.GPTGrammarProposer, "__call__", resume)
     assert build(tmp_path, make_cache(tmp_path, []))["exhausted"]
-    assert len(calls) == 2
+    assert len(calls) == 3 * (1 + grammar.DEFAULT_RETRY_ROUNDS) - 1
     assert saved_request not in calls
 
 

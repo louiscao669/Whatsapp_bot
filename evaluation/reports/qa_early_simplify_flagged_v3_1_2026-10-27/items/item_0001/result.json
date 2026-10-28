@@ -1,0 +1,304 @@
+{
+  "id": "gold:t1_1kgs13:o8ae:mcq",
+  "original": {
+    "id": "gold:t1_1kgs13:o8ae:mcq",
+    "question": "What becomes sin to Jeroboam's family?",
+    "passage": "13:32 for the message that he cried out by the word of the LORD against the altar in Bethel and against all the shrines on the high places in the cities of Samaria will surely come to pass.”\n13:33 Even after these events, Jeroboam did not repent of his evil ways, but again he appointed priests for the high places from every class of people. He ordained anyone who desired to be a priest of the high places.\n13:34 And this was the sin of the house of Jeroboam that led to its extermination and destruction from the face of the earth.",
+    "expected_answer": "Consecrating anyone as priests.",
+    "form": "mcq",
+    "options": {
+      "A": "Building a new altar.",
+      "B": "Worshiping false gods.",
+      "C": "Consecrating anyone as priests.",
+      "D": "Ignoring the prophet's warning.",
+      "E": "I can't tell from this passage"
+    },
+    "correct_option": "C",
+    "intended_target": "",
+    "original_question": "What becomes sin to Jeroboam's family?",
+    "original_answer": "Consecrating anyone as priests."
+  },
+  "input_hash": "56f2cc35b82993922d02e5d21fc413c282141ec5f0ea2b825e3205f8eaafdf57",
+  "status": "SIMPLIFIED",
+  "accepted_case": {
+    "id": "gold:t1_1kgs13:o8ae:mcq",
+    "question": "What was the sin of Jeroboam's family?",
+    "passage": "13:32 for the message that he cried out by the word of the LORD against the altar in Bethel and against all the shrines on the high places in the cities of Samaria will surely come to pass.”\n13:33 Even after these events, Jeroboam did not repent of his evil ways, but again he appointed priests for the high places from every class of people. He ordained anyone who desired to be a priest of the high places.\n13:34 And this was the sin of the house of Jeroboam that led to its extermination and destruction from the face of the earth.",
+    "expected_answer": "Consecrating anyone as priests.",
+    "form": "mcq",
+    "options": {
+      "A": "Building a new altar.",
+      "B": "Worshiping false gods.",
+      "C": "Consecrating anyone as priests.",
+      "D": "Ignoring the prophet's warning.",
+      "E": "I can't tell from this passage"
+    },
+    "correct_option": "C",
+    "intended_target": "",
+    "original_question": "What becomes sin to Jeroboam's family?",
+    "original_answer": "Consecrating anyone as priests."
+  },
+  "contract": {
+    "id": "item",
+    "status": "ready",
+    "target": "Identify Jeroboam’s consecration of anyone as priests of the high places as the practice counted as sin to his family.",
+    "basis": "inferred",
+    "required_answer_components": [
+      "Appointing or consecrating anyone as priests, rather than restricting who could serve."
+    ],
+    "relations": [
+      {
+        "id": "r1",
+        "quote": "What becomes sin",
+        "meaning": "Identify the practice characterized as sin.",
+        "role": "tested",
+        "reason": "The respondent must recover the offending practice, not merely name Jeroboam or describe the consequences of his sin. The answer must preserve the unrestricted scope of appointing anyone as priests."
+      },
+      {
+        "id": "r2",
+        "quote": "to Jeroboam's family",
+        "meaning": "The sin is attributed to the house of Jeroboam.",
+        "role": "tested",
+        "reason": "This specifies whose sin is being asked about and connects the question to the passage’s characterization of the sin of Jeroboam’s house."
+      }
+    ],
+    "note": "The target is conservatively inferred from the supplied question and original answer; no explicit intended target was provided. Verse 13:33 describes Jeroboam appointing priests from every class and ordaining anyone who desired to serve at the high places. Verse 13:34 identifies this as the sin of his house, supporting the fixed answer. The resulting extermination and destruction are not requested answer components."
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "proposal": {
+        "id": "item",
+        "status": "revised",
+        "question": "What was the sin of Jeroboam's family?",
+        "options": [
+          {
+            "label": "A",
+            "text": "Building a new altar."
+          },
+          {
+            "label": "B",
+            "text": "Worshiping false gods."
+          },
+          {
+            "label": "C",
+            "text": "Consecrating anyone as priests."
+          },
+          {
+            "label": "D",
+            "text": "Ignoring the prophet's warning."
+          },
+          {
+            "label": "E",
+            "text": "I can't tell from this passage"
+          }
+        ],
+        "removed_relation_ids": [],
+        "note": "Replaced the awkward wording with a direct question while preserving both tested relations."
+      },
+      "candidate": {
+        "id": "gold:t1_1kgs13:o8ae:mcq",
+        "question": "What was the sin of Jeroboam's family?",
+        "passage": "13:32 for the message that he cried out by the word of the LORD against the altar in Bethel and against all the shrines on the high places in the cities of Samaria will surely come to pass.”\n13:33 Even after these events, Jeroboam did not repent of his evil ways, but again he appointed priests for the high places from every class of people. He ordained anyone who desired to be a priest of the high places.\n13:34 And this was the sin of the house of Jeroboam that led to its extermination and destruction from the face of the earth.",
+        "expected_answer": "Consecrating anyone as priests.",
+        "form": "mcq",
+        "options": {
+          "A": "Building a new altar.",
+          "B": "Worshiping false gods.",
+          "C": "Consecrating anyone as priests.",
+          "D": "Ignoring the prophet's warning.",
+          "E": "I can't tell from this passage"
+        },
+        "correct_option": "C",
+        "intended_target": "",
+        "original_question": "What becomes sin to Jeroboam's family?",
+        "original_answer": "Consecrating anyone as priests."
+      },
+      "checks": [
+        {
+          "repeat": 1,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "The inferred contract matches the original question and fixed answer. Verse 13:33 describes appointing priests from every class and ordaining anyone who desired to serve; verse 13:34 identifies this practice as the sin of Jeroboam's house. The consequences are not requested."
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "The candidate still asks which practice constituted the sin of Jeroboam's family. Changing 'becomes sin to' to 'was the sin of' preserves the attribution and identification target."
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "No substantive information, scope, or identifying relation was removed. The change replaces awkward wording without introducing a competing event or answer."
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "The question and all five options remain in English."
+            },
+            "option_meanings": [
+              {
+                "status": "pass",
+                "evidence": "Unchanged: building a new altar.",
+                "label": "A"
+              },
+              {
+                "status": "pass",
+                "evidence": "Unchanged: worshiping false gods.",
+                "label": "B"
+              },
+              {
+                "status": "pass",
+                "evidence": "Unchanged: consecrating anyone as priests, preserving the unrestricted scope.",
+                "label": "C"
+              },
+              {
+                "status": "pass",
+                "evidence": "Unchanged: ignoring the prophet's warning.",
+                "label": "D"
+              },
+              {
+                "status": "pass",
+                "evidence": "Unchanged: inability to determine the answer from the passage.",
+                "label": "E"
+              }
+            ],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "Verse 13:34 explicitly refers to 'the sin of the house of Jeroboam,' supporting the question's attribution and presupposition."
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "Verse 13:33 says Jeroboam appointed priests from every class and 'ordained anyone who desired to be a priest of the high places.' This supports the fixed answer and key C."
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "The practice immediately identified as the sin is the appointment of anyone as priests. The other substantive choices are not identified as that practice in the supplied window."
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "Verses 13:33–34 supply both the offending practice and its characterization as the sin of Jeroboam's house; no outside knowledge is required."
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "The question does not disclose the offending practice or privilege option C through added hints."
+              },
+              "mcq_validity": {
+                "status": "pass",
+                "evidence": "The five options are distinct, the abstention option is preserved, and C is the single supported answer."
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "The question is idiomatic and direct. The options are understandable action phrases with a clear abstention choice.",
+              "quotes": []
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "The question has a simple structure, and comparing the short choices requires no avoidable reference or role tracking.",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "The question contains only the requested characterization and the useful identifying anchor, Jeroboam's family. There is no unnecessary setup or event narration.",
+              "quotes": []
+            }
+          }
+        },
+        {
+          "repeat": 2,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "The inferred contract matches the original question and answer. Verse 13:33 describes appointing priests from every class and ordaining anyone who desired it; verse 13:34 identifies this practice as the sin of Jeroboam's house. Neither the original nor the contract requires explaining its consequences."
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "The candidate still asks which practice constituted the sin of Jeroboam's family. The change from 'becomes sin to' to 'was the sin of' preserves the attribution and identification target."
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "No substantive information, identifying relation, or answer component was removed. The question was idiomatically rephrased, and all options remain unchanged."
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "The question and every option remain in English."
+            },
+            "option_meanings": [
+              {
+                "status": "pass",
+                "evidence": "Unchanged: building a new altar.",
+                "label": "A"
+              },
+              {
+                "status": "pass",
+                "evidence": "Unchanged: worshiping false gods.",
+                "label": "B"
+              },
+              {
+                "status": "pass",
+                "evidence": "Unchanged: consecrating anyone as priests, preserving the unrestricted scope of appointment.",
+                "label": "C"
+              },
+              {
+                "status": "pass",
+                "evidence": "Unchanged: ignoring the prophet's warning.",
+                "label": "D"
+              },
+              {
+                "status": "pass",
+                "evidence": "Unchanged: inability to determine the answer from the passage.",
+                "label": "E"
+              }
+            ],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "Verse 13:34 explicitly refers to 'the sin of the house of Jeroboam,' supporting the question's attribution and presupposition."
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "Verse 13:33 says that Jeroboam appointed priests 'from every class of people' and 'ordained anyone who desired to be a priest of the high places.' This supports the fixed answer and key C."
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "C uniquely matches the practice immediately identified as the sin in verse 13:34. The other substantive options do not describe that explicitly identified practice."
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "Verses 13:33–34 provide both the offending practice and its characterization as the sin of Jeroboam's house, without requiring outside knowledge."
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "The question does not disclose the offending practice or otherwise signal the correct option independently of comprehension."
+              },
+              "mcq_validity": {
+                "status": "pass",
+                "evidence": "The item has one supported correct option, distinct distractors, and an abstention option. The supplied key C agrees with the passage."
+              }
+            },
+            "naturalness": {
+              "score": 1,
+              "evidence": "The question is direct and idiomatic. Option C has a minor singular–plural awkwardness in pairing 'anyone' with 'as priests'; 'as a priest' would be smoother.",
+              "quotes": [
+                "Consecrating anyone as priests."
+              ]
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "The question and short options are readily parsed, with no avoidable reference chain or complicated role comparison.",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "The question directly asks for the target practice. Naming Jeroboam's family supplies the relevant attribution without unnecessary setup.",
+              "quotes": []
+            }
+          }
+        }
+      ],
+      "status": "SIMPLIFIED"
+    }
+  ]
+}

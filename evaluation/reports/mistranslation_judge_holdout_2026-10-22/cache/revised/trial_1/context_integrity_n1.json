@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "records": {
+    "4f40ed6658d05e4206a414b9be73be896ec97a7521ce90bdd714bd8ece52194d": {
+      "identity": {
+        "model": "gpt-6-sol",
+        "prompt_sha256": "710d52b8945d965d68775a411de6abc5543010775247b16f5b9a92c4275a06ca",
+        "schema_sha256": "5fa920642b474382900cb35cd4cea1669a30f9717edb84a60aec124f26c3b82d",
+        "max_output_tokens": 8192,
+        "api": "responses"
+      },
+      "request": {
+        "original_passage": "主人打了仆人一下，随后打算返回家中。",
+        "source": "打",
+        "replacement": "踢",
+        "mode": "systematic",
+        "occurrences": [
+          {
+            "start": 2,
+            "end": 3,
+            "original_context": "主人打了仆人一下，随后打算返回家中。",
+            "edited_context": "主人踢了仆人一下，随后打算返回家中。"
+          },
+          {
+            "start": 11,
+            "end": 12,
+            "original_context": "主人打了仆人一下，随后打算返回家中。",
+            "edited_context": "主人打了仆人一下，随后踢算返回家中。"
+          }
+        ]
+      },
+      "response": {
+        "source_claim": "主人打了仆人一下，随后打算返回家中。",
+        "replacement_claim": "主人踢了仆人一下，随后“踢算”返回家中；后半句无法正常理解。",
+        "explanation": "第一处将“打仆人”改为“踢仆人”，动作明确改变。但系统替换也命中“打算”，生成不成词的“踢算”，破坏了原本的回家计划这一表述。因此并非所有匹配处都构成通顺、局部的事实替换。",
+        "meaning_changed": "uncertain",
+        "fluent": "no",
+        "substitution_only": "no",
+        "localized": "no",
+        "valid_in_all_contexts": "no"
+      },
+      "response_id": "resp_054782b3d95c6511006adac20cdc6487d18c45f47cdea6bcf4",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1173,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1170
+        },
+        "output_tokens": 372,
+        "output_tokens_details": {
+          "reasoning_tokens": 200
+        },
+        "total_tokens": 1545
+      },
+      "completed_at_unix": 1792721426
+    }
+  }
+}

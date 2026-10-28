@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "reviews": {
+    "3b909fc31bf6e3c344e1f0f831cb5ab0a4be91179f740381ad1d0d2fbe7e1050": {
+      "reviewer": {
+        "policy": "source_blind_reading_v1",
+        "reader": {
+          "model": "gpt-6.1-sol",
+          "prompt_sha256": "a0abc3d1e42b1bfe1ba91b0a91409d58ec5e3eb273766c96c3ce50c9e6a9fc4a",
+          "schema_sha256": "c0bff0fe9ca0ac0ae2790f5ec01573f1335a0ff178afc6be9c2d72d9e4c2159d"
+        },
+        "judge": {
+          "model": "gpt-6.1-sol",
+          "prompt_sha256": "4352e228b628d838ff5212c165c0501c0e93eda9a2c6c236209c578e341912f2",
+          "schema_sha256": "1212873bed97eb86ed4570777326a91477cbe9b01f421809ab1e9c5d4def5f57"
+        }
+      },
+      "request": {
+        "original_passage": "15 非利士人再次与以色列争战，大卫和他的仆人下去与非利士人作战。但大卫疲惫不堪。\n\n16 那时，拉法的后裔以施比·比拿，拿着一根重三百舍客勒的铜矛，带着一把新剑，想要杀大卫。\n\n17 但洗鲁雅的儿子亚比筛来帮助大卫，击杀了那非利士人。于是大卫的众人向他起誓说：“你不可再和我们同去打仗，免得以色列的灯灭了。”\n\n18 过了些日子，在迦百发生了另一场与非利士人的战斗。那时，户沙人西比该杀了拉法的后裔撒弗。\n\n19 又在迦百与非利士人争战，伯利恒人睚珥的儿子伊勒哈难杀了迦特人歌利亚的弟弟，他的矛杆像织布机的机轴。\n\n20 又在迦特有一场战斗，那里有一个身材高大的男子，手指和脚趾各有六个，共二十四个。他也是拉法的后裔，\n\n21 他嘲笑以色列时，大卫兄弟示米的儿子约拿单杀了他。\n\n22 这样，在迦特的这四个拉法的后裔都被大卫和他的仆人杀死了。",
+        "clause_start": 61,
+        "original_clause": "拿着一根重三百舍客勒的铜矛，",
+        "edited_clause": "拿重三百舍客勒的着一根铜矛，"
+      },
+      "review": {
+        "candidate_reading": {
+          "primary_reading": "以施比·比拿拿着一根铜矛，这根铜矛重三百舍客勒。虽然“的着”的排列不合常规，持有者、所持物及其重量仍可确定。",
+          "participant_roles": "拿矛者是上下文中的以施比·比拿，他被标明为拉法的后裔；所持物是一根铜矛。这里表达持拿关系，不足以确定铜矛的所有权，也没有表达铜矛已经伤及谁。",
+          "event_structure": "本句描述以施比·比拿持拿铜矛的状态。“着”虽位置异常，仍可理解为持拿状态的持续，没有完成或否定标记，也没有明确的移动方向。上下文另说他想杀大卫，但本句并未表达刺击或杀害已经发生。",
+          "modifier_scope": "“重三百舍客勒”说明铜矛的重量；“一根”计量铜矛，数量为一；“铜”说明矛的材质。三百舍客勒不是人物的体重，也不是铜矛的数量。",
+          "interpretation_status": "clear",
+          "alternative_readings": []
+        },
+        "judgment": {
+          "explanation": "记录的独立阅读与原句一致：以施比·比拿持拿一根铜矛，重量为三百舍客勒。编辑后的“拿重三百舍客勒的着一根铜矛”虽将“着”移至异常位置，但记录的阅读仍明确保留持拿的持续状态，没有将其读成新的动作、结果或方向补语。“重三百舍客勒”“一根”和“铜”仍分别限定矛的重量、数量和材质，人物与所持物的角色未变。结合上下文，没有得到支持的新增竞争读法。",
+          "participant_roles_preserved": "yes",
+          "event_structure_preserved": "yes",
+          "modifier_scope_preserved": "yes",
+          "no_new_plausible_meaning": "yes",
+          "risk_spans": []
+        }
+      }
+    }
+  }
+}

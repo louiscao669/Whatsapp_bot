@@ -1,0 +1,261 @@
+{
+  "id": "hard:t1_judg17_18:3162:open",
+  "input_hash": "96be52bfc617ce4a297a7256541a540890e0c8db24f5063380a1bba80c1de264",
+  "original": {
+    "id": "hard:t1_judg17_18:3162:open",
+    "question": "那些神像最先发生了什么事？",
+    "passage": "18:17 那五个窥探地的人进去，拿了雕像、以弗得、家用神像和熔铸的偶像，祭司站在城门口，带着六百带兵器的人。\n18:18 他们进了米迦家，拿了雕像、以弗得、家用神像和熔铸的偶像，祭司问他们说：“你们做什么呢？”\n18:19 他们说：“安静，不要出声，把手捂口，跟我们去作我们的父亲和祭司。你作一个人家的祭司好呢？还是作以色列一个支派一个家族的祭司好呢？”\n18:20 祭司就喜悦，拿了以弗得、家用神像和雕像，跟着他们去了。\n18:21 他们将小孩、牲畜和财物放在前面，转身离开。",
+    "expected_answer": "the five men take them from Micah’s house",
+    "form": "open",
+    "options": {},
+    "correct_option": "",
+    "intended_target": "",
+    "original_question": "",
+    "original_answer": ""
+  },
+  "source_review_dir": "/Users/louiscao/whatsapp-bot/eten-whatsapp-bot/evaluation/reports/qa_review_v2_full_2026-10-27/hard",
+  "status": "ACCEPTED",
+  "accepted_case": {
+    "id": "hard:t1_judg17_18:3162:open",
+    "question": "经文中，人们最先对那些神像做了什么？",
+    "passage": "18:17 那五个窥探地的人进去，拿了雕像、以弗得、家用神像和熔铸的偶像，祭司站在城门口，带着六百带兵器的人。\n18:18 他们进了米迦家，拿了雕像、以弗得、家用神像和熔铸的偶像，祭司问他们说：“你们做什么呢？”\n18:19 他们说：“安静，不要出声，把手捂口，跟我们去作我们的父亲和祭司。你作一个人家的祭司好呢？还是作以色列一个支派一个家族的祭司好呢？”\n18:20 祭司就喜悦，拿了以弗得、家用神像和雕像，跟着他们去了。\n18:21 他们将小孩、牲畜和财物放在前面，转身离开。",
+    "expected_answer": "the five men take them from Micah’s house",
+    "form": "open",
+    "options": {},
+    "correct_option": "",
+    "intended_target": "",
+    "original_question": "那些神像最先发生了什么事？",
+    "original_answer": "the five men take them from Micah’s house"
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "proposal": {
+        "id": "item",
+        "status": "revised",
+        "question": "经文中，人们最先对那些神像做了什么？",
+        "options": [],
+        "note": "将生硬的“神像发生了什么事”改为“人们对神像做了什么”，明确神像是动作的承受对象，减少读者修补主谓关系的负担；保留对神像的回指及“最先”的事件顺序要求。"
+      },
+      "candidate": {
+        "id": "hard:t1_judg17_18:3162:open",
+        "question": "经文中，人们最先对那些神像做了什么？",
+        "passage": "18:17 那五个窥探地的人进去，拿了雕像、以弗得、家用神像和熔铸的偶像，祭司站在城门口，带着六百带兵器的人。\n18:18 他们进了米迦家，拿了雕像、以弗得、家用神像和熔铸的偶像，祭司问他们说：“你们做什么呢？”\n18:19 他们说：“安静，不要出声，把手捂口，跟我们去作我们的父亲和祭司。你作一个人家的祭司好呢？还是作以色列一个支派一个家族的祭司好呢？”\n18:20 祭司就喜悦，拿了以弗得、家用神像和雕像，跟着他们去了。\n18:21 他们将小孩、牲畜和财物放在前面，转身离开。",
+        "expected_answer": "the five men take them from Micah’s house",
+        "form": "open",
+        "options": {},
+        "correct_option": "",
+        "intended_target": "",
+        "original_question": "那些神像最先发生了什么事？",
+        "original_answer": "the five men take them from Micah’s house"
+      },
+      "checks": [
+        {
+          "repeat": 1,
+          "preservation": {
+            "id": "item",
+            "same_target": {
+              "status": "pass",
+              "evidence": "两题都询问那些神像最先经历的事件，即五个窥探地的人从米迦家拿走它们。修订将事件表述为人们对神像的行动，保留了对象、事件关系及“最先”的时间限定，也未透露答案。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "原题和修订题均为中文。"
+            },
+            "option_meanings": []
+          },
+          "review": {
+            "id": "item",
+            "input_hash": "bb0657d08cbbf20b074223efeda892a68a65f396ed92265bd1f0448a36cfe290",
+            "content_validity": {
+              "id": "item",
+              "target": "辨认经文中最先对神像采取的行动：五个探子从米迦家拿走了神像。",
+              "target_basis": "inferred",
+              "target_preservation": {
+                "status": "pass",
+                "evidence": "原题询问那些神像最先发生了什么，改题询问人们最先对那些神像做了什么，仍测试最初拿走神像这一事件，没有改变行动者、先后关系或答案范围。"
+              },
+              "question_support": {
+                "status": "pass",
+                "evidence": "18:17首先记载五个窥探地的人拿了神像，18:20才记载祭司拿了神像跟随他们；题目所问的最初行动符合所给经文。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "18:17明确行动者是那五个窥探地的人，18:18说明他们进了米迦家并拿了神像，支持预期答案“五个人从米迦家拿走神像”。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "最先记载的行动是五个探子拿走神像；祭司拿神像发生在后，不能作为“最先”的另一答案。“拿了”与“拿走”在此是同一事件的表达。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "所给经文包含五个探子拿神像、进入米迦家的说明，以及祭司随后拿神像的记载，足以确定题目所指的最初事件。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "题目只询问对神像所做的最初行动，没有透露“拿走”、五个探子或米迦家等答案内容。"
+              },
+              "mcq_validity": {
+                "status": "not_applicable",
+                "evidence": "本题为开放式问题，没有选择项。"
+              },
+              "meaning_profile": {
+                "answer_explicitness": "nearby_connection",
+                "semantic_relation": "辨认神像最先受到的处置及其行动者、来源地点",
+                "answer_scope": "single_component",
+                "passage_span": "nearby"
+              }
+            },
+            "structural_inspection": {
+              "id": "item",
+              "parse_summary": "问句以“经文中”限定范围，以“人们”为施事、“那些神像”为动作对象，询问“最先”发生的行动；没有嵌套从句。“人们”和“那些神像”需结合经文确定所指，并区分五个探子的先行动作与祭司的后续动作。",
+              "features": [
+                {
+                  "kind": "reference_chain",
+                  "quote": "人们最先对那些神像做了什么？",
+                  "required_operations": "将“人们”对应到五个探子，将“那些神像”对应到经文所列的神像，并依据“最先”定位他们拿走神像的行动，而非祭司随后拿取神像的行动。",
+                  "concern": "ordinary",
+                  "reason": "人物和对象的回指及行动先后判断直接服务于辨认最先行动的目标；问句本身没有额外的修饰嵌套或多层指代。"
+                }
+              ]
+            },
+            "language_accessibility": {
+              "id": "item",
+              "naturalness": {
+                "score": 0,
+                "evidence": "“经文中，人们最先对那些神像做了什么？”语序自然，“对……做了什么”是常见问法；“人们”和“那些神像”虽较概括，但结合所给经文阅读，不需要修补句意。"
+              },
+              "processing": {
+                "score": 1,
+                "evidence": "读者需要结合经文确定“人们”和“那些神像”的所指，并按“最先”区分前后的行动。这些是辨认最先行动所需的普通理解操作；问句没有额外的修饰嵌套、复杂角色关系或选项比较负担。"
+              },
+              "context_economy": {
+                "score": 0,
+                "evidence": "“经文中”简短地限定作答范围，“最先”明确所问的时间关系；没有额外引言或无关背景。"
+              },
+              "structure_assessments": [
+                {
+                  "feature_index": 0,
+                  "assessment": "manageable",
+                  "reason": "“人们最先对那些神像做了什么？”要求读者联系经文识别行动者与对象，并区分先后行动。回指距离和句式均属普通阅读需求，先后判断也直接服务于所问内容，没有明显可避免的语言负担。"
+                }
+              ]
+            },
+            "decision": "KEEP",
+            "content_status": "PASS",
+            "language_status": "PASS",
+            "content_failures": [],
+            "content_uncertainties": [],
+            "language_failures": [],
+            "structural_concerns": [],
+            "unresolved_features": [],
+            "structure_burden_disagreement": false
+          }
+        },
+        {
+          "repeat": 2,
+          "preservation": {
+            "id": "item",
+            "same_target": {
+              "status": "pass",
+              "evidence": "两题均询问那些神像最先遭遇的事件，即五个窥探地的人从米迦家拿走它们。修订以主动表达询问人们对神像的行为，保留了对象、事件及“最先”的时间关系，未透露答案。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "原题和修订后的问题均为中文。"
+            },
+            "option_meanings": []
+          },
+          "review": {
+            "id": "item",
+            "input_hash": "bb0657d08cbbf20b074223efeda892a68a65f396ed92265bd1f0448a36cfe290",
+            "content_validity": {
+              "id": "item",
+              "target": "那些神像最先被五个窥探地的人从米迦家拿走。",
+              "target_basis": "inferred",
+              "target_preservation": {
+                "status": "pass",
+                "evidence": "原题问神像最先发生了什么，改写后问人们最先对神像做了什么；两者都要求识别神像最初被拿走这一事件，未改变时间顺序或答案范围。"
+              },
+              "question_support": {
+                "status": "pass",
+                "evidence": "18:17先记载五个窥探地的人拿了雕像、家用神像等物，18:20才记载祭司拿取这些物品。问题所问的最先行动符合所给经文的顺序。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "18:17明确指出拿取物品的是五个窥探地的人，18:18说明他们进了米迦家拿取这些物品，支持预期答案“那五个人从米迦家拿走神像”。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "经文中对神像最先记载的行动是五个人拿取它们；祭司拿取神像发生在后文，不构成同样符合“最先”的另一答案。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "所给段落包含五个人拿取神像、米迦家的地点，以及祭司后来拿取神像的记述，足以识别所问事件和先后顺序。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "问题仅指出神像并询问最先发生的行动，没有透露“拿走”、五个人或米迦家等答案内容。"
+              },
+              "mcq_validity": {
+                "status": "not_applicable",
+                "evidence": "本题为开放题，没有供评估的选项。"
+              },
+              "meaning_profile": {
+                "answer_explicitness": "direct",
+                "semantic_relation": "神像最先受到的行动及其施事者和来源地点",
+                "answer_scope": "single_component",
+                "passage_span": "nearby"
+              }
+            },
+            "structural_inspection": {
+              "id": "item",
+              "parse_summary": "“经文中”限定查找范围，主句以“人们”为施事、“那些神像”为动作对象，询问最先发生的动作；没有嵌套从句。需结合经文，将“人们”落实为五个窥探地的人，将“那些神像”对应到所列神像，并区分他们先拿取与祭司后来拿取的动作。",
+              "features": [
+                {
+                  "kind": "reference_chain",
+                  "quote": "人们最先对那些神像做了什么？",
+                  "required_operations": "从经文确定“人们”和“那些神像”的所指，再按叙述顺序定位最先发生的拿取动作。",
+                  "concern": "ordinary",
+                  "reason": "回指和先后关系直接服务于目标：识别五个人最先从米迦家拿走神像的行为，未形成额外的嵌套或记忆负担。"
+                }
+              ]
+            },
+            "language_accessibility": {
+              "id": "item",
+              "naturalness": {
+                "score": 0,
+                "evidence": "“经文中，人们最先对那些神像做了什么？”是自然的中文问句；“对……做了什么”直接询问动作，没有生硬搭配或需要重新拼接的语序。"
+              },
+              "processing": {
+                "score": 1,
+                "evidence": "读者需将“人们”和“那些神像”对应到经文中的人物与物品，并根据“最先”区分前后的拿取动作。这是目标所需的普通回指和顺序判断；问句本身没有增加可避免的修饰、嵌套或选项比较负担。"
+              },
+              "context_economy": {
+                "score": 0,
+                "evidence": "题面只有“经文中”这一简短的查找范围提示，其余文字均用于指定人物、对象、先后关系和所问动作，没有多余铺垫。"
+              },
+              "structure_assessments": [
+                {
+                  "feature_index": 0,
+                  "assessment": "manageable",
+                  "reason": "“人们最先对那些神像做了什么？”需要回到经文确定人物和神像的所指，再按叙述顺序辨认动作。两处回指都处于简单主句中，“最先”所要求的顺序判断直接服务于理解目标，未形成额外的结构负担。"
+                }
+              ]
+            },
+            "decision": "KEEP",
+            "content_status": "PASS",
+            "language_status": "PASS",
+            "content_failures": [],
+            "content_uncertainties": [],
+            "language_failures": [],
+            "structural_concerns": [],
+            "unresolved_features": [],
+            "structure_burden_disagreement": false
+          }
+        }
+      ],
+      "status": "ACCEPTED"
+    }
+  ]
+}

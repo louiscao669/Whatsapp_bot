@@ -1,0 +1,307 @@
+{
+  "id": "gold:t1_2chr26:tglh:mcq",
+  "original": {
+    "id": "gold:t1_2chr26:tglh:mcq",
+    "question": "How does Uzziah follow his father's example with Yahweh?",
+    "passage": "26:4 And he did what was right in the eyes of the LORD, just as his father Amaziah had done.\n26:5 He sought God throughout the days of Zechariah, who instructed him in the fear of God. And as long as he sought the LORD, God gave him success.\n26:6 Uzziah went out to wage war against the Philistines, and he tore down the walls of Gath, Jabneh, and Ashdod. Then he built cities near Ashdod and among the Philistines.",
+    "expected_answer": "Did right and sought God",
+    "form": "mcq",
+    "options": {
+      "A": "Worshipped other gods",
+      "B": "Ignored God's laws",
+      "C": "Built idols",
+      "D": "Did right and sought God",
+      "E": "I can't tell from this passage"
+    },
+    "correct_option": "D",
+    "intended_target": "",
+    "original_question": "How did Uzziah follow his father's example with Yahweh?",
+    "original_answer": "Did right and sought God."
+  },
+  "input_hash": "a014dc525a9b5c27ea1b8c8e19e0bd8b4c3b1738965d8dea01859962845c1ab1",
+  "status": "KEPT",
+  "accepted_case": {
+    "id": "gold:t1_2chr26:tglh:mcq",
+    "question": "How does Uzziah follow his father's example with Yahweh?",
+    "passage": "26:4 And he did what was right in the eyes of the LORD, just as his father Amaziah had done.\n26:5 He sought God throughout the days of Zechariah, who instructed him in the fear of God. And as long as he sought the LORD, God gave him success.\n26:6 Uzziah went out to wage war against the Philistines, and he tore down the walls of Gath, Jabneh, and Ashdod. Then he built cities near Ashdod and among the Philistines.",
+    "expected_answer": "Did right and sought God",
+    "form": "mcq",
+    "options": {
+      "A": "Worshipped other gods",
+      "B": "Ignored God's laws",
+      "C": "Built idols",
+      "D": "Did right and sought God",
+      "E": "I can't tell from this passage"
+    },
+    "correct_option": "D",
+    "intended_target": "",
+    "original_question": "How did Uzziah follow his father's example with Yahweh?",
+    "original_answer": "Did right and sought God."
+  },
+  "contract": {
+    "id": "item",
+    "status": "ready",
+    "target": "Identify how Uzziah followed his father's example in his conduct toward Yahweh, including both doing what was right and seeking God.",
+    "basis": "inferred",
+    "required_answer_components": [
+      "Uzziah did what was right in Yahweh's eyes.",
+      "Uzziah sought God."
+    ],
+    "relations": [
+      {
+        "id": "r1",
+        "quote": "How does Uzziah follow his father's example",
+        "meaning": "Recover the conduct by which Uzziah followed his father's example, rather than merely identify Uzziah or his father.",
+        "role": "tested",
+        "reason": "The question explicitly asks how Uzziah followed that example. The earlier original question preserves this comparison, and the original answer requires both doing right and seeking God."
+      },
+      {
+        "id": "r2",
+        "quote": "with Yahweh",
+        "meaning": "Limit the requested conduct to Uzziah's relationship with and behavior toward God.",
+        "role": "tested",
+        "reason": "This is essential scope for the requested comparison, distinguishing religious conduct from the military activity also described in the passage."
+      }
+    ],
+    "note": "No explicit intended target is supplied; the target is inferred from the current question and earlier original question and answer. Verse 26:4 explicitly compares Uzziah's doing right with Amaziah's conduct, and verse 26:5 supports the required component that Uzziah sought God. The passage does not independently state that Amaziah sought God, so that additional claim is not required. Zechariah's instruction, the duration of Uzziah's seeking, and his resulting success are not requested answer components."
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "proposal": {
+        "id": "item",
+        "status": "unchanged",
+        "question": "How does Uzziah follow his father's example with Yahweh?",
+        "options": [
+          {
+            "label": "A",
+            "text": "Worshipped other gods"
+          },
+          {
+            "label": "B",
+            "text": "Ignored God's laws"
+          },
+          {
+            "label": "C",
+            "text": "Built idols"
+          },
+          {
+            "label": "D",
+            "text": "Did right and sought God"
+          },
+          {
+            "label": "E",
+            "text": "I can't tell from this passage"
+          }
+        ],
+        "removed_relation_ids": [],
+        "note": "The question is already direct. Both the comparison with his father and the scope of conduct toward Yahweh are tested relations, so neither can be removed."
+      },
+      "candidate": {
+        "id": "gold:t1_2chr26:tglh:mcq",
+        "question": "How does Uzziah follow his father's example with Yahweh?",
+        "passage": "26:4 And he did what was right in the eyes of the LORD, just as his father Amaziah had done.\n26:5 He sought God throughout the days of Zechariah, who instructed him in the fear of God. And as long as he sought the LORD, God gave him success.\n26:6 Uzziah went out to wage war against the Philistines, and he tore down the walls of Gath, Jabneh, and Ashdod. Then he built cities near Ashdod and among the Philistines.",
+        "expected_answer": "Did right and sought God",
+        "form": "mcq",
+        "options": {
+          "A": "Worshipped other gods",
+          "B": "Ignored God's laws",
+          "C": "Built idols",
+          "D": "Did right and sought God",
+          "E": "I can't tell from this passage"
+        },
+        "correct_option": "D",
+        "intended_target": "",
+        "original_question": "How did Uzziah follow his father's example with Yahweh?",
+        "original_answer": "Did right and sought God."
+      },
+      "checks": [
+        {
+          "repeat": 1,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "The contract preserves the original comparison with Uzziah's father, its religious scope, and both original answer components. Verse 26:4 explicitly connects doing right with his father's example; verse 26:5 supplies seeking God as further conduct by Uzziah. The contract appropriately does not require the unsupported claim that his father also sought God."
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "The candidate is unchanged from the original and retains the comparison with his father's example, the scope concerning Yahweh, and both required answer components."
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "No question wording, options, or passage information was removed."
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "The question and all five options remain in their original English."
+            },
+            "option_meanings": [
+              {
+                "status": "pass",
+                "evidence": "Unchanged: worshipping other gods.",
+                "label": "A"
+              },
+              {
+                "status": "pass",
+                "evidence": "Unchanged: ignoring God's laws.",
+                "label": "B"
+              },
+              {
+                "status": "pass",
+                "evidence": "Unchanged: building idols.",
+                "label": "C"
+              },
+              {
+                "status": "pass",
+                "evidence": "Unchanged: both doing right and seeking God.",
+                "label": "D"
+              },
+              {
+                "status": "pass",
+                "evidence": "Unchanged: inability to determine the answer from this passage.",
+                "label": "E"
+              }
+            ],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "Verse 26:4 explicitly says Uzziah did right just as his father Amaziah had done, supporting the question's comparison and religious scope."
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "Verse 26:4 states that he did what was right, and verse 26:5 states that he sought God. Both components of D are supported. Only doing right is explicitly compared with his father's conduct; the answer need not assert that his father also sought God."
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "D alone gives the positive religious conduct described. Worshipping other gods, ignoring God's laws, and building idols are not supported, and the passage provides enough information to reject E."
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "The supplied window contains the father comparison and both answer components. Verse 26:6 names Uzziah, helping identify the subject of the preceding verses."
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "The question identifies the relevant relationship but does not disclose doing right or seeking God. No answer annotation appears in the displayed question or choices."
+              },
+              "mcq_validity": {
+                "status": "pass",
+                "evidence": "There is one supported keyed option, D, with distinct distractors and a clear abstention option."
+              }
+            },
+            "naturalness": {
+              "score": 1,
+              "evidence": "The question is understandable, but 'example with Yahweh' is a mildly awkward way to express conduct toward God.",
+              "quotes": [
+                "his father's example with Yahweh"
+              ]
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "The single question and short, distinct choices are readily parsed. The father comparison is part of the target rather than an avoidable reference chain.",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "There is no unnecessary introductory narration. The father comparison preserves the tested relation, and mentioning Yahweh specifies the relevant conduct.",
+              "quotes": []
+            }
+          }
+        },
+        {
+          "repeat": 2,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "The contract preserves the original comparison with Uzziah's father and both components of the supplied answer. Verse 26:4 explicitly supports the comparison in doing right; verse 26:5 supports Uzziah's seeking God. The contract appropriately does not require the unsupported additional claim that his father also sought God."
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "The candidate is unchanged from the original and preserves the father-example comparison, the religious scope, and both required answer components."
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "No question or option information was removed."
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "The question and all five options remain in English, with identical wording."
+            },
+            "option_meanings": [
+              {
+                "status": "pass",
+                "evidence": "Unchanged: worshipping other gods.",
+                "label": "A"
+              },
+              {
+                "status": "pass",
+                "evidence": "Unchanged: ignoring God's laws.",
+                "label": "B"
+              },
+              {
+                "status": "pass",
+                "evidence": "Unchanged: building idols.",
+                "label": "C"
+              },
+              {
+                "status": "pass",
+                "evidence": "Unchanged: both doing right and seeking God.",
+                "label": "D"
+              },
+              {
+                "status": "pass",
+                "evidence": "Unchanged: inability to determine the answer from the passage.",
+                "label": "E"
+              }
+            ],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "Verse 26:4 explicitly says Uzziah did right just as his father Amaziah had done, supporting the question's presupposition."
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "Verses 26:4–5 support both parts of D: Uzziah did right and sought God. The explicit father comparison attaches to doing right; the passage does not independently establish that Amaziah sought God."
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "D is the only option expressing the positive religious conduct described in verses 26:4–5. No competing option is supported."
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "The supplied window contains the father comparison and both expected actions. No outside biblical knowledge is needed to select D."
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "The question identifies the comparison and religious scope without stating either required action or signaling the correct label."
+              },
+              "mcq_validity": {
+                "status": "pass",
+                "evidence": "The keyed option D matches the expected answer and is uniquely supported. The other substantive options describe distinct unsupported conduct, and E is a clear abstention option."
+              }
+            },
+            "naturalness": {
+              "score": 1,
+              "evidence": "The question is understandable, but 'with Yahweh' attaches somewhat awkwardly to 'follow his father's example'; wording about conduct toward Yahweh would be more idiomatic.",
+              "quotes": [
+                "follow his father's example with Yahweh"
+              ]
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "The question has a straightforward comparison, and the short options require no difficult reference resolution or choice comparison.",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "The father comparison is the tested relation, and the reference to Yahweh usefully specifies the religious scope. There is no dispensable event narration or reference chain in the question.",
+              "quotes": []
+            }
+          }
+        }
+      ],
+      "status": "KEPT"
+    }
+  ]
+}

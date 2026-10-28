@@ -225,7 +225,7 @@ test("stored timing is sanitized, so a tampered cache cannot inflate it", () => 
 });
 
 test("the pilot frontend emits no periodic heartbeat", () => {
-  for (const name of ["app.js", "api.js", "timing.js"]) {
+  for (const name of ["app.js", "api.js", "timing.js", "questionnaire.js"]) {
     const source = readFileSync(join(FRONTEND, name), "utf8");
     for (const forbidden of ["setInterval", "setTimeout", "requestIdleCallback", "heartbeat"]) {
       assert.equal(

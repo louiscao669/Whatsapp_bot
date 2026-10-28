@@ -1,0 +1,41 @@
+{
+  "request_hash": "9f3034a914b206b7a4e8085d9e722a99c331c729cf38a58fbb6c815c61ba0191",
+  "model": "gpt-6.1-sol",
+  "response_id": "resp_001609ca79771194006ae0ed5cf49487d1a020c52efc9588c6",
+  "usage": {
+    "input_tokens": 873,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0
+    },
+    "output_tokens": 369,
+    "output_tokens_details": {
+      "reasoning_tokens": 122
+    },
+    "total_tokens": 1242
+  },
+  "parsed": {
+    "items": [
+      {
+        "id": "item",
+        "parse_summary": "The passive question asks for the action assigned to two divisions. Within its subject, “going off duty on the Sabbath” modifies “the two divisions,” distinguishing them from those coming on duty. The divisions receive the command and are to perform the requested action; the commander need not be identified. The choices are structurally distinct.",
+        "features": [
+          {
+            "kind": "nested_modifier",
+            "quote": "the two divisions going off duty on the Sabbath",
+            "required_operations": "Attach “going off duty” to “the two divisions” and “on the Sabbath” to that duty transition, preserving which divisions the question concerns.",
+            "concern": "ordinary",
+            "reason": "The modifier identifies the target divisions and distinguishes them from the divisions coming on duty; it adds no avoidable nesting."
+          },
+          {
+            "kind": "role_tracking",
+            "quote": "What were the two divisions going off duty on the Sabbath commanded to do?",
+            "required_operations": "Interpret the divisions as recipients of a command and as the intended performers of the action being asked about.",
+            "concern": "ordinary",
+            "reason": "The passive construction directly expresses the assigned duty. No additional participant identities or competing role assignments must be tracked."
+          }
+        ]
+      }
+    ]
+  }
+}

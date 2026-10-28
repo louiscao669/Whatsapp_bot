@@ -5,7 +5,11 @@ import re
 from sqlalchemy import select
 
 from eten_shared.domain.qa_eligibility import qa_item_is_assignable
-from eten_shared.domain.assignments import select_three_verse_window
+from eten_shared.domain.assignments import (
+    passage_translation_book_clause,
+    select_three_verse_window,
+)
+from eten_shared.domain.bible_books import LEGACY_TRANSLATION_BOOK, qa_item_book
 from eten_shared.models import (
     Assignment,
     AssignmentStatus,
@@ -93,8 +97,8 @@ def qa_reference_sort_key(qa_item):
     return (0, book, chapter, verse, qa_item.id)
 
 
-def _translation_options(db, language, chapter, target_verse):
-    translations = db.scalars(
+def _translation_options(db, language, chapter, target_verse, qa_item):
+    statement = (
         select(PassageTranslation)
         .join(PassageVerse)
         .where(
@@ -102,6 +106,14 @@ def _translation_options(db, language, chapter, target_verse):
             PassageVerse.chapter_number == chapter,
             PassageVerse.verse_number == str(target_verse),
         )
+    )
+    # Chapter:verse alone is not enough: a Judges 9 question must not be
+    # offered a Luke 9 passage.
+    book_clause = passage_translation_book_clause(qa_item)
+    if book_clause is not None:
+        statement = statement.where(book_clause)
+    translations = db.scalars(
+        statement
         .distinct()
         .order_by(PassageTranslation.name, PassageTranslation.created_at)
     ).all()
@@ -135,7 +147,7 @@ def get_assignment_options(db, participant_id):
         if qa_item.id in assigned_ids or not qa_item_is_assignable(qa_item) or not location:
             continue
         chapter, verse = location
-        translations = _translation_options(db, language, chapter, verse)
+        translations = _translation_options(db, language, chapter, verse, qa_item)
         questions.append(
             {
                 "id": qa_item.id,
@@ -200,6 +212,13 @@ def assign_questions_with_passages(db, participant_id, selections):
             raise ParticipantAssignmentError("A selected question is unavailable for assignment")
         if not translation or translation.language != language:
             raise ParticipantAssignmentError("Passage translation must match participant language")
+        question_book = qa_item_book(qa_item)
+        translation_book = translation.book or LEGACY_TRANSLATION_BOOK
+        if question_book and question_book != translation_book:
+            raise ParticipantAssignmentError(
+                f"Passage translation is {translation_book.title()} but the question is from "
+                f"{question_book.title()}"
+            )
         chapter, target_verse = location
         verses = _passage_window(db, translation.id, chapter, target_verse, qa_item)
         prepared.append((qa_item, translation, chapter, verses))

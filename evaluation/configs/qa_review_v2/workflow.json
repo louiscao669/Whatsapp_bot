@@ -1,0 +1,10 @@
+{
+  "version": "qa_review_v2",
+  "model": "gpt-6.1-sol",
+  "stages": ["content_validity", "structure", "burden"],
+  "language_rewrite_threshold": 2,
+  "decision_policy": "content failure holds the item; content uncertainty or unresolved structural concern requires review; language score >=2 requires rewrite; otherwise keep",
+  "difficulty_role": "descriptive metadata only, separate from admission",
+  "mutation_policy": "retain all input records; do not rewrite or delete questions",
+  "review_points": ["final source wording after format conversion", "final translated wording with clean participant passage", "after any wording, option, target or passage-window change"]
+}

@@ -1,0 +1,48 @@
+{
+  "request_hash": "752f6fa190e1ddd6a1a105615dd841645f3f3cef98b0c12fb2eacd60401d7352",
+  "model": "gpt-6.1-sol",
+  "response_id": "resp_0d126b6f4d648cca006ae0f044f38087d194caad7050cfe6b7",
+  "usage": {
+    "input_tokens": 907,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0
+    },
+    "output_tokens": 567,
+    "output_tokens_details": {
+      "reasoning_tokens": 101
+    },
+    "total_tokens": 1474
+  },
+  "parsed": {
+    "items": [
+      {
+        "id": "item",
+        "parse_summary": "第一句以“被邪灵附身”修饰施事“人”，说明此人制服了“一些人”；第二句用“这些人”和“他们”连续回指被制服者，补充其带伤逃离的经历，最后询问这群人的身份。需将这群人与经文中的士基瓦的七个儿子对应，而非与被邪灵附身的人混同。",
+        "features": [
+          {
+            "kind": "nested_modifier",
+            "quote": "那个被邪灵附身的人",
+            "required_operations": "将“被邪灵附身”作为“人”的修饰语，再将整个名词短语理解为“制服”的施事。",
+            "concern": "ordinary",
+            "reason": "修饰语层次浅，用于区分制服他人的人和被制服者，是目标事件关系的一部分。"
+          },
+          {
+            "kind": "role_tracking",
+            "quote": "那个被邪灵附身的人制服了一些人。",
+            "required_operations": "区分邪灵、被附身的人和被制服的一群人；理解被附身的人同时是制服行为的施事。",
+            "concern": "ordinary",
+            "reason": "角色转换是辨认目标人物所必需的关系，题目没有增加额外的角色层次。"
+          },
+          {
+            "kind": "reference_chain",
+            "quote": "一些人。这些人随后带伤逃出了那房子，他们是谁？",
+            "required_operations": "把“这些人”和“他们”均回接到“一些人”，将制服与逃离两个事件的参与者保持为同一群人，并从经文确定其身份；“那房子”对应经文中的房子。",
+            "concern": "ordinary",
+            "reason": "回指相邻且对象一致，连接的两个事件正是题目用于辨认人物的必要线索。"
+          }
+        ]
+      }
+    ]
+  }
+}

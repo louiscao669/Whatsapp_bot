@@ -1,0 +1,78 @@
+{
+  "request_hash": "0f909c3e28046ba3690454ac4897d4f42f170f395b8c253d45c28ba9be351652",
+  "model": "gpt-6.1-sol",
+  "response_id": "resp_0e2f0219e85a8433006ae130db6f7487d18c26a82f2361076d",
+  "usage": {
+    "input_tokens": 1740,
+    "input_tokens_details": {
+      "cached_tokens": 1268,
+      "cache_write_tokens": 469
+    },
+    "output_tokens": 774,
+    "output_tokens_details": {
+      "reasoning_tokens": 90
+    },
+    "total_tokens": 2514
+  },
+  "parsed": {
+    "id": "item",
+    "contract_validity": {
+      "status": "pass",
+      "evidence": "合同符合显式目标及短文：需识别吃饭前离开的小林，并通过时间条件与吃饭后离开的小周区分。饭前条件和离开者身份均为被测内容。"
+    },
+    "same_target": {
+      "status": "fail",
+      "evidence": "候选问题删去了“吃饭前”，只问谁离开了，未保留显式要求的饭前／饭后区别。"
+    },
+    "removals_justified": {
+      "status": "fail",
+      "evidence": "“吃饭前”不是冗余背景，而是区分两次离开事件的必要条件。删除后，小周也成为符合问题的答案。"
+    },
+    "same_language": {
+      "status": "pass",
+      "evidence": "原问题与候选问题均为中文；本题无选项。"
+    },
+    "option_meanings": [],
+    "content": {
+      "question_support": {
+        "status": "pass",
+        "evidence": "短文明确记载小林和小周都离开了，因此候选问题关于有人离开的预设有支持。"
+      },
+      "answer_support": {
+        "status": "pass",
+        "evidence": "短文写明“吃饭前，小林离开了”，所以固定答案“小林”确实是离开者之一。"
+      },
+      "answer_uniqueness": {
+        "status": "fail",
+        "evidence": "“谁离开了？”同时适用于小林和小周，无法唯一确定固定答案“小林”。"
+      },
+      "context_sufficiency": {
+        "status": "fail",
+        "evidence": "当前短文提供了两个离开者，但候选问题没有给出选择饭前事件的条件，因而不足以确定只应回答小林。"
+      },
+      "answer_leakage": {
+        "status": "pass",
+        "evidence": "候选问题没有透露小林的姓名或直接提示固定答案。"
+      },
+      "mcq_validity": {
+        "status": "not_applicable",
+        "evidence": "本题为开放题，无选项或选择题答案键。"
+      }
+    },
+    "naturalness": {
+      "score": 0,
+      "evidence": "“谁离开了？”是自然、直接的中文问句。",
+      "quotes": []
+    },
+    "processing": {
+      "score": 0,
+      "evidence": "句式简单，无指代链、复杂修饰或角色解析负担；答案不唯一属于内容问题。",
+      "quotes": []
+    },
+    "context_economy": {
+      "score": 0,
+      "evidence": "候选问题没有冗余铺垫；其缺陷是删除了必要条件，而非保留了多余背景。",
+      "quotes": []
+    }
+  }
+}

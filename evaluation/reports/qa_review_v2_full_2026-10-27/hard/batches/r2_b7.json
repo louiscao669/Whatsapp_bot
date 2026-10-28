@@ -1,0 +1,1123 @@
+[
+  {
+    "id": "hard:t1_2kgs6_7:fe00:mcq",
+    "input_hash": "06d31c80e76dc769f31b95b466759dfe176da784f19881658b0c6013ab39c86d",
+    "content_validity": {
+      "id": "q0058",
+      "target": "吃另一个妇人儿子的计划时间是明天。",
+      "target_basis": "inferred",
+      "target_preservation": {
+        "status": "pass",
+        "evidence": "最终问题与原问题相同，仍询问吃另一个妇人儿子的时间；预期答案与原答案 tomorrow 一致。"
+      },
+      "question_support": {
+        "status": "fail",
+        "evidence": "经文只记载一个妇人提出“明天我们就吃我的儿子”，没有记载另一个妇人同意；“她们约定”把单方提出的计划说成了双方达成的约定。"
+      },
+      "answer_support": {
+        "status": "pass",
+        "evidence": "就所问的计划时间而言，“明天我们就吃我的儿子”直接支持“明天”。"
+      },
+      "answer_uniqueness": {
+        "status": "pass",
+        "evidence": "这段话只为吃另一个妇人的儿子指定了“明天”，没有其他竞争日期。"
+      },
+      "context_sufficiency": {
+        "status": "pass",
+        "evidence": "妇人转述的话区分了“你的儿子”和“我的儿子”，足以定位所问的第二个儿子及其计划时间。"
+      },
+      "answer_leakage": {
+        "status": "pass",
+        "evidence": "问题没有给出日期；“明天”出现在选项中不构成泄露。"
+      },
+      "mcq_validity": {
+        "status": "pass",
+        "evidence": "D“明天”是唯一符合所述计划时间的选项；A、B、C均不符，E也不符，因为日期已明确给出。双方是否同意的问题另见 question_support。"
+      },
+      "meaning_profile": {
+        "answer_explicitness": "direct",
+        "semantic_relation": "计划事件与其时间",
+        "answer_scope": "single_component",
+        "passage_span": "one_sentence"
+      }
+    },
+    "structural_inspection": {
+      "id": "q0058",
+      "parse_summary": "“她们”是约定的双方；“哪一天”询问吃儿子的计划时间。“另一个妇人的儿子”须与引文中提出约定者所说的“我的儿子”对应，而非当时听她说话的妇人的儿子。",
+      "features": [
+        {
+          "kind": "reference_chain",
+          "quote": "她们约定哪一天吃另一个妇人的儿子？",
+          "required_operations": "把“她们”对应到两位妇人，并根据转述中的说话者身份，确定“另一个妇人的儿子”对应谁所说的“我的儿子”。",
+          "concern": "ordinary",
+          "reason": "需要转换人物指称视角，但这是确定目标计划时间所必需的关系。"
+        },
+        {
+          "kind": "layered_speech",
+          "quote": "她们约定",
+          "required_operations": "从妇人向王转述另一妇人的提议中，提取约定的时间，而不是把转述时刻当作计划时间。",
+          "concern": "ordinary",
+          "reason": "约定通过人物转述呈现；题问本身没有额外叠加报告层。"
+        }
+      ]
+    },
+    "language_accessibility": {
+      "id": "q0058",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“她们约定哪一天吃另一个妇人的儿子？”语序自然，“哪一天”直接询问计划时间。"
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "需把“她们”对应到两位妇人，并将“另一个妇人的儿子”与转述中的“我的儿子”对应。这是目标所需的视角转换，问句没有额外增加嵌套或比较负担。"
+      },
+      "context_economy": {
+        "score": 0,
+        "evidence": "“她们约定”和“另一个妇人的儿子”均用于限定所问计划，没有多余的题目铺垫。"
+      },
+      "structure_assessments": [
+        {
+          "feature_index": 0,
+          "assessment": "manageable",
+          "reason": "“她们”和“另一个妇人的儿子”需要人物对应，但这一对应直接服务于辨认所问计划，属于可管理的必要指称追踪。"
+        },
+        {
+          "feature_index": 1,
+          "assessment": "manageable",
+          "reason": "“她们约定”将注意力指向转述中的计划；问句本身没有再增加引语层次，提取计划时间的要求可管理。"
+        }
+      ]
+    },
+    "decision": "HOLD_CONTENT",
+    "content_status": "HOLD",
+    "language_status": "PASS",
+    "content_failures": [
+      "question_support"
+    ],
+    "content_uncertainties": [],
+    "language_failures": [],
+    "structural_concerns": [],
+    "unresolved_features": [],
+    "structure_burden_disagreement": false,
+    "repeat": 2
+  },
+  {
+    "id": "hard:t1_2chr26:eb1d:mcq",
+    "input_hash": "5d8fca7708daacda26e1f23501e0766284bd69d8f2f70537afc687a4df762a75",
+    "content_validity": {
+      "id": "q0026",
+      "target": "亚撒利亚和八十位祭司跟随进入耶和华殿的人是乌西雅。",
+      "target_basis": "inferred",
+      "target_preservation": {
+        "status": "pass",
+        "evidence": "最终问题保留了原问题中的跟随者、进入圣殿的行动及所问人物；乌西雅与原答案 King Uzziah 相同。"
+      },
+      "question_support": {
+        "status": "pass",
+        "evidence": "26:16说乌西雅进入耶和华的殿，26:17说亚撒利亚和八十位祭司“跟随他进去”。"
+      },
+      "answer_support": {
+        "status": "pass",
+        "evidence": "“跟随他进去”的“他”承接上一节进入圣殿的乌西雅。"
+      },
+      "answer_uniqueness": {
+        "status": "pass",
+        "evidence": "上下文唯一对应的被跟随者是乌西雅，26:18也明确说祭司站在乌西雅王面前。"
+      },
+      "context_sufficiency": {
+        "status": "pass",
+        "evidence": "前一节提供了“他”的明确先行词和进入的地点。"
+      },
+      "answer_leakage": {
+        "status": "pass",
+        "evidence": "问题只给出跟随者和地点，没有给出被跟随者的名字。"
+      },
+      "mcq_validity": {
+        "status": "pass",
+        "evidence": "B乌西雅符合经文；亚伦是祭司祖先，亚撒利亚是跟随者，约坦未在这段出现；E不成立。"
+      },
+      "meaning_profile": {
+        "answer_explicitness": "nearby_connection",
+        "semantic_relation": "跟随行动的对象及代词指代",
+        "answer_scope": "single_component",
+        "passage_span": "nearby"
+      }
+    },
+    "structural_inspection": {
+      "id": "q0026",
+      "parse_summary": "并列主语“祭司亚撒利亚和八十位祭司”共同执行“跟随……进殿”；“谁”占据被跟随者的位置，“耶和华的殿”是进入的地点。",
+      "features": [
+        {
+          "kind": "role_tracking",
+          "quote": "祭司亚撒利亚和八十位祭司跟随谁进了耶和华的殿？",
+          "required_operations": "区分跟随者、被跟随者和进入的地点，并把经文中的“他”对应到乌西雅。",
+          "concern": "ordinary",
+          "reason": "这些角色正是所问的跟随关系，没有额外嵌套。"
+        }
+      ]
+    },
+    "language_accessibility": {
+      "id": "q0026",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“祭司亚撒利亚和八十位祭司跟随谁进了耶和华的殿？”是自然的并列主语加连动结构。"
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "需区分“祭司亚撒利亚和八十位祭司”这些跟随者与“谁”所问的被跟随者，并联系原文的“他”；角色由“跟随谁”清楚标明。"
+      },
+      "context_economy": {
+        "score": 0,
+        "evidence": "“祭司亚撒利亚和八十位祭司”及“耶和华的殿”共同限定目标事件，没有额外背景说明。"
+      },
+      "structure_assessments": [
+        {
+          "feature_index": 0,
+          "assessment": "manageable",
+          "reason": "“跟随谁进了耶和华的殿”明确区分跟随者、被跟随者和地点；这些角色均属于所问关系，没有不必要的修饰层。"
+        }
+      ]
+    },
+    "decision": "KEEP",
+    "content_status": "PASS",
+    "language_status": "PASS",
+    "content_failures": [],
+    "content_uncertainties": [],
+    "language_failures": [],
+    "structural_concerns": [],
+    "unresolved_features": [],
+    "structure_burden_disagreement": false,
+    "repeat": 2
+  },
+  {
+    "id": "hard:t1_judg9:1246:mcq",
+    "input_hash": "ea076bf4a8e4c23e8394292b60d4e8aa308a1cac8b1096a48dc151e38d30f693",
+    "content_validity": {
+      "id": "q0118",
+      "target": "暗暗打发人去见亚比米勒的人是示剑的官西布。",
+      "target_basis": "inferred",
+      "target_preservation": {
+        "status": "pass",
+        "evidence": "最终问题与原问题相同，仍询问秘密派人的发起者；答案保留原答案所指的城市官员。"
+      },
+      "question_support": {
+        "status": "pass",
+        "evidence": "9:31明确记载“他暗暗打发人去见亚比米勒”。"
+      },
+      "answer_support": {
+        "status": "pass",
+        "evidence": "9:30的主语是“示剑的官西布”，下一节的“他”承接此人。"
+      },
+      "answer_uniqueness": {
+        "status": "pass",
+        "evidence": "只有西布被描述为暗中派人的人；迦勒是被他报告的人。"
+      },
+      "context_sufficiency": {
+        "status": "pass",
+        "evidence": "相邻两节提供姓名、官职和派人行动，指代清楚。"
+      },
+      "answer_leakage": {
+        "status": "pass",
+        "evidence": "问题提供行动和接见对象，但未透露派人者。"
+      },
+      "mcq_validity": {
+        "status": "pass",
+        "evidence": "只有B符合；A和C没有被记载实施此行动，D迦勒是报告对象，E与明确记载不符。"
+      },
+      "meaning_profile": {
+        "answer_explicitness": "nearby_connection",
+        "semantic_relation": "派遣行动的施事及代词指代",
+        "answer_scope": "single_component",
+        "passage_span": "nearby"
+      }
+    },
+    "structural_inspection": {
+      "id": "q0118",
+      "parse_summary": "“谁”是打发者，“人”是被派遣并前往者，“亚比米勒”是会见对象。“暗暗”修饰打发行为；选项中的身份短语用于指认人物。",
+      "features": [
+        {
+          "kind": "role_tracking",
+          "quote": "谁暗暗打发人去见亚比米勒？",
+          "required_operations": "区分发出派遣的人、受派遣的人及被会见的人，选择派遣者。",
+          "concern": "ordinary",
+          "reason": "派遣结构有三个角色，但均为目标事件的必要组成。"
+        }
+      ]
+    },
+    "language_accessibility": {
+      "id": "q0118",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“谁暗暗打发人去见亚比米勒？”虽用书面表达“暗暗打发人”，但搭配成立，语意直接；选项中的人物身份短语也自然。"
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "需区分“谁”这一派遣者、“人”这一受派遣者和“亚比米勒”这一会见对象。“打发人去见”按行动顺序组织，角色追踪可管理。"
+      },
+      "context_economy": {
+        "score": 0,
+        "evidence": "“暗暗”和“去见亚比米勒”用于识别派遣事件；选项“示剑的官西布”等没有附加无关说明。"
+      },
+      "structure_assessments": [
+        {
+          "feature_index": 0,
+          "assessment": "manageable",
+          "reason": "“谁暗暗打发人去见亚比米勒”包含三个必要角色，但派遣结构明确，读者不需处理额外嵌套。"
+        }
+      ]
+    },
+    "decision": "KEEP",
+    "content_status": "PASS",
+    "language_status": "PASS",
+    "content_failures": [],
+    "content_uncertainties": [],
+    "language_failures": [],
+    "structural_concerns": [],
+    "unresolved_features": [],
+    "structure_burden_disagreement": false,
+    "repeat": 2
+  },
+  {
+    "id": "hard:t1_acts19:9b0c:open",
+    "input_hash": "0876ae24bdda7a134991ad7d2241e01ab245179703af3c4cfb6d228f8775b5a4",
+    "content_validity": {
+      "id": "q0069",
+      "target": "行邪术的人拿出书后，在众人面前把书烧掉。",
+      "target_basis": "inferred",
+      "target_preservation": {
+        "status": "not_applicable",
+        "evidence": "未提供原问题、原答案或明确的 intended_target。"
+      },
+      "question_support": {
+        "status": "pass",
+        "evidence": "19:19记载他们“拿出他们的书，在众人面前烧掉”，支持问题中的行动顺序。"
+      },
+      "answer_support": {
+        "status": "pass",
+        "evidence": "预期答案 burn the scrolls publicly 对应“在众人面前烧掉”；这里 scrolls 与经文“书”指同一批被烧的书籍，不改变所问行动。"
+      },
+      "answer_uniqueness": {
+        "status": "pass",
+        "evidence": "紧接拿出书的行动只有当众烧书；统计价值不是他们接着对书实施的另一种行动。"
+      },
+      "context_sufficiency": {
+        "status": "pass",
+        "evidence": "19:19完整提供行动者、书和后续行动。"
+      },
+      "answer_leakage": {
+        "status": "pass",
+        "evidence": "“把书拿出来”只是前序事件，没有透露随后烧书的行动。"
+      },
+      "mcq_validity": {
+        "status": "not_applicable",
+        "evidence": "这是开放题，没有选项。"
+      },
+      "meaning_profile": {
+        "answer_explicitness": "direct",
+        "semantic_relation": "前序行动之后的行动",
+        "answer_scope": "single_component",
+        "passage_span": "one_sentence"
+      }
+    },
+    "structural_inspection": {
+      "id": "q0069",
+      "parse_summary": "“行邪术的人”是带动词性修饰语的主语；“把书拿出来以后”提供先行事件，“接着做了什么”询问同一群人的下一步行动。两个事件共享主语，后一动作的对象可由“书”承接。",
+      "features": []
+    },
+    "language_accessibility": {
+      "id": "q0069",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“把书拿出来以后，接着做了什么？”是自然、直接的时间顺序问法。"
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "“行邪术的人”是两个动作共享的主语，“以后”和“接着”清楚标示先后关系，无须重新分配人物角色。"
+      },
+      "context_economy": {
+        "score": 0,
+        "evidence": "“把书拿出来以后”提供询问下一步行动所需的时间锚点，没有额外铺垫。"
+      },
+      "structure_assessments": []
+    },
+    "decision": "KEEP",
+    "content_status": "PASS",
+    "language_status": "PASS",
+    "content_failures": [],
+    "content_uncertainties": [],
+    "language_failures": [],
+    "structural_concerns": [],
+    "unresolved_features": [],
+    "structure_burden_disagreement": false,
+    "repeat": 2
+  },
+  {
+    "id": "hard:t1_2kgs11:df0e:open",
+    "input_hash": "a03482b2c1b65a43215655a88cdcd6b706fb2ba060711016cb618322a1751a6d",
+    "content_validity": {
+      "id": "q0039",
+      "target": "耶何耶大明确吩咐百夫长杀死所有跟随那个妇人的人。",
+      "target_basis": "inferred",
+      "target_preservation": {
+        "status": "not_applicable",
+        "evidence": "未提供原问题、原答案或明确的 intended_target。"
+      },
+      "question_support": {
+        "status": "pass",
+        "evidence": "11:15明确说耶何耶大吩咐百夫长：“跟随她的都要杀死。”"
+      },
+      "answer_support": {
+        "status": "pass",
+        "evidence": "Anyone who follows the woman 准确对应明确命令中的“跟随她的都要杀死”。"
+      },
+      "answer_uniqueness": {
+        "status": "pass",
+        "evidence": "明确的“都要杀死”命令只有一个对象群体，即跟随她的人；对妇人的话则规定不可在殿里杀她。"
+      },
+      "context_sufficiency": {
+        "status": "pass",
+        "evidence": "杀死跟随者的命令完整呈现，11:16还将妇人标明为亚他利雅。"
+      },
+      "answer_leakage": {
+        "status": "pass",
+        "evidence": "问题给出下令者和受令者，没有给出被命令杀死的人群。"
+      },
+      "mcq_validity": {
+        "status": "not_applicable",
+        "evidence": "这是开放题，没有选项。"
+      },
+      "meaning_profile": {
+        "answer_explicitness": "direct",
+        "semantic_relation": "处死命令的对象群体",
+        "answer_scope": "single_component",
+        "passage_span": "one_sentence"
+      }
+    },
+    "structural_inspection": {
+      "id": "q0039",
+      "parse_summary": "主句是耶何耶大吩咐百夫长；后半句询问命令中“杀死”的对象，执行者承接百夫长。回答需提取命令中“跟随她的”这一人物集合。",
+      "features": [
+        {
+          "kind": "role_tracking",
+          "quote": "耶何耶大吩咐百夫长，要杀死哪些人？",
+          "required_operations": "区分下令者、受命执行者和被命令杀死的人；不能把百夫长当作被杀对象。",
+          "concern": "ordinary",
+          "reason": "命令的发出者、执行者与对象是本题必要的角色关系。"
+        },
+        {
+          "kind": "layered_speech",
+          "quote": "耶何耶大吩咐百夫长，要杀死哪些人？",
+          "required_operations": "在命令内容中寻找被杀对象，而不是仅根据随后实际发生的杀人事件作答。",
+          "concern": "ordinary",
+          "reason": "题问明确针对吩咐的内容，这一报告层服务于目标区分。"
+        }
+      ]
+    },
+    "language_accessibility": {
+      "id": "q0039",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“耶何耶大吩咐百夫长，要杀死哪些人？”采用常见的命令内容问法，逗号后的部分自然承接“吩咐”。"
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "需区分“耶何耶大”这一下令者、“百夫长”这一执行者和“哪些人”这一对象，并把问题限定在吩咐内容内。这些都是目标所需的普通角色区分。"
+      },
+      "context_economy": {
+        "score": 0,
+        "evidence": "“耶何耶大吩咐百夫长”用于确定所问命令，没有添加与对象识别无关的背景。"
+      },
+      "structure_assessments": [
+        {
+          "feature_index": 0,
+          "assessment": "manageable",
+          "reason": "“吩咐百夫长”与“杀死哪些人”分别标出受命者和被杀对象，必要的三方角色关系可以顺序解析。"
+        },
+        {
+          "feature_index": 1,
+          "assessment": "manageable",
+          "reason": "“吩咐”清楚限定问题针对命令内容；这一报告层是辨认所问对象所需的，不是额外负担。"
+        }
+      ]
+    },
+    "decision": "KEEP",
+    "content_status": "PASS",
+    "language_status": "PASS",
+    "content_failures": [],
+    "content_uncertainties": [],
+    "language_failures": [],
+    "structural_concerns": [],
+    "unresolved_features": [],
+    "structure_burden_disagreement": false,
+    "repeat": 2
+  },
+  {
+    "id": "hard:t1_judg9:c232:open",
+    "input_hash": "dffcc07d548b9d80f81d3244227e20f112390d05b9fbab3c61920fcab627f159",
+    "content_validity": {
+      "id": "q0109",
+      "target": "亚比米勒请母亲的弟兄和母亲的全家族向示剑众首领转达他的话。",
+      "target_basis": "inferred",
+      "target_preservation": {
+        "status": "not_applicable",
+        "evidence": "未提供原问题、原答案或明确的 intended_target。"
+      },
+      "question_support": {
+        "status": "pass",
+        "evidence": "9:1交代亚比米勒对母亲的弟兄及母亲全家族说话，9:2接着说“请你们问示剑的众首领”。"
+      },
+      "answer_support": {
+        "status": "pass",
+        "evidence": "预期答案包含9:1中全部受话者，正是9:2“你们”所指的人。"
+      },
+      "answer_uniqueness": {
+        "status": "pass",
+        "evidence": "两个亲属群体共同构成受托者，是一个包含两部分的完整答案，并非互相竞争的答案。"
+      },
+      "context_sufficiency": {
+        "status": "pass",
+        "evidence": "两节相连，明确交代受话者及他们要向谁传达什么话。"
+      },
+      "answer_leakage": {
+        "status": "pass",
+        "evidence": "问题给出亚比米勒及最终收话者，没有给出中间传话者的身份。"
+      },
+      "mcq_validity": {
+        "status": "not_applicable",
+        "evidence": "这是开放题，没有选项。"
+      },
+      "meaning_profile": {
+        "answer_explicitness": "nearby_connection",
+        "semantic_relation": "转达请求的受托者及代词指代",
+        "answer_scope": "multiple_components",
+        "passage_span": "nearby"
+      }
+    },
+    "structural_inspection": {
+      "id": "q0109",
+      "parse_summary": "亚比米勒是请求者；“谁”是受请求并负责转告的人；“他的话”是转告内容；示剑的众首领是最终接收者。“他”回指亚比米勒。",
+      "features": [
+        {
+          "kind": "role_tracking",
+          "quote": "亚比米勒请谁把他的话转告示剑的众首领？",
+          "required_operations": "区分原始说话者、传话者及最终听话者，选取中间的传话者作为答案。",
+          "concern": "ordinary",
+          "reason": "三方传话关系就是本题的语义目标。"
+        },
+        {
+          "kind": "reference_chain",
+          "quote": "他的话",
+          "required_operations": "将“他”回指亚比米勒，而非疑问代词“谁”所代表的传话者。",
+          "concern": "ordinary",
+          "reason": "回指距离短，且由转告关系明确支持。"
+        },
+        {
+          "kind": "layered_speech",
+          "quote": "请谁把他的话转告示剑的众首领",
+          "required_operations": "理解亚比米勒向亲属提出请求，再由亲属向众首领传达话语的两层交流关系。",
+          "concern": "ordinary",
+          "reason": "保留传话层次才能识别所问的受托者。"
+        }
+      ]
+    },
+    "language_accessibility": {
+      "id": "q0109",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“亚比米勒请谁把他的话转告示剑的众首领？”搭配和语序自然，“请谁把……转告……”直接表达委托传话。"
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "需追踪亚比米勒、传话者和众首领三个角色，并把“他的话”回指亚比米勒。三方关系就是所问内容，句中没有多余的交流层次。"
+      },
+      "context_economy": {
+        "score": 0,
+        "evidence": "“他的话”和“示剑的众首领”分别交代传话内容的归属及接收者，均有助于限定所问委托。"
+      },
+      "structure_assessments": [
+        {
+          "feature_index": 0,
+          "assessment": "manageable",
+          "reason": "“请谁把他的话转告”明确将疑问位置放在传话者上，三方角色虽需区分，但属于必要关系。"
+        },
+        {
+          "feature_index": 1,
+          "assessment": "manageable",
+          "reason": "“他的话”与句首“亚比米勒”距离短，委托传话的结构也支持这一回指，不构成额外指称负担。"
+        },
+        {
+          "feature_index": 2,
+          "assessment": "manageable",
+          "reason": "“请谁……转告示剑的众首领”保留了识别受托者所需的两阶段交流，表达紧凑，没有另加观点或引语嵌套。"
+        }
+      ]
+    },
+    "decision": "KEEP",
+    "content_status": "PASS",
+    "language_status": "PASS",
+    "content_failures": [],
+    "content_uncertainties": [],
+    "language_failures": [],
+    "structural_concerns": [],
+    "unresolved_features": [],
+    "structure_burden_disagreement": false,
+    "repeat": 2
+  },
+  {
+    "id": "hard:t1_1kgs13:8a66:mcq",
+    "input_hash": "724ec4a9d73e1255182200d846d22f7ed06bb6557cec7c8852c9bdfc03481ffb",
+    "content_validity": {
+      "id": "q0011",
+      "target": "在路上被狮子杀死的人是神人。",
+      "target_basis": "inferred",
+      "target_preservation": {
+        "status": "pass",
+        "evidence": "最终问题与原问题相同，仍询问被狮子杀死者的身份；原答案是 the man of God。"
+      },
+      "question_support": {
+        "status": "pass",
+        "evidence": "13:23—24叙述神人吃喝后离开，在路上遇见狮子并被杀死；“咬死”是对狮子杀人的通常表述，没有改变受害者或事件。"
+      },
+      "answer_support": {
+        "status": "fail",
+        "evidence": "经文支持死者是“神人”，但未说他“从犹大来”。预期答案增加了显示段落不能支持的来源信息。"
+      },
+      "answer_uniqueness": {
+        "status": "pass",
+        "evidence": "按叙事衔接，受害者是吃喝完、获备驴后离开的神人，没有记载第二名被狮子杀死的人。"
+      },
+      "context_sufficiency": {
+        "status": "pass",
+        "evidence": "段落足以识别受害者为神人，并将他与给他备驴的年老先知区别开；缺少的是答案额外添加的籍贯信息。"
+      },
+      "answer_leakage": {
+        "status": "pass",
+        "evidence": "问题只给出死亡事件，没有透露死者身份。"
+      },
+      "mcq_validity": {
+        "status": "fail",
+        "evidence": "指定答案C包含未经本段支持的“从犹大来”。A、B、D也没有得到受害者身份的支持；E又不能准确替代本段已经能够作出的“神人”回答，因此没有一个完全由本段支持的实质答案选项。"
+      },
+      "meaning_profile": {
+        "answer_explicitness": "nearby_connection",
+        "semantic_relation": "死亡事件的受害者及代词指代",
+        "answer_scope": "single_component",
+        "passage_span": "nearby"
+      }
+    },
+    "structural_inspection": {
+      "id": "q0011",
+      "parse_summary": "“谁”是被咬死者，“狮子”是施事，“在路上”限定事件地点。选项以人物名称或身份短语作答，其中“从犹大来的”修饰“神人”。",
+      "features": [
+        {
+          "kind": "role_tracking",
+          "quote": "谁在路上被狮子咬死了？",
+          "required_operations": "将疑问人物识别为受害者、狮子识别为施事，并根据经文连续的“他”确定遇害者是神人，而不是年老先知。",
+          "concern": "ordinary",
+          "reason": "被动结构直接标明所问角色，没有增加不必要的角色层次。"
+        }
+      ]
+    },
+    "language_accessibility": {
+      "id": "q0011",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“谁在路上被狮子咬死了？”是自然的被动问句；“伯特利的老先知”“从犹大来的神人”等选项修饰关系清楚。"
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "“被狮子咬死”直接标明受害者与施事。读者还需将所问人物与原文中的“他”对应，但题目没有增加额外角色层次。"
+      },
+      "context_economy": {
+        "score": 0,
+        "evidence": "“在路上”限定事件场景，选项中的地点和身份修饰用于辨认人物，没有冗余叙述。"
+      },
+      "structure_assessments": [
+        {
+          "feature_index": 0,
+          "assessment": "manageable",
+          "reason": "“谁……被狮子咬死”清楚标示受害者位置；联系原文指称是必要的理解步骤，被动结构本身没有造成额外负担。"
+        }
+      ]
+    },
+    "decision": "HOLD_CONTENT",
+    "content_status": "HOLD",
+    "language_status": "PASS",
+    "content_failures": [
+      "answer_support",
+      "mcq_validity"
+    ],
+    "content_uncertainties": [],
+    "language_failures": [],
+    "structural_concerns": [],
+    "unresolved_features": [],
+    "structure_burden_disagreement": false,
+    "repeat": 2
+  },
+  {
+    "id": "hard:t1_judg17_18:725d:mcq",
+    "input_hash": "201a75e421f9097b6dd517110a982c2f879a8ae1f419e9fea4d2a587a5d5fe9f",
+    "content_validity": {
+      "id": "q0092",
+      "target": "他们请祭司为这次行程求问神。",
+      "target_basis": "inferred",
+      "target_preservation": {
+        "status": "pass",
+        "evidence": "最终问题与原问题相同，仍询问受托求问者；预期答案与原答案 the priest 相同。"
+      },
+      "question_support": {
+        "status": "pass",
+        "evidence": "18:5记载他们请求“请你求问神”，18:6紧接着记载祭司回答他们。"
+      },
+      "answer_support": {
+        "status": "pass",
+        "evidence": "祭司的直接回应表明，前一句被请求求问神的“你”是祭司。"
+      },
+      "answer_uniqueness": {
+        "status": "pass",
+        "evidence": "这段对话只有祭司作为回应请求的人；神是求问的对象，不是受托求问者。"
+      },
+      "context_sufficiency": {
+        "status": "pass",
+        "evidence": "虽然没有交代“他们”的姓名，但相邻的请求与回应足以确定被请求者。"
+      },
+      "answer_leakage": {
+        "status": "pass",
+        "evidence": "问题未透露祭司身份，只描述所请求的任务。"
+      },
+      "mcq_validity": {
+        "status": "pass",
+        "evidence": "D祭司由回应得到支持；A神是求问对象，B、C在本段没有受托依据；E不成立。"
+      },
+      "meaning_profile": {
+        "answer_explicitness": "nearby_connection",
+        "semantic_relation": "请求的受托者与对话衔接",
+        "answer_scope": "single_component",
+        "passage_span": "nearby"
+      }
+    },
+    "structural_inspection": {
+      "id": "q0092",
+      "parse_summary": "第一个“他们”是请求者，“谁”是受请求的求问者，“为他们”指受益者并回指请求者，“这趟行程”是求问事项。需区分求问的执行者与求问对象神。",
+      "features": [
+        {
+          "kind": "role_tracking",
+          "quote": "他们请谁为他们求问这趟行程？",
+          "required_operations": "区分请求者、代为求问者和被求问的神；选择求问者，而非选项中的神。",
+          "concern": "ordinary",
+          "reason": "这些角色差别直接构成本题所问的关系。"
+        },
+        {
+          "kind": "reference_chain",
+          "quote": "他们请谁为他们求问这趟行程？",
+          "required_operations": "将两处“他们”理解为同一群人，将“这趟行程”对应到经文中的“我们行这路”，并由祭司的回应确认受请求者。",
+          "concern": "ordinary",
+          "reason": "指称衔接服务于同一次请求，没有额外人物链。"
+        }
+      ]
+    },
+    "language_accessibility": {
+      "id": "q0092",
+      "naturalness": {
+        "score": 2,
+        "evidence": "“求问这趟行程”的动宾搭配不自然：“行程”被直接放在“求问”后，读者需将其修复理解为就行程进行求问，而不是把行程当作被询问者。"
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "需将两处“他们”对应为同一群人，并区分“谁”这一代为求问者与选项“神”。“求问这趟行程”还需要局部关系调整，但整句短，尚未形成 substantial 的多层解析负担。"
+      },
+      "context_economy": {
+        "score": 0,
+        "evidence": "“为他们”和“这趟行程”分别说明代求关系和求问事项，均服务于目标；问题在搭配，不在背景过多。"
+      },
+      "structure_assessments": [
+        {
+          "feature_index": 0,
+          "assessment": "manageable",
+          "reason": "请求者、代为求问者和神之间的角色区别是必要的，“请谁为他们”也能清楚标示所问角色；另有“求问这趟行程”的搭配问题，已单独计入措辞评价。"
+        },
+        {
+          "feature_index": 1,
+          "assessment": "manageable",
+          "reason": "两处“他们”自然理解为同一群人，“这趟行程”也提供明确的事项指向；这些指称本身没有形成额外人物链。"
+        }
+      ]
+    },
+    "decision": "REWRITE",
+    "content_status": "PASS",
+    "language_status": "REWRITE",
+    "content_failures": [],
+    "content_uncertainties": [],
+    "language_failures": [
+      "naturalness"
+    ],
+    "structural_concerns": [],
+    "unresolved_features": [],
+    "structure_burden_disagreement": false,
+    "repeat": 2
+  },
+  {
+    "id": "hard:t1_judg17_18:9f00:mcq",
+    "input_hash": "ff9891c1199fbdfdc8256fa46c90100a0c2f500ba063c4f79862867981d126db",
+    "content_validity": {
+      "id": "q0088",
+      "target": "咒诅被拿走银子的人是米迦的母亲。",
+      "target_basis": "inferred",
+      "target_preservation": {
+        "status": "pass",
+        "evidence": "最终问题与原问题相同，仍询问咒诅者；预期答案与原答案 Micah’s mother 一致。"
+      },
+      "question_support": {
+        "status": "pass",
+        "evidence": "米迦向母亲提到从她那里拿走的银子，并说“我听见你咒诅它”，支持问题所述事件。"
+      },
+      "answer_support": {
+        "status": "pass",
+        "evidence": "米迦是对母亲说话，因此“你咒诅它”的施事是米迦的母亲。"
+      },
+      "answer_uniqueness": {
+        "status": "pass",
+        "evidence": "段落只将咒诅行为归给母亲；米迦承认的是拿走银子。"
+      },
+      "context_sufficiency": {
+        "status": "pass",
+        "evidence": "17:1提供米迦姓名，17:2明确说明受话者是他的母亲。"
+      },
+      "answer_leakage": {
+        "status": "pass",
+        "evidence": "问题没有给出咒诅者的身份。"
+      },
+      "mcq_validity": {
+        "status": "pass",
+        "evidence": "C符合“对他母亲说”及“你咒诅它”；B米迦是拿银子的人，A和D没有相关行为记载，E不成立。"
+      },
+      "meaning_profile": {
+        "answer_explicitness": "nearby_connection",
+        "semantic_relation": "咒诅行为的施事及第二人称指代",
+        "answer_scope": "single_component",
+        "passage_span": "nearby"
+      }
+    },
+    "structural_inspection": {
+      "id": "q0088",
+      "parse_summary": "主干是“谁咒诅了银子”；“被偷的”修饰银子，并不把“谁”设为偷银子的人。识别咒诅者时，需要将米迦对母亲说话时的“你”对应到母亲。",
+      "features": [
+        {
+          "kind": "role_tracking",
+          "quote": "谁咒诅了被偷的银子？",
+          "required_operations": "区分咒诅者与偷银者；理解“被偷的”只限定银子，不改变主句所问的咒诅行为。",
+          "concern": "ordinary",
+          "reason": "两种行为涉及同一对象，但问题清楚指定所问的行为角色。"
+        }
+      ]
+    },
+    "language_accessibility": {
+      "id": "q0088",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“谁咒诅了被偷的银子？”语法完整，“被偷的”自然修饰“银子”；“咒诅”虽是书面宗教用语，但在此语境中搭配可理解。"
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "需区分咒诅者和偷银者，并将引语中的“你”对应到米迦的母亲。“谁咒诅了”已明确所问行为，不需复杂的句法拆解。"
+      },
+      "context_economy": {
+        "score": 0,
+        "evidence": "“被偷的银子”用简短修饰语限定事件对象，没有多余背景或选项说明。"
+      },
+      "structure_assessments": [
+        {
+          "feature_index": 0,
+          "assessment": "manageable",
+          "reason": "“被偷的”局部修饰“银子”，主句仍清楚询问“谁咒诅”；区分两个行为的参与者属于可管理的必要操作。"
+        }
+      ]
+    },
+    "decision": "KEEP",
+    "content_status": "PASS",
+    "language_status": "PASS",
+    "content_failures": [],
+    "content_uncertainties": [],
+    "language_failures": [],
+    "structural_concerns": [],
+    "unresolved_features": [],
+    "structure_burden_disagreement": false,
+    "repeat": 2
+  },
+  {
+    "id": "hard:t1_2kgs6_7:5e57:open",
+    "input_hash": "c5bda4b152cbae41fdc10d1d73a046aa929b4a5ba71ae280fec6bd769ef45e9f",
+    "content_validity": {
+      "id": "q0061",
+      "target": "以利沙称派使者来杀他的王为“杀人犯”。",
+      "target_basis": "inferred",
+      "target_preservation": {
+        "status": "not_applicable",
+        "evidence": "未提供原问题、原答案或明确的 intended_target。"
+      },
+      "question_support": {
+        "status": "pass",
+        "evidence": "6:32明确记载以利沙说“这杀人犯打发人来砍我的头”。"
+      },
+      "answer_support": {
+        "status": "pass",
+        "evidence": "前文说“王打发使者先去”，以利沙随后把打发人者称为“这杀人犯”，对应的就是王。"
+      },
+      "answer_uniqueness": {
+        "status": "pass",
+        "evidence": "王是派遣者，使者是被派者；“这杀人犯打发人”指向王而不是使者或长老。"
+      },
+      "context_sufficiency": {
+        "status": "pass",
+        "evidence": "同一节提供派遣关系和称呼，足以确定人物角色，不需要知道王的姓名。"
+      },
+      "answer_leakage": {
+        "status": "pass",
+        "evidence": "问题给出待解释的称呼，但没有给出被称呼者。"
+      },
+      "mcq_validity": {
+        "status": "not_applicable",
+        "evidence": "这是开放题，没有选项。"
+      },
+      "meaning_profile": {
+        "answer_explicitness": "nearby_connection",
+        "semantic_relation": "称呼的所指人物",
+        "answer_scope": "single_component",
+        "passage_span": "nearby"
+      }
+    },
+    "structural_inspection": {
+      "id": "q0061",
+      "parse_summary": "“以利沙称谁为……”是称谓结构，“谁”是被称作杀人犯的人。需将以利沙话中的“这杀人犯”与叙述中打发使者的王对应，而非与使者混同。",
+      "features": [
+        {
+          "kind": "role_tracking",
+          "quote": "以利沙称谁为“杀人犯”？",
+          "required_operations": "区分给出称谓的以利沙、被称谓的王，以及受王派遣的使者。",
+          "concern": "ordinary",
+          "reason": "辨别派遣者与使者是定位该称谓对象的必要步骤。"
+        },
+        {
+          "kind": "layered_speech",
+          "quote": "以利沙称谁为“杀人犯”？",
+          "required_operations": "将“杀人犯”作为以利沙话语中的称谓，依据他所说的派遣行为识别指称对象。",
+          "concern": "ordinary",
+          "reason": "问题明确询问人物话语中的称呼，没有引入额外观点层。"
+        }
+      ]
+    },
+    "language_accessibility": {
+      "id": "q0061",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“以利沙称谁为‘杀人犯’？”使用自然、完整的“称……为……”结构，引号清楚标出称谓。"
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "需区分以利沙、派遣者和使者，并识别“杀人犯”指向谁。这是称谓对象识别所需的角色追踪，问句本身简短清楚。"
+      },
+      "context_economy": {
+        "score": 0,
+        "evidence": "题目仅保留称谓发出者“以利沙”和称谓“杀人犯”，没有重复叙述派遣事件。"
+      },
+      "structure_assessments": [
+        {
+          "feature_index": 0,
+          "assessment": "manageable",
+          "reason": "“以利沙称谁为”明确区分称呼者与被称呼者；进一步区分王和使者直接服务于目标，不是题目额外引入的角色负担。"
+        },
+        {
+          "feature_index": 1,
+          "assessment": "manageable",
+          "reason": "引号和“称……为……”清楚表明是在询问人物使用的称谓，没有加入额外的观点层次。"
+        }
+      ]
+    },
+    "decision": "KEEP",
+    "content_status": "PASS",
+    "language_status": "PASS",
+    "content_failures": [],
+    "content_uncertainties": [],
+    "language_failures": [],
+    "structural_concerns": [],
+    "unresolved_features": [],
+    "structure_burden_disagreement": false,
+    "repeat": 2
+  },
+  {
+    "id": "hard:t1_2chr26:9860:mcq",
+    "input_hash": "61e42efc172491aef5623a9526b51843c30c5827cba027baca2fbfd0a4b371a2",
+    "content_validity": {
+      "id": "q0030",
+      "target": "乌西雅埋葬之后，儿子约坦接续他作王。",
+      "target_basis": "inferred",
+      "target_preservation": {
+        "status": "pass",
+        "evidence": "最终问题与原问题相同，保留埋葬之后的事件关系；答案与原答案约坦继位一致。"
+      },
+      "question_support": {
+        "status": "pass",
+        "evidence": "26:23先叙述乌西雅死亡和安葬，接着记载约坦接续他作王，支持问题的叙事顺序。"
+      },
+      "answer_support": {
+        "status": "pass",
+        "evidence": "26:23直接说“他的儿子约坦接续他作王”。"
+      },
+      "answer_uniqueness": {
+        "status": "pass",
+        "evidence": "段落中安葬之后接着记载的事件只有约坦继位；管理王宫和隔离居住在前文，百姓的话解释安葬情况。"
+      },
+      "context_sufficiency": {
+        "status": "pass",
+        "evidence": "段落同时呈现乌西雅在世时的安排、死亡安葬和约坦继位，足以区分这些事件。"
+      },
+      "answer_leakage": {
+        "status": "pass",
+        "evidence": "乌西雅被埋葬是事件定位信息，没有透露继位者或继位行动。"
+      },
+      "mcq_validity": {
+        "status": "pass",
+        "evidence": "B符合最后一句；A、D是死亡前的状态，C是安葬原因中的话，E与明确记载不符。"
+      },
+      "meaning_profile": {
+        "answer_explicitness": "direct",
+        "semantic_relation": "安葬之后的继位事件",
+        "answer_scope": "single_component",
+        "passage_span": "nearby"
+      }
+    },
+    "structural_inspection": {
+      "id": "q0030",
+      "parse_summary": "“乌西雅被埋葬以后”设置时间界限，主问询问其后的事件。选项A、B共享“他的儿子约坦”这一主语，但分别陈述管理王宫与接续作王；选项中的“他”均须按各自句法位置回指乌西雅。",
+      "features": [
+        {
+          "kind": "reference_chain",
+          "quote": "他的儿子约坦接续他作王",
+          "required_operations": "将“他的儿子”中的“他”和“接续他”中的“他”均对应到乌西雅，保持约坦与乌西雅的父子及继位关系。",
+          "concern": "ordinary",
+          "reason": "两个回指共同表达所问事件，先行人物由题干明确提供。"
+        },
+        {
+          "kind": "option_overlap",
+          "quote": "他的儿子约坦管理王宫",
+          "required_operations": "与“他的儿子约坦接续他作王”比较，越过相同的人物短语，依据不同谓语及发生时间作出区分。",
+          "concern": "ordinary",
+          "reason": "相同主语下区分先前管理与随后继位，直接服务于时间顺序目标。"
+        }
+      ]
+    },
+    "language_accessibility": {
+      "id": "q0030",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“乌西雅被埋葬以后，发生了什么事？”是自然的时间顺序问法；各选项也都是完整、常见的陈述结构。"
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "需以“被埋葬以后”为时间界限，并比较“管理王宫”与“接续他作王”两个不同谓语。重复主语“他的儿子约坦”便于对齐，比较要求直接服务于事件顺序。"
+      },
+      "context_economy": {
+        "score": 0,
+        "evidence": "“乌西雅被埋葬以后”是必要的时间限定；选项没有附带无关解释。"
+      },
+      "structure_assessments": [
+        {
+          "feature_index": 0,
+          "assessment": "manageable",
+          "reason": "“他的儿子约坦接续他作王”中的两处“他”均可由题干中的“乌西雅”承接，父子和继位关系的表达没有长距离回指。"
+        },
+        {
+          "feature_index": 1,
+          "assessment": "manageable",
+          "reason": "“他的儿子约坦管理王宫”与“他的儿子约坦接续他作王”共享主语，读者只需比较谓语及时间，属于目标所需的普通选项比较。"
+        }
+      ]
+    },
+    "decision": "KEEP",
+    "content_status": "PASS",
+    "language_status": "PASS",
+    "content_failures": [],
+    "content_uncertainties": [],
+    "language_failures": [],
+    "structural_concerns": [],
+    "unresolved_features": [],
+    "structure_burden_disagreement": false,
+    "repeat": 2
+  },
+  {
+    "id": "hard:t1_2chr26:1fc4:open",
+    "input_hash": "bb6b5542fb83d7f2646d56f3ac13ed46aa06726cb4ba24d2d8e4296709ad391f",
+    "content_validity": {
+      "id": "q0021",
+      "target": "爱好土地并设立农夫和葡萄园工人的人是乌西雅。",
+      "target_basis": "inferred",
+      "target_preservation": {
+        "status": "not_applicable",
+        "evidence": "未提供原问题、原答案或明确的 intended_target。"
+      },
+      "question_support": {
+        "status": "pass",
+        "evidence": "26:10将“他爱好土地”和设立农夫、葡萄园工人紧接叙述，支持将土地爱好与农业安排联系起来。"
+      },
+      "answer_support": {
+        "status": "pass",
+        "evidence": "26:9的主语是乌西雅，26:10继续用“他”叙述其行为。预期答案 Uzziah’s 的所有格形式不改变所指人物。"
+      },
+      "answer_uniqueness": {
+        "status": "pass",
+        "evidence": "段落中只有乌西雅被描述为爱好土地并设立这些工人，其他具名者出现在军队管理叙述中。"
+      },
+      "context_sufficiency": {
+        "status": "pass",
+        "evidence": "26:9提供姓名，26:10延续同一主语，26:11又明确提到乌西雅，人物指向充分。"
+      },
+      "answer_leakage": {
+        "status": "pass",
+        "evidence": "问题描述爱好和行动，但没有提供乌西雅的名字。"
+      },
+      "mcq_validity": {
+        "status": "not_applicable",
+        "evidence": "这是开放题，没有选项。"
+      },
+      "meaning_profile": {
+        "answer_explicitness": "nearby_connection",
+        "semantic_relation": "具有土地爱好并作出农业安排的人物",
+        "answer_scope": "single_component",
+        "passage_span": "nearby"
+      }
+    },
+    "structural_inspection": {
+      "id": "q0021",
+      "parse_summary": "“谁”同时充当“爱好土地”和“设立了农夫和葡萄园工人”的主语；“所以”连接原因与结果，后一个谓语省略同一主语。问句没有嵌入其他人物的行动或观点。",
+      "features": []
+    },
+    "language_accessibility": {
+      "id": "q0021",
+      "naturalness": {
+        "score": 2,
+        "evidence": "“爱好土地”较生硬，尤其“设立了农夫和葡萄园工人”将通常用于机构、职位等的“设立”直接搭配人员，需读者在心中调整为安排或设置相关人员的意思。"
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "“谁”自然统领“爱好土地”和“设立了农夫和葡萄园工人”，“所以”也明确因果关系。主要额外操作是理解“设立……工人”的不自然搭配，尚不构成 substantial 的角色或嵌套负担。"
+      },
+      "context_economy": {
+        "score": 0,
+        "evidence": "“爱好土地，所以设立了农夫和葡萄园工人”均用于限定所问人物的行动关系，没有额外背景；措辞问题不属于上下文过量。"
+      },
+      "structure_assessments": []
+    },
+    "decision": "REWRITE",
+    "content_status": "PASS",
+    "language_status": "REWRITE",
+    "content_failures": [],
+    "content_uncertainties": [],
+    "language_failures": [
+      "naturalness"
+    ],
+    "structural_concerns": [],
+    "unresolved_features": [],
+    "structure_burden_disagreement": false,
+    "repeat": 2
+  }
+]

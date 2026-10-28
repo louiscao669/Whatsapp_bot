@@ -1,0 +1,72 @@
+{
+  "prompt": "wording_only_v2",
+  "repeat": 1,
+  "batch": 2,
+  "model": "gpt-6.1-sol",
+  "response_id": "resp_088a5974f7e4f3dc006ae05009b99487d1a2425ef85df1f086",
+  "elapsed_seconds": 17.69500756263733,
+  "usage": {
+    "input_tokens": 6818,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 6815
+    },
+    "output_tokens": 977,
+    "output_tokens_details": {
+      "reasoning_tokens": 92
+    },
+    "total_tokens": 7795
+  },
+  "items": [
+    {
+      "id": "gold:t1_2kgs6_7:sz5j:open",
+      "decision": "KEEP",
+      "reason": "The main question contains one relative clause, “who spoke to the king,” modifying “the woman.” That description identifies the woman clearly in context; no referent is unresolved."
+    },
+    {
+      "id": "gold:t1_1kgs13:kcyl:open",
+      "decision": "KEEP",
+      "reason": "The main question has one straightforward temporal clause, “when the man of God prays.” The man and the prayer event are clear in context; there is no unresolved referent or nested viewpoint."
+    },
+    {
+      "id": "hard:t1_1kgs13:a6cd:mcq",
+      "decision": "REWRITE",
+      "reason": "The setup “王求神人为他祷告” contains a request with an embedded action; “他” clearly refers to the king. However, it names 神人 as the requested actor immediately before asking “谁为王祷告了？”, effectively supplying the answer."
+    },
+    {
+      "id": "hard:t1_judg9:6d68:mcq",
+      "decision": "REWRITE",
+      "reason": "“约坦呼叫示剑的众首领听他的话” embeds the leaders’ listening under 约坦’s call, with “他” clearly referring to 约坦. The main query “是为了什么结果” is an unnatural purpose–result construction that requires mental repair."
+    },
+    {
+      "id": "hard:t1_judg17_18:c2d9:mcq",
+      "decision": "KEEP",
+      "reason": "This is a direct subject question with successive actions, “进去拿走了,” followed by a coordinated list of objects. The options contain only short actor descriptions; no referent is unresolved."
+    },
+    {
+      "id": "hard:t1_2chr26:723e:mcq",
+      "decision": "REWRITE",
+      "reason": "The question uses a simple passive, “由谁统领,” but its subject “这三十万七千五百训练有素的军队” unnaturally attaches a personnel count directly to “军队.” The modifier “训练有素的” adds no clause nesting, and “这” has a clear contextual referent, but the noun phrase requires grammatical repair."
+    },
+    {
+      "id": "gold:t1_1kgs13:trr6:open",
+      "decision": "REWRITE",
+      "reason": "The main question has only one temporal clause, “after the man of God leaves,” but “leaves” does not identify the departure or its location. The passage includes both his departure from Bethel and his later departure from the prophet’s house, leaving the temporal reference unresolved."
+    },
+    {
+      "id": "hard:t1_judg17_18:3162:mcq",
+      "decision": "KEEP",
+      "reason": "The question is a single event query modified by “最先”; its options use simple passive constructions, including an actor and source location in C. “那些神像” clearly refers to the images in the passage, with no unresolved referent."
+    },
+    {
+      "id": "hard:t1_2kgs11:b13a:mcq",
+      "decision": "KEEP",
+      "reason": "This is a direct actor question using a single 把 construction, with “枪和盾牌” as coordinated objects and “百夫长” as recipient. There are no embedded clauses or unresolved referents."
+    },
+    {
+      "id": "hard:t1_acts20:f988:mcq",
+      "decision": "KEEP",
+      "reason": "The question directly asks the cause of one action, “一直讲到午夜.” The options are single causal clauses; in A, “打算第二天离开” is a simple intention complement and “他” clearly refers to 保罗. No referent is unresolved."
+    }
+  ]
+}

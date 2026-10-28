@@ -1,0 +1,224 @@
+{
+  "prompt": "whole_item_rubric",
+  "repeat": 2,
+  "batch": 3,
+  "request_hash": "a8a8802736411ddddaa0b00c3d67c88d38de4d511ea8e4686dcd0a303ca19ff1",
+  "model": "gpt-6.1-sol",
+  "response_id": "resp_0110bb08819d587a006ae053a737ec87d1bfdffadace2c251c",
+  "elapsed_seconds": 29.446812868118286,
+  "usage": {
+    "input_tokens": 5179,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 5176
+    },
+    "output_tokens": 2093,
+    "output_tokens_details": {
+      "reasoning_tokens": 123
+    },
+    "total_tokens": 7272
+  },
+  "threshold_mismatches": [],
+  "items": [
+    {
+      "id": "gold:t1_1kgs13:nntp:open",
+      "decision": "REWRITE",
+      "target": "Recall the old prophet's invitation to come home with him and eat.",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "The question is idiomatic and direct."
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "The speaker, listener, and requested speech are easy to parse."
+      },
+      "context": {
+        "score": 2,
+        "evidence": "Missing event disambiguation: the old prophet speaks to the man of God several times, including an invitation, a false claim, and a judgment. Nothing identifies the invitation."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "The question supplies none of the invitation's content."
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "The wording needs an event anchor to distinguish the intended invitation from the old prophet's other statements."
+    },
+    {
+      "id": "hard:t1_2kgs6_7:3452:mcq",
+      "decision": "KEEP",
+      "target": "Identify what the men planned to do after acknowledging their wrongdoing.",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“承认做得不对以后，打算怎么做” is natural, direct Chinese."
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "The temporal anchor and four short action choices create ordinary, manageable reading demand."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“承认做得不对以后” usefully identifies the point in the account being tested."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "Acknowledging wrongdoing does not reveal their next plan; the answer appears only as one of the choices."
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "The item clearly asks about the men's next intended action without avoidable burden."
+    },
+    {
+      "id": "gold:t1_acts19:b1be:open",
+      "decision": "KEEP",
+      "target": "Recall what happened to the sick when cloths that had touched Paul were brought to them.",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“What happened when” introduces the question naturally."
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "“That had touched Paul” and “were taken to the sick” require manageable tracking of the cloths and their recipients; both identify the intended event."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "The cloths, Paul, and the sick provide sufficient, relevant event identification."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "Bringing the cloths to the sick does not state the resulting healing or departure of spirits."
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "The sentence includes necessary event details with manageable processing demand."
+    },
+    {
+      "id": "gold:t1_1kgs13:gfxe:open",
+      "decision": "KEEP",
+      "target": "Identify who showed the old prophet the route taken by the man of God.",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“Who showed ... which way” is idiomatic."
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "The embedded “which way the man of God had gone” is readily understood and necessary to specify what was shown."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "The old prophet and the route shown to him identify a distinct event."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "The question does not identify the people who showed him the route."
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "The question clearly identifies the event and asks directly for its participants."
+    },
+    {
+      "id": "constructed:direct",
+      "decision": "KEEP",
+      "target": "Identify who moved the books inside.",
+      "target_basis": "explicit",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“是谁把书搬进屋里的？” is a natural Chinese identification question."
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "The action and destination are expressed directly, with no competing references."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“把书搬进屋里” uniquely identifies the relevant action in the passage."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "The question names the action but not the person who performed it."
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "The item directly tests the explicit target with no unnecessary framing."
+    },
+    {
+      "id": "gold:t1_judg17_18:ramy:open",
+      "decision": "KEEP",
+      "target": "Explain why no one could rescue Laish: its distance from Sidon and lack of relationships with others.",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“Why can't Laish be rescued?” is a direct, understandable question."
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "The short passive question has no layered modifiers or difficult role tracking."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "Laish and the reference to rescue identify the attack described in the passage."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "The question states the lack of rescue, not the reasons being tested."
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "The question accessibly asks for the passage's explanation of why rescue was unavailable."
+    },
+    {
+      "id": "hard:t1_acts20:f988:mcq",
+      "decision": "KEEP",
+      "target": "Identify why Paul continued speaking until midnight.",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“保罗为什么一直讲到午夜？” and the “因为” choices are natural Chinese."
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "Comparing four plainly expressed reasons imposes only ordinary multiple-choice reading demand."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "Paul's speaking until midnight is a sufficient event anchor."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "The question does not explain why he spoke so long; the explanation appears among the choices."
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "The item asks directly for the reason and uses easily distinguished options."
+    },
+    {
+      "id": "hard:t1_judg17_18:725d:mcq",
+      "decision": "KEEP",
+      "target": "Identify whom the travelers asked to inquire of God about their journey.",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 1,
+        "evidence": "“求问这趟行程” is mildly compressed: the reader supplies the sense of asking about the journey's prospects."
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "“请谁为他们求问” requires distinguishing the requested intermediary from those making the request, but the roles remain manageable."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "The passage's request and the priest's reply make “他们” and the relevant exchange sufficiently clear."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "Neither the question nor introductory framing identifies the intermediary; “祭司” appears only as a choice."
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "Despite minor compression in “求问这趟行程,” the intended participant question is readily understandable."
+    }
+  ]
+}

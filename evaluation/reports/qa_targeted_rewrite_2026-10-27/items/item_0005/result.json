@@ -1,0 +1,376 @@
+{
+  "id": "gold:t1_2kgs11:otua:mcq",
+  "input_hash": "ec831b09923e0b94d7d2badde2352ea34295afffa7017f2a9af2ad822dfb3ad1",
+  "original": {
+    "id": "gold:t1_2kgs11:otua:mcq",
+    "question": "What did non-serving groups do on the Sabbath?",
+    "passage": "11:5 and commanded them, “This is what you are to do: A third of you who come on duty on the Sabbath shall guard the royal palace,\n11:6 a third shall be at the gate of Sur, and a third at the gate behind the guards. You are to take turns guarding the temple—\n11:7 the two divisions that would go off duty on the Sabbath are to guard the house of the LORD for the king.",
+    "expected_answer": "Guard the house of Yahweh",
+    "form": "mcq",
+    "options": {
+      "A": "Guard the house of Yahweh",
+      "B": "Visit the market",
+      "C": "Attend a feast",
+      "D": "Rest at home",
+      "E": "I can't tell from this passage"
+    },
+    "correct_option": "A",
+    "intended_target": "",
+    "original_question": "What did non-serving groups do on the Sabbath?",
+    "original_answer": "Guard the house of Yahweh."
+  },
+  "source_review_dir": "/Users/louiscao/whatsapp-bot/eten-whatsapp-bot/evaluation/reports/qa_review_v2_full_2026-10-27/gold",
+  "status": "ACCEPTED",
+  "accepted_case": {
+    "id": "gold:t1_2kgs11:otua:mcq",
+    "question": "What were the two divisions going off duty on the Sabbath commanded to do?",
+    "passage": "11:5 and commanded them, “This is what you are to do: A third of you who come on duty on the Sabbath shall guard the royal palace,\n11:6 a third shall be at the gate of Sur, and a third at the gate behind the guards. You are to take turns guarding the temple—\n11:7 the two divisions that would go off duty on the Sabbath are to guard the house of the LORD for the king.",
+    "expected_answer": "Guard the house of Yahweh",
+    "form": "mcq",
+    "options": {
+      "A": "Guard the house of Yahweh",
+      "B": "Visit the market",
+      "C": "Attend a feast",
+      "D": "Rest at home",
+      "E": "I can't tell from this passage"
+    },
+    "correct_option": "A",
+    "intended_target": "",
+    "original_question": "What did non-serving groups do on the Sabbath?",
+    "original_answer": "Guard the house of Yahweh."
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "proposal": {
+        "id": "item",
+        "status": "revised",
+        "question": "What were the two divisions going off duty on the Sabbath commanded to do?",
+        "options": [
+          {
+            "label": "A",
+            "text": "Guard the house of Yahweh"
+          },
+          {
+            "label": "B",
+            "text": "Visit the market"
+          },
+          {
+            "label": "C",
+            "text": "Attend a feast"
+          },
+          {
+            "label": "D",
+            "text": "Rest at home"
+          },
+          {
+            "label": "E",
+            "text": "I can't tell from this passage"
+          }
+        ],
+        "note": "Replaces the misleading label “non-serving groups” with the passage’s clear description, “two divisions going off duty.” Asking what they were commanded to do preserves the intended assignment question without implying that the passage reports their carrying it out."
+      },
+      "candidate": {
+        "id": "gold:t1_2kgs11:otua:mcq",
+        "question": "What were the two divisions going off duty on the Sabbath commanded to do?",
+        "passage": "11:5 and commanded them, “This is what you are to do: A third of you who come on duty on the Sabbath shall guard the royal palace,\n11:6 a third shall be at the gate of Sur, and a third at the gate behind the guards. You are to take turns guarding the temple—\n11:7 the two divisions that would go off duty on the Sabbath are to guard the house of the LORD for the king.",
+        "expected_answer": "Guard the house of Yahweh",
+        "form": "mcq",
+        "options": {
+          "A": "Guard the house of Yahweh",
+          "B": "Visit the market",
+          "C": "Attend a feast",
+          "D": "Rest at home",
+          "E": "I can't tell from this passage"
+        },
+        "correct_option": "A",
+        "intended_target": "",
+        "original_question": "What did non-serving groups do on the Sabbath?",
+        "original_answer": "Guard the house of Yahweh."
+      },
+      "checks": [
+        {
+          "repeat": 1,
+          "preservation": {
+            "id": "item",
+            "same_target": {
+              "status": "pass",
+              "evidence": "Both ask for the Sabbath duty of the off-duty groups: guarding the house of Yahweh. The revision identifies 'non-serving groups' as the passage's two divisions going off duty and frames their duty as the command given in the passage."
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "The question remains in English, and every option is unchanged in English."
+            },
+            "option_meanings": [
+              {
+                "status": "pass",
+                "evidence": "Unchanged: guarding the house of Yahweh.",
+                "label": "A"
+              },
+              {
+                "status": "pass",
+                "evidence": "Unchanged: visiting the market.",
+                "label": "B"
+              },
+              {
+                "status": "pass",
+                "evidence": "Unchanged: attending a feast.",
+                "label": "C"
+              },
+              {
+                "status": "pass",
+                "evidence": "Unchanged: resting at home.",
+                "label": "D"
+              },
+              {
+                "status": "pass",
+                "evidence": "Unchanged: inability to determine the answer from the passage.",
+                "label": "E"
+              }
+            ]
+          },
+          "review": {
+            "id": "item",
+            "input_hash": "22b25e7ecca493c16d9488e3b4acb6bc3f1a6cd28467b7b893f0304d9b739c65",
+            "content_validity": {
+              "id": "item",
+              "target": "The duty assigned to the two divisions going off duty on the Sabbath: guarding the house of the LORD.",
+              "target_basis": "inferred",
+              "target_preservation": {
+                "status": "pass",
+                "evidence": "The final question retains the original target: the Sabbath responsibility of the non-serving groups. It identifies them more precisely as the two divisions going off duty and asks about their commanded duty, as the passage presents it."
+              },
+              "question_support": {
+                "status": "pass",
+                "evidence": "The passage introduces commands in 11:5 and specifies in 11:7 that the two divisions going off duty on the Sabbath are to guard the house of the LORD."
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "Verse 11:7 directly supplies the duty: 'guard the house of the LORD for the king.' 'House of Yahweh' is an equivalent designation here, not a different place or duty."
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "Only one duty is assigned to these two divisions: guarding the house of the LORD. The palace and gate assignments concern the divisions coming on duty."
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "The supplied verses distinguish the incoming divisions from the two outgoing divisions and explicitly state the latter's assignment."
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "The question identifies the divisions and the Sabbath but does not disclose their duty. The answer's appearance among the choices is not leakage."
+              },
+              "mcq_validity": {
+                "status": "pass",
+                "evidence": "A matches the stated command. B (visit the market), C (attend a feast), and D (rest at home) are not assigned in the passage. E is not defensible because 11:7 explicitly answers the question. The supplied key is A."
+              },
+              "meaning_profile": {
+                "answer_explicitness": "direct",
+                "semantic_relation": "Assigned duty of the divisions going off duty on the Sabbath",
+                "answer_scope": "single_component",
+                "passage_span": "one_sentence"
+              }
+            },
+            "structural_inspection": {
+              "id": "item",
+              "parse_summary": "The passive question asks for the action assigned to two divisions. Within its subject, “going off duty on the Sabbath” modifies “the two divisions,” distinguishing them from those coming on duty. The divisions receive the command and are to perform the requested action; the commander need not be identified. The choices are structurally distinct.",
+              "features": [
+                {
+                  "kind": "nested_modifier",
+                  "quote": "the two divisions going off duty on the Sabbath",
+                  "required_operations": "Attach “going off duty” to “the two divisions” and “on the Sabbath” to that duty transition, preserving which divisions the question concerns.",
+                  "concern": "ordinary",
+                  "reason": "The modifier identifies the target divisions and distinguishes them from the divisions coming on duty; it adds no avoidable nesting."
+                },
+                {
+                  "kind": "role_tracking",
+                  "quote": "What were the two divisions going off duty on the Sabbath commanded to do?",
+                  "required_operations": "Interpret the divisions as recipients of a command and as the intended performers of the action being asked about.",
+                  "concern": "ordinary",
+                  "reason": "The passive construction directly expresses the assigned duty. No additional participant identities or competing role assignments must be tracked."
+                }
+              ]
+            },
+            "language_accessibility": {
+              "id": "item",
+              "naturalness": {
+                "score": 0,
+                "evidence": "“What were the two divisions going off duty on the Sabbath commanded to do?” is idiomatic English. “Going off duty” naturally describes the end of a shift, and the action options use direct, familiar wording such as “Visit the market” and “Rest at home.”"
+              },
+              "processing": {
+                "score": 1,
+                "evidence": "Readers must attach “going off duty on the Sabbath” to “the two divisions” and understand those divisions as both receiving the command and performing the requested action. These are ordinary, manageable operations that identify the intended group; they do not introduce substantial avoidable load. The short options are readily compared."
+              },
+              "context_economy": {
+                "score": 0,
+                "evidence": "The question supplies no unnecessary setup. “Going off duty on the Sabbath” usefully identifies which divisions are meant, while “commanded to do” directly asks for their assigned action."
+              },
+              "structure_assessments": [
+                {
+                  "feature_index": 0,
+                  "assessment": "manageable",
+                  "reason": "In “the two divisions going off duty on the Sabbath,” the modifier attaches naturally to “divisions,” and the time phrase specifies the duty transition. This information identifies the group without avoidable nesting."
+                },
+                {
+                  "feature_index": 1,
+                  "assessment": "manageable",
+                  "reason": "In “were the two divisions … commanded to do,” the passive construction leaves the commander unnamed but makes the divisions’ role clear: they receive the command and carry out the action. Readers need not track an additional participant."
+                }
+              ]
+            },
+            "decision": "KEEP",
+            "content_status": "PASS",
+            "language_status": "PASS",
+            "content_failures": [],
+            "content_uncertainties": [],
+            "language_failures": [],
+            "structural_concerns": [],
+            "unresolved_features": [],
+            "structure_burden_disagreement": false
+          }
+        },
+        {
+          "repeat": 2,
+          "preservation": {
+            "id": "item",
+            "same_target": {
+              "status": "pass",
+              "evidence": "Both questions ask for the Sabbath duty of the off-duty groups in verse 11:7: guarding the house of Yahweh. The revision identifies the original's 'non-serving groups' as the two divisions going off duty and makes the passage's command framing explicit without changing the requested duty."
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "The question and all options remain in English."
+            },
+            "option_meanings": [
+              {
+                "status": "pass",
+                "evidence": "Unchanged: guarding the house of Yahweh.",
+                "label": "A"
+              },
+              {
+                "status": "pass",
+                "evidence": "Unchanged: visiting the market.",
+                "label": "B"
+              },
+              {
+                "status": "pass",
+                "evidence": "Unchanged: attending a feast.",
+                "label": "C"
+              },
+              {
+                "status": "pass",
+                "evidence": "Unchanged: resting at home.",
+                "label": "D"
+              },
+              {
+                "status": "pass",
+                "evidence": "Unchanged: inability to determine the answer from the passage.",
+                "label": "E"
+              }
+            ]
+          },
+          "review": {
+            "id": "item",
+            "input_hash": "22b25e7ecca493c16d9488e3b4acb6bc3f1a6cd28467b7b893f0304d9b739c65",
+            "content_validity": {
+              "id": "item",
+              "target": "The duty assigned to the two divisions going off duty on the Sabbath: guarding the house of the LORD.",
+              "target_basis": "inferred",
+              "target_preservation": {
+                "status": "pass",
+                "evidence": "The original question and answer target the Sabbath guarding duty of the non-serving groups. The final question preserves those participants, timing, and duty, while accurately framing it as a command."
+              },
+              "question_support": {
+                "status": "pass",
+                "evidence": "The passage introduces commands in 11:5 and specifies in 11:7 that the two divisions going off duty on the Sabbath are to guard the house of the LORD."
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "Verse 11:7 explicitly assigns guarding the house of the LORD. 'House of Yahweh' is a naming variation for the same referent, not a different duty or location."
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "The passage assigns these two divisions one clear duty: guarding the house of the LORD for the king. The other guarding locations concern divisions coming on duty."
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "The displayed passage identifies the two divisions, their Sabbath off-duty status, and their assigned duty in 11:7."
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "The question identifies the relevant divisions and timing but does not state what they were commanded to do. The answer's appearance among the choices is not leakage."
+              },
+              "mcq_validity": {
+                "status": "pass",
+                "evidence": "A matches the guarding command in 11:7. B (visit the market), C (attend a feast), and D (rest at home) are not assigned by the passage. E is indefensible because the duty is explicitly stated. Thus A is the sole defensible option and matches the supplied key."
+              },
+              "meaning_profile": {
+                "answer_explicitness": "direct",
+                "semantic_relation": "Assigned guarding duty of the divisions going off duty on the Sabbath",
+                "answer_scope": "single_component",
+                "passage_span": "one_sentence"
+              }
+            },
+            "structural_inspection": {
+              "id": "item",
+              "parse_summary": "The main question asks what action the two divisions were commanded to perform. The reduced relative clause “going off duty on the Sabbath” identifies the divisions, with “on the Sabbath” specifying when they go off duty. The passive construction makes those divisions the recipients of the command and the intended performers of the action supplied by an option.",
+              "features": [
+                {
+                  "kind": "nested_modifier",
+                  "quote": "the two divisions going off duty on the Sabbath",
+                  "required_operations": "Attach “going off duty” to “the two divisions” and “on the Sabbath” to that duty transition, distinguishing these divisions from those coming on duty.",
+                  "concern": "ordinary",
+                  "reason": "The modifier identifies the particular divisions whose assigned duty is the intended target; it does not add avoidable background."
+                },
+                {
+                  "kind": "role_tracking",
+                  "quote": "What were the two divisions going off duty on the Sabbath commanded to do?",
+                  "required_operations": "Understand the divisions as receiving the command and as performing the commanded action, then select that action from the choices.",
+                  "concern": "ordinary",
+                  "reason": "The passive leaves the command giver unstated but keeps the requested duty central. There are no competing participant assignments to maintain."
+                }
+              ]
+            },
+            "language_accessibility": {
+              "id": "item",
+              "naturalness": {
+                "score": 0,
+                "evidence": "“What were the two divisions going off duty on the Sabbath commanded to do?” is idiomatic English. “Going off duty” naturally describes a shift ending, and the options use direct, familiar action phrases such as “Visit the market” and “Rest at home.”"
+              },
+              "processing": {
+                "score": 1,
+                "evidence": "Readers must connect “going off duty on the Sabbath” to “the two divisions” and understand those divisions as both receiving the command and carrying out the requested action. These are ordinary, manageable operations needed to identify the intended group. The short options introduce no substantial comparison or reference-tracking burden."
+              },
+              "context_economy": {
+                "score": 0,
+                "evidence": "There is no additional introductory framing. “The two divisions going off duty on the Sabbath” usefully identifies the group being asked about rather than adding unnecessary setup."
+              },
+              "structure_assessments": [
+                {
+                  "feature_index": 0,
+                  "assessment": "manageable",
+                  "reason": "In “the two divisions going off duty on the Sabbath,” the modifier attaches naturally to “divisions,” and the time phrase specifies their duty transition. This identification is useful to the intended question and does not create avoidable modifier load."
+                },
+                {
+                  "feature_index": 1,
+                  "assessment": "manageable",
+                  "reason": "“What were the two divisions … commanded to do?” uses a familiar passive question pattern. Readers can readily treat the divisions as the command recipients and the performers of the action; identifying the command giver is unnecessary."
+                }
+              ]
+            },
+            "decision": "KEEP",
+            "content_status": "PASS",
+            "language_status": "PASS",
+            "content_failures": [],
+            "content_uncertainties": [],
+            "language_failures": [],
+            "structural_concerns": [],
+            "unresolved_features": [],
+            "structure_burden_disagreement": false
+          }
+        }
+      ],
+      "status": "ACCEPTED"
+    }
+  ]
+}

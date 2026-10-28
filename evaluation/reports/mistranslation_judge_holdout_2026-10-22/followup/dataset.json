@@ -1,0 +1,197 @@
+{
+  "schema_version": 1,
+  "name": "mistranslation_judge_followup_v1",
+  "created_date": "2026-10-22",
+  "provenance": "Assistant-authored second diagnostic batch created AFTER reviewing the first 48-case results. Eight harder weak candidates and five clear controls are new examples; three clarified-context probes deliberately revisit initial disagreements. Expected labels fixed before this batch calls, not human-validated. Both judge prompts unchanged.",
+  "held_out_scope": "Report separately from the first frozen holdout. Do not pool the three clarification probes into an independent generalization score. No prompt tuning between batches.",
+  "policy": "Accept only a clear localized factual substitution with natural language at every exact match. Reject vague overlapping or equivalent descriptions, mere loss of specificity, omissions, and broken contexts. Modal force changes count as factual/commitment changes. Narrative contradictions alone do not disqualify.",
+  "evaluation_plan": {
+    "primary": "One response per case per frozen prompt, 16 cases per prompt. This is an explicitly post-observation diagnostic batch.",
+    "stability": "No repetitions in this follow-up batch.",
+    "model": "gpt-6-sol",
+    "promotion_gate": {
+      "max_false_accepts": 0,
+      "max_false_rejects": 1,
+      "max_repeat_flips": 0,
+      "note": "No promotion decision from this diagnostic batch."
+    }
+  },
+  "cases": [
+    {
+      "id": "new_n1",
+      "family": "harder_vague_wording",
+      "expected": "reject",
+      "passage": "领主派来大批士兵守住桥头。",
+      "source": "大批士兵",
+      "target": "几名士兵",
+      "mode": "contextual",
+      "expected_reason": "两个非精确数量描述，缺乏数量阈值；按本实验规则，不把典型数量差异当作可靠事实错译。",
+      "repeat": false
+    },
+    {
+      "id": "new_n2",
+      "family": "harder_vague_wording",
+      "expected": "reject",
+      "passage": "仓库门前坐着十来个工人，等候管家分派工作。",
+      "source": "十来个",
+      "target": "十几个",
+      "mode": "contextual",
+      "expected_reason": "约十个与十几个有重叠，原文没有确切人数。",
+      "repeat": false
+    },
+    {
+      "id": "new_n3",
+      "family": "harder_vague_wording",
+      "expected": "reject",
+      "passage": "商队打算在城里停留两三天，再继续赶路。",
+      "source": "两三天",
+      "target": "几天",
+      "mode": "contextual",
+      "expected_reason": "几天可以涵盖两三天，只减弱天数的具体程度。",
+      "repeat": false
+    },
+    {
+      "id": "new_n4",
+      "family": "harder_vague_wording",
+      "expected": "reject",
+      "passage": "老人经常到村口看望守卫。",
+      "source": "经常",
+      "target": "有时",
+      "mode": "contextual",
+      "expected_reason": "有时可以在经常成立时成立，缺乏相反或明确分离的频率；只是弱化描述。",
+      "repeat": false
+    },
+    {
+      "id": "new_n5",
+      "family": "harder_vague_wording",
+      "expected": "reject",
+      "passage": "管家从箱子里取出一大笔银子，交给工匠。",
+      "source": "一大笔银子",
+      "target": "一些银子",
+      "mode": "contextual",
+      "expected_reason": "一些并不限定银子少，只减少数量信息。",
+      "repeat": false
+    },
+    {
+      "id": "new_n6",
+      "family": "harder_vague_wording",
+      "expected": "reject",
+      "passage": "粮仓外聚集着大量村民，等待分发粮食。",
+      "source": "大量村民",
+      "target": "若干村民",
+      "mode": "contextual",
+      "expected_reason": "若干没有明确数量上限，较不具体的表述未确立不同事实。",
+      "repeat": false
+    },
+    {
+      "id": "new_n7",
+      "family": "harder_vague_wording",
+      "expected": "reject",
+      "passage": "离开山洞之后，旅人很快就回到了村里。",
+      "source": "很快",
+      "target": "不久",
+      "mode": "contextual",
+      "expected_reason": "此语境均表示回村前间隔短，缺乏可靠事实区别。",
+      "repeat": false
+    },
+    {
+      "id": "new_n8",
+      "family": "harder_vague_wording",
+      "expected": "reject",
+      "passage": "这个孩子几乎每天都到井边打水。",
+      "source": "几乎每天",
+      "target": "常常",
+      "mode": "contextual",
+      "expected_reason": "常常可涵盖几乎每天，只有频率精确程度下降。",
+      "repeat": false
+    },
+    {
+      "id": "new_p1",
+      "family": "clear_control",
+      "expected": "accept",
+      "passage": "正午，城门外站着大批士兵，路上没有行人。",
+      "source": "大批士兵",
+      "target": "一名士兵",
+      "mode": "contextual",
+      "expected_reason": "复数人数变为一人。",
+      "repeat": false
+    },
+    {
+      "id": "new_p2",
+      "family": "clear_control",
+      "expected": "accept",
+      "passage": "园子里有十来个工人正在摘果子。",
+      "source": "十来个",
+      "target": "五十个",
+      "mode": "contextual",
+      "expected_reason": "约十人与五十人有清楚的数量差别。",
+      "repeat": false
+    },
+    {
+      "id": "new_p3",
+      "family": "clear_control",
+      "expected": "accept",
+      "passage": "船夫准备在码头停留两三天。",
+      "source": "两三天",
+      "target": "十天",
+      "mode": "contextual",
+      "expected_reason": "两三天与十天明确不同。",
+      "repeat": false
+    },
+    {
+      "id": "new_p4",
+      "family": "clear_control",
+      "expected": "accept",
+      "passage": "长老经常到河边向渔夫讲故事。",
+      "source": "经常",
+      "target": "从不",
+      "mode": "contextual",
+      "expected_reason": "经常发生变为从未发生。",
+      "repeat": false
+    },
+    {
+      "id": "new_p5",
+      "family": "clear_control",
+      "expected": "accept",
+      "passage": "管家几乎每天都要清点仓库中的粮食。",
+      "source": "几乎每天",
+      "target": "每月一次",
+      "mode": "contextual",
+      "expected_reason": "接近每日的频率变为每月一次。",
+      "repeat": false
+    },
+    {
+      "id": "diagnostic_p1",
+      "family": "clarified_context",
+      "expected": "accept",
+      "passage": "管家说：船队明天可能会抵达。",
+      "source": "可能会",
+      "target": "一定会",
+      "mode": "contextual",
+      "expected_reason": "确定程度被改变，删除原测试中额外的冲突后句以隔离模态判断。",
+      "repeat": false
+    },
+    {
+      "id": "diagnostic_p2",
+      "family": "clarified_context",
+      "expected": "accept",
+      "passage": "记录写道：船夫在五月初三的日出之前出港。",
+      "source": "日出之前",
+      "target": "日落之后",
+      "mode": "contextual",
+      "expected_reason": "明确同一日期，日出前与日落后的时间范围不重合。",
+      "repeat": false
+    },
+    {
+      "id": "diagnostic_p3",
+      "family": "clarified_context",
+      "expected": "accept",
+      "passage": "韩宁和周安并非亲属。韩宁比周安年长，二人一起看守城门。",
+      "source": "比周安年长",
+      "target": "比周安年幼",
+      "mode": "contextual",
+      "expected_reason": "用姓名替代带年龄关系的弟弟，隔离年龄比较反转。",
+      "repeat": false
+    }
+  ]
+}

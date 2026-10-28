@@ -5,6 +5,9 @@ from dataclasses import dataclass
 
 from sqlalchemy import select
 
+from sqlalchemy import func
+
+from eten_shared.domain.bible_books import LEGACY_TRANSLATION_BOOK, normalize_book
 from eten_shared.models import PassageTranslation, PassageVerse
 from backend.admin.services.system_languages_service import canonical_language_code, upsert_system_language
 
@@ -117,11 +120,18 @@ def import_passage_translation(
     language: str,
     chapter_number,
     name=None,
+    book=None,
     allow_duplicate_verse_numbers: bool = False,
 ):
     normalized_language = canonical_language_code(language)
     if not normalized_language:
         raise PassageImportError("Translation language is required")
+
+    # Book defaults to Luke, the only book the regular flow has carried.
+    raw_book = str(book).strip() if book is not None else ""
+    normalized_book = normalize_book(raw_book) if raw_book else LEGACY_TRANSLATION_BOOK
+    if not normalized_book:
+        raise PassageImportError(f"Unknown book '{raw_book}'")
 
     try:
         normalized_chapter_number = int(chapter_number)
@@ -151,6 +161,7 @@ def import_passage_translation(
         .where(
             PassageTranslation.language == normalized_language,
             name_filter,
+            func.coalesce(PassageTranslation.book, LEGACY_TRANSLATION_BOOK) == normalized_book,
             PassageVerse.chapter_number == normalized_chapter_number,
         )
         .order_by(PassageTranslation.created_at)
@@ -158,11 +169,15 @@ def import_passage_translation(
     )
 
     if translation is None:
-        translation = PassageTranslation(language=normalized_language, name=normalized_name)
+        translation = PassageTranslation(
+            language=normalized_language, name=normalized_name, book=normalized_book
+        )
         db.add(translation)
         db.flush()
         existing_verses = []
     else:
+        if translation.book is None:
+            translation.book = normalized_book
         existing_verses = list(
             db.scalars(
                 select(PassageVerse).where(

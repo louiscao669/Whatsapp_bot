@@ -1,0 +1,228 @@
+{
+  "id": "focus:escape:split:inferred",
+  "original": {
+    "id": "focus:escape:split:inferred",
+    "question": "那个被邪灵附身的人制服了一些人。这些人随后带伤逃出了那房子，他们是谁？",
+    "passage": "19:13 当时有几个流动的犹太驱魔师试图用主耶稣的名给那些被邪灵附着的人驱魔。他们说：“我奉保罗所传的耶稣的名，吩咐你们。”\n19:14 这事是犹太大祭司士基瓦的七个儿子做的。\n19:15 有一天，邪灵回答说：“耶稣我认识，保罗我也知道，你们是谁？”\n19:16 那附着邪灵的人跳到他们身上，制服了他们所有人。攻击如此猛烈，以致他们赤身裸体、受伤逃出房子。",
+    "expected_answer": "The seven sons of Sceva.",
+    "form": "open",
+    "options": {},
+    "correct_option": "",
+    "intended_target": "",
+    "original_question": "被那附着邪灵的人制服以后，谁受伤逃出了那房子？",
+    "original_answer": "The seven sons of Sceva."
+  },
+  "input_hash": "f4c0fb7492bc17400436d577c9d126e0fb1af55fcbaf236a1180931c93bda498",
+  "status": "SIMPLIFIED",
+  "accepted_case": {
+    "id": "focus:escape:split:inferred",
+    "question": "谁带伤逃出了那房子？",
+    "passage": "19:13 当时有几个流动的犹太驱魔师试图用主耶稣的名给那些被邪灵附着的人驱魔。他们说：“我奉保罗所传的耶稣的名，吩咐你们。”\n19:14 这事是犹太大祭司士基瓦的七个儿子做的。\n19:15 有一天，邪灵回答说：“耶稣我认识，保罗我也知道，你们是谁？”\n19:16 那附着邪灵的人跳到他们身上，制服了他们所有人。攻击如此猛烈，以致他们赤身裸体、受伤逃出房子。",
+    "expected_answer": "The seven sons of Sceva.",
+    "form": "open",
+    "options": {},
+    "correct_option": "",
+    "intended_target": "",
+    "original_question": "被那附着邪灵的人制服以后，谁受伤逃出了那房子？",
+    "original_answer": "The seven sons of Sceva."
+  },
+  "contract": {
+    "id": "item",
+    "status": "ready",
+    "target": "识别在被附着邪灵的人制服后，受伤逃出房子的那些人是谁。",
+    "basis": "inferred",
+    "required_answer_components": [
+      "指出这些人是士基瓦的七个儿子。"
+    ],
+    "relations": [
+      {
+        "id": "r1",
+        "quote": "那个被邪灵附身的人制服了一些人。",
+        "meaning": "交代逃出房子的人此前被附着邪灵的人制服。",
+        "role": "removable",
+        "reason": "这是人物到达所问事件之前的叙事背景，并非另行要求回答的事实。在本段中，受伤逃出房子的事件只有一次，仅凭该逃离事件仍能唯一定位所问人物。"
+      },
+      {
+        "id": "r2",
+        "quote": "随后",
+        "meaning": "逃离发生在被制服之后。",
+        "role": "removable",
+        "reason": "问题询问人物身份，而非事件先后顺序；这一时间连接也不用于区分本段中的多个逃离事件。原题中的先后关系同样用于定位人物，而非要求解释或复述时间顺序。"
+      },
+      {
+        "id": "r3",
+        "quote": "这些人随后带伤逃出了那房子",
+        "meaning": "所问人物是受伤逃出该房子的一群人。",
+        "role": "anchor",
+        "reason": "受伤并逃出房子的事件用于定位身份问题的指称对象，段落中只有这一处符合的事件。此引文包含的时间连接词“随后”已在r2单独判定为可移除背景。"
+      },
+      {
+        "id": "r4",
+        "quote": "他们是谁？",
+        "meaning": "要求识别上述逃离者的身份。",
+        "role": "tested",
+        "reason": "必须把所问人物与士基瓦的七个儿子对应起来；仅复述制服、受伤或逃离经过不能满足身份提问。"
+      }
+    ],
+    "note": "未提供非空的明确研究目标，因此依据当前问题、原题及两处一致的答案保守推断。19:14明确参与者为士基瓦的七个儿子，19:16以“他们”延续这些人物，记述其被制服并受伤逃出房子，支持固定答案。无需另外回答其父亲的祭司身份、驱魔用语或赤身裸体的细节。"
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "proposal": {
+        "id": "item",
+        "status": "revised",
+        "question": "谁带伤逃出了那房子？",
+        "options": [],
+        "removed_relation_ids": [
+          "r1",
+          "r2"
+        ],
+        "note": "直接询问受伤逃出房子者的身份，保留定位事件，移除被制服的背景及先后连接。"
+      },
+      "candidate": {
+        "id": "focus:escape:split:inferred",
+        "question": "谁带伤逃出了那房子？",
+        "passage": "19:13 当时有几个流动的犹太驱魔师试图用主耶稣的名给那些被邪灵附着的人驱魔。他们说：“我奉保罗所传的耶稣的名，吩咐你们。”\n19:14 这事是犹太大祭司士基瓦的七个儿子做的。\n19:15 有一天，邪灵回答说：“耶稣我认识，保罗我也知道，你们是谁？”\n19:16 那附着邪灵的人跳到他们身上，制服了他们所有人。攻击如此猛烈，以致他们赤身裸体、受伤逃出房子。",
+        "expected_answer": "The seven sons of Sceva.",
+        "form": "open",
+        "options": {},
+        "correct_option": "",
+        "intended_target": "",
+        "original_question": "被那附着邪灵的人制服以后，谁受伤逃出了那房子？",
+        "original_answer": "The seven sons of Sceva."
+      },
+      "checks": [
+        {
+          "repeat": 1,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "原题询问受伤逃出房子者的身份，并非要求说明被制服的原因或事件顺序。合同将身份识别列为测试核心，将此前被制服及先后关系视为定位背景，符合原题及经文。19:14与19:16支持所需答案“士基瓦的七个儿子”。"
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "候选题保留“带伤逃出了那房子”这一事件锚点，仍要求识别同一群人的身份，未改变所需答案或必要范围。"
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "删去被邪灵附身者制服众人的背景、“随后”及重复指代链是合理的。本段仅有一次受伤逃出房子的事件，删除这些内容不会引入另一组符合条件的人，也没有移除独立要求作答的关系。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "原题与候选题均为简体中文；本题没有选项。"
+            },
+            "option_meanings": [],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "19:16明确记载有人“受伤逃出房子”，支持候选题所问事件及其预设。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "19:14指出参与者是“犹太大祭司士基瓦的七个儿子”，19:16以“他们”承接这些人物，记述他们受伤逃出房子，支持固定答案。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "当前经文没有记载其他人带伤逃出房子的事件；符合题目描述的群体唯一。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "经文同时提供人物身份及其受伤逃离的叙述，足以完成对应，无需外部圣经知识。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "候选题只描述待识别的逃离事件，没有直接给出士基瓦或七个儿子的身份信息。"
+              },
+              "mcq_validity": {
+                "status": "not_applicable",
+                "evidence": "本题为开放题，没有选项或选择题答案键。"
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "“谁带伤逃出了那房子？”表达自然、直接，符合中文问句习惯。",
+              "quotes": []
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "单句直接询问动作主体，没有多层修饰、角色转换或需要跨句解析的指代链。",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "保留的受伤、逃离及房子共同构成清晰的事件定位，没有额外叙事铺垫或重复指代。",
+              "quotes": []
+            }
+          }
+        },
+        {
+          "repeat": 2,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "原题要求识别受伤逃出房子的人，并非解释被制服的原因或回答事件顺序。经文19:14指出参与者是士基瓦的七个儿子，19:16延续指称他们。契约将人物身份列为测试目标、将被制服及先后关系列为可移除背景，符合原题与经文。"
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "候选题仍询问带伤逃出房子者的身份，保留了受伤、逃离及房子这一事件锚点；完整答案仍是士基瓦的七个儿子。"
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "删除了被邪灵附身的人制服他们的前置叙述、时间连接词“随后”和重复的人物指称。当前经文只有一次受伤逃出房子的事件，删除这些内容不会产生另一个符合条件的人物或事件，也未删除要求解释的关系。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "原题和候选题均为中文；此题无选项。"
+            },
+            "option_meanings": [],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "19:16明确记述“他们赤身裸体、受伤逃出房子”，支持候选题所预设的带伤逃离事件。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "19:14明确说明做这事的是“犹太大祭司士基瓦的七个儿子”，19:16的“他们”延续这些参与者，支持固定答案。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "经文中唯一带伤逃出房子的人群就是士基瓦的七个儿子，没有其他逃离者与之竞争。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "当前窗口同时包含人物身份及其受伤逃离的叙述，足以在不依赖外部圣经知识的情况下作答。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "候选题仅给出用于定位的逃离事件，没有在题干中透露士基瓦或七个儿子的身份。"
+              },
+              "mcq_validity": {
+                "status": "not_applicable",
+                "evidence": "此题为开放题，无选项或选项键需要核验。"
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "“谁带伤逃出了那房子？”是自然、直接的中文身份问句，无需修复语义。",
+              "quotes": []
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "单句直接询问行动者，没有重复指称链、多层修饰或选项比较负担。",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "题干只保留用于识别目标事件的受伤逃离及地点信息，没有附加事件叙述或冗余人物关系。",
+              "quotes": []
+            }
+          }
+        }
+      ],
+      "status": "SIMPLIFIED"
+    }
+  ]
+}

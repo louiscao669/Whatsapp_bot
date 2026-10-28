@@ -1,0 +1,302 @@
+{
+  "id": "hard:t1_judg17_18:725d:mcq",
+  "original": {
+    "id": "hard:t1_judg17_18:725d:mcq",
+    "question": "他们请谁为他们求问这趟行程？",
+    "passage": "18:5 他们说：“请你求问神，知道我们行这路是否顺利。”\n18:6 祭司对他们说：“平安去吧，耶和华看顾你们的路程。”",
+    "expected_answer": "祭司",
+    "form": "mcq",
+    "options": {
+      "A": "神",
+      "B": "米迦的母亲",
+      "C": "米迦",
+      "D": "祭司",
+      "E": "根据这段文字无法判断"
+    },
+    "correct_option": "D",
+    "intended_target": "",
+    "original_question": "他们请谁为他们求问这趟行程？",
+    "original_answer": "the priest"
+  },
+  "input_hash": "672f7e919ec56bf7057200948eb897e842a318ebd653c2113653f0cf03aaa930",
+  "status": "KEPT",
+  "accepted_case": {
+    "id": "hard:t1_judg17_18:725d:mcq",
+    "question": "他们请谁为他们求问这趟行程？",
+    "passage": "18:5 他们说：“请你求问神，知道我们行这路是否顺利。”\n18:6 祭司对他们说：“平安去吧，耶和华看顾你们的路程。”",
+    "expected_answer": "祭司",
+    "form": "mcq",
+    "options": {
+      "A": "神",
+      "B": "米迦的母亲",
+      "C": "米迦",
+      "D": "祭司",
+      "E": "根据这段文字无法判断"
+    },
+    "correct_option": "D",
+    "intended_target": "",
+    "original_question": "他们请谁为他们求问这趟行程？",
+    "original_answer": "the priest"
+  },
+  "contract": {
+    "id": "item",
+    "status": "ready",
+    "target": "识别他们请求代为求问此次行程的人，其身份是祭司。",
+    "basis": "inferred",
+    "required_answer_components": [
+      "指出受请求代为求问的人是祭司。"
+    ],
+    "relations": [
+      {
+        "id": "r1",
+        "quote": "他们请谁",
+        "meaning": "确定他们向谁提出了代为求问的请求。",
+        "role": "tested",
+        "reason": "问题要求识别受请求者的身份；原始问题及原始答案也支持这一理解。"
+      },
+      {
+        "id": "r2",
+        "quote": "为他们求问这趟行程",
+        "meaning": "将身份识别限定在替他们求问此次行程的请求中。",
+        "role": "anchor",
+        "reason": "这部分定位所问的请求事件，并区分受请求代为求问的人与被求问的神；它不要求另行回答行程是否顺利或祭司如何回应。"
+      }
+    ],
+    "note": "未提供非空的明确目标，因此依据原始问题、原始答案及所给经文保守推断。18:5记载他们请求对方求问神，18:6紧接着说明回应他们的是祭司，支持固定答案“祭司”。此推断不代表已获研究者确认的设计意图。"
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "proposal": {
+        "id": "item",
+        "status": "unchanged",
+        "question": "他们请谁为他们求问这趟行程？",
+        "options": [
+          {
+            "label": "A",
+            "text": "神"
+          },
+          {
+            "label": "B",
+            "text": "米迦的母亲"
+          },
+          {
+            "label": "C",
+            "text": "米迦"
+          },
+          {
+            "label": "D",
+            "text": "祭司"
+          },
+          {
+            "label": "E",
+            "text": "根据这段文字无法判断"
+          }
+        ],
+        "removed_relation_ids": [],
+        "note": "原问题已简洁直接；请求对象及代为求问此次行程的限定均须保留，无可实质删减的内容。"
+      },
+      "candidate": {
+        "id": "hard:t1_judg17_18:725d:mcq",
+        "question": "他们请谁为他们求问这趟行程？",
+        "passage": "18:5 他们说：“请你求问神，知道我们行这路是否顺利。”\n18:6 祭司对他们说：“平安去吧，耶和华看顾你们的路程。”",
+        "expected_answer": "祭司",
+        "form": "mcq",
+        "options": {
+          "A": "神",
+          "B": "米迦的母亲",
+          "C": "米迦",
+          "D": "祭司",
+          "E": "根据这段文字无法判断"
+        },
+        "correct_option": "D",
+        "intended_target": "",
+        "original_question": "他们请谁为他们求问这趟行程？",
+        "original_answer": "the priest"
+      },
+      "checks": [
+        {
+          "repeat": 1,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "契约正确地将目标确定为识别受请求代为求问的人，而非被求问的神。原题、固定答案及经文中紧接请求作出回应的“祭司”共同支持这一目标；行程是请求事件的定位信息。"
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "候选题与原题完全相同，仍要求识别替他们求问此次行程的人，保留了受请求者与被求问的神之间的角色区别。"
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "候选题未删除或改写原题及选项中的任何信息。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "问题及所有选项均保持原来的中文表述。"
+            },
+            "option_meanings": [
+              {
+                "status": "pass",
+                "evidence": "“神”原样保留，仍指被求问的神。",
+                "label": "A"
+              },
+              {
+                "status": "pass",
+                "evidence": "“米迦的母亲”原样保留，人物身份和关系范围不变。",
+                "label": "B"
+              },
+              {
+                "status": "pass",
+                "evidence": "“米迦”原样保留，指称不变。",
+                "label": "C"
+              },
+              {
+                "status": "pass",
+                "evidence": "“祭司”原样保留，仍是固定正确答案。",
+                "label": "D"
+              },
+              {
+                "status": "pass",
+                "evidence": "“根据这段文字无法判断”原样保留，仍表示文本不足以确定答案。",
+                "label": "E"
+              }
+            ],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "18:5明确记载他们请求对方求问神，以知道行路是否顺利，支持问题所预设的请求及其行程主题。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "18:5提出请求，18:6紧接着记载“祭司对他们说”并回答行程问题，足以通过对话衔接确定受请求者是祭司，支持答案及键值D。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "祭司是唯一被文本标明身份并回应请求的人；神是求问的对象，而米迦及其母亲未在窗口中出现。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "两节经文提供了请求内容和回应者身份，无需补充人物背景或依赖经文之外的知识。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "题干没有直接透露祭司身份，选项也未以额外提示标出正确答案；答案需要从经文对话中识别。"
+              },
+              "mcq_validity": {
+                "status": "pass",
+                "evidence": "五个选项标签完整、含义可区分，只有D符合文本中的受请求者身份，无法判断项不成立。"
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "题干是直接、可理解的中文问句，“为他们求问”清楚表达代为求问的关系，选项表述自然。",
+              "quotes": []
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "题干只有一个核心询问，角色关系明确；理解代为求问者与被求问对象的区别属于本题必要的语义要求，没有额外的指代链或比较负担。",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "没有额外叙事铺垫。“为他们求问这趟行程”直接限定目标请求事件，并帮助区分受请求的人与神，是有用且简洁的定位信息。",
+              "quotes": []
+            }
+          }
+        },
+        {
+          "repeat": 2,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "契约准确识别原题目标：找出受请求、代他们求问行程的人，而不是被求问的神或行程的结果。18:5提出请求，18:6紧接着记载祭司的回应，支持将受请求者识别为祭司。"
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "候选题与原题完全相同，保留了受请求者这一核心目标，以及代他们求问此次行程的事件限定。"
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "候选题未删除或改动原题及选项中的信息。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "问题和全部选项均保持原有中文，文字未变。"
+            },
+            "option_meanings": [
+              {
+                "status": "pass",
+                "evidence": "仍指神，保留了被求问者与受请求代为求问者之间的区别。",
+                "label": "A"
+              },
+              {
+                "status": "pass",
+                "evidence": "仍指米迦的母亲，人物身份和范围未变。",
+                "label": "B"
+              },
+              {
+                "status": "pass",
+                "evidence": "仍指米迦，人物身份未变。",
+                "label": "C"
+              },
+              {
+                "status": "pass",
+                "evidence": "仍指祭司，完整保留固定正确答案。",
+                "label": "D"
+              },
+              {
+                "status": "pass",
+                "evidence": "仍表示根据所给文字无法判断，保留原有弃答选项的含义和范围。",
+                "label": "E"
+              }
+            ],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "18:5明确记载他们请求对方求问神，以知道行程是否顺利，支持问题所预设的请求事件。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "18:6紧接请求写道“祭司对他们说”，其回答直接回应行程问题，支持固定答案“祭司”和选项D。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "祭司是文中唯一被呈现为回应这一请求的人。神是被求问的对象；米迦及其母亲未在当前窗口中出现，没有形成另一个有文本依据的答案。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "当前两节包含请求内容及祭司的紧接回应，足以确定受请求者，不需要借助窗口外的背景知识。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "题干未直接给出祭司身份，也未通过额外提示或选项格式标出正确答案；作答需要理解经文中的请求与回应。"
+              },
+              "mcq_validity": {
+                "status": "pass",
+                "evidence": "五个选项可明确区分，只有D得到当前经文支持，正确选项标注与预期答案一致。"
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "题干是自然、直接的中文问句；“为他们求问这趟行程”在经文语境中可顺畅理解，选项表达清楚。",
+              "quotes": []
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "单句直接询问受请求者；理解“他们”和行程请求只需正常联系经文，没有额外的指代链、复杂修饰或选项比较负担。",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "题干没有额外叙事。“为他们求问这趟行程”用于定位请求事件，并帮助区分代为求问的人与被求问的神，是有用且简洁的限定。",
+              "quotes": []
+            }
+          }
+        }
+      ],
+      "status": "KEPT"
+    }
+  ]
+}

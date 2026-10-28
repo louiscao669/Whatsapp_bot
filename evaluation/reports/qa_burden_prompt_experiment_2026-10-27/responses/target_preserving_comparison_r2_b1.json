@@ -1,0 +1,224 @@
+{
+  "prompt": "target_preserving_comparison",
+  "repeat": 2,
+  "batch": 1,
+  "request_hash": "65f45327cdf19b258cdd400328e76b7b156acd79d8a30740597ef86f48c1e68b",
+  "model": "gpt-6.1-sol",
+  "response_id": "resp_0f97406c3499ce88006ae053ec2f5c87d1b612f3faf7a2a258",
+  "elapsed_seconds": 44.55596613883972,
+  "usage": {
+    "input_tokens": 5935,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 5932
+    },
+    "output_tokens": 2935,
+    "output_tokens_details": {
+      "reasoning_tokens": 740
+    },
+    "total_tokens": 8870
+  },
+  "threshold_mismatches": [],
+  "items": [
+    {
+      "id": "hard:t1_1kgs13:ec63:mcq",
+      "decision": "KEEP",
+      "target": "Identify whose body the prophet declared would not enter the ancestral tomb.",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 1,
+        "evidence": "“尸首必不得入他列祖的坟墓” is formal biblical wording, but the question is understandable."
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "Readers must distinguish the announcing prophet from the person addressed; “带他回来的先知” usefully identifies the speaker."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "The announcement and its speaker sufficiently locate the event in the passage."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "The question does not identify whose body is meant; that identity must be recovered from the passage."
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "The reference tracking is manageable and necessary to the identity question; no meaningful target-preserving simplification is needed."
+    },
+    {
+      "id": "gold:t1_2kgs11:w4ys:open",
+      "decision": "KEEP",
+      "target": "Identify what Jehoiada gave the commanders.",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“What did Jehoiada give the commanders?” is direct and idiomatic."
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "The giver, recipients, and requested information are immediately clear."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "The named giver and recipients sufficiently identify the relevant action."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "The question does not supply the objects given."
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "The item already asks for the intended information without avoidable burden."
+    },
+    {
+      "id": "gold:t1_2sam21:kjsg:open",
+      "decision": "KEEP",
+      "target": "Identify the action by which Abishai rescued David.",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“How does Abishai rescue David?” is a natural narrative-present question."
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "The question clearly asks how one named person rescued another."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "Abishai and David identify the rescue event without additional setup."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "Mentioning the rescue anchors the event but does not state how it happened."
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "The how-question directly tests the intended action and introduces no unnecessary complexity."
+    },
+    {
+      "id": "transfer:handkerchief:repair:zh",
+      "decision": "REWRITE",
+      "target": "Identify what happened to the sick people after the cloths were brought to them: illnesses and evil spirits left them.",
+      "target_basis": "explicit",
+      "naturalness": {
+        "score": 2,
+        "evidence": "“摸过保罗的手帕和围裙” invites the reading ‘touched Paul's handkerchiefs and aprons’; treating the cloths as things that “摸过保罗” requires repair."
+      },
+      "processing": {
+        "score": 2,
+        "evidence": "Before reaching “被带到”, readers must resolve whether “摸过” describes the cloths or an action performed on them. The alternative removes this non-target attachment problem."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "The cloths being brought to the sick people sufficiently identify the relevant event."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "The setup states the delivery, not the resulting healing or departure of evil spirits."
+      },
+      "alternative": "保罗的手帕和围裙被带到病人那里后，病人怎么样了？\nA. 病人陷入了深度睡眠\nB. 疾病和邪灵离开了病人\nC. 犹太驱魔师给病人驱魔\nD. 病人变得无法说话\nE. 根据这段文字无法判断",
+      "target_preservation": "preserved",
+      "reason": "The alternative retains the patients, delivery event, subsequent outcome, and answer scope while removing an ambiguous modifier that is not part of the explicit target."
+    },
+    {
+      "id": "gold:t1_judg9:iw06:open",
+      "decision": "KEEP",
+      "target": "State the content of Jotham's curse concerning Abimelek and Shechem.",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“What is Jotham's curse?” is idiomatic and direct."
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "The question has no embedded roles, conditions, or competing references to unpack."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "The passage identifies Jotham's curse and later explicitly refers back to it."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "The question names the curse without supplying its content."
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "The complexity belongs to the curse being tested, not to the wording of the question."
+    },
+    {
+      "id": "hard:t1_2chr26:1cab:mcq",
+      "decision": "KEEP",
+      "target": "Identify the peoples God helped Uzziah fight.",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“神帮助乌西雅攻打哪些人？” and the listed answers are natural Chinese."
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "Readers must compare three-group lists and their location modifiers, but these distinctions constitute the requested identification rather than avoidable wording load."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "God's help and Uzziah's fighting identify the relevant statement without unnecessary setup."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "The stem supplies none of the targeted peoples; the correct list appearing among choices is not leakage."
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "The options require ordinary comparison of the answer's constituent groups; shortening them would risk changing the tested distinctions."
+    },
+    {
+      "id": "hard:t1_2kgs11:f49c:mcq",
+      "decision": "REWRITE",
+      "target": "Identify the parties to the first covenant Jehoiada made.",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 2,
+        "evidence": "“在哪些之间立的” leaves “哪些” without a natural nominal head; readers must mentally supply something such as “几方”."
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "The first-covenant distinction is manageable, although the incomplete “哪些之间” phrasing briefly interrupts parsing."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“第一个约” usefully distinguishes the two covenants mentioned in the passage."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "The stem identifies the covenant but does not name its parties."
+      },
+      "alternative": "耶何耶大立的第一个约，是哪几方之间的约？\nA. 耶和华、王和百姓\nB. 王和百夫长\nC. 耶和华和守卫\nD. 王和百姓",
+      "target_preservation": "preserved",
+      "reason": "The alternative repairs the unnatural interrogative while retaining the first covenant, its parties, and the original choices."
+    },
+    {
+      "id": "constructed:ambiguous",
+      "decision": "REWRITE",
+      "target": "Identify the person who took books to the library.",
+      "target_basis": "explicit",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“谁把书带走了？” is natural Chinese in isolation."
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "The sentence is easy to parse, but readers must guess which of the two book-carrying events is intended."
+      },
+      "context": {
+        "score": 2,
+        "evidence": "Missing disambiguation: “带走” does not distinguish 小林 taking books to school from 小周 taking books to the library. Naming the destination repairs this."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "The question does not state either person's identity."
+      },
+      "alternative": "谁把书带到图书馆了？",
+      "target_preservation": "preserved",
+      "reason": "The alternative supplies the destination required by the explicit target, allowing respondents to select the intended event rather than guess."
+    }
+  ]
+}

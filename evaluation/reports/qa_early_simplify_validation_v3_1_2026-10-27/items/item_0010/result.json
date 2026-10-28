@@ -1,0 +1,204 @@
+{
+  "id": "control:direct:en",
+  "original": {
+    "id": "control:direct:en",
+    "question": "Who left?",
+    "passage": "Mara left. Levi stayed.",
+    "expected_answer": "Mara",
+    "form": "open",
+    "options": {},
+    "correct_option": "",
+    "intended_target": "Identify who left.",
+    "original_question": "",
+    "original_answer": ""
+  },
+  "input_hash": "13ca29610fa4be27d10812bc0244a9edb9f89866805625f7e202362f83094291",
+  "status": "KEPT",
+  "accepted_case": {
+    "id": "control:direct:en",
+    "question": "Who left?",
+    "passage": "Mara left. Levi stayed.",
+    "expected_answer": "Mara",
+    "form": "open",
+    "options": {},
+    "correct_option": "",
+    "intended_target": "Identify who left.",
+    "original_question": "",
+    "original_answer": ""
+  },
+  "contract": {
+    "id": "item",
+    "status": "ready",
+    "target": "Identify who left.",
+    "basis": "explicit",
+    "required_answer_components": [
+      "Mara is the person who left."
+    ],
+    "relations": [
+      {
+        "id": "r1",
+        "quote": "Who left?",
+        "meaning": "Identify the participant who performed the action of leaving.",
+        "role": "tested",
+        "reason": "The question directly tests the identity of the person who left. The passage contains only one leaving event, so no additional identifying anchor is needed."
+      }
+    ],
+    "note": "The passage explicitly states, \"Mara left.\" This supports the expected answer, Mara, and matches the explicit intended target. \"Levi stayed\" provides contrast but is not a separately requested answer component."
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "proposal": {
+        "id": "item",
+        "status": "unchanged",
+        "question": "Who left?",
+        "options": [],
+        "removed_relation_ids": [],
+        "note": "The question already asks directly about the target event with minimum sufficient wording."
+      },
+      "candidate": {
+        "id": "control:direct:en",
+        "question": "Who left?",
+        "passage": "Mara left. Levi stayed.",
+        "expected_answer": "Mara",
+        "form": "open",
+        "options": {},
+        "correct_option": "",
+        "intended_target": "Identify who left.",
+        "original_question": "",
+        "original_answer": ""
+      },
+      "checks": [
+        {
+          "repeat": 1,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "The explicit target is to identify who left. The passage states \"Mara left.\", supporting the required participant and action relation."
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "The candidate retains the original question unchanged and tests the identity of the person who left."
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "No information was removed."
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "The question remains in English; there are no options."
+            },
+            "option_meanings": [],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "The question's presupposition that someone left is explicitly supported by \"Mara left.\""
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "The expected answer, Mara, is explicitly identified as the person who left."
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "Mara is the only person stated to have left; Levi stayed."
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "The current passage supplies all information needed to answer without external knowledge."
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "The question does not reveal the answer; it must be obtained from the passage."
+              },
+              "mcq_validity": {
+                "status": "not_applicable",
+                "evidence": "This is an open question with no answer options."
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "\"Who left?\" is idiomatic and direct.",
+              "quotes": []
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "The question has a simple structure with no reference or role-tracking burden.",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "The question directly asks for the target participant and contains no unnecessary setup.",
+              "quotes": []
+            }
+          }
+        },
+        {
+          "repeat": 2,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "The explicit target is to identify who left. The passage states \"Mara left,\" supporting the required answer component and the contract's tested participant–action relation."
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "The candidate retains the exact question \"Who left?\" and tests the same identity, action, and scope."
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "Nothing was removed or changed."
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "The question remains in English; there are no options."
+            },
+            "option_meanings": [],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "The question's presupposition that someone left is explicitly supported by \"Mara left.\""
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "The expected answer, Mara, is explicitly supported by the clean passage."
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "Mara is the only person stated to have left; Levi stayed."
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "The passage supplies all information needed to identify who left without outside knowledge."
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "The question does not disclose the answer; it must be obtained from the passage."
+              },
+              "mcq_validity": {
+                "status": "not_applicable",
+                "evidence": "This is an open question with no answer options."
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "\"Who left?\" is idiomatic and direct.",
+              "quotes": []
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "The question is readily parsed and has no reference chain, modifiers, or choice-comparison burden.",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "The question directly asks for the target participant and contains no unnecessary setup.",
+              "quotes": []
+            }
+          }
+        }
+      ],
+      "status": "KEPT"
+    }
+  ]
+}

@@ -1,0 +1,247 @@
+{
+  "id": "hard:t1_2chr26:1fc4:open",
+  "input_hash": "2acba7294a5214f4bb984fe8b4705312eb01034988bf4961facdf5ebac0862db",
+  "original": {
+    "id": "hard:t1_2chr26:1fc4:open",
+    "question": "谁爱好土地，所以设立了农夫和葡萄园工人？",
+    "passage": "26:9 乌西雅在耶路撒冷的角门、谷门和城墙的转角建造城楼，并加固城墙。\n26:10 他在山地和平原有许多牲畜，就在旷野建造城楼，挖了许多水池。他爱好土地，在山地和肥沃的田野中设立农夫和葡萄园工人。\n26:11 乌西雅有一支预备出战的军队，按班次出征，由书记耶列和官长玛西亚在王官哈拿尼雅的指挥下记载。",
+    "expected_answer": "Uzziah’s",
+    "form": "open",
+    "options": {},
+    "correct_option": "",
+    "intended_target": "",
+    "original_question": "",
+    "original_answer": ""
+  },
+  "source_review_dir": "/Users/louiscao/whatsapp-bot/eten-whatsapp-bot/evaluation/reports/qa_review_v2_full_2026-10-27/hard",
+  "status": "ACCEPTED",
+  "accepted_case": {
+    "id": "hard:t1_2chr26:1fc4:open",
+    "question": "谁喜爱土地，因此安排了农夫和葡萄园工人？",
+    "passage": "26:9 乌西雅在耶路撒冷的角门、谷门和城墙的转角建造城楼，并加固城墙。\n26:10 他在山地和平原有许多牲畜，就在旷野建造城楼，挖了许多水池。他爱好土地，在山地和肥沃的田野中设立农夫和葡萄园工人。\n26:11 乌西雅有一支预备出战的军队，按班次出征，由书记耶列和官长玛西亚在王官哈拿尼雅的指挥下记载。",
+    "expected_answer": "Uzziah’s",
+    "form": "open",
+    "options": {},
+    "correct_option": "",
+    "intended_target": "",
+    "original_question": "谁爱好土地，所以设立了农夫和葡萄园工人？",
+    "original_answer": "Uzziah’s"
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "proposal": {
+        "id": "item",
+        "status": "revised",
+        "question": "谁喜爱土地，因此安排了农夫和葡萄园工人？",
+        "options": [],
+        "note": "将搭配生硬的“爱好土地”改为“喜爱土地”，将不适合直接搭配人员的“设立”改为“安排”，保留人物识别目标及喜爱土地与安排人员之间的因果关系。"
+      },
+      "candidate": {
+        "id": "hard:t1_2chr26:1fc4:open",
+        "question": "谁喜爱土地，因此安排了农夫和葡萄园工人？",
+        "passage": "26:9 乌西雅在耶路撒冷的角门、谷门和城墙的转角建造城楼，并加固城墙。\n26:10 他在山地和平原有许多牲畜，就在旷野建造城楼，挖了许多水池。他爱好土地，在山地和肥沃的田野中设立农夫和葡萄园工人。\n26:11 乌西雅有一支预备出战的军队，按班次出征，由书记耶列和官长玛西亚在王官哈拿尼雅的指挥下记载。",
+        "expected_answer": "Uzziah’s",
+        "form": "open",
+        "options": {},
+        "correct_option": "",
+        "intended_target": "",
+        "original_question": "谁爱好土地，所以设立了农夫和葡萄园工人？",
+        "original_answer": "Uzziah’s"
+      },
+      "checks": [
+        {
+          "repeat": 1,
+          "preservation": {
+            "id": "item",
+            "same_target": {
+              "status": "pass",
+              "evidence": "两题都问谁因喜爱土地而设立农夫和葡萄园工人，所指均为乌西雅。“喜爱／爱好”“因此／所以”“安排／设立”在此保留了相同的参与者、行为及因果关系。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "原问题与修订问题均为中文。"
+            },
+            "option_meanings": []
+          },
+          "review": {
+            "id": "item",
+            "input_hash": "39c066887ecc484e59f1fea536eedb6f3aaaf5d849fa4f9a4dcb3de238ab7a6a",
+            "content_validity": {
+              "id": "item",
+              "target": "识别爱好土地并因此设立农夫和葡萄园工人的人是乌西雅。",
+              "target_basis": "inferred",
+              "target_preservation": {
+                "status": "pass",
+                "evidence": "原题与最终问题都询问同一人物，保留了爱好土地与设立农夫、葡萄园工人之间的关系；“喜爱”和“安排”没有实质改变目标。"
+              },
+              "question_support": {
+                "status": "pass",
+                "evidence": "26:10说“他爱好土地，在山地和肥沃的田野中设立农夫和葡萄园工人”。问题中的人物和行动均符合经文，“因此”合理表达了此处爱好土地与农业安排的联系。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "26:9以乌西雅为主语，26:10延续以“他”指称该人物。预期答案“Uzziah’s”虽采用英语所有格形式，但所指仍是乌西雅，没有实质意义偏差。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "这段经文仅将爱好土地和设立农夫、葡萄园工人的行动归于乌西雅，没有其他可成立的人物答案。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "所给26:9–11包含乌西雅的姓名及26:10的相关行动，足以确定“他”的指代和所问事件。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "问题只描述需要识别的行为与动机，没有直接给出乌西雅的姓名。"
+              },
+              "mcq_validity": {
+                "status": "not_applicable",
+                "evidence": "这是开放式问题，没有供参与者选择的选项。"
+              },
+              "meaning_profile": {
+                "answer_explicitness": "nearby_connection",
+                "semantic_relation": "通过相邻经文中的代词指代，识别爱好土地并设立农业工作人员的人物。",
+                "answer_scope": "single_component",
+                "passage_span": "nearby"
+              }
+            },
+            "structural_inspection": {
+              "id": "item",
+              "parse_summary": "疑问代词“谁”同时作“喜爱土地”和“安排了农夫和葡萄园工人”的主语；“因此”将两个谓语连接为因果关系。“农夫和葡萄园工人”是“安排”的并列宾语。根据经文，两项行为的主体均为乌西雅。",
+              "features": [
+                {
+                  "kind": "role_tracking",
+                  "quote": "谁喜爱土地，因此安排了农夫和葡萄园工人？",
+                  "required_operations": "将“谁”理解为两个谓语共享的主体，并区分安排者与被安排的农夫、葡萄园工人。",
+                  "concern": "ordinary",
+                  "reason": "主体连续且无切换；行为主体与被安排者的区分是识别目标人物所必需的，没有额外的角色追踪负担。"
+                }
+              ]
+            },
+            "language_accessibility": {
+              "id": "item",
+              "naturalness": {
+                "score": 1,
+                "evidence": "“谁喜爱土地”表达直接；“安排了农夫和葡萄园工人”略显生硬，因为“安排”后只列出人员，没有说明安排他们做什么，但在耕作语境中仍可理解，不需要明显的语义修补。"
+              },
+              "processing": {
+                "score": 1,
+                "evidence": "读者需要将“谁”同时理解为“喜爱土地”和“安排了农夫和葡萄园工人”的主体，并通过“因此”连接两项行为。两个谓语相邻、主体不变，“农夫和葡萄园工人”也明确是被安排的人员，属于普通、可管理的理解要求。"
+              },
+              "context_economy": {
+                "score": 0,
+                "evidence": "题干“谁喜爱土地，因此安排了农夫和葡萄园工人？”没有额外引言或旁支说明；两项行为共同限定所问人物，没有明显可删的冗余铺垫。"
+              },
+              "structure_assessments": [
+                {
+                  "feature_index": 0,
+                  "assessment": "manageable",
+                  "reason": "“谁”自然统领“喜爱土地”和“安排了农夫和葡萄园工人”两个谓语。读者只需保持同一主体，并区分安排者与被安排者；句中没有主体切换或竞争性指代，不构成额外的角色追踪负担。"
+                }
+              ]
+            },
+            "decision": "KEEP",
+            "content_status": "PASS",
+            "language_status": "PASS",
+            "content_failures": [],
+            "content_uncertainties": [],
+            "language_failures": [],
+            "structural_concerns": [],
+            "unresolved_features": [],
+            "structure_burden_disagreement": false
+          }
+        },
+        {
+          "repeat": 2,
+          "preservation": {
+            "id": "item",
+            "same_target": {
+              "status": "pass",
+              "evidence": "Both questions ask who loved the land and consequently appointed farmers and vineyard workers. “喜爱/爱好,” “因此/所以,” and “安排/设立” preserve the participants, actions, and causal relationship; the passage identifies the person as 乌西雅."
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "Both the original and revised respondent-facing questions are in Chinese."
+            },
+            "option_meanings": []
+          },
+          "review": {
+            "id": "item",
+            "input_hash": "39c066887ecc484e59f1fea536eedb6f3aaaf5d849fa4f9a4dcb3de238ab7a6a",
+            "content_validity": {
+              "id": "item",
+              "target": "辨认喜爱土地并设立农夫和葡萄园工人的人，即乌西雅。",
+              "target_basis": "inferred",
+              "target_preservation": {
+                "status": "pass",
+                "evidence": "原题与现题都询问同一人物，保留了喜爱土地与安排农夫和葡萄园工人之间的关系；“安排”与“设立”在此不改变目标。"
+              },
+              "question_support": {
+                "status": "pass",
+                "evidence": "26:10说“他爱好土地”，随后说他设立农夫和葡萄园工人，支持题目所表达的动机关系；“他”承接26:9的乌西雅。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "预期答案“Uzziah’s”指向乌西雅，与26:9及26:10的指代一致。英文所有格形式虽不完全贴合“谁”的回答形式，但未造成实质意义差异。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "段落只将喜爱土地和设立这些工人的行为归于乌西雅，没有其他可成立的人物答案。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "26:9明确提到乌西雅，紧接的26:10延续其为主语，足以确定“他”的指代及题目所问的事件。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "题目提供行为特征以定位人物，但没有直接给出乌西雅的名字。"
+              },
+              "mcq_validity": {
+                "status": "not_applicable",
+                "evidence": "本题为开放题，没有选择项。"
+              },
+              "meaning_profile": {
+                "answer_explicitness": "nearby_connection",
+                "semantic_relation": "通过相邻经文的代词指代，辨认喜爱土地并安排农业工人的行动者",
+                "answer_scope": "single_component",
+                "passage_span": "nearby"
+              }
+            },
+            "structural_inspection": {
+              "id": "item",
+              "parse_summary": "疑问代词“谁”同时作“喜爱土地”和“安排了农夫和葡萄园工人”的主语；“因此”连接前因与后果，“农夫和葡萄园工人”是并列宾语。需从经文中辨认这一共同主语为乌西雅，无嵌套从句或多层指代。",
+              "features": []
+            },
+            "language_accessibility": {
+              "id": "item",
+              "naturalness": {
+                "score": 1,
+                "evidence": "“安排了农夫和葡萄园工人”略显生硬：“安排”后只列出人员，没有说明安排他们做什么，但仍可自然理解为安排这些人从事相应工作。其余措辞通顺。"
+              },
+              "processing": {
+                "score": 1,
+                "evidence": "读者需将“谁”同时理解为“喜爱土地”和“安排了农夫和葡萄园工人”的主语，并用“因此”连接两个动作。这是普通、可管理的因果结构；并列宾语也较短，没有明显可避免的复杂修饰或指代负担。"
+              },
+              "context_economy": {
+                "score": 0,
+                "evidence": "题目没有额外引言；“喜爱土地”和“安排了农夫和葡萄园工人”共同构成所问人物的描述，没有明显多余的背景铺垫。"
+              },
+              "structure_assessments": []
+            },
+            "decision": "KEEP",
+            "content_status": "PASS",
+            "language_status": "PASS",
+            "content_failures": [],
+            "content_uncertainties": [],
+            "language_failures": [],
+            "structural_concerns": [],
+            "unresolved_features": [],
+            "structure_burden_disagreement": false
+          }
+        }
+      ],
+      "status": "ACCEPTED"
+    }
+  ]
+}

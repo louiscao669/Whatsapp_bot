@@ -23,6 +23,7 @@ export function PassageImportPanel({ onImported }: PassageImportPanelProps) {
     language, loadNames, null, 'Could not load translation names',
   )
   const translationNames = namesData?.names ?? []
+  const [book, setBook] = useState('Luke')
   const [chapterNumber, setChapterNumber] = useState('')
   const [translationText, setTranslationText] = useState('')
   const [translationFile, setTranslationFile] = useState<File | null>(null)
@@ -52,6 +53,10 @@ export function PassageImportPanel({ onImported }: PassageImportPanelProps) {
       setError('Select a translation language.')
       return
     }
+    if (!book.trim()) {
+      setError('Enter the book, for example Luke or Judges.')
+      return
+    }
     const parsedChapterNumber = Number(chapterNumber)
     if (!Number.isInteger(parsedChapterNumber) || parsedChapterNumber < 1) {
       setError('Enter a positive chapter number.')
@@ -71,12 +76,14 @@ export function PassageImportPanel({ onImported }: PassageImportPanelProps) {
             language,
             chapter_number: parsedChapterNumber,
             name,
+            book,
           })
         : await importPassageTranslation({
             translation_text: translationText,
             language,
             chapter_number: parsedChapterNumber,
             name,
+            book,
           })
       setMessage(result.message)
       setTranslationFile(null)
@@ -121,6 +128,16 @@ export function PassageImportPanel({ onImported }: PassageImportPanelProps) {
               <option key={option} value={option}>{option}</option>
             ))}
           </select>
+          <label htmlFor="passage-book">Book</label>
+          <input
+            id="passage-book"
+            type="text"
+            maxLength={64}
+            value={book}
+            onChange={(event) => setBook(event.target.value)}
+            placeholder="For example, Luke or Judges"
+            required
+          />
           <label htmlFor="passage-chapter-number">Chapter number</label>
           <input
             id="passage-chapter-number"

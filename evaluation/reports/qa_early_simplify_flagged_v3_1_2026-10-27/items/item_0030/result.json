@@ -1,0 +1,315 @@
+{
+  "id": "hard:t1_judg17_18:97e8:mcq",
+  "original": {
+    "id": "hard:t1_judg17_18:97e8:mcq",
+    "question": "约拿单和他的子孙作但支派的祭司，直到什么时候？",
+    "passage": "18:29 他们给城起名叫但，照着他们祖先但的名字，原名来士。\n18:30 但人为自己立偶像，摩西的孙子、革顺的儿子约拿单和他的儿子作但支派的祭司，直到被掳之日。\n18:31 神的殿在示罗多少日子，他们为自己设立的米迦的雕像也在那里多少日子。",
+    "expected_answer": "直到被掳之日。",
+    "form": "mcq",
+    "options": {
+      "A": "直到被掳之日。",
+      "B": "直到他们给城起名叫但。",
+      "C": "直到但人为自己立偶像。",
+      "D": "神的殿在示罗多少日子，就到多少日子。",
+      "E": "根据这段文字无法判断"
+    },
+    "correct_option": "A",
+    "intended_target": "",
+    "original_question": "约拿单和他的子孙作但支派的祭司，直到什么时候？",
+    "original_answer": "Until the captivity of the land."
+  },
+  "input_hash": "7b090c8a8fddc0b6c6ae3629cd9fea6723a382e0117a5ada73d75d944347c769",
+  "status": "KEPT",
+  "accepted_case": {
+    "id": "hard:t1_judg17_18:97e8:mcq",
+    "question": "约拿单和他的子孙作但支派的祭司，直到什么时候？",
+    "passage": "18:29 他们给城起名叫但，照着他们祖先但的名字，原名来士。\n18:30 但人为自己立偶像，摩西的孙子、革顺的儿子约拿单和他的儿子作但支派的祭司，直到被掳之日。\n18:31 神的殿在示罗多少日子，他们为自己设立的米迦的雕像也在那里多少日子。",
+    "expected_answer": "直到被掳之日。",
+    "form": "mcq",
+    "options": {
+      "A": "直到被掳之日。",
+      "B": "直到他们给城起名叫但。",
+      "C": "直到但人为自己立偶像。",
+      "D": "神的殿在示罗多少日子，就到多少日子。",
+      "E": "根据这段文字无法判断"
+    },
+    "correct_option": "A",
+    "intended_target": "",
+    "original_question": "约拿单和他的子孙作但支派的祭司，直到什么时候？",
+    "original_answer": "Until the captivity of the land."
+  },
+  "contract": {
+    "id": "item",
+    "status": "ready",
+    "target": "识别经文所述约拿单及其后代担任但支派祭司这一任职状态的时间终点。",
+    "basis": "inferred",
+    "required_answer_components": [
+      "指出任职持续到被掳之日。"
+    ],
+    "relations": [
+      {
+        "id": "r1",
+        "quote": "约拿单和他的子孙",
+        "meaning": "限定所问任职状态的参与者为约拿单及其后代。",
+        "role": "anchor",
+        "reason": "用于定位所问的任职事件；题目不要求回答这些人的身份或谱系。经文对应表述为“约拿单和他的儿子”。"
+      },
+      {
+        "id": "r2",
+        "quote": "作但支派的祭司",
+        "meaning": "所问时间终点针对的是为但支派担任祭司的任职状态。",
+        "role": "tested",
+        "reason": "这是时间问题的必要作用范围，不能以立偶像、命名城邑或雕像存续的时间取代。"
+      },
+      {
+        "id": "r3",
+        "quote": "直到什么时候",
+        "meaning": "要求指出该任职状态持续到的时间终点。",
+        "role": "tested",
+        "reason": "直接规定所需回答的是终止时间，而非开始时间、任职原因或其他事件。"
+      }
+    ],
+    "note": "未提供非空的明确研究目标；本目标依据当前问题及一致的原始问题、原始答案保守推断。18:30明确记载“约拿单和他的儿子作但支派的祭司，直到被掳之日”，支持固定答案。原始英文答案中的“of the land”不作为额外必答成分，因为所供中文经文仅写“被掳之日”。题目中的“子孙”用于定位参与者，不据此要求理解经文未明确陈述的跨代任职范围。"
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "proposal": {
+        "id": "item",
+        "status": "unchanged",
+        "question": "约拿单和他的子孙作但支派的祭司，直到什么时候？",
+        "options": [
+          {
+            "label": "A",
+            "text": "直到被掳之日。"
+          },
+          {
+            "label": "B",
+            "text": "直到他们给城起名叫但。"
+          },
+          {
+            "label": "C",
+            "text": "直到但人为自己立偶像。"
+          },
+          {
+            "label": "D",
+            "text": "神的殿在示罗多少日子，就到多少日子。"
+          },
+          {
+            "label": "E",
+            "text": "根据这段文字无法判断"
+          }
+        ],
+        "removed_relation_ids": [],
+        "note": "原题已直接询问任职的时间终点；参与者和任职范围均为必要信息，没有可实质删减的铺垫。"
+      },
+      "candidate": {
+        "id": "hard:t1_judg17_18:97e8:mcq",
+        "question": "约拿单和他的子孙作但支派的祭司，直到什么时候？",
+        "passage": "18:29 他们给城起名叫但，照着他们祖先但的名字，原名来士。\n18:30 但人为自己立偶像，摩西的孙子、革顺的儿子约拿单和他的儿子作但支派的祭司，直到被掳之日。\n18:31 神的殿在示罗多少日子，他们为自己设立的米迦的雕像也在那里多少日子。",
+        "expected_answer": "直到被掳之日。",
+        "form": "mcq",
+        "options": {
+          "A": "直到被掳之日。",
+          "B": "直到他们给城起名叫但。",
+          "C": "直到但人为自己立偶像。",
+          "D": "神的殿在示罗多少日子，就到多少日子。",
+          "E": "根据这段文字无法判断"
+        },
+        "correct_option": "A",
+        "intended_target": "",
+        "original_question": "约拿单和他的子孙作但支派的祭司，直到什么时候？",
+        "original_answer": "Until the captivity of the land."
+      },
+      "checks": [
+        {
+          "repeat": 1,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "契约正确识别所测关系：约拿单及其后代为但支派担任祭司这一状态的时间终点。18:30直接支持“直到被掳之日”。“子孙”在此概称后代，不必解释为经文另有记载的多代任职；契约也未将跨代范围列为必答内容。"
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "候选题与原题完全一致，保留任职者、为但支派作祭司的状态以及询问持续终点的关系，没有转为询问立偶像或雕像存续的时间。"
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "候选题未删除或改写原题及任何选项，没有信息损失。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "问题和A至E各选项均保持原来的中文。"
+            },
+            "option_meanings": [
+              {
+                "status": "pass",
+                "evidence": "文字未变，仍表示任职持续到被掳之日。",
+                "label": "A"
+              },
+              {
+                "status": "pass",
+                "evidence": "文字未变，仍将城命名为但的时间作为终点。",
+                "label": "B"
+              },
+              {
+                "status": "pass",
+                "evidence": "文字未变，仍将但人为自己立偶像的时间作为终点。",
+                "label": "C"
+              },
+              {
+                "status": "pass",
+                "evidence": "文字未变，仍以神的殿在示罗的存续时间作为所问任职时间的界限。",
+                "label": "D"
+              },
+              {
+                "status": "pass",
+                "evidence": "文字未变，仍表示无法根据所给文字判断。",
+                "label": "E"
+              }
+            ],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "18:30记载约拿单和他的儿子作但支派的祭司，并给出持续终点，支持问题的任职前提及时间询问。“子孙”可作为包含儿子的后代概称，无须假定额外世代。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "18:30明确写道“作但支派的祭司，直到被掳之日”，直接支持固定答案及A项。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "只有A对应经文明示的任职终点。B、C所述事件不是该终点；18:31的时间关系针对米迦的雕像，不支持D作为祭司任职期限；E与明确记载不符。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "当前窗口的18:30已完整提供任职者、任职状态和时间终点，不需要借助其他经文或背景知识。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "题干未提前给出被掳这一终点，也未通过额外提示标示正确选项；答案来自阅读经文。"
+              },
+              "mcq_validity": {
+                "status": "pass",
+                "evidence": "选项及正确键齐全，A是唯一受经文支持的答案。其他选项分别混淆相关事件、另一对象的持续时间或主张无法判断。"
+              }
+            },
+            "naturalness": {
+              "score": 1,
+              "evidence": "题干直接自然；D项用“就到多少日子”承接持续时长，略显生硬，但结合题干仍可理解其意思。",
+              "quotes": [
+                "神的殿在示罗多少日子，就到多少日子。"
+              ]
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "题干一次明确交代任职者、职务和所问时间关系；选项比较属于普通的时间信息辨别，没有显著的指代或结构负担。",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "题干没有额外叙事或背景链条；任职者及为但支派作祭司的信息均用于定位所问状态，区别于经文中的其他事件。",
+              "quotes": []
+            }
+          }
+        },
+        {
+          "repeat": 2,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "契约正确识别了所问目标：约拿单及其后代为但支派担任祭司的时间终点。18:30直接支持“直到被掳之日”。“子孙”在此作为后代的概括性称呼，不要求推断经文未明说的世代范围；原英文答案中的“of the land”也未被错误加入中文必答成分。"
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "候选题与原题完全一致，保留了任职者、为但支派作祭司这一状态，以及询问持续终点的时间关系。"
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "候选题没有删去原题或选项中的任何信息，也没有引入新的竞争事件。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "题干及A至E各选项均保持原来的中文，文字没有变化。"
+            },
+            "option_meanings": [
+              {
+                "status": "pass",
+                "evidence": "原文保留，仍表示任职持续到被掳之日。",
+                "label": "A"
+              },
+              {
+                "status": "pass",
+                "evidence": "原文保留，仍以给城起名叫但作为时间终点。",
+                "label": "B"
+              },
+              {
+                "status": "pass",
+                "evidence": "原文保留，仍以但人为自己立偶像作为时间终点。",
+                "label": "C"
+              },
+              {
+                "status": "pass",
+                "evidence": "原文保留，仍将所问期限与神的殿在示罗的存续时间相联系。",
+                "label": "D"
+              },
+              {
+                "status": "pass",
+                "evidence": "原文保留，仍表示根据所给文字无法判断。",
+                "label": "E"
+              }
+            ],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "18:30明确记载约拿单和他的儿子作但支派的祭司，并说明持续终点。题干的“子孙”可作后代的概括称呼，没有另行要求证明孙辈也任职。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "18:30的“作但支派的祭司，直到被掳之日”直接支持固定答案及选项A。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "只有A符合经文明示的任职终点。B、C是其他事件；18:31所说与示罗神殿存续时间相对应的是雕像，而不是祭司任期；E与明确记载不符。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "当前经文窗口包含任职者、任职对象及时间终点，无须借助外部圣经知识。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "题干未给出“被掳之日”，也没有额外提示正确选项；需要从经文识别对应的时间关系。"
+              },
+              "mcq_validity": {
+                "status": "pass",
+                "evidence": "五个选项均可识别，A是唯一受经文支持的答案，正确选项标记与固定答案一致。"
+              }
+            },
+            "naturalness": {
+              "score": 1,
+              "evidence": "题干直接自然。D的“就到多少日子”略显生硬，将持续时长表达为终点，但结合题干仍能理解。",
+              "quotes": [
+                "神的殿在示罗多少日子，就到多少日子。"
+              ]
+            },
+            "processing": {
+              "score": 1,
+              "evidence": "整体容易解析；D需要将省略的任职期限与神殿存续时间相联系，属于普通、可管理的选项比较负担。",
+              "quotes": [
+                "神的殿在示罗多少日子，就到多少日子。"
+              ]
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "题干只保留定位目标所需的任职者、支派、职务及时间问项，没有多余事件叙述或可省去的指代链。",
+              "quotes": []
+            }
+          }
+        }
+      ],
+      "status": "KEPT"
+    }
+  ]
+}

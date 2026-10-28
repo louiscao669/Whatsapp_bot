@@ -1,0 +1,126 @@
+{
+  "request_hash": "d8df41c797a6a4c8cd0a2e77dd17484e43e13bf81313ae5d390cdeae682b2186",
+  "model": "gpt-6.1-sol",
+  "response_id": "resp_026910a4ea15d748006ae0d39d81bc87d2b58d0c3e24a14d00",
+  "usage": {
+    "input_tokens": 2887,
+    "input_tokens_details": {
+      "cached_tokens": 2884,
+      "cache_write_tokens": 0
+    },
+    "output_tokens": 1975,
+    "output_tokens_details": {
+      "reasoning_tokens": 483
+    },
+    "total_tokens": 4862
+  },
+  "parsed": {
+    "items": [
+      {
+        "id": "q0123",
+        "parse_summary": "“城楼上的”直接修饰“人”，主句询问这群人的死亡方式；没有嵌套从句或额外的参与者转换。",
+        "features": []
+      },
+      {
+        "id": "q0064",
+        "parse_summary": "问句以亚比筛为施事，直接询问“击杀”的受事。选项是人物或群体名称，其中“非利士人以施比·比拿”以身份加姓名指称同一人，结构不嵌套。",
+        "features": []
+      },
+      {
+        "id": "q0086",
+        "parse_summary": "句首“第二天”限定返回兵营的时间，随后直接询问行动者。结合经文，需要区分返回的士兵与继续护送保罗的骑兵。",
+        "features": [
+          {
+            "kind": "reference_chain",
+            "quote": "第二天",
+            "required_operations": "将相对时间定位到经文中夜间护送之后的一天，再辨认该时段返回兵营的人。",
+            "concern": "ordinary",
+            "reason": "只有一层时间回指，直接限定目标事件，没有额外的记忆链。"
+          }
+        ]
+      },
+      {
+        "id": "q0095",
+        "parse_summary": "“来士的人”是主语，“为什么”直接询问“富足”的原因或依据；没有前置叙事、嵌套修饰或角色转换。",
+        "features": []
+      },
+      {
+        "id": "q0128",
+        "parse_summary": "“谁”是被刺死者，“他的甲士”是施事；其中“他”与待确定的“谁”同指。选项提供被害者身份，不增加从句层级。",
+        "features": [
+          {
+            "kind": "role_tracking",
+            "quote": "谁被他的甲士刺死了？",
+            "required_operations": "按“被”字结构区分被刺死者与实施刺杀的甲士，再选择被刺死者。",
+            "concern": "ordinary",
+            "reason": "被动关系直接表达目标事件，只有两个人物角色。"
+          },
+          {
+            "kind": "reference_chain",
+            "quote": "谁被他的甲士刺死了？",
+            "required_operations": "把“他的”中的“他”与问句中的“谁”对应，理解为被害者自己的甲士。",
+            "concern": "ordinary",
+            "reason": "同句内的一步同指关系保留了目标所需的所属关系。"
+          }
+        ]
+      },
+      {
+        "id": "q0037",
+        "parse_summary": "亚他利雅是“出来”“到耶和华的殿中”和“见众人”的共同主语；这些连续动作构成被询问原因的事件。“耶和华的”只修饰“殿”，没有更深嵌套。",
+        "features": []
+      },
+      {
+        "id": "q0068",
+        "parse_summary": "前置时间结构“被……制服以后”省略受事主语，其施事名词组内部又有“附着邪灵的”修饰“人”；主句到“谁”才明确询问该受事，并让其继续充当“受伤逃出”的主语。",
+        "features": [
+          {
+            "kind": "nested_modifier",
+            "quote": "被那附着邪灵的人制服以后",
+            "required_operations": "先把“附着邪灵的”与“人”组合，再将整个名词组识别为“制服”的施事，最后把该事件放入“以后”的时间结构。",
+            "concern": "ordinary",
+            "reason": "修饰语用于辨认制服他人的那个人，关系本身与目标事件直接相关。"
+          },
+          {
+            "kind": "role_tracking",
+            "quote": "被那附着邪灵的人制服以后，谁受伤逃出了那房子？",
+            "required_operations": "暂存前置被动结构中尚未明说的受事，将其与后面的“谁”合并，并维持其作为受伤、逃出者的身份。",
+            "concern": "potential_burden",
+            "reason": "识别逃出者是必要的，但前置无显式受事的被动结构要求在出现“谁”之前先保留角色空位，增加了可避免的跨分句角色整合负担。"
+          },
+          {
+            "kind": "reference_chain",
+            "quote": "那附着邪灵的人",
+            "required_operations": "回指经文中的攻击者，并将其与被制服、逃出的七个儿子区分。",
+            "concern": "ordinary",
+            "reason": "指示词只需回接一个明确人物，服务于必要的攻击者与受害者区分。"
+          }
+        ]
+      },
+      {
+        "id": "q0006",
+        "parse_summary": "“神人”为主语，“不肯”否定跟王回去的意愿，“为什么”询问这一拒绝的原因。问句本身没有嵌入经文中的引语或禁令层级。",
+        "features": []
+      },
+      {
+        "id": "q0090",
+        "parse_summary": "问句直接询问但支派寻找地业居住的原因。各实质选项均为单层原因分句；选项C用“还没有”表达截至当时尚未获得产业，“在以色列诸支派中”限定获得产业的范围。",
+        "features": [
+          {
+            "kind": "reference_chain",
+            "quote": "因为他们还没有在以色列诸支派中得到产业。",
+            "required_operations": "把选项中的“他们”回接到问句中的“但支派的人”。",
+            "concern": "ordinary",
+            "reason": "跨问句与选项的一步回指，先行对象明确。"
+          },
+          {
+            "kind": "negation_scope",
+            "quote": "因为他们还没有在以色列诸支派中得到产业。",
+            "required_operations": "将“还没有”理解为截至相关时间尚未得到产业，而非永久不能得到产业。",
+            "concern": "ordinary",
+            "reason": "时间与否定共同表达目标原因，没有多重否定或额外条件嵌套。"
+          }
+        ]
+      }
+    ]
+  }
+}

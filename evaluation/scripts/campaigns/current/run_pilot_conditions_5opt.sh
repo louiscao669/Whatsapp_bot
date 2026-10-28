@@ -45,6 +45,9 @@ export MODELS="${MODELS:-llama3.2:1b qwen2.5:1.5b qwen3:1.7b}"
 export NO_THINK="${NO_THINK:-0}"                         # qwen3 reasons, as in the 5opt_think arm
 export SHARE_QA="${SHARE_QA:-1}"
 export DISCOVER_LEVELS=0
+# Reviewed passage releases replace the shared inputs. Always refresh the
+# per-model copies; forcing answers alone would otherwise reuse the old text.
+export REPLACE_INPUTS=1
 export FORCE_ANSWER="${FORCE_ANSWER:-1}"
 export FORCE_BACKTRANSLATE="${FORCE_BACKTRANSLATE:-1}"
 export FORCE_SCORE="${FORCE_SCORE:-1}"

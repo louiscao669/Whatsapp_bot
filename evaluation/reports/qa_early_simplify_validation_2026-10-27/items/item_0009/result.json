@@ -1,0 +1,212 @@
+{
+  "id": "control:necessary_event",
+  "original": {
+    "id": "control:necessary_event",
+    "question": "谁被那个人制服后，受伤逃出了房子？",
+    "passage": "小林在屋里受了伤，逃出了房子。后来，小周被另一个人制服，也受伤逃出了房子。",
+    "expected_answer": "小周",
+    "form": "open",
+    "options": {},
+    "correct_option": "",
+    "intended_target": "",
+    "original_question": "",
+    "original_answer": ""
+  },
+  "input_hash": "6bf409ca2dd4d531a79d4fea4e382818651ae2c48122dc1886f96d185106700d",
+  "status": "KEPT",
+  "accepted_case": {
+    "id": "control:necessary_event",
+    "question": "谁被那个人制服后，受伤逃出了房子？",
+    "passage": "小林在屋里受了伤，逃出了房子。后来，小周被另一个人制服，也受伤逃出了房子。",
+    "expected_answer": "小周",
+    "form": "open",
+    "options": {},
+    "correct_option": "",
+    "intended_target": "",
+    "original_question": "",
+    "original_answer": ""
+  },
+  "contract": {
+    "id": "item",
+    "status": "ready",
+    "target": "识别在被人制服后受伤逃出房子的参与者。",
+    "basis": "inferred",
+    "required_answer_components": [
+      "指出该参与者是小周。"
+    ],
+    "relations": [
+      {
+        "id": "r1",
+        "quote": "谁",
+        "meaning": "要求回答符合所述事件条件的参与者身份。",
+        "role": "tested",
+        "reason": "问题直接询问人物身份，而非制服或逃离的原因。"
+      },
+      {
+        "id": "r2",
+        "quote": "被那个人制服后",
+        "meaning": "所问人物先被人制服，随后发生受伤逃离的事件。",
+        "role": "anchor",
+        "reason": "这是区分两名参与者的必要条件：小林和小周都受伤逃出了房子，但只有小周被描述为先遭到制服。此处的先后关系用于限定所问事件，并非另行要求解释时间关系。"
+      },
+      {
+        "id": "r3",
+        "quote": "受伤逃出了房子",
+        "meaning": "所问人物受了伤并逃离房子。",
+        "role": "tested",
+        "reason": "这是身份问句所指向的核心事件，包含受伤与逃出房子两个描述；不能仅因仍能猜出同一人物，就将所问事件改成单纯被制服。"
+      }
+    ],
+    "note": "未提供明确的 intended_target 或更早的原题、原答案，因此目标为保守推断，不代表研究者已确认的设计意图。段落明确写出小周被另一个人制服，也受伤逃出了房子，支持固定答案“小周”。小林也受伤逃出了房子，故制服这一限定不可删除；没有可安全认定为冗余的整项关系。"
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "proposal": {
+        "id": "item",
+        "status": "unchanged",
+        "question": "谁被那个人制服后，受伤逃出了房子？",
+        "options": [],
+        "removed_relation_ids": [],
+        "note": "原题已直接询问人物身份。“被那个人制服后”是区分两人的必要条件，“受伤逃出了房子”是所问的核心事件，没有可安全删除的关系。"
+      },
+      "candidate": {
+        "id": "control:necessary_event",
+        "question": "谁被那个人制服后，受伤逃出了房子？",
+        "passage": "小林在屋里受了伤，逃出了房子。后来，小周被另一个人制服，也受伤逃出了房子。",
+        "expected_answer": "小周",
+        "form": "open",
+        "options": {},
+        "correct_option": "",
+        "intended_target": "",
+        "original_question": "",
+        "original_answer": ""
+      },
+      "checks": [
+        {
+          "repeat": 1,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "原题要求识别先被制服、随后受伤逃出房子的人。契约保留人物身份、制服限定及受伤逃离事件，没有将问题缩减为只问谁被制服。段落支持答案“小周”。"
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "候选与原题完全相同，保留全部事件条件、先后关系及人物身份这一回答目标。"
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "候选未删除或改写原题、段落中的任何信息。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "问题仍为中文；本题没有选项。"
+            },
+            "option_meanings": [],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "段落明确描述小周被另一个人制服，也受伤逃出了房子，支持问句的事件前提。“那个人”可对应文中制服小周的那个人，虽指称略显生硬。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "“小周被另一个人制服，也受伤逃出了房子”直接支持固定答案“小周”。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "两人都受伤逃出房子，但只有小周被描述为遭到制服，因此符合完整条件的答案唯一。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "当前段落足以区分小林和小周，无须外部知识，也无须知道制服者的姓名。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "问句未直接提供小周的姓名；作答需要将制服这一限定与段落中的人物对应。"
+              },
+              "mcq_validity": {
+                "status": "not_applicable",
+                "evidence": "本题为开放题，没有选项或选项键。"
+              }
+            },
+            "naturalness": {
+              "score": 1,
+              "evidence": "整体表达通顺，但问句使用“那个人”，段落只引入“另一个人”，指称衔接略显生硬，不影响理解。"
+            },
+            "processing": {
+              "score": 1,
+              "evidence": "读者需比较两名都受伤逃离的人，并利用被制服这一条件筛选小周；这是必要且可管理的理解负担。"
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "问句直接询问目标事件，没有额外铺垫或重复指称链。被制服的限定用于区分同样受伤逃离的小林，具有实际作用。"
+            }
+          }
+        },
+        {
+          "repeat": 2,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "The original asks for the participant who was subdued and then escaped injured. The passage supports 小周. The contract preserves the identity target, the distinguishing subduing condition, and the injured escape event."
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "The candidate is identical to the original, retaining the subduing condition, temporal sequence, injury, and escape from the house."
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "No information was removed or changed."
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "The question remains in Chinese. There are no options."
+            },
+            "option_meanings": [],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "The passage states that 小周 was subdued by another person and also escaped from the house injured. “那个人” can refer to this introduced agent."
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "The current passage explicitly associates 小周 with being subdued and escaping injured, supporting the fixed answer “小周”."
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "Both named participants escaped injured, but only 小周 is described as having been subdued. The full condition uniquely selects 小周."
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "The passage supplies the participants and all events needed to answer without outside knowledge."
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "The question does not name the answer or provide an extraneous answer cue; the participant must be identified from the passage."
+              },
+              "mcq_validity": {
+                "status": "not_applicable",
+                "evidence": "This is an open question with no answer choices."
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "The Chinese question is idiomatic and direct. The construction “谁被……制服后，受伤逃出了房子” naturally expresses the participant and event sequence."
+            },
+            "processing": {
+              "score": 1,
+              "evidence": "The reader must distinguish two injured escapees using the passive subduing condition. This is manageable, target-relevant comparison rather than avoidable reference complexity."
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "The question contains no separate setup or repeated reference chain. The subduing condition distinguishes 小周 from 小林, while injury and escape preserve the event being queried."
+            }
+          }
+        }
+      ],
+      "status": "KEPT"
+    }
+  ]
+}

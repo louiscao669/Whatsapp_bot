@@ -40,6 +40,7 @@ create table if not exists passage_translations (
     id text primary key default gen_random_uuid()::text,
     language text not null,
     name text,
+    book varchar(64),
     created_at timestamptz not null default now(),
     updated_at timestamptz not null default now(),
     constraint uq_passage_translations_language_name unique (language, name)

@@ -1,0 +1,175 @@
+{
+  "method": "grammar_30%",
+  "source_language": "en",
+  "target_language": "Simplified Chinese",
+  "nllb_dropout_rate": null,
+  "source_texts": [
+    "11 God did extraordinary miracles through the hands of Paul,\n\n12 so that even handkerchiefs and aprons that had touched him were taken to the sick, and the diseases and evil spirits left them.\n\n13 Now there were some itinerant Jewish exorcists who tried to invoke the name of the Lord Jesus over those with evil spirits. They would say, “I command you by Jesus, whom Paul proclaims.”\n\n14 Seven sons of Sceva, a Jewish chief priest, were doing this.\n\n15 But one day the evil spirit responded, “Jesus I know, and I know about Paul, but who are you?”\n\n16 Then the man with the evil spirit jumped on them and overpowered them all. The attack was so violent that they ran out of the house naked and wounded.\n\n17 This became known to all the Jews and Greeks living in Ephesus, and fear came over all of them. So the name of the Lord Jesus was held in high honor.\n\n18 Many who had believed now came forward, confessing and disclosing their deeds.\n\n19 And a number of those who had practiced magic arts brought their books and burned them in front of everyone. When the value of the books was calculated, the total came to fifty thousand drachmas.\n\n20 So the word of the Lord powerfully continued to spread and prevail.\n"
+  ],
+  "translations": [
+    "11 神行了非凡的借着保罗的手奇迹，  \n12 甚至连都被带到摸过他的手帕和围裙病人那里，疾病和邪灵就离开了他们。  \n13 当时有几个流动的犹太驱魔师试图用主耶稣的给那些被邪灵附着的人名驱魔。他们说：“我奉保罗所传的耶稣的名，吩咐你们。”  \n14 这事是犹太大祭司士基瓦的七个儿子做的。  \n15 有一天，邪灵回答说：“耶稣我认识，保罗我也知道，你们是谁？”  \n16 那附着邪灵的人跳到他们身上，制服了他们所有人。攻击如此猛烈，以致他们赤身裸体、受伤逃出房子。  \n17 这事传遍了住在以弗所的犹太人和希腊人，众人都害怕。于是主耶稣的名被尊为至高。  \n18 许多信了的人都出来，承认并公开他们的行为。  \n19 那些行邪术的他们的书人拿出，在烧掉众人面前。书的价值合计五万德拉克马。  \n20 主的话大有能力，继续兴旺起来，得胜前行。"
+  ],
+  "grammar_rate": 0.3,
+  "grammar_metadata": {
+    "generation_mode": "validated_bank",
+    "bank_id": "d4807f6cd84cca82dcc9c46b00e6aba7dd3e49beed7c4dc8716e9df058389f1c",
+    "edit_style": "llm_structural_v1",
+    "source_sha256": "688802928a6899f6111428206e5eedb7f5fba7628bb3975f050d9294ee7f7e80",
+    "output_sha256": "d2222216188a3f26e402f49b9ae0769c16b15dd16be6b63a61550743cabca0fc",
+    "judge": {
+      "model": "gpt-6.1-sol",
+      "prompt_sha256": "a2abc09beb94299ae5ba0b4d6c363ce481093bce718b9b9608318cce66e6c61e",
+      "schema_sha256": "ad414a52eb96503c0b44a987f2edd0589aa8555bbfea4aacbe8305676de1aa12"
+    },
+    "bank_max_rate": 0.3,
+    "generator": {
+      "model": "gpt-6.1-sol",
+      "prompt_sha256": "1a0fc34ac6e0db5918641db38e16db653909ae5a6a89b418e958e5dc2ba3782b",
+      "schema_sha256": "647d8249f8e5e165094d5f461438de2f36ec7ff8ee75007729e01d3bc3069057"
+    },
+    "requested_rate": 0.3,
+    "actual_affected_rate": 0.3096085409252669,
+    "target_met": true,
+    "shortfall_content_chars": 0,
+    "seed": 45914,
+    "total_content_chars": 281,
+    "affected_content_chars": 87,
+    "affected_unit_count": 5,
+    "operation_count": 5,
+    "protected_terms": 0,
+    "protected_losses": [],
+    "protected_verified": true,
+    "affected_units": [
+      {
+        "unit_index": 2,
+        "verse": 12,
+        "content_chars": 20,
+        "original_text": "12 甚至连摸过他的手帕和围裙都被带到病人那里，",
+        "corrupted_text": "12 甚至连都被带到摸过他的手帕和围裙病人那里，",
+        "operations": [
+          "llm_structural_defect"
+        ],
+        "proposal_id": "b59fcd8714c60eac84ed89980da095f2570282f5b3e4da9bb5308896f2908d8e",
+        "proposal": {
+          "edited_clause": "12 甚至连都被带到摸过他的手帕和围裙病人那里，",
+          "error_type": "连字结构的焦点成分错位",
+          "explanation": "将原来充当受事主语及“连”字焦点的完整名词短语“摸过他的手帕和围裙”移到“带到”之后，违反“连”的焦点成分须位于“连……都”之间的顺序要求。"
+        },
+        "judgment_id": "aaee4cf6b9e65e1269f91eab1d5af2942ec69cc19cb41396a0f9b13271331420",
+        "judgment": {
+          "explanation": "完整名词短语“摸过他的手帕和围裙”原是“连……都……”所强调的主语，现被移入“带到”的处所补语位置，插在“到”与原处所“病人那里”之间。这样既使“连……都……”失去焦点成分，又使该名词短语与“病人那里”无法组成合法的处所补语，属于多词成分移位造成的局部语法错误。原有词语内部均完整，手帕和围裙被带到病人那里的事件仍可恢复。",
+          "grammar_worsened": "yes",
+          "structural_error": "yes",
+          "lexical_integrity": "yes",
+          "meaning_preserved": "yes",
+          "local_error": "yes",
+          "error_span": "连都被带到摸过他的手帕和围裙病人那里"
+        }
+      },
+      {
+        "unit_index": 30,
+        "verse": 19,
+        "content_chars": 13,
+        "original_text": "19 那些行邪术的人拿出他们的书，",
+        "corrupted_text": "19 那些行邪术的他们的书人拿出，",
+        "operations": [
+          "llm_structural_defect"
+        ],
+        "proposal_id": "34c400af57e7f499948662b37d1db4f452ce6e6278b4297701703c7f6da359e1",
+        "proposal": {
+          "edited_clause": "19 那些行邪术的他们的书人拿出，",
+          "error_type": "宾语移位打断主语名词短语",
+          "explanation": "将原作“拿出”宾语的完整短语“他们的书”移到“行邪术的”与中心语“人”之间，使独立宾语插入关系修饰语与其中心语之间，破坏主语名词短语的结构。"
+        },
+        "judgment_id": "d4014b037b5449aebeb49ab66f343d1c934858981249a1436a0083fef5853b90",
+        "judgment": {
+          "explanation": "原作“拿出”宾语的多词名词短语“他们的书”被整体移入“那些行邪术的人”，插在关系从句标记“的”与中心语“人”之间，破坏了该定中结构，造成新的语法错误。原有词语均保持完整，施事、拿书动作及所属关系仍可恢复；错误局限于本分句。",
+          "grammar_worsened": "yes",
+          "structural_error": "yes",
+          "lexical_integrity": "yes",
+          "meaning_preserved": "yes",
+          "local_error": "yes",
+          "error_span": "行邪术的他们的书人"
+        }
+      },
+      {
+        "unit_index": 31,
+        "verse": 19,
+        "content_chars": 7,
+        "original_text": "在众人面前烧掉。",
+        "corrupted_text": "在烧掉众人面前。",
+        "operations": [
+          "llm_structural_defect"
+        ],
+        "proposal_id": "34c400af57e7f499948662b37d1db4f452ce6e6278b4297701703c7f6da359e1",
+        "proposal": {
+          "edited_clause": "在烧掉众人面前。",
+          "error_type": "介词补足语移位",
+          "explanation": "将原作介词“在”补足语的方位短语“众人面前”整体移到“烧掉”之后，破坏“在”与其方位补足语的连接，使动作谓语插入介词结构内部。"
+        },
+        "judgment_id": "9e0395203ee110cda7b88b8e847ed183f94c57be4d973ca32f27f5d6c300fb84",
+        "judgment": {
+          "explanation": "原作介词“在”之处所补语的多词短语“众人面前”（众人＋面前）被移到动词“烧掉”之后，使“在”与其补语之间插入谓语，破坏了“在＋处所”结构的衔接。原有词语均保持完整，原来的焚烧动作及其发生场所仍可恢复；错误局限于本次编辑的分句。",
+          "grammar_worsened": "yes",
+          "structural_error": "yes",
+          "lexical_integrity": "yes",
+          "meaning_preserved": "yes",
+          "local_error": "yes",
+          "error_span": "在烧掉众人面前"
+        }
+      },
+      {
+        "unit_index": 5,
+        "verse": 13,
+        "content_chars": 33,
+        "original_text": "13 当时有几个流动的犹太驱魔师试图用主耶稣的名给那些被邪灵附着的人驱魔。",
+        "corrupted_text": "13 当时有几个流动的犹太驱魔师试图用主耶稣的给那些被邪灵附着的人名驱魔。",
+        "operations": [
+          "llm_structural_defect"
+        ],
+        "proposal_id": "34c400af57e7f499948662b37d1db4f452ce6e6278b4297701703c7f6da359e1",
+        "proposal": {
+          "edited_clause": "13 当时有几个流动的犹太驱魔师试图用主耶稣的给那些被邪灵附着的人名驱魔。",
+          "error_type": "介词短语移位打断名词短语",
+          "explanation": "将原作“驱魔”对象状语的完整介词短语“给那些被邪灵附着的人”移入“主耶稣的名”，插在领属标记“的”与中心语“名”之间，破坏该名词短语的内部结构。"
+        },
+        "judgment_id": "b460aadc316a126d6273e784f55e17e99112b2018d13317c9b13eed7d55072ad",
+        "judgment": {
+          "explanation": "原来作“驱魔”对象介词短语的“给那些被邪灵附着的人”被整体移入“主耶稣的名”内部，隔开定语标记“的”和中心语“名”，违反该名词短语的内部结构要求。被移动成分包含多个词，并非单个虚词移位。原有词语内部完整，原来的施事、驱魔对象及所用之名仍可恢复；错误仅在本分句内。",
+          "grammar_worsened": "yes",
+          "structural_error": "yes",
+          "lexical_integrity": "yes",
+          "meaning_preserved": "yes",
+          "local_error": "yes",
+          "error_span": "主耶稣的给那些被邪灵附着的人名"
+        }
+      },
+      {
+        "unit_index": 0,
+        "verse": 11,
+        "content_chars": 14,
+        "original_text": "11 神借着保罗的手行了非凡的奇迹，",
+        "corrupted_text": "11 神行了非凡的借着保罗的手奇迹，",
+        "operations": [
+          "llm_structural_defect"
+        ],
+        "proposal_id": "34c400af57e7f499948662b37d1db4f452ce6e6278b4297701703c7f6da359e1",
+        "proposal": {
+          "edited_clause": "11 神行了非凡的借着保罗的手奇迹，",
+          "error_type": "介词短语移位打断宾语名词短语",
+          "explanation": "将原作“行了”状语的完整介词短语“借着保罗的手”移到“非凡的”与“奇迹”之间，使谓语状语插入定语与名词中心语之间，破坏宾语名词短语的结构。"
+        },
+        "judgment_id": "bbfbead245d04302ede3488a7772470483d50b324dca7de1205179a5ac9c8011",
+        "judgment": {
+          "explanation": "原句中“借着保罗的手”是修饰“行了”的介词短语。替换将这一完整多词短语移到“非凡的”与中心名词“奇迹”之间，打断定中结构；该介词短语不能以现有形式嵌入此处。原有词语均保持完整，施事、动作、借助对象及事件内容仍可恢复，错误仅在本次编辑的分句内。",
+          "grammar_worsened": "yes",
+          "structural_error": "yes",
+          "lexical_integrity": "yes",
+          "meaning_preserved": "yes",
+          "local_error": "yes",
+          "error_span": "非凡的借着保罗的手奇迹"
+        }
+      }
+    ]
+  }
+}

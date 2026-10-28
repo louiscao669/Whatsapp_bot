@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "records": {
+    "cc45e086447e4afc408f5258bc77ba735501ff344b685671bb464cba247c0745": {
+      "identity": {
+        "model": "gpt-6-sol",
+        "prompt_sha256": "f857438a2a18e6f6221c4a199812ef2424055243a155316029daaccb7a0d9162",
+        "schema_sha256": "8319c0cd3900dfdaddc6a5f55bd684c72343c8ac328e12cd2fc660e099093bfa",
+        "max_output_tokens": 8192,
+        "api": "responses"
+      },
+      "request": {
+        "original_passage": "在这份兵册中，二十人的队伍称为中队，八十人的称为大队。守关的是中队。",
+        "source": "守关的是中队",
+        "replacement": "守关的是大队",
+        "mode": "contextual",
+        "occurrences": [
+          {
+            "start": 27,
+            "end": 33,
+            "original_context": "守关的是中队。",
+            "edited_context": "守关的是大队。"
+          }
+        ]
+      },
+      "response": {
+        "source_claim": "守关的是中队，即文中定义的二十人队伍。",
+        "replacement_claim": "守关的是大队，即文中定义的八十人队伍。",
+        "explanation": "原句指守关队伍为中队，替换后指大队。文中明确区分两种队伍；编辑后的句子自然，只改变了守关队伍的类别。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes",
+        "change_basis": "context_defined_distinction",
+        "change_dimension": "referent",
+        "difference_evidence": "“二十人的队伍称为中队，八十人的称为大队”明确区分了中队与大队。",
+        "needs_repair": "no"
+      },
+      "response_id": "resp_01dda2a77efe5ba8006adacd92164887d1bac8fb3b4880a1dc",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1589,
+        "input_tokens_details": {
+          "cached_tokens": 1586,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 262,
+        "output_tokens_details": {
+          "reasoning_tokens": 77
+        },
+        "total_tokens": 1851
+      },
+      "completed_at_unix": 1792724374
+    }
+  }
+}

@@ -1,0 +1,211 @@
+{
+  "id": "constructed:direct",
+  "original": {
+    "id": "constructed:direct",
+    "question": "是谁把书搬进屋里的？",
+    "passage": "下雨了，小林把书搬进屋里。小周留在门口。",
+    "expected_answer": "小林",
+    "form": "open",
+    "options": {},
+    "correct_option": "",
+    "intended_target": "Identify who moved the books inside.",
+    "original_question": "",
+    "original_answer": ""
+  },
+  "input_hash": "418b493d197e4e7d54a4c0b10823c0be63533da22051b10da048bbec54c3fe8f",
+  "status": "KEPT",
+  "accepted_case": {
+    "id": "constructed:direct",
+    "question": "是谁把书搬进屋里的？",
+    "passage": "下雨了，小林把书搬进屋里。小周留在门口。",
+    "expected_answer": "小林",
+    "form": "open",
+    "options": {},
+    "correct_option": "",
+    "intended_target": "Identify who moved the books inside.",
+    "original_question": "",
+    "original_answer": ""
+  },
+  "contract": {
+    "id": "item",
+    "status": "ready",
+    "target": "Identify who moved the books inside.",
+    "basis": "explicit",
+    "required_answer_components": [
+      "小林是把书搬进屋里的人。"
+    ],
+    "relations": [
+      {
+        "id": "r1",
+        "quote": "是谁",
+        "meaning": "要求识别搬书进屋这一事件的施事者。",
+        "role": "tested",
+        "reason": "问题要求回答人物身份；明确目标也规定识别是谁把书搬进屋里。"
+      },
+      {
+        "id": "r2",
+        "quote": "把书搬进屋里",
+        "meaning": "所问人物参与的特定事件：把书搬到屋内。",
+        "role": "anchor",
+        "reason": "该动作、对象和目的地共同定位所问事件。短文中只有一次搬书进屋的事件，与小周留在门口的事件不同；问题不要求另行回答搬了什么或搬到哪里。"
+      }
+    ],
+    "note": "所提供短文明确写道“小林把书搬进屋里”，支持固定答案“小林”。明确目标与当前问题、答案一致；没有提供更早的原始问题或答案。下雨是短文背景，并未出现在问题中，不属于本题要求恢复的因果或时间关系。"
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "proposal": {
+        "id": "item",
+        "status": "unchanged",
+        "question": "是谁把书搬进屋里的？",
+        "options": [],
+        "removed_relation_ids": [],
+        "note": "原问题已直接询问搬书进屋的人，动作、对象和目的地均为定位事件所需，无可实质删减的内容。"
+      },
+      "candidate": {
+        "id": "constructed:direct",
+        "question": "是谁把书搬进屋里的？",
+        "passage": "下雨了，小林把书搬进屋里。小周留在门口。",
+        "expected_answer": "小林",
+        "form": "open",
+        "options": {},
+        "correct_option": "",
+        "intended_target": "Identify who moved the books inside.",
+        "original_question": "",
+        "original_answer": ""
+      },
+      "checks": [
+        {
+          "repeat": 1,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "合同准确识别了明确目标：回答搬书进屋这一事件的施事者。动作、对象和目的地用于定位事件，并非另行测试原因或条件。短文明确支持所需答案“小林”。"
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "候选问题与原问题完全相同，保留了人物识别目标以及“把书搬进屋里”的事件范围。"
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "候选问题未删除或改动任何原问题信息。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "原问题和候选问题均为中文；本题无选项。"
+            },
+            "option_meanings": [],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "问题预设有人把书搬进屋里，短文“小林把书搬进屋里”直接支持该预设。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "当前短文直接写明搬书进屋的人是小林，支持固定答案“小林”。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "短文仅将搬书进屋的动作归于小林；小周的动作是留在门口，没有第二个符合问题的人物。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "当前短文完整提供了所问动作及其施事者，无需外部知识或额外上下文。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "候选问题只询问人物身份，没有在问题中给出或暗示“小林”这一姓名。"
+              },
+              "mcq_validity": {
+                "status": "not_applicable",
+                "evidence": "本题为开放式问题，没有选项或选择题答案键。"
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "“是谁把书搬进屋里的？”是自然、直接的中文人物询问句。",
+              "quotes": []
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "问题结构清楚，直接询问指定动作的施事者，没有指代链或额外角色比较负担。",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "问题没有附加叙事；“把书搬进屋里”是定位所问事件的有效锚点。",
+              "quotes": []
+            }
+          }
+        },
+        {
+          "repeat": 2,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "契约与明确目标一致：识别搬书进屋这一事件的施事者。动作、对象和目的地是定位事件的必要锚点；原题未测试下雨与搬书之间的因果关系。"
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "候选题与原题完全相同，保留了人物识别目标及搬书进屋的事件范围。"
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "候选题未删除或改写原题信息，短文也未变化。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "原题与候选题均使用中文；本题没有选项。"
+            },
+            "option_meanings": [],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "短文明确陈述“小林把书搬进屋里”，支持问题所预设的搬书进屋事件。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "当前短文直接将“小林”标明为搬书进屋的人，支持固定答案“小林”。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "短文只将小林与搬书进屋的动作关联；小周的动作是留在门口，没有第二个符合条件的人物。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "当前短文提供了所问事件及其施事者，无需借助外部知识或缺失上下文。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "题干只描述目标事件并询问人物，没有直接给出“小林”或附加答案提示。"
+              },
+              "mcq_validity": {
+                "status": "not_applicable",
+                "evidence": "本题为开放式问题，没有选择项或选项答案键。"
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "“是谁把书搬进屋里的？”是自然、直接的中文人物询问句。",
+              "quotes": []
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "单句直接询问明确动作的施事者，没有跨句指代、角色嵌套或选项比较负担。",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "题干只保留识别目标事件所需的动作、对象和目的地，没有额外背景或可删除的叙事链。",
+              "quotes": []
+            }
+          }
+        }
+      ],
+      "status": "KEPT"
+    }
+  ]
+}

@@ -6,9 +6,10 @@ import re
 from dataclasses import dataclass
 from typing import Optional
 
-from sqlalchemy import select, update
+from sqlalchemy import func, select, update
 from sqlalchemy.orm import Session
 
+from eten_shared.domain.bible_books import LEGACY_TRANSLATION_BOOK, qa_item_book
 from eten_shared.domain.batch_schedules import cancel_pending_next_batch_schedules
 from eten_shared.domain.batch_size_nudges import clamp_batch_size
 from eten_shared.domain.qa_eligibility import qa_item_is_assignable
@@ -407,6 +408,20 @@ def passage_translation_assignment_kwargs(db: Session, translation, qa_item):
     }
 
 
+def passage_translation_book_clause(qa_item):
+    """WHERE clause restricting PassageTranslation to the QA item's book.
+
+    None when the QA item names no recognisable book (bare "2:4" references
+    with an opaque id): those keep the old chapter:verse-only matching.
+    Translations with no stored book are read as Luke (legacy uploads).
+    """
+
+    book = qa_item_book(qa_item)
+    if not book:
+        return None
+    return func.coalesce(PassageTranslation.book, LEGACY_TRANSLATION_BOOK) == book
+
+
 def automatic_passage_assignment_kwargs(db: Session, participant, qa_item):
     """Resolve the deterministic production translation for an automatic assignment."""
 
@@ -415,7 +430,7 @@ def automatic_passage_assignment_kwargs(db: Session, participant, qa_item):
     if not location or not language:
         return {}
     chapter, target_number = location
-    translation = db.scalars(
+    statement = (
         select(PassageTranslation)
         .join(PassageVerse)
         .where(
@@ -423,6 +438,12 @@ def automatic_passage_assignment_kwargs(db: Session, participant, qa_item):
             PassageVerse.chapter_number == chapter,
             PassageVerse.verse_number == target_number,
         )
+    )
+    book_clause = passage_translation_book_clause(qa_item)
+    if book_clause is not None:
+        statement = statement.where(book_clause)
+    translation = db.scalars(
+        statement
         .distinct()
         .order_by(PassageTranslation.name, PassageTranslation.created_at, PassageTranslation.id)
     ).first()

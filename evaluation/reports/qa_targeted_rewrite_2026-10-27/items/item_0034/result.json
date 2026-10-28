@@ -1,0 +1,412 @@
+{
+  "id": "hard:t1_judg9:f36a:mcq",
+  "input_hash": "041f1bc59e4aa19e561e796b1c0ba81efad1a3d249f08a6cc40297148be95f59",
+  "original": {
+    "id": "hard:t1_judg9:f36a:mcq",
+    "question": "迦勒第一次说有人来时，西布说他看见的其实是什么？",
+    "passage": "9:36 迦勒看见人群，就对西布说：“看哪，有人从山上下来！”西布说：“山上的影子在你眼中好像人。”\n9:37 迦勒又说：“看哪，有人从地中间下来，一队从占卜树那里经过。”",
+    "expected_answer": "山上的影子，不是人。",
+    "form": "mcq",
+    "options": {
+      "A": "伪装的士兵。",
+      "B": "山上的影子，不是人。",
+      "C": "从山上下来的人。",
+      "D": "树林里的野兽。",
+      "E": "根据这段文字无法判断"
+    },
+    "correct_option": "B",
+    "intended_target": "",
+    "original_question": "迦勒第一次说有人来时，西布说他看见的其实是什么？",
+    "original_answer": "Shadows on the hills, not people."
+  },
+  "source_review_dir": "/Users/louiscao/whatsapp-bot/eten-whatsapp-bot/evaluation/reports/qa_review_v2_full_2026-10-27/hard",
+  "status": "ACCEPTED",
+  "accepted_case": {
+    "id": "hard:t1_judg9:f36a:mcq",
+    "question": "迦勒第一次说有人来时，西布说迦勒看见的其实是什么？",
+    "passage": "9:36 迦勒看见人群，就对西布说：“看哪，有人从山上下来！”西布说：“山上的影子在你眼中好像人。”\n9:37 迦勒又说：“看哪，有人从地中间下来，一队从占卜树那里经过。”",
+    "expected_answer": "山上的影子，不是人。",
+    "form": "mcq",
+    "options": {
+      "A": "伪装的士兵。",
+      "B": "山上的影子，不是人。",
+      "C": "从山上下来的人。",
+      "D": "树林里的野兽。",
+      "E": "根据这段文字无法判断"
+    },
+    "correct_option": "B",
+    "intended_target": "",
+    "original_question": "迦勒第一次说有人来时，西布说他看见的其实是什么？",
+    "original_answer": "Shadows on the hills, not people."
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "proposal": {
+        "id": "item",
+        "status": "revised",
+        "question": "迦勒第一次说有人来时，西布说迦勒看见的其实是什么？",
+        "options": [
+          {
+            "label": "A",
+            "text": "伪装的士兵。"
+          },
+          {
+            "label": "B",
+            "text": "山上的影子，不是人。"
+          },
+          {
+            "label": "C",
+            "text": "从山上下来的人。"
+          },
+          {
+            "label": "D",
+            "text": "树林里的野兽。"
+          },
+          {
+            "label": "E",
+            "text": "根据这段文字无法判断"
+          }
+        ],
+        "note": "将指代不清的“他”改为“迦勒”，明确西布解释的是迦勒所见的对象，避免读者误将所见者理解为西布。保留“第一次”的时间定位及两人说法之间的关系，选项不变。"
+      },
+      "candidate": {
+        "id": "hard:t1_judg9:f36a:mcq",
+        "question": "迦勒第一次说有人来时，西布说迦勒看见的其实是什么？",
+        "passage": "9:36 迦勒看见人群，就对西布说：“看哪，有人从山上下来！”西布说：“山上的影子在你眼中好像人。”\n9:37 迦勒又说：“看哪，有人从地中间下来，一队从占卜树那里经过。”",
+        "expected_answer": "山上的影子，不是人。",
+        "form": "mcq",
+        "options": {
+          "A": "伪装的士兵。",
+          "B": "山上的影子，不是人。",
+          "C": "从山上下来的人。",
+          "D": "树林里的野兽。",
+          "E": "根据这段文字无法判断"
+        },
+        "correct_option": "B",
+        "intended_target": "",
+        "original_question": "迦勒第一次说有人来时，西布说他看见的其实是什么？",
+        "original_answer": "Shadows on the hills, not people."
+      },
+      "checks": [
+        {
+          "repeat": 1,
+          "preservation": {
+            "id": "item",
+            "same_target": {
+              "status": "pass",
+              "evidence": "修订仅将“他看见的”明确为“迦勒看见的”。原文中西布对迦勒说“山上的影子在你眼中好像人”，因此指代与原题及答案一致；首次说有人来的时间限定和所问内容均未改变。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "修订后的问题和所有选项仍为中文，与原字段语言一致。"
+            },
+            "option_meanings": [
+              {
+                "status": "pass",
+                "evidence": "选项保持“伪装的士兵。”，含义未变。",
+                "label": "A"
+              },
+              {
+                "status": "pass",
+                "evidence": "选项保持“山上的影子，不是人。”，对象和否定内容均未变。",
+                "label": "B"
+              },
+              {
+                "status": "pass",
+                "evidence": "选项保持“从山上下来的人。”，含义未变。",
+                "label": "C"
+              },
+              {
+                "status": "pass",
+                "evidence": "选项保持“树林里的野兽。”，含义未变。",
+                "label": "D"
+              },
+              {
+                "status": "pass",
+                "evidence": "选项保持“根据这段文字无法判断”，无法判断的范围和含义未变。",
+                "label": "E"
+              }
+            ]
+          },
+          "review": {
+            "id": "item",
+            "input_hash": "f0fefd624cda21ad716ef929e9676551e87aea54d5bb1f48eb26cd5490eac8ba",
+            "content_validity": {
+              "id": "item",
+              "target": "西布对迦勒第一次报告有人下来所作的解释：迦勒看见的是山上的影子，而不是人。",
+              "target_basis": "inferred",
+              "target_preservation": {
+                "status": "pass",
+                "evidence": "原题询问迦勒第一次报告有人来时西布如何解释所见；最终题仅将“他”明确为“迦勒”，保留了人物、首次报告的时间限定和解释内容。"
+              },
+              "question_support": {
+                "status": "pass",
+                "evidence": "9:36记载迦勒说有人从山上下来，西布回应“山上的影子在你眼中好像人”；9:37的“又说”支持题目对第一次报告的定位。问题问的是西布的说法，并未将其解释当作叙述者确认的事实。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "“山上的影子，不是人”准确概括了西布所说的“山上的影子在你眼中好像人”，直接回答西布认为迦勒看见了什么。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "西布的回答明确指向山上的影子，没有给出其他可与之竞争的解释。叙述者提到人群不构成另一答案，因为题目限定询问西布的说法。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "所给经文包含第一次报告、西布的回应及迦勒再次报告，足以唯一定位问题所指的对话。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "题干只标明第一次报告及回应者，没有透露“山上的影子”；该答案出现在选项中不属于泄漏。"
+              },
+              "mcq_validity": {
+                "status": "pass",
+                "evidence": "B是西布回答的准确概括，也是指定答案。A的伪装士兵和D的野兽均无文本依据；C对应迦勒的报告而非西布的解释；西布的回答已明确给出，因此E“无法判断”不成立。"
+              },
+              "meaning_profile": {
+                "answer_explicitness": "direct",
+                "semantic_relation": "说话者对他人所见事物的解释与辨认",
+                "answer_scope": "single_component",
+                "passage_span": "one_sentence"
+              }
+            },
+            "structural_inspection": {
+              "id": "item",
+              "parse_summary": "题干以“迦勒第一次说有人来时”限定报告的时点，其中“有人来”是迦勒所说的内容；主问句在“西布说”之下询问“迦勒看见的”究竟是什么。需要区分迦勒的观察报告与西布对该报告的解释，并将“第一次”对应到经文中迦勒的首次发言。",
+              "features": [
+                {
+                  "kind": "nested_modifier",
+                  "quote": "西布说迦勒看见的其实是什么",
+                  "required_operations": "将“迦勒看见的”理解为所见对象，并在西布所作解释的框架内确定该对象。",
+                  "concern": "ordinary",
+                  "reason": "名词性“的”字结构嵌在言说内容中，但直接承载目标所需的所见对象关系，结构较短。"
+                },
+                {
+                  "kind": "role_tracking",
+                  "quote": "迦勒第一次说有人来时，西布说迦勒看见的其实是什么？",
+                  "required_operations": "区分观察并报告的迦勒与作出解释的西布，避免将两人的判断混为一谈。",
+                  "concern": "ordinary",
+                  "reason": "两个人物的不同角色是目标本身所需的关系，题干重复姓名，使角色指派明确。"
+                },
+                {
+                  "kind": "layered_speech",
+                  "quote": "迦勒第一次说有人来时，西布说迦勒看见的其实是什么？",
+                  "required_operations": "先定位迦勒首次报告的内容，再提取西布针对该报告给出的解释，而非直接采用迦勒的判断。",
+                  "concern": "ordinary",
+                  "reason": "题干涉及两人的言说及解释关系，但这是区分“人”与“山上的影子”这一目标所必需的视角转换。"
+                }
+              ]
+            },
+            "language_accessibility": {
+              "id": "item",
+              "naturalness": {
+                "score": 0,
+                "evidence": "“迦勒第一次说有人来时”与“西布说迦勒看见的其实是什么”衔接自然；“看见的”是常用的“的”字结构，“其实”自然地引出对先前判断的解释。选项“伪装的士兵”“树林里的野兽”等措辞直接，“根据这段文字无法判断”也是常见表达，无需修补语意或语法。"
+              },
+              "processing": {
+                "score": 1,
+                "evidence": "读者需要用“第一次”定位发言，再区分“迦勒”报告所见与“西布”作出解释这两个角色。“西布说迦勒看见的其实是什么”虽包含言说内容和所见对象两层关系，但结构短，重复姓名也避免了代词指向不清。选项均为简短表述，“山上的影子，不是人”中的否定关系明确；整体只有目标本身需要的、可管理的理解需求。"
+              },
+              "context_economy": {
+                "score": 0,
+                "evidence": "题干没有额外铺垫。“第一次说有人来时”用于限定所问的发言，“西布说”用于限定解释者，均有明确作用；选项也没有附加冗长说明。"
+              },
+              "structure_assessments": [
+                {
+                  "feature_index": 0,
+                  "assessment": "manageable",
+                  "reason": "“西布说迦勒看见的其实是什么”中的“迦勒看见的”直接指所见对象，嵌入“西布说”的内容后仍容易解析；这一关系是询问西布如何解释所见对象所必需的。"
+                },
+                {
+                  "feature_index": 1,
+                  "assessment": "manageable",
+                  "reason": "“迦勒第一次说有人来时，西布说迦勒看见的其实是什么？”明确重复两人的姓名，读者可以清楚区分报告者与解释者。角色转换有实际意义，不构成可避免的指代负担。"
+                },
+                {
+                  "feature_index": 2,
+                  "assessment": "manageable",
+                  "reason": "“第一次说有人来时”先限定迦勒的报告，“西布说”再限定所问的回应视角。读者需要在两次言说之间建立联系，但题干按事件关系顺序组织，没有额外套入复杂引语或不必要的言说层级。"
+                }
+              ]
+            },
+            "decision": "KEEP",
+            "content_status": "PASS",
+            "language_status": "PASS",
+            "content_failures": [],
+            "content_uncertainties": [],
+            "language_failures": [],
+            "structural_concerns": [],
+            "unresolved_features": [],
+            "structure_burden_disagreement": false
+          }
+        },
+        {
+          "repeat": 2,
+          "preservation": {
+            "id": "item",
+            "same_target": {
+              "status": "pass",
+              "evidence": "修订仅将“他看见的”明确为“迦勒看见的”，与原题、原答案和经文中“在你眼中”的指向一致；仍询问迦勒第一次说有人来时，西布称他实际看见的是什么。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "修订后的问题和所有选项均保持中文，与原对应字段一致。"
+            },
+            "option_meanings": [
+              {
+                "status": "pass",
+                "evidence": "选项未改，仍指伪装的士兵。",
+                "label": "A"
+              },
+              {
+                "status": "pass",
+                "evidence": "选项未改，仍指山上的影子，并否认是人。",
+                "label": "B"
+              },
+              {
+                "status": "pass",
+                "evidence": "选项未改，仍指从山上下来的人。",
+                "label": "C"
+              },
+              {
+                "status": "pass",
+                "evidence": "选项未改，仍指树林里的野兽。",
+                "label": "D"
+              },
+              {
+                "status": "pass",
+                "evidence": "选项未改，仍表示根据这段文字无法判断。",
+                "label": "E"
+              }
+            ]
+          },
+          "review": {
+            "id": "item",
+            "input_hash": "f0fefd624cda21ad716ef929e9676551e87aea54d5bb1f48eb26cd5490eac8ba",
+            "content_validity": {
+              "id": "item",
+              "target": "迦勒第一次报告有人下来时，西布把迦勒所见解释为山上的影子，而不是人。",
+              "target_basis": "inferred",
+              "target_preservation": {
+                "status": "pass",
+                "evidence": "原题与原答案针对西布对迦勒第一次所见的解释；现题将“他”明确为“迦勒”，保留了说话者、所见者、时间限定和答案范围。"
+              },
+              "question_support": {
+                "status": "pass",
+                "evidence": "9:36记载迦勒先说有人从山上下来，西布随即回答“山上的影子在你眼中好像人”；9:37的“又说”也支持题目对第一次报告的区分。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "“山上的影子，不是人”准确概括了西布所说的“山上的影子在你眼中好像人”，并直接回答西布如何解释迦勒所见。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "西布只提出了“山上的影子”这一解释；段落未提供其他可与之并立的答案。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "所给段落包含第一次报告、西布的回答及迦勒再次报告，足以唯一定位题目所问的对话。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "题干仅定位第一次报告并询问西布的解释，没有透露“山上的影子”；正确答案出现在选项中不构成泄漏。"
+              },
+              "mcq_validity": {
+                "status": "pass",
+                "evidence": "B符合西布的原话。A“伪装的士兵”和D“树林里的野兽”无文本依据；C是迦勒的报告，不是西布的解释；原文明确给出解释，因此E“无法判断”也不成立。唯一正确选项为所给答案B。"
+              },
+              "meaning_profile": {
+                "answer_explicitness": "direct",
+                "semantic_relation": "说话者对他人所见事物的解释与纠正",
+                "answer_scope": "single_component",
+                "passage_span": "one_sentence"
+              }
+            },
+            "structural_inspection": {
+              "id": "item",
+              "parse_summary": "“迦勒第一次说有人来时”是时间框架，其中包含迦勒报告的内容；主问句“西布说迦勒看见的其实是什么”又在西布的话语范围内，以“迦勒看见的”指称待辨认的对象。理解时须区分迦勒的初次报告与西布对此的解释，并将“第一次”对应到经文中“迦勒又说”之前的报告。",
+              "features": [
+                {
+                  "kind": "nested_modifier",
+                  "quote": "西布说迦勒看见的其实是什么",
+                  "required_operations": "将“迦勒看见的”理解为所见对象，并在“西布说”的范围内确定该对象被解释为什么。",
+                  "concern": "ordinary",
+                  "reason": "嵌入的“的”字结构用于保留所见对象与观察者的关系，直接服务于题目目标。"
+                },
+                {
+                  "kind": "role_tracking",
+                  "quote": "迦勒第一次说有人来时，西布说迦勒看见的其实是什么？",
+                  "required_operations": "区分迦勒作为观察者、报告者与西布作为解释者的角色，不把迦勒报告的“人”当作西布的判断。",
+                  "concern": "ordinary",
+                  "reason": "两人的不同判断正是理解目标，角色区分属于必要结构。"
+                },
+                {
+                  "kind": "layered_speech",
+                  "quote": "迦勒第一次说有人来时，西布说迦勒看见的其实是什么？",
+                  "required_operations": "先识别迦勒所报告的内容，再提取西布对该报告中所见对象的解释。",
+                  "concern": "ordinary",
+                  "reason": "两层话语对应经文中的报告与回应，没有加入额外观点层次。"
+                },
+                {
+                  "kind": "reference_chain",
+                  "quote": "迦勒第一次说有人来时",
+                  "required_operations": "将“第一次”定位到经文中第一处“有人从山上下来”的报告，而非后面的再次报告。",
+                  "concern": "ordinary",
+                  "reason": "经文包含两次报告，这一定位用于明确题目所问的回应。"
+                }
+              ]
+            },
+            "language_accessibility": {
+              "id": "item",
+              "naturalness": {
+                "score": 0,
+                "evidence": "“迦勒第一次说有人来时”与“西布说迦勒看见的其实是什么？”衔接自然；“看见的”是常见的名词性表达，“其实是什么”也符合日常问法。选项如“伪装的士兵”“山上的影子，不是人”表达直接，无须在措辞上作心理修补。"
+              },
+              "processing": {
+                "score": 1,
+                "evidence": "读者需要用“第一次”定位迦勒的初次报告，并区分“迦勒看见”与“西布说”所标示的观察者和解释者。这些操作直接服务于理解两人的不同判断，属于普通、可管理的负担。选项均为简短表达，“山上的影子，不是人”中的对比也不造成额外的复杂比较。"
+              },
+              "context_economy": {
+                "score": 0,
+                "evidence": "没有额外引言或无关背景。“第一次说有人来时”用于限定所问的报告，“西布说”用于限定判断来源，均有明确作用，不属于多余铺垫。"
+              },
+              "structure_assessments": [
+                {
+                  "feature_index": 0,
+                  "assessment": "manageable",
+                  "reason": "“西布说迦勒看见的其实是什么”要求把“迦勒看见的”理解为所见对象，再确定西布如何解释它。“看见的”是常用结构，嵌入关系短而清楚，没有明显的错误附着诱因。"
+                },
+                {
+                  "feature_index": 1,
+                  "assessment": "manageable",
+                  "reason": "“迦勒第一次说有人来时，西布说迦勒看见的其实是什么？”确实要求区分两人的角色，但直接重复“迦勒”和“西布”使角色明确，不必解析含混的代词指向；这一角色区分也是题目所需。"
+                },
+                {
+                  "feature_index": 2,
+                  "assessment": "manageable",
+                  "reason": "“迦勒……说有人来”与“西布说……”构成报告和回应两层话语。读者只需辨认谁报告、谁解释，没有额外嵌入的第三方观点，层次可直接掌握。"
+                },
+                {
+                  "feature_index": 3,
+                  "assessment": "manageable",
+                  "reason": "“第一次”需要与后面的“迦勒又说”相区分，但它是明确而简短的时间定位，能减少所问对象的歧义，而非增加可避免的指代负担。"
+                }
+              ]
+            },
+            "decision": "KEEP",
+            "content_status": "PASS",
+            "language_status": "PASS",
+            "content_failures": [],
+            "content_uncertainties": [],
+            "language_failures": [],
+            "structural_concerns": [],
+            "unresolved_features": [],
+            "structure_burden_disagreement": false
+          }
+        }
+      ],
+      "status": "ACCEPTED"
+    }
+  ]
+}

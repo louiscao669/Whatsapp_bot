@@ -1,0 +1,122 @@
+[
+  {
+    "id": "residual_split_burden",
+    "original": {
+      "id": "focus:escape:split:explicit",
+      "question": "那个被邪灵附身的人制服了一些人。这些人随后带伤逃出了那房子，他们是谁？",
+      "passage": "19:13 当时有几个流动的犹太驱魔师试图用主耶稣的名给那些被邪灵附着的人驱魔。他们说：“我奉保罗所传的耶稣的名，吩咐你们。”\n19:14 这事是犹太大祭司士基瓦的七个儿子做的。\n19:15 有一天，邪灵回答说：“耶稣我认识，保罗我也知道，你们是谁？”\n19:16 那附着邪灵的人跳到他们身上，制服了他们所有人。攻击如此猛烈，以致他们赤身裸体、受伤逃出房子。",
+      "expected_answer": "The seven sons of Sceva.",
+      "form": "open",
+      "options": {},
+      "correct_option": "",
+      "intended_target": "Identify the people who escaped from the house injured. The preceding overpowering event is identifying setup, not a separately tested relationship.",
+      "original_question": "被那附着邪灵的人制服以后，谁受伤逃出了那房子？",
+      "original_answer": "The seven sons of Sceva."
+    },
+    "candidate": {
+      "id": "focus:escape:split:explicit",
+      "question": "那个被邪灵附身的人制服了一些人。这些人随后带伤逃出了那房子，他们是谁？",
+      "passage": "19:13 当时有几个流动的犹太驱魔师试图用主耶稣的名给那些被邪灵附着的人驱魔。他们说：“我奉保罗所传的耶稣的名，吩咐你们。”\n19:14 这事是犹太大祭司士基瓦的七个儿子做的。\n19:15 有一天，邪灵回答说：“耶稣我认识，保罗我也知道，你们是谁？”\n19:16 那附着邪灵的人跳到他们身上，制服了他们所有人。攻击如此猛烈，以致他们赤身裸体、受伤逃出房子。",
+      "expected_answer": "The seven sons of Sceva.",
+      "form": "open",
+      "options": {},
+      "correct_option": "",
+      "intended_target": "Identify the people who escaped from the house injured. The preceding overpowering event is identifying setup, not a separately tested relationship.",
+      "original_question": "被那附着邪灵的人制服以后，谁受伤逃出了那房子？",
+      "original_answer": "The seven sons of Sceva."
+    },
+    "contract": {
+      "id": "item",
+      "status": "ready",
+      "target": "Identify the people who escaped from the house injured. The preceding overpowering event is identifying setup, not a separately tested relationship.",
+      "basis": "explicit",
+      "required_answer_components": [
+        "Identify the people who escaped from the house injured as the seven sons of Sceva."
+      ],
+      "relations": [
+        {
+          "id": "r1",
+          "quote": "那个被邪灵附身的人制服了一些人。",
+          "meaning": "The demon-possessed man overpowered the people subsequently referred to in the question.",
+          "role": "removable",
+          "reason": "The explicit target treats the overpowering event as setup rather than a separately tested relationship. The passage contains only one event in which people escape from a house injured, so that escape still uniquely identifies the relevant people without this setup."
+        },
+        {
+          "id": "r2",
+          "quote": "随后",
+          "meaning": "The escape happened after the overpowering event.",
+          "role": "removable",
+          "reason": "This narrates the sequence leading to the escape; the question does not independently ask about temporal order. The injured escape uniquely identifies the event without this sequencing detail."
+        },
+        {
+          "id": "r3",
+          "quote": "带伤逃出了那房子",
+          "meaning": "The relevant people escaped from the house injured.",
+          "role": "anchor",
+          "reason": "This identifies the particular event whose participants must be named. The injury and escape from the house define the scope specified by the explicit target, rather than requiring a separate account of what happened."
+        },
+        {
+          "id": "r4",
+          "quote": "他们是谁",
+          "meaning": "Identify the people who participated in the specified injured escape.",
+          "role": "tested",
+          "reason": "The requested understanding is the identity of those people, not an explanation of how they were overpowered or why they fled."
+        }
+      ],
+      "note": "The explicit target agrees with the earlier original question and answer. In the supplied passage, 19:14 identifies the actors as Sceva’s seven sons, and 19:16 describes those same people being overpowered and escaping from the house injured. This supports the fixed answer. Their nakedness, also mentioned in the passage, is not a requested answer component."
+    }
+  },
+  {
+    "id": "lost_required_time",
+    "original": {
+      "id": "control:necessary_time",
+      "question": "吃饭前，谁离开了？",
+      "passage": "吃饭前，小林离开了。吃饭后，小周也离开了。",
+      "expected_answer": "小林",
+      "form": "open",
+      "options": {},
+      "correct_option": "",
+      "intended_target": "Identify who left before the meal, preserving the before/after distinction.",
+      "original_question": "",
+      "original_answer": ""
+    },
+    "candidate": {
+      "id": "control:necessary_time",
+      "question": "谁离开了？",
+      "passage": "吃饭前，小林离开了。吃饭后，小周也离开了。",
+      "expected_answer": "小林",
+      "form": "open",
+      "options": {},
+      "correct_option": "",
+      "intended_target": "Identify who left before the meal, preserving the before/after distinction.",
+      "original_question": "",
+      "original_answer": ""
+    },
+    "contract": {
+      "id": "item",
+      "status": "ready",
+      "target": "Identify who left before the meal, preserving the before/after distinction.",
+      "basis": "explicit",
+      "required_answer_components": [
+        "小林：在吃饭前离开的人，而不是吃饭后离开的小周。"
+      ],
+      "relations": [
+        {
+          "id": "r1",
+          "quote": "吃饭前",
+          "meaning": "离开发生在吃饭之前，而非吃饭之后。",
+          "role": "tested",
+          "reason": "显式目标要求保留饭前与饭后的区别；这一时间条件也区分了文中两次离开事件，不能删除。"
+        },
+        {
+          "id": "r2",
+          "quote": "谁离开了",
+          "meaning": "识别在指定时间条件下离开的人的身份。",
+          "role": "tested",
+          "reason": "问题要求回答离开者是谁；结合饭前条件，答案必须指向小林。"
+        }
+      ],
+      "note": "所供参与者短文明确写道“吃饭前，小林离开了”，并以“吃饭后，小周也离开了”形成时间对照。固定答案“小林”有直接支持，与显式目标一致。"
+    }
+  }
+]

@@ -1,0 +1,100 @@
+{
+  "baseline": {
+    "true_accept": 7,
+    "true_reject": 5,
+    "false_accept": 3,
+    "false_reject": 1,
+    "scored_cases": 16,
+    "expected_cases": 16,
+    "accuracy": 0.75,
+    "false_accept_rate": 0.375,
+    "false_reject_rate": 0.125,
+    "families": {
+      "clarified_context": {
+        "true_accept": 3
+      },
+      "clear_control": {
+        "true_accept": 4,
+        "false_reject": 1
+      },
+      "harder_vague_wording": {
+        "true_reject": 5,
+        "false_accept": 3
+      }
+    },
+    "misclassifications": [
+      {
+        "id": "new_n1",
+        "expected": "reject",
+        "actual": "accept",
+        "explanation": "将守桥士兵的数量从“大批”改为“几名”，其余信息不变；替换后的句子自然通顺，且原文只有这一处匹配。"
+      },
+      {
+        "id": "new_n2",
+        "expected": "reject",
+        "actual": "accept",
+        "explanation": "“十来个”表示约十个，“十几个”表示多于十个、不满二十个，人数范围发生了变化。替换后的句子自然通顺，只改动了工人人数；原词在 passage 中仅出现一次。"
+      },
+      {
+        "id": "new_n4",
+        "expected": "reject",
+        "actual": "accept",
+        "explanation": "“经常”表示频繁，“有时”表示偶尔，改变了探望守卫的频率；句子通顺，其余信息未变，且原文仅有这一处匹配。"
+      },
+      {
+        "id": "new_p5",
+        "expected": "accept",
+        "actual": "reject",
+        "explanation": "清点频率由“几乎每天”变为“每月一次”，是明确的事实变化，且只改动了频率。但“每月一次都要清点”语序生硬，不够自然。"
+      }
+    ],
+    "repeat_decisions": {},
+    "repeat_flips": [],
+    "errors": 0
+  },
+  "revised": {
+    "true_accept": 8,
+    "true_reject": 7,
+    "false_accept": 1,
+    "false_reject": 0,
+    "scored_cases": 16,
+    "expected_cases": 16,
+    "accuracy": 0.9375,
+    "false_accept_rate": 0.125,
+    "false_reject_rate": 0.0,
+    "families": {
+      "clarified_context": {
+        "true_accept": 3
+      },
+      "clear_control": {
+        "true_accept": 5
+      },
+      "harder_vague_wording": {
+        "true_reject": 7,
+        "false_accept": 1
+      }
+    },
+    "misclassifications": [
+      {
+        "id": "new_n1",
+        "expected": "reject",
+        "actual": "accept",
+        "explanation": "“大批士兵”指人数众多的一批士兵，“几名士兵”指少数几人；两者在此处有明确的人数规模差别。句子通顺，只替换了派来士兵的人数描述，且来源词只出现一次。"
+      }
+    ],
+    "repeat_decisions": {},
+    "repeat_flips": [],
+    "errors": 0
+  },
+  "complete": true,
+  "completed_responses": 32,
+  "planned_responses": 32,
+  "usage": {
+    "input_tokens": 31188,
+    "output_tokens": 6797,
+    "total_tokens": 37985,
+    "reasoning_tokens": 2594,
+    "cached_input_tokens": 0
+  },
+  "revised_passes_screening_gate": null
+}

@@ -1,0 +1,52 @@
+{
+  "kind": "mcq_abstention_followup",
+  "original_run": "/Users/louiscao/whatsapp-bot/eten-whatsapp-bot/evaluation/runs/hard66_full_ladder_2026-10-23",
+  "original_mcq_rows": 910,
+  "original_successful_mcq_rows": 906,
+  "original_successful_choice_counts": {
+    "E": 154,
+    "A": 208,
+    "D": 147,
+    "C": 202,
+    "B": 195
+  },
+  "original_failed_mcq_rows": 4,
+  "original_failure_fallback_E_count": 1,
+  "original_failed_thinking_text_available": false,
+  "original_qwen_answer_files_match_saved_campaign_hashes": true,
+  "limitations": [
+    "Diagnostic replays are newly generated, not recovered original thinking.",
+    "All replays used temperature 0, 2500 output tokens, 150-second timeout, and no retries.",
+    "The original Judges 9 failures were timeouts under an earlier, longer budget; the diagnostic replay uses the current 2500-token budget.",
+    "A reasoning statement choosing E is not a submitted final E answer."
+  ],
+  "replays": [
+    {
+      "file": "/Users/louiscao/whatsapp-bot/eten-whatsapp-bot/evaluation/reports/hard66_empty_answers_2026-10-24/replay_3.json",
+      "label": "Acts 23 — mistranslation 10%",
+      "E_status": "listed_only",
+      "finding": "Only lists E as an option. It does not decide to abstain; it loops between A and B.",
+      "final_answer": "",
+      "tokens": 2500,
+      "done_reason": "length"
+    },
+    {
+      "file": "/Users/louiscao/whatsapp-bot/eten-whatsapp-bot/evaluation/reports/hard66_empty_answers_2026-10-24/replay_4.json",
+      "label": "2 Chronicles 26 — word-by-word",
+      "E_status": "tentatively_considered",
+      "finding": "Tentatively considers E, then repeatedly concludes C until the token limit.",
+      "final_answer": "",
+      "tokens": 2500,
+      "done_reason": "length"
+    },
+    {
+      "file": "/Users/louiscao/whatsapp-bot/eten-whatsapp-bot/evaluation/reports/hard66_empty_answers_2026-10-24/replay_5.json",
+      "label": "Judges 9 — omission 25% and 30%",
+      "E_status": "interim_conclusion_then_reversed",
+      "finding": "Initially concludes E, then changes to B and repeatedly argues for B until the token limit. These two original conditions have identical local prompts, so one replay covers their shared prompt.",
+      "final_answer": "",
+      "tokens": 2500,
+      "done_reason": "length"
+    }
+  ]
+}

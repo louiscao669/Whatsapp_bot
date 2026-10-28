@@ -31,6 +31,7 @@ PASSAGE_DIR="${PASSAGE_DIR:-evaluation/datasets/pseudonymized/passages/tier1_bsb
 QA_DIR="${QA_DIR:-evaluation/datasets/pseudonymized/qa/tier1_bsb}"
 DRY_RUN="${DRY_RUN:-0}"
 FORCE_ANSWER="${FORCE_ANSWER:-0}"
+REPLACE_INPUTS="${REPLACE_INPUTS:-0}"
 NO_THINK="${NO_THINK:-1}"
 # Thinking on/off are different conditions and must not share an output cell, so the
 # model dir gets a suffix (defaults to "_think" when NO_THINK=0), matching
@@ -59,7 +60,7 @@ passage_file() {
 # overwrites results already produced.
 ARTIFACTS="passage_source_decanonicalized.txt passage_target.txt
            passage_target_decanonicalized.txt passage_translation.json
-           qa_target.json qa_target_decanonicalized.json"
+           qa_target.json qa_target_decanonicalized.json decanonicalized_metadata.json"
 
 say() { echo "[$(date '+%H:%M:%S')] $*"; }
 
@@ -93,10 +94,16 @@ for pid in $PIDS; do
     if [ "$DRY_RUN" != "1" ]; then
       mkdir -p "$dst"
       for f in $ARTIFACTS; do
-        [ -f "$src/$f" ] && cp -n "$src/$f" "$dst/$f" 2>/dev/null || true
+        if [ -f "$src/$f" ]; then
+          if [ "$REPLACE_INPUTS" = "1" ]; then
+            cp -f "$src/$f" "$dst/$f"
+          else
+            cp -n "$src/$f" "$dst/$f" 2>/dev/null || true
+          fi
+        fi
       done
     fi
-    cmd="python -u evaluation/main.py \"$PASSAGE_DIR/$(passage_file "$pid")\" \"$QA_DIR/${pid}_all_formats.json\" \
+    cmd="\"${PYTHON_BIN:-python}\" -u evaluation/main.py \"$PASSAGE_DIR/$(passage_file "$pid")\" \"$QA_DIR/${pid}_all_formats.json\" \
       --output-dir \"$OUT_ROOT/$pid/$slug\" --run-name \"${pid}_${slug}\" \
       --methods $METHOD --answer-provider ollama --answer-model \"$model\" \
       --mcq-choice-mapper openai --skip-entity-discovery --pre-blinded \

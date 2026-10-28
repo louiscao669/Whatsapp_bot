@@ -1,0 +1,311 @@
+{
+  "id": "hard:t1_2chr26:723e:mcq",
+  "original": {
+    "id": "hard:t1_2chr26:723e:mcq",
+    "question": "这三十万七千五百训练有素的军队由谁统领？",
+    "passage": "26:11 乌西雅有一支预备出战的军队，按班次出征，由书记耶列和官长玛西亚在王官哈拿尼雅的指挥下记载。\n26:12 勇士家族的首领共有二千六百人。\n26:13 他们统领的军队共有三十万七千五百名训练有素的士兵，是支持王抵御敌人的强大力量。\n26:14 乌西雅为全军配备了盾牌、枪矛、头盔、铠甲、弓和弹石器。\n26:15 他在耶路撒冷巧妙制造发射箭矢和投掷大石的装置，安置在城楼和城角。因此他的名声远扬，因神大大帮助他，他就变得强盛。",
+    "expected_answer": "那二千六百个家族首领",
+    "form": "mcq",
+    "options": {
+      "A": "哈拿尼雅",
+      "B": "耶列和玛西亚",
+      "C": "乌西雅",
+      "D": "那二千六百个家族首领",
+      "E": "根据这段文字无法判断"
+    },
+    "correct_option": "D",
+    "intended_target": "",
+    "original_question": "这三十万七千五百训练有素的军队由谁统领？",
+    "original_answer": "the 2,600 family leaders"
+  },
+  "input_hash": "3cb3cfe40a55a88d3953cb25cef967f2c0e31afc92b0c876db5cb983e97ce516",
+  "status": "SIMPLIFIED",
+  "accepted_case": {
+    "id": "hard:t1_2chr26:723e:mcq",
+    "question": "这支三十万七千五百人的军队由谁统领？",
+    "passage": "26:11 乌西雅有一支预备出战的军队，按班次出征，由书记耶列和官长玛西亚在王官哈拿尼雅的指挥下记载。\n26:12 勇士家族的首领共有二千六百人。\n26:13 他们统领的军队共有三十万七千五百名训练有素的士兵，是支持王抵御敌人的强大力量。\n26:14 乌西雅为全军配备了盾牌、枪矛、头盔、铠甲、弓和弹石器。\n26:15 他在耶路撒冷巧妙制造发射箭矢和投掷大石的装置，安置在城楼和城角。因此他的名声远扬，因神大大帮助他，他就变得强盛。",
+    "expected_answer": "那二千六百个家族首领",
+    "form": "mcq",
+    "options": {
+      "A": "哈拿尼雅",
+      "B": "耶列和玛西亚",
+      "C": "乌西雅",
+      "D": "那二千六百个家族首领",
+      "E": "根据这段文字无法判断"
+    },
+    "correct_option": "D",
+    "intended_target": "",
+    "original_question": "这三十万七千五百训练有素的军队由谁统领？",
+    "original_answer": "the 2,600 family leaders"
+  },
+  "contract": {
+    "id": "item",
+    "status": "ready",
+    "target": "识别统领这支三十万七千五百人军队的是勇士家族的首领，即经文所说的二千六百人。",
+    "basis": "inferred",
+    "required_answer_components": [
+      "指出统领者是那二千六百名勇士家族的首领，而非负责记载或指挥记载工作的官员，也非仅回答乌西雅。"
+    ],
+    "relations": [
+      {
+        "id": "r1",
+        "quote": "军队由谁统领",
+        "meaning": "要求识别这支军队的统领者。",
+        "role": "tested",
+        "reason": "这是问题直接要求恢复的人物身份及其与军队的统领关系，不是在问军队人数、装备或记载工作的负责人。"
+      },
+      {
+        "id": "r2",
+        "quote": "这三十万七千五百",
+        "meaning": "以三十万七千五百这一人数定位26:13所述军队。",
+        "role": "anchor",
+        "reason": "这一人数将问题明确定位到26:13的统领关系，避免与26:11哈拿尼雅指挥记载工作的关系混淆；人数本身不是要求作答的内容。"
+      },
+      {
+        "id": "r3",
+        "quote": "训练有素的",
+        "meaning": "描述这支军队的训练状况。",
+        "role": "removable",
+        "reason": "这是描述性信息，不是所问的统领关系。在保留三十万七千五百这一人数及军队对象的情况下，仍可唯一定位26:13的同一支军队；文中没有另一支同人数但训练状况不同的军队。"
+      }
+    ],
+    "note": "未提供非空的明确 intended_target；本目标依据当前问题及一致的 original_question、original_answer 保守推断，不代表研究者已明确批准的设计意图。26:12先指出勇士家族的首领共有二千六百人，26:13紧接着说“他们统领的军队”共有三十万七千五百人，支持既定答案。二千六百用于明确所指的首领群体，不构成独立的人数计算或回忆测试。"
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "proposal": {
+        "id": "item",
+        "status": "revised",
+        "question": "这支三十万七千五百人的军队由谁统领？",
+        "options": [
+          {
+            "label": "A",
+            "text": "哈拿尼雅"
+          },
+          {
+            "label": "B",
+            "text": "耶列和玛西亚"
+          },
+          {
+            "label": "C",
+            "text": "乌西雅"
+          },
+          {
+            "label": "D",
+            "text": "那二千六百个家族首领"
+          },
+          {
+            "label": "E",
+            "text": "根据这段文字无法判断"
+          }
+        ],
+        "removed_relation_ids": [
+          "r3"
+        ],
+        "note": "删除训练状况的描述，保留军队人数这一定位信息及所问的统领关系。"
+      },
+      "candidate": {
+        "id": "hard:t1_2chr26:723e:mcq",
+        "question": "这支三十万七千五百人的军队由谁统领？",
+        "passage": "26:11 乌西雅有一支预备出战的军队，按班次出征，由书记耶列和官长玛西亚在王官哈拿尼雅的指挥下记载。\n26:12 勇士家族的首领共有二千六百人。\n26:13 他们统领的军队共有三十万七千五百名训练有素的士兵，是支持王抵御敌人的强大力量。\n26:14 乌西雅为全军配备了盾牌、枪矛、头盔、铠甲、弓和弹石器。\n26:15 他在耶路撒冷巧妙制造发射箭矢和投掷大石的装置，安置在城楼和城角。因此他的名声远扬，因神大大帮助他，他就变得强盛。",
+        "expected_answer": "那二千六百个家族首领",
+        "form": "mcq",
+        "options": {
+          "A": "哈拿尼雅",
+          "B": "耶列和玛西亚",
+          "C": "乌西雅",
+          "D": "那二千六百个家族首领",
+          "E": "根据这段文字无法判断"
+        },
+        "correct_option": "D",
+        "intended_target": "",
+        "original_question": "这三十万七千五百训练有素的军队由谁统领？",
+        "original_answer": "the 2,600 family leaders"
+      },
+      "checks": [
+        {
+          "repeat": 1,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "原题询问三十万七千五百人军队的统领者。26:12指出勇士家族的首领有二千六百人，26:13用“他们统领的军队”承接，支持合同中的目标、答案组成及关系角色。没有非空的明确意图与此推断冲突。"
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "候选仍以三十万七千五百人的军队为对象，询问“由谁统领”，完整保留人物身份及统领关系这一核心目标。"
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "仅删除军队“训练有素”的描述，并用“这支……人的军队”改善表达。保留的人数足以定位26:13的同一支军队；删除训练状况不会引入另一支军队或另一统领事件。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "问题及A至E全部选项均保持中文。"
+            },
+            "option_meanings": [
+              {
+                "status": "pass",
+                "evidence": "选项原样保留，仍指哈拿尼雅。",
+                "label": "A"
+              },
+              {
+                "status": "pass",
+                "evidence": "选项原样保留，仍指耶列和玛西亚两人。",
+                "label": "B"
+              },
+              {
+                "status": "pass",
+                "evidence": "选项原样保留，仍指乌西雅。",
+                "label": "C"
+              },
+              {
+                "status": "pass",
+                "evidence": "选项原样保留，仍指那二千六百个家族首领这一群体。",
+                "label": "D"
+              },
+              {
+                "status": "pass",
+                "evidence": "选项原样保留，仍表示依据所给文字无法判断。",
+                "label": "E"
+              }
+            ],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "26:13明确记载军队人数为三十万七千五百，并说明有人统领，支持问题的对象与预设。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "26:12的“勇士家族的首领共有二千六百人”与26:13的“他们统领的军队”直接支持固定答案及D项。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "“他们”承接前句的二千六百名首领。其他选项涉及王、记载人员或指挥记载工作的官员，不是该句所指的统领群体。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "当前窗口包含26:12及26:13，足以解析代词、确认军队人数并识别统领者，无需外部知识。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "题干只提供定位军队的人数，没有透露统领者身份；选项也没有答案标记或额外提示。"
+              },
+              "mcq_validity": {
+                "status": "pass",
+                "evidence": "选项完整、互可区分，D为唯一受经文直接支持的答案；A至C分别对应文中的其他人物角色，E不成立。"
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "问句表达自然直接，人数与“人的军队”搭配清楚，选项均为常规中文表达。",
+              "quotes": []
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "问句只有一个明确对象和一个统领关系；人数是有用的定位信息，没有额外的指代链或角色嵌套。",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "题干直接询问目标关系，保留的人数有助于定位对应经句，没有多余事件叙述或关系铺垫。",
+              "quotes": []
+            }
+          }
+        },
+        {
+          "repeat": 2,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "契约正确识别了原题所考查的统领关系。26:12给出二千六百名勇士家族首领，26:13以“他们统领的军队”承接，并以三十万七千五百人定位该军队。人数是识别锚点，“训练有素”不是必需的答题条件。"
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "候选题仍要求识别三十万七千五百人军队的统领者，保留了人物与军队之间的统领关系、军队人数锚点及完整的正确选项。"
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "唯一实质删减是“训练有素的”。保留确切人数及军队对象后，仍可唯一定位26:13的军队；删去训练状况不会引入另一支军队或另一种统领关系。“这支……人的军队”是对原表达的语法整理。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "候选问题及A至E所有选项均保留原来的中文显示语言。"
+            },
+            "option_meanings": [
+              {
+                "status": "pass",
+                "evidence": "“哈拿尼雅”原样保留，人物指称不变。",
+                "label": "A"
+              },
+              {
+                "status": "pass",
+                "evidence": "“耶列和玛西亚”原样保留，仍指两人共同构成的答案。",
+                "label": "B"
+              },
+              {
+                "status": "pass",
+                "evidence": "“乌西雅”原样保留，人物指称不变。",
+                "label": "C"
+              },
+              {
+                "status": "pass",
+                "evidence": "“那二千六百个家族首领”原样保留，群体身份和数量范围不变。",
+                "label": "D"
+              },
+              {
+                "status": "pass",
+                "evidence": "“根据这段文字无法判断”原样保留，仍表示文本不足以判断的弃答选项。",
+                "label": "E"
+              }
+            ],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "26:13明确记载一支三十万七千五百人的军队及其统领关系，支持问题的对象和预设。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "26:12说勇士家族首领共有二千六百人，26:13紧接着说“他们统领的军队”，直接支持既定答案和D项。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "人数锚点明确指向26:13，其统领者是前句的家族首领。哈拿尼雅、耶列和玛西亚涉及记载工作的关系，乌西雅则是拥有、装备军队的王，均非该句指定的统领者。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "当前窗口完整保留26:12的先行词与26:13的代词承接，不需借助窗口外信息即可确定答案。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "问题只提供军队人数作为定位信息，没有直接透露首领身份或二千六百这一答案数量；选项也没有额外标示正确答案。"
+              },
+              "mcq_validity": {
+                "status": "pass",
+                "evidence": "五个选项指称清楚，正确项D得到文本唯一支持；其他人物选项及“无法判断”均不能回答所定位的统领关系。"
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "“这支……人的军队由谁统领？”是自然、直接的中文问法，所有选项表达清楚。",
+              "quotes": []
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "问题为单一直接问句，人数短语紧邻所修饰的军队，没有多层指代、角色嵌套或额外比较负担。",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "军队人数是有用的定位锚点，能将所问关系明确对应到26:13；问题没有保留多余事件叙述或人物关系铺垫。",
+              "quotes": []
+            }
+          }
+        }
+      ],
+      "status": "SIMPLIFIED"
+    }
+  ]
+}

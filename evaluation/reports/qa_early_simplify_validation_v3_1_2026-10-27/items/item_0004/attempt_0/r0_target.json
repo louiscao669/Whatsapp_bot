@@ -1,0 +1,51 @@
+{
+  "request_hash": "48b260fd900fdea75b5303df9fcf9e2f5d5b8e64c82db8058c97c2f8934fb207",
+  "model": "gpt-6.1-sol",
+  "response_id": "resp_0e6163b8b7fd28e9006ae130b3408487d1a84b522a8263bb6d",
+  "usage": {
+    "input_tokens": 1220,
+    "input_tokens_details": {
+      "cached_tokens": 1217,
+      "cache_write_tokens": 0
+    },
+    "output_tokens": 789,
+    "output_tokens_details": {
+      "reasoning_tokens": 236
+    },
+    "total_tokens": 2009
+  },
+  "parsed": {
+    "id": "item",
+    "status": "ready",
+    "target": "What happened to the sick people (illnesses and evil spirits leaving), not which objects touched Paul or where the objects were taken.",
+    "basis": "explicit",
+    "required_answer_components": [
+      "疾病离开了病人。",
+      "邪灵也离开了病人。"
+    ],
+    "relations": [
+      {
+        "id": "r1",
+        "quote": "当触摸过保罗的手帕和围裙被带到病人那里时发生了什么？",
+        "meaning": "询问所述物品被带到病人那里时，病人身上发生的结果；需要同时识别疾病离开和邪灵离开。",
+        "role": "tested",
+        "reason": "问题要求恢复这一特定事件中的结果，而不是其他驱魔事件的结果。“当……时”的事件范围限定结果所属的情境，但不要求额外推断因果机制。"
+      },
+      {
+        "id": "r2",
+        "quote": "手帕和围裙被带到病人那里",
+        "meaning": "以物品被送至病人处这一事件定位所问的结果。",
+        "role": "anchor",
+        "reason": "这一区分线索将问题定位于第12节，而非后文犹太驱魔师驱魔及遭受攻击的事件。物品名称和送达地点是事件定位信息，不是要求回答的独立知识点。"
+      },
+      {
+        "id": "r3",
+        "quote": "触摸过保罗的",
+        "meaning": "说明这些手帕和围裙此前与保罗有过接触。",
+        "role": "removable",
+        "reason": "这是物品到达病人处之前的背景描述。本文只有一次手帕和围裙被带到病人处的事件，保留该送达事件即可唯一定位所问结果；明确目标也排除了考查哪些物品接触过保罗。"
+      }
+    ],
+    "note": "第12节明确记载，物品被带到病人那里后，“疾病和邪灵就离开了他们”。因此固定答案及选项B均有直接依据。目标由 supplied intended_target 明确给定；两个并列结果均须保留，不能只回答疾病离开或只回答邪灵离开。"
+  }
+}

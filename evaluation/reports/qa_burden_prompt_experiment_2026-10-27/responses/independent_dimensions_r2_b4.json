@@ -1,0 +1,224 @@
+{
+  "prompt": "independent_dimensions",
+  "repeat": 2,
+  "batch": 4,
+  "request_hash": "f35b5130a1196e207085fb382951f550663a42a125ac5aa07bb5d68d011f8f81",
+  "model": "gpt-6.1-sol",
+  "response_id": "resp_0949aae08a8767b0006ae05461ced087d18160742815f06d0c",
+  "elapsed_seconds": 33.5365629196167,
+  "usage": {
+    "input_tokens": 3320,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 3317
+    },
+    "output_tokens": 2354,
+    "output_tokens_details": {
+      "reasoning_tokens": 90
+    },
+    "total_tokens": 5674
+  },
+  "threshold_mismatches": [],
+  "items": [
+    {
+      "id": "hard:t1_2sam21:de9f:mcq",
+      "decision": "KEEP",
+      "target": "辨认亚比筛击杀的人。",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“亚比筛击杀了谁？”自然直接。"
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "只需辨认“亚比筛”这一施事及其击杀的对象；选项简短。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“亚比筛击杀”足以定位经文中的唯一事件，无多余背景。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "题干没有说明被击杀者是谁；答案出现在选项中不构成泄露。"
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "各维度均通过；直接询问人物身份。负担判断仍需受访者验证。"
+    },
+    {
+      "id": "hard:t1_judg9:0bd2:mcq",
+      "decision": "KEEP",
+      "target": "辨认亚比米勒来到楼门的目的。",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“来到楼门，是要做什么？”是自然的目的问法。"
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "题干只要求理解一次行动及其目的；四个选项都是简短动作。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“亚比米勒来到楼门”提供了必要且足够的事件定位。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "到达楼门并未说明其目的是“点火烧楼”。"
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "问法直接，事件锚点适量，没有明显的可避免负担。负担判断仍需受访者验证。"
+    },
+    {
+      "id": "hard:t1_judg17_18:1654:mcq",
+      "decision": "KEEP",
+      "target": "辨认来士的人富足的原因。",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“来士的人为什么富足？”自然明确。"
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "各选项以“因为”引出一个简短原因，没有嵌套关系或复杂比较要求。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“来士的人”明确定位所问群体，不需要补充五人出行的背景。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "题干给出待解释的富足状态，但没有提供其原因。"
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "原因问法本身不增加不必要负担，各维度均通过。负担判断仍需受访者验证。"
+    },
+    {
+      "id": "focus:handkerchief:direct:zh",
+      "decision": "KEEP",
+      "target": "辨认病人发生的变化，即疾病和邪灵离开了他们，而非辨认接触保罗的物品或物品被带往的地点。",
+      "target_basis": "explicit",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“病人的情况有什么变化？”是自然、常见的询问方式。"
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "需在五个选项中辨认病人的变化；包括“无法判断”选项，但整体比较要求仍属普通。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“病人”能定位经文前部明确提到的群体，无须重述手帕和围裙的经过。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "题干没有说明病人发生了哪种变化。"
+      },
+      "alternative": "",
+      "target_preservation": "preserved",
+      "reason": "直接聚焦指定的病人变化，没有引入物品相关的额外任务。负担判断仍需受访者验证。"
+    },
+    {
+      "id": "hard:t1_2chr26:723e:mcq",
+      "decision": "REWRITE",
+      "target": "辨认统领三十万七千五百名训练有素士兵的人。",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 2,
+        "evidence": "“这三十万七千五百训练有素的军队”把人数直接接到“军队”上，缺少“名士兵”等成分，读者需要自行修补数量与名词的关系。"
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "需读出较长人数并判断“由谁统领”的角色关系；除数量短语的表达问题外，任务结构仍较简单。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "人数及“训练有素”能明确定位所问军队，没有多余背景。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "题干只标识军队，没有说明统领者身份。"
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "自然度未通过：数量短语需要读者作语言修补；应保留统领者这一目标而调整措辞。负担判断仍需受访者验证。"
+    },
+    {
+      "id": "hard:t1_1kgs13:8a66:mcq",
+      "decision": "KEEP",
+      "target": "辨认在路上被狮子咬死的人。",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“谁在路上被狮子咬死了？”符合自然汉语表达。"
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "被动句清楚标明狮子是施事、所问人物是受事；选项均为简短人物称谓。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“在路上被狮子咬死”足以定位唯一事件，无须补充老先知的背景。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "题干指出死亡事件，但未给出死者身份。"
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "被动表达服务于人物辨认，没有造成额外解码负担。负担判断仍需受访者验证。"
+    },
+    {
+      "id": "hard:t1_acts19:7628:mcq",
+      "decision": "KEEP",
+      "target": "辨认被附着邪灵的人制服后受伤逃出房子的人。",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 1,
+        "evidence": "“被那附着邪灵的人制服以后”略显书面，但意思明确，无须修补。"
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "需区分制服他人的人和随后受伤逃走的人，并理解先后关系；角色链条短且连续，负担可管理。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "制服事件与“逃出了那房子”共同定位所问人物，没有无关背景。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "题干没有点明被制服并逃走者的身份。"
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "虽有被动结构和时间关系，但整体清楚，未形成实质性的可避免负担。负担判断仍需受访者验证。"
+    },
+    {
+      "id": "constructed:anchor",
+      "decision": "KEEP",
+      "target": "辨认把书带到图书馆的人。",
+      "target_basis": "explicit",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“谁把书带到图书馆？”自然直接。"
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "只需根据目的地“图书馆”辨认人物，没有额外角色或时间比较要求。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“图书馆”已能区分两次带书事件，无须再加“下午”。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "题干没有给出带书者的姓名。"
+      },
+      "alternative": "",
+      "target_preservation": "preserved",
+      "reason": "使用足够且简洁的事件锚点，准确保留指定目标。负担判断仍需受访者验证。"
+    }
+  ]
+}

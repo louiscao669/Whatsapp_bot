@@ -1,0 +1,219 @@
+{
+  "id": "control:escape:required_relation",
+  "original": {
+    "id": "control:escape:required_relation",
+    "question": "被那附着邪灵的人制服以后，谁受伤逃出了那房子？",
+    "passage": "19:13 当时有几个流动的犹太驱魔师试图用主耶稣的名给那些被邪灵附着的人驱魔。他们说：“我奉保罗所传的耶稣的名，吩咐你们。”\n19:14 这事是犹太大祭司士基瓦的七个儿子做的。\n19:15 有一天，邪灵回答说：“耶稣我认识，保罗我也知道，你们是谁？”\n19:16 那附着邪灵的人跳到他们身上，制服了他们所有人。攻击如此猛烈，以致他们赤身裸体、受伤逃出房子。",
+    "expected_answer": "The seven sons of Sceva.",
+    "form": "open",
+    "options": {},
+    "correct_option": "",
+    "intended_target": "Identify the people overpowered by the possessed man who subsequently escaped injured. The link between being overpowered by that man and then escaping injured is explicitly part of the tested relationship and must remain in the question.",
+    "original_question": "",
+    "original_answer": ""
+  },
+  "input_hash": "8a2fc9a575ea31d258c0da9f49a568f1f21c7c77c595b934997936fa3c8a4f15",
+  "status": "KEPT",
+  "accepted_case": {
+    "id": "control:escape:required_relation",
+    "question": "被那附着邪灵的人制服以后，谁受伤逃出了那房子？",
+    "passage": "19:13 当时有几个流动的犹太驱魔师试图用主耶稣的名给那些被邪灵附着的人驱魔。他们说：“我奉保罗所传的耶稣的名，吩咐你们。”\n19:14 这事是犹太大祭司士基瓦的七个儿子做的。\n19:15 有一天，邪灵回答说：“耶稣我认识，保罗我也知道，你们是谁？”\n19:16 那附着邪灵的人跳到他们身上，制服了他们所有人。攻击如此猛烈，以致他们赤身裸体、受伤逃出房子。",
+    "expected_answer": "The seven sons of Sceva.",
+    "form": "open",
+    "options": {},
+    "correct_option": "",
+    "intended_target": "Identify the people overpowered by the possessed man who subsequently escaped injured. The link between being overpowered by that man and then escaping injured is explicitly part of the tested relationship and must remain in the question.",
+    "original_question": "",
+    "original_answer": ""
+  },
+  "contract": {
+    "id": "item",
+    "status": "ready",
+    "target": "Identify the people overpowered by the possessed man who subsequently escaped injured. The link between being overpowered by that man and then escaping injured is explicitly part of the tested relationship and must remain in the question.",
+    "basis": "explicit",
+    "required_answer_components": [
+      "指出这些人是士基瓦的七个儿子。",
+      "所指的人必须是被那附着邪灵的人制服后，受伤逃出房子的同一群人；不要求另外复述事件经过。"
+    ],
+    "relations": [
+      {
+        "id": "r1",
+        "quote": "被那附着邪灵的人制服以后",
+        "meaning": "所问的人先被那附着邪灵的人制服，随后才发生受伤逃出房子的事件。",
+        "role": "tested",
+        "reason": "显式目标明确要求保留被制服与随后受伤逃出之间的联系，因此这不是可删除的背景叙述。"
+      },
+      {
+        "id": "r2",
+        "quote": "谁",
+        "meaning": "要求辨认参与上述连续事件的人的身份。",
+        "role": "tested",
+        "reason": "身份辨认是问题直接要求的回答内容；本段支持的身份是士基瓦的七个儿子。"
+      },
+      {
+        "id": "r3",
+        "quote": "受伤逃出了那房子",
+        "meaning": "这些人受了伤，并逃出了事发的房子。",
+        "role": "tested",
+        "reason": "受伤逃出是显式目标指定的后续事件，用来限定所问的是哪些人；不能只保留被制服而删去这一结果。"
+      }
+    ],
+    "note": "19:14将参与驱魔的人指明为士基瓦的七个儿子；19:16用“他们”承接这群人，并叙述他们被制服、受伤逃出房子的经过，因此固定答案有支持。问题未要求回答他们赤身裸体或此前如何驱魔，这些细节不属于必需回答内容。"
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "proposal": {
+        "id": "item",
+        "status": "unchanged",
+        "question": "被那附着邪灵的人制服以后，谁受伤逃出了那房子？",
+        "options": [],
+        "removed_relation_ids": [],
+        "note": "原问题已直接、简洁地询问人物身份；被制服与随后受伤逃出房子的联系均为测试内容，没有可实质删减的背景关系。"
+      },
+      "candidate": {
+        "id": "control:escape:required_relation",
+        "question": "被那附着邪灵的人制服以后，谁受伤逃出了那房子？",
+        "passage": "19:13 当时有几个流动的犹太驱魔师试图用主耶稣的名给那些被邪灵附着的人驱魔。他们说：“我奉保罗所传的耶稣的名，吩咐你们。”\n19:14 这事是犹太大祭司士基瓦的七个儿子做的。\n19:15 有一天，邪灵回答说：“耶稣我认识，保罗我也知道，你们是谁？”\n19:16 那附着邪灵的人跳到他们身上，制服了他们所有人。攻击如此猛烈，以致他们赤身裸体、受伤逃出房子。",
+        "expected_answer": "The seven sons of Sceva.",
+        "form": "open",
+        "options": {},
+        "correct_option": "",
+        "intended_target": "Identify the people overpowered by the possessed man who subsequently escaped injured. The link between being overpowered by that man and then escaping injured is explicitly part of the tested relationship and must remain in the question.",
+        "original_question": "",
+        "original_answer": ""
+      },
+      "checks": [
+        {
+          "repeat": 1,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "契约符合原题和显式目标：辨认被附着邪灵的人制服、随后受伤逃出房子的同一群人。19:14和19:16支持答案为士基瓦的七个儿子；无需在答案中另行复述经过。"
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "候选题与原题完全相同，保留了被制服与随后受伤逃出的关系，以及辨认这些人身份的要求。"
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "候选题没有删除或改动原题信息。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "原题与候选题均为中文；本题无选项。"
+            },
+            "option_meanings": [],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "19:16明确叙述附着邪灵的人制服他们，以及他们受伤逃出房子，支持问题的事件前提和先后关系。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "19:14将参与者指明为士基瓦的七个儿子，19:16以“他们”承接这群人，支持固定答案。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "当前经文中，只有士基瓦的七个儿子被描述为遭制服后受伤逃出房子的群体，没有竞争答案。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "当前经文同时提供参与者身份及其被制服、受伤逃出的经过，无需外部知识。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "问题未透露士基瓦、七个儿子或其他直接给出身份的答案信息。"
+              },
+              "mcq_validity": {
+                "status": "not_applicable",
+                "evidence": "本题为开放式问题，无选项或选项答案键。"
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "问句完整、自然，前置时间关系与“谁”的身份询问衔接清楚。",
+              "quotes": []
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "单句直接询问同一群人的身份，施事、受事及事件顺序清晰，没有额外的指代链或选择比较负担。",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "被制服后受伤逃出的关系是显式测试目标，属于必要限定而非可删背景；问题没有添加无关叙述。",
+              "quotes": []
+            }
+          }
+        },
+        {
+          "repeat": 2,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "The contract matches the explicit intended target and the original question: identify the same people who were overpowered by the possessed man and then escaped injured. Verses 19:14–16 support the identity and event sequence."
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "The candidate question is unchanged and retains both the identity question and the required link between being overpowered and subsequently escaping injured."
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "No information was removed from the question or passage."
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "The question remains in Chinese. There are no options."
+            },
+            "option_meanings": [],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "Verse 19:16 explicitly describes the possessed man overpowering the group, who then escaped from the house injured."
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "Verse 19:14 identifies the participants as 士基瓦的七个儿子; the subsequent references to 他们 connect them to the overpowering and injured escape."
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "The seven sons of Sceva are the only group identified as undergoing both events in the supplied passage."
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "The clean window supplies the group's identity and the complete sequence needed to answer without outside knowledge."
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "The question describes the tested events without naming the sons or otherwise supplying their identity."
+              },
+              "mcq_validity": {
+                "status": "not_applicable",
+                "evidence": "This is an open question with no answer choices."
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "The Chinese question is grammatical and direct; the opening temporal clause connects naturally to the identity question.",
+              "quotes": []
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "The agent, affected people, and event sequence are readily parsed. The temporal relation is necessary to the explicit target rather than avoidable processing load.",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "The question contains only the required event relationship and the identity request. The opening clause is explicitly tested, not dispensable setup.",
+              "quotes": []
+            }
+          }
+        }
+      ],
+      "status": "KEPT"
+    }
+  ]
+}

@@ -1,0 +1,224 @@
+{
+  "prompt": "independent_dimensions",
+  "repeat": 1,
+  "batch": 2,
+  "request_hash": "7883b7c04bc35e8be26a5663344601852a9048c197680f32247241277ed23ba5",
+  "model": "gpt-6.1-sol",
+  "response_id": "resp_0c4b0845ce9fd1fe006ae0542040a887d1a2613e273c05497d",
+  "elapsed_seconds": 42.08375287055969,
+  "usage": {
+    "input_tokens": 3087,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 3084
+    },
+    "output_tokens": 2628,
+    "output_tokens_details": {
+      "reasoning_tokens": 298
+    },
+    "total_tokens": 5715
+  },
+  "threshold_mismatches": [],
+  "items": [
+    {
+      "id": "hard:t1_2kgs11:f49c:mcq",
+      "decision": "REWRITE",
+      "target": "辨认耶何耶大所立第一个约涉及的各方。",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 2,
+        "evidence": "“在哪些之间立的”中，“哪些”缺少所指类别，通常需说“哪些人之间”或“哪几方之间”，读者需要补足表达。"
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "需要区分第一个约与后一个约，并比较各选项中的参与方；这是辨认目标所需的普通负担。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“耶何耶大立的第一个约”足以定位经文中的两个约之一。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "题干没有列出立约各方；正确组合出现在选项中不构成泄露。"
+      },
+      "alternative": "",
+      "target_preservation": "preserved",
+      "reason": "自然度未通过：应修复“哪些之间”的缺省表达，同时保留辨认第一个约参与方的目标。"
+    },
+    {
+      "id": "hard:t1_2chr26:4cb0:mcq",
+      "decision": "KEEP",
+      "target": "辨认教导乌西雅敬畏神的人。",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“谁教导乌西雅敬畏神”是自然、直接的人物提问。"
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "只需辨认教导者，人物关系明确，选项均为人名。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“乌西雅”和“教导……敬畏神”足以定位所问关系。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "题干没有提供教导者的名字。"
+      },
+      "alternative": "",
+      "target_preservation": "preserved",
+      "reason": "表达直接，定位充分，没有可避免的显著负担或答案泄露。"
+    },
+    {
+      "id": "hard:t1_2sam21:de9f:mcq",
+      "decision": "KEEP",
+      "target": "辨认亚比筛击杀的人。",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“亚比筛击杀了谁”表达自然，施事和所问对象清楚。"
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "只需找到击杀事件中的对象；选项没有造成复杂的比较负担。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "所给段落只有一个亚比筛击杀人的事件，无需额外背景。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "题干没有说明被击杀者是谁。"
+      },
+      "alternative": "",
+      "target_preservation": "preserved",
+      "reason": "问题简洁，事件定位明确，各项均通过。"
+    },
+    {
+      "id": "constructed:ambiguous",
+      "decision": "REWRITE",
+      "target": "辨认把书带到图书馆的人。",
+      "target_basis": "explicit",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“谁把书带走了”本身是自然的口语问法。"
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "需要在小林和小周两次带书的事件之间判断题目所指，但题干没有提供选择依据。"
+      },
+      "context": {
+        "score": 2,
+        "evidence": "缺少必要的目的地锚点：小林把书带到学校，小周把书带到图书馆，“带走”不能唯一指向后者。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "题干没有提供目标人物的身份。"
+      },
+      "alternative": "",
+      "target_preservation": "preserved",
+      "reason": "语句自然，但缺少“图书馆”这一必要定位信息，无法稳定询问明确指定的目标。"
+    },
+    {
+      "id": "transfer:handkerchief:repair:zh",
+      "decision": "REWRITE",
+      "target": "说明病人后来发生的变化，即疾病和邪灵离开了他们。",
+      "target_basis": "explicit",
+      "naturalness": {
+        "score": 2,
+        "evidence": "“摸过保罗的手帕和围裙”容易被读成手帕和围裙主动“摸”保罗，需要修复为物品曾接触保罗的意思。"
+      },
+      "processing": {
+        "score": 2,
+        "evidence": "回答病人状况前，需先解析“摸过保罗的”的修饰范围、确定物品与保罗的接触关系，再处理“被带到”的角色关系；前一层并非测试病人变化所必需。"
+      },
+      "context": {
+        "score": 1,
+        "evidence": "物品被带到病人那里可以定位事件，但详细交代物品与保罗的接触关系，对所问变化并非必要。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "开头只交代物品被送到病人那里，没有说明疾病或邪灵是否离开。"
+      },
+      "alternative": "",
+      "target_preservation": "preserved",
+      "reason": "开头存在需要修复的表达，并给目标之外的接触关系增加了显著解析负担；后面的简短问题不能抵消这部分负担。"
+    },
+    {
+      "id": "hard:t1_1kgs13:a6cd:mcq",
+      "decision": "KEEP",
+      "target": "辨认实际为王祷告的人。",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“王求神人为他祷告，谁为王祷告了”是自然的事件承接问法。"
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "需区分王提出请求与有人实际祷告两个环节，角色清楚，负担普通。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“王求神人为他祷告”提供适度的事件锚点，没有加入无关背景。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "请求神人祷告不等于已经说明神人实际祷告了；题干没有直接陈述所问结果。"
+      },
+      "alternative": "",
+      "target_preservation": "preserved",
+      "reason": "请求与实际行动的区别明确，背景适量，没有显著负担或直接泄露。"
+    },
+    {
+      "id": "hard:t1_judg9:6d68:mcq",
+      "decision": "REWRITE",
+      "target": "辨认约坦要求示剑众首领听他的话所指向的结果：神也听他们的话。",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 2,
+        "evidence": "“是为了什么结果”搭配生硬，需要理解为“想达到什么结果”或询问目的，普通说话者较少这样提问。"
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "需要把约坦要求首领听话的行动与所问结果联系起来；其余人物指代和选项比较负担普通。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“约坦呼叫示剑的众首领听他的话”能唯一定位所问话语，没有多余背景。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "题干没有说出“神也听他们的话”这一目标结果。"
+      },
+      "alternative": "",
+      "target_preservation": "preserved",
+      "reason": "主要问题是“为了什么结果”的不自然搭配；应改善问法而保留原有的结果目标。"
+    },
+    {
+      "id": "focus:handkerchief:direct:zh",
+      "decision": "KEEP",
+      "target": "说明病人发生的变化，即疾病和邪灵离开了他们。",
+      "target_basis": "explicit",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“病人的情况有什么变化”是自然、直接的状况提问。"
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "直接询问病人的变化，无需先解码物品接触关系；各选项也容易区分。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "所给段落明确提到接受手帕和围裙的“病人”，这一称呼足以定位目标群体。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "“根据这段经文”没有提供病人变化的具体内容。"
+      },
+      "alternative": "",
+      "target_preservation": "preserved",
+      "reason": "直接测试指定的病人变化，现有语境足以定位，无需加入物品相关背景。"
+    }
+  ]
+}

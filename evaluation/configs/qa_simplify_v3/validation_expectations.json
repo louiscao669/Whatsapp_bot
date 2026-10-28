@@ -1,0 +1,20 @@
+{
+  "purpose": "Focused examples plus synthetic controls; not a held-out estimate of screening accuracy.",
+  "source_paths": [
+    "evaluation/reports/qa_targeted_rewrite_2026-10-27/results.json",
+    "evaluation/configs/qa_review_v2/smoke_cases.json"
+  ],
+  "case_hash": "174b73161c5ddbb49b3c8b4355958d7d2f1f42ac9cb10a1ca657b1cc5cf2f99d",
+  "explicit_escape_target_authority": "User endorsed simplifying the question to identify those who escaped injured; target text supplied, desired Chinese wording withheld from model payloads.",
+  "preferred_escape_wording": "谁受伤逃出了那座房子？",
+  "scope": "English and Chinese probes, including the Chinese Gold handkerchief item omitted from the earlier full Gold-English rewrite run.",
+  "controls": {
+    "control:necessary_time": "retain before-meal restriction",
+    "control:necessary_event": "retain overpowering anchor because two injured people escaped",
+    "control:escape:required_relation": "retain the explicitly required overpowering-to-escape relationship",
+    "control:direct:en": "keep already direct wording",
+    "constructed:direct": "keep already direct wording",
+    "hard:t1_acts20:f988:mcq": "keep causal question type",
+    "control:unsupported_answer": "hold unsupported fixed answer"
+  }
+}

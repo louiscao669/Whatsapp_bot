@@ -1,0 +1,106 @@
+{
+  "type": "object",
+  "properties": {
+    "source_claim": {
+      "type": "string"
+    },
+    "replacement_claim": {
+      "type": "string"
+    },
+    "explanation": {
+      "type": "string"
+    },
+    "meaning_changed": {
+      "type": "string",
+      "enum": [
+        "yes",
+        "no",
+        "uncertain"
+      ]
+    },
+    "fluent": {
+      "type": "string",
+      "enum": [
+        "yes",
+        "no",
+        "uncertain"
+      ]
+    },
+    "substitution_only": {
+      "type": "string",
+      "enum": [
+        "yes",
+        "no",
+        "uncertain"
+      ]
+    },
+    "localized": {
+      "type": "string",
+      "enum": [
+        "yes",
+        "no",
+        "uncertain"
+      ]
+    },
+    "valid_in_all_contexts": {
+      "type": "string",
+      "enum": [
+        "yes",
+        "no",
+        "uncertain"
+      ]
+    },
+    "change_basis": {
+      "type": "string",
+      "enum": [
+        "explicit_value_change",
+        "context_defined_distinction",
+        "different_action_or_referent",
+        "polarity_reversal",
+        "vague_contrast",
+        "equivalent_or_uncertain"
+      ]
+    },
+    "change_dimension": {
+      "type": "string",
+      "enum": [
+        "quantity",
+        "time",
+        "frequency",
+        "degree",
+        "action",
+        "referent",
+        "relationship",
+        "polarity",
+        "attribute",
+        "other"
+      ]
+    },
+    "difference_evidence": {
+      "type": "string"
+    },
+    "needs_repair": {
+      "type": "string",
+      "enum": [
+        "yes",
+        "no",
+        "uncertain"
+      ]
+    }
+  },
+  "required": [
+    "source_claim",
+    "replacement_claim",
+    "explanation",
+    "meaning_changed",
+    "fluent",
+    "substitution_only",
+    "localized",
+    "valid_in_all_contexts",
+    "change_basis",
+    "change_dimension",
+    "difference_evidence",
+    "needs_repair"
+  ],
+  "additionalProperties": false
+}

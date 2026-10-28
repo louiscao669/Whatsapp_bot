@@ -15,6 +15,13 @@ from eten_shared.database import get_session_factory
 from eten_shared.repo_paths import REPO_ROOT
 
 from backend.pilot.background import run_in_background
+from backend.pilot.questionnaire import (
+    QuestionnaireError,
+    QuestionnaireNotFoundError,
+    get_questionnaire_results,
+    get_questionnaire_state,
+    submit_questionnaire_section,
+)
 from backend.pilot.service import (
     PilotError,
     PilotNotFoundError,
@@ -118,6 +125,51 @@ def pilot_consent_record(participant_id):
             db.commit()
     except PilotError as exc:
         return _error(exc)
+    return jsonify(payload)
+
+
+def _questionnaire_error(exc):
+    status = 404 if isinstance(exc, QuestionnaireNotFoundError) else 400
+    return jsonify({"error": "pilot_error", "message": str(exc)}), status
+
+
+@pilot_blueprint.route("/pilot/api/<participant_id>/questionnaire", methods=["GET"])
+def pilot_questionnaire_state(participant_id):
+    """Which questionnaire step is due, with the instrument to render.
+
+    The instrument never includes the Section D key, and no response ever
+    carries a familiarity score.
+    """
+
+    try:
+        with get_session_factory()() as db:
+            payload = get_questionnaire_state(db, participant_id)
+    except QuestionnaireError as exc:
+        return _questionnaire_error(exc)
+    return jsonify(payload)
+
+
+@pilot_blueprint.route("/pilot/api/<participant_id>/questionnaire", methods=["POST"])
+def pilot_questionnaire_submit(participant_id):
+    """Save one section: ``{"section": ..., "answers": {...}}``.
+
+    Section C also needs an explicit boolean ``religion_consent`` (the separate
+    consent prompt that precedes it).
+    """
+
+    body = _body()
+    try:
+        with get_session_factory()() as db:
+            payload = submit_questionnaire_section(
+                db,
+                participant_id,
+                body.get("section"),
+                body.get("answers"),
+                religion_consent=body.get("religion_consent"),
+            )
+            db.commit()
+    except QuestionnaireError as exc:
+        return _questionnaire_error(exc)
     return jsonify(payload)
 
 
@@ -242,6 +294,21 @@ def pilot_results():
         payload = get_pilot_results(db, participant_ids or None)
     if not include_trials:
         payload = {key: value for key, value in payload.items() if key != "trials"}
+    return jsonify(payload)
+
+
+@pilot_blueprint.route("/pilot/api/questionnaire-results", methods=["GET"])
+@require_roles("admin", "expert")
+def pilot_questionnaire_results():
+    """Background questionnaire rows + anonymous screen-out counts (admin)."""
+
+    participant_ids = [
+        value.strip()
+        for value in (request.args.get("participant_ids") or "").split(",")
+        if value.strip()
+    ]
+    with get_session_factory()() as db:
+        payload = get_questionnaire_results(db, participant_ids or None)
     return jsonify(payload)
 
 

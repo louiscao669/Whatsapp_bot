@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "records": {
+    "336d254677220f0ce5e2587efd2072745418868048a70b7e56020b4de16540c5": {
+      "identity": {
+        "model": "gpt-6-sol",
+        "prompt_sha256": "b7c9868704e29c70e16d236520c4de4800b352e71e3ae4ea15ac335e3e3fcb3f",
+        "schema_sha256": "5fa920642b474382900cb35cd4cea1669a30f9717edb84a60aec124f26c3b82d",
+        "max_output_tokens": 8192,
+        "api": "responses"
+      },
+      "request": {
+        "original_passage": "主人打了仆人一下，随后打算返回家中。",
+        "source": "打",
+        "replacement": "踢",
+        "mode": "systematic",
+        "occurrences": [
+          {
+            "start": 2,
+            "end": 3,
+            "original_context": "主人打了仆人一下，随后打算返回家中。",
+            "edited_context": "主人踢了仆人一下，随后打算返回家中。"
+          },
+          {
+            "start": 11,
+            "end": 12,
+            "original_context": "主人打了仆人一下，随后打算返回家中。",
+            "edited_context": "主人打了仆人一下，随后踢算返回家中。"
+          }
+        ]
+      },
+      "response": {
+        "source_claim": "主人打了仆人一下，随后打算返回家中。",
+        "replacement_claim": "第一处替换后，主人踢了仆人一下；第二处替换后成为“随后踢算返回家中”，无法表达明确意思。",
+        "explanation": "“打了仆人”改为“踢了仆人”改变了动作，但“打”也出现在“打算”中。系统性替换会产生不通顺的“踢算”，因此不能在所有匹配处成立。",
+        "meaning_changed": "uncertain",
+        "fluent": "no",
+        "substitution_only": "no",
+        "localized": "no",
+        "valid_in_all_contexts": "no"
+      },
+      "response_id": "resp_069a0dbb8ab781c9006adac22be6c087d1ac94cff7b52cf357",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 880,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0
+        },
+        "output_tokens": 405,
+        "output_tokens_details": {
+          "reasoning_tokens": 241
+        },
+        "total_tokens": 1285
+      },
+      "completed_at_unix": 1792721456
+    }
+  }
+}

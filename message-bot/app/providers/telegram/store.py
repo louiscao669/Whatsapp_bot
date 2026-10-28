@@ -167,7 +167,13 @@ def confirm_telegram_default_language(contact_input: TelegramContactInput):
             return None, None
 
         participant = contact.participant
-        participant.target_language = language
+        # A researcher-provisioned participant (e.g. a TEST participant with a
+        # pilot plan, linked with link_participant.py) already has its study
+        # language; the experiment passages are keyed on it ("zh"). Overwriting
+        # it with the bot default ("chinese") made every plan cell unresolvable.
+        if not (participant.target_language or "").strip():
+            participant.target_language = language
+        language = participant.target_language
         participant.last_seen_at = now
         contact.last_seen_at = now
         metadata = dict(contact.contact_metadata or {})

@@ -1,0 +1,1895 @@
+{
+  "schema_version": 2,
+  "generation_mode": "validated_bank",
+  "edit_style": "llm_structural_v1",
+  "source_method_dir": "/Users/louiscao/whatsapp-bot/eten-whatsapp-bot/evaluation/outputs/tier1_bsb_unblinded_5opt_think/t1_2kgs6_7/_base/llm_prompt_high",
+  "variant": "30%",
+  "method": "grammar_30%",
+  "seed": 8798,
+  "files": {
+    "passage_target": {
+      "generation_mode": "validated_bank",
+      "bank_id": "df5e03b5d207e17280e386de7f9f152c27120f5b945295e1ac0bcbec942adc9b",
+      "edit_style": "llm_structural_v1",
+      "source_sha256": "f87f459a6257cb422491d1b763ef6deb2f7ad7e993f50cfb392ab45d735b1597",
+      "output_sha256": "768297ab5ce1e42cfeca16ad230d48b3e913f19db4e9f734a343a2fa0e0f9f8d",
+      "judge": {
+        "model": "gpt-6.1-sol",
+        "prompt_sha256": "a2abc09beb94299ae5ba0b4d6c363ce481093bce718b9b9608318cce66e6c61e",
+        "schema_sha256": "ad414a52eb96503c0b44a987f2edd0589aa8555bbfea4aacbe8305676de1aa12"
+      },
+      "bank_max_rate": 0.3,
+      "generator": {
+        "model": "gpt-6.1-sol",
+        "prompt_sha256": "1a0fc34ac6e0db5918641db38e16db653909ae5a6a89b418e958e5dc2ba3782b",
+        "schema_sha256": "647d8249f8e5e165094d5f461438de2f36ec7ff8ee75007729e01d3bc3069057"
+      },
+      "requested_rate": 0.3,
+      "actual_affected_rate": 0.3189873417721519,
+      "target_met": true,
+      "shortfall_content_chars": 0,
+      "seed": 8798,
+      "total_content_chars": 1185,
+      "affected_content_chars": 378,
+      "affected_unit_count": 35,
+      "operation_count": 35,
+      "protected_terms": 0,
+      "protected_losses": [],
+      "protected_verified": true,
+      "affected_units": [
+        {
+          "unit_index": 167,
+          "verse": 18,
+          "content_chars": 10,
+          "original_text": "18 事情正如神人对王所说：",
+          "corrupted_text": "18 事情正如神人所说对王：",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "2743273a3429b02d9d41557cfbde1ac772056442abbbcda29f18426ac436867b",
+          "proposal": {
+            "edited_clause": "18 事情正如神人所说对王：",
+            "error_type": "介词短语错置",
+            "explanation": "将原本修饰言说行为的介词短语“对王”整体移到“所说”之后，使言说对象状语脱离谓语前的位置，成为不能直接后接的成分。"
+          },
+          "judgment_id": "73d9256ff127779478cbebfc38a57b18f04d7b7b4c52d906e80d35a6f8bdc899",
+          "judgment": {
+            "explanation": "原句中“对王”是由介词“对”和名词“王”组成的多词短语，在“神人对王所说”中标明说话对象。替换将其整体移到“所说”之后，违反此处受话对象介词短语须置于言说谓语之前的要求，也无法作为“所说”的后置修饰语。原有词语均保持完整，向王说话的关系仍可恢复，错误仅限本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "神人所说对王"
+          }
+        },
+        {
+          "unit_index": 129,
+          "verse": 11,
+          "content_chars": 10,
+          "original_text": "11 守望者把消息传给王家。",
+          "corrupted_text": "11 守望者传给把消息王家。",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "2743273a3429b02d9d41557cfbde1ac772056442abbbcda29f18426ac436867b",
+          "proposal": {
+            "edited_clause": "11 守望者传给把消息王家。",
+            "error_type": "把字短语错置",
+            "explanation": "将原本位于谓语前的“把消息”整体移到“传给”和接收者“王家”之间，违反把字短语须位于其支配谓语之前的次序要求。"
+          },
+          "judgment_id": "91e5d970451ccbd791d67e523b86899e28ed8d1b5650391e7bd2418c705d6134",
+          "judgment": {
+            "explanation": "原句中“把消息”是由介词“把”和名词“消息”组成的处置结构成分，位于谓语“传给”之前。编辑将这一完整多词成分移到“传给”之后，违反把字结构的语序要求，并使“传给”与接受者“王家”的连接受到阻断。各词内部保持完整，传递消息的施事、对象和接受者仍可恢复；错误局限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "传给把消息王家"
+          }
+        },
+        {
+          "unit_index": 48,
+          "verse": 32,
+          "content_chars": 16,
+          "original_text": "“你们看这杀人犯打发人来砍我的头吗？",
+          "corrupted_text": "“你们看这我的头杀人犯打发人来砍吗？",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "8253cfedefe00405700aca0d2e7c648627667a1d90051a9f760100a74a6842eb",
+          "proposal": {
+            "edited_clause": "“你们看这我的头杀人犯打发人来砍吗？",
+            "error_type": "指示名词短语被移入成分打断",
+            "explanation": "将原作“砍”的宾语的名词短语“我的头”整体移入“这杀人犯”之间，破坏指示词“这”与中心语“杀人犯”的组合。"
+          },
+          "judgment_id": "0cb697f2296210865d70ec473e2c4ce82962101987a56c7271df80986762bb75",
+          "judgment": {
+            "explanation": "原作“砍”的宾语的多词名词短语“我的头”被整体移到“这杀人犯”内部，插在指示词“这”与中心名词“杀人犯”之间。“我的头”不能在此直接充当名词修饰语，因而破坏了该名词短语的结构，并使“砍”失去原有宾语。原有词语均保持完整，原来的施事、动作和受事仍可恢复；错误完全局限于本次编辑的分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "这我的头杀人犯"
+          }
+        },
+        {
+          "unit_index": 114,
+          "verse": 9,
+          "content_chars": 9,
+          "original_text": "今日是好消息的日子，",
+          "corrupted_text": "好消息今日是的日子，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "8253cfedefe00405700aca0d2e7c648627667a1d90051a9f760100a74a6842eb",
+          "proposal": {
+            "edited_clause": "好消息今日是的日子，",
+            "error_type": "定语内部依存关系断裂",
+            "explanation": "将由“好”和“消息”组成、原处于“好消息的”定语中的名词短语“好消息”整体移到“今日”之前，使定语标记“的”失去其前面的修饰成分。"
+          },
+          "judgment_id": "fdaaaeda87c529dbe9659f1f58347a65d58720fcaa10670e738b3647b46c660c",
+          "judgment": {
+            "explanation": "原句中“好消息”（形容词“好”＋名词“消息”）是“好消息的日子”内的多词定语成分。替换将它整体移到“今日”之前，使其与后面的“的日子”分离，留下“今日是的日子”；这里的“的”失去定语依附，违反定语须与“的”及中心语构成连续名词短语的要求。原有词语均保持完整，原句的时间和判断内容仍可恢复，错误局限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "好消息今日是的日子"
+          }
+        },
+        {
+          "unit_index": 32,
+          "verse": 29,
+          "content_chars": 12,
+          "original_text": "’但她却把她的儿子藏起来了。",
+          "corrupted_text": "’但她却把藏起来她的儿子了。",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "ac711568df54a8a2f96cef31acb06d35ad72c82eacef038495280d3c0cac713d",
+          "proposal": {
+            "edited_clause": "’但她却把藏起来她的儿子了。",
+            "error_type": "把字句宾语错位",
+            "explanation": "将原作“把”字宾语的多词名词短语“她的儿子”整体移到“藏起来”之后，违反把字句中受事宾语须置于“把”与处置谓语之间的次序要求。"
+          },
+          "judgment_id": "29c4a68155dd2af3d8ec2adc26ff0befa03adf0db10191240ea8f050ae231b9f",
+          "judgment": {
+            "explanation": "原作把字句宾语的多词名词短语“她的儿子”被整体移到“藏起来”之后，破坏了“把＋宾语＋谓语”的必要次序，使“把”后直接接动词短语。原有词语均保持完整，藏匿者、被藏者及完成意义仍可恢复；错误仅在本分句内。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "把藏起来她的儿子了"
+          }
+        },
+        {
+          "unit_index": 7,
+          "verse": 25,
+          "content_chars": 17,
+          "original_text": "以至于一头驴的头卖到八十舍客勒银子，",
+          "corrupted_text": "以至于一头驴的八十舍客勒银子头卖到，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "ac711568df54a8a2f96cef31acb06d35ad72c82eacef038495280d3c0cac713d",
+          "proposal": {
+            "edited_clause": "以至于一头驴的八十舍客勒银子头卖到，",
+            "error_type": "价格补语插入名词短语",
+            "explanation": "将原作“卖到”的价格补语“八十舍客勒银子”整体移入“一头驴的头”，插在定语标记“的”与中心语“头”之间，破坏该名词短语的定中连接。"
+          },
+          "judgment_id": "66047d1966c736fe19929638261a5ad9a33fb638ed1546d50cd96a4d1a4e5ba0",
+          "judgment": {
+            "explanation": "原作“卖到”的价格补语“八十舍客勒银子”被整体移入“一头驴的头”，插在“的”与中心语“头”之间，使该名词短语结构受损，同时使“卖到”缺少原有补语。这是完整多词短语的错位，不是单个虚词的移动。原有词语、数词及量词表达均未被拆开，售价与出售对象仍可恢复；错误局限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "一头驴的八十舍客勒银子头卖到"
+          }
+        },
+        {
+          "unit_index": 40,
+          "verse": 31,
+          "content_chars": 18,
+          "original_text": "“沙法的儿子以利沙的头今日若还在他肩上，",
+          "corrupted_text": "“沙法的儿子以利沙的在他肩上头今日若还，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "c62b2a033e796651ad7b8578e640eab1a5baee454659c30826b2b1d10afdbbe5",
+          "proposal": {
+            "edited_clause": "“沙法的儿子以利沙的在他肩上头今日若还，",
+            "error_type": "谓语成分移入名词短语",
+            "explanation": "将原作处所谓语的多词成分“在他肩上”整体移到“以利沙的”与中心语“头”之间，违反领属定语与名词中心语之间不能插入该谓语成分的结构要求。"
+          },
+          "judgment_id": "3d89116d7ab002243f143d1399bb97156b2a5d4708eacbeae55efbe1ef8cc3ac",
+          "judgment": {
+            "explanation": "原作谓语的多词介词短语“在他肩上”被整体移入主语名词短语“沙法的儿子以利沙的头”，插在“的”和中心语“头”之间。该位置不能直接容纳这一谓语性短语，同时“今日若还”失去了后接的谓语，构成新增的语序错误。原有词语均保持完整，人物、身体部位及条件关系仍可恢复；错误局限于本次编辑的分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "以利沙的在他肩上头今日若还"
+          }
+        },
+        {
+          "unit_index": 10,
+          "verse": 26,
+          "content_chars": 12,
+          "original_text": "26 以色列王正从城墙上经过时，",
+          "corrupted_text": "26 以色列王正经过从城墙上时，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "c62b2a033e796651ad7b8578e640eab1a5baee454659c30826b2b1d10afdbbe5",
+          "proposal": {
+            "edited_clause": "26 以色列王正经过从城墙上时，",
+            "error_type": "介词短语后置错序",
+            "explanation": "将原作路径状语的多词介词短语“从城墙上”整体移到“经过”之后，违反该路径状语须置于所修饰动词之前的语序要求。"
+          },
+          "judgment_id": "c2cb4a3692eff669f353820475416eb8b6c41997a2f601eae4f9da1fc2fb43bf",
+          "judgment": {
+            "explanation": "原句中“从城墙上”是位于“经过”前的路径介词短语，由介词“从”和方位名词短语“城墙上”组成。替换将这一完整多词成分移到“经过”之后、“时”之前；该介词短语不能在此直接充当“经过”的后置补足语，造成新的语序错误。原有词语均保持完整，人物、动作、路径及进行中的时间关系仍可恢复，错误仅限于本次编辑的分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "经过从城墙上时"
+          }
+        },
+        {
+          "unit_index": 178,
+          "verse": 19,
+          "content_chars": 6,
+          "original_text": "“你必亲眼看见，",
+          "corrupted_text": "“亲眼看见你必，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "c62b2a033e796651ad7b8578e640eab1a5baee454659c30826b2b1d10afdbbe5",
+          "proposal": {
+            "edited_clause": "“亲眼看见你必，",
+            "error_type": "谓语前移导致情态成分悬空",
+            "explanation": "将原作谓语的多词成分“亲眼看见”整体移到主语“你”之前，违反“必”须在其后的谓语上取得作用域的顺序要求。"
+          },
+          "judgment_id": "cad9edf67d29f78e6710787f5af0b9ed54eb013245246604e6aece6d7ff88279",
+          "judgment": {
+            "explanation": "原作谓语、受情态词“必”修饰的多词动词短语“亲眼看见”被整体移到“你必”之前，导致“必”后缺少其支配的谓语；这一顺序不能构成正常的话题化。原有词语均保持完整，仍可恢复“你必亲眼看见”的人物、动作及情态意义。错误局限于本次编辑的分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "亲眼看见你必"
+          }
+        },
+        {
+          "unit_index": 24,
+          "verse": 28,
+          "content_chars": 8,
+          "original_text": "‘把你的儿子交出来，",
+          "corrupted_text": "‘把交出来你的儿子，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "c62b2a033e796651ad7b8578e640eab1a5baee454659c30826b2b1d10afdbbe5",
+          "proposal": {
+            "edited_clause": "‘把交出来你的儿子，",
+            "error_type": "把字句宾语后置",
+            "explanation": "将原作“把”字宾语的多词名词短语“你的儿子”整体移到“交出来”之后，违反把字句中受事宾语须位于“把”与谓语之间的要求。"
+          },
+          "judgment_id": "484a5a911f0c24a57b84150fc07af5ef951e496323e90d52d3b9937118fe9ea1",
+          "judgment": {
+            "explanation": "原作把字句中充当处置对象的多词名词短语“你的儿子”被移到谓语“交出来”之后，违反“把＋宾语＋谓语”的次序要求，使“把”后缺少宾语。这是完整短语的错位，非单个虚词移动；原有词语均保持完整，交出儿子的动作及参与者仍可恢复，错误局限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "把交出来你的儿子"
+          }
+        },
+        {
+          "unit_index": 117,
+          "verse": 9,
+          "content_chars": 6,
+          "original_text": "罪必临到我们。",
+          "corrupted_text": "临到我们罪必。",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "67f0e6ca01e054eb9404f011b65310d6a4fe7fc007eba256f284ea9722292c79",
+          "proposal": {
+            "edited_clause": "临到我们罪必。",
+            "error_type": "谓语短语移位导致副词后缺少谓语",
+            "explanation": "将原作谓语的多词动词短语“临到我们”整体移到主语“罪”之前，使原本修饰该谓语的“必”留在句末，违反“必”须位于其所修饰谓语之前的要求。"
+          },
+          "judgment_id": "1c9497f436bf58694e342b17f2b4fb9a0a245762ed077c6bfe37859b6d6fd6ee",
+          "judgment": {
+            "explanation": "原句中“临到我们”是由动词及其宾语组成的多词谓语短语，受“必”修饰。将其整体移到主语“罪”之前，留下“罪必”，使情态副词“必”后缺少其所修饰的谓语；这里也没有支持这种前置的结构。各词内部完整，罪必临到说话者一方的含义仍可恢复，错误仅限于本句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "临到我们罪必"
+          }
+        },
+        {
+          "unit_index": 143,
+          "verse": 13,
+          "content_chars": 18,
+          "original_text": "他们的处境不会比这里所有以色列人更糟。",
+          "corrupted_text": "他们的比这里所有以色列人处境不会更糟。",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "67f0e6ca01e054eb9404f011b65310d6a4fe7fc007eba256f284ea9722292c79",
+          "proposal": {
+            "edited_clause": "他们的比这里所有以色列人处境不会更糟。",
+            "error_type": "比较介词短语插入主语内部",
+            "explanation": "将原作比较状语的多词介词短语“比这里所有以色列人”整体移到“他们的”与“处境”之间，违反领属修饰语“他们的”须与中心语“处境”组成名词短语、不能被该谓语状语截断的要求。"
+          },
+          "judgment_id": "e557b1a2139dc3019e80ad79d3da6f68503a449470230db98132accebe1ef795",
+          "judgment": {
+            "explanation": "原句中“比这里所有以色列人”是修饰“更糟”的比较介词短语；替换后，该完整多词短语被移入主语“他们的处境”内部，隔开“他们的”和中心语“处境”。该比较短语不能直接充当这里的名词定语，因而引入了新的结构错误。原有词语均保持完整，比较双方、否定和处境优劣关系仍可恢复，错误也仅限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "他们的比这里所有以色列人处境"
+          }
+        },
+        {
+          "unit_index": 8,
+          "verse": 25,
+          "content_chars": 12,
+          "original_text": "一升鸽粪卖到五舍客勒银子。",
+          "corrupted_text": "卖到五舍客勒一升鸽粪银子。",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "0c32a377d9c7f2419f3cac93afeff715ccca228f2cec2335147a553e26ba7daf",
+          "proposal": {
+            "edited_clause": "卖到五舍客勒一升鸽粪银子。",
+            "error_type": "主语移入价量名词短语内部",
+            "explanation": "将原作主语的完整数量名词短语“一升鸽粪”移到“五舍客勒”与“银子”之间，打断价量短语“五舍客勒银子”的内部组合。"
+          },
+          "judgment_id": "a4b6313077062d3210e6553ccb4e0a3e47f76dd1b6b27b0a5f1d5b7d64ad26ff",
+          "judgment": {
+            "explanation": "原作主语的多词名词短语“一升鸽粪”被移入价格补语“五舍客勒银子”内部，隔开计量部分“五舍客勒”和中心语“银子”，破坏了该数量名词短语的结构，并非可接受的主语后置。原有词语及计量表达均保持完整，所售物品、数量和价格仍可恢复；错误局限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "五舍客勒一升鸽粪银子"
+          }
+        },
+        {
+          "unit_index": 110,
+          "verse": 8,
+          "content_chars": 7,
+          "original_text": "拿些东西藏起来。",
+          "corrupted_text": "拿些藏起来东西。",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "0c32a377d9c7f2419f3cac93afeff715ccca228f2cec2335147a553e26ba7daf",
+          "proposal": {
+            "edited_clause": "拿些藏起来东西。",
+            "error_type": "动补短语插入宾语内部",
+            "explanation": "将原作后续动作谓语的动补短语“藏起来”（“藏”加趋向补语“起来”）移到“些”与“东西”之间，打断数量成分与名词中心语的组合。"
+          },
+          "judgment_id": "54c09f94467ede02775c28a05283ef6432c2a5cb3ad271612f67e0bfef075bba",
+          "judgment": {
+            "explanation": "原句中“藏起来”由动词“藏”和趋向补语“起来”构成，是承接“拿些东西”的后续谓语。编辑将这一完整多词短语移入数量宾语“些东西”内部，隔开“些”和“东西”；若将其理解为修饰“东西”，此处又缺少必要的“的”，因此引入了局部语法错误。原有词语均保持完整，拿取东西并藏起的动作关系仍可恢复。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "些藏起来东西"
+          }
+        },
+        {
+          "unit_index": 182,
+          "verse": 20,
+          "content_chars": 9,
+          "original_text": "百姓在城门口践踏他，",
+          "corrupted_text": "百姓践踏在城门口他，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "0c32a377d9c7f2419f3cac93afeff715ccca228f2cec2335147a553e26ba7daf",
+          "proposal": {
+            "edited_clause": "百姓践踏在城门口他，",
+            "error_type": "处所介词短语阻断动宾连接",
+            "explanation": "将原作处所状语的完整介词短语“在城门口”移到“践踏”与宾语“他”之间，违反该句及物动词与其宾语的连接要求。"
+          },
+          "judgment_id": "549d957b323dc107a846a9b918be463f1ec56625e8ceea078fcd9edbb1138414",
+          "judgment": {
+            "explanation": "原作状语的完整介词短语“在城门口”被移到动词“践踏”与宾语“他”之间。此处后置处所短语不能这样插在动宾之间，因而引入了局部语序错误。该短语包含介词“在”和处所词“城门口”，并非单独移动一个功能词；原有词语均完整保留，施事、受事和地点仍可恢复。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "践踏在城门口他"
+          }
+        },
+        {
+          "unit_index": 30,
+          "verse": 29,
+          "content_chars": 8,
+          "original_text": "‘把你的儿子交出来，",
+          "corrupted_text": "‘把交出来你的儿子，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "7242954c3330d0c54224638b257b643c4ead9a58b76b79fbcfcfff4e0b81473d",
+          "proposal": {
+            "edited_clause": "‘把交出来你的儿子，",
+            "error_type": "把字句宾语错位",
+            "explanation": "将原作“把”字宾语的多词名词短语“你的儿子”整体移到“交出来”之后，违反把字句中宾语须位于“把”与谓语之间的顺序要求。"
+          },
+          "judgment_id": "b3cba838a1ee4a29e7de6ba8c18f8a8ade496ef8424611a525b62a47cccd28cd",
+          "judgment": {
+            "explanation": "原句中“你的儿子”是“把”的宾语，为包含代词和名词的多词名词短语。替换将该短语整体移至“交出来”之后，违反把字句中宾语须位于“把”之后、谓语之前的语序要求。原有词语均保持完整，交出儿子的动作及参与者关系仍可恢复；错误局限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "把交出来你的儿子"
+          }
+        },
+        {
+          "unit_index": 11,
+          "verse": 26,
+          "content_chars": 9,
+          "original_text": "有一个妇人向他呼喊：",
+          "corrupted_text": "有向他一个妇人呼喊：",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "7242954c3330d0c54224638b257b643c4ead9a58b76b79fbcfcfff4e0b81473d",
+          "proposal": {
+            "edited_clause": "有向他一个妇人呼喊：",
+            "error_type": "兼语名词短语侵入介词结构",
+            "explanation": "将原作“有”的宾语兼“呼喊”的施事的多词名词短语“一个妇人”移至“向他”之后，使它插在介词状语“向他”与谓语“呼喊”之间，破坏存在兼语结构中兼语应先于其谓语状语的顺序。"
+          },
+          "judgment_id": "dedc0e7adb544f2a5f85ba4689b97ea4b9bab6b7ee75aad78509f20d58e81d02",
+          "judgment": {
+            "explanation": "原句中“向他”是修饰“呼喊”的介词短语，由介词“向”和代词“他”组成。改句将该短语移到存在动词“有”与其引入的名词短语“一个妇人”之间；它既不能在此充当“有”的补语，也不能直接修饰“一个妇人”，因而造成新的语序错误。原有词语均完整，妇人向他呼喊的参与者关系仍可恢复，错误局限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "有向他一个妇人"
+          }
+        },
+        {
+          "unit_index": 36,
+          "verse": 30,
+          "content_chars": 9,
+          "original_text": "当他从城墙上经过时，",
+          "corrupted_text": "当他经过从城墙上时，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "8118636320e18a194e41067b99e80d6bfea021bf3cb5ed4cb59c5c990dafe2ce",
+          "proposal": {
+            "edited_clause": "当他经过从城墙上时，",
+            "error_type": "介词短语错置",
+            "explanation": "将原作路径状语的多词短语“从城墙上”整体移至“经过”之后，违反该路径介词短语须置于所修饰谓语之前的语序要求。"
+          },
+          "judgment_id": "360d181bb05ca5c58c8a996f6401a6e08729b16bcdf26db07adb106d3d1268bf",
+          "judgment": {
+            "explanation": "原句中“从城墙上”是修饰“经过”的介词短语，表示经过的路径。替换将这一完整的多词短语移至“经过”之后；此处“从”字短语不能作为“经过”的后置补语，因而违反路径状语应置于谓语前的要求。各词内部保持完整，人物、动作、路径及时间关系仍可恢复，错误仅限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "经过从城墙上"
+          }
+        },
+        {
+          "unit_index": 80,
+          "verse": 4,
+          "content_chars": 7,
+          "original_text": "必因城中饥荒死；",
+          "corrupted_text": "必死因城中饥荒；",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "8118636320e18a194e41067b99e80d6bfea021bf3cb5ed4cb59c5c990dafe2ce",
+          "proposal": {
+            "edited_clause": "必死因城中饥荒；",
+            "error_type": "原因状语后置",
+            "explanation": "将原作原因状语的多词短语“因城中饥荒”整体移至“死”之后，违反此处“因”字原因短语须先于其所修饰谓语的语序要求。"
+          },
+          "judgment_id": "bbd5b44af0c3fa4f431afbad848956f00a406b83f477a3ddcc9863afdef1d624",
+          "judgment": {
+            "explanation": "原句的“因城中饥荒”是表示原因的介词短语，作“死”的前置状语；改句将这一完整多词短语移到“死”后。“因”引出的原因状语不能在此直接充当“死”的后置补语，因而产生新的语序错误。原有词语内部未被拆分，死亡及其原因仍可恢复，错误仅限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "死因城中饥荒"
+          }
+        },
+        {
+          "unit_index": 163,
+          "verse": 17,
+          "content_chars": 10,
+          "original_text": "但百姓在城门口践踏他，",
+          "corrupted_text": "但百姓践踏在城门口他，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "8118636320e18a194e41067b99e80d6bfea021bf3cb5ed4cb59c5c990dafe2ce",
+          "proposal": {
+            "edited_clause": "但百姓践踏在城门口他，",
+            "error_type": "状语插入动宾结构",
+            "explanation": "将原作地点状语的多词短语“在城门口”整体移入“践踏”和宾语“他”之间，破坏该动词直接支配代词宾语的结构。"
+          },
+          "judgment_id": "024956f93ebf840dfe92b519e5b899f82d451b2128e2f7fe91a15d0a97222ae1",
+          "judgment": {
+            "explanation": "原作地点状语的完整介词短语“在城门口”被移到“践踏”和宾语“他”之间，阻断了动宾连接；此处不能用该处所短语作“践踏”的补语后再接“他”。该短语含介词与处所内容词，符合多词成分移位的条件。原有词语均保持完整，施事、受事、动作及地点仍可恢复，错误局限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "践踏在城门口他"
+          }
+        },
+        {
+          "unit_index": 95,
+          "verse": 6,
+          "content_chars": 19,
+          "original_text": "6 因为耶和华使叙利亚人听见车马声和大军声，",
+          "corrupted_text": "6 因为耶和华使听见车马声和大军声叙利亚人，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "8118636320e18a194e41067b99e80d6bfea021bf3cb5ed4cb59c5c990dafe2ce",
+          "proposal": {
+            "edited_clause": "6 因为耶和华使听见车马声和大军声叙利亚人，",
+            "error_type": "兼语结构语序破坏",
+            "explanation": "将原作兼语后续谓语的多词短语“听见车马声和大军声”整体移至“叙利亚人”之前，违反“使”字兼语结构中受使者须先于其谓语的顺序要求。"
+          },
+          "judgment_id": "5b0cd7717ead72c4c2946ad2b615d821fc938e1f89227fc23318670c4c14ac03",
+          "judgment": {
+            "explanation": "完整的多词谓语“听见车马声和大军声”原本位于兼语“叙利亚人”之后，现被移到它之前，违反“使＋兼语＋谓语”的语序要求，使“叙利亚人”失去合法的句法位置。原有词语均保持完整，致使者、听者及所听内容仍可恢复；错误仅发生在本分句内。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "使听见车马声和大军声叙利亚人"
+          }
+        },
+        {
+          "unit_index": 73,
+          "verse": 2,
+          "content_chars": 6,
+          "original_text": "“你必亲眼看见，",
+          "corrupted_text": "“亲眼看见你必，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "8118636320e18a194e41067b99e80d6bfea021bf3cb5ed4cb59c5c990dafe2ce",
+          "proposal": {
+            "edited_clause": "“亲眼看见你必，",
+            "error_type": "谓语短语错置",
+            "explanation": "将原作谓语的多词短语“亲眼看见”整体移至主语“你”之前，使“必”留在句末，破坏“必”须位于其所修饰谓语之前的依存顺序。"
+          },
+          "judgment_id": "1f5c9ca96beee53fa414334360bbf537015779943a0b47b74533d200a6b08f57",
+          "judgment": {
+            "explanation": "“亲眼看见”由状语“亲眼”和动词“看见”组成，原本是主语“你”和情态副词“必”之后的谓语成分。将其整体移到“你必”之前，使“必”悬空，缺少其后应有的谓语，不能构成正常的谓语前置。原有词语均保持完整，且仍可恢复“你必亲眼看见”的人物、动作和必然性；错误仅在本分句内。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "亲眼看见你必"
+          }
+        },
+        {
+          "unit_index": 133,
+          "verse": 12,
+          "content_chars": 16,
+          "original_text": "“我告诉你们叙利亚人向我们所行的事。",
+          "corrupted_text": "“我告诉你们叙利亚人所行的向我们事。",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "8118636320e18a194e41067b99e80d6bfea021bf3cb5ed4cb59c5c990dafe2ce",
+          "proposal": {
+            "edited_clause": "“我告诉你们叙利亚人所行的向我们事。",
+            "error_type": "介词短语插入定中结构",
+            "explanation": "将原在关系修饰语内修饰“所行”的多词短语“向我们”整体移至“的”和中心名词“事”之间，违反此处定语标记“的”须直接连接中心名词的结构要求。"
+          },
+          "judgment_id": "08cc5398dd0a992e0413713c2f64c05379539994377596771ba7ae55bd838664",
+          "judgment": {
+            "explanation": "原作状语的多词介词短语“向我们”被整体移到“所行的”与中心名词“事”之间。它既不能在此位置修饰“所行”，也不能直接作“事”的定语，破坏了关系修饰语与中心名词的连接，构成新的语法错误。原有词语均保持完整，叙利亚人向我们行事、我告诉你们此事的意义仍可恢复；错误仅限于本次编辑的分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "所行的向我们事"
+          }
+        },
+        {
+          "unit_index": 54,
+          "verse": 33,
+          "content_chars": 10,
+          "original_text": "33 以利沙正与他们说话时，",
+          "corrupted_text": "33 以利沙正说话与他们时，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "6ff33cec41e6cfad86252db0d764de17ea9f22ec71d4abfe0d1a0cbc32e4e67b",
+          "proposal": {
+            "edited_clause": "33 以利沙正说话与他们时，",
+            "error_type": "介词短语错置",
+            "explanation": "将由介词“与”和代词“他们”组成的完整短语“与他们”从“说话”前移至其后。该短语原作交谈对象状语，移位后违反此处介词状语须置于谓语前的语序要求。"
+          },
+          "judgment_id": "3b350852c75614ddd054c3a6042a17fc5c305e1316f46c871dbf98f31f99dec6",
+          "judgment": {
+            "explanation": "原句中“与他们”是置于“说话”前的介词短语，表示交谈对象。替换将这一完整的多词短语移至“说话”之后；“说话”不能以这种次序直接后接“与他们”，因而破坏了介词短语与谓语的正常组合。所有词语保持完整，人物、交谈对象及进行中的时间关系仍可恢复，错误仅在本分句内。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "说话与他们时"
+          }
+        },
+        {
+          "unit_index": 70,
+          "verse": 2,
+          "content_chars": 7,
+          "original_text": "耶和华若开天窗，",
+          "corrupted_text": "开天窗耶和华若，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "6ff33cec41e6cfad86252db0d764de17ea9f22ec71d4abfe0d1a0cbc32e4e67b",
+          "proposal": {
+            "edited_clause": "开天窗耶和华若，",
+            "error_type": "条件谓语错置",
+            "explanation": "将由动词“开”和宾语“天窗”组成的完整谓语“开天窗”移至主语“耶和华”之前，使条件标记“若”后缺失其所引导的谓语，破坏“若＋谓语”的结构要求。"
+          },
+          "judgment_id": "12b0ef641af627c1f431284b77f4b57b66976f67b9944b815c2d3ec5aab8aff7",
+          "judgment": {
+            "explanation": "原句中“开天窗”由动词“开”和宾语“天窗”组成，是“若”所引条件分句的谓语。替换将这一完整多词动宾短语移到主语“耶和华”之前，使“若”悬置于分句末尾，缺少其应引出的谓语，违反条件分句的构造要求。这不是仅移动一个功能词所能得到的变化。原有词语均保持完整，原条件关系及参与者仍可恢复，缺陷局限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "开天窗耶和华若"
+          }
+        },
+        {
+          "unit_index": 181,
+          "verse": 20,
+          "content_chars": 8,
+          "original_text": "20 这事就这样临到他。",
+          "corrupted_text": "20 这事临到就这样他。",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "10845f9f54ae0aadd1ca2c58ffd56ffb60919cbc36178fd1428c673296ad3d4b",
+          "proposal": {
+            "edited_clause": "20 这事临到就这样他。",
+            "error_type": "方式状语错置于动宾之间",
+            "explanation": "将原本修饰“临到”的多词状语“就这样”移到“临到”和宾语“他”之间，违反该方式状语须置于谓语之前、不能插入此处动宾结构的语序要求。"
+          },
+          "judgment_id": "7d9aa73033985e5f8eea304522971badb8f851c27c5e06bcc8690da7e42d8891",
+          "judgment": {
+            "explanation": "原来的方式状语“就这样”（“就”＋“这样”）被整体移到动词“临到”和宾语“他”之间。该多词状语不能在这里插入动宾结构，因而引入了新的语序错误。词语内部均未拆分，事件及参与者关系仍可恢复，错误也仅限于本句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "临到就这样他"
+          }
+        },
+        {
+          "unit_index": 43,
+          "verse": 32,
+          "content_chars": 12,
+          "original_text": "32 那时以利沙坐在自己的屋里，",
+          "corrupted_text": "32 那时以利沙自己的屋里坐在，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "10845f9f54ae0aadd1ca2c58ffd56ffb60919cbc36178fd1428c673296ad3d4b",
+          "proposal": {
+            "edited_clause": "32 那时以利沙自己的屋里坐在，",
+            "error_type": "处所补足语移位导致介词悬空",
+            "explanation": "将原本由“在”引出的多词处所短语“自己的屋里”移到“坐在”之前，违反“在”须在此结构中后接处所补足语的要求。"
+          },
+          "judgment_id": "ea9b7bd3c41539fc967793a36a6fe01e824116d675777775c995faae542dad93",
+          "judgment": {
+            "explanation": "完整的多词处所短语“自己的屋里”原本是“坐在”中“在”的处所补语，现被移到“坐在”之前，使句末的“在”失去补语。处所短语前置本可成立，但此处保留悬空的“在”，违反了该介词须带处所补语的要求。原词均保持完整，人物、时间和坐于屋内的意思仍可恢复，错误仅限本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "自己的屋里坐在"
+          }
+        },
+        {
+          "unit_index": 47,
+          "verse": 32,
+          "content_chars": 8,
+          "original_text": "以利沙对长老们说：",
+          "corrupted_text": "以利沙说对长老们：",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "5b80191941cb1739afc4b84f1de71e6edfbd6d467d26538da27ed318c54051ce",
+          "proposal": {
+            "edited_clause": "以利沙说对长老们：",
+            "error_type": "介词短语状语错置",
+            "explanation": "将完整的多词介词短语“对长老们”从“说”前移到其后。该短语原本标明说话对象，移位后违反此处对象介词短语应置于“说”前的次序要求。"
+          },
+          "judgment_id": "1e0b491db5d048505b584bfc94c9a4fbae6ed0bcc5f9671c662f2a6065fb4d74",
+          "judgment": {
+            "explanation": "原句中“对长老们”是由介词“对”和名词“长老们”组成的多词介词短语，作“说”的对象状语。替换将该短语完整移到“说”后，违反此处引语结构中对象状语应置于言说动词之前的要求。各词内部保持完整，言说者、受话者及言说行为仍可恢复；错误仅限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "说对长老们"
+          }
+        },
+        {
+          "unit_index": 144,
+          "verse": 13,
+          "content_chars": 14,
+          "original_text": "你看这里所有以色列人都必灭亡。",
+          "corrupted_text": "你看都必灭亡这里所有以色列人。",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "5b80191941cb1739afc4b84f1de71e6edfbd6d467d26538da27ed318c54051ce",
+          "proposal": {
+            "edited_clause": "你看都必灭亡这里所有以色列人。",
+            "error_type": "嵌入分句主语后置",
+            "explanation": "将完整的多词名词短语“这里所有以色列人”从嵌入分句的主语位置移到“都必灭亡”之后。该短语仍指灭亡者，但新位置违反此处主语应先于其统摄性副词“都”及谓语的次序要求。"
+          },
+          "judgment_id": "6889f37e548bfc1b00d28fde1a3d2cc4f8da49ed815cceefe0cefc5ef43c159d",
+          "judgment": {
+            "explanation": "原主语“这里所有以色列人”是完整的多词名词短语，被移到谓语“都必灭亡”之后。“都”在此总括该主语，而这种带“都必”的陈述句不能直接采用谓语在前、主语在后的顺序；“你看”也不能许可这种倒置。因此引入了局部的短语移位错误。原有词语均保持完整，人物范围、必然灭亡的判断及参与者角色仍可恢复。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "都必灭亡这里所有以色列人"
+          }
+        },
+        {
+          "unit_index": 138,
+          "verse": 12,
+          "content_chars": 7,
+          "original_text": "我们必活捉他们，",
+          "corrupted_text": "活捉他们我们必，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "2532524afe33239494e214f89bcf22bc93c47e7f4170f76b4c09fc893996c790",
+          "proposal": {
+            "edited_clause": "活捉他们我们必，",
+            "error_type": "谓语短语错位",
+            "explanation": "将原作谓语的多词短语“活捉他们”整体移到主语“我们”之前，使“必”后缺少其应修饰的谓语，破坏情态副词与谓语的顺序关系。"
+          },
+          "judgment_id": "c4ae71871ac393c6798ee2830da8a5885d4623378bba51c542d5b036d61cc253",
+          "judgment": {
+            "explanation": "完整动宾短语“活捉他们”从主语“我们”和情态副词“必”之后移到句首，使“我们必”失去后续谓语。“必”不能在此独立收尾，因此这不是可接受的话题化，而是违反了“必”须修饰后续谓语的结构要求。原有词语均保持完整，施事、受事及必然性仍可恢复，错误仅在本分句内。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "活捉他们我们必"
+          }
+        },
+        {
+          "unit_index": 173,
+          "verse": 19,
+          "content_chars": 7,
+          "original_text": "19 那官曾对神人说：",
+          "corrupted_text": "19 那官曾说对神人：",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "2532524afe33239494e214f89bcf22bc93c47e7f4170f76b4c09fc893996c790",
+          "proposal": {
+            "edited_clause": "19 那官曾说对神人：",
+            "error_type": "介词短语错位",
+            "explanation": "将原作言说对象状语的多词介词短语“对神人”整体移到“说”之后，违反此处“对＋对象”应置于言说动词之前的顺序要求。"
+          },
+          "judgment_id": "7b3f2037a9d704785b640421f19ff40ae9b7bf326c886c09233e2179be14142d",
+          "judgment": {
+            "explanation": "原作中“对神人”是由介词“对”和名词“神人”组成的受话者介词短语，作“说”的状语。替换将这个完整短语移到“说”后，形成“说对神人”，不符合此处受话者介词短语须置于言说动词前的语序要求。原有词语均保持完整，说话者、受话者及“曾”的时间意义仍可恢复，错误仅在本分句内。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "说对神人"
+          }
+        },
+        {
+          "unit_index": 26,
+          "verse": 28,
+          "content_chars": 10,
+          "original_text": "明天我们就吃我的儿子。",
+          "corrupted_text": "吃我的儿子明天我们就。",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "2532524afe33239494e214f89bcf22bc93c47e7f4170f76b4c09fc893996c790",
+          "proposal": {
+            "edited_clause": "吃我的儿子明天我们就。",
+            "error_type": "谓语短语错位",
+            "explanation": "将原作谓语的多词短语“吃我的儿子”整体移到句首，使“就”悬空在句末，破坏“就”应位于其修饰的谓语之前的依存关系。"
+          },
+          "judgment_id": "bc332f04af19acc02491b1c6d40c34373985c1ad671cca655daea7bb84524c83",
+          "judgment": {
+            "explanation": "原作谓语的多词动宾短语“吃我的儿子”被整体移到句首，使“明天我们就”中的副词“就”后缺少其所修饰的谓语，违反了该结构的语序要求。原有词语均保持完整，吃的对象、参与者及明天这一时间仍可恢复；缺陷仅在本次编辑的分句内。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "吃我的儿子明天我们就"
+          }
+        },
+        {
+          "unit_index": 85,
+          "verse": 4,
+          "content_chars": 8,
+          "original_text": "若他们留我们存活，",
+          "corrupted_text": "留我们存活若他们，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "2532524afe33239494e214f89bcf22bc93c47e7f4170f76b4c09fc893996c790",
+          "proposal": {
+            "edited_clause": "留我们存活若他们，",
+            "error_type": "条件分句谓语错位",
+            "explanation": "将原作条件分句谓语的多词短语“留我们存活”整体移到“若他们”之前，违反条件标记“若”应引出包含主语和谓语的分句这一顺序要求。"
+          },
+          "judgment_id": "caad8d5ca6a5c65f2d6ee753c9c2faf957866e2f3bbb912f7b83ec6531ae7a7e",
+          "judgment": {
+            "explanation": "原作谓语的多词短语“留我们存活”被整体移到“若他们”之前，使条件标记“若”及其主语“他们”后缺少谓语，不能正常构成条件分句。这不是单个虚词移位。原有词语均保持完整，结合后续“我们就活”，原条件关系及参与者角色仍可恢复；错误局限于本次编辑的分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "留我们存活若他们"
+          }
+        },
+        {
+          "unit_index": 57,
+          "verse": 33,
+          "content_chars": 9,
+          "original_text": "“这灾祸是耶和华所降，",
+          "corrupted_text": "“是耶和华所这灾祸降，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "de175bb9d5574a190c9d07fc11eeceddcd6b340aea65546f8761dec30146e79d",
+          "proposal": {
+            "edited_clause": "“是耶和华所这灾祸降，",
+            "error_type": "主语短语移入所字结构",
+            "explanation": "将原作主语的多词名词短语“这灾祸”整体移到“所”和“降”之间，破坏“所”须直接引出谓词性成分的结构要求。"
+          },
+          "judgment_id": "a4aaf4b5d4ce03b7037314c0ec83a6dd31bfe8b77c90d3373472197241edf755",
+          "judgment": {
+            "explanation": "原主语“这灾祸”（指示词“这”加名词“灾祸”）被整体移入“所降”之间。“所”应直接引出谓词性成分，不能在此插入原主语，因而破坏了“耶和华所降”的内部结构。这不是单个虚词移位；各词仍完整，灾祸由耶和华降下的原意仍可恢复，错误也仅限本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "所这灾祸降"
+          }
+        },
+        {
+          "unit_index": 98,
+          "verse": 6,
+          "content_chars": 24,
+          "original_text": "以色列王必是雇了赫人的诸王和埃及的诸王来攻击我们。",
+          "corrupted_text": "以色列王必是雇了赫人的来攻击我们诸王和埃及的诸王。",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "63d07d65c8e7bc2f4bac1a65869ace9ef4495b9f9b77f0ac90b6688dfb0f20f1",
+          "proposal": {
+            "edited_clause": "以色列王必是雇了赫人的来攻击我们诸王和埃及的诸王。",
+            "error_type": "目的短语插入名词短语",
+            "explanation": "将完整目的短语“来攻击我们”从受雇者之后移至“赫人的”与“诸王”之间；原本修饰雇佣行动的短语插入定语与中心名词之间，破坏该名词短语的内部结构。"
+          },
+          "judgment_id": "f231366af16c7cdfd71ac8feaa4189e270f37a3ad1150ca7f4dfc0378990e99b",
+          "judgment": {
+            "explanation": "原句中“来攻击我们”是说明雇用目的的多词成分，原本位于完整的并列宾语之后。替换将其移入“赫人的诸王”内部，隔开定语“赫人的”和中心语“诸王”；该成分也没有构成修饰“诸王”所需的定语结构，因而引入局部语法错误。原有词语均保持完整，雇用双方及攻击对象等原意仍可恢复。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "赫人的来攻击我们诸王"
+          }
+        }
+      ]
+    },
+    "passage_target_decanonicalized": {
+      "generation_mode": "validated_bank",
+      "bank_id": "df5e03b5d207e17280e386de7f9f152c27120f5b945295e1ac0bcbec942adc9b",
+      "edit_style": "llm_structural_v1",
+      "source_sha256": "f87f459a6257cb422491d1b763ef6deb2f7ad7e993f50cfb392ab45d735b1597",
+      "output_sha256": "768297ab5ce1e42cfeca16ad230d48b3e913f19db4e9f734a343a2fa0e0f9f8d",
+      "judge": {
+        "model": "gpt-6.1-sol",
+        "prompt_sha256": "a2abc09beb94299ae5ba0b4d6c363ce481093bce718b9b9608318cce66e6c61e",
+        "schema_sha256": "ad414a52eb96503c0b44a987f2edd0589aa8555bbfea4aacbe8305676de1aa12"
+      },
+      "bank_max_rate": 0.3,
+      "generator": {
+        "model": "gpt-6.1-sol",
+        "prompt_sha256": "1a0fc34ac6e0db5918641db38e16db653909ae5a6a89b418e958e5dc2ba3782b",
+        "schema_sha256": "647d8249f8e5e165094d5f461438de2f36ec7ff8ee75007729e01d3bc3069057"
+      },
+      "requested_rate": 0.3,
+      "actual_affected_rate": 0.3189873417721519,
+      "target_met": true,
+      "shortfall_content_chars": 0,
+      "seed": 8798,
+      "total_content_chars": 1185,
+      "affected_content_chars": 378,
+      "affected_unit_count": 35,
+      "operation_count": 35,
+      "protected_terms": 0,
+      "protected_losses": [],
+      "protected_verified": true,
+      "affected_units": [
+        {
+          "unit_index": 167,
+          "verse": 18,
+          "content_chars": 10,
+          "original_text": "18 事情正如神人对王所说：",
+          "corrupted_text": "18 事情正如神人所说对王：",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "2743273a3429b02d9d41557cfbde1ac772056442abbbcda29f18426ac436867b",
+          "proposal": {
+            "edited_clause": "18 事情正如神人所说对王：",
+            "error_type": "介词短语错置",
+            "explanation": "将原本修饰言说行为的介词短语“对王”整体移到“所说”之后，使言说对象状语脱离谓语前的位置，成为不能直接后接的成分。"
+          },
+          "judgment_id": "73d9256ff127779478cbebfc38a57b18f04d7b7b4c52d906e80d35a6f8bdc899",
+          "judgment": {
+            "explanation": "原句中“对王”是由介词“对”和名词“王”组成的多词短语，在“神人对王所说”中标明说话对象。替换将其整体移到“所说”之后，违反此处受话对象介词短语须置于言说谓语之前的要求，也无法作为“所说”的后置修饰语。原有词语均保持完整，向王说话的关系仍可恢复，错误仅限本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "神人所说对王"
+          }
+        },
+        {
+          "unit_index": 129,
+          "verse": 11,
+          "content_chars": 10,
+          "original_text": "11 守望者把消息传给王家。",
+          "corrupted_text": "11 守望者传给把消息王家。",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "2743273a3429b02d9d41557cfbde1ac772056442abbbcda29f18426ac436867b",
+          "proposal": {
+            "edited_clause": "11 守望者传给把消息王家。",
+            "error_type": "把字短语错置",
+            "explanation": "将原本位于谓语前的“把消息”整体移到“传给”和接收者“王家”之间，违反把字短语须位于其支配谓语之前的次序要求。"
+          },
+          "judgment_id": "91e5d970451ccbd791d67e523b86899e28ed8d1b5650391e7bd2418c705d6134",
+          "judgment": {
+            "explanation": "原句中“把消息”是由介词“把”和名词“消息”组成的处置结构成分，位于谓语“传给”之前。编辑将这一完整多词成分移到“传给”之后，违反把字结构的语序要求，并使“传给”与接受者“王家”的连接受到阻断。各词内部保持完整，传递消息的施事、对象和接受者仍可恢复；错误局限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "传给把消息王家"
+          }
+        },
+        {
+          "unit_index": 48,
+          "verse": 32,
+          "content_chars": 16,
+          "original_text": "“你们看这杀人犯打发人来砍我的头吗？",
+          "corrupted_text": "“你们看这我的头杀人犯打发人来砍吗？",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "8253cfedefe00405700aca0d2e7c648627667a1d90051a9f760100a74a6842eb",
+          "proposal": {
+            "edited_clause": "“你们看这我的头杀人犯打发人来砍吗？",
+            "error_type": "指示名词短语被移入成分打断",
+            "explanation": "将原作“砍”的宾语的名词短语“我的头”整体移入“这杀人犯”之间，破坏指示词“这”与中心语“杀人犯”的组合。"
+          },
+          "judgment_id": "0cb697f2296210865d70ec473e2c4ce82962101987a56c7271df80986762bb75",
+          "judgment": {
+            "explanation": "原作“砍”的宾语的多词名词短语“我的头”被整体移到“这杀人犯”内部，插在指示词“这”与中心名词“杀人犯”之间。“我的头”不能在此直接充当名词修饰语，因而破坏了该名词短语的结构，并使“砍”失去原有宾语。原有词语均保持完整，原来的施事、动作和受事仍可恢复；错误完全局限于本次编辑的分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "这我的头杀人犯"
+          }
+        },
+        {
+          "unit_index": 114,
+          "verse": 9,
+          "content_chars": 9,
+          "original_text": "今日是好消息的日子，",
+          "corrupted_text": "好消息今日是的日子，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "8253cfedefe00405700aca0d2e7c648627667a1d90051a9f760100a74a6842eb",
+          "proposal": {
+            "edited_clause": "好消息今日是的日子，",
+            "error_type": "定语内部依存关系断裂",
+            "explanation": "将由“好”和“消息”组成、原处于“好消息的”定语中的名词短语“好消息”整体移到“今日”之前，使定语标记“的”失去其前面的修饰成分。"
+          },
+          "judgment_id": "fdaaaeda87c529dbe9659f1f58347a65d58720fcaa10670e738b3647b46c660c",
+          "judgment": {
+            "explanation": "原句中“好消息”（形容词“好”＋名词“消息”）是“好消息的日子”内的多词定语成分。替换将它整体移到“今日”之前，使其与后面的“的日子”分离，留下“今日是的日子”；这里的“的”失去定语依附，违反定语须与“的”及中心语构成连续名词短语的要求。原有词语均保持完整，原句的时间和判断内容仍可恢复，错误局限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "好消息今日是的日子"
+          }
+        },
+        {
+          "unit_index": 32,
+          "verse": 29,
+          "content_chars": 12,
+          "original_text": "’但她却把她的儿子藏起来了。",
+          "corrupted_text": "’但她却把藏起来她的儿子了。",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "ac711568df54a8a2f96cef31acb06d35ad72c82eacef038495280d3c0cac713d",
+          "proposal": {
+            "edited_clause": "’但她却把藏起来她的儿子了。",
+            "error_type": "把字句宾语错位",
+            "explanation": "将原作“把”字宾语的多词名词短语“她的儿子”整体移到“藏起来”之后，违反把字句中受事宾语须置于“把”与处置谓语之间的次序要求。"
+          },
+          "judgment_id": "29c4a68155dd2af3d8ec2adc26ff0befa03adf0db10191240ea8f050ae231b9f",
+          "judgment": {
+            "explanation": "原作把字句宾语的多词名词短语“她的儿子”被整体移到“藏起来”之后，破坏了“把＋宾语＋谓语”的必要次序，使“把”后直接接动词短语。原有词语均保持完整，藏匿者、被藏者及完成意义仍可恢复；错误仅在本分句内。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "把藏起来她的儿子了"
+          }
+        },
+        {
+          "unit_index": 7,
+          "verse": 25,
+          "content_chars": 17,
+          "original_text": "以至于一头驴的头卖到八十舍客勒银子，",
+          "corrupted_text": "以至于一头驴的八十舍客勒银子头卖到，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "ac711568df54a8a2f96cef31acb06d35ad72c82eacef038495280d3c0cac713d",
+          "proposal": {
+            "edited_clause": "以至于一头驴的八十舍客勒银子头卖到，",
+            "error_type": "价格补语插入名词短语",
+            "explanation": "将原作“卖到”的价格补语“八十舍客勒银子”整体移入“一头驴的头”，插在定语标记“的”与中心语“头”之间，破坏该名词短语的定中连接。"
+          },
+          "judgment_id": "66047d1966c736fe19929638261a5ad9a33fb638ed1546d50cd96a4d1a4e5ba0",
+          "judgment": {
+            "explanation": "原作“卖到”的价格补语“八十舍客勒银子”被整体移入“一头驴的头”，插在“的”与中心语“头”之间，使该名词短语结构受损，同时使“卖到”缺少原有补语。这是完整多词短语的错位，不是单个虚词的移动。原有词语、数词及量词表达均未被拆开，售价与出售对象仍可恢复；错误局限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "一头驴的八十舍客勒银子头卖到"
+          }
+        },
+        {
+          "unit_index": 40,
+          "verse": 31,
+          "content_chars": 18,
+          "original_text": "“沙法的儿子以利沙的头今日若还在他肩上，",
+          "corrupted_text": "“沙法的儿子以利沙的在他肩上头今日若还，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "c62b2a033e796651ad7b8578e640eab1a5baee454659c30826b2b1d10afdbbe5",
+          "proposal": {
+            "edited_clause": "“沙法的儿子以利沙的在他肩上头今日若还，",
+            "error_type": "谓语成分移入名词短语",
+            "explanation": "将原作处所谓语的多词成分“在他肩上”整体移到“以利沙的”与中心语“头”之间，违反领属定语与名词中心语之间不能插入该谓语成分的结构要求。"
+          },
+          "judgment_id": "3d89116d7ab002243f143d1399bb97156b2a5d4708eacbeae55efbe1ef8cc3ac",
+          "judgment": {
+            "explanation": "原作谓语的多词介词短语“在他肩上”被整体移入主语名词短语“沙法的儿子以利沙的头”，插在“的”和中心语“头”之间。该位置不能直接容纳这一谓语性短语，同时“今日若还”失去了后接的谓语，构成新增的语序错误。原有词语均保持完整，人物、身体部位及条件关系仍可恢复；错误局限于本次编辑的分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "以利沙的在他肩上头今日若还"
+          }
+        },
+        {
+          "unit_index": 10,
+          "verse": 26,
+          "content_chars": 12,
+          "original_text": "26 以色列王正从城墙上经过时，",
+          "corrupted_text": "26 以色列王正经过从城墙上时，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "c62b2a033e796651ad7b8578e640eab1a5baee454659c30826b2b1d10afdbbe5",
+          "proposal": {
+            "edited_clause": "26 以色列王正经过从城墙上时，",
+            "error_type": "介词短语后置错序",
+            "explanation": "将原作路径状语的多词介词短语“从城墙上”整体移到“经过”之后，违反该路径状语须置于所修饰动词之前的语序要求。"
+          },
+          "judgment_id": "c2cb4a3692eff669f353820475416eb8b6c41997a2f601eae4f9da1fc2fb43bf",
+          "judgment": {
+            "explanation": "原句中“从城墙上”是位于“经过”前的路径介词短语，由介词“从”和方位名词短语“城墙上”组成。替换将这一完整多词成分移到“经过”之后、“时”之前；该介词短语不能在此直接充当“经过”的后置补足语，造成新的语序错误。原有词语均保持完整，人物、动作、路径及进行中的时间关系仍可恢复，错误仅限于本次编辑的分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "经过从城墙上时"
+          }
+        },
+        {
+          "unit_index": 178,
+          "verse": 19,
+          "content_chars": 6,
+          "original_text": "“你必亲眼看见，",
+          "corrupted_text": "“亲眼看见你必，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "c62b2a033e796651ad7b8578e640eab1a5baee454659c30826b2b1d10afdbbe5",
+          "proposal": {
+            "edited_clause": "“亲眼看见你必，",
+            "error_type": "谓语前移导致情态成分悬空",
+            "explanation": "将原作谓语的多词成分“亲眼看见”整体移到主语“你”之前，违反“必”须在其后的谓语上取得作用域的顺序要求。"
+          },
+          "judgment_id": "cad9edf67d29f78e6710787f5af0b9ed54eb013245246604e6aece6d7ff88279",
+          "judgment": {
+            "explanation": "原作谓语、受情态词“必”修饰的多词动词短语“亲眼看见”被整体移到“你必”之前，导致“必”后缺少其支配的谓语；这一顺序不能构成正常的话题化。原有词语均保持完整，仍可恢复“你必亲眼看见”的人物、动作及情态意义。错误局限于本次编辑的分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "亲眼看见你必"
+          }
+        },
+        {
+          "unit_index": 24,
+          "verse": 28,
+          "content_chars": 8,
+          "original_text": "‘把你的儿子交出来，",
+          "corrupted_text": "‘把交出来你的儿子，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "c62b2a033e796651ad7b8578e640eab1a5baee454659c30826b2b1d10afdbbe5",
+          "proposal": {
+            "edited_clause": "‘把交出来你的儿子，",
+            "error_type": "把字句宾语后置",
+            "explanation": "将原作“把”字宾语的多词名词短语“你的儿子”整体移到“交出来”之后，违反把字句中受事宾语须位于“把”与谓语之间的要求。"
+          },
+          "judgment_id": "484a5a911f0c24a57b84150fc07af5ef951e496323e90d52d3b9937118fe9ea1",
+          "judgment": {
+            "explanation": "原作把字句中充当处置对象的多词名词短语“你的儿子”被移到谓语“交出来”之后，违反“把＋宾语＋谓语”的次序要求，使“把”后缺少宾语。这是完整短语的错位，非单个虚词移动；原有词语均保持完整，交出儿子的动作及参与者仍可恢复，错误局限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "把交出来你的儿子"
+          }
+        },
+        {
+          "unit_index": 117,
+          "verse": 9,
+          "content_chars": 6,
+          "original_text": "罪必临到我们。",
+          "corrupted_text": "临到我们罪必。",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "67f0e6ca01e054eb9404f011b65310d6a4fe7fc007eba256f284ea9722292c79",
+          "proposal": {
+            "edited_clause": "临到我们罪必。",
+            "error_type": "谓语短语移位导致副词后缺少谓语",
+            "explanation": "将原作谓语的多词动词短语“临到我们”整体移到主语“罪”之前，使原本修饰该谓语的“必”留在句末，违反“必”须位于其所修饰谓语之前的要求。"
+          },
+          "judgment_id": "1c9497f436bf58694e342b17f2b4fb9a0a245762ed077c6bfe37859b6d6fd6ee",
+          "judgment": {
+            "explanation": "原句中“临到我们”是由动词及其宾语组成的多词谓语短语，受“必”修饰。将其整体移到主语“罪”之前，留下“罪必”，使情态副词“必”后缺少其所修饰的谓语；这里也没有支持这种前置的结构。各词内部完整，罪必临到说话者一方的含义仍可恢复，错误仅限于本句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "临到我们罪必"
+          }
+        },
+        {
+          "unit_index": 143,
+          "verse": 13,
+          "content_chars": 18,
+          "original_text": "他们的处境不会比这里所有以色列人更糟。",
+          "corrupted_text": "他们的比这里所有以色列人处境不会更糟。",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "67f0e6ca01e054eb9404f011b65310d6a4fe7fc007eba256f284ea9722292c79",
+          "proposal": {
+            "edited_clause": "他们的比这里所有以色列人处境不会更糟。",
+            "error_type": "比较介词短语插入主语内部",
+            "explanation": "将原作比较状语的多词介词短语“比这里所有以色列人”整体移到“他们的”与“处境”之间，违反领属修饰语“他们的”须与中心语“处境”组成名词短语、不能被该谓语状语截断的要求。"
+          },
+          "judgment_id": "e557b1a2139dc3019e80ad79d3da6f68503a449470230db98132accebe1ef795",
+          "judgment": {
+            "explanation": "原句中“比这里所有以色列人”是修饰“更糟”的比较介词短语；替换后，该完整多词短语被移入主语“他们的处境”内部，隔开“他们的”和中心语“处境”。该比较短语不能直接充当这里的名词定语，因而引入了新的结构错误。原有词语均保持完整，比较双方、否定和处境优劣关系仍可恢复，错误也仅限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "他们的比这里所有以色列人处境"
+          }
+        },
+        {
+          "unit_index": 8,
+          "verse": 25,
+          "content_chars": 12,
+          "original_text": "一升鸽粪卖到五舍客勒银子。",
+          "corrupted_text": "卖到五舍客勒一升鸽粪银子。",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "0c32a377d9c7f2419f3cac93afeff715ccca228f2cec2335147a553e26ba7daf",
+          "proposal": {
+            "edited_clause": "卖到五舍客勒一升鸽粪银子。",
+            "error_type": "主语移入价量名词短语内部",
+            "explanation": "将原作主语的完整数量名词短语“一升鸽粪”移到“五舍客勒”与“银子”之间，打断价量短语“五舍客勒银子”的内部组合。"
+          },
+          "judgment_id": "a4b6313077062d3210e6553ccb4e0a3e47f76dd1b6b27b0a5f1d5b7d64ad26ff",
+          "judgment": {
+            "explanation": "原作主语的多词名词短语“一升鸽粪”被移入价格补语“五舍客勒银子”内部，隔开计量部分“五舍客勒”和中心语“银子”，破坏了该数量名词短语的结构，并非可接受的主语后置。原有词语及计量表达均保持完整，所售物品、数量和价格仍可恢复；错误局限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "五舍客勒一升鸽粪银子"
+          }
+        },
+        {
+          "unit_index": 110,
+          "verse": 8,
+          "content_chars": 7,
+          "original_text": "拿些东西藏起来。",
+          "corrupted_text": "拿些藏起来东西。",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "0c32a377d9c7f2419f3cac93afeff715ccca228f2cec2335147a553e26ba7daf",
+          "proposal": {
+            "edited_clause": "拿些藏起来东西。",
+            "error_type": "动补短语插入宾语内部",
+            "explanation": "将原作后续动作谓语的动补短语“藏起来”（“藏”加趋向补语“起来”）移到“些”与“东西”之间，打断数量成分与名词中心语的组合。"
+          },
+          "judgment_id": "54c09f94467ede02775c28a05283ef6432c2a5cb3ad271612f67e0bfef075bba",
+          "judgment": {
+            "explanation": "原句中“藏起来”由动词“藏”和趋向补语“起来”构成，是承接“拿些东西”的后续谓语。编辑将这一完整多词短语移入数量宾语“些东西”内部，隔开“些”和“东西”；若将其理解为修饰“东西”，此处又缺少必要的“的”，因此引入了局部语法错误。原有词语均保持完整，拿取东西并藏起的动作关系仍可恢复。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "些藏起来东西"
+          }
+        },
+        {
+          "unit_index": 182,
+          "verse": 20,
+          "content_chars": 9,
+          "original_text": "百姓在城门口践踏他，",
+          "corrupted_text": "百姓践踏在城门口他，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "0c32a377d9c7f2419f3cac93afeff715ccca228f2cec2335147a553e26ba7daf",
+          "proposal": {
+            "edited_clause": "百姓践踏在城门口他，",
+            "error_type": "处所介词短语阻断动宾连接",
+            "explanation": "将原作处所状语的完整介词短语“在城门口”移到“践踏”与宾语“他”之间，违反该句及物动词与其宾语的连接要求。"
+          },
+          "judgment_id": "549d957b323dc107a846a9b918be463f1ec56625e8ceea078fcd9edbb1138414",
+          "judgment": {
+            "explanation": "原作状语的完整介词短语“在城门口”被移到动词“践踏”与宾语“他”之间。此处后置处所短语不能这样插在动宾之间，因而引入了局部语序错误。该短语包含介词“在”和处所词“城门口”，并非单独移动一个功能词；原有词语均完整保留，施事、受事和地点仍可恢复。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "践踏在城门口他"
+          }
+        },
+        {
+          "unit_index": 30,
+          "verse": 29,
+          "content_chars": 8,
+          "original_text": "‘把你的儿子交出来，",
+          "corrupted_text": "‘把交出来你的儿子，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "7242954c3330d0c54224638b257b643c4ead9a58b76b79fbcfcfff4e0b81473d",
+          "proposal": {
+            "edited_clause": "‘把交出来你的儿子，",
+            "error_type": "把字句宾语错位",
+            "explanation": "将原作“把”字宾语的多词名词短语“你的儿子”整体移到“交出来”之后，违反把字句中宾语须位于“把”与谓语之间的顺序要求。"
+          },
+          "judgment_id": "b3cba838a1ee4a29e7de6ba8c18f8a8ade496ef8424611a525b62a47cccd28cd",
+          "judgment": {
+            "explanation": "原句中“你的儿子”是“把”的宾语，为包含代词和名词的多词名词短语。替换将该短语整体移至“交出来”之后，违反把字句中宾语须位于“把”之后、谓语之前的语序要求。原有词语均保持完整，交出儿子的动作及参与者关系仍可恢复；错误局限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "把交出来你的儿子"
+          }
+        },
+        {
+          "unit_index": 11,
+          "verse": 26,
+          "content_chars": 9,
+          "original_text": "有一个妇人向他呼喊：",
+          "corrupted_text": "有向他一个妇人呼喊：",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "7242954c3330d0c54224638b257b643c4ead9a58b76b79fbcfcfff4e0b81473d",
+          "proposal": {
+            "edited_clause": "有向他一个妇人呼喊：",
+            "error_type": "兼语名词短语侵入介词结构",
+            "explanation": "将原作“有”的宾语兼“呼喊”的施事的多词名词短语“一个妇人”移至“向他”之后，使它插在介词状语“向他”与谓语“呼喊”之间，破坏存在兼语结构中兼语应先于其谓语状语的顺序。"
+          },
+          "judgment_id": "dedc0e7adb544f2a5f85ba4689b97ea4b9bab6b7ee75aad78509f20d58e81d02",
+          "judgment": {
+            "explanation": "原句中“向他”是修饰“呼喊”的介词短语，由介词“向”和代词“他”组成。改句将该短语移到存在动词“有”与其引入的名词短语“一个妇人”之间；它既不能在此充当“有”的补语，也不能直接修饰“一个妇人”，因而造成新的语序错误。原有词语均完整，妇人向他呼喊的参与者关系仍可恢复，错误局限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "有向他一个妇人"
+          }
+        },
+        {
+          "unit_index": 36,
+          "verse": 30,
+          "content_chars": 9,
+          "original_text": "当他从城墙上经过时，",
+          "corrupted_text": "当他经过从城墙上时，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "8118636320e18a194e41067b99e80d6bfea021bf3cb5ed4cb59c5c990dafe2ce",
+          "proposal": {
+            "edited_clause": "当他经过从城墙上时，",
+            "error_type": "介词短语错置",
+            "explanation": "将原作路径状语的多词短语“从城墙上”整体移至“经过”之后，违反该路径介词短语须置于所修饰谓语之前的语序要求。"
+          },
+          "judgment_id": "360d181bb05ca5c58c8a996f6401a6e08729b16bcdf26db07adb106d3d1268bf",
+          "judgment": {
+            "explanation": "原句中“从城墙上”是修饰“经过”的介词短语，表示经过的路径。替换将这一完整的多词短语移至“经过”之后；此处“从”字短语不能作为“经过”的后置补语，因而违反路径状语应置于谓语前的要求。各词内部保持完整，人物、动作、路径及时间关系仍可恢复，错误仅限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "经过从城墙上"
+          }
+        },
+        {
+          "unit_index": 80,
+          "verse": 4,
+          "content_chars": 7,
+          "original_text": "必因城中饥荒死；",
+          "corrupted_text": "必死因城中饥荒；",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "8118636320e18a194e41067b99e80d6bfea021bf3cb5ed4cb59c5c990dafe2ce",
+          "proposal": {
+            "edited_clause": "必死因城中饥荒；",
+            "error_type": "原因状语后置",
+            "explanation": "将原作原因状语的多词短语“因城中饥荒”整体移至“死”之后，违反此处“因”字原因短语须先于其所修饰谓语的语序要求。"
+          },
+          "judgment_id": "bbd5b44af0c3fa4f431afbad848956f00a406b83f477a3ddcc9863afdef1d624",
+          "judgment": {
+            "explanation": "原句的“因城中饥荒”是表示原因的介词短语，作“死”的前置状语；改句将这一完整多词短语移到“死”后。“因”引出的原因状语不能在此直接充当“死”的后置补语，因而产生新的语序错误。原有词语内部未被拆分，死亡及其原因仍可恢复，错误仅限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "死因城中饥荒"
+          }
+        },
+        {
+          "unit_index": 163,
+          "verse": 17,
+          "content_chars": 10,
+          "original_text": "但百姓在城门口践踏他，",
+          "corrupted_text": "但百姓践踏在城门口他，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "8118636320e18a194e41067b99e80d6bfea021bf3cb5ed4cb59c5c990dafe2ce",
+          "proposal": {
+            "edited_clause": "但百姓践踏在城门口他，",
+            "error_type": "状语插入动宾结构",
+            "explanation": "将原作地点状语的多词短语“在城门口”整体移入“践踏”和宾语“他”之间，破坏该动词直接支配代词宾语的结构。"
+          },
+          "judgment_id": "024956f93ebf840dfe92b519e5b899f82d451b2128e2f7fe91a15d0a97222ae1",
+          "judgment": {
+            "explanation": "原作地点状语的完整介词短语“在城门口”被移到“践踏”和宾语“他”之间，阻断了动宾连接；此处不能用该处所短语作“践踏”的补语后再接“他”。该短语含介词与处所内容词，符合多词成分移位的条件。原有词语均保持完整，施事、受事、动作及地点仍可恢复，错误局限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "践踏在城门口他"
+          }
+        },
+        {
+          "unit_index": 95,
+          "verse": 6,
+          "content_chars": 19,
+          "original_text": "6 因为耶和华使叙利亚人听见车马声和大军声，",
+          "corrupted_text": "6 因为耶和华使听见车马声和大军声叙利亚人，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "8118636320e18a194e41067b99e80d6bfea021bf3cb5ed4cb59c5c990dafe2ce",
+          "proposal": {
+            "edited_clause": "6 因为耶和华使听见车马声和大军声叙利亚人，",
+            "error_type": "兼语结构语序破坏",
+            "explanation": "将原作兼语后续谓语的多词短语“听见车马声和大军声”整体移至“叙利亚人”之前，违反“使”字兼语结构中受使者须先于其谓语的顺序要求。"
+          },
+          "judgment_id": "5b0cd7717ead72c4c2946ad2b615d821fc938e1f89227fc23318670c4c14ac03",
+          "judgment": {
+            "explanation": "完整的多词谓语“听见车马声和大军声”原本位于兼语“叙利亚人”之后，现被移到它之前，违反“使＋兼语＋谓语”的语序要求，使“叙利亚人”失去合法的句法位置。原有词语均保持完整，致使者、听者及所听内容仍可恢复；错误仅发生在本分句内。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "使听见车马声和大军声叙利亚人"
+          }
+        },
+        {
+          "unit_index": 73,
+          "verse": 2,
+          "content_chars": 6,
+          "original_text": "“你必亲眼看见，",
+          "corrupted_text": "“亲眼看见你必，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "8118636320e18a194e41067b99e80d6bfea021bf3cb5ed4cb59c5c990dafe2ce",
+          "proposal": {
+            "edited_clause": "“亲眼看见你必，",
+            "error_type": "谓语短语错置",
+            "explanation": "将原作谓语的多词短语“亲眼看见”整体移至主语“你”之前，使“必”留在句末，破坏“必”须位于其所修饰谓语之前的依存顺序。"
+          },
+          "judgment_id": "1f5c9ca96beee53fa414334360bbf537015779943a0b47b74533d200a6b08f57",
+          "judgment": {
+            "explanation": "“亲眼看见”由状语“亲眼”和动词“看见”组成，原本是主语“你”和情态副词“必”之后的谓语成分。将其整体移到“你必”之前，使“必”悬空，缺少其后应有的谓语，不能构成正常的谓语前置。原有词语均保持完整，且仍可恢复“你必亲眼看见”的人物、动作和必然性；错误仅在本分句内。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "亲眼看见你必"
+          }
+        },
+        {
+          "unit_index": 133,
+          "verse": 12,
+          "content_chars": 16,
+          "original_text": "“我告诉你们叙利亚人向我们所行的事。",
+          "corrupted_text": "“我告诉你们叙利亚人所行的向我们事。",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "8118636320e18a194e41067b99e80d6bfea021bf3cb5ed4cb59c5c990dafe2ce",
+          "proposal": {
+            "edited_clause": "“我告诉你们叙利亚人所行的向我们事。",
+            "error_type": "介词短语插入定中结构",
+            "explanation": "将原在关系修饰语内修饰“所行”的多词短语“向我们”整体移至“的”和中心名词“事”之间，违反此处定语标记“的”须直接连接中心名词的结构要求。"
+          },
+          "judgment_id": "08cc5398dd0a992e0413713c2f64c05379539994377596771ba7ae55bd838664",
+          "judgment": {
+            "explanation": "原作状语的多词介词短语“向我们”被整体移到“所行的”与中心名词“事”之间。它既不能在此位置修饰“所行”，也不能直接作“事”的定语，破坏了关系修饰语与中心名词的连接，构成新的语法错误。原有词语均保持完整，叙利亚人向我们行事、我告诉你们此事的意义仍可恢复；错误仅限于本次编辑的分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "所行的向我们事"
+          }
+        },
+        {
+          "unit_index": 54,
+          "verse": 33,
+          "content_chars": 10,
+          "original_text": "33 以利沙正与他们说话时，",
+          "corrupted_text": "33 以利沙正说话与他们时，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "6ff33cec41e6cfad86252db0d764de17ea9f22ec71d4abfe0d1a0cbc32e4e67b",
+          "proposal": {
+            "edited_clause": "33 以利沙正说话与他们时，",
+            "error_type": "介词短语错置",
+            "explanation": "将由介词“与”和代词“他们”组成的完整短语“与他们”从“说话”前移至其后。该短语原作交谈对象状语，移位后违反此处介词状语须置于谓语前的语序要求。"
+          },
+          "judgment_id": "3b350852c75614ddd054c3a6042a17fc5c305e1316f46c871dbf98f31f99dec6",
+          "judgment": {
+            "explanation": "原句中“与他们”是置于“说话”前的介词短语，表示交谈对象。替换将这一完整的多词短语移至“说话”之后；“说话”不能以这种次序直接后接“与他们”，因而破坏了介词短语与谓语的正常组合。所有词语保持完整，人物、交谈对象及进行中的时间关系仍可恢复，错误仅在本分句内。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "说话与他们时"
+          }
+        },
+        {
+          "unit_index": 70,
+          "verse": 2,
+          "content_chars": 7,
+          "original_text": "耶和华若开天窗，",
+          "corrupted_text": "开天窗耶和华若，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "6ff33cec41e6cfad86252db0d764de17ea9f22ec71d4abfe0d1a0cbc32e4e67b",
+          "proposal": {
+            "edited_clause": "开天窗耶和华若，",
+            "error_type": "条件谓语错置",
+            "explanation": "将由动词“开”和宾语“天窗”组成的完整谓语“开天窗”移至主语“耶和华”之前，使条件标记“若”后缺失其所引导的谓语，破坏“若＋谓语”的结构要求。"
+          },
+          "judgment_id": "12b0ef641af627c1f431284b77f4b57b66976f67b9944b815c2d3ec5aab8aff7",
+          "judgment": {
+            "explanation": "原句中“开天窗”由动词“开”和宾语“天窗”组成，是“若”所引条件分句的谓语。替换将这一完整多词动宾短语移到主语“耶和华”之前，使“若”悬置于分句末尾，缺少其应引出的谓语，违反条件分句的构造要求。这不是仅移动一个功能词所能得到的变化。原有词语均保持完整，原条件关系及参与者仍可恢复，缺陷局限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "开天窗耶和华若"
+          }
+        },
+        {
+          "unit_index": 181,
+          "verse": 20,
+          "content_chars": 8,
+          "original_text": "20 这事就这样临到他。",
+          "corrupted_text": "20 这事临到就这样他。",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "10845f9f54ae0aadd1ca2c58ffd56ffb60919cbc36178fd1428c673296ad3d4b",
+          "proposal": {
+            "edited_clause": "20 这事临到就这样他。",
+            "error_type": "方式状语错置于动宾之间",
+            "explanation": "将原本修饰“临到”的多词状语“就这样”移到“临到”和宾语“他”之间，违反该方式状语须置于谓语之前、不能插入此处动宾结构的语序要求。"
+          },
+          "judgment_id": "7d9aa73033985e5f8eea304522971badb8f851c27c5e06bcc8690da7e42d8891",
+          "judgment": {
+            "explanation": "原来的方式状语“就这样”（“就”＋“这样”）被整体移到动词“临到”和宾语“他”之间。该多词状语不能在这里插入动宾结构，因而引入了新的语序错误。词语内部均未拆分，事件及参与者关系仍可恢复，错误也仅限于本句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "临到就这样他"
+          }
+        },
+        {
+          "unit_index": 43,
+          "verse": 32,
+          "content_chars": 12,
+          "original_text": "32 那时以利沙坐在自己的屋里，",
+          "corrupted_text": "32 那时以利沙自己的屋里坐在，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "10845f9f54ae0aadd1ca2c58ffd56ffb60919cbc36178fd1428c673296ad3d4b",
+          "proposal": {
+            "edited_clause": "32 那时以利沙自己的屋里坐在，",
+            "error_type": "处所补足语移位导致介词悬空",
+            "explanation": "将原本由“在”引出的多词处所短语“自己的屋里”移到“坐在”之前，违反“在”须在此结构中后接处所补足语的要求。"
+          },
+          "judgment_id": "ea9b7bd3c41539fc967793a36a6fe01e824116d675777775c995faae542dad93",
+          "judgment": {
+            "explanation": "完整的多词处所短语“自己的屋里”原本是“坐在”中“在”的处所补语，现被移到“坐在”之前，使句末的“在”失去补语。处所短语前置本可成立，但此处保留悬空的“在”，违反了该介词须带处所补语的要求。原词均保持完整，人物、时间和坐于屋内的意思仍可恢复，错误仅限本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "自己的屋里坐在"
+          }
+        },
+        {
+          "unit_index": 47,
+          "verse": 32,
+          "content_chars": 8,
+          "original_text": "以利沙对长老们说：",
+          "corrupted_text": "以利沙说对长老们：",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "5b80191941cb1739afc4b84f1de71e6edfbd6d467d26538da27ed318c54051ce",
+          "proposal": {
+            "edited_clause": "以利沙说对长老们：",
+            "error_type": "介词短语状语错置",
+            "explanation": "将完整的多词介词短语“对长老们”从“说”前移到其后。该短语原本标明说话对象，移位后违反此处对象介词短语应置于“说”前的次序要求。"
+          },
+          "judgment_id": "1e0b491db5d048505b584bfc94c9a4fbae6ed0bcc5f9671c662f2a6065fb4d74",
+          "judgment": {
+            "explanation": "原句中“对长老们”是由介词“对”和名词“长老们”组成的多词介词短语，作“说”的对象状语。替换将该短语完整移到“说”后，违反此处引语结构中对象状语应置于言说动词之前的要求。各词内部保持完整，言说者、受话者及言说行为仍可恢复；错误仅限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "说对长老们"
+          }
+        },
+        {
+          "unit_index": 144,
+          "verse": 13,
+          "content_chars": 14,
+          "original_text": "你看这里所有以色列人都必灭亡。",
+          "corrupted_text": "你看都必灭亡这里所有以色列人。",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "5b80191941cb1739afc4b84f1de71e6edfbd6d467d26538da27ed318c54051ce",
+          "proposal": {
+            "edited_clause": "你看都必灭亡这里所有以色列人。",
+            "error_type": "嵌入分句主语后置",
+            "explanation": "将完整的多词名词短语“这里所有以色列人”从嵌入分句的主语位置移到“都必灭亡”之后。该短语仍指灭亡者，但新位置违反此处主语应先于其统摄性副词“都”及谓语的次序要求。"
+          },
+          "judgment_id": "6889f37e548bfc1b00d28fde1a3d2cc4f8da49ed815cceefe0cefc5ef43c159d",
+          "judgment": {
+            "explanation": "原主语“这里所有以色列人”是完整的多词名词短语，被移到谓语“都必灭亡”之后。“都”在此总括该主语，而这种带“都必”的陈述句不能直接采用谓语在前、主语在后的顺序；“你看”也不能许可这种倒置。因此引入了局部的短语移位错误。原有词语均保持完整，人物范围、必然灭亡的判断及参与者角色仍可恢复。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "都必灭亡这里所有以色列人"
+          }
+        },
+        {
+          "unit_index": 138,
+          "verse": 12,
+          "content_chars": 7,
+          "original_text": "我们必活捉他们，",
+          "corrupted_text": "活捉他们我们必，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "2532524afe33239494e214f89bcf22bc93c47e7f4170f76b4c09fc893996c790",
+          "proposal": {
+            "edited_clause": "活捉他们我们必，",
+            "error_type": "谓语短语错位",
+            "explanation": "将原作谓语的多词短语“活捉他们”整体移到主语“我们”之前，使“必”后缺少其应修饰的谓语，破坏情态副词与谓语的顺序关系。"
+          },
+          "judgment_id": "c4ae71871ac393c6798ee2830da8a5885d4623378bba51c542d5b036d61cc253",
+          "judgment": {
+            "explanation": "完整动宾短语“活捉他们”从主语“我们”和情态副词“必”之后移到句首，使“我们必”失去后续谓语。“必”不能在此独立收尾，因此这不是可接受的话题化，而是违反了“必”须修饰后续谓语的结构要求。原有词语均保持完整，施事、受事及必然性仍可恢复，错误仅在本分句内。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "活捉他们我们必"
+          }
+        },
+        {
+          "unit_index": 173,
+          "verse": 19,
+          "content_chars": 7,
+          "original_text": "19 那官曾对神人说：",
+          "corrupted_text": "19 那官曾说对神人：",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "2532524afe33239494e214f89bcf22bc93c47e7f4170f76b4c09fc893996c790",
+          "proposal": {
+            "edited_clause": "19 那官曾说对神人：",
+            "error_type": "介词短语错位",
+            "explanation": "将原作言说对象状语的多词介词短语“对神人”整体移到“说”之后，违反此处“对＋对象”应置于言说动词之前的顺序要求。"
+          },
+          "judgment_id": "7b3f2037a9d704785b640421f19ff40ae9b7bf326c886c09233e2179be14142d",
+          "judgment": {
+            "explanation": "原作中“对神人”是由介词“对”和名词“神人”组成的受话者介词短语，作“说”的状语。替换将这个完整短语移到“说”后，形成“说对神人”，不符合此处受话者介词短语须置于言说动词前的语序要求。原有词语均保持完整，说话者、受话者及“曾”的时间意义仍可恢复，错误仅在本分句内。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "说对神人"
+          }
+        },
+        {
+          "unit_index": 26,
+          "verse": 28,
+          "content_chars": 10,
+          "original_text": "明天我们就吃我的儿子。",
+          "corrupted_text": "吃我的儿子明天我们就。",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "2532524afe33239494e214f89bcf22bc93c47e7f4170f76b4c09fc893996c790",
+          "proposal": {
+            "edited_clause": "吃我的儿子明天我们就。",
+            "error_type": "谓语短语错位",
+            "explanation": "将原作谓语的多词短语“吃我的儿子”整体移到句首，使“就”悬空在句末，破坏“就”应位于其修饰的谓语之前的依存关系。"
+          },
+          "judgment_id": "bc332f04af19acc02491b1c6d40c34373985c1ad671cca655daea7bb84524c83",
+          "judgment": {
+            "explanation": "原作谓语的多词动宾短语“吃我的儿子”被整体移到句首，使“明天我们就”中的副词“就”后缺少其所修饰的谓语，违反了该结构的语序要求。原有词语均保持完整，吃的对象、参与者及明天这一时间仍可恢复；缺陷仅在本次编辑的分句内。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "吃我的儿子明天我们就"
+          }
+        },
+        {
+          "unit_index": 85,
+          "verse": 4,
+          "content_chars": 8,
+          "original_text": "若他们留我们存活，",
+          "corrupted_text": "留我们存活若他们，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "2532524afe33239494e214f89bcf22bc93c47e7f4170f76b4c09fc893996c790",
+          "proposal": {
+            "edited_clause": "留我们存活若他们，",
+            "error_type": "条件分句谓语错位",
+            "explanation": "将原作条件分句谓语的多词短语“留我们存活”整体移到“若他们”之前，违反条件标记“若”应引出包含主语和谓语的分句这一顺序要求。"
+          },
+          "judgment_id": "caad8d5ca6a5c65f2d6ee753c9c2faf957866e2f3bbb912f7b83ec6531ae7a7e",
+          "judgment": {
+            "explanation": "原作谓语的多词短语“留我们存活”被整体移到“若他们”之前，使条件标记“若”及其主语“他们”后缺少谓语，不能正常构成条件分句。这不是单个虚词移位。原有词语均保持完整，结合后续“我们就活”，原条件关系及参与者角色仍可恢复；错误局限于本次编辑的分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "留我们存活若他们"
+          }
+        },
+        {
+          "unit_index": 57,
+          "verse": 33,
+          "content_chars": 9,
+          "original_text": "“这灾祸是耶和华所降，",
+          "corrupted_text": "“是耶和华所这灾祸降，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "de175bb9d5574a190c9d07fc11eeceddcd6b340aea65546f8761dec30146e79d",
+          "proposal": {
+            "edited_clause": "“是耶和华所这灾祸降，",
+            "error_type": "主语短语移入所字结构",
+            "explanation": "将原作主语的多词名词短语“这灾祸”整体移到“所”和“降”之间，破坏“所”须直接引出谓词性成分的结构要求。"
+          },
+          "judgment_id": "a4aaf4b5d4ce03b7037314c0ec83a6dd31bfe8b77c90d3373472197241edf755",
+          "judgment": {
+            "explanation": "原主语“这灾祸”（指示词“这”加名词“灾祸”）被整体移入“所降”之间。“所”应直接引出谓词性成分，不能在此插入原主语，因而破坏了“耶和华所降”的内部结构。这不是单个虚词移位；各词仍完整，灾祸由耶和华降下的原意仍可恢复，错误也仅限本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "所这灾祸降"
+          }
+        },
+        {
+          "unit_index": 98,
+          "verse": 6,
+          "content_chars": 24,
+          "original_text": "以色列王必是雇了赫人的诸王和埃及的诸王来攻击我们。",
+          "corrupted_text": "以色列王必是雇了赫人的来攻击我们诸王和埃及的诸王。",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "63d07d65c8e7bc2f4bac1a65869ace9ef4495b9f9b77f0ac90b6688dfb0f20f1",
+          "proposal": {
+            "edited_clause": "以色列王必是雇了赫人的来攻击我们诸王和埃及的诸王。",
+            "error_type": "目的短语插入名词短语",
+            "explanation": "将完整目的短语“来攻击我们”从受雇者之后移至“赫人的”与“诸王”之间；原本修饰雇佣行动的短语插入定语与中心名词之间，破坏该名词短语的内部结构。"
+          },
+          "judgment_id": "f231366af16c7cdfd71ac8feaa4189e270f37a3ad1150ca7f4dfc0378990e99b",
+          "judgment": {
+            "explanation": "原句中“来攻击我们”是说明雇用目的的多词成分，原本位于完整的并列宾语之后。替换将其移入“赫人的诸王”内部，隔开定语“赫人的”和中心语“诸王”；该成分也没有构成修饰“诸王”所需的定语结构，因而引入局部语法错误。原有词语均保持完整，雇用双方及攻击对象等原意仍可恢复。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "赫人的来攻击我们诸王"
+          }
+        }
+      ]
+    }
+  }
+}

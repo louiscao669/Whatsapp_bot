@@ -1,0 +1,192 @@
+{
+  "request_hash": "5ef5ee9006a95dcd7da005f0c5887f8881f5d2fa7e619ff9b31ee1fad0dc165a",
+  "model": "gpt-6.1-sol",
+  "response_id": "resp_04dcd4185ec44c38006ae0b3ccdcbc87d186a3ac00627bbc6b",
+  "usage": {
+    "input_tokens": 4706,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 4703
+    },
+    "output_tokens": 3004,
+    "output_tokens_details": {
+      "reasoning_tokens": 261
+    },
+    "total_tokens": 7710
+  },
+  "parsed": {
+    "items": [
+      {
+        "id": "q0001",
+        "parse_summary": "问句以前置的“被……制服以后”作时间背景，其中施事名词“那附着邪灵的人”带修饰语；省略的受事与后面“谁受伤逃出”的主语相同。需区分制服别人的人和受伤逃走的七个儿子。",
+        "features": [
+          {
+            "kind": "nested_modifier",
+            "quote": "被那附着邪灵的人制服以后",
+            "required_operations": "在时间背景内识别被动结构，再把“附着邪灵的”归到施事“人”。",
+            "concern": "ordinary",
+            "reason": "修饰语用于识别制服七个儿子的人，结构服务于目标事件的区分。"
+          },
+          {
+            "kind": "role_tracking",
+            "quote": "被那附着邪灵的人制服以后，谁受伤逃出了那房子？",
+            "required_operations": "将被制服的受事与受伤、逃出的行动者对应，并与制服他们的施事区分。",
+            "concern": "ordinary",
+            "reason": "被制服者与逃走者的同一关系正是题目要求识别的关系。"
+          },
+          {
+            "kind": "reference_chain",
+            "quote": "那附着邪灵的人",
+            "required_operations": "联系经文中的攻击者，并将经文中被制服、逃走的“他们”回指到士基瓦的七个儿子。",
+            "concern": "ordinary",
+            "reason": "需要跨经文句子确认人物，但没有额外引入不必要的指代层级。"
+          }
+        ]
+      },
+      {
+        "id": "q0000",
+        "parse_summary": "“耶何耶大立的”修饰“第一个约”，整个名词组成为话题，后句询问立约各方。“第一个”要求区分经文先后两次立约；选项以部分重合的人物列表呈现。",
+        "features": [
+          {
+            "kind": "nested_modifier",
+            "quote": "耶何耶大立的第一个约",
+            "required_operations": "将耶何耶大识别为“立”的主语，将“约”识别为被修饰的中心语，并确定序数限定的是哪一次立约。",
+            "concern": "ordinary",
+            "reason": "这一限定用于区分经文中的两个约，是目标所需。"
+          },
+          {
+            "kind": "option_overlap",
+            "quote": "耶和华、王和百姓",
+            "required_operations": "把完整三方列表与“王和百姓”等部分重合的选项比较，核对是否包含耶和华。",
+            "concern": "ordinary",
+            "reason": "列表重合对应第一次与第二次立约的关键参与方差别，比较负荷有限且与目标直接相关。"
+          }
+        ]
+      },
+      {
+        "id": "q0008",
+        "parse_summary": "首句用“把”字句直接陈述小林搬书的事件；次句保留同一事件结构，以“是谁……的”询问行动者。两句没有嵌套或代词回指。",
+        "features": []
+      },
+      {
+        "id": "q0002",
+        "parse_summary": "问句直接询问保罗持续讲话至午夜的原因。四个选项均为“因为”引出的原因分句；部分选项用“他”承接问句中的保罗，正确选项中的“第二天”以讲话当天为时间基点。",
+        "features": [
+          {
+            "kind": "reference_chain",
+            "quote": "因为他打算第二天离开",
+            "required_operations": "将“他”对应到保罗，并把“第二天”定位为讲话当天的次日。",
+            "concern": "ordinary",
+            "reason": "人物和时间回指简短，且都是识别离开计划这一原因所必需的关系。"
+          }
+        ]
+      },
+      {
+        "id": "q0009",
+        "parse_summary": "单句以“是谁……的”聚焦行动者；“把书搬进屋里”明确给出受事和移动终点，没有从句嵌套或指代链。",
+        "features": []
+      },
+      {
+        "id": "q0003",
+        "parse_summary": "A direct object question asks what Uzziah built. The locative phrase “at Jerusalem's gates” restricts the building event; Uzziah is the explicit agent, and the possessive identifies the gates' location.",
+        "features": []
+      },
+      {
+        "id": "q0010",
+        "parse_summary": "问句用“谁”询问“把书带到图书馆”的行动者；书为受事，图书馆为终点。结构为单一事件，没有嵌套或代词回指。",
+        "features": []
+      },
+      {
+        "id": "q0006",
+        "parse_summary": "The introduction makes “Cloths” the subject of a passive clause and embeds “that had touched Paul” inside that subject. The following question shifts focus from the cloths to their recipients, repeating “the sick” rather than using a pronoun.",
+        "features": [
+          {
+            "kind": "nested_modifier",
+            "quote": "Cloths that had touched Paul were taken to the sick.",
+            "required_operations": "Resolve the relative clause modifying “Cloths,” then resume the main passive clause and identify its recipients.",
+            "concern": "potential_burden",
+            "reason": "The embedded contact event must be parsed before reaching the patient-outcome question, although identifying the cloths is not the stated target."
+          },
+          {
+            "kind": "role_tracking",
+            "quote": "Cloths that had touched Paul were taken to the sick. What happened to the sick?",
+            "required_operations": "Track cloths as the subject of “had touched” and the transported objects of “were taken,” Paul as the contact participant, and the sick as recipients who become the question's focus.",
+            "concern": "potential_burden",
+            "reason": "The respondent traverses an object-centered setup with several roles before answering about the patients; that role shift adds load beyond the outcome target."
+          },
+          {
+            "kind": "delayed_query",
+            "quote": "Cloths that had touched Paul were taken to the sick. What happened to the sick?",
+            "required_operations": "Process and retain the contact-and-transport setup before learning that the requested information concerns the sick people's outcome.",
+            "concern": "potential_burden",
+            "reason": "The actual ask follows a complete setup containing both an embedded event and a passive event; the sentence boundary does not remove that advance processing."
+          }
+        ]
+      },
+      {
+        "id": "q0011",
+        "parse_summary": "问句以“谁”为行动者空位，“把书带走了”为单一完成事件。“走”表示离开而未明示终点；句内没有嵌套、代词链或多重角色切换。",
+        "features": []
+      },
+      {
+        "id": "q0005",
+        "parse_summary": "首句以带“摸过保罗的”修饰语的“手帕和围裙”为主语，使用“被带到”引出病人；次句把焦点转到病人的后续变化。“摸过保罗的”需与“手帕和围裙”正确结合，避免把“保罗的手帕和围裙”先读成所属名词组。",
+        "features": [
+          {
+            "kind": "nested_modifier",
+            "quote": "摸过保罗的手帕和围裙被带到病人那里。",
+            "required_operations": "确定“摸过保罗的”是修饰物品的关系结构，并把它归到并列中心语“手帕和围裙”，再接续主句“被带到”。",
+            "concern": "potential_burden",
+            "reason": "修饰语内部的“保罗的手帕”可触发所属关系的先行切分，需要重新确定边界；辨认物品的接触关系又不是所问的病人结果。"
+          },
+          {
+            "kind": "role_tracking",
+            "quote": "摸过保罗的手帕和围裙被带到病人那里。病人随后怎么样了？",
+            "required_operations": "区分物品、保罗和病人：物品参与接触并被运送，病人是接收方，也是后一句所问的对象。",
+            "concern": "potential_burden",
+            "reason": "在询问病人变化之前先建立物品中心的多个角色，增加了相对于目标可避免的焦点转换。"
+          },
+          {
+            "kind": "delayed_query",
+            "quote": "摸过保罗的手帕和围裙被带到病人那里。病人随后怎么样了？",
+            "required_operations": "先处理带修饰语的被动事件，再获知需要回答病人的后续情况。",
+            "concern": "potential_burden",
+            "reason": "实际询问置于包含接触和运送关系的完整背景句之后，分成两句仍需先完成这些解析。"
+          }
+        ]
+      },
+      {
+        "id": "q0007",
+        "parse_summary": "“根据这段经文”是简短依据提示，主问句直接询问病人的情况变化。选项为单层陈述；正确选项以“疾病和邪灵”为并列主语、“病人”为离开的对象，没有额外嵌套。",
+        "features": []
+      },
+      {
+        "id": "q0004",
+        "parse_summary": "问句以“当……时”包住完整背景事件；该事件的主语“手帕和围裙”又带“触摸过保罗的”修饰语，谓语为“被带到病人那里”。真正的询问“发生了什么”在时间结构结束后才出现，需从物品的接触、运送关系转向病人的结果。",
+        "features": [
+          {
+            "kind": "nested_modifier",
+            "quote": "当触摸过保罗的手帕和围裙被带到病人那里时",
+            "required_operations": "在“当……时”内部识别被动主句，并确定“触摸过保罗的”修饰并列物品，而不是把“保罗的手帕和围裙”整体理解为所属名词组。",
+            "concern": "potential_burden",
+            "reason": "时间框架内又嵌入带边界歧义的修饰结构；这些物品识别操作超出了病人变化这一目标。"
+          },
+          {
+            "kind": "delayed_query",
+            "quote": "当触摸过保罗的手帕和围裙被带到病人那里时发生了什么？",
+            "required_operations": "保持时间框架未闭合，处理接触修饰语和被动运送事件，直到“发生了什么”才确定所求。",
+            "concern": "potential_burden",
+            "reason": "实际询问位于多层背景之后，且未在开头明确病人是结果焦点，增加了提前解析和保持背景的负荷。"
+          },
+          {
+            "kind": "role_tracking",
+            "quote": "触摸过保罗的手帕和围裙被带到病人那里",
+            "required_operations": "追踪物品在接触关系和被动运送关系中的不同位置，并将接收方病人与选项中的结果承担者对应。",
+            "concern": "potential_burden",
+            "reason": "题目先聚焦物品的角色，再要求选择病人的变化；这一角色转换并非目标本身所需的全部结构。"
+          }
+        ]
+      }
+    ]
+  }
+}

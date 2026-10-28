@@ -1,0 +1,78 @@
+{
+  "request_hash": "250b7b76c99d31ea82c9b06ce61da60b3f4ec199a4250486f5a58c2382f53c46",
+  "model": "gpt-6.1-sol",
+  "response_id": "resp_0986e546bac78529006ae135c774dc87d19497bf615e56bed7",
+  "usage": {
+    "input_tokens": 2329,
+    "input_tokens_details": {
+      "cached_tokens": 1268,
+      "cache_write_tokens": 1058
+    },
+    "output_tokens": 873,
+    "output_tokens_details": {
+      "reasoning_tokens": 55
+    },
+    "total_tokens": 3202
+  },
+  "parsed": {
+    "id": "item",
+    "contract_validity": {
+      "status": "pass",
+      "evidence": "原题询问军队的统领者。26:12列出二千六百名勇士家族的首领，26:13以“他们”承接这些首领，明确说明其统领军队，支持合同的目标、答案成分及关系角色。"
+    },
+    "same_target": {
+      "status": "pass",
+      "evidence": "候选题仍询问同一支军队由谁统领，保留了统领关系及其主体这一核心目标，没有改问人数、军备或登记人员。"
+    },
+    "removals_justified": {
+      "status": "pass",
+      "evidence": "删去的“三十万七千五百”和“训练有素的”是军队的规模及素质描述。当前经文只描述一支军队，不需要这些修饰语区分对象。26:11的官员指挥登记工作，并非另一项军队统领关系，删去修饰语未引入新的竞争答案。"
+    },
+    "same_language": {
+      "status": "pass",
+      "evidence": "原题与候选题均为中文；本题没有选项。"
+    },
+    "option_meanings": [],
+    "content": {
+      "question_support": {
+        "status": "pass",
+        "evidence": "经文明确描述一支军队，并在26:13说明有人统领它，支持候选题的对象及预设。"
+      },
+      "answer_support": {
+        "status": "pass",
+        "evidence": "26:12说“勇士家族的首领共有二千六百人”，26:13紧接着说“他们统领的军队”，直接支持固定答案。"
+      },
+      "answer_uniqueness": {
+        "status": "pass",
+        "evidence": "明确被称为军队统领者的是上述二千六百名首领。登记军队的官员和拥有军队的乌西雅在文中承担不同角色，不构成同等受支持的答案。"
+      },
+      "context_sufficiency": {
+        "status": "pass",
+        "evidence": "当前窗口完整保留首领的身份、人数以及“他们统领”的承接关系，无须依赖外部圣经知识。"
+      },
+      "answer_leakage": {
+        "status": "pass",
+        "evidence": "候选题只问“这支军队由谁统领？”，未包含统领者身份或人数，也没有选项提示答案。"
+      },
+      "mcq_validity": {
+        "status": "not_applicable",
+        "evidence": "本题为开放题，没有选项或选项键。"
+      }
+    },
+    "naturalness": {
+      "score": 0,
+      "evidence": "问句简洁、自然，“由谁统领”准确表达所问关系。",
+      "quotes": []
+    },
+    "processing": {
+      "score": 0,
+      "evidence": "单句直接询问统领者；“这支军队”在经文中有明确对象，没有多层指代或角色比较负担。",
+      "quotes": []
+    },
+    "context_economy": {
+      "score": 0,
+      "evidence": "候选题只保留识别对象所需的军队指称和核心提问，没有附加事件叙述或可删的关系链。",
+      "quotes": []
+    }
+  }
+}

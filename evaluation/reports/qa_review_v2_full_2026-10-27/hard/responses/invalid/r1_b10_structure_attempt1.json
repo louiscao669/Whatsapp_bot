@@ -1,0 +1,141 @@
+{
+  "request_hash": "d8df41c797a6a4c8cd0a2e77dd17484e43e13bf81313ae5d390cdeae682b2186",
+  "model": "gpt-6.1-sol",
+  "response_id": "resp_0eb3c7caecbf6d48006ae0d36ffb4c87d2b24d0634b637959c",
+  "usage": {
+    "input_tokens": 2887,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 2884
+    },
+    "output_tokens": 2192,
+    "output_tokens_details": {
+      "reasoning_tokens": 403
+    },
+    "total_tokens": 5079
+  },
+  "parsed": {
+    "items": [
+      {
+        "id": "q0123",
+        "parse_summary": "“城楼上的”限定所问的人群，“怎么死的”直接询问死亡方式；需把该人群与经文中被内室火烧死的人对应起来，无多层从句。",
+        "features": []
+      },
+      {
+        "id": "q0064",
+        "parse_summary": "主动句明确以亚比筛为施事，以“谁”询问受事。选项主要是人物或群体名称；B项将族属与人名合为一个指称。",
+        "features": [
+          {
+            "kind": "reference_chain",
+            "quote": "亚比筛击杀了谁？",
+            "required_operations": "将经文中被击杀的“那非利士人”回指到前文的以施比·比拿，再与选项对应。",
+            "concern": "ordinary",
+            "reason": "回指连接正是辨认被击杀者所需的关系，题干未增加额外指称层次。"
+          }
+        ]
+      },
+      {
+        "id": "q0086",
+        "parse_summary": "句首时间语“第二天”限定返回兵营的事件，“谁”询问返回者。理解时需把经文中的“他们”对应到士兵，并与继续护送保罗的骑兵区分。",
+        "features": [
+          {
+            "kind": "reference_chain",
+            "quote": "第二天谁回到了兵营？",
+            "required_operations": "定位第二天返回兵营的事件，将该事件中的“他们”回接到前文士兵。",
+            "concern": "ordinary",
+            "reason": "时间定位和代词回接直接服务于目标人物的辨认，没有额外的题干嵌套。"
+          },
+          {
+            "kind": "role_tracking",
+            "quote": "A：士兵们；B：骑兵",
+            "required_operations": "区分返回兵营的士兵与继续护送保罗的骑兵，不把两组人的行动互换。",
+            "concern": "ordinary",
+            "reason": "两组参与者的行动差异属于本题所问事件的必要关系。"
+          }
+        ]
+      },
+      {
+        "id": "q0095",
+        "parse_summary": "“来士的”限定人群，“为什么富足”直接询问原因或依据；需联系当地无所缺乏的描述，没有嵌套报告或复杂指代。",
+        "features": []
+      },
+      {
+        "id": "q0128",
+        "parse_summary": "疑问词“谁”占被动句的受事位置，“他的甲士”是施事，其中“他”与所问的死者同指。选项为人物或群体名称，未增加从句层次。",
+        "features": [
+          {
+            "kind": "role_tracking",
+            "quote": "谁被他的甲士刺死了？",
+            "required_operations": "区分被刺死者与执行刺杀的甲士，将疑问词对应到受事而非施事。",
+            "concern": "ordinary",
+            "reason": "被动关系直接表达目标事件，不构成额外负担。"
+          },
+          {
+            "kind": "reference_chain",
+            "quote": "谁被他的甲士刺死了？",
+            "required_operations": "理解“他的”指向所问的死者，并依据经文确定该人为亚比米勒。",
+            "concern": "ordinary",
+            "reason": "所属关系用于识别死者自己的甲士，指代链短且与目标一致。"
+          }
+        ]
+      },
+      {
+        "id": "q0037",
+        "parse_summary": "以亚他利雅为共同主语，“出来—到耶和华的殿中—见众人”构成连续行动及目的关系；“为什么”统摄这一行动，直接询问其起因。",
+        "features": []
+      },
+      {
+        "id": "q0068",
+        "parse_summary": "句首先以“被……制服以后”设定时间与被动事件，其中施事名词又由“附着邪灵的”修饰；到后半句才以“谁”明示所问的受事。该受事同时是受伤逃出房子的人，需对应到士基瓦的七个儿子。",
+        "features": [
+          {
+            "kind": "nested_modifier",
+            "quote": "被那附着邪灵的人制服以后",
+            "required_operations": "先把“附着邪灵的”附着于“人”，再把整个人物短语识别为“制服”的施事，最后将整个被动事件纳入“以后”的时间框架。",
+            "concern": "ordinary",
+            "reason": "该人物修饰用于区分攻击者与逃出者，关系本身与目标辨认有关。"
+          },
+          {
+            "kind": "delayed_query",
+            "quote": "被那附着邪灵的人制服以后，谁受伤逃出了那房子？",
+            "required_operations": "在尚未读到“谁”时，暂存前置被动事件及其未明示的受事，再把该受事与后半句的逃出者合并。",
+            "concern": "potential_burden",
+            "reason": "负担不只来自时间先后，而是人物修饰、被动角色和隐含受事都在实际询问之前出现；这种前置安排增加了可避免的暂存与回接操作。"
+          },
+          {
+            "kind": "role_tracking",
+            "quote": "被那附着邪灵的人制服以后，谁受伤逃出了那房子？",
+            "required_operations": "保持附着邪灵的人为制服者，所问者为被制服者，同时将所问者识别为逃出动作的施事。",
+            "concern": "ordinary",
+            "reason": "同一人物在两个动作中的角色不同，但这正是题目要求辨认的事件关系。"
+          },
+          {
+            "kind": "reference_chain",
+            "quote": "那附着邪灵的人；那房子",
+            "required_operations": "将两个“那”所限定的对象对应到经文中的攻击者和逃出地点，并将逃出者对应到前文的七个儿子。",
+            "concern": "ordinary",
+            "reason": "指称均可在同一事件中解析，没有额外引入多层报告或新的参与者。"
+          }
+        ]
+      },
+      {
+        "id": "q0006",
+        "parse_summary": "“神人”为主语，“不肯”支配“跟王回去”，“为什么”询问拒绝的原因。题干只有一层否定态度，不要求解析经文引语内部的多层话语结构。",
+        "features": []
+      },
+      {
+        "id": "q0090",
+        "parse_summary": "“但支派的人”为主语，“寻找地业居住”表达寻找可居住地业的行动，“为什么”询问原因。A至D均以“因为”引出原因；C中的“还没有”限定截至当时尚未得到产业，不与其他否定交互。",
+        "features": [
+          {
+            "kind": "reference_chain",
+            "quote": "但支派的人为什么要寻找地业居住？；因为他们还没有在以色列诸支派中得到产业。",
+            "required_operations": "将选项中的“他们”统一回接到题干的但支派的人，并把“以色列诸支派中”理解为取得产业的范围。",
+            "concern": "ordinary",
+            "reason": "选项沿用同一主语，回接直接；范围短语属于目标原因本身。"
+          }
+        ]
+      }
+    ]
+  }
+}

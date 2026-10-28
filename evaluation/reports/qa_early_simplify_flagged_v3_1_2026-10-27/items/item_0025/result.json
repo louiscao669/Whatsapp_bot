@@ -1,0 +1,213 @@
+{
+  "id": "hard:t1_judg17_18:725d:open",
+  "original": {
+    "id": "hard:t1_judg17_18:725d:open",
+    "question": "他们请谁为他们求问这趟行程？",
+    "passage": "18:5 他们说：“请你求问神，知道我们行这路是否顺利。”\n18:6 祭司对他们说：“平安去吧，耶和华看顾你们的路程。”",
+    "expected_answer": "the priest",
+    "form": "open",
+    "options": {},
+    "correct_option": "",
+    "intended_target": "",
+    "original_question": "",
+    "original_answer": ""
+  },
+  "input_hash": "f80f88a9250b1569ec1dda752df53a559c5c3c5ac406026fd0bb7b16493105d5",
+  "status": "KEPT",
+  "accepted_case": {
+    "id": "hard:t1_judg17_18:725d:open",
+    "question": "他们请谁为他们求问这趟行程？",
+    "passage": "18:5 他们说：“请你求问神，知道我们行这路是否顺利。”\n18:6 祭司对他们说：“平安去吧，耶和华看顾你们的路程。”",
+    "expected_answer": "the priest",
+    "form": "open",
+    "options": {},
+    "correct_option": "",
+    "intended_target": "",
+    "original_question": "",
+    "original_answer": ""
+  },
+  "contract": {
+    "id": "item",
+    "status": "ready",
+    "target": "识别他们请求为此次行程求问神的人。",
+    "basis": "inferred",
+    "required_answer_components": [
+      "指出受请求的人是祭司。"
+    ],
+    "relations": [
+      {
+        "id": "r1",
+        "quote": "他们请谁",
+        "meaning": "辨认他们提出请求的对象。",
+        "role": "tested",
+        "reason": "问题要求回答人物身份，而不是求问的结果或行程是否顺利。"
+      },
+      {
+        "id": "r2",
+        "quote": "为他们求问这趟行程",
+        "meaning": "将所问人物定位为受托替他们求问此次行程的人。",
+        "role": "anchor",
+        "reason": "这部分限定人物所参与的具体请求事件，对应18:5中求问神、了解行路是否顺利的请求；不要求另行回答求问内容或行程结果。"
+      }
+    ],
+    "note": "未提供明确的 intended_target 或更早的原题、原答案，因此目标为保守推断。18:5记载请求，18:6紧接着说明祭司向他们作答，支持固定答案“祭司”。所测理解是请求对象的身份，而非祭司回答中的平安或耶和华看顾行程。"
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "proposal": {
+        "id": "item",
+        "status": "unchanged",
+        "question": "他们请谁为他们求问这趟行程？",
+        "options": [],
+        "removed_relation_ids": [],
+        "note": "原题已简洁直接；“为他们求问这趟行程”是定位请求对象的必要锚点，没有可实质删减的内容。"
+      },
+      "candidate": {
+        "id": "hard:t1_judg17_18:725d:open",
+        "question": "他们请谁为他们求问这趟行程？",
+        "passage": "18:5 他们说：“请你求问神，知道我们行这路是否顺利。”\n18:6 祭司对他们说：“平安去吧，耶和华看顾你们的路程。”",
+        "expected_answer": "the priest",
+        "form": "open",
+        "options": {},
+        "correct_option": "",
+        "intended_target": "",
+        "original_question": "",
+        "original_answer": ""
+      },
+      "checks": [
+        {
+          "repeat": 1,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "The original asks who received their request to inquire about the journey. The contract correctly identifies the requested person's identity as the target, with the journey inquiry serving as an event anchor. The priest's immediate reply supports the fixed answer."
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "The candidate question is unchanged and preserves both the requested person's identity and the journey-inquiry anchor."
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "No information was removed."
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "The question remains in Chinese. There are no options."
+            },
+            "option_meanings": [],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "Verse 18:5 explicitly records a request to inquire of God about whether their journey will go well."
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "The priest responds directly to their request in 18:6, supporting the expected answer, 'the priest.'"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "The priest is the only identified respondent to the request. God is the one to be consulted, not the person asked to conduct the inquiry."
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "The request and the priest's immediately following response provide enough local context to identify the requested person."
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "The question does not name the priest or otherwise disclose the answer independently of the passage."
+              },
+              "mcq_validity": {
+                "status": "not_applicable",
+                "evidence": "This is an open question with no answer options."
+              }
+            },
+            "naturalness": {
+              "score": 1,
+              "evidence": "The question is understandable, but '求问这趟行程' is a slightly stiff compression: the intended inquiry concerns whether the journey will go well, rather than the journey itself as the direct object.",
+              "quotes": [
+                "求问这趟行程"
+              ]
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "The short question has a straightforward requester–recipient structure. The pronouns are readily resolved from the passage, and there is no substantial reference or comparison burden.",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "The journey-inquiry phrase usefully identifies the request being tested. There is no separate event narration or dispensable reference chain.",
+              "quotes": []
+            }
+          }
+        },
+        {
+          "repeat": 2,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "The original asks whom they requested to inquire about their journey. Identifying the priest is the required answer; the journey identifies the request rather than introducing a separate question about its outcome. The priest’s immediately following reply supports this interpretation."
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "The candidate preserves the original question exactly, including the requested person’s role and the journey-related request."
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "No question content has been removed or changed."
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "The question remains in Chinese. There are no options."
+            },
+            "option_meanings": [],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "Verse 18:5 records their request to inquire of God about whether their journey will succeed; 18:6 identifies the priest as the person replying."
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "The immediate response, “祭司对他们说”, supports the fixed answer “the priest” without requiring outside biblical knowledge."
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "The priest is the only identified respondent to the request. God is the one to be consulted, not the person asked to perform the inquiry."
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "The request and the priest’s adjacent reply provide sufficient local context to identify whom they asked."
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "The question does not name the priest or otherwise supply the answer."
+              },
+              "mcq_validity": {
+                "status": "not_applicable",
+                "evidence": "This is an open question with no answer choices."
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "The Chinese question is grammatical and direct; its religious use of 求问 is appropriate to the request described.",
+              "quotes": []
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "A single short question asks for one person’s identity. The repeated pronoun refers consistently to the requesting group and creates no substantial reference burden.",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "The journey-related phrase usefully identifies the request being tested. There is no introductory narration or dispensable event chain.",
+              "quotes": []
+            }
+          }
+        }
+      ],
+      "status": "KEPT"
+    }
+  ]
+}

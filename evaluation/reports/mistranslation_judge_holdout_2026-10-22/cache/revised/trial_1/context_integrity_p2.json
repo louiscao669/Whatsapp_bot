@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "records": {
+    "877cd2714a760557ce69bdd59e6fe840f17559c122658a5146ef2d449ead6ae0": {
+      "identity": {
+        "model": "gpt-6-sol",
+        "prompt_sha256": "710d52b8945d965d68775a411de6abc5543010775247b16f5b9a92c4275a06ca",
+        "schema_sha256": "5fa920642b474382900cb35cd4cea1669a30f9717edb84a60aec124f26c3b82d",
+        "max_output_tokens": 8192,
+        "api": "responses"
+      },
+      "request": {
+        "original_passage": "商人在港口买了布匹。第二天，他又买了谷物。",
+        "source": "买了",
+        "replacement": "卖了",
+        "mode": "systematic",
+        "occurrences": [
+          {
+            "start": 5,
+            "end": 7,
+            "original_context": "商人在港口买了布匹。",
+            "edited_context": "商人在港口卖了布匹。"
+          },
+          {
+            "start": 16,
+            "end": 18,
+            "original_context": "第二天，他又买了谷物。",
+            "edited_context": "第二天，他又卖了谷物。"
+          }
+        ]
+      },
+      "response": {
+        "source_claim": "商人在港口买了布匹，第二天又买了谷物。",
+        "replacement_claim": "商人在港口卖了布匹，第二天又卖了谷物。",
+        "explanation": "两处都将商人的交易行为由买入改为卖出，交易方向明确改变；句子自然，其余信息保留。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "response_id": "resp_070feba9334d4202006adac253d3a087d1b03e96d9073e7a26",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1151,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1148
+        },
+        "output_tokens": 137,
+        "output_tokens_details": {
+          "reasoning_tokens": 17
+        },
+        "total_tokens": 1288
+      },
+      "completed_at_unix": 1792721494
+    }
+  }
+}

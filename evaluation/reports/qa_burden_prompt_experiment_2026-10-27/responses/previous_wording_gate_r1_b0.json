@@ -1,0 +1,64 @@
+{
+  "prompt": "previous_wording_gate",
+  "repeat": 1,
+  "batch": 0,
+  "request_hash": "ab7950bc90154120aca47456a888d70e1928193b840ee96d456b4d345a77dda9",
+  "model": "gpt-6.1-sol",
+  "response_id": "resp_0d3fd64a7ed0c242006ae053307bd487d1bc9598dbd8124671",
+  "elapsed_seconds": 26.868481874465942,
+  "usage": {
+    "input_tokens": 6129,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 6126
+    },
+    "output_tokens": 1027,
+    "output_tokens_details": {
+      "reasoning_tokens": 264
+    },
+    "total_tokens": 7156
+  },
+  "threshold_mismatches": [],
+  "items": [
+    {
+      "id": "hard:t1_2kgs11:b13a:mcq",
+      "decision": "KEEP",
+      "reason": "单层“谁把……交给……”问句，没有嵌套从句或未明指代；选项简短，人物角色清楚。"
+    },
+    {
+      "id": "gold:t1_1kgs13:gfxe:open",
+      "decision": "KEEP",
+      "reason": "The main question contains one embedded interrogative, “which way the man of God had gone,” as the content shown. Both named roles are clear, with no unresolved referent."
+    },
+    {
+      "id": "hard:t1_2chr26:1cab:mcq",
+      "decision": "REWRITE",
+      "reason": "主问句结构简单；选项中最深的结构是“住在……的”修饰族群，没有未明指代。但四个选项均为三项名单，反复交叉替换“亚扪人”“非利士人”及居住地点，要求逐项核对重叠名单，增加了不必要的解码负担。"
+    },
+    {
+      "id": "transfer:handkerchief:repair:en",
+      "decision": "REWRITE",
+      "reason": "The preliminary passive sentence embeds the relative clause “that had touched Paul” within “Cloths … were taken to the sick,” before the main question. “The sick” has a clear referent, but this relative-within-passive setup creates the prohibited layered lead-in."
+    },
+    {
+      "id": "hard:t1_judg17_18:725d:mcq",
+      "decision": "KEEP",
+      "reason": "问句以“他们请谁……”询问受请托者，其后“为他们求问这趟行程”说明行动和受益者；没有再嵌套求问内容的从句。两处“他们”均指文中的请求者，语境足以明确指代。"
+    },
+    {
+      "id": "gold:t1_judg17_18:rhwo:open",
+      "decision": "REWRITE",
+      "reason": "“What did Dan's people want the Levite to ask God?” nests asking inside wanting: Dan's people want something, the Levite asks it, and God receives the inquiry. No referent is unresolved, but identifying the requested content requires tracking three roles through two layers."
+    },
+    {
+      "id": "gold:t1_2kgs11:w4ys:open",
+      "decision": "KEEP",
+      "reason": "This is a single main question with a direct object queried by “What” and an explicit recipient, “the commanders.” There are no embedded clauses or unresolved referents."
+    },
+    {
+      "id": "hard:t1_1kgs13:ec63:mcq",
+      "decision": "REWRITE",
+      "reason": "“带他回来的”先修饰宣告者“先知”，随后嵌入宣告内容，并以“必不得”作否定预告。前一个“他”指被带回的人，后一个“他”须随“谁”确定所属；虽可由上下文解出，但关系修饰、古雅否定和重复代词叠加，造成不必要的指代追踪。"
+    }
+  ]
+}

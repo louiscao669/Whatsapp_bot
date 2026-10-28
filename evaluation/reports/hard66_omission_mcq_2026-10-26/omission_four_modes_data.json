@@ -1,0 +1,311 @@
+{
+  "source_runs": [
+    "/Users/louiscao/whatsapp-bot/eten-whatsapp-bot/evaluation/runs/hard66_full_ladder_2026-10-23",
+    "/Users/louiscao/whatsapp-bot/eten-whatsapp-bot/evaluation/runs/hard66_omission_mcq_qwen317b_nothink_2026-10-26"
+  ],
+  "question_format": "mcq",
+  "passages": [
+    "t1_1kgs13",
+    "t1_2chr26",
+    "t1_2kgs11",
+    "t1_2kgs6_7",
+    "t1_2sam21",
+    "t1_acts19",
+    "t1_acts20",
+    "t1_acts23",
+    "t1_judg17_18",
+    "t1_judg9"
+  ],
+  "verified_cells": 280,
+  "model_responses": 1820,
+  "notes": [
+    "Same 65 reviewed MCQs and clean answer key at every point.",
+    "0% is the clean baseline; x-axis is nominal whole-passage omission.",
+    "Models answer from the same curated local verse windows.",
+    "All responses remain in the denominator; generation failures count as incorrect.",
+    "Qwen3 1.7B has separate thinking and no-thinking curves; the smaller models use standard inference.",
+    "Observed accuracy only; connecting lines are not fitted trends."
+  ],
+  "data": [
+    {
+      "model": "llama3.2:1b",
+      "mode": "standard",
+      "label": "Llama 3.2 1B",
+      "nominal_omission_percent": 0,
+      "correct": 30,
+      "n": 65,
+      "accuracy_percent": 46.15384615384615,
+      "generation_errors": 0
+    },
+    {
+      "model": "llama3.2:1b",
+      "mode": "standard",
+      "label": "Llama 3.2 1B",
+      "nominal_omission_percent": 5,
+      "correct": 30,
+      "n": 65,
+      "accuracy_percent": 46.15384615384615,
+      "generation_errors": 0
+    },
+    {
+      "model": "llama3.2:1b",
+      "mode": "standard",
+      "label": "Llama 3.2 1B",
+      "nominal_omission_percent": 10,
+      "correct": 30,
+      "n": 65,
+      "accuracy_percent": 46.15384615384615,
+      "generation_errors": 0
+    },
+    {
+      "model": "llama3.2:1b",
+      "mode": "standard",
+      "label": "Llama 3.2 1B",
+      "nominal_omission_percent": 15,
+      "correct": 30,
+      "n": 65,
+      "accuracy_percent": 46.15384615384615,
+      "generation_errors": 0
+    },
+    {
+      "model": "llama3.2:1b",
+      "mode": "standard",
+      "label": "Llama 3.2 1B",
+      "nominal_omission_percent": 20,
+      "correct": 27,
+      "n": 65,
+      "accuracy_percent": 41.53846153846154,
+      "generation_errors": 0
+    },
+    {
+      "model": "llama3.2:1b",
+      "mode": "standard",
+      "label": "Llama 3.2 1B",
+      "nominal_omission_percent": 25,
+      "correct": 24,
+      "n": 65,
+      "accuracy_percent": 36.92307692307693,
+      "generation_errors": 0
+    },
+    {
+      "model": "llama3.2:1b",
+      "mode": "standard",
+      "label": "Llama 3.2 1B",
+      "nominal_omission_percent": 30,
+      "correct": 29,
+      "n": 65,
+      "accuracy_percent": 44.61538461538462,
+      "generation_errors": 0
+    },
+    {
+      "model": "qwen2.5:1.5b",
+      "mode": "standard",
+      "label": "Qwen 2.5 1.5B",
+      "nominal_omission_percent": 0,
+      "correct": 56,
+      "n": 65,
+      "accuracy_percent": 86.15384615384616,
+      "generation_errors": 0
+    },
+    {
+      "model": "qwen2.5:1.5b",
+      "mode": "standard",
+      "label": "Qwen 2.5 1.5B",
+      "nominal_omission_percent": 5,
+      "correct": 55,
+      "n": 65,
+      "accuracy_percent": 84.61538461538461,
+      "generation_errors": 0
+    },
+    {
+      "model": "qwen2.5:1.5b",
+      "mode": "standard",
+      "label": "Qwen 2.5 1.5B",
+      "nominal_omission_percent": 10,
+      "correct": 50,
+      "n": 65,
+      "accuracy_percent": 76.92307692307693,
+      "generation_errors": 0
+    },
+    {
+      "model": "qwen2.5:1.5b",
+      "mode": "standard",
+      "label": "Qwen 2.5 1.5B",
+      "nominal_omission_percent": 15,
+      "correct": 47,
+      "n": 65,
+      "accuracy_percent": 72.3076923076923,
+      "generation_errors": 0
+    },
+    {
+      "model": "qwen2.5:1.5b",
+      "mode": "standard",
+      "label": "Qwen 2.5 1.5B",
+      "nominal_omission_percent": 20,
+      "correct": 46,
+      "n": 65,
+      "accuracy_percent": 70.76923076923077,
+      "generation_errors": 0
+    },
+    {
+      "model": "qwen2.5:1.5b",
+      "mode": "standard",
+      "label": "Qwen 2.5 1.5B",
+      "nominal_omission_percent": 25,
+      "correct": 46,
+      "n": 65,
+      "accuracy_percent": 70.76923076923077,
+      "generation_errors": 0
+    },
+    {
+      "model": "qwen2.5:1.5b",
+      "mode": "standard",
+      "label": "Qwen 2.5 1.5B",
+      "nominal_omission_percent": 30,
+      "correct": 44,
+      "n": 65,
+      "accuracy_percent": 67.6923076923077,
+      "generation_errors": 0
+    },
+    {
+      "model": "qwen3:1.7b",
+      "mode": "thinking",
+      "label": "Qwen3 1.7B · thinking",
+      "nominal_omission_percent": 0,
+      "correct": 51,
+      "n": 65,
+      "accuracy_percent": 78.46153846153847,
+      "generation_errors": 0
+    },
+    {
+      "model": "qwen3:1.7b",
+      "mode": "thinking",
+      "label": "Qwen3 1.7B · thinking",
+      "nominal_omission_percent": 5,
+      "correct": 50,
+      "n": 65,
+      "accuracy_percent": 76.92307692307693,
+      "generation_errors": 0
+    },
+    {
+      "model": "qwen3:1.7b",
+      "mode": "thinking",
+      "label": "Qwen3 1.7B · thinking",
+      "nominal_omission_percent": 10,
+      "correct": 44,
+      "n": 65,
+      "accuracy_percent": 67.6923076923077,
+      "generation_errors": 0
+    },
+    {
+      "model": "qwen3:1.7b",
+      "mode": "thinking",
+      "label": "Qwen3 1.7B · thinking",
+      "nominal_omission_percent": 15,
+      "correct": 45,
+      "n": 65,
+      "accuracy_percent": 69.23076923076923,
+      "generation_errors": 0
+    },
+    {
+      "model": "qwen3:1.7b",
+      "mode": "thinking",
+      "label": "Qwen3 1.7B · thinking",
+      "nominal_omission_percent": 20,
+      "correct": 42,
+      "n": 65,
+      "accuracy_percent": 64.61538461538461,
+      "generation_errors": 0
+    },
+    {
+      "model": "qwen3:1.7b",
+      "mode": "thinking",
+      "label": "Qwen3 1.7B · thinking",
+      "nominal_omission_percent": 25,
+      "correct": 39,
+      "n": 65,
+      "accuracy_percent": 60.0,
+      "generation_errors": 1
+    },
+    {
+      "model": "qwen3:1.7b",
+      "mode": "thinking",
+      "label": "Qwen3 1.7B · thinking",
+      "nominal_omission_percent": 30,
+      "correct": 36,
+      "n": 65,
+      "accuracy_percent": 55.38461538461539,
+      "generation_errors": 1
+    },
+    {
+      "model": "qwen3:1.7b",
+      "mode": "no_thinking",
+      "label": "Qwen3 1.7B · no thinking",
+      "nominal_omission_percent": 0,
+      "correct": 48,
+      "n": 65,
+      "accuracy_percent": 73.84615384615385,
+      "generation_errors": 0
+    },
+    {
+      "model": "qwen3:1.7b",
+      "mode": "no_thinking",
+      "label": "Qwen3 1.7B · no thinking",
+      "nominal_omission_percent": 5,
+      "correct": 45,
+      "n": 65,
+      "accuracy_percent": 69.23076923076923,
+      "generation_errors": 0
+    },
+    {
+      "model": "qwen3:1.7b",
+      "mode": "no_thinking",
+      "label": "Qwen3 1.7B · no thinking",
+      "nominal_omission_percent": 10,
+      "correct": 43,
+      "n": 65,
+      "accuracy_percent": 66.15384615384615,
+      "generation_errors": 0
+    },
+    {
+      "model": "qwen3:1.7b",
+      "mode": "no_thinking",
+      "label": "Qwen3 1.7B · no thinking",
+      "nominal_omission_percent": 15,
+      "correct": 43,
+      "n": 65,
+      "accuracy_percent": 66.15384615384615,
+      "generation_errors": 0
+    },
+    {
+      "model": "qwen3:1.7b",
+      "mode": "no_thinking",
+      "label": "Qwen3 1.7B · no thinking",
+      "nominal_omission_percent": 20,
+      "correct": 41,
+      "n": 65,
+      "accuracy_percent": 63.07692307692307,
+      "generation_errors": 0
+    },
+    {
+      "model": "qwen3:1.7b",
+      "mode": "no_thinking",
+      "label": "Qwen3 1.7B · no thinking",
+      "nominal_omission_percent": 25,
+      "correct": 39,
+      "n": 65,
+      "accuracy_percent": 60.0,
+      "generation_errors": 0
+    },
+    {
+      "model": "qwen3:1.7b",
+      "mode": "no_thinking",
+      "label": "Qwen3 1.7B · no thinking",
+      "nominal_omission_percent": 30,
+      "correct": 37,
+      "n": 65,
+      "accuracy_percent": 56.92307692307692,
+      "generation_errors": 0
+    }
+  ]
+}

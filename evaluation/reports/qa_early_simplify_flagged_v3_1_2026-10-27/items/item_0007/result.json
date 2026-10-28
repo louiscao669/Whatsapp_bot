@@ -1,0 +1,307 @@
+{
+  "id": "gold:t1_2kgs6_7:pb1x:mcq",
+  "original": {
+    "id": "gold:t1_2kgs6_7:pb1x:mcq",
+    "question": "What does the captain say to Elisha's prophecy?",
+    "passage": "7:18 It happened just as the man of God had told the king: “About this time tomorrow at the gate of Samaria, two seahs of barley will sell for a shekel, and a seah of fine flour will sell for a shekel.”\n7:19 And the officer had answered the man of God, “Look, even if the LORD were to make windows in heaven, could this really happen?” So Elisha had replied, “You will see it with your own eyes, but you will not eat any of it!”\n7:20 And that is just what happened to him. The people trampled him in the gateway, and he died.",
+    "expected_answer": "Impossible even if Yahweh helped",
+    "form": "mcq",
+    "options": {
+      "A": "It will happen soon",
+      "B": "Impossible even if Yahweh helped",
+      "C": "We must prepare",
+      "D": "The people will rejoice",
+      "E": "I can't tell from this passage"
+    },
+    "correct_option": "B",
+    "intended_target": "",
+    "original_question": "What did the captain say to Elisha's prophecy?",
+    "original_answer": "Impossible even if Yahweh helped."
+  },
+  "input_hash": "1660c0033aea43ca5412ae478a99833918dab12dc408af763012c20dc3b307b6",
+  "status": "KEPT",
+  "accepted_case": {
+    "id": "gold:t1_2kgs6_7:pb1x:mcq",
+    "question": "What does the captain say to Elisha's prophecy?",
+    "passage": "7:18 It happened just as the man of God had told the king: “About this time tomorrow at the gate of Samaria, two seahs of barley will sell for a shekel, and a seah of fine flour will sell for a shekel.”\n7:19 And the officer had answered the man of God, “Look, even if the LORD were to make windows in heaven, could this really happen?” So Elisha had replied, “You will see it with your own eyes, but you will not eat any of it!”\n7:20 And that is just what happened to him. The people trampled him in the gateway, and he died.",
+    "expected_answer": "Impossible even if Yahweh helped",
+    "form": "mcq",
+    "options": {
+      "A": "It will happen soon",
+      "B": "Impossible even if Yahweh helped",
+      "C": "We must prepare",
+      "D": "The people will rejoice",
+      "E": "I can't tell from this passage"
+    },
+    "correct_option": "B",
+    "intended_target": "",
+    "original_question": "What did the captain say to Elisha's prophecy?",
+    "original_answer": "Impossible even if Yahweh helped."
+  },
+  "contract": {
+    "id": "item",
+    "status": "ready",
+    "target": "Identify the captain's response to Elisha's prophecy as disbelief that it could happen, even with extraordinary help from the LORD.",
+    "basis": "inferred",
+    "required_answer_components": [
+      "The captain considers the prophecy impossible or expresses strong disbelief that it could happen.",
+      "His disbelief extends even to the hypothetical intervention of the LORD, described as making windows in heaven."
+    ],
+    "relations": [
+      {
+        "id": "r1",
+        "quote": "What does the captain say",
+        "meaning": "Recover the content of the captain's spoken response, rather than Elisha's reply or the captain's eventual fate.",
+        "role": "tested",
+        "reason": "The question requests what this speaker says. The earlier original answer establishes that the required content is his disbelief even under hypothetical divine intervention."
+      },
+      {
+        "id": "r2",
+        "quote": "to Elisha's prophecy",
+        "meaning": "Locate the captain's speech as his response to Elisha's prediction.",
+        "role": "anchor",
+        "reason": "This identifies the relevant exchange in the passage. The specific predicted quantities, prices, location, and timing are not themselves requested answer components."
+      }
+    ],
+    "note": "No explicit intended target is supplied; the target is conservatively inferred from the current question and the consistent earlier original question and answer. The passage calls the captain an officer and records his rhetorical challenge: “Look, even if the LORD were to make windows in heaven, could this really happen?” This supports the fixed answer as a paraphrase of emphatic disbelief, not a verbatim quotation."
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "proposal": {
+        "id": "item",
+        "status": "unchanged",
+        "question": "What does the captain say to Elisha's prophecy?",
+        "options": [
+          {
+            "label": "A",
+            "text": "It will happen soon"
+          },
+          {
+            "label": "B",
+            "text": "Impossible even if Yahweh helped"
+          },
+          {
+            "label": "C",
+            "text": "We must prepare"
+          },
+          {
+            "label": "D",
+            "text": "The people will rejoice"
+          },
+          {
+            "label": "E",
+            "text": "I can't tell from this passage"
+          }
+        ],
+        "removed_relation_ids": [],
+        "note": "The question is already direct and concise. Both the captain’s response and its connection to Elisha’s prophecy are necessary; no removable relations are identified."
+      },
+      "candidate": {
+        "id": "gold:t1_2kgs6_7:pb1x:mcq",
+        "question": "What does the captain say to Elisha's prophecy?",
+        "passage": "7:18 It happened just as the man of God had told the king: “About this time tomorrow at the gate of Samaria, two seahs of barley will sell for a shekel, and a seah of fine flour will sell for a shekel.”\n7:19 And the officer had answered the man of God, “Look, even if the LORD were to make windows in heaven, could this really happen?” So Elisha had replied, “You will see it with your own eyes, but you will not eat any of it!”\n7:20 And that is just what happened to him. The people trampled him in the gateway, and he died.",
+        "expected_answer": "Impossible even if Yahweh helped",
+        "form": "mcq",
+        "options": {
+          "A": "It will happen soon",
+          "B": "Impossible even if Yahweh helped",
+          "C": "We must prepare",
+          "D": "The people will rejoice",
+          "E": "I can't tell from this passage"
+        },
+        "correct_option": "B",
+        "intended_target": "",
+        "original_question": "What did the captain say to Elisha's prophecy?",
+        "original_answer": "Impossible even if Yahweh helped."
+      },
+      "checks": [
+        {
+          "repeat": 1,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "The contract correctly targets the officer's spoken disbelief, including its extension to hypothetical divine intervention. It distinguishes his response from Elisha's reply and the officer's fate."
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "The candidate is unchanged and preserves the speaker, the prophecy as the anchor, and both required answer components."
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "No question or option information was removed."
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "The question and all five options remain in English."
+            },
+            "option_meanings": [
+              {
+                "status": "pass",
+                "evidence": "Unchanged prediction that the event will happen soon.",
+                "label": "A"
+              },
+              {
+                "status": "pass",
+                "evidence": "Unchanged assertion of impossibility even with Yahweh's help.",
+                "label": "B"
+              },
+              {
+                "status": "pass",
+                "evidence": "Unchanged statement that preparation is necessary.",
+                "label": "C"
+              },
+              {
+                "status": "pass",
+                "evidence": "Unchanged prediction that the people will rejoice.",
+                "label": "D"
+              },
+              {
+                "status": "pass",
+                "evidence": "Unchanged abstention option expressing insufficient information from the passage.",
+                "label": "E"
+              }
+            ],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "The passage records the officer answering the man of God and then identifies Elisha as replying. 'Captain' is a reasonable designation for the officer in this exchange."
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "The officer asks, 'even if the LORD were to make windows in heaven, could this really happen?' This supports B as a paraphrase of strong disbelief even under hypothetical divine intervention."
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "Only B expresses the officer's skeptical response. A, C, and D do not represent his words, and E is unwarranted because his response is supplied."
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "The clean window contains the prediction, the officer's response, and Elisha's reply, providing enough context to identify the intended speaker and answer."
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "The question identifies the exchange without revealing the officer's disbelief or indicating the correct choice."
+              },
+              "mcq_validity": {
+                "status": "pass",
+                "evidence": "The five distinct options include one supported answer, B, which agrees with the fixed key and expected answer."
+              }
+            },
+            "naturalness": {
+              "score": 1,
+              "evidence": "'Say to Elisha's prophecy' is mildly awkward; 'say in response to Elisha's prophecy' would be more idiomatic. The meaning remains clear.",
+              "quotes": [
+                "What does the captain say to Elisha's prophecy?"
+              ]
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "The short question directly identifies the speaker and exchange. The choices are brief and require no burdensome reference resolution or comparison.",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "The question contains only the requested speech act and a useful anchor identifying the exchange, with no unnecessary narration.",
+              "quotes": []
+            }
+          }
+        },
+        {
+          "repeat": 2,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "The inferred contract matches the original question and answer: identify the officer's response as disbelief even under hypothetical divine intervention. The passage supports both components through his challenge about the LORD making windows in heaven."
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "The candidate is unchanged from the original and retains the requested speaker, response, and prophecy anchor."
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "No information was removed from the question or options."
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "The question and every option remain in English, unchanged."
+            },
+            "option_meanings": [
+              {
+                "status": "pass",
+                "evidence": "Unchanged prediction that the event will happen soon.",
+                "label": "A"
+              },
+              {
+                "status": "pass",
+                "evidence": "Unchanged claim of impossibility even with Yahweh's help.",
+                "label": "B"
+              },
+              {
+                "status": "pass",
+                "evidence": "Unchanged statement that preparation is necessary.",
+                "label": "C"
+              },
+              {
+                "status": "pass",
+                "evidence": "Unchanged prediction that the people will rejoice.",
+                "label": "D"
+              },
+              {
+                "status": "pass",
+                "evidence": "Unchanged abstention stating that the passage does not provide enough information.",
+                "label": "E"
+              }
+            ],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "The passage records the officer answering the man of God and identifies the latter as Elisha in the following sentence. 'Captain' is a reasonable contextual designation for the officer."
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "The rhetorical question, 'even if the LORD were to make windows in heaven, could this really happen?', supports B as a paraphrase of emphatic disbelief even with divine intervention."
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "Only B expresses the officer's skeptical response. A, C, and D do not describe his words, and E is contradicted by the explicit exchange."
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "The clean window contains the prediction, the officer's response, and Elisha's reply, providing sufficient context to identify the speaker and interpret his disbelief."
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "The question identifies the exchange without revealing the officer's response or signaling the correct option."
+              },
+              "mcq_validity": {
+                "status": "pass",
+                "evidence": "The five distinct options include one supported answer, B, which matches the fixed key and expected answer."
+              }
+            },
+            "naturalness": {
+              "score": 1,
+              "evidence": "The construction 'say to' with a prophecy as its object is mildly awkward; 'say in response to' would be more idiomatic. The intended meaning remains clear.",
+              "quotes": [
+                "What does the captain say to Elisha's prophecy?"
+              ]
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "The short question directly identifies the speaker and exchange. The choices are brief and readily distinguishable; the hypothetical condition in B is necessary target content.",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "The question contains only the requested speaker and a useful anchor to the prophecy. There is no unnecessary event narration or reference chain.",
+              "quotes": []
+            }
+          }
+        }
+      ],
+      "status": "KEPT"
+    }
+  ]
+}

@@ -1,0 +1,224 @@
+{
+  "prompt": "target_preserving_comparison",
+  "repeat": 2,
+  "batch": 0,
+  "request_hash": "123ef24adf48d745bfc453c800fff6031cf687d5b7af161f12411f937116f01e",
+  "model": "gpt-6.1-sol",
+  "response_id": "resp_071b68179f573322006ae053e7ace487d183bd80bac0c7dc42",
+  "elapsed_seconds": 32.9684579372406,
+  "usage": {
+    "input_tokens": 6668,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 6665
+    },
+    "output_tokens": 2293,
+    "output_tokens_details": {
+      "reasoning_tokens": 222
+    },
+    "total_tokens": 8961
+  },
+  "threshold_mismatches": [],
+  "items": [
+    {
+      "id": "gold:t1_acts23:xj40:open",
+      "decision": "REWRITE",
+      "target": "Identify the commander's protective response after learning of the plot to kill Paul.",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 1,
+        "evidence": "“How did captain” is missing the ordinary article before “captain.”"
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "The sentence is short, but the reader must resolve the unspecified reference “the plan.”"
+      },
+      "context": {
+        "score": 2,
+        "evidence": "Missing disambiguation: the passage contains the murder plot, the proposed hearing, and transfer arrangements. Naming the plot to kill Paul identifies the intended event."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "The question does not supply the commander's response."
+      },
+      "alternative": "How did the commander respond when he learned of the plot to kill Paul?",
+      "target_preservation": "preserved",
+      "reason": "Specifying the murder plot removes avoidable event ambiguity while preserving the question about the commander's response."
+    },
+    {
+      "id": "gold:t1_2kgs6_7:lxi8:open",
+      "decision": "KEEP",
+      "target": "Identify what the Arameans heard that made them think Israel had hired Hittites and Egyptians.",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 1,
+        "evidence": "“Why did Arameans” is slightly stiff without “the,” but the question remains readily understandable."
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "The reader tracks the Arameans' belief about Israel hiring two groups; these roles are necessary to the target."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“Israel hired Hittites and Egyptians” clearly anchors the relevant episode."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "The question states the belief being explained, not the sounds that prompted it."
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "The causal question is accessible, with only minor article stiffness and no substantial avoidable burden."
+    },
+    {
+      "id": "gold:t1_judg17_18:qysg:open",
+      "decision": "KEEP",
+      "target": "Identify what Micah stole.",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“What did Micah steal?” is direct and idiomatic."
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "The question contains one participant and one straightforward action."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "Micah's name and the action “steal” sufficiently identify the event in the passage."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "No stolen object or amount is supplied."
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "The question already expresses the narrow target naturally and unambiguously."
+    },
+    {
+      "id": "gold:t1_judg17_18:rhwo:open",
+      "decision": "KEEP",
+      "target": "Identify what the Danites wanted the Levite to ask God about their journey.",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“Want the Levite to ask God” is ordinary, understandable wording."
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "The reader tracks who requests the inquiry, who makes it, and whom he asks; these roles are integral to the target."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“Dan's people” and “the Levite” locate the relevant request without unnecessary setup."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "The question does not state what they wanted to learn."
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "The participant chain is manageable and necessary, rather than an avoidable wording burden."
+    },
+    {
+      "id": "hard:t1_2sam21:761c:mcq",
+      "decision": "KEEP",
+      "target": "Identify who killed the four descendants of Rapha at Gath.",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“被谁杀死了” is a natural way to ask for the killers; the comma marks a comprehensible topic pause."
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "“在迦特的这四个拉法的后裔” identifies the group, and the four short choices are easy to compare."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“这四个拉法的后裔” clearly refers to the group summarized in verse 22."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "The stem does not name the killers; “大卫和他的仆人” appears only as an answer choice."
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "The group description and passive question preserve the intended scope without substantial avoidable burden."
+    },
+    {
+      "id": "gold:t1_2chr26:ryq4:open",
+      "decision": "KEEP",
+      "target": "Identify what Uzziah built at Jerusalem's gates.",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“What did Uzziah build at Jerusalem's gates?” is idiomatic and direct."
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "One action and a short location phrase are readily parsed."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“At Jerusalem's gates” distinguishes the intended construction from Uzziah's other building projects."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "The question supplies the location but not the structure built."
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "The location is useful disambiguation, and the question has no meaningful removable burden."
+    },
+    {
+      "id": "constructed:leak",
+      "decision": "REWRITE",
+      "target": "Identify who moved the books inside.",
+      "target_basis": "explicit",
+      "naturalness": {
+        "score": 0,
+        "evidence": "Both “小林把书搬进屋里” and “是谁把书搬进屋里的” are natural Chinese."
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "The repeated action is easy to parse and introduces no difficult role or reference tracking."
+      },
+      "context": {
+        "score": 1,
+        "evidence": "The introductory sentence is removable; the passage already provides enough context for the question."
+      },
+      "leakage": {
+        "score": 3,
+        "evidence": "“小林把书搬进屋里” explicitly names the person whom the following question asks respondents to identify."
+      },
+      "alternative": "是谁把书搬进屋里的？",
+      "target_preservation": "preserved",
+      "reason": "Removing the introductory answer statement preserves the exact actor-identification target without giving the answer away."
+    },
+    {
+      "id": "hard:t1_judg9:f36a:mcq",
+      "decision": "KEEP",
+      "target": "Identify what Zebul said Gaal was seeing when Gaal first reported people approaching.",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“第一次说有人来时” and “其实是什么” are natural Chinese expressions in this question."
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "The reader tracks Gaal's report and Zebul's explanation. The short options present readily distinguishable possibilities."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“第一次” usefully distinguishes the first report from Gaal's second report in the next verse; “他” is resolvable as Gaal in context."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "The stem does not supply Zebul's explanation; “山上的影子，不是人” appears only among the choices."
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "The temporal anchor and reported explanation are necessary to the target and remain manageable in the displayed Chinese."
+    }
+  ]
+}

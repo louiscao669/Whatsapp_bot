@@ -1,0 +1,51 @@
+{
+  "id": "gold:t1_acts23:xj40:mcq",
+  "original": {
+    "id": "gold:t1_acts23:xj40:mcq",
+    "question": "How did captain respond to the plan?",
+    "passage": "23:23 Then he called two of his centurions and said, “Prepare two hundred soldiers, seventy horsemen, and two hundred spearmen to go to Caesarea in the third hour of the night.\n23:24 Provide mounts for Paul to take him safely to Governor Felix.”\n23:25 And he wrote the following letter:",
+    "expected_answer": "Ordered guard to protect Paul.",
+    "form": "mcq",
+    "options": {
+      "A": "Dismissed the young man without acting.",
+      "B": "Ordered Paul returned to the council.",
+      "C": "Released Paul without an escort.",
+      "D": "Ordered guard to protect Paul.",
+      "E": "I can't tell from this passage"
+    },
+    "correct_option": "D",
+    "intended_target": "",
+    "original_question": "How did captain respond to the plan?",
+    "original_answer": "Ordered guard to protect Paul."
+  },
+  "input_hash": "94924cb3096763cbdcfb70827670ac5ad1e781aa2076220ecdf34288a0b13fcd",
+  "status": "HOLD_TARGET",
+  "accepted_case": null,
+  "contract": {
+    "id": "item",
+    "status": "hold",
+    "target": "Identify the captain's response to the plan as ordering an armed escort to protect Paul.",
+    "basis": "inferred",
+    "required_answer_components": [
+      "He ordered guards or an armed escort to protect Paul."
+    ],
+    "relations": [
+      {
+        "id": "r1",
+        "quote": "How did captain respond to the plan?",
+        "meaning": "Recover the action the captain took in response to the referenced plan.",
+        "role": "tested",
+        "reason": "The question requests a responsive action, not merely the captain's identity. The relationship between the plan and his action is explicitly part of the question and cannot safely be discarded."
+      },
+      {
+        "id": "r2",
+        "quote": "captain",
+        "meaning": "Identify the officer whose response is requested.",
+        "role": "anchor",
+        "reason": "This identifies the actor. The passage presents an unnamed person commanding centurions, which is compatible with the question's designation, although it does not explicitly call him captain."
+      }
+    ],
+    "note": "The original question and answer support the inferred target. The passage supports ordering an armed escort to take Paul safely to Governor Felix. However, it contains no plan or explicit connection between a plan and these orders. The action is supported, but the complete response-to-plan relation cannot be verified using only this passage; the contract therefore remains on hold."
+  },
+  "attempts": []
+}

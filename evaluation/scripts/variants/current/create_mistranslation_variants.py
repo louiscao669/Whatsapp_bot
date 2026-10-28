@@ -15,12 +15,16 @@ import re
 import shutil
 import sys
 from pathlib import Path
+
 from typing import Any
 
 REPO_ROOT = Path(__file__).resolve().parents[4]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
+from evaluation.scripts.variants.banks.mistranslation_validation import (
+    MistranslationValidationError, validate_reviewed_bank,
+)
 from evaluation.scripts.variants._common import (
     content_len as content_len,
 )
@@ -327,16 +331,27 @@ def apply_mistranslations(
     rate: float,
     seed: int,
     bank: dict,
+    selected_group_indices: list[int] | None = None,
 ) -> tuple[str, dict]:
+    if bank.get("schema_version") == 2 or "validation" in bank:
+        try:
+            validate_reviewed_bank(bank, text)
+        except MistranslationValidationError as exc:
+            raise MistranslationError(str(exc)) from exc
     replacements = normalized_replacements(bank)
     total_chars = content_len(text)
     occurrences = find_occurrences(text, replacements)
-    selected_groups, target_chars = choose_groups(
-        occurrences,
-        total_content_chars=total_chars,
-        rate=rate,
-        seed=seed,
-    )
+    if selected_group_indices is None:
+        selected_groups, target_chars = choose_groups(
+            occurrences, total_content_chars=total_chars, rate=rate, seed=seed)
+    else:
+        groups = candidate_groups(occurrences)
+        if (len(set(selected_group_indices)) != len(selected_group_indices)
+            or any(type(i) is not int or not 0 <= i < len(groups) for i in selected_group_indices)
+            or (rate == 0 and selected_group_indices)):
+            raise MistranslationError("Invalid planned substitution-group selection")
+        selected_groups = [groups[i] for i in selected_group_indices]
+        target_chars = max(1, round(total_chars * rate)) if rate > 0 else 0
 
     selected_occurrences = [
         occurrence
@@ -455,16 +470,40 @@ def create_variant(
     seed: int,
     bank: dict,
     force: bool,
+    selections: dict[str, list[int]] | None = None,
 ) -> Path:
     variant_name = format_rate(rate)
     variant_dir = output_dir / variant_name
+    reviewed = bank.get("schema_version") == 2 or "validation" in bank
+    if reviewed:
+        # Validate every input before writing either raw or decanonicalized text.
+        for filename in ("passage_target.txt", "passage_target_decanonicalized.txt"):
+            path = source_method_dir / filename
+            if path.exists():
+                validate_reviewed_bank(bank, load_text(path))
     if variant_dir.exists() and not force:
+        if reviewed:
+            meta_path = variant_dir / "mistranslation_metadata.json"
+            saved = load_json(meta_path) if meta_path.exists() else {}
+            if saved.get("bank_id") != bank.get("bank_id") or saved.get("seed") != seed:
+                raise MistranslationError("Existing variants use a different or unreviewed bank. Use a new --output-model-dir or --force.")
+            for filename in ("passage_target.txt", "passage_target_decanonicalized.txt"):
+                source_path = source_method_dir / filename
+                if not source_path.exists():
+                    continue
+                expected, _ = apply_mistranslations(load_text(source_path), rate=rate, seed=seed, bank=bank,
+                    selected_group_indices=selections[filename] if selections is not None else None)
+                path = variant_dir / filename
+                if not path.exists() or load_text(path) != expected:
+                    raise MistranslationError(f"Existing reviewed variant is stale: {path}. Use --force to rebuild.")
         print(f"reuse mistranslation variant: {variant_dir}")
         return variant_dir
 
     variant_dir.mkdir(parents=True, exist_ok=True)
     method_name = f"mistranslation_{variant_name}"
     metadata = {
+        **({"bank_id": bank["bank_id"], "bank_generation": bank["generation"],
+            "bank_validation": bank["validation"]} if reviewed else {}),
         "schema_version": 1,
         "source_method_dir": str(source_method_dir),
         "variant": variant_name,
@@ -483,6 +522,7 @@ def create_variant(
         rate=rate,
         seed=seed,
         bank=bank,
+        selected_group_indices=selections["passage_target.txt"] if selections is not None else None,
     )
     write_text(variant_dir / "passage_target.txt", raw_mutated)
     metadata["files"]["passage_target"] = raw_meta
@@ -495,6 +535,7 @@ def create_variant(
             rate=rate,
             seed=seed,
             bank=bank,
+            selected_group_indices=selections["passage_target_decanonicalized.txt"] if selections is not None else None,
         )
         write_text(variant_dir / "passage_target_decanonicalized.txt", decan_mutated)
         metadata["files"]["passage_target_decanonicalized"] = decan_meta
@@ -618,6 +659,10 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Fail instead of falling back to the built-in default bank.",
     )
+    parser.add_argument(
+        "--require-judged-bank", action="store_true",
+        help="Require a context-reviewed bank and verify every saved approval before export.",
+    )
     parser.add_argument("--force", action="store_true")
     return parser.parse_args()
 
@@ -643,14 +688,18 @@ def main() -> int:
                 f"warning: source method folder missing: {source_method_dir}",
                 file=sys.stderr,
             )
+            if args.require_judged_bank:
+                return 1
             continue
         try:
             bank, bank_source = load_bank_for_chapter(args, source_model_dir)
             normalized_replacements(bank)
         except Exception as exc:
             print(f"warning: invalid bank for {source_method_dir}: {exc}", file=sys.stderr)
+            if args.require_judged_bank:
+                return 1
             continue
-
+ 
         if bank_source == "built_in_default" and args.require_bank:
             # The built-in bank was written for Luke. Falling back to it makes a
             # grid that looks complete but perturbs this passage with another
@@ -663,6 +712,16 @@ def main() -> int:
                 file=sys.stderr,
             )
             return 1
+
+        if args.require_judged_bank or bank.get("schema_version") == 2 or "validation" in bank:
+            try:
+                for filename in ("passage_target.txt", "passage_target_decanonicalized.txt"):
+                    source_path = source_method_dir / filename
+                    if filename == "passage_target.txt" or source_path.exists():
+                        validate_reviewed_bank(bank, load_text(source_path))
+            except (MistranslationValidationError, MistranslationError, OSError, ValueError) as exc:
+                print(f"error: {chapter}: {exc}", file=sys.stderr)
+                return 1
 
         copy_shared_files(source_model_dir / "_shared", output_dir / "_shared")
         # Says the actual cell name; it used to hardcode "luke{chapter}", which

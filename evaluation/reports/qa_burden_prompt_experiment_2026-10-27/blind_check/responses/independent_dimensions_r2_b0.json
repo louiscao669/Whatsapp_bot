@@ -1,0 +1,274 @@
+{
+  "prompt": "independent_dimensions",
+  "repeat": 2,
+  "batch": 0,
+  "request_hash": "e00d1be1f3643cda7207549acb6d2e6c97296db3f21c49e5f66a220f203b89c0",
+  "model": "gpt-6.1-sol",
+  "response_id": "resp_0a6aa088a3ccad30006ae054ad6fc487d19d8ab3cde0eefe2e",
+  "elapsed_seconds": 46.10124111175537,
+  "usage": {
+    "input_tokens": 3855,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 3852
+    },
+    "output_tokens": 3038,
+    "output_tokens_details": {
+      "reasoning_tokens": 397
+    },
+    "total_tokens": 6893
+  },
+  "threshold_mismatches": [],
+  "items": [
+    {
+      "id": "item_01",
+      "decision": "KEEP",
+      "target": "Identify who moved the books inside.",
+      "target_basis": "explicit",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“是谁把书搬进屋里的？”是自然、直接的问法。"
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "只需识别“搬进屋里”这一动作的执行者，没有额外的修饰或指代负担。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“把书搬进屋里”足以唯一定位所问事件。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "题目没有提供执行者的姓名。"
+      },
+      "alternative": "",
+      "target_preservation": "preserved",
+      "reason": "措辞自然，事件定位明确，没有不必要的理解负担或答案泄露。"
+    },
+    {
+      "id": "item_02",
+      "decision": "KEEP",
+      "target": "Identify what happened to the sick people: their illnesses were cured and evil spirits left them.",
+      "target_basis": "explicit",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“Cloths that had touched Paul” and “What happened to the sick?” are idiomatic in this context."
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "Readers track the cloths through a short relative clause and passive, then identify the outcome for the sick; this is manageable event anchoring."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "The introductory sentence identifies the relevant healing event without unrelated background."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "Taking cloths to the sick does not state whether healing or deliverance occurred."
+      },
+      "alternative": "",
+      "target_preservation": "preserved",
+      "reason": "The setup supplies a useful event anchor, and the outcome question is direct."
+    },
+    {
+      "id": "item_03",
+      "decision": "REWRITE",
+      "target": "Identify what happened to the sick people: illnesses and evil spirits left them.",
+      "target_basis": "explicit",
+      "naturalness": {
+        "score": 2,
+        "evidence": "“摸过保罗的手帕和围裙”把手帕和围裙说成会“摸”人的东西，需要读者将“摸”修复为接触之意。"
+      },
+      "processing": {
+        "score": 2,
+        "evidence": "“摸过保罗的手帕和围裙”容易先被读成摸过保罗所有的物品；读到“被带到”后，需要重新确定主语及接触关系。这是可避免的解析负担。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "手帕、围裙和病人的叙述足以定位所问事件，没有多余背景。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "引言只说物品被带到病人那里，没有说明病人后来如何；选项中的答案本身不构成泄露。"
+      },
+      "alternative": "",
+      "target_preservation": "preserved",
+      "reason": "后面的结果问题和选项清楚，但引言中的接触关系表达不自然，并造成可避免的重读。"
+    },
+    {
+      "id": "item_04",
+      "decision": "KEEP",
+      "target": "Identify the person who took books to the library.",
+      "target_basis": "explicit",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“谁把书带到图书馆？”是自然的日常问法。"
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "只需根据目的地识别动作的执行者。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“图书馆”明确区分了小周的行动和小林去学校的行动。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "题目没有透露是谁带书。"
+      },
+      "alternative": "",
+      "target_preservation": "preserved",
+      "reason": "问题直接，且包含区分两次带书事件所需的地点。"
+    },
+    {
+      "id": "item_05",
+      "decision": "REWRITE",
+      "target": "Identify what happened to the sick people: illnesses and evil spirits left them.",
+      "target_basis": "explicit",
+      "naturalness": {
+        "score": 2,
+        "evidence": "“触摸过保罗的手帕和围裙”让物品充当“触摸”的执行者，表达生硬，需要按“接触过保罗”理解。"
+      },
+      "processing": {
+        "score": 2,
+        "evidence": "读者需拆解“触摸过保罗的手帕和围裙”的所属关系与接触关系，再接上“被带到”的角色关系和外层“当……时”。接触修饰语的歧义使这些操作形成可避免的负担。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "手帕和围裙被带到病人那里这一线索足以定位事件。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "题干没有交代病人的变化；正确答案出现在选项中不算泄露。"
+      },
+      "alternative": "",
+      "target_preservation": "preserved",
+      "reason": "问题的目标明确，但接触关系的生硬表达与嵌套结构共同增加了不必要的解码负担。"
+    },
+    {
+      "id": "item_06",
+      "decision": "KEEP",
+      "target": "Identify the person killed by the lion on the road.",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“谁在路上被狮子咬死了？”表达自然，受事关系清楚。"
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "问题只要求识别被狮子杀死的人；选项是容易区分的人物名称或身份。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“在路上被狮子咬死”能唯一定位这段经文中的事件。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "题干没有透露死者身份，选项列出候选身份不构成泄露。"
+      },
+      "alternative": "",
+      "target_preservation": "preserved",
+      "reason": "事件锚点充分，人物角色清楚，没有明显的措辞负担。"
+    },
+    {
+      "id": "item_07",
+      "decision": "KEEP",
+      "target": "Identify what happened to the sick people: illnesses and evil spirits left them.",
+      "target_basis": "explicit",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“病人的情况有什么变化？”是自然、清楚的结果问法。"
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "直接询问病人的变化；各选项简短且含义容易区分。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "经文中“病人”明确对应手帕和围裙被带去的那群人，不必补充其他人物背景。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "“有什么变化”没有透露变化的具体内容。"
+      },
+      "alternative": "",
+      "target_preservation": "preserved",
+      "reason": "利用经文中的明确称呼即可定位目标，问法直接，选项没有额外比较负担。"
+    },
+    {
+      "id": "item_08",
+      "decision": "KEEP",
+      "target": "Identify what Uzziah built at Jerusalem’s gates.",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“What did Uzziah build at Jerusalem's gates?” is natural and direct."
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "The reader identifies the object built by a named person at a specified location."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“At Jerusalem's gates” distinguishes this construction from the other building activities in the passage."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "The question names the location but does not identify what was built."
+      },
+      "alternative": "",
+      "target_preservation": "preserved",
+      "reason": "The location is a useful anchor, and the wording adds no avoidable burden."
+    },
+    {
+      "id": "item_09",
+      "decision": "REWRITE",
+      "target": "Identify who moved the books inside.",
+      "target_basis": "explicit",
+      "naturalness": {
+        "score": 0,
+        "evidence": "陈述句和“是谁把书搬进屋里的？”本身都自然。"
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "两句都容易理解，重复没有造成显著解析负担。"
+      },
+      "context": {
+        "score": 1,
+        "evidence": "前句完整重复了问题中的事件，而问题本身已足以定位该事件。"
+      },
+      "leakage": {
+        "score": 3,
+        "evidence": "“小林把书搬进屋里”直接说出了随后所问的执行者“小林”。"
+      },
+      "alternative": "",
+      "target_preservation": "preserved",
+      "reason": "虽然措辞简单自然，但引言明确给出了所测试的答案。"
+    },
+    {
+      "id": "item_10",
+      "decision": "REWRITE",
+      "target": "Identify the person who took books to the library.",
+      "target_basis": "explicit",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“谁把书带走了？”作为日常问句很自然。"
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "句子结构直接，没有修饰语或角色解析负担。"
+      },
+      "context": {
+        "score": 2,
+        "evidence": "缺少区分事件的线索：小林和小周都把书带到别处，“带走”没有限定图书馆或下午的那次行动。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "题目没有给出执行者或其他答案线索。"
+      },
+      "alternative": "",
+      "target_preservation": "uncertain",
+      "reason": "问法自然，但没有包含定位图书馆事件所必需的地点或时间线索，无法明确指向既定目标。"
+    }
+  ]
+}

@@ -2,6 +2,7 @@
 
 from sqlalchemy import select
 
+from eten_shared.domain.bible_books import LEGACY_TRANSLATION_BOOK
 from eten_shared.models import PassageTranslation, PassageVerse
 
 
@@ -30,6 +31,7 @@ def get_passage_detail(db, translation_id, chapter_number):
         "id": translation.id,
         "language": translation.language,
         "translation_name": translation.name,
+        "book": translation.book or LEGACY_TRANSLATION_BOOK,
         "chapter_number": chapter,
         "created_at": translation.created_at.isoformat() if translation.created_at else None,
         "updated_at": translation.updated_at.isoformat() if translation.updated_at else None,
@@ -62,6 +64,7 @@ def list_passage_items(db):
                 "id": translation.id,
                 "language": translation.language,
                 "translation_name": translation.name,
+                "book": translation.book or LEGACY_TRANSLATION_BOOK,
                 "chapter_number": verse.chapter_number,
                 "verse_numbers": [],
             },

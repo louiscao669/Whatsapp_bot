@@ -18,6 +18,7 @@ from eten_shared.mcq import (
     choice_response_is_correct,
     choice_response_letter,
     is_choice_scored_item,
+    exact_choice_scoring_metadata,
 )
 from eten_shared.models import (
     Assignment,
@@ -114,6 +115,7 @@ def submit_dashboard_answer(
             choice_correct = choice_response_is_correct(qa_item, answer_text)
             is_correct_label = "yes (auto)" if choice_correct else "no (auto)"
             review_status = ReviewStatus.AUTO.value
+            scoring_metadata = exact_choice_scoring_metadata(parsed_letter)
         elif llm_answer_scoring_enabled() and (answer_text or "").strip():
             mcq_needs_llm_resolution = True
             is_correct_label = "pending"

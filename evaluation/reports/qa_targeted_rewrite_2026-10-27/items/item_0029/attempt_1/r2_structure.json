@@ -1,0 +1,48 @@
+{
+  "request_hash": "011c755f6e55f183ee4c218f8e1587694047c326cbbef07b06bdfd1f15676c98",
+  "model": "gpt-6.1-sol",
+  "response_id": "resp_096ba4b005ddb4d8006ae0f2892c2887d1b24bfbde2135f998",
+  "usage": {
+    "input_tokens": 906,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0
+    },
+    "output_tokens": 607,
+    "output_tokens_details": {
+      "reasoning_tokens": 162
+    },
+    "total_tokens": 1513
+  },
+  "parsed": {
+    "items": [
+      {
+        "id": "item",
+        "parse_summary": "问句以“为什么”询问无人搭救来士居民的原因，“来士的人”是“搭救”的对象。A以“也”连接两个并列原因，主语均为“那城”；B至D转用但人作主语，分别陈述夺取、杀灭和重建居住的行动。“那城”指来士，“他们”指当地居民，“那里”指重建的城邑。没有多层嵌套或延迟出现的提问。",
+        "features": [
+          {
+            "kind": "role_tracking",
+            "quote": "为什么没有人搭救来士的人？",
+            "required_operations": "区分未出现的搭救者、作为受助对象的来士居民，以及B至D中实施夺取、杀灭和重建的但人。",
+            "concern": "ordinary",
+            "reason": "施事与受事关系直接；这些角色区别有助于理解无人搭救的事件及各选项所述行动，没有额外的角色嵌套。"
+          },
+          {
+            "kind": "reference_chain",
+            "quote": "因为但人用刀杀灭他们",
+            "required_operations": "将“他们”解析为来士当地居民，而不是但人或米迦的偶像和祭司；同时将其他选项中的“那城”“那里”联系到来士。",
+            "concern": "ordinary",
+            "reason": "选项沿用经文中的指称，需回接相关人物和地点，但指称链较短。"
+          },
+          {
+            "kind": "negation_scope",
+            "quote": "因为那城远离西顿，也没有与人结盟。",
+            "required_operations": "把“没有”限定于“与人结盟”，并将缺少结盟关系与远离西顿一起理解为无人搭救的两个原因，而非把两项理解为择一关系。",
+            "concern": "ordinary",
+            "reason": "否定范围局部且明确，并列关系正是目标所要求理解的双重原因，不构成额外的否定嵌套。"
+          }
+        ]
+      }
+    ]
+  }
+}

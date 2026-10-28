@@ -1,0 +1,274 @@
+{
+  "prompt": "target_preserving_comparison",
+  "repeat": 1,
+  "batch": 0,
+  "request_hash": "b1d048222c8ddd1b90cc4aee71850f293ad6415b2ef9b961abea14481bcec547",
+  "model": "gpt-6.1-sol",
+  "response_id": "resp_0e3a43a9e72eaf1c006ae05482f94c87d198377259d74297f5",
+  "elapsed_seconds": 46.59262990951538,
+  "usage": {
+    "input_tokens": 3835,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 3832
+    },
+    "output_tokens": 3300,
+    "output_tokens_details": {
+      "reasoning_tokens": 680
+    },
+    "total_tokens": 7135
+  },
+  "threshold_mismatches": [],
+  "items": [
+    {
+      "id": "item_01",
+      "decision": "REWRITE",
+      "target": "What happened to the sick people after the cloths were brought to them: their illnesses and evil spirits left.",
+      "target_basis": "explicit",
+      "naturalness": {
+        "score": 2,
+        "evidence": "“摸过保罗的手帕和围裙” readily suggests someone touching Paul's cloths; treating the cloths as what touched Paul requires reinterpretation."
+      },
+      "processing": {
+        "score": 2,
+        "evidence": "Readers must resolve the competing groupings of “摸过保罗的手帕和围裙” before reaching the straightforward outcome question. The alternative removes this unnecessary modifier without losing the event anchor."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "The cloths being brought to the sick adequately identifies the intended event."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "The setup states that the cloths arrived, not what happened to the sick afterward."
+      },
+      "alternative": "手帕和围裙被带到病人那里后，病人怎么样了？\nA. 病人陷入了深度睡眠\nB. 疾病和邪灵离开了病人\nC. 犹太驱魔师给病人驱魔\nD. 病人变得无法说话\nE. 根据这段文字无法判断",
+      "target_preservation": "preserved",
+      "reason": "The contact modifier creates avoidable interpretation work. Removing it preserves the participants, event sequence, and requested outcome."
+    },
+    {
+      "id": "item_02",
+      "decision": "KEEP",
+      "target": "Identify who moved the books inside.",
+      "target_basis": "explicit",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“是谁把书搬进屋里的？” is an idiomatic identification question."
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "The reader identifies one participant in a directly stated action."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“搬进屋里” uniquely identifies the relevant action in the passage."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "The question does not supply the person's name."
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "The wording is direct and sufficiently specific; no meaningful burden reduction is needed."
+    },
+    {
+      "id": "item_03",
+      "decision": "KEEP",
+      "target": "Identify the person killed by the lion on the road.",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“谁在路上被狮子咬死了？” is a natural Chinese question."
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "The question asks for one participant, and the four choices are short person descriptions."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“在路上被狮子咬死” clearly locates the event in the supplied passage."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "No introductory statement identifies the victim; the choices do not themselves disclose which is correct."
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "The passive wording directly expresses the intended relation and creates no avoidable burden."
+    },
+    {
+      "id": "item_04",
+      "decision": "REWRITE",
+      "target": "Identify who moved the books inside.",
+      "target_basis": "explicit",
+      "naturalness": {
+        "score": 0,
+        "evidence": "Both “小林把书搬进屋里” and the following question are idiomatic."
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "The repeated action is easy to follow and requires no substantial decoding."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "The action is clearly identified; the repeated sentence is not substantial contextual overload."
+      },
+      "leakage": {
+        "score": 3,
+        "evidence": "“小林把书搬进屋里” explicitly names the person immediately before asking who performed that action."
+      },
+      "alternative": "是谁把书搬进屋里的？",
+      "target_preservation": "preserved",
+      "reason": "Deleting the answer-giving introduction preserves the exact identification target."
+    },
+    {
+      "id": "item_05",
+      "decision": "KEEP",
+      "target": "Identify the person who took books to the library.",
+      "target_basis": "explicit",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“谁把书带到图书馆？” is direct and idiomatic."
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "The question asks for a single participant with no competing modifiers."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“图书馆” distinguishes this action from taking books to school."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "The question supplies the destination but not the person's identity."
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "The destination provides necessary disambiguation without unnecessary detail."
+    },
+    {
+      "id": "item_06",
+      "decision": "REWRITE",
+      "target": "What happened to the sick people after the cloths were brought to them: their illnesses and evil spirits left.",
+      "target_basis": "explicit",
+      "naturalness": {
+        "score": 2,
+        "evidence": "“触摸过保罗的手帕和围裙” awkwardly presents cloths as touching Paul and also invites the reading that someone touched Paul's cloths."
+      },
+      "processing": {
+        "score": 2,
+        "evidence": "Within “当……被带到……时”, readers must first resolve the grouping and roles in “触摸过保罗的手帕和围裙”. The alternative retains the temporal relation without that avoidable ambiguity."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "The delivery of the cloths identifies the relevant event sufficiently."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "Neither the event anchor nor the choices disclose which outcome actually occurred."
+      },
+      "alternative": "手帕和围裙被带到病人那里后，病人怎么样了？\nA. 病人陷入了深度睡眠\nB. 疾病和邪灵离开了病人\nC. 犹太驱魔师给病人驱魔\nD. 病人变得无法说话\nE. 根据这段文字无法判断",
+      "target_preservation": "preserved",
+      "reason": "The problem is the avoidable contact-modifier ambiguity, not the temporal clause or passive alone. The alternative preserves the event and outcome scope."
+    },
+    {
+      "id": "item_07",
+      "decision": "KEEP",
+      "target": "What happened to the sick people after the cloths were brought to them: their illnesses and evil spirits left.",
+      "target_basis": "explicit",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“Cloths that had touched Paul” and “What happened to the sick?” are idiomatic English."
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "The relative clause and passive require ordinary, manageable reading; the roles are clear across both sentences."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "The first sentence identifies the relevant sick people and occasion."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "The setup gives the delivery event but does not state that healing or departure of spirits followed."
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "The whole item is readily understood, and the event anchor usefully connects the question to the passage."
+    },
+    {
+      "id": "item_08",
+      "decision": "KEEP",
+      "target": "Identify what Uzziah built at Jerusalem's gates.",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“What did Uzziah build at Jerusalem's gates?” is natural and direct."
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "The question has one builder, one action, and a clear location."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“Jerusalem's gates” distinguishes the relevant construction from his other building projects."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "The question does not name the structures."
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "The location is useful for identifying the intended construction, and the wording adds no meaningful burden."
+    },
+    {
+      "id": "item_09",
+      "decision": "REWRITE",
+      "target": "Identify the person who took books to the library.",
+      "target_basis": "explicit",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“谁把书带走了？” is idiomatic Chinese."
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "The sentence itself is readily parsed; the problem is identifying the intended event."
+      },
+      "context": {
+        "score": 2,
+        "evidence": "The destination is missing: both 小林 and 小周 take books somewhere. Unlike “带到图书馆”, “带走了” does not distinguish the targeted action."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "The question does not supply the person's identity."
+      },
+      "alternative": "谁把书带到图书馆？",
+      "target_preservation": "preserved",
+      "reason": "Adding the intended destination resolves the missing event distinction while preserving the explicit participant-identification target."
+    },
+    {
+      "id": "item_10",
+      "decision": "KEEP",
+      "target": "Identify the change in the sick people's condition: their illnesses and evil spirits left.",
+      "target_basis": "explicit",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“病人的情况有什么变化？” is an idiomatic way to ask about an outcome."
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "Readers compare five plainly worded choices; there is no substantial modifier or reference load."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“根据这段经文” and “病人” sufficiently locate the only sick group described in this passage."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "The question asks about a change without supplying its content; the correct choice's presence is not leakage."
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "The supplied passage resolves the reference, and the question directly asks for the intended outcome."
+    }
+  ]
+}

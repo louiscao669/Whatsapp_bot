@@ -1,0 +1,1583 @@
+{
+  "schema_version": 2,
+  "generation_mode": "validated_bank",
+  "edit_style": "llm_structural_v1",
+  "source_method_dir": "/Users/louiscao/whatsapp-bot/eten-whatsapp-bot/evaluation/outputs/tier1_bsb_unblinded_5opt_think/t1_1kgs13/_base/llm_prompt_high",
+  "variant": "30%",
+  "method": "grammar_30%",
+  "seed": 80755,
+  "files": {
+    "passage_target": {
+      "generation_mode": "validated_bank",
+      "bank_id": "d5ddb3042746311fe43b8c52a881f0f053fe1154c3e9cd40893702a6d3ddc7fd",
+      "edit_style": "llm_structural_v1",
+      "source_sha256": "e4b9e276439a52b0095e56f7604a055f1b80f7fd135e646247bec9476daa6e43",
+      "output_sha256": "49edcd48e6e9ccfabcb3b6191145cabe2b788f3845bcd6f489d893a3bdb7a460",
+      "judge": {
+        "model": "gpt-6.1-sol",
+        "prompt_sha256": "a2abc09beb94299ae5ba0b4d6c363ce481093bce718b9b9608318cce66e6c61e",
+        "schema_sha256": "ad414a52eb96503c0b44a987f2edd0589aa8555bbfea4aacbe8305676de1aa12"
+      },
+      "bank_max_rate": 0.3,
+      "generator": {
+        "model": "gpt-6.1-sol",
+        "prompt_sha256": "1a0fc34ac6e0db5918641db38e16db653909ae5a6a89b418e958e5dc2ba3782b",
+        "schema_sha256": "647d8249f8e5e165094d5f461438de2f36ec7ff8ee75007729e01d3bc3069057"
+      },
+      "requested_rate": 0.3,
+      "actual_affected_rate": 0.30357142857142855,
+      "target_met": true,
+      "shortfall_content_chars": 0,
+      "seed": 80755,
+      "total_content_chars": 1120,
+      "affected_content_chars": 340,
+      "affected_unit_count": 29,
+      "operation_count": 29,
+      "protected_terms": 0,
+      "protected_losses": [],
+      "protected_verified": true,
+      "affected_units": [
+        {
+          "unit_index": 99,
+          "verse": 20,
+          "content_chars": 7,
+          "original_text": "20 他们坐席的时候，",
+          "corrupted_text": "20 的时候他们坐席，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "8958ff9e965d5b6d042139128416d857189e6efd764c2bc26cd927169e0e9251",
+          "proposal": {
+            "edited_clause": "20 的时候他们坐席，",
+            "error_type": "时间结构内嵌小句错位",
+            "explanation": "将原作时间结构内嵌小句的“他们坐席”整体移至“的时候”之后，违反该结构中小句须位于“的时候”之前的要求。"
+          },
+          "judgment_id": "074f371653e1b758a916e643cb328025b75360b66225e83248e3f119899e0f7a",
+          "judgment": {
+            "explanation": "完整的主谓短语“他们坐席”原本位于“的时候”之前，充当时间结构中的修饰成分；移到其后，使句首的“的”失去左侧依附成分，破坏了“……的时候”的构造。各词内部完整，原来的坐席事件及其时间关系仍可恢复，错误局限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "的时候他们坐席"
+          }
+        },
+        {
+          "unit_index": 142,
+          "verse": 29,
+          "content_chars": 12,
+          "original_text": "29 先知就把神人的尸首拾起来，",
+          "corrupted_text": "29 先知就把拾起来神人的尸首，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "8958ff9e965d5b6d042139128416d857189e6efd764c2bc26cd927169e0e9251",
+          "proposal": {
+            "edited_clause": "29 先知就把拾起来神人的尸首，",
+            "error_type": "把字结构宾语错位",
+            "explanation": "将原作“把”字结构宾语的“神人的尸首”整体移到“拾起来”之后，违反把字宾语须位于“把”与谓语之间的要求。"
+          },
+          "judgment_id": "af72d28d263f9d000130216b007212f771be322a900d24cc3481e4808a3bc1c9",
+          "judgment": {
+            "explanation": "原句中“神人的尸首”是“把”引出的多词宾语，须位于“把”之后、谓语“拾起来”之前。替换将这一完整名词短语移到谓语之后，形成“把拾起来神人的尸首”，违反把字结构的宾语位置要求。原有词语均保持完整，先知拾起神人尸首的参与者与动作仍可恢复；错误仅在本分句内。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "把拾起来神人的尸首"
+          }
+        },
+        {
+          "unit_index": 155,
+          "verse": 31,
+          "content_chars": 14,
+          "original_text": "你们要把我葬在神人葬的坟墓里，",
+          "corrupted_text": "你们要把在神人葬的坟墓里我葬，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "8958ff9e965d5b6d042139128416d857189e6efd764c2bc26cd927169e0e9251",
+          "proposal": {
+            "edited_clause": "你们要把在神人葬的坟墓里我葬，",
+            "error_type": "处所补语插入把字宾语位置",
+            "explanation": "将原作“葬”的处所补语的“在神人葬的坟墓里”整体移至“把”与“我”之间，违反把字宾语须紧随“把”的结构要求。"
+          },
+          "judgment_id": "66e5b3ac3fafee9ef8090f2590ff3b4d76bad50703568d2efb0be417b9af8eab",
+          "judgment": {
+            "explanation": "原句中“在神人葬的坟墓里”是“葬”的处所补语，现被整体移到“把”与其宾语“我”之间，违反“把”须先引出受处置宾语、再接谓语的结构要求。该成分包含多个词，并非单个介词的移动。词语内部均完整，安葬对象、地点及要求仍可恢复；错误局限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "把在神人葬的坟墓里我葬"
+          }
+        },
+        {
+          "unit_index": 161,
+          "verse": 33,
+          "content_chars": 12,
+          "original_text": "耶罗波安仍不离弃他的恶行，",
+          "corrupted_text": "耶罗波安仍不他的恶行离弃，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "8958ff9e965d5b6d042139128416d857189e6efd764c2bc26cd927169e0e9251",
+          "proposal": {
+            "edited_clause": "耶罗波安仍不他的恶行离弃，",
+            "error_type": "宾语插入否定谓语内部",
+            "explanation": "将原作“离弃”宾语的“他的恶行”整体移至“不”与“离弃”之间，违反此处否定词“不”须直接置于所否定谓语之前、不能由宾语隔开的要求。"
+          },
+          "judgment_id": "e678cd17c8af8efe4700d511bace0557a129d1e5cd4e30aae571f6671be9973a",
+          "judgment": {
+            "explanation": "原作宾语的多词名词短语“他的恶行”被整体移到“不”与动词“离弃”之间，破坏了此处否定副词与动词短语的组合次序；该位置也不能解释为正常的话题前置。原有词语均保持完整，人物、否定关系及离弃的对象仍可恢复，错误仅限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "不他的恶行离弃"
+          }
+        },
+        {
+          "unit_index": 84,
+          "verse": 17,
+          "content_chars": 13,
+          "original_text": "17 因为我奉耶和华的话被吩咐说：",
+          "corrupted_text": "17 因为我奉被吩咐耶和华的话说：",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "a8df8ffc373fdfa709f11cccd0c551161f1675b2d34d50ac2127c3264a205d4a",
+          "proposal": {
+            "edited_clause": "17 因为我奉被吩咐耶和华的话说：",
+            "error_type": "介词宾语错位",
+            "explanation": "将原作“奉”的宾语的多词名词短语“耶和华的话”移至“被吩咐”之后，破坏“奉”与其宾语必须相接的结构要求。"
+          },
+          "judgment_id": "90760572d4b59ac287564238d51eddad04981f948eade9c7e125ed555ecc93b1",
+          "judgment": {
+            "explanation": "原作“奉”的宾语的多词名词短语“耶和华的话”被移到“被吩咐”之后，使“奉”无法正常连接其宾语，并使该名词短语误接在被动谓语“被吩咐”后，破坏了原有介词结构。这不是单个虚词的移位。各词内部完整，原有的奉命及被吩咐关系仍可恢复；错误仅在本分句内。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "奉被吩咐耶和华的话"
+          }
+        },
+        {
+          "unit_index": 162,
+          "verse": 33,
+          "content_chars": 11,
+          "original_text": "仍从各阶层立高处的祭司，",
+          "corrupted_text": "仍立高处的从各阶层祭司，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "a8df8ffc373fdfa709f11cccd0c551161f1675b2d34d50ac2127c3264a205d4a",
+          "proposal": {
+            "edited_clause": "仍立高处的从各阶层祭司，",
+            "error_type": "介词短语插入名词短语",
+            "explanation": "将原作来源状语的多词介词短语“从各阶层”移入“高处的祭司”，置于“的”与中心语“祭司”之间，破坏该定中结构的连接。"
+          },
+          "judgment_id": "765726ba90b9a02cef7e79f7090a3c1bd452b7f1195720c73bdd76c86ea3c3cb",
+          "judgment": {
+            "explanation": "原作中“从各阶层”是修饰“立”的介词短语，表示选立祭司的来源。替换将这一完整多词短语移到“高处的”与中心名词“祭司”之间，破坏了定语与中心语的正常连接，不能作为该名词短语内部的合法修饰语。原有词语均保持完整，选立的对象及来源仍可恢复；错误仅在本分句内。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "高处的从各阶层祭司"
+          }
+        },
+        {
+          "unit_index": 105,
+          "verse": 21,
+          "content_chars": 16,
+          "original_text": "没有遵守耶和华你神所吩咐你的命令，",
+          "corrupted_text": "没有遵守耶和华你神的命令所吩咐你，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "a8df8ffc373fdfa709f11cccd0c551161f1675b2d34d50ac2127c3264a205d4a",
+          "proposal": {
+            "edited_clause": "没有遵守耶和华你神的命令所吩咐你，",
+            "error_type": "关系定语内部成分后置",
+            "explanation": "将原在关系定语中作谓语成分的多词短语“所吩咐你”移至“命令”之后，破坏该成分须位于定语标记“的”之前的顺序要求。"
+          },
+          "judgment_id": "eae844b252a881b95f0d617a360c399ed4a358c9f4652f1ca7b65f7f78aea4be",
+          "judgment": {
+            "explanation": "多词成分“所吩咐你”原是关系从句中的谓语部分，位于“耶和华你神”之后、“的命令”之前；现被移到“命令”之后，破坏了“……所吩咐你的命令”的定语—中心语结构，且后置的“所吩咐你”没有合适的句法归属。这不是单个虚词的移位。各词内部保持完整，原有的不遵守神所吩咐之命令的意思仍可恢复，错误局限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "耶和华你神的命令所吩咐你"
+          }
+        },
+        {
+          "unit_index": 70,
+          "verse": 14,
+          "content_chars": 10,
+          "original_text": "遇见他坐在一棵橡树下，",
+          "corrupted_text": "遇见他一棵橡树坐在下，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "a8df8ffc373fdfa709f11cccd0c551161f1675b2d34d50ac2127c3264a205d4a",
+          "proposal": {
+            "edited_clause": "遇见他一棵橡树坐在下，",
+            "error_type": "处所结构内部名词短语错位",
+            "explanation": "将原在“在……下”处所结构中的多词名词短语“一棵橡树”移至“他”与“坐”之间，破坏该名词短语须处于“在”与方位词“下”之间的要求。"
+          },
+          "judgment_id": "707a5ba43279a98bda60d99f73d39d94428c1f88fea61ddcc5d5092756aa7dd1",
+          "judgment": {
+            "explanation": "原来位于处所结构“在一棵橡树下”中的多词名词短语“一棵橡树”被移到“他”和“坐”之间，使处所结构的名词部分与方位词“下”分离；“他一棵橡树坐在下”不构成正常的话题或主谓结构。原有词语均保持完整，人物、坐的动作及树下位置仍可恢复，错误仅限本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "他一棵橡树坐在下"
+          }
+        },
+        {
+          "unit_index": 120,
+          "verse": 25,
+          "content_chars": 7,
+          "original_text": "25 有人从那里经过，",
+          "corrupted_text": "25 有人经过从那里，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "aea5faaa9eababc3963e273254c783029c5f585ecb81b9da3f87dc1bba92df8f",
+          "proposal": {
+            "edited_clause": "25 有人经过从那里，",
+            "error_type": "来源介词短语错置",
+            "explanation": "将原作来源状语的多词介词短语“从那里”移到“经过”之后，违反该来源状语应置于动词前的语序要求。"
+          },
+          "judgment_id": "ecd91b71fcf99ca67b6bb52b704a396d26d5f333914f1523d57dad8bd4b695af",
+          "judgment": {
+            "explanation": "原句中“从那里”是由介词“从”和处所词“那里”组成的介词短语，作“经过”的处所状语。替换将这一完整短语移到“经过”之后，而“经过”不能直接后接“从那里”作此类补语，因而引入了语序错误。原有词语均保持完整，人物、动作及处所关系仍可恢复，错误也仅限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "经过从那里"
+          }
+        },
+        {
+          "unit_index": 2,
+          "verse": 13,
+          "content_chars": 19,
+          "original_text": "有一位神人奉耶和华的话从犹大来到伯特利。",
+          "corrupted_text": "有一位神人奉从犹大耶和华的话来到伯特利。",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "aea5faaa9eababc3963e273254c783029c5f585ecb81b9da3f87dc1bba92df8f",
+          "proposal": {
+            "edited_clause": "有一位神人奉从犹大耶和华的话来到伯特利。",
+            "error_type": "介宾结构内部插入状语",
+            "explanation": "将原作来源状语的多词介词短语“从犹大”移到“奉”与“耶和华的话”之间，破坏“奉”直接引出其名词性宾语的结构要求。"
+          },
+          "judgment_id": "6935ab4536555dc581b2a673ac8cb9a3c16988e850ea395c3e172c11dce23a1a",
+          "judgment": {
+            "explanation": "原句中“从犹大”是修饰“来到”的来源介词短语。替换将这一完整多词短语移入“奉耶和华的话”，插在介词“奉”与其名词性宾语“耶和华的话”之间，破坏了介词与宾语的结合，且“从犹大”不能在此直接修饰“耶和华的话”。原有词语均保持完整，人物、来源、目的地及奉命而来的关系仍可恢复；错误仅在本分句内。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "奉从犹大耶和华的话"
+          }
+        },
+        {
+          "unit_index": 34,
+          "verse": 6,
+          "content_chars": 8,
+          "original_text": "使我的手得以复原。",
+          "corrupted_text": "使得以复原我的手。",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "aea5faaa9eababc3963e273254c783029c5f585ecb81b9da3f87dc1bba92df8f",
+          "proposal": {
+            "edited_clause": "使得以复原我的手。",
+            "error_type": "使令兼语后置",
+            "explanation": "将原作“使”的宾语兼“得以复原”的主语的多词名词短语“我的手”移到句末，违反使令兼语应位于“使”与后续谓语之间的要求。"
+          },
+          "judgment_id": "154413695e587db6220a4e094440b87428459ebce6723e2385378191dad04bc8",
+          "judgment": {
+            "explanation": "原句中“我的手”是“使”所引出的兼语，也是“得以复原”的主语。替换将完整的多词名词短语“我的手”移到谓语“得以复原”之后，破坏了“使＋兼语＋谓语”的次序；“复原”在此也不能直接带“我的手”作宾语。原有词语内部保持完整，致使手恢复的含义仍可辨认，错误仅限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "使得以复原我的手"
+          }
+        },
+        {
+          "unit_index": 47,
+          "verse": 8,
+          "content_chars": 10,
+          "original_text": "也不在这地方吃饭喝水。",
+          "corrupted_text": "也不在吃饭喝水这地方。",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "fd49d2e5edac4926fddb0b2c61761c2ff625e0e8a9e268d989c746974c905601",
+          "proposal": {
+            "edited_clause": "也不在吃饭喝水这地方。",
+            "error_type": "谓语移入介词宾语内部",
+            "explanation": "将原作并列谓语的多词成分“吃饭喝水”整体移到“在”和“这地方”之间，使其无连接地插入地点介词短语，破坏“在”与地点宾语的结合。"
+          },
+          "judgment_id": "ef4ee76068a759cdcc2c006d5476fa26281cf07010b0d68d1ec7b6a89d4a3842",
+          "judgment": {
+            "explanation": "原句中“吃饭喝水”是受“不”否定的并列谓语，“在这地方”是地点状语。修改把完整的多词谓语“吃饭喝水”移到“在”与其处所宾语“这地方”之间，破坏了介词与宾语的连接；这里也不能直接把“吃饭喝水这地方”作为规范的定中结构。原有词语均未被拆分，原来的否定、地点与行为仍可恢复，缺陷仅限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "在吃饭喝水这地方"
+          }
+        },
+        {
+          "unit_index": 72,
+          "verse": 14,
+          "content_chars": 10,
+          "original_text": "“你是从犹大来的神人吗？",
+          "corrupted_text": "“你是来的从犹大神人吗？",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "fd49d2e5edac4926fddb0b2c61761c2ff625e0e8a9e268d989c746974c905601",
+          "proposal": {
+            "edited_clause": "“你是来的从犹大神人吗？",
+            "error_type": "来源介词短语错置",
+            "explanation": "将原在关系从句中修饰“来”的多词介词短语“从犹大”整体移到“的”与“神人”之间，使来源状语脱离从句，并插入关系从句标记与中心名词之间。"
+          },
+          "judgment_id": "bfa2376d5b0778f130883c553176913ce10922b83e5ad6c0f41393b7bde39307",
+          "judgment": {
+            "explanation": "原句中，“从犹大”是修饰“来”的来源介词短语。替换将这个完整的多词短语移到“来的”之后、“神人”之前，使其脱离“来”，并在定语标记“的”与中心名词之间形成无法成立的修饰结构。这不是单个虚词的移位。原有词语均保持完整，人物身份及来自犹大的含义仍可恢复，错误仅限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "来的从犹大神人"
+          }
+        },
+        {
+          "unit_index": 66,
+          "verse": 13,
+          "content_chars": 8,
+          "original_text": "”他们就给驴备了鞍，",
+          "corrupted_text": "”他们就备了给驴鞍，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "fd49d2e5edac4926fddb0b2c61761c2ff625e0e8a9e268d989c746974c905601",
+          "proposal": {
+            "edited_clause": "”他们就备了给驴鞍，",
+            "error_type": "受益介词短语后置",
+            "explanation": "将原作受益状语的多词介词短语“给驴”整体移到“备了”和宾语“鞍”之间，违反该状语应置于谓语前、不能插入动宾结合内部的次序要求。"
+          },
+          "judgment_id": "9c5ba344a2ff95493cc811604af9923214f1218d0608f81dc4105c72ec12d884",
+          "judgment": {
+            "explanation": "原句中“给驴”是由介词“给”和名词“驴”组成的受益对象短语，位于“备了鞍”之前。替换将该完整短语移到“备了”与宾语“鞍”之间，违反此处介词短语的附着和语序要求，造成新的语法错误，并非仅移动一个功能词。原有词语均保持完整，给驴备鞍的参与者、动作和完成意义仍可恢复，错误也局限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "备了给驴鞍"
+          }
+        },
+        {
+          "unit_index": 35,
+          "verse": 6,
+          "content_chars": 7,
+          "original_text": "”神人就为王祷告，",
+          "corrupted_text": "”为王祷告神人就，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "18267badfd2beab0f1caa0e06670d038fcf734bac9b4ab31afe618f282cc3bf0",
+          "proposal": {
+            "edited_clause": "”为王祷告神人就，",
+            "error_type": "谓语短语前移导致状语悬空",
+            "explanation": "将完整谓语短语“为王祷告”移到主语“神人”之前，使原本修饰该谓语的“就”悬在句末，违反“就”须位于其所修饰谓语之前的次序要求。"
+          },
+          "judgment_id": "b36f074859b45d794280a559b75bddd0978e52f0c826f00aed602c508b96014a",
+          "judgment": {
+            "explanation": "原作谓语的多词短语“为王祷告”被整体移到主语“神人”之前，使副词“就”留在句末而没有后接谓语，违反“主语＋就＋谓语”的结构要求，不能视为正常话题化。原有词语均保持完整，为王祷告的人仍可辨认为神人；错误限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "为王祷告神人就"
+          }
+        },
+        {
+          "unit_index": 32,
+          "verse": 6,
+          "content_chars": 6,
+          "original_text": "“你要为我祷告，",
+          "corrupted_text": "“为我祷告你要，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "18267badfd2beab0f1caa0e06670d038fcf734bac9b4ab31afe618f282cc3bf0",
+          "proposal": {
+            "edited_clause": "“为我祷告你要，",
+            "error_type": "动词短语前移导致情态依存断裂",
+            "explanation": "将原作“要”的补足语的完整动词短语“为我祷告”移到主语“你”之前，使“要”悬在句末，违反情态动词须在本句中先于其动词短语补足语的要求。"
+          },
+          "judgment_id": "0e8f8a25001caea95c49fdca45cb85665646b4102fcddde36f33d8bd41dc3b73",
+          "judgment": {
+            "explanation": "原句中“为我祷告”是情态动词“要”后的谓语短语，包含介词短语“为我”和动词“祷告”。替换将其整体移到“你要”之前，使情态动词“要”悬置在分句末尾，破坏了此处“主语＋要＋谓语”的结构；不能自然理解为合法的话题化。各词内部完整，祷告者、受益者及要求祷告的含义仍可恢复，错误仅涉及本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "为我祷告你要"
+          }
+        },
+        {
+          "unit_index": 112,
+          "verse": 23,
+          "content_chars": 14,
+          "original_text": "带他回来的年老先知给他备了驴，",
+          "corrupted_text": "年老先知给他带他回来的备了驴，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "18267badfd2beab0f1caa0e06670d038fcf734bac9b4ab31afe618f282cc3bf0",
+          "proposal": {
+            "edited_clause": "年老先知给他带他回来的备了驴，",
+            "error_type": "关系从句错置",
+            "explanation": "将原修饰“年老先知”的完整关系从句“带他回来的”移到“备了驴”之前，使带“的”的关系从句直接接在动词“备”前，违反该定语须依附名词性中心语的要求。"
+          },
+          "judgment_id": "04d302eb166b21ac7e48b3f9b009508526ae71df7c0a2a50616ce0334c9758d2",
+          "judgment": {
+            "explanation": "原作定语的多词成分“带他回来的”从中心语“年老先知”前移到了“给他”与“备了驴”之间，既失去所修饰的中心语，又不能作为“备”的状语，造成新的定中结构和附着错误。该变化不是单个虚词的移位。各词内部完整，原有参与者及备驴、带回的关系仍可恢复，错误局限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "给他带他回来的备了驴"
+          }
+        },
+        {
+          "unit_index": 9,
+          "verse": 2,
+          "content_chars": 22,
+          "original_text": "他必在你上面献祭那些在你上面烧香的丘坛的祭司，",
+          "corrupted_text": "他必献祭那些在你上面烧香的丘坛的在你上面祭司，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "18267badfd2beab0f1caa0e06670d038fcf734bac9b4ab31afe618f282cc3bf0",
+          "proposal": {
+            "edited_clause": "他必献祭那些在你上面烧香的丘坛的在你上面祭司，",
+            "error_type": "处所介词短语侵入名词短语",
+            "explanation": "将原修饰“献祭”的第一个“在你上面”整体移到“丘坛的”与“祭司”之间，使谓语的处所状语侵入定语与名词中心语之间，破坏该名词短语的内部次序。"
+          },
+          "judgment_id": "2104c480442bc7a3024aca3e1362cbb6f69fdedf9fb0a92f719b80e1f940bee4",
+          "judgment": {
+            "explanation": "原来修饰“献祭”的介词短语“在你上面”被整体移到宾语内部，插在“丘坛的”与中心名词“祭司”之间。该短语包含介词、代词和方位词，不是单个词的移位；它在此既不能直接充当“祭司”的定语，也破坏了原有定语与中心名词的衔接，造成新的语法错误。原有词语均保持完整，参与者、动作及地点关系仍可从原有成分恢复，错误仅在本分句内。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "丘坛的在你上面祭司"
+          }
+        },
+        {
+          "unit_index": 10,
+          "verse": 2,
+          "content_chars": 12,
+          "original_text": "人的骨头也必在你上面焚烧。",
+          "corrupted_text": "人的在你上面骨头也必焚烧。",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "18267badfd2beab0f1caa0e06670d038fcf734bac9b4ab31afe618f282cc3bf0",
+          "proposal": {
+            "edited_clause": "人的在你上面骨头也必焚烧。",
+            "error_type": "处所介词短语侵入主语内部",
+            "explanation": "将原修饰“焚烧”的完整处所介词短语“在你上面”移到“人的”与“骨头”之间，使谓语状语打断主语中定语与名词中心语的组合。"
+          },
+          "judgment_id": "77de6638ae357d5eb3f73c1d978afe6d7a3418e393d8cefed84092dad3bc00b4",
+          "judgment": {
+            "explanation": "原作中“在你上面”是修饰“焚烧”的处所状语；替换后，这个由介词、代词和方位词组成的完整短语被移入“人的骨头”内部，插在“的”与中心名词“骨头”之间，破坏了定中结构。原有词语均保持完整，人物关系、焚烧事件、处所及“也必”的含义仍可恢复，错误仅限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "人的在你上面骨头"
+          }
+        },
+        {
+          "unit_index": 25,
+          "verse": 4,
+          "content_chars": 9,
+          "original_text": "”他所伸出的手便枯干，",
+          "corrupted_text": "”手便他所伸出的枯干，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "18c5e579f50788cc9d7dc9b4bb9098906acf3f0d8a713a7ae27a99b8a26d76be",
+          "proposal": {
+            "edited_clause": "”手便他所伸出的枯干，",
+            "error_type": "关系定语错置于谓语内部",
+            "explanation": "将修饰“手”的完整关系定语“他所伸出的”移到“便”和“枯干”之间，使其脱离名词中心语而直接置于谓语动词前，违反该关系定语须依附名词中心语的要求。"
+          },
+          "judgment_id": "e9595c70ba9a5e6b65e66d5863a878f210b090abacd4df5533dd2cf8ede0bf01",
+          "judgment": {
+            "explanation": "原句中“他所伸出的”是修饰“手”的关系从句；编辑将这一完整多词成分移到“便”之后、“枯干”之前，使其脱离中心语“手”，且无法在该位置合法修饰谓语“枯干”，造成新的修饰与附着错误。原有词语均保持完整，仍可恢复他伸出的手枯干这一含义，错误仅限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "手便他所伸出的枯干"
+          }
+        },
+        {
+          "unit_index": 31,
+          "verse": 6,
+          "content_chars": 5,
+          "original_text": "6 王对神人说：",
+          "corrupted_text": "6 王说对神人：",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "18c5e579f50788cc9d7dc9b4bb9098906acf3f0d8a713a7ae27a99b8a26d76be",
+          "proposal": {
+            "edited_clause": "6 王说对神人：",
+            "error_type": "对象介词短语后置",
+            "explanation": "将表示说话对象的完整介词短语“对神人”从“说”前移至其后；这里的对象状语须位于“说”前，不能直接作为其后置补足语。"
+          },
+          "judgment_id": "9b1baf986bcaf995d0e3e9a28067f4835d9032d7352c65038f50cb4f419dd3dc",
+          "judgment": {
+            "explanation": "原句中“对神人”是由介词“对”和名词“神人”组成的多词介词短语，充当“说”的对象状语。替换将该短语移到“说”之后；这里的“对神人”不能直接充当“说”的后置补语，因而违反该介词短语应置于谓语前的要求。词语均保持完整，说话者、受话者和说话行为仍可恢复，错误限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "王说对神人"
+          }
+        },
+        {
+          "unit_index": 158,
+          "verse": 32,
+          "content_chars": 38,
+          "original_text": "32 因为他奉耶和华的话向伯特利的坛和撒玛利亚各城高处的所有丘坛所喊的预言必然应验。",
+          "corrupted_text": "32 因为他向伯特利的坛和撒玛利亚各城高处的所有奉耶和华的话丘坛所喊的预言必然应验。",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "18c5e579f50788cc9d7dc9b4bb9098906acf3f0d8a713a7ae27a99b8a26d76be",
+          "proposal": {
+            "edited_clause": "32 因为他向伯特利的坛和撒玛利亚各城高处的所有奉耶和华的话丘坛所喊的预言必然应验。",
+            "error_type": "介词短语插入名词短语内部",
+            "explanation": "将原作“喊”的依据状语的完整介词短语“奉耶和华的话”移入“所有丘坛”，隔在“所有”和“丘坛”之间，违反该状语不能直接充当名词定语的结构要求。"
+          },
+          "judgment_id": "5c02e569968cbb461add45b8877ddbea768de0b11083a6a989cf8d8b24dcb089",
+          "judgment": {
+            "explanation": "原作状语、修饰“喊”的多词短语“奉耶和华的话”被整体移入名词短语“所有丘坛”，插在“所有”和中心语“丘坛”之间。该介词短语不能在此直接充当无“的”的名词修饰语，因而破坏了名词短语的内部结构。原有词语均保持完整，原来的参与者、动作及逻辑关系仍可恢复；错误仅发生在本次编辑的分句内。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "所有奉耶和华的话丘坛"
+          }
+        },
+        {
+          "unit_index": 128,
+          "verse": 26,
+          "content_chars": 11,
+          "original_text": "耶和华因此把他交给狮子，",
+          "corrupted_text": "耶和华因此交给狮子把他，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "060204eb8f9f48a0b67e38857529508ef81aee418d942f5c0b24e98d1ab72c92",
+          "proposal": {
+            "edited_clause": "耶和华因此交给狮子把他，",
+            "error_type": "把字句谓语前置",
+            "explanation": "将原作谓语的多词短语“交给狮子”整体移到“把他”之前，违反把字句中“把＋宾语”须位于其支配谓语之前的次序要求。"
+          },
+          "judgment_id": "61348365795a20937df906d0ed364a0cddb3b077b37a08999c5b2c3e158a28d2",
+          "judgment": {
+            "explanation": "原句中“把他”是由介词“把”和代词“他”组成的处置式介词短语，位于谓语“交给狮子”之前。编辑将这一完整短语移到谓语之后，违反把字结构中“把＋受事”须置于主要谓语之前的语序要求，不能仅靠移动一个虚词得到。原有词语均保持完整，施事、受事、接受者及因果关系仍可恢复，错误局限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "交给狮子把他"
+          }
+        },
+        {
+          "unit_index": 89,
+          "verse": 18,
+          "content_chars": 5,
+          "original_text": "“我也是先知，",
+          "corrupted_text": "“是先知我也，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "359756bebfc0d76fba88bc2817681cc8888f57ee60eaec0edfc3403f2298c3d9",
+          "proposal": {
+            "edited_clause": "“是先知我也，",
+            "error_type": "谓语短语错置",
+            "explanation": "将原作谓语的完整短语“是先知”移到主语“我”之前，使本应位于谓语前的副词“也”悬置于句末，破坏“也”与其所修饰谓语的次序关系。"
+          },
+          "judgment_id": "6f9ae5fe2e7463c19df0cb04505e5a75f277a4d5201706cfeb9af77c53024b9d",
+          "judgment": {
+            "explanation": "原句的多词谓语“是先知”（系词“是”加名词“先知”）被整体移到主语“我”和副词“也”之前，使“也”悬空，破坏了该句中“主语＋也＋谓语”的结构；这里没有可支持这种前置的正常话题结构。各词内部保持完整，原有身份判断及“也”的附加关系仍可恢复，错误仅在本分句内。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "是先知我也"
+          }
+        },
+        {
+          "unit_index": 58,
+          "verse": 11,
+          "content_chars": 15,
+          "original_text": "也将神人对王所说的话告诉了父亲。",
+          "corrupted_text": "也将神人对王所说告诉了父亲的话。",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "b5aaf365b61a8e8745618fb1b4a115a9dee3f5976085e0ee660dacf0b4024b8f",
+          "proposal": {
+            "edited_clause": "也将神人对王所说告诉了父亲的话。",
+            "error_type": "谓语移入宾语内部",
+            "explanation": "将原作主句谓语的多词成分“告诉了父亲”移到“所说”与“的话”之间，破坏关系修饰语“神人对王所说的”与中心语“话”的内部结构。"
+          },
+          "judgment_id": "21e670663152a3528151bfe94873194c3b2ca7b8b31a5dac0f1fde0e0485939f",
+          "judgment": {
+            "explanation": "“告诉了父亲”原是“将”字句中位于宾语“神人对王所说的话”之后的谓语，现被移入该宾语，插在“所说”与“的话”之间，破坏了关系修饰语与中心语的结构，也使“将”字句缺少合法的后续谓语。移动的是包含动词和名词的完整多词成分，并非单个助词。原有词语内部保持完整，原来的告知内容、对象和动作仍可恢复；错误局限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "所说告诉了父亲的话"
+          }
+        },
+        {
+          "unit_index": 21,
+          "verse": 4,
+          "content_chars": 14,
+          "original_text": "耶罗波安王正站在伯特利的坛旁，",
+          "corrupted_text": "耶罗波安王正伯特利的坛旁站在，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "b5aaf365b61a8e8745618fb1b4a115a9dee3f5976085e0ee660dacf0b4024b8f",
+          "proposal": {
+            "edited_clause": "耶罗波安王正伯特利的坛旁站在，",
+            "error_type": "处所补足语错位",
+            "explanation": "将原作“站在”的处所补足语“伯特利的坛旁”整体移到“正”与“站在”之间，违反处所补足语须接在“站在”之后的顺序要求。"
+          },
+          "judgment_id": "cf90fe687d00982a0b0061203e9750545adcbe9f3fb8abfc9d3cd027ed438931",
+          "judgment": {
+            "explanation": "原作处所补语的多词短语“伯特利的坛旁”被整体移到“站在”之前，使句末的“在”失去其后必需的处所宾语，违反“站在＋处所”的语序要求。这不是单个介词的移位。原有词语均保持完整，人物、正在站立的动作及地点仍可恢复，错误仅限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "正伯特利的坛旁站在"
+          }
+        },
+        {
+          "unit_index": 163,
+          "verse": 33,
+          "content_chars": 9,
+          "original_text": "凡愿意作高处祭司的，",
+          "corrupted_text": "凡愿意高处祭司作的，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "b5aaf365b61a8e8745618fb1b4a115a9dee3f5976085e0ee660dacf0b4024b8f",
+          "proposal": {
+            "edited_clause": "凡愿意高处祭司作的，",
+            "error_type": "补语内部宾语错位",
+            "explanation": "将原作“作”的宾语“高处祭司”整体移到“愿意”与“作”之间，破坏“愿意”所接动词短语中“作＋身份宾语”的顺序。"
+          },
+          "judgment_id": "7379df22909d2c93b5a28765313d14cc2f0f1d3461f6bdf67225c2f334701d82",
+          "judgment": {
+            "explanation": "“高处祭司”由“高处”和“祭司”构成，原是“作”的宾语；替换后被移到“愿意”与“作”之间。在没有话题化或其他许可结构的情况下，这一位置不能容纳该宾语，破坏了“愿意＋作＋宾语”的结构。原有词语均保持完整，所指人群及其意愿仍可恢复，错误仅限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "愿意高处祭司作"
+          }
+        },
+        {
+          "unit_index": 148,
+          "verse": 30,
+          "content_chars": 11,
+          "original_text": "30 把尸首葬在自己的坟墓里，",
+          "corrupted_text": "30 把在自己的坟墓里尸首葬，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "af2e110e4f60bddae64d3ca2c3dd41ac81a9d8dbb523558ad86008e61608f55a",
+          "proposal": {
+            "edited_clause": "30 把在自己的坟墓里尸首葬，",
+            "error_type": "处所短语插入把字宾语位置",
+            "explanation": "将原作“葬”的处所补语的多词短语“在自己的坟墓里”移到“把”与“尸首”之间，违反“把”后应直接接其名词性宾语的结构要求。"
+          },
+          "judgment_id": "902761befff0a38c155d103b8100c035a755dc731d18d01e489dc447c320a39b",
+          "judgment": {
+            "explanation": "原作中完整的多词处所短语“在自己的坟墓里”是“葬”的处所补语，现被移至“把”与其宾语“尸首”之间。该介词短语不能在这里修饰“尸首”，因而破坏了“把＋宾语＋谓语”的结构。原有词语均保持完整，埋葬对象及地点仍可恢复；错误局限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "把在自己的坟墓里尸首葬"
+          }
+        },
+        {
+          "unit_index": 168,
+          "verse": 34,
+          "content_chars": 5,
+          "original_text": "从地上除掉。",
+          "corrupted_text": "除掉从地上。",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "af2e110e4f60bddae64d3ca2c3dd41ac81a9d8dbb523558ad86008e61608f55a",
+          "proposal": {
+            "edited_clause": "除掉从地上。",
+            "error_type": "来源介词短语后置",
+            "explanation": "将原作来源状语的多词介词短语“从地上”完整移到“除掉”后，违反此处“从”字来源短语应置于动词前的顺序要求。"
+          },
+          "judgment_id": "015b6fee984d0b5093b2884b1228fd77b191381a58ebb4e9b16a6290f31f5311",
+          "judgment": {
+            "explanation": "完整介词短语“从地上”原作“除掉”的来源状语，被移到动词之后。“除掉”不能以这种后置的“从”字短语承接来源，因此引入了局部语序错误。该短语含介词“从”和处所词“地上”，符合多词成分的要求；各词内部完整，被除掉的对象及来源仍可从上下文恢复。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "除掉从地上"
+          }
+        }
+      ]
+    },
+    "passage_target_decanonicalized": {
+      "generation_mode": "validated_bank",
+      "bank_id": "d5ddb3042746311fe43b8c52a881f0f053fe1154c3e9cd40893702a6d3ddc7fd",
+      "edit_style": "llm_structural_v1",
+      "source_sha256": "e4b9e276439a52b0095e56f7604a055f1b80f7fd135e646247bec9476daa6e43",
+      "output_sha256": "49edcd48e6e9ccfabcb3b6191145cabe2b788f3845bcd6f489d893a3bdb7a460",
+      "judge": {
+        "model": "gpt-6.1-sol",
+        "prompt_sha256": "a2abc09beb94299ae5ba0b4d6c363ce481093bce718b9b9608318cce66e6c61e",
+        "schema_sha256": "ad414a52eb96503c0b44a987f2edd0589aa8555bbfea4aacbe8305676de1aa12"
+      },
+      "bank_max_rate": 0.3,
+      "generator": {
+        "model": "gpt-6.1-sol",
+        "prompt_sha256": "1a0fc34ac6e0db5918641db38e16db653909ae5a6a89b418e958e5dc2ba3782b",
+        "schema_sha256": "647d8249f8e5e165094d5f461438de2f36ec7ff8ee75007729e01d3bc3069057"
+      },
+      "requested_rate": 0.3,
+      "actual_affected_rate": 0.30357142857142855,
+      "target_met": true,
+      "shortfall_content_chars": 0,
+      "seed": 80755,
+      "total_content_chars": 1120,
+      "affected_content_chars": 340,
+      "affected_unit_count": 29,
+      "operation_count": 29,
+      "protected_terms": 0,
+      "protected_losses": [],
+      "protected_verified": true,
+      "affected_units": [
+        {
+          "unit_index": 99,
+          "verse": 20,
+          "content_chars": 7,
+          "original_text": "20 他们坐席的时候，",
+          "corrupted_text": "20 的时候他们坐席，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "8958ff9e965d5b6d042139128416d857189e6efd764c2bc26cd927169e0e9251",
+          "proposal": {
+            "edited_clause": "20 的时候他们坐席，",
+            "error_type": "时间结构内嵌小句错位",
+            "explanation": "将原作时间结构内嵌小句的“他们坐席”整体移至“的时候”之后，违反该结构中小句须位于“的时候”之前的要求。"
+          },
+          "judgment_id": "074f371653e1b758a916e643cb328025b75360b66225e83248e3f119899e0f7a",
+          "judgment": {
+            "explanation": "完整的主谓短语“他们坐席”原本位于“的时候”之前，充当时间结构中的修饰成分；移到其后，使句首的“的”失去左侧依附成分，破坏了“……的时候”的构造。各词内部完整，原来的坐席事件及其时间关系仍可恢复，错误局限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "的时候他们坐席"
+          }
+        },
+        {
+          "unit_index": 142,
+          "verse": 29,
+          "content_chars": 12,
+          "original_text": "29 先知就把神人的尸首拾起来，",
+          "corrupted_text": "29 先知就把拾起来神人的尸首，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "8958ff9e965d5b6d042139128416d857189e6efd764c2bc26cd927169e0e9251",
+          "proposal": {
+            "edited_clause": "29 先知就把拾起来神人的尸首，",
+            "error_type": "把字结构宾语错位",
+            "explanation": "将原作“把”字结构宾语的“神人的尸首”整体移到“拾起来”之后，违反把字宾语须位于“把”与谓语之间的要求。"
+          },
+          "judgment_id": "af72d28d263f9d000130216b007212f771be322a900d24cc3481e4808a3bc1c9",
+          "judgment": {
+            "explanation": "原句中“神人的尸首”是“把”引出的多词宾语，须位于“把”之后、谓语“拾起来”之前。替换将这一完整名词短语移到谓语之后，形成“把拾起来神人的尸首”，违反把字结构的宾语位置要求。原有词语均保持完整，先知拾起神人尸首的参与者与动作仍可恢复；错误仅在本分句内。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "把拾起来神人的尸首"
+          }
+        },
+        {
+          "unit_index": 155,
+          "verse": 31,
+          "content_chars": 14,
+          "original_text": "你们要把我葬在神人葬的坟墓里，",
+          "corrupted_text": "你们要把在神人葬的坟墓里我葬，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "8958ff9e965d5b6d042139128416d857189e6efd764c2bc26cd927169e0e9251",
+          "proposal": {
+            "edited_clause": "你们要把在神人葬的坟墓里我葬，",
+            "error_type": "处所补语插入把字宾语位置",
+            "explanation": "将原作“葬”的处所补语的“在神人葬的坟墓里”整体移至“把”与“我”之间，违反把字宾语须紧随“把”的结构要求。"
+          },
+          "judgment_id": "66e5b3ac3fafee9ef8090f2590ff3b4d76bad50703568d2efb0be417b9af8eab",
+          "judgment": {
+            "explanation": "原句中“在神人葬的坟墓里”是“葬”的处所补语，现被整体移到“把”与其宾语“我”之间，违反“把”须先引出受处置宾语、再接谓语的结构要求。该成分包含多个词，并非单个介词的移动。词语内部均完整，安葬对象、地点及要求仍可恢复；错误局限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "把在神人葬的坟墓里我葬"
+          }
+        },
+        {
+          "unit_index": 161,
+          "verse": 33,
+          "content_chars": 12,
+          "original_text": "耶罗波安仍不离弃他的恶行，",
+          "corrupted_text": "耶罗波安仍不他的恶行离弃，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "8958ff9e965d5b6d042139128416d857189e6efd764c2bc26cd927169e0e9251",
+          "proposal": {
+            "edited_clause": "耶罗波安仍不他的恶行离弃，",
+            "error_type": "宾语插入否定谓语内部",
+            "explanation": "将原作“离弃”宾语的“他的恶行”整体移至“不”与“离弃”之间，违反此处否定词“不”须直接置于所否定谓语之前、不能由宾语隔开的要求。"
+          },
+          "judgment_id": "e678cd17c8af8efe4700d511bace0557a129d1e5cd4e30aae571f6671be9973a",
+          "judgment": {
+            "explanation": "原作宾语的多词名词短语“他的恶行”被整体移到“不”与动词“离弃”之间，破坏了此处否定副词与动词短语的组合次序；该位置也不能解释为正常的话题前置。原有词语均保持完整，人物、否定关系及离弃的对象仍可恢复，错误仅限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "不他的恶行离弃"
+          }
+        },
+        {
+          "unit_index": 84,
+          "verse": 17,
+          "content_chars": 13,
+          "original_text": "17 因为我奉耶和华的话被吩咐说：",
+          "corrupted_text": "17 因为我奉被吩咐耶和华的话说：",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "a8df8ffc373fdfa709f11cccd0c551161f1675b2d34d50ac2127c3264a205d4a",
+          "proposal": {
+            "edited_clause": "17 因为我奉被吩咐耶和华的话说：",
+            "error_type": "介词宾语错位",
+            "explanation": "将原作“奉”的宾语的多词名词短语“耶和华的话”移至“被吩咐”之后，破坏“奉”与其宾语必须相接的结构要求。"
+          },
+          "judgment_id": "90760572d4b59ac287564238d51eddad04981f948eade9c7e125ed555ecc93b1",
+          "judgment": {
+            "explanation": "原作“奉”的宾语的多词名词短语“耶和华的话”被移到“被吩咐”之后，使“奉”无法正常连接其宾语，并使该名词短语误接在被动谓语“被吩咐”后，破坏了原有介词结构。这不是单个虚词的移位。各词内部完整，原有的奉命及被吩咐关系仍可恢复；错误仅在本分句内。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "奉被吩咐耶和华的话"
+          }
+        },
+        {
+          "unit_index": 162,
+          "verse": 33,
+          "content_chars": 11,
+          "original_text": "仍从各阶层立高处的祭司，",
+          "corrupted_text": "仍立高处的从各阶层祭司，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "a8df8ffc373fdfa709f11cccd0c551161f1675b2d34d50ac2127c3264a205d4a",
+          "proposal": {
+            "edited_clause": "仍立高处的从各阶层祭司，",
+            "error_type": "介词短语插入名词短语",
+            "explanation": "将原作来源状语的多词介词短语“从各阶层”移入“高处的祭司”，置于“的”与中心语“祭司”之间，破坏该定中结构的连接。"
+          },
+          "judgment_id": "765726ba90b9a02cef7e79f7090a3c1bd452b7f1195720c73bdd76c86ea3c3cb",
+          "judgment": {
+            "explanation": "原作中“从各阶层”是修饰“立”的介词短语，表示选立祭司的来源。替换将这一完整多词短语移到“高处的”与中心名词“祭司”之间，破坏了定语与中心语的正常连接，不能作为该名词短语内部的合法修饰语。原有词语均保持完整，选立的对象及来源仍可恢复；错误仅在本分句内。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "高处的从各阶层祭司"
+          }
+        },
+        {
+          "unit_index": 105,
+          "verse": 21,
+          "content_chars": 16,
+          "original_text": "没有遵守耶和华你神所吩咐你的命令，",
+          "corrupted_text": "没有遵守耶和华你神的命令所吩咐你，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "a8df8ffc373fdfa709f11cccd0c551161f1675b2d34d50ac2127c3264a205d4a",
+          "proposal": {
+            "edited_clause": "没有遵守耶和华你神的命令所吩咐你，",
+            "error_type": "关系定语内部成分后置",
+            "explanation": "将原在关系定语中作谓语成分的多词短语“所吩咐你”移至“命令”之后，破坏该成分须位于定语标记“的”之前的顺序要求。"
+          },
+          "judgment_id": "eae844b252a881b95f0d617a360c399ed4a358c9f4652f1ca7b65f7f78aea4be",
+          "judgment": {
+            "explanation": "多词成分“所吩咐你”原是关系从句中的谓语部分，位于“耶和华你神”之后、“的命令”之前；现被移到“命令”之后，破坏了“……所吩咐你的命令”的定语—中心语结构，且后置的“所吩咐你”没有合适的句法归属。这不是单个虚词的移位。各词内部保持完整，原有的不遵守神所吩咐之命令的意思仍可恢复，错误局限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "耶和华你神的命令所吩咐你"
+          }
+        },
+        {
+          "unit_index": 70,
+          "verse": 14,
+          "content_chars": 10,
+          "original_text": "遇见他坐在一棵橡树下，",
+          "corrupted_text": "遇见他一棵橡树坐在下，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "a8df8ffc373fdfa709f11cccd0c551161f1675b2d34d50ac2127c3264a205d4a",
+          "proposal": {
+            "edited_clause": "遇见他一棵橡树坐在下，",
+            "error_type": "处所结构内部名词短语错位",
+            "explanation": "将原在“在……下”处所结构中的多词名词短语“一棵橡树”移至“他”与“坐”之间，破坏该名词短语须处于“在”与方位词“下”之间的要求。"
+          },
+          "judgment_id": "707a5ba43279a98bda60d99f73d39d94428c1f88fea61ddcc5d5092756aa7dd1",
+          "judgment": {
+            "explanation": "原来位于处所结构“在一棵橡树下”中的多词名词短语“一棵橡树”被移到“他”和“坐”之间，使处所结构的名词部分与方位词“下”分离；“他一棵橡树坐在下”不构成正常的话题或主谓结构。原有词语均保持完整，人物、坐的动作及树下位置仍可恢复，错误仅限本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "他一棵橡树坐在下"
+          }
+        },
+        {
+          "unit_index": 120,
+          "verse": 25,
+          "content_chars": 7,
+          "original_text": "25 有人从那里经过，",
+          "corrupted_text": "25 有人经过从那里，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "aea5faaa9eababc3963e273254c783029c5f585ecb81b9da3f87dc1bba92df8f",
+          "proposal": {
+            "edited_clause": "25 有人经过从那里，",
+            "error_type": "来源介词短语错置",
+            "explanation": "将原作来源状语的多词介词短语“从那里”移到“经过”之后，违反该来源状语应置于动词前的语序要求。"
+          },
+          "judgment_id": "ecd91b71fcf99ca67b6bb52b704a396d26d5f333914f1523d57dad8bd4b695af",
+          "judgment": {
+            "explanation": "原句中“从那里”是由介词“从”和处所词“那里”组成的介词短语，作“经过”的处所状语。替换将这一完整短语移到“经过”之后，而“经过”不能直接后接“从那里”作此类补语，因而引入了语序错误。原有词语均保持完整，人物、动作及处所关系仍可恢复，错误也仅限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "经过从那里"
+          }
+        },
+        {
+          "unit_index": 2,
+          "verse": 13,
+          "content_chars": 19,
+          "original_text": "有一位神人奉耶和华的话从犹大来到伯特利。",
+          "corrupted_text": "有一位神人奉从犹大耶和华的话来到伯特利。",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "aea5faaa9eababc3963e273254c783029c5f585ecb81b9da3f87dc1bba92df8f",
+          "proposal": {
+            "edited_clause": "有一位神人奉从犹大耶和华的话来到伯特利。",
+            "error_type": "介宾结构内部插入状语",
+            "explanation": "将原作来源状语的多词介词短语“从犹大”移到“奉”与“耶和华的话”之间，破坏“奉”直接引出其名词性宾语的结构要求。"
+          },
+          "judgment_id": "6935ab4536555dc581b2a673ac8cb9a3c16988e850ea395c3e172c11dce23a1a",
+          "judgment": {
+            "explanation": "原句中“从犹大”是修饰“来到”的来源介词短语。替换将这一完整多词短语移入“奉耶和华的话”，插在介词“奉”与其名词性宾语“耶和华的话”之间，破坏了介词与宾语的结合，且“从犹大”不能在此直接修饰“耶和华的话”。原有词语均保持完整，人物、来源、目的地及奉命而来的关系仍可恢复；错误仅在本分句内。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "奉从犹大耶和华的话"
+          }
+        },
+        {
+          "unit_index": 34,
+          "verse": 6,
+          "content_chars": 8,
+          "original_text": "使我的手得以复原。",
+          "corrupted_text": "使得以复原我的手。",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "aea5faaa9eababc3963e273254c783029c5f585ecb81b9da3f87dc1bba92df8f",
+          "proposal": {
+            "edited_clause": "使得以复原我的手。",
+            "error_type": "使令兼语后置",
+            "explanation": "将原作“使”的宾语兼“得以复原”的主语的多词名词短语“我的手”移到句末，违反使令兼语应位于“使”与后续谓语之间的要求。"
+          },
+          "judgment_id": "154413695e587db6220a4e094440b87428459ebce6723e2385378191dad04bc8",
+          "judgment": {
+            "explanation": "原句中“我的手”是“使”所引出的兼语，也是“得以复原”的主语。替换将完整的多词名词短语“我的手”移到谓语“得以复原”之后，破坏了“使＋兼语＋谓语”的次序；“复原”在此也不能直接带“我的手”作宾语。原有词语内部保持完整，致使手恢复的含义仍可辨认，错误仅限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "使得以复原我的手"
+          }
+        },
+        {
+          "unit_index": 47,
+          "verse": 8,
+          "content_chars": 10,
+          "original_text": "也不在这地方吃饭喝水。",
+          "corrupted_text": "也不在吃饭喝水这地方。",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "fd49d2e5edac4926fddb0b2c61761c2ff625e0e8a9e268d989c746974c905601",
+          "proposal": {
+            "edited_clause": "也不在吃饭喝水这地方。",
+            "error_type": "谓语移入介词宾语内部",
+            "explanation": "将原作并列谓语的多词成分“吃饭喝水”整体移到“在”和“这地方”之间，使其无连接地插入地点介词短语，破坏“在”与地点宾语的结合。"
+          },
+          "judgment_id": "ef4ee76068a759cdcc2c006d5476fa26281cf07010b0d68d1ec7b6a89d4a3842",
+          "judgment": {
+            "explanation": "原句中“吃饭喝水”是受“不”否定的并列谓语，“在这地方”是地点状语。修改把完整的多词谓语“吃饭喝水”移到“在”与其处所宾语“这地方”之间，破坏了介词与宾语的连接；这里也不能直接把“吃饭喝水这地方”作为规范的定中结构。原有词语均未被拆分，原来的否定、地点与行为仍可恢复，缺陷仅限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "在吃饭喝水这地方"
+          }
+        },
+        {
+          "unit_index": 72,
+          "verse": 14,
+          "content_chars": 10,
+          "original_text": "“你是从犹大来的神人吗？",
+          "corrupted_text": "“你是来的从犹大神人吗？",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "fd49d2e5edac4926fddb0b2c61761c2ff625e0e8a9e268d989c746974c905601",
+          "proposal": {
+            "edited_clause": "“你是来的从犹大神人吗？",
+            "error_type": "来源介词短语错置",
+            "explanation": "将原在关系从句中修饰“来”的多词介词短语“从犹大”整体移到“的”与“神人”之间，使来源状语脱离从句，并插入关系从句标记与中心名词之间。"
+          },
+          "judgment_id": "bfa2376d5b0778f130883c553176913ce10922b83e5ad6c0f41393b7bde39307",
+          "judgment": {
+            "explanation": "原句中，“从犹大”是修饰“来”的来源介词短语。替换将这个完整的多词短语移到“来的”之后、“神人”之前，使其脱离“来”，并在定语标记“的”与中心名词之间形成无法成立的修饰结构。这不是单个虚词的移位。原有词语均保持完整，人物身份及来自犹大的含义仍可恢复，错误仅限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "来的从犹大神人"
+          }
+        },
+        {
+          "unit_index": 66,
+          "verse": 13,
+          "content_chars": 8,
+          "original_text": "”他们就给驴备了鞍，",
+          "corrupted_text": "”他们就备了给驴鞍，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "fd49d2e5edac4926fddb0b2c61761c2ff625e0e8a9e268d989c746974c905601",
+          "proposal": {
+            "edited_clause": "”他们就备了给驴鞍，",
+            "error_type": "受益介词短语后置",
+            "explanation": "将原作受益状语的多词介词短语“给驴”整体移到“备了”和宾语“鞍”之间，违反该状语应置于谓语前、不能插入动宾结合内部的次序要求。"
+          },
+          "judgment_id": "9c5ba344a2ff95493cc811604af9923214f1218d0608f81dc4105c72ec12d884",
+          "judgment": {
+            "explanation": "原句中“给驴”是由介词“给”和名词“驴”组成的受益对象短语，位于“备了鞍”之前。替换将该完整短语移到“备了”与宾语“鞍”之间，违反此处介词短语的附着和语序要求，造成新的语法错误，并非仅移动一个功能词。原有词语均保持完整，给驴备鞍的参与者、动作和完成意义仍可恢复，错误也局限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "备了给驴鞍"
+          }
+        },
+        {
+          "unit_index": 35,
+          "verse": 6,
+          "content_chars": 7,
+          "original_text": "”神人就为王祷告，",
+          "corrupted_text": "”为王祷告神人就，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "18267badfd2beab0f1caa0e06670d038fcf734bac9b4ab31afe618f282cc3bf0",
+          "proposal": {
+            "edited_clause": "”为王祷告神人就，",
+            "error_type": "谓语短语前移导致状语悬空",
+            "explanation": "将完整谓语短语“为王祷告”移到主语“神人”之前，使原本修饰该谓语的“就”悬在句末，违反“就”须位于其所修饰谓语之前的次序要求。"
+          },
+          "judgment_id": "b36f074859b45d794280a559b75bddd0978e52f0c826f00aed602c508b96014a",
+          "judgment": {
+            "explanation": "原作谓语的多词短语“为王祷告”被整体移到主语“神人”之前，使副词“就”留在句末而没有后接谓语，违反“主语＋就＋谓语”的结构要求，不能视为正常话题化。原有词语均保持完整，为王祷告的人仍可辨认为神人；错误限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "为王祷告神人就"
+          }
+        },
+        {
+          "unit_index": 32,
+          "verse": 6,
+          "content_chars": 6,
+          "original_text": "“你要为我祷告，",
+          "corrupted_text": "“为我祷告你要，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "18267badfd2beab0f1caa0e06670d038fcf734bac9b4ab31afe618f282cc3bf0",
+          "proposal": {
+            "edited_clause": "“为我祷告你要，",
+            "error_type": "动词短语前移导致情态依存断裂",
+            "explanation": "将原作“要”的补足语的完整动词短语“为我祷告”移到主语“你”之前，使“要”悬在句末，违反情态动词须在本句中先于其动词短语补足语的要求。"
+          },
+          "judgment_id": "0e8f8a25001caea95c49fdca45cb85665646b4102fcddde36f33d8bd41dc3b73",
+          "judgment": {
+            "explanation": "原句中“为我祷告”是情态动词“要”后的谓语短语，包含介词短语“为我”和动词“祷告”。替换将其整体移到“你要”之前，使情态动词“要”悬置在分句末尾，破坏了此处“主语＋要＋谓语”的结构；不能自然理解为合法的话题化。各词内部完整，祷告者、受益者及要求祷告的含义仍可恢复，错误仅涉及本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "为我祷告你要"
+          }
+        },
+        {
+          "unit_index": 112,
+          "verse": 23,
+          "content_chars": 14,
+          "original_text": "带他回来的年老先知给他备了驴，",
+          "corrupted_text": "年老先知给他带他回来的备了驴，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "18267badfd2beab0f1caa0e06670d038fcf734bac9b4ab31afe618f282cc3bf0",
+          "proposal": {
+            "edited_clause": "年老先知给他带他回来的备了驴，",
+            "error_type": "关系从句错置",
+            "explanation": "将原修饰“年老先知”的完整关系从句“带他回来的”移到“备了驴”之前，使带“的”的关系从句直接接在动词“备”前，违反该定语须依附名词性中心语的要求。"
+          },
+          "judgment_id": "04d302eb166b21ac7e48b3f9b009508526ae71df7c0a2a50616ce0334c9758d2",
+          "judgment": {
+            "explanation": "原作定语的多词成分“带他回来的”从中心语“年老先知”前移到了“给他”与“备了驴”之间，既失去所修饰的中心语，又不能作为“备”的状语，造成新的定中结构和附着错误。该变化不是单个虚词的移位。各词内部完整，原有参与者及备驴、带回的关系仍可恢复，错误局限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "给他带他回来的备了驴"
+          }
+        },
+        {
+          "unit_index": 9,
+          "verse": 2,
+          "content_chars": 22,
+          "original_text": "他必在你上面献祭那些在你上面烧香的丘坛的祭司，",
+          "corrupted_text": "他必献祭那些在你上面烧香的丘坛的在你上面祭司，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "18267badfd2beab0f1caa0e06670d038fcf734bac9b4ab31afe618f282cc3bf0",
+          "proposal": {
+            "edited_clause": "他必献祭那些在你上面烧香的丘坛的在你上面祭司，",
+            "error_type": "处所介词短语侵入名词短语",
+            "explanation": "将原修饰“献祭”的第一个“在你上面”整体移到“丘坛的”与“祭司”之间，使谓语的处所状语侵入定语与名词中心语之间，破坏该名词短语的内部次序。"
+          },
+          "judgment_id": "2104c480442bc7a3024aca3e1362cbb6f69fdedf9fb0a92f719b80e1f940bee4",
+          "judgment": {
+            "explanation": "原来修饰“献祭”的介词短语“在你上面”被整体移到宾语内部，插在“丘坛的”与中心名词“祭司”之间。该短语包含介词、代词和方位词，不是单个词的移位；它在此既不能直接充当“祭司”的定语，也破坏了原有定语与中心名词的衔接，造成新的语法错误。原有词语均保持完整，参与者、动作及地点关系仍可从原有成分恢复，错误仅在本分句内。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "丘坛的在你上面祭司"
+          }
+        },
+        {
+          "unit_index": 10,
+          "verse": 2,
+          "content_chars": 12,
+          "original_text": "人的骨头也必在你上面焚烧。",
+          "corrupted_text": "人的在你上面骨头也必焚烧。",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "18267badfd2beab0f1caa0e06670d038fcf734bac9b4ab31afe618f282cc3bf0",
+          "proposal": {
+            "edited_clause": "人的在你上面骨头也必焚烧。",
+            "error_type": "处所介词短语侵入主语内部",
+            "explanation": "将原修饰“焚烧”的完整处所介词短语“在你上面”移到“人的”与“骨头”之间，使谓语状语打断主语中定语与名词中心语的组合。"
+          },
+          "judgment_id": "77de6638ae357d5eb3f73c1d978afe6d7a3418e393d8cefed84092dad3bc00b4",
+          "judgment": {
+            "explanation": "原作中“在你上面”是修饰“焚烧”的处所状语；替换后，这个由介词、代词和方位词组成的完整短语被移入“人的骨头”内部，插在“的”与中心名词“骨头”之间，破坏了定中结构。原有词语均保持完整，人物关系、焚烧事件、处所及“也必”的含义仍可恢复，错误仅限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "人的在你上面骨头"
+          }
+        },
+        {
+          "unit_index": 25,
+          "verse": 4,
+          "content_chars": 9,
+          "original_text": "”他所伸出的手便枯干，",
+          "corrupted_text": "”手便他所伸出的枯干，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "18c5e579f50788cc9d7dc9b4bb9098906acf3f0d8a713a7ae27a99b8a26d76be",
+          "proposal": {
+            "edited_clause": "”手便他所伸出的枯干，",
+            "error_type": "关系定语错置于谓语内部",
+            "explanation": "将修饰“手”的完整关系定语“他所伸出的”移到“便”和“枯干”之间，使其脱离名词中心语而直接置于谓语动词前，违反该关系定语须依附名词中心语的要求。"
+          },
+          "judgment_id": "e9595c70ba9a5e6b65e66d5863a878f210b090abacd4df5533dd2cf8ede0bf01",
+          "judgment": {
+            "explanation": "原句中“他所伸出的”是修饰“手”的关系从句；编辑将这一完整多词成分移到“便”之后、“枯干”之前，使其脱离中心语“手”，且无法在该位置合法修饰谓语“枯干”，造成新的修饰与附着错误。原有词语均保持完整，仍可恢复他伸出的手枯干这一含义，错误仅限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "手便他所伸出的枯干"
+          }
+        },
+        {
+          "unit_index": 31,
+          "verse": 6,
+          "content_chars": 5,
+          "original_text": "6 王对神人说：",
+          "corrupted_text": "6 王说对神人：",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "18c5e579f50788cc9d7dc9b4bb9098906acf3f0d8a713a7ae27a99b8a26d76be",
+          "proposal": {
+            "edited_clause": "6 王说对神人：",
+            "error_type": "对象介词短语后置",
+            "explanation": "将表示说话对象的完整介词短语“对神人”从“说”前移至其后；这里的对象状语须位于“说”前，不能直接作为其后置补足语。"
+          },
+          "judgment_id": "9b1baf986bcaf995d0e3e9a28067f4835d9032d7352c65038f50cb4f419dd3dc",
+          "judgment": {
+            "explanation": "原句中“对神人”是由介词“对”和名词“神人”组成的多词介词短语，充当“说”的对象状语。替换将该短语移到“说”之后；这里的“对神人”不能直接充当“说”的后置补语，因而违反该介词短语应置于谓语前的要求。词语均保持完整，说话者、受话者和说话行为仍可恢复，错误限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "王说对神人"
+          }
+        },
+        {
+          "unit_index": 158,
+          "verse": 32,
+          "content_chars": 38,
+          "original_text": "32 因为他奉耶和华的话向伯特利的坛和撒玛利亚各城高处的所有丘坛所喊的预言必然应验。",
+          "corrupted_text": "32 因为他向伯特利的坛和撒玛利亚各城高处的所有奉耶和华的话丘坛所喊的预言必然应验。",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "18c5e579f50788cc9d7dc9b4bb9098906acf3f0d8a713a7ae27a99b8a26d76be",
+          "proposal": {
+            "edited_clause": "32 因为他向伯特利的坛和撒玛利亚各城高处的所有奉耶和华的话丘坛所喊的预言必然应验。",
+            "error_type": "介词短语插入名词短语内部",
+            "explanation": "将原作“喊”的依据状语的完整介词短语“奉耶和华的话”移入“所有丘坛”，隔在“所有”和“丘坛”之间，违反该状语不能直接充当名词定语的结构要求。"
+          },
+          "judgment_id": "5c02e569968cbb461add45b8877ddbea768de0b11083a6a989cf8d8b24dcb089",
+          "judgment": {
+            "explanation": "原作状语、修饰“喊”的多词短语“奉耶和华的话”被整体移入名词短语“所有丘坛”，插在“所有”和中心语“丘坛”之间。该介词短语不能在此直接充当无“的”的名词修饰语，因而破坏了名词短语的内部结构。原有词语均保持完整，原来的参与者、动作及逻辑关系仍可恢复；错误仅发生在本次编辑的分句内。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "所有奉耶和华的话丘坛"
+          }
+        },
+        {
+          "unit_index": 128,
+          "verse": 26,
+          "content_chars": 11,
+          "original_text": "耶和华因此把他交给狮子，",
+          "corrupted_text": "耶和华因此交给狮子把他，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "060204eb8f9f48a0b67e38857529508ef81aee418d942f5c0b24e98d1ab72c92",
+          "proposal": {
+            "edited_clause": "耶和华因此交给狮子把他，",
+            "error_type": "把字句谓语前置",
+            "explanation": "将原作谓语的多词短语“交给狮子”整体移到“把他”之前，违反把字句中“把＋宾语”须位于其支配谓语之前的次序要求。"
+          },
+          "judgment_id": "61348365795a20937df906d0ed364a0cddb3b077b37a08999c5b2c3e158a28d2",
+          "judgment": {
+            "explanation": "原句中“把他”是由介词“把”和代词“他”组成的处置式介词短语，位于谓语“交给狮子”之前。编辑将这一完整短语移到谓语之后，违反把字结构中“把＋受事”须置于主要谓语之前的语序要求，不能仅靠移动一个虚词得到。原有词语均保持完整，施事、受事、接受者及因果关系仍可恢复，错误局限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "交给狮子把他"
+          }
+        },
+        {
+          "unit_index": 89,
+          "verse": 18,
+          "content_chars": 5,
+          "original_text": "“我也是先知，",
+          "corrupted_text": "“是先知我也，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "359756bebfc0d76fba88bc2817681cc8888f57ee60eaec0edfc3403f2298c3d9",
+          "proposal": {
+            "edited_clause": "“是先知我也，",
+            "error_type": "谓语短语错置",
+            "explanation": "将原作谓语的完整短语“是先知”移到主语“我”之前，使本应位于谓语前的副词“也”悬置于句末，破坏“也”与其所修饰谓语的次序关系。"
+          },
+          "judgment_id": "6f9ae5fe2e7463c19df0cb04505e5a75f277a4d5201706cfeb9af77c53024b9d",
+          "judgment": {
+            "explanation": "原句的多词谓语“是先知”（系词“是”加名词“先知”）被整体移到主语“我”和副词“也”之前，使“也”悬空，破坏了该句中“主语＋也＋谓语”的结构；这里没有可支持这种前置的正常话题结构。各词内部保持完整，原有身份判断及“也”的附加关系仍可恢复，错误仅在本分句内。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "是先知我也"
+          }
+        },
+        {
+          "unit_index": 58,
+          "verse": 11,
+          "content_chars": 15,
+          "original_text": "也将神人对王所说的话告诉了父亲。",
+          "corrupted_text": "也将神人对王所说告诉了父亲的话。",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "b5aaf365b61a8e8745618fb1b4a115a9dee3f5976085e0ee660dacf0b4024b8f",
+          "proposal": {
+            "edited_clause": "也将神人对王所说告诉了父亲的话。",
+            "error_type": "谓语移入宾语内部",
+            "explanation": "将原作主句谓语的多词成分“告诉了父亲”移到“所说”与“的话”之间，破坏关系修饰语“神人对王所说的”与中心语“话”的内部结构。"
+          },
+          "judgment_id": "21e670663152a3528151bfe94873194c3b2ca7b8b31a5dac0f1fde0e0485939f",
+          "judgment": {
+            "explanation": "“告诉了父亲”原是“将”字句中位于宾语“神人对王所说的话”之后的谓语，现被移入该宾语，插在“所说”与“的话”之间，破坏了关系修饰语与中心语的结构，也使“将”字句缺少合法的后续谓语。移动的是包含动词和名词的完整多词成分，并非单个助词。原有词语内部保持完整，原来的告知内容、对象和动作仍可恢复；错误局限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "所说告诉了父亲的话"
+          }
+        },
+        {
+          "unit_index": 21,
+          "verse": 4,
+          "content_chars": 14,
+          "original_text": "耶罗波安王正站在伯特利的坛旁，",
+          "corrupted_text": "耶罗波安王正伯特利的坛旁站在，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "b5aaf365b61a8e8745618fb1b4a115a9dee3f5976085e0ee660dacf0b4024b8f",
+          "proposal": {
+            "edited_clause": "耶罗波安王正伯特利的坛旁站在，",
+            "error_type": "处所补足语错位",
+            "explanation": "将原作“站在”的处所补足语“伯特利的坛旁”整体移到“正”与“站在”之间，违反处所补足语须接在“站在”之后的顺序要求。"
+          },
+          "judgment_id": "cf90fe687d00982a0b0061203e9750545adcbe9f3fb8abfc9d3cd027ed438931",
+          "judgment": {
+            "explanation": "原作处所补语的多词短语“伯特利的坛旁”被整体移到“站在”之前，使句末的“在”失去其后必需的处所宾语，违反“站在＋处所”的语序要求。这不是单个介词的移位。原有词语均保持完整，人物、正在站立的动作及地点仍可恢复，错误仅限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "正伯特利的坛旁站在"
+          }
+        },
+        {
+          "unit_index": 163,
+          "verse": 33,
+          "content_chars": 9,
+          "original_text": "凡愿意作高处祭司的，",
+          "corrupted_text": "凡愿意高处祭司作的，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "b5aaf365b61a8e8745618fb1b4a115a9dee3f5976085e0ee660dacf0b4024b8f",
+          "proposal": {
+            "edited_clause": "凡愿意高处祭司作的，",
+            "error_type": "补语内部宾语错位",
+            "explanation": "将原作“作”的宾语“高处祭司”整体移到“愿意”与“作”之间，破坏“愿意”所接动词短语中“作＋身份宾语”的顺序。"
+          },
+          "judgment_id": "7379df22909d2c93b5a28765313d14cc2f0f1d3461f6bdf67225c2f334701d82",
+          "judgment": {
+            "explanation": "“高处祭司”由“高处”和“祭司”构成，原是“作”的宾语；替换后被移到“愿意”与“作”之间。在没有话题化或其他许可结构的情况下，这一位置不能容纳该宾语，破坏了“愿意＋作＋宾语”的结构。原有词语均保持完整，所指人群及其意愿仍可恢复，错误仅限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "愿意高处祭司作"
+          }
+        },
+        {
+          "unit_index": 148,
+          "verse": 30,
+          "content_chars": 11,
+          "original_text": "30 把尸首葬在自己的坟墓里，",
+          "corrupted_text": "30 把在自己的坟墓里尸首葬，",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "af2e110e4f60bddae64d3ca2c3dd41ac81a9d8dbb523558ad86008e61608f55a",
+          "proposal": {
+            "edited_clause": "30 把在自己的坟墓里尸首葬，",
+            "error_type": "处所短语插入把字宾语位置",
+            "explanation": "将原作“葬”的处所补语的多词短语“在自己的坟墓里”移到“把”与“尸首”之间，违反“把”后应直接接其名词性宾语的结构要求。"
+          },
+          "judgment_id": "902761befff0a38c155d103b8100c035a755dc731d18d01e489dc447c320a39b",
+          "judgment": {
+            "explanation": "原作中完整的多词处所短语“在自己的坟墓里”是“葬”的处所补语，现被移至“把”与其宾语“尸首”之间。该介词短语不能在这里修饰“尸首”，因而破坏了“把＋宾语＋谓语”的结构。原有词语均保持完整，埋葬对象及地点仍可恢复；错误局限于本分句。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "把在自己的坟墓里尸首葬"
+          }
+        },
+        {
+          "unit_index": 168,
+          "verse": 34,
+          "content_chars": 5,
+          "original_text": "从地上除掉。",
+          "corrupted_text": "除掉从地上。",
+          "operations": [
+            "llm_structural_defect"
+          ],
+          "proposal_id": "af2e110e4f60bddae64d3ca2c3dd41ac81a9d8dbb523558ad86008e61608f55a",
+          "proposal": {
+            "edited_clause": "除掉从地上。",
+            "error_type": "来源介词短语后置",
+            "explanation": "将原作来源状语的多词介词短语“从地上”完整移到“除掉”后，违反此处“从”字来源短语应置于动词前的顺序要求。"
+          },
+          "judgment_id": "015b6fee984d0b5093b2884b1228fd77b191381a58ebb4e9b16a6290f31f5311",
+          "judgment": {
+            "explanation": "完整介词短语“从地上”原作“除掉”的来源状语，被移到动词之后。“除掉”不能以这种后置的“从”字短语承接来源，因此引入了局部语序错误。该短语含介词“从”和处所词“地上”，符合多词成分的要求；各词内部完整，被除掉的对象及来源仍可从上下文恢复。",
+            "grammar_worsened": "yes",
+            "structural_error": "yes",
+            "lexical_integrity": "yes",
+            "meaning_preserved": "yes",
+            "local_error": "yes",
+            "error_span": "除掉从地上"
+          }
+        }
+      ]
+    }
+  }
+}

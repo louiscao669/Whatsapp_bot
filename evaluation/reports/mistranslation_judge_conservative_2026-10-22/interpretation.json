@@ -1,0 +1,77 @@
+{
+  "verdict": "More conservative, but not uniformly more accurate. No false approvals under the frozen policy; two valid controls over-rejected across the fresh and regression cohorts.",
+  "fresh": {
+    "current": {
+      "true_accept": 16,
+      "true_reject": 14,
+      "false_accept": 2,
+      "false_reject": 0,
+      "scored_cases": 32,
+      "repeat_flips": []
+    },
+    "previous": {
+      "true_accept": 16,
+      "true_reject": 16,
+      "false_accept": 0,
+      "false_reject": 0,
+      "scored_cases": 32,
+      "repeat_flips": []
+    },
+    "conservative": {
+      "true_accept": 15,
+      "true_reject": 16,
+      "false_accept": 0,
+      "false_reject": 1,
+      "scored_cases": 32,
+      "repeat_flips": []
+    }
+  },
+  "regression": {
+    "current": {
+      "true_accept": 1,
+      "true_reject": 1,
+      "false_accept": 4,
+      "false_reject": 0,
+      "scored_cases": 6
+    },
+    "previous": {
+      "true_accept": 1,
+      "true_reject": 4,
+      "false_accept": 1,
+      "false_reject": 0,
+      "scored_cases": 6
+    },
+    "conservative": {
+      "true_accept": 0,
+      "true_reject": 5,
+      "false_accept": 0,
+      "false_reject": 1,
+      "scored_cases": 6
+    }
+  },
+  "over_rejections": [
+    {
+      "case": "modal_p1",
+      "edit": "可能 → 必定",
+      "reason": "The new judge treats possibility versus certainty as a vague degree contrast, although this was a predeclared positive change in commitment. The other two judges accepted it."
+    },
+    {
+      "case": "known_fluency_control",
+      "edit": "几乎每天都要清点 → 每月清点一次",
+      "reason": "The edited sentence is natural and the intended frequency distinction is clear. The new judge rejects because one expression is imprecise. The other two judges accepted it."
+    }
+  ],
+  "known_fluency": "The conservative judge marked fluent=no and needs_repair=yes for 每月一次都要清点; the previous revised judge approved that awkward sentence.",
+  "gate_contribution": "No live result had all original criteria approving while an extra gate alone rejected. Offline tests verify that the gates can enforce their rules, but this run cannot attribute an independent performance gain to the code gates.",
+  "interpretation_limits": "Assistant-authored reference labels under an intentionally strict experimental policy, not human-validated accuracy. Vague large/small contrasts are negatives by design, not asserted to be linguistically synonymous. Known examples and prompt examples are excluded from fresh scores. Only four fresh cases were repeated.",
+  "future_refinement": "Distinguish changes in categorical modal commitment (possible/certain) from vague scalar degree contrasts. Clarify when a vague expression versus an exact value can be demonstrably different; do not demand precision on both sides in every such case. These refinements have not been implemented or tested.",
+  "production_status": "Unchanged. The conservative prompt, schema and code gates are experimental.",
+  "validation": "55 offline tests passed. Full replay completed with OPENAI_API_KEY removed. All 138 saved responses are distinct and report gpt-6-sol. Twelve failed network/timeout attempts were retried; their token usage is unknown.",
+  "recorded_usage": {
+    "input_tokens": 162633,
+    "output_tokens": 31514,
+    "total_tokens": 194147,
+    "reasoning_tokens": 10871,
+    "cached_input_tokens": 76212
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "reviews": {
+    "f46e9cac5292ccf5511d74e11b227d273ea7a7de4d715f542f904ff31d81ca62": {
+      "reviewer": {
+        "policy": "source_blind_reading_v1",
+        "reader": {
+          "model": "gpt-6.1-sol",
+          "prompt_sha256": "fb8be39193ad42a4a899c93a73966f4f563cceec3b13b2637be26a30cebe45d7",
+          "schema_sha256": "c0bff0fe9ca0ac0ae2790f5ec01573f1335a0ff178afc6be9c2d72d9e4c2159d"
+        },
+        "judge": {
+          "model": "gpt-6.1-sol",
+          "prompt_sha256": "65ac136b58ee49062543842181a9d52b42cf97f82a5da527f3e841f10a700e3f",
+          "schema_sha256": "1212873bed97eb86ed4570777326a91477cbe9b01f421809ab1e9c5d4def5f57"
+        }
+      },
+      "request": {
+        "original_passage": "15 非利士人再次与以色列争战，大卫和他的仆人下去与非利士人作战。但大卫疲惫不堪。\n\n16 那时，拉法的后裔以施比·比拿，拿着一根重三百舍客勒的铜矛，带着一把新剑，想要杀大卫。\n\n17 但洗鲁雅的儿子亚比筛来帮助大卫，击杀了那非利士人。于是大卫的众人向他起誓说：“你不可再和我们同去打仗，免得以色列的灯灭了。”\n\n18 过了些日子，在迦百发生了另一场与非利士人的战斗。那时，户沙人西比该杀了拉法的后裔撒弗。\n\n19 又在迦百与非利士人争战，伯利恒人睚珥的儿子伊勒哈难杀了迦特人歌利亚的弟弟，他的矛杆像织布机的机轴。\n\n20 又在迦特有一场战斗，那里有一个身材高大的男子，手指和脚趾各有六个，共二十四个。他也是拉法的后裔，\n\n21 他嘲笑以色列时，大卫兄弟示米的儿子约拿单杀了他。\n\n22 这样，在迦特的这四个拉法的后裔都被大卫和他的仆人杀死了。",
+        "clause_start": 61,
+        "original_clause": "拿着一根重三百舍客勒的铜矛，",
+        "edited_clause": "拿重三百舍客勒的着一根铜矛，"
+      },
+      "review": {
+        "candidate_reading": {
+          "primary_reading": "以施比·比拿拿着一根铜矛，矛重三百舍客勒。虽然“着”的位置打断了数量修饰语与名词的连接，持矛者、所持物及其重量仍可辨认。",
+          "participant_roles": "持拿者是上文的以施比·比拿；持拿的对象是一根铜矛。本分句没有其他受事者，也没有说明铜矛归谁所有。",
+          "event_structure": "描述持拿铜矛的状态。“着”可辨认为持拿状态持续的标记；没有表达完成、移动、否定或持拿动作的起始时间。",
+          "modifier_scope": "“重三百舍客勒的”修饰铜矛，三百舍客勒是重量，不是数量；“一根”表示铜矛的数量为一，“铜”说明矛的材质。",
+          "interpretation_status": "clear",
+          "alternative_readings": []
+        },
+        "judgment": {
+          "explanation": "记录的独立阅读与原句一致：以施比·比拿持拿一根铜矛，铜矛重三百舍客勒。“拿重三百舍客勒的着一根铜矛”虽打乱了“拿着”及定语的排列，但该阅读明确将“着”理解为持拿状态的持续标记，没有将“拿重”解释为新的动作或补语结构，也未报告其他竞争读法。持拿者、对象、持续状态以及重量、数量和材质的修饰范围均未改变。",
+          "participant_roles_preserved": "yes",
+          "event_structure_preserved": "yes",
+          "modifier_scope_preserved": "yes",
+          "no_new_plausible_meaning": "yes",
+          "risk_spans": []
+        }
+      }
+    }
+  }
+}

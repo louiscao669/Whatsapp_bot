@@ -1,0 +1,52 @@
+{
+  "id": "control:unsupported_answer",
+  "original": {
+    "id": "control:unsupported_answer",
+    "question": "小林为什么离开了？",
+    "passage": "小林离开了。经文没有说明原因。",
+    "expected_answer": "因为下雨了。",
+    "form": "open",
+    "options": {},
+    "correct_option": "",
+    "intended_target": "Identify why Xiaolin left.",
+    "original_question": "",
+    "original_answer": ""
+  },
+  "input_hash": "3667e09c7e6a482667d73123d9fdd0c669e791e82d51d955473869f5adc08d6e",
+  "status": "HOLD_TARGET",
+  "accepted_case": null,
+  "contract": {
+    "id": "item",
+    "status": "hold",
+    "target": "Identify why Xiaolin left.",
+    "basis": "explicit",
+    "required_answer_components": [
+      "小林离开的原因。"
+    ],
+    "relations": [
+      {
+        "id": "r1",
+        "quote": "为什么",
+        "meaning": "询问离开的原因，要求恢复因果关系。",
+        "role": "tested",
+        "reason": "原因是问题明确要求的内容，不能改成仅识别人物或确认离开这一事实。"
+      },
+      {
+        "id": "r2",
+        "quote": "小林",
+        "meaning": "离开事件的参与者是小林。",
+        "role": "anchor",
+        "reason": "用于确定所问原因所属的人物及事件。"
+      },
+      {
+        "id": "r3",
+        "quote": "离开了",
+        "meaning": "所问原因对应的是已经发生的离开事件。",
+        "role": "tested",
+        "reason": "离开是所问因果关系中的结果，也是目标明确指定的事件范围。"
+      }
+    ],
+    "note": "所供经文为“小林离开了。经文没有说明原因。”，明确未提供离开的原因。固定答案“因为下雨了。”没有经文支持，因此不能建立可用的固定答案契约，状态为 hold。"
+  },
+  "attempts": []
+}

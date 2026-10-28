@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "records": {
+    "aea78aa0e8756353d8aae1089188eb4ee4c877a280cc8ebcc9546ddf800e6eec": {
+      "identity": {
+        "model": "gpt-6-sol",
+        "prompt_sha256": "f857438a2a18e6f6221c4a199812ef2424055243a155316029daaccb7a0d9162",
+        "schema_sha256": "8319c0cd3900dfdaddc6a5f55bd684c72343c8ac328e12cd2fc660e099093bfa",
+        "max_output_tokens": 8192,
+        "api": "responses"
+      },
+      "request": {
+        "original_passage": "管家几乎每天都要清点仓库中的粮食。",
+        "source": "几乎每天",
+        "replacement": "每月一次",
+        "mode": "contextual",
+        "occurrences": [
+          {
+            "start": 2,
+            "end": 6,
+            "original_context": "管家几乎每天都要清点仓库中的粮食。",
+            "edited_context": "管家每月一次都要清点仓库中的粮食。"
+          }
+        ]
+      },
+      "response": {
+        "source_claim": "管家几乎每天都要清点仓库中的粮食。",
+        "replacement_claim": "管家每月一次都要清点仓库中的粮食。",
+        "explanation": "原文说清点频率是“几乎每天”，替换后说“每月一次”。但“几乎每天”没有明确次数或界限，不能仅凭通常理解中的频率差异认定符合严格标量规则。此外，“每月一次都要清点”语序不自然，需要修整。",
+        "meaning_changed": "no",
+        "fluent": "no",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "no",
+        "change_basis": "vague_contrast",
+        "change_dimension": "frequency",
+        "difference_evidence": "“几乎每天”与“每月一次”表达不同的通常频率，但原文未给“几乎每天”规定明确次数或与“每月一次”不相交的范围。",
+        "needs_repair": "yes"
+      },
+      "response_id": "resp_055d73e9fa5ff77b006adacd802c0487d1bc1780f45545f667",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1587,
+        "input_tokens_details": {
+          "cached_tokens": 1476,
+          "cache_write_tokens": 108
+        },
+        "output_tokens": 522,
+        "output_tokens_details": {
+          "reasoning_tokens": 299
+        },
+        "total_tokens": 2109
+      },
+      "completed_at_unix": 1792724361
+    }
+  }
+}

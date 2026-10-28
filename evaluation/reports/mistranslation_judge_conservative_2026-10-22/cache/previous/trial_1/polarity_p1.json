@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "records": {
+    "91de1366f5a3cc4fd4ffad8d8338e3e62c6285aa7e5b732da3010ed24432952b": {
+      "identity": {
+        "model": "gpt-6-sol",
+        "prompt_sha256": "710d52b8945d965d68775a411de6abc5543010775247b16f5b9a92c4275a06ca",
+        "schema_sha256": "5fa920642b474382900cb35cd4cea1669a30f9717edb84a60aec124f26c3b82d",
+        "max_output_tokens": 8192,
+        "api": "responses"
+      },
+      "request": {
+        "original_passage": "这个裁判在早晨宣布被告无罪。到了午后，他又说被告应当受罚。",
+        "source": "无罪",
+        "replacement": "有罪",
+        "mode": "contextual",
+        "occurrences": [
+          {
+            "start": 11,
+            "end": 13,
+            "original_context": "这个裁判在早晨宣布被告无罪。",
+            "edited_context": "这个裁判在早晨宣布被告有罪。"
+          }
+        ]
+      },
+      "response": {
+        "source_claim": "裁判在早晨宣布被告无罪。",
+        "replacement_claim": "裁判在早晨宣布被告有罪。",
+        "explanation": "早晨宣布的裁断由无罪变为有罪，明确改变了同一项事实；午后的陈述未变。原文中仅有这一处匹配，替换后语句自然。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes"
+      },
+      "response_id": "resp_0f081327a3281ef8006adacd69152087d1891023139dc714eb",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1122,
+        "input_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1119
+        },
+        "output_tokens": 154,
+        "output_tokens_details": {
+          "reasoning_tokens": 30
+        },
+        "total_tokens": 1276
+      },
+      "completed_at_unix": 1792724332
+    }
+  }
+}

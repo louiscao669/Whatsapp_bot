@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "records": {
+    "f2711e46b93f173ccbec9fb9d7045d405842a719f0020475d4c98af31dcfec74": {
+      "identity": {
+        "model": "gpt-6-sol",
+        "prompt_sha256": "f857438a2a18e6f6221c4a199812ef2424055243a155316029daaccb7a0d9162",
+        "schema_sha256": "8319c0cd3900dfdaddc6a5f55bd684c72343c8ac328e12cd2fc660e099093bfa",
+        "max_output_tokens": 8192,
+        "api": "responses"
+      },
+      "request": {
+        "original_passage": "仆人拿走了钥匙。过了一会儿，管家拿走了木箱。",
+        "source": "拿走",
+        "replacement": "留下",
+        "mode": "systematic",
+        "occurrences": [
+          {
+            "start": 2,
+            "end": 4,
+            "original_context": "仆人拿走了钥匙。",
+            "edited_context": "仆人留下了钥匙。"
+          },
+          {
+            "start": 16,
+            "end": 18,
+            "original_context": "过了一会儿，管家拿走了木箱。",
+            "edited_context": "过了一会儿，管家留下了木箱。"
+          }
+        ]
+      },
+      "response": {
+        "source_claim": "仆人拿走了钥匙；过了一会儿，管家拿走了木箱。",
+        "replacement_claim": "仆人留下了钥匙；过了一会儿，管家留下了木箱。",
+        "explanation": "两处都把“拿走”改为“留下”，改变了各自对物品所做的动作。修改后的句子均自然，其他信息未变。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes",
+        "change_basis": "different_action_or_referent",
+        "change_dimension": "action",
+        "difference_evidence": "原文分别说仆人“拿走了钥匙”、管家“拿走了木箱”；替换后分别说他们“留下了”这些物品。",
+        "needs_repair": "no"
+      },
+      "response_id": "resp_0a455fdfa795bc0e006adacd6a1f6487d19ba36ac659dccf4b",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1627,
+        "input_tokens_details": {
+          "cached_tokens": 1476,
+          "cache_write_tokens": 148
+        },
+        "output_tokens": 258,
+        "output_tokens_details": {
+          "reasoning_tokens": 60
+        },
+        "total_tokens": 1885
+      },
+      "completed_at_unix": 1792724334
+    }
+  }
+}

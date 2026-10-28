@@ -1,0 +1,33 @@
+{
+  "version": "qa_simplify_v3",
+  "model": "gpt-6.1-sol",
+  "config": {
+    "version": "qa_simplify_v3",
+    "model": "gpt-6.1-sol",
+    "verification_repeats": 2,
+    "max_attempts": 2,
+    "language_rewrite_threshold": 2,
+    "policy": "freeze target and relation roles; simplify first; require unanimous compact verification; detailed structure and burden diagnostics only for residual language failures"
+  },
+  "input_hash": "174b73161c5ddbb49b3c8b4355958d7d2f1f42ac9cb10a1ca657b1cc5cf2f99d",
+  "input_files": {
+    "/Users/louiscao/whatsapp-bot/eten-whatsapp-bot/evaluation/configs/qa_simplify_v3/validation_cases.json": "174b73161c5ddbb49b3c8b4355958d7d2f1f42ac9cb10a1ca657b1cc5cf2f99d"
+  },
+  "prompts": {
+    "target": "b7e4411f42d54d7e0d03f9b7a3e5873a3b5bfdff1743df1e919e95f44ebdd9ce",
+    "simplify": "bc2dbcf2a9070bcce32f0910363b795c98ba5bdb26d1fb8e6c175024c54166df",
+    "verify": "6fa21aa9051dfb477412f37bed2fb897c18de0d169e5bc8ceffea071d8fce66a",
+    "structure": "7b90f83a7a9ffe6975a46c577459fa3a68e8ef2b376317f5165c347ddbf30f4f",
+    "burden": "27ee76e4c4ed8e8fb0f3314a5b38c684004de2a58af7ad19e313a6a869d8afc3"
+  },
+  "schemas": {
+    "target": "f5cec72a2a8c0c96291bf4fed5291534c7938ad0d45222d9239d80ff20b1757c",
+    "simplify": "55bca704e025ed9e361ef29925157011671b7481e0811e9cd73251b13c7b4e65",
+    "verify": "f41a766a6f9d65114f3ef0be293cc6866842ca5f0cac901a8e90efda766d9a34"
+  },
+  "sources": {
+    "simplify_qa_items.py": "5428d3a30e76d65eff01cec1ba7b8e2cea5f13f07555f4e568ae778052a3dd11",
+    "rewrite_flagged_qa.py": "7eae49341272c25f62c382a7a7cceba3519212acdb35583974de0afa1927ce36",
+    "review_qa_items.py": "7ab8035133fc2a79eabcd01945b4eaf7ff900c00aff93c58da7709ab1a915da1"
+  }
+}

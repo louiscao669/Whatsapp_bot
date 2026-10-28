@@ -24,6 +24,43 @@ participants receive neither the panel nor its condition/answer data in the
 question API response. A URL parameter cannot enable it. Existing test
 participants get the panel too; no reimport or database migration is needed.
 
+## Background questionnaire
+
+Between consent and the first question, participants complete the background
+& eligibility questionnaire approved under IRB protocol 26-08-10268
+(`eten_shared/pilot_questionnaire.py`; approved instrument:
+`Eligibility_Screening_Questionnaire_EN_v1_1`, **English only** — the Chinese
+labels are an unapproved translation, see the module docstring). One section
+per screen, in **English** (the approved wording; `PILOT_QUESTIONNAIRE_LANGUAGE`
+defaults to `en` — `zh` exists but is not IRB-approved):
+
+1. **A — Eligibility** (required). 18+, Mandarin or another Chinese variety as
+   first language, and not "not comfortable" reading Chinese.
+2. **B — Background** (optional items).
+3. **C — Religion**: a separate consent prompt first; declining skips to D.
+4. **D — Familiarity quiz** (optional). Scored server-side; the key never
+   reaches the browser and no score is shown.
+
+The server enforces the order: `GET /question` returns `state: "questionnaire"`
+(no question, no assignment minted) until it is complete. A reload resumes at
+the section that is due.
+
+**Screen-out.** An ineligible participant sees a thank-you screen. Their answers
+are not stored, `pilot_screenout_counts` is incremented (anonymous, per
+instrument version), and the participant record is **deleted**. Their personal
+link then shows "This link is no longer active". The email lives outside this
+database, so removing it from the researcher-held list is manual. Flagged TEST
+participants are not deleted. They are marked `questionnaire_screened_out`, so
+the screen can be checked, and can then be removed from the admin page.
+
+Participants who already answered questions before this existed are not sent
+back through it. Set `PILOT_QUESTIONNAIRE_ENABLED=0` to switch it off.
+`PILOT_QUESTIONNAIRE_LANGUAGE` (default `en`) picks the label language.
+
+Data: `pilot_questionnaire_responses` (one row per eligible participant),
+`GET /pilot/api/questionnaire-results` (admin/expert), and
+`python human_pilot/export_pilot_background.py` (CSV + screen-out counts).
+
 ## Running it
 
 From the repository root (`.env` supplies `DATABASE_URL`):

@@ -1,0 +1,38 @@
+{
+  "status": "Completed; revised prompt remains experimental; production judge unchanged.",
+  "primary_results": "Baseline 46/48, revised 45/48 against frozen assistant-authored labels. Both rejected all 24 expected rejects. Baseline flipped on 1 of 8 repeated cases; revised flipped on 0 of 8.",
+  "followup_results": "Separate post-observation batch: 13 fresh challenge/control cases plus 3 clarified-context probes. Fresh cases: baseline 9/13, revised 12/13; both accepted all three clarification probes. Do not pool this diagnostic batch into the original holdout score.",
+  "remaining_policy_disagreement": {
+    "case": "followup/new_n1",
+    "edit": "大批士兵 → 几名士兵",
+    "expected": "reject",
+    "both_judges": "accept",
+    "assessment": "The model treats large versus few as a definite scale difference. The reference label encodes a stricter policy against vague quantities. Human agreement on that boundary is needed; this is not proof the Chinese expressions are synonymous."
+  },
+  "post_run_reference_label_audit": [
+    {
+      "case": "primary/time_p2",
+      "frozen_expected": "accept",
+      "assessment": "Questionable expected label: 日出之前 and 日落之后 can describe the same overnight period without an anchored date. The revised rejection has a defensible reading. The dated follow-up was accepted by both judges."
+    },
+    {
+      "case": "primary/modality_p2",
+      "frozen_expected": "accept",
+      "assessment": "The replacement produces 一定会抵达，我们还不能确定. Both judges identify a definite semantic change but reject immediate contradiction as unnatural. Clarifying whether these local contradictions count as acceptable defects requires rubric/reference-label review. Both accepted the version without the contradictory clause."
+    },
+    {
+      "case": "primary/equivalence_p2",
+      "frozen_expected": "accept",
+      "assessment": "比弟弟年幼 conflicts with the lexical age relation in 弟弟. Both judges reject its immediate semantics. The comparison with two names was accepted by both. Original positive label is debatable under the nonsensical-language exclusion."
+    },
+    {
+      "case": "followup/new_p5",
+      "frozen_expected": "accept",
+      "assessment": "The literal substitution produces 管家每月一次都要清点仓库中的粮食, which is awkward. Baseline rejects fluency; revised accepts it. This positive label needs review and revised approval is not evidence of better fluency judgment."
+    }
+  ],
+  "interpretation": "The revised rubric transfers to some unseen overlapping quantities and frequencies, but the test does not establish reliable generalization or a uniform improvement. Raw scores are label agreement, not independently validated accuracy. Preserve all original labels/results; seek independent human adjudication and fresh validation before broad rollout.",
+  "api_calls": 160,
+  "total_tokens": 186971,
+  "validation": "42 offline tests passed; both result sets reproduced offline with OPENAI_API_KEY removed. All 160 responses report gpt-6-sol, no API failures."
+}

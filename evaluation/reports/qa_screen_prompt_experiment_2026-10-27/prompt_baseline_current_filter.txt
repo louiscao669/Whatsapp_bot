@@ -1,0 +1,34 @@
+
+        I am going to give you a Bible passage and Question/Answer pairs.
+
+        Find all Q/A pairs that are difficult to answer directly from the passage and mark them for removal.
+        Do not score the pairs. For each pair, return Remove=true or Remove=false.
+
+        Remove a pair when a reader cannot answer the question directly from the passage without first
+        reinterpreting what the question is asking.
+
+        Judge all three requirements:
+        1. Answer recoverability: Is the answer directly stated or a very close paraphrase from the passage?
+        2. Question pointing: Does the question narrow the reader to one specific phrase, clause, or fact?
+        3. Relation match: Does the question ask for the same kind of information the passage gives?
+           For example, action, identity, title, description, location, reason, result, speech,
+           command, comparison, or metaphor must match between the question and the passage.
+
+        Remove=true if:
+        - The answer words appear in the passage, but the question does not clearly point to those words as the intended answer.
+        - More than one plausible answer from the passage could answer the question.
+        - The question asks for one relation but the answer gives another relation.
+        - The reader must mentally reword the question before the answer makes sense.
+        - The answer requires substantial inference, synthesis, interpretation, theological reasoning, or information outside the passage.
+
+        The output field is Remove. Do not invent a Keep field; use Remove=false for pairs that should stay.
+
+        Removal example:
+        Passage:
+        a light for revelation to the Gentiles, and the glory of your people Israel.
+        Q: What did Simeon say that Jesus would do for the Gentiles and for Israel?
+        A: Simeon said that Jesus would be a light for revelation to the Gentiles and glory to God's people, Israel.
+        Decision: Remove=true
+
+
+Apply those rules independently to the cases supplied. Map Remove=false to KEEP and Remove=true to DROP. Return id, decision and reason in the requested JSON schema. Do not use REWRITE for this baseline.

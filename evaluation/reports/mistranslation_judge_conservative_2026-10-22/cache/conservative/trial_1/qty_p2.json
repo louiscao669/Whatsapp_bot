@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "records": {
+    "ae189cdc222934c0eeece29c91ca29a5656159962d30684ac0580c64a8da4a52": {
+      "identity": {
+        "model": "gpt-6-sol",
+        "prompt_sha256": "f857438a2a18e6f6221c4a199812ef2424055243a155316029daaccb7a0d9162",
+        "schema_sha256": "8319c0cd3900dfdaddc6a5f55bd684c72343c8ac328e12cd2fc660e099093bfa",
+        "max_output_tokens": 8192,
+        "api": "responses"
+      },
+      "request": {
+        "original_passage": "山脚下有许多水井，路人可以在那里取水。",
+        "source": "许多水井",
+        "replacement": "一口水井",
+        "mode": "contextual",
+        "occurrences": [
+          {
+            "start": 4,
+            "end": 8,
+            "original_context": "山脚下有许多水井，路人可以在那里取水。",
+            "edited_context": "山脚下有一口水井，路人可以在那里取水。"
+          }
+        ]
+      },
+      "response": {
+        "source_claim": "山脚下有许多口水井，路人可以在那里取水。",
+        "replacement_claim": "山脚下有一口水井，路人可以在那里取水。",
+        "explanation": "原文断言山脚下有多口水井，替换后断言只有一口。单数与明确的复数不同；句子自然，仅改变水井数量，且所给匹配处只有一处。",
+        "meaning_changed": "yes",
+        "fluent": "yes",
+        "substitution_only": "yes",
+        "localized": "yes",
+        "valid_in_all_contexts": "yes",
+        "change_basis": "polarity_reversal",
+        "change_dimension": "quantity",
+        "difference_evidence": "“许多水井”明确指多口，“一口水井”明确指一口，属于一与复数的区别。",
+        "needs_repair": "no"
+      },
+      "response_id": "resp_003c02e62c0f401d006adacd1572f887d1a8230cfb61a9748b",
+      "response_model": "gpt-6-sol",
+      "usage": {
+        "input_tokens": 1592,
+        "input_tokens_details": {
+          "cached_tokens": 1476,
+          "cache_write_tokens": 113
+        },
+        "output_tokens": 262,
+        "output_tokens_details": {
+          "reasoning_tokens": 70
+        },
+        "total_tokens": 1854
+      },
+      "completed_at_unix": 1792724250
+    }
+  }
+}

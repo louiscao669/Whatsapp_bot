@@ -1,0 +1,213 @@
+{
+  "id": "hard:t1_judg9:f36a:open",
+  "original": {
+    "id": "hard:t1_judg9:f36a:open",
+    "question": "迦勒第一次说有人来时，西布说他看见的其实是什么？",
+    "passage": "9:36 迦勒看见人群，就对西布说：“看哪，有人从山上下来！”西布说：“山上的影子在你眼中好像人。”\n9:37 迦勒又说：“看哪，有人从地中间下来，一队从占卜树那里经过。”",
+    "expected_answer": "Shadows on the hills, not people.",
+    "form": "open",
+    "options": {},
+    "correct_option": "",
+    "intended_target": "",
+    "original_question": "",
+    "original_answer": ""
+  },
+  "input_hash": "2d6049b30d778d023845b0b3f2ff2949d77678201263abf38af3b0f3251fa23a",
+  "status": "KEPT",
+  "accepted_case": {
+    "id": "hard:t1_judg9:f36a:open",
+    "question": "迦勒第一次说有人来时，西布说他看见的其实是什么？",
+    "passage": "9:36 迦勒看见人群，就对西布说：“看哪，有人从山上下来！”西布说：“山上的影子在你眼中好像人。”\n9:37 迦勒又说：“看哪，有人从地中间下来，一队从占卜树那里经过。”",
+    "expected_answer": "Shadows on the hills, not people.",
+    "form": "open",
+    "options": {},
+    "correct_option": "",
+    "intended_target": "",
+    "original_question": "",
+    "original_answer": ""
+  },
+  "contract": {
+    "id": "item",
+    "status": "ready",
+    "target": "识别迦勒第一次报告有人来时，西布将迦勒所见解释为山上的影子，而不是人。",
+    "basis": "inferred",
+    "required_answer_components": [
+      "西布认为迦勒看见的是山上的影子，而不是真正的人。"
+    ],
+    "relations": [
+      {
+        "id": "r1",
+        "quote": "迦勒第一次说有人来时",
+        "meaning": "将所问的解释定位在迦勒第一次报告有人来这一场景。",
+        "role": "anchor",
+        "reason": "本段包含迦勒先后两次报告有人下来；此处限定第一次报告，定位9:36中西布作出解释的场景，并不要求回答迦勒报告的内容。"
+      },
+      {
+        "id": "r2",
+        "quote": "西布说他看见的其实是什么",
+        "meaning": "要求回答西布如何解释迦勒所见，并区分山上的影子与迦勒以为看见的人。",
+        "role": "tested",
+        "reason": "这是直接提问的内容：须恢复西布对迦勒所见的解释。回答仅提到有人或其他景物不能满足要求；应明确所见是山上的影子而非人。"
+      }
+    ],
+    "note": "未提供明确的 intended_target 或更早的原题、原答案，因此目标依据当前问题和预期答案保守推断，不代表研究者已确认的设计意图。所供段落9:36中西布说“山上的影子在你眼中好像人”，直接支持固定答案；9:37的“又说”支持第一次报告这一场景定位。"
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "proposal": {
+        "id": "item",
+        "status": "unchanged",
+        "question": "迦勒第一次说有人来时，西布说他看见的其实是什么？",
+        "options": [],
+        "removed_relation_ids": [],
+        "note": "原题已简洁直接；“第一次”是区分两次报告的必要限定，没有可删除的铺垫关系。"
+      },
+      "candidate": {
+        "id": "hard:t1_judg9:f36a:open",
+        "question": "迦勒第一次说有人来时，西布说他看见的其实是什么？",
+        "passage": "9:36 迦勒看见人群，就对西布说：“看哪，有人从山上下来！”西布说：“山上的影子在你眼中好像人。”\n9:37 迦勒又说：“看哪，有人从地中间下来，一队从占卜树那里经过。”",
+        "expected_answer": "Shadows on the hills, not people.",
+        "form": "open",
+        "options": {},
+        "correct_option": "",
+        "intended_target": "",
+        "original_question": "",
+        "original_answer": ""
+      },
+      "checks": [
+        {
+          "repeat": 1,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "契约准确识别了目标：回答西布如何解释迦勒第一次报告时所见的东西。原题和经文支持“山上的影子，而不是人”；“第一次”是场景定位，不是另一个待答内容。"
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "候选问题与原题完全相同，保留首次报告的范围、西布的解释这一归属，以及影子与人的对照。"
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "候选没有删除或改写任何原题信息。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "问题仍为中文；原题和候选均无选项。"
+            },
+            "option_meanings": [],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "9:36记载迦勒报告有人下来，西布随即作出解释；9:37的“又说”支持首次与再次报告的区分。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "西布说“山上的影子在你眼中好像人”，直接支持固定答案。问题问的是西布的解释，而非叙述者认定实际出现了什么。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "首次报告后，西布唯一给出的解释是山上的影子像人，没有其他竞争答案。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "当前经文完整提供首次报告、西布的回应以及随后再次报告，足以作答，无需外部知识。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "问题没有透露“山上的影子”；答案须从经文中提取。"
+              },
+              "mcq_validity": {
+                "status": "not_applicable",
+                "evidence": "这是开放题，没有选择项。"
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "中文表达自然，时间从句与主问题衔接顺畅。",
+              "quotes": []
+            },
+            "processing": {
+              "score": 1,
+              "evidence": "需区分解释者西布与看见东西的迦勒，将“他”回指迦勒；这是普通、可管理的说话者与观察者角色区分。",
+              "quotes": [
+                "迦勒第一次说有人来时，西布说他看见的其实是什么？"
+              ]
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "首次报告的时间限定为两次报告提供有用定位；人物名称分别标明观察者和解释者，没有额外事件叙述或冗余指代链。",
+              "quotes": []
+            }
+          }
+        },
+        {
+          "repeat": 2,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "契约准确保留了原题目标：回答西布如何解释迦勒第一次报告时所见的事物。答案是西布所说的“山上的影子”，而非断言迦勒实际上没有看见人；契约保持了这一归属关系。"
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "候选题与原题完全一致，保留第一次报告的场景限定、西布的解释及山影与人的区别。"
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "候选题未删除或改动原题信息。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "原题和候选题均为中文，且题目文字完全相同；没有选项。"
+            },
+            "option_meanings": [],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "9:36记载迦勒报告有人下来以及西布随后的解释；9:37的“又说”支持题目对第一次报告的定位。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "西布说“山上的影子在你眼中好像人”，直接支持固定答案“山上的影子，而不是人”。这里回答的是西布的解释。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "指定场景中，西布只给出山上的影子这一解释，没有其他同样符合问题的答案。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "当前经文完整提供第一次报告、西布的回应和随后再次报告的顺序，无须外部知识。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "题目没有提供“山上的影子”这一答案；需从经文中提取西布的解释。"
+              },
+              "mcq_validity": {
+                "status": "not_applicable",
+                "evidence": "本题为开放题，没有选项或选择题答案键。"
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "整句中文自然、直接，时间限定与疑问部分衔接顺畅。",
+              "quotes": []
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "题目只有一个简短的场景限定和一个直接问题；“他”在对话语境中自然指向迦勒，没有明显的角色追踪负担。",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "“第一次”有助于在两次报告中定位所问回应；人物名称明确说话者与观察者。题目未额外复述报告内容，也没有多余事件叙述。",
+              "quotes": []
+            }
+          }
+        }
+      ],
+      "status": "KEPT"
+    }
+  ]
+}

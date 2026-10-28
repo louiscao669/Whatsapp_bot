@@ -62,6 +62,7 @@ def _import_fields():
             request.form.get("language"),
             request.form.get("chapter_number"),
             request.form.get("name"),
+            request.form.get("book"),
         )
 
     body = request.get_json(silent=True) or {}
@@ -70,6 +71,7 @@ def _import_fields():
         body.get("language"),
         body.get("chapter_number"),
         body.get("name"),
+        body.get("book"),
     )
 
 
@@ -77,7 +79,7 @@ def _import_fields():
 @require_roles("admin")
 def import_passage_endpoint():
     try:
-        source_text, language, chapter_number, name = _import_fields()
+        source_text, language, chapter_number, name, book = _import_fields()
         session_factory = get_session_factory()
         with session_factory() as db:
             translation, verses = import_passage_translation(
@@ -86,12 +88,14 @@ def import_passage_endpoint():
                 language=language,
                 chapter_number=chapter_number,
                 name=name,
+                book=book,
             )
             db.commit()
             result = {
                 "id": translation.id,
                 "language": translation.language,
                 "name": translation.name,
+                "book": translation.book,
                 "chapter_number": int(chapter_number),
                 "verse_count": len(verses),
             }

@@ -1,0 +1,311 @@
+{
+  "id": "hard:t1_2chr26:1fc4:mcq",
+  "original": {
+    "id": "hard:t1_2chr26:1fc4:mcq",
+    "question": "谁爱好土地，所以设立了农夫和葡萄园工人？",
+    "passage": "26:9 乌西雅在耶路撒冷的角门、谷门和城墙的转角建造城楼，并加固城墙。\n26:10 他在山地和平原有许多牲畜，就在旷野建造城楼，挖了许多水池。他爱好土地，在山地和肥沃的田野中设立农夫和葡萄园工人。\n26:11 乌西雅有一支预备出战的军队，按班次出征，由书记耶列和官长玛西亚在王官哈拿尼雅的指挥下记载。",
+    "expected_answer": "乌西雅",
+    "form": "mcq",
+    "options": {
+      "A": "葡萄园工人",
+      "B": "约坦",
+      "C": "乌西雅",
+      "D": "田野中的农夫",
+      "E": "根据这段文字无法判断"
+    },
+    "correct_option": "C",
+    "intended_target": "",
+    "original_question": "谁爱好土地，所以设立了农夫和葡萄园工人？",
+    "original_answer": "Uzziah’s"
+  },
+  "input_hash": "cb96fb5c4261829b17efce8750383db087c3f319c80e1c1cb67598767f8861d5",
+  "status": "SIMPLIFIED",
+  "accepted_case": {
+    "id": "hard:t1_2chr26:1fc4:mcq",
+    "question": "谁设立了农夫和葡萄园工人？",
+    "passage": "26:9 乌西雅在耶路撒冷的角门、谷门和城墙的转角建造城楼，并加固城墙。\n26:10 他在山地和平原有许多牲畜，就在旷野建造城楼，挖了许多水池。他爱好土地，在山地和肥沃的田野中设立农夫和葡萄园工人。\n26:11 乌西雅有一支预备出战的军队，按班次出征，由书记耶列和官长玛西亚在王官哈拿尼雅的指挥下记载。",
+    "expected_answer": "乌西雅",
+    "form": "mcq",
+    "options": {
+      "A": "葡萄园工人",
+      "B": "约坦",
+      "C": "乌西雅",
+      "D": "田野中的农夫",
+      "E": "根据这段文字无法判断"
+    },
+    "correct_option": "C",
+    "intended_target": "",
+    "original_question": "谁爱好土地，所以设立了农夫和葡萄园工人？",
+    "original_answer": "Uzziah’s"
+  },
+  "contract": {
+    "id": "item",
+    "status": "ready",
+    "target": "识别在文中设立农夫和葡萄园工人的人物。",
+    "basis": "inferred",
+    "required_answer_components": [
+      "人物身份：乌西雅。"
+    ],
+    "relations": [
+      {
+        "id": "r1",
+        "quote": "谁",
+        "meaning": "要求识别所述事件中的人物。",
+        "role": "tested",
+        "reason": "题目要求回答人物身份，而不是解释动机或因果关系；原始答案也指向乌西雅。"
+      },
+      {
+        "id": "r2",
+        "quote": "设立了农夫和葡萄园工人",
+        "meaning": "以设立农夫及葡萄园工人这一事件定位待识别的人物。",
+        "role": "anchor",
+        "reason": "这是人物身份所对应的具体事件；两类人员共同构成事件描述。本文只出现一次该事件，可以据此唯一定位其施事。"
+      },
+      {
+        "id": "r3",
+        "quote": "爱好土地，所以",
+        "meaning": "将爱好土地描述为设立农夫和葡萄园工人的动机。",
+        "role": "removable",
+        "reason": "这里的动机是人物识别问题的叙述性铺垫，并非要求回答的因果关系。即使不依赖这一铺垫，本文唯一的设立农夫和葡萄园工人事件仍足以确定人物，不会与其他事件混淆。"
+      }
+    ],
+    "note": "未提供非空的 intended_target，因此目标为依据题型及原始问答保守推断，并非已获研究者确认的设计意图。26:9先点明乌西雅，26:10以“他”承接，并明确记述其设立农夫和葡萄园工人；26:11再次点明乌西雅。固定答案“乌西雅”及原始答案“Uzziah’s”在人物身份上相符。原文将爱好土地与设立人员相邻叙述，但本题不要求独立论证二者的因果关系。"
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "proposal": {
+        "id": "item",
+        "status": "revised",
+        "question": "谁设立了农夫和葡萄园工人？",
+        "options": [
+          {
+            "label": "A",
+            "text": "葡萄园工人"
+          },
+          {
+            "label": "B",
+            "text": "约坦"
+          },
+          {
+            "label": "C",
+            "text": "乌西雅"
+          },
+          {
+            "label": "D",
+            "text": "田野中的农夫"
+          },
+          {
+            "label": "E",
+            "text": "根据这段文字无法判断"
+          }
+        ],
+        "removed_relation_ids": [
+          "r3"
+        ],
+        "note": "删除动机铺垫，保留设立农夫和葡萄园工人这一定位事件及人物识别要求。"
+      },
+      "candidate": {
+        "id": "hard:t1_2chr26:1fc4:mcq",
+        "question": "谁设立了农夫和葡萄园工人？",
+        "passage": "26:9 乌西雅在耶路撒冷的角门、谷门和城墙的转角建造城楼，并加固城墙。\n26:10 他在山地和平原有许多牲畜，就在旷野建造城楼，挖了许多水池。他爱好土地，在山地和肥沃的田野中设立农夫和葡萄园工人。\n26:11 乌西雅有一支预备出战的军队，按班次出征，由书记耶列和官长玛西亚在王官哈拿尼雅的指挥下记载。",
+        "expected_answer": "乌西雅",
+        "form": "mcq",
+        "options": {
+          "A": "葡萄园工人",
+          "B": "约坦",
+          "C": "乌西雅",
+          "D": "田野中的农夫",
+          "E": "根据这段文字无法判断"
+        },
+        "correct_option": "C",
+        "intended_target": "",
+        "original_question": "谁爱好土地，所以设立了农夫和葡萄园工人？",
+        "original_answer": "Uzziah’s"
+      },
+      "checks": [
+        {
+          "repeat": 1,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "原题询问“谁”，固定答案也是人物身份，且没有非空的显式预期目标。契约保留了设立农夫和葡萄园工人的施事识别及两类人员的完整范围。“爱好土地，所以”是人物识别的附加线索，并非要求回答的原因或条件。"
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "候选题仍要求识别设立农夫和葡萄园工人的人物，保留了原题的核心事件、施事角色和两类人员，答案仍为乌西雅。"
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "唯一实质删除是“爱好土地，所以”。文段只记述一次设立农夫和葡萄园工人的事件，该事件本身已能唯一定位人物；删除动机线索不会引入竞争事件或竞争答案。原题不是询问设立人员的原因。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "候选问题和所有选项均保持原来的简体中文。"
+            },
+            "option_meanings": [
+              {
+                "status": "pass",
+                "evidence": "“葡萄园工人”原样保留，人物类别和范围不变。",
+                "label": "A"
+              },
+              {
+                "status": "pass",
+                "evidence": "“约坦”原样保留，所指人物不变。",
+                "label": "B"
+              },
+              {
+                "status": "pass",
+                "evidence": "“乌西雅”原样保留，所指人物不变。",
+                "label": "C"
+              },
+              {
+                "status": "pass",
+                "evidence": "“田野中的农夫”原样保留，地点限定和人物类别不变。",
+                "label": "D"
+              },
+              {
+                "status": "pass",
+                "evidence": "“根据这段文字无法判断”原样保留，无法据文作答的含义不变。",
+                "label": "E"
+              }
+            ],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "26:10明确记述“设立农夫和葡萄园工人”，支持问题所预设的事件。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "26:9先引入乌西雅，26:10的“他”承接该人物并记述其设立农夫和葡萄园工人，支持固定答案乌西雅及选项C。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "文段只将该设立行为归于乌西雅，没有其他人物被描述为这一行为的施事。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "当前文段提供了人物名称、可解析的代词承接和目标事件，无需外部圣经知识即可作答。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "问题没有直接给出乌西雅的名字，也没有通过选项格式或额外提示标出正确答案；需依据文段确定施事。"
+              },
+              "mcq_validity": {
+                "status": "pass",
+                "evidence": "选项C与固定答案一致且是唯一受文段支持的答案；其他人物或群体未被记述为该行为的施事，文段也足以排除选项E。"
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "问题是直接、自然的中文人物问句；各选项表达清楚，无需语言修复。",
+              "quotes": []
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "问题只有一个明确的施事识别任务，没有额外指代链、嵌套修饰或复杂选项比较负担。",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "问题直接使用目标事件定位人物，没有保留额外叙事铺垫；农夫和葡萄园工人共同构成必要的事件描述。",
+              "quotes": []
+            }
+          }
+        },
+        {
+          "repeat": 2,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "原题以“谁”询问人物身份，未提供非空的明确意图目标；预期答案也为人物“乌西雅”。“爱好土地，所以”是该人物的动机性描述，并非要求回答原因。合同保留人物身份及其设立两类人员的事件，关系角色划分合理。"
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "候选题仍要求识别设立农夫和葡萄园工人的人物，同时保留两类人员及其施事关系，没有改变所需答案或事件范围。"
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "删除的是“爱好土地，所以”这一动机性限定。独立检查段落可见，设立农夫和葡萄园工人的事件只出现一次；删除后没有新增竞争人物或事件，也不影响该事件施事的定位。原题不是原因题，删除未将原因目标降为人物事实题。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "候选问题及全部选项均保留原来的中文。"
+            },
+            "option_meanings": [
+              {
+                "status": "pass",
+                "evidence": "选项原文未变，仍指葡萄园工人。",
+                "label": "A"
+              },
+              {
+                "status": "pass",
+                "evidence": "选项原文未变，仍指人物约坦。",
+                "label": "B"
+              },
+              {
+                "status": "pass",
+                "evidence": "选项原文未变，仍指人物乌西雅。",
+                "label": "C"
+              },
+              {
+                "status": "pass",
+                "evidence": "选项原文未变，仍指田野中的农夫，保留原有范围限定。",
+                "label": "D"
+              },
+              {
+                "status": "pass",
+                "evidence": "选项原文未变，仍表示根据所给文字无法判断。",
+                "label": "E"
+              }
+            ],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "段落明确记载“设立农夫和葡萄园工人”，支持问题所预设的事件。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "26:9先点明乌西雅，26:10以“他”承接并记述设立人员的行为，支持固定答案“乌西雅”和选项C。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "所给段落只将该行为归于乌西雅；农夫和葡萄园工人是被设立的人员，约坦未被提及，没有其他受支持的正确选项。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "当前段落提供人物先行词及完整目标事件，足以解析“他”的指代并回答，无需外部圣经知识。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "题干没有透露人物姓名，也没有以额外提示标示正确选项；需要依据段落识别行为的施事。"
+              },
+              "mcq_validity": {
+                "status": "pass",
+                "evidence": "选项标签完整，正确键C与固定答案一致；各选项可区分，只有C得到段落支持，“无法判断”不成立。"
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "问句直接、语法自然；各选项表达清楚，不需要语言修补。",
+              "quotes": []
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "题干为单一人物识别问句，行为及两类人员清晰，没有额外指代链、嵌套修饰或复杂选项比较。",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "题干仅保留定位目标事件所需的行为和人员类别，没有多余事件叙述或关系铺垫。",
+              "quotes": []
+            }
+          }
+        }
+      ],
+      "status": "SIMPLIFIED"
+    }
+  ]
+}

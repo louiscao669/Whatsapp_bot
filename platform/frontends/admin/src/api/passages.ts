@@ -4,6 +4,7 @@ export type PassageItem = {
   id: string
   language: string
   translation_name: string | null
+  book: string
   chapter_number: number
   verse_count: number
   verses: string
@@ -23,6 +24,7 @@ export type PassageDetail = {
   id: string
   language: string
   translation_name: string | null
+  book: string
   chapter_number: number
   created_at: string | null
   updated_at: string | null
@@ -48,6 +50,7 @@ export type ImportPassageResult = {
     id: string
     language: string
     name: string | null
+    book: string
     chapter_number: number
     verse_count: number
   }
@@ -58,6 +61,7 @@ export function importPassageTranslation(payload: {
   language: string
   chapter_number: number
   name?: string
+  book?: string
 }) {
   return apiFetch<ImportPassageResult>('/api/v1/passages/import', {
     method: 'POST',
@@ -67,13 +71,14 @@ export function importPassageTranslation(payload: {
 
 export async function importPassageTranslationFromFile(
   file: File,
-  fields: { language: string; chapter_number: number; name?: string },
+  fields: { language: string; chapter_number: number; name?: string; book?: string },
 ) {
   const formData = new FormData()
   formData.append('translation_file', file)
   formData.append('language', fields.language)
   formData.append('chapter_number', String(fields.chapter_number))
   formData.append('name', fields.name ?? '')
+  formData.append('book', fields.book ?? '')
   const response = await fetch('/api/v1/passages/import', {
     method: 'POST',
     body: formData,

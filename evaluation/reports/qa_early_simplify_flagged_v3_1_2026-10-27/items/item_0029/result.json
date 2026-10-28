@@ -1,0 +1,311 @@
+{
+  "id": "hard:t1_judg17_18:3250:mcq",
+  "original": {
+    "id": "hard:t1_judg17_18:3250:mcq",
+    "question": "为什么没有人搭救来士的人？",
+    "passage": "18:27 他们夺了米迦的偶像和祭司，往来士去，遇见那地安静无备的人，用刀杀灭他们，烧毁城邑。\n18:28 并无人搭救，因为那城远离西顿，也没有与人结盟；城在伯利合附近的谷中。于是但人重建城邑，在那里居住。",
+    "expected_answer": "因为那城远离西顿，也没有与人结盟。",
+    "form": "mcq",
+    "options": {
+      "A": "因为那城远离西顿，也没有与人结盟。",
+      "B": "因为他们夺了米迦的偶像和祭司",
+      "C": "因为但人用刀杀灭他们",
+      "D": "因为但人重建城邑，在那里居住",
+      "E": "根据这段文字无法判断"
+    },
+    "correct_option": "A",
+    "intended_target": "",
+    "original_question": "为什么没有人搭救来士的人？",
+    "original_answer": "They are far from Sidon and have no ties with others."
+  },
+  "input_hash": "2e809ae22ce84678387f61e3b6899560a1facd35962d625a9474ebf99c289dd4",
+  "status": "KEPT",
+  "accepted_case": {
+    "id": "hard:t1_judg17_18:3250:mcq",
+    "question": "为什么没有人搭救来士的人？",
+    "passage": "18:27 他们夺了米迦的偶像和祭司，往来士去，遇见那地安静无备的人，用刀杀灭他们，烧毁城邑。\n18:28 并无人搭救，因为那城远离西顿，也没有与人结盟；城在伯利合附近的谷中。于是但人重建城邑，在那里居住。",
+    "expected_answer": "因为那城远离西顿，也没有与人结盟。",
+    "form": "mcq",
+    "options": {
+      "A": "因为那城远离西顿，也没有与人结盟。",
+      "B": "因为他们夺了米迦的偶像和祭司",
+      "C": "因为但人用刀杀灭他们",
+      "D": "因为但人重建城邑，在那里居住",
+      "E": "根据这段文字无法判断"
+    },
+    "correct_option": "A",
+    "intended_target": "",
+    "original_question": "为什么没有人搭救来士的人？",
+    "original_answer": "They are far from Sidon and have no ties with others."
+  },
+  "contract": {
+    "id": "item",
+    "status": "ready",
+    "target": "理解来士居民无人搭救的两个原因：那城远离西顿，而且没有与他人结盟。",
+    "basis": "inferred",
+    "required_answer_components": [
+      "那城远离西顿。",
+      "那城没有与他人结盟。",
+      "将上述两点识别为来士居民无人搭救的原因，而非袭击的经过或后续结果。"
+    ],
+    "relations": [
+      {
+        "id": "r1",
+        "quote": "为什么",
+        "meaning": "要求解释无人搭救的原因。",
+        "role": "tested",
+        "reason": "问题明确询问因果关系；仅指出谁受到袭击或发生了什么，不能满足要求。"
+      },
+      {
+        "id": "r2",
+        "quote": "没有人搭救",
+        "meaning": "需要解释的结果是无人施救，而不是有人施救或袭击本身。",
+        "role": "tested",
+        "reason": "否定及其范围界定了被解释的结果，不能删除或改成其他结果。"
+      },
+      {
+        "id": "r3",
+        "quote": "来士的人",
+        "meaning": "无人搭救的对象是来士居民。",
+        "role": "anchor",
+        "reason": "将所问结果定位于本段来士遇袭事件中的居民；不要求另外回答来士居民的身份或复述袭击经过。"
+      }
+    ],
+    "note": "intended_target 为空，因此目标为保守推断，并非已明确提供的研究设计意图。18:28 以“因为”直接给出远离西顿、没有与人结盟这两个原因，支持固定答案，且与 original_question 和 original_answer 一致。题目没有额外叙述抵达或袭击经过，因此没有需要标为 removable 的背景关系。"
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "proposal": {
+        "id": "item",
+        "status": "unchanged",
+        "question": "为什么没有人搭救来士的人？",
+        "options": [
+          {
+            "label": "A",
+            "text": "因为那城远离西顿，也没有与人结盟。"
+          },
+          {
+            "label": "B",
+            "text": "因为他们夺了米迦的偶像和祭司"
+          },
+          {
+            "label": "C",
+            "text": "因为但人用刀杀灭他们"
+          },
+          {
+            "label": "D",
+            "text": "因为但人重建城邑，在那里居住"
+          },
+          {
+            "label": "E",
+            "text": "根据这段文字无法判断"
+          }
+        ],
+        "removed_relation_ids": [],
+        "note": "原问题已直接询问来士居民无人搭救的原因，没有可删除的背景叙述；保留原题及全部选项。"
+      },
+      "candidate": {
+        "id": "hard:t1_judg17_18:3250:mcq",
+        "question": "为什么没有人搭救来士的人？",
+        "passage": "18:27 他们夺了米迦的偶像和祭司，往来士去，遇见那地安静无备的人，用刀杀灭他们，烧毁城邑。\n18:28 并无人搭救，因为那城远离西顿，也没有与人结盟；城在伯利合附近的谷中。于是但人重建城邑，在那里居住。",
+        "expected_answer": "因为那城远离西顿，也没有与人结盟。",
+        "form": "mcq",
+        "options": {
+          "A": "因为那城远离西顿，也没有与人结盟。",
+          "B": "因为他们夺了米迦的偶像和祭司",
+          "C": "因为但人用刀杀灭他们",
+          "D": "因为但人重建城邑，在那里居住",
+          "E": "根据这段文字无法判断"
+        },
+        "correct_option": "A",
+        "intended_target": "",
+        "original_question": "为什么没有人搭救来士的人？",
+        "original_answer": "They are far from Sidon and have no ties with others."
+      },
+      "checks": [
+        {
+          "repeat": 1,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "原题询问来士居民无人搭救的原因。经文以“因为”明确给出远离西顿、没有与人结盟两个原因；契约保留了因果关系、无人施救的否定范围及来士居民这一对象。"
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "候选题与原题完全相同，仍要求解释无人搭救的原因；正确选项保留两个原因，未降为事件或人物识别题。"
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "问题和全部选项均未删改，没有信息损失。"
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "问题及A至E各选项均保持原有中文表述。"
+            },
+            "option_meanings": [
+              {
+                "status": "pass",
+                "evidence": "原文不变，保留远离西顿及未与人结盟两个原因。",
+                "label": "A"
+              },
+              {
+                "status": "pass",
+                "evidence": "原文不变，仍将夺取米迦的偶像和祭司作为原因。",
+                "label": "B"
+              },
+              {
+                "status": "pass",
+                "evidence": "原文不变，仍将但人用刀杀灭来士居民作为原因。",
+                "label": "C"
+              },
+              {
+                "status": "pass",
+                "evidence": "原文不变，仍将但人重建城邑并居住在那里作为原因。",
+                "label": "D"
+              },
+              {
+                "status": "pass",
+                "evidence": "原文不变，保留根据本段无法判断的弃答含义。",
+                "label": "E"
+              }
+            ],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "18:27交代来士居民遇袭，18:28明确说明“并无人搭救”，支持问题的对象和前提。"
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "18:28明确写道“因为那城远离西顿，也没有与人结盟”，直接支持固定答案及正确选项A。"
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "只有A对应经文明示的两个原因；B是袭击前的行动，C是袭击经过，D是后续事件，E与经文已有明确解释不符。"
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "当前经文完整提供受袭对象、无人施救的结果及其两个原因，无须外部圣经知识。"
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "问题未透露两个原因，也未标示正确选项；A作为正常备选答案呈现，不构成额外泄漏。"
+              },
+              "mcq_validity": {
+                "status": "pass",
+                "evidence": "题目有五个不同选项，均可作为对原因问题的回答进行判断，且仅A受到经文因果说明的支持，答案键正确。"
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "问题表达自然直接；各选项表述通顺，没有需要读者修复的语法或措辞。",
+              "quotes": []
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "问题直接询问一个明确结果的原因；选项中的人物指代和并列原因均易于结合经文理解，无明显可避免的解析负担。",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "问题没有额外事件叙述或重复指代链；“来士的人”用于定位无人搭救的对象，是有用的识别信息。",
+              "quotes": []
+            }
+          }
+        },
+        {
+          "repeat": 2,
+          "verification": {
+            "id": "item",
+            "contract_validity": {
+              "status": "pass",
+              "evidence": "The contract preserves the original causal question, including the negative outcome of no rescue and both stated reasons. The passage explicitly connects that outcome to distance from Sidon and lack of alliances."
+            },
+            "same_target": {
+              "status": "pass",
+              "evidence": "The candidate is unchanged. It still asks why the people of Laish received no rescue, and the keyed answer retains both required reasons."
+            },
+            "removals_justified": {
+              "status": "pass",
+              "evidence": "No question or option information has been removed."
+            },
+            "same_language": {
+              "status": "pass",
+              "evidence": "The question and all five options remain in their original Chinese wording."
+            },
+            "option_meanings": [
+              {
+                "status": "pass",
+                "evidence": "Unchanged: both distance from Sidon and lack of alliances are presented as reasons for no rescue.",
+                "label": "A"
+              },
+              {
+                "status": "pass",
+                "evidence": "Unchanged: taking Micah's idols and priest is presented as the reason.",
+                "label": "B"
+              },
+              {
+                "status": "pass",
+                "evidence": "Unchanged: the Danites killing the residents with swords is presented as the reason.",
+                "label": "C"
+              },
+              {
+                "status": "pass",
+                "evidence": "Unchanged: the Danites rebuilding and inhabiting the city is presented as the reason.",
+                "label": "D"
+              },
+              {
+                "status": "pass",
+                "evidence": "Unchanged: the option asserts that the passage does not allow a determination.",
+                "label": "E"
+              }
+            ],
+            "content": {
+              "question_support": {
+                "status": "pass",
+                "evidence": "The passage identifies Laish as the attacked location and explicitly states “并无人搭救,” supporting the question's presupposition."
+              },
+              "answer_support": {
+                "status": "pass",
+                "evidence": "The passage directly states “因为那城远离西顿，也没有与人结盟,” matching the expected answer and option A."
+              },
+              "answer_uniqueness": {
+                "status": "pass",
+                "evidence": "Only A gives the passage's explicit explanation for no rescue. B and C describe events in the attack narrative, D describes its aftermath, and E conflicts with the explicit explanation."
+              },
+              "context_sufficiency": {
+                "status": "pass",
+                "evidence": "The clean passage supplies the affected population, the absence of rescue, and both reasons; no outside knowledge is needed."
+              },
+              "answer_leakage": {
+                "status": "pass",
+                "evidence": "The question does not disclose either reason or identify the correct option. Including the supported answer among the choices is normal MCQ construction."
+              },
+              "mcq_validity": {
+                "status": "pass",
+                "evidence": "There is one supported keyed answer, A. The other options offer distinct event-based explanations or abstention, none supported as the reason for no rescue."
+              }
+            },
+            "naturalness": {
+              "score": 0,
+              "evidence": "The Chinese question is idiomatic and direct. The choices use clear causal phrasing and a standard abstention formulation.",
+              "quotes": []
+            },
+            "processing": {
+              "score": 0,
+              "evidence": "The question has a straightforward why-question structure and a named population. The choices are short and require no substantial reference or modifier resolution.",
+              "quotes": []
+            },
+            "context_economy": {
+              "score": 0,
+              "evidence": "The question contains only the outcome being explained and the useful Laish population anchor. It adds no unnecessary event narration or reference chain.",
+              "quotes": []
+            }
+          }
+        }
+      ],
+      "status": "KEPT"
+    }
+  ]
+}

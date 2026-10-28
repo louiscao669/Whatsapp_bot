@@ -1,0 +1,456 @@
+{
+  "fresh": {
+    "current": {
+      "true_accept": 16,
+      "true_reject": 14,
+      "false_accept": 2,
+      "false_reject": 0,
+      "scored_cases": 32,
+      "expected_cases": 32,
+      "accuracy": 0.9375,
+      "false_accept_rate": 0.125,
+      "false_reject_rate": 0.0,
+      "families": {
+        "action": {
+          "true_accept": 1
+        },
+        "all_occurrences": {
+          "true_reject": 1,
+          "true_accept": 1
+        },
+        "cardinality": {
+          "true_accept": 1
+        },
+        "categorical_attribute": {
+          "true_accept": 2
+        },
+        "context_defined": {
+          "true_accept": 1
+        },
+        "explicit_frequency": {
+          "true_accept": 1
+        },
+        "explicit_measurement": {
+          "true_accept": 1
+        },
+        "explicit_quantity": {
+          "true_accept": 1
+        },
+        "explicit_time": {
+          "true_accept": 1
+        },
+        "fluency": {
+          "true_reject": 1
+        },
+        "location": {
+          "true_accept": 1
+        },
+        "modality": {
+          "true_accept": 1
+        },
+        "omission": {
+          "true_reject": 1
+        },
+        "polarity": {
+          "true_accept": 3
+        },
+        "relationship": {
+          "true_accept": 1
+        },
+        "same_referent": {
+          "true_reject": 1
+        },
+        "specificity": {
+          "true_reject": 1
+        },
+        "vague_degree": {
+          "false_accept": 1,
+          "true_reject": 1
+        },
+        "vague_frequency": {
+          "true_reject": 2
+        },
+        "vague_quantity": {
+          "true_reject": 3,
+          "false_accept": 1
+        },
+        "vague_time": {
+          "true_reject": 3
+        }
+      },
+      "misclassifications": [
+        {
+          "id": "degree_n2",
+          "expected": "reject",
+          "actual": "accept",
+          "explanation": "将饥饿程度从“十分”改为“有些”，改变了一个明确的程度信息；句子自然，且仅有这一处匹配。"
+        },
+        {
+          "id": "qty_n4",
+          "expected": "reject",
+          "actual": "accept",
+          "explanation": "将等候官员的百姓由一大群改为少数，改变了人数规模；句子通顺，其余信息未变，且原文只有这一处匹配。"
+        }
+      ],
+      "repeat_decisions": {
+        "degree_n2": [
+          "accept",
+          "accept",
+          "accept"
+        ],
+        "freq_p2": [
+          "accept",
+          "accept",
+          "accept"
+        ],
+        "qty_n4": [
+          "accept",
+          "accept",
+          "accept"
+        ],
+        "qty_p4": [
+          "accept",
+          "accept",
+          "accept"
+        ]
+      },
+      "repeat_flips": [],
+      "errors": 0
+    },
+    "previous": {
+      "true_accept": 16,
+      "true_reject": 16,
+      "false_accept": 0,
+      "false_reject": 0,
+      "scored_cases": 32,
+      "expected_cases": 32,
+      "accuracy": 1.0,
+      "false_accept_rate": 0.0,
+      "false_reject_rate": 0.0,
+      "families": {
+        "action": {
+          "true_accept": 1
+        },
+        "all_occurrences": {
+          "true_reject": 1,
+          "true_accept": 1
+        },
+        "cardinality": {
+          "true_accept": 1
+        },
+        "categorical_attribute": {
+          "true_accept": 2
+        },
+        "context_defined": {
+          "true_accept": 1
+        },
+        "explicit_frequency": {
+          "true_accept": 1
+        },
+        "explicit_measurement": {
+          "true_accept": 1
+        },
+        "explicit_quantity": {
+          "true_accept": 1
+        },
+        "explicit_time": {
+          "true_accept": 1
+        },
+        "fluency": {
+          "true_reject": 1
+        },
+        "location": {
+          "true_accept": 1
+        },
+        "modality": {
+          "true_accept": 1
+        },
+        "omission": {
+          "true_reject": 1
+        },
+        "polarity": {
+          "true_accept": 3
+        },
+        "relationship": {
+          "true_accept": 1
+        },
+        "same_referent": {
+          "true_reject": 1
+        },
+        "specificity": {
+          "true_reject": 1
+        },
+        "vague_degree": {
+          "true_reject": 2
+        },
+        "vague_frequency": {
+          "true_reject": 2
+        },
+        "vague_quantity": {
+          "true_reject": 4
+        },
+        "vague_time": {
+          "true_reject": 3
+        }
+      },
+      "misclassifications": [],
+      "repeat_decisions": {
+        "degree_n2": [
+          "reject",
+          "reject",
+          "reject"
+        ],
+        "freq_p2": [
+          "accept",
+          "accept",
+          "accept"
+        ],
+        "qty_n4": [
+          "reject",
+          "reject",
+          "reject"
+        ],
+        "qty_p4": [
+          "accept",
+          "accept",
+          "accept"
+        ]
+      },
+      "repeat_flips": [],
+      "errors": 0
+    },
+    "conservative": {
+      "true_accept": 15,
+      "true_reject": 16,
+      "false_accept": 0,
+      "false_reject": 1,
+      "scored_cases": 32,
+      "expected_cases": 32,
+      "accuracy": 0.96875,
+      "false_accept_rate": 0.0,
+      "false_reject_rate": 0.0625,
+      "families": {
+        "action": {
+          "true_accept": 1
+        },
+        "all_occurrences": {
+          "true_reject": 1,
+          "true_accept": 1
+        },
+        "cardinality": {
+          "true_accept": 1
+        },
+        "categorical_attribute": {
+          "true_accept": 2
+        },
+        "context_defined": {
+          "true_accept": 1
+        },
+        "explicit_frequency": {
+          "true_accept": 1
+        },
+        "explicit_measurement": {
+          "true_accept": 1
+        },
+        "explicit_quantity": {
+          "true_accept": 1
+        },
+        "explicit_time": {
+          "true_accept": 1
+        },
+        "fluency": {
+          "true_reject": 1
+        },
+        "location": {
+          "true_accept": 1
+        },
+        "modality": {
+          "false_reject": 1
+        },
+        "omission": {
+          "true_reject": 1
+        },
+        "polarity": {
+          "true_accept": 3
+        },
+        "relationship": {
+          "true_accept": 1
+        },
+        "same_referent": {
+          "true_reject": 1
+        },
+        "specificity": {
+          "true_reject": 1
+        },
+        "vague_degree": {
+          "true_reject": 2
+        },
+        "vague_frequency": {
+          "true_reject": 2
+        },
+        "vague_quantity": {
+          "true_reject": 4
+        },
+        "vague_time": {
+          "true_reject": 3
+        }
+      },
+      "misclassifications": [
+        {
+          "id": "modal_p1",
+          "expected": "accept",
+          "actual": "reject",
+          "explanation": "“可能”表示回城存在可能，“必定”表示确定会回城。两者改变了确定程度，但原文未明确排除确定回城；按模糊程度变化的严格规则，不能据此认定为合格的事实改动。编辑后的句子通顺，且只替换了一处。"
+        }
+      ],
+      "repeat_decisions": {
+        "degree_n2": [
+          "reject",
+          "reject",
+          "reject"
+        ],
+        "freq_p2": [
+          "accept",
+          "accept",
+          "accept"
+        ],
+        "qty_n4": [
+          "reject",
+          "reject",
+          "reject"
+        ],
+        "qty_p4": [
+          "accept",
+          "accept",
+          "accept"
+        ]
+      },
+      "repeat_flips": [],
+      "errors": 0
+    }
+  },
+  "regression": {
+    "current": {
+      "true_accept": 1,
+      "true_reject": 1,
+      "false_accept": 4,
+      "false_reject": 0,
+      "scored_cases": 6,
+      "expected_cases": 6,
+      "accuracy": 0.3333333333333333,
+      "false_accept_rate": 0.8,
+      "false_reject_rate": 0.0,
+      "families": {
+        "known_control": {
+          "true_accept": 1
+        },
+        "known_failure": {
+          "false_accept": 4,
+          "true_reject": 1
+        }
+      },
+      "misclassifications": [
+        {
+          "id": "known_approx",
+          "expected": "reject",
+          "actual": "accept",
+          "explanation": "“十来个”表示约十个，“十几个”明确表示超过十个、不满二十个，人数范围发生变化。替换后句子自然，且只改动了人数；原文中仅有这一处匹配。"
+        },
+        {
+          "id": "known_frequency",
+          "expected": "reject",
+          "actual": "accept",
+          "explanation": "将看望守卫的频率由“经常”改为“有时”，改变了频率这一项事实；句子自然通顺，其余信息未变，且原文只有这一处匹配。"
+        },
+        {
+          "id": "known_lamps",
+          "expected": "reject",
+          "actual": "accept",
+          "explanation": "将灯的数量从“许多”改为“几盏”，改变了同一事实中的数量；句子自然，其他信息未变，且该来源片段只出现一次。"
+        },
+        {
+          "id": "known_quantity",
+          "expected": "reject",
+          "actual": "accept",
+          "explanation": "将派来的士兵人数从“大批”改为“几名”，改变了数量这一项事实；句子自然通顺，其余信息未变，且仅有这一处匹配。"
+        }
+      ],
+      "repeat_decisions": {},
+      "repeat_flips": [],
+      "errors": 0
+    },
+    "previous": {
+      "true_accept": 1,
+      "true_reject": 4,
+      "false_accept": 1,
+      "false_reject": 0,
+      "scored_cases": 6,
+      "expected_cases": 6,
+      "accuracy": 0.8333333333333334,
+      "false_accept_rate": 0.2,
+      "false_reject_rate": 0.0,
+      "families": {
+        "known_control": {
+          "true_accept": 1
+        },
+        "known_failure": {
+          "false_accept": 1,
+          "true_reject": 4
+        }
+      },
+      "misclassifications": [
+        {
+          "id": "known_fluency",
+          "expected": "reject",
+          "actual": "accept",
+          "explanation": "清点粮食的频率由几乎每天变为每月一次，事实差异明确；仅替换了频率，句子通顺，且原文只有这一处匹配。"
+        }
+      ],
+      "repeat_decisions": {},
+      "repeat_flips": [],
+      "errors": 0
+    },
+    "conservative": {
+      "true_accept": 0,
+      "true_reject": 5,
+      "false_accept": 0,
+      "false_reject": 1,
+      "scored_cases": 6,
+      "expected_cases": 6,
+      "accuracy": 0.8333333333333334,
+      "false_accept_rate": 0.0,
+      "false_reject_rate": 1.0,
+      "families": {
+        "known_control": {
+          "false_reject": 1
+        },
+        "known_failure": {
+          "true_reject": 5
+        }
+      },
+      "misclassifications": [
+        {
+          "id": "known_fluency_control",
+          "expected": "accept",
+          "actual": "reject",
+          "explanation": "替换后的句子自然，只改动了清点频率。但“几乎每天”是模糊频率，“每月一次”虽更明确，两者的差别仍不符合严格标量规则所要求的明确数值对比或文内界定，因此不批准。"
+        }
+      ],
+      "repeat_decisions": {},
+      "repeat_flips": [],
+      "errors": 0
+    }
+  },
+  "complete": true,
+  "completed_responses": 138,
+  "planned_responses": 138,
+  "usage": {
+    "input_tokens": 162633,
+    "output_tokens": 31514,
+    "total_tokens": 194147,
+    "reasoning_tokens": 10871,
+    "cached_input_tokens": 76212
+  },
+  "extra_gate_changed_decisions": [],
+  "screening_gate_passed": true
+}

@@ -31,7 +31,9 @@ export function createPilotApi(participantId, { origin = window.location.origin 
     });
     const payload = await response.json().catch(() => ({}));
     if (!response.ok) {
-      throw new Error(payload.message || `Request failed with ${response.status}`);
+      const error = new Error(payload.message || `Request failed with ${response.status}`);
+      error.status = response.status;
+      throw error;
     }
     return payload;
   }
@@ -53,6 +55,16 @@ export function createPilotApi(participantId, { origin = window.location.origin 
         method: "POST",
         body: { agreed: Boolean(agreed), consent_version: consentVersion || undefined }
       });
+    },
+
+    /** Which background-questionnaire section is due (+ the instrument, never its key). */
+    getQuestionnaire() {
+      return request("/questionnaire");
+    },
+
+    /** Save one questionnaire section: {section, answers, religion_consent?}. */
+    submitQuestionnaire(body) {
+      return request("/questionnaire", { method: "POST", body });
     },
 
     startSession(consentVersion) {

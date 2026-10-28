@@ -1,0 +1,274 @@
+{
+  "prompt": "whole_item_rubric",
+  "repeat": 1,
+  "batch": 0,
+  "request_hash": "1e550765088eb950ff7c7e0b9a86b328714f2eb32dd2dbdaf24fd236f341bc7a",
+  "model": "gpt-6.1-sol",
+  "response_id": "resp_0f4b7d144529b4b0006ae05482f63c87d18c6af1c3753e440a",
+  "elapsed_seconds": 41.77160620689392,
+  "usage": {
+    "input_tokens": 3719,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 3716
+    },
+    "output_tokens": 2846,
+    "output_tokens_details": {
+      "reasoning_tokens": 516
+    },
+    "total_tokens": 6565
+  },
+  "threshold_mismatches": [],
+  "items": [
+    {
+      "id": "item_01",
+      "decision": "REWRITE",
+      "target": "What happened to the sick people: their illnesses and evil spirits left them.",
+      "target_basis": "explicit",
+      "naturalness": {
+        "score": 2,
+        "evidence": "“摸过保罗的手帕和围裙” awkwardly makes the objects agents of “摸”; readers must repair this to mean objects that had been in contact with Paul."
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "The opening modifier requires some role resolution, but the event sequence and answer choices are otherwise manageable."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "The objects being brought to the sick provide a useful anchor for “随后怎么样了”."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "The introduction states that the objects arrived, not that the sick recovered or the spirits left."
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "Rewrite because the opening modifier requires linguistic repair, not because the event anchor is unnecessary."
+    },
+    {
+      "id": "item_02",
+      "decision": "KEEP",
+      "target": "Identify who moved the books inside.",
+      "target_basis": "explicit",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“是谁把书搬进屋里的？” is an idiomatic identification question."
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "The question presents one action and asks directly for its agent."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“搬进屋里” uniquely identifies 小林's action in the passage."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "The question does not name the person who moved the books."
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "The question is direct, sufficiently anchored, and does not supply its answer."
+    },
+    {
+      "id": "item_03",
+      "decision": "KEEP",
+      "target": "Identify the person killed by the lion on the road.",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“谁在路上被狮子咬死了？” is natural and direct."
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "The passive clearly distinguishes the victim from the lion; the choices are short person labels."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“在路上被狮子咬死” identifies the relevant event."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "The question does not identify the victim, and the choices do not independently reveal the answer."
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "The event and requested participant are clear without unnecessary framing."
+    },
+    {
+      "id": "item_04",
+      "decision": "REWRITE",
+      "target": "Identify who moved the books inside.",
+      "target_basis": "explicit",
+      "naturalness": {
+        "score": 0,
+        "evidence": "Both “小林把书搬进屋里” and the following question are idiomatic."
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "The repeated action is easy to parse and creates no substantial processing load."
+      },
+      "context": {
+        "score": 1,
+        "evidence": "The introductory statement unnecessarily repeats the exact event being queried."
+      },
+      "leakage": {
+        "score": 3,
+        "evidence": "“小林把书搬进屋里” explicitly names the person immediately before asking who did it."
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "Rewrite because the setup explicitly supplies the target answer."
+    },
+    {
+      "id": "item_05",
+      "decision": "KEEP",
+      "target": "Identify the person who took books to the library.",
+      "target_basis": "explicit",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“谁把书带到图书馆？” is idiomatic and direct."
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "One action and destination clearly specify the requested person."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“图书馆” distinguishes 小周's action from 小林 taking books to school."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "The question gives the destination but not the person's identity."
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "The destination supplies exactly the distinction needed to identify the intended event."
+    },
+    {
+      "id": "item_06",
+      "decision": "REWRITE",
+      "target": "What happened to the sick people: their illnesses and evil spirits left them.",
+      "target_basis": "explicit",
+      "naturalness": {
+        "score": 2,
+        "evidence": "“触摸过保罗的手帕和围裙” awkwardly attributes “触摸” to the objects rather than naturally expressing their contact with Paul."
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "The opening modifier needs role resolution, but the single temporal frame and short choices remain manageable."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "The objects being taken to the sick usefully identifies the event whose outcome is requested."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "The temporal setup does not state what happened to the sick."
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "Rewrite the unnatural contact wording; the temporal clause itself is not a reason for rejection."
+    },
+    {
+      "id": "item_07",
+      "decision": "KEEP",
+      "target": "What happened to the sick people: their illnesses and evil spirits left them.",
+      "target_basis": "explicit",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“Cloths that had touched Paul” and “What happened to the sick?” are idiomatic English."
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "The relative clause and passive require ordinary, manageable tracking of the cloths and the sick."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "The first sentence anchors the particular event being asked about."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "The setup states that cloths were taken to the sick, not the resulting healing."
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "The whole item provides useful context with manageable structure and no answer disclosure."
+    },
+    {
+      "id": "item_08",
+      "decision": "KEEP",
+      "target": "Identify what Uzziah built at Jerusalem's gates.",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“What did Uzziah build at Jerusalem's gates?” is a natural, direct question."
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "The question contains one builder, one action, and a clear location."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“At Jerusalem's gates” distinguishes the relevant building activity from the other construction in the passage."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "The question does not state that he built towers."
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "The wording clearly locates the construction and asks directly what was built."
+    },
+    {
+      "id": "item_09",
+      "decision": "REWRITE",
+      "target": "Identify the person who took books to the library.",
+      "target_basis": "explicit",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“谁把书带走了？” is natural Chinese."
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "The sentence itself is short and readily parsed."
+      },
+      "context": {
+        "score": 2,
+        "evidence": "The missing destination leaves “带走” applicable to both 小林 taking books to school and 小周 taking books to the library."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "No introductory statement supplies the person's identity."
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "Rewrite because the question omits the library distinction needed to locate the explicit target event."
+    },
+    {
+      "id": "item_10",
+      "decision": "KEEP",
+      "target": "What happened to the sick people: their illnesses and evil spirits left them.",
+      "target_basis": "explicit",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“病人的情况有什么变化？” is idiomatic and direct."
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "The question and choices are straightforward, with no layered modifiers or difficult comparisons."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "Within this passage, “病人” sufficiently identifies the people described when the cloths were brought."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "“根据这段经文” provides no answer information; the correct choice's presence is not leakage."
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "The passage supplies sufficient reference, and the question directly asks about the intended change."
+    }
+  ]
+}

@@ -1,0 +1,224 @@
+{
+  "prompt": "target_preserving_comparison",
+  "repeat": 2,
+  "batch": 2,
+  "request_hash": "9b30148c3a4174eb93a3229ffa1d9d99a482daa35cb144f16ff56258098d7f6d",
+  "model": "gpt-6.1-sol",
+  "response_id": "resp_00ae5827e45ba109006ae053f1699487d1ba60e944ba264cc1",
+  "elapsed_seconds": 38.06806492805481,
+  "usage": {
+    "input_tokens": 3411,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 3408
+    },
+    "output_tokens": 2670,
+    "output_tokens_details": {
+      "reasoning_tokens": 389
+    },
+    "total_tokens": 6081
+  },
+  "threshold_mismatches": [],
+  "items": [
+    {
+      "id": "hard:t1_2kgs11:a99f:mcq",
+      "decision": "KEEP",
+      "target": "谁和他的奶母在耶和华的殿里藏了六年。",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“谁和他的奶母……藏了六年”是自然、直接的人物提问。"
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "需结合奶母、地点和六年的时间定位人物；这些都是明确的事件线索，四个人名选项没有额外结构负担。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "“在耶和华的殿里藏了六年”足以定位所问事件。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "题干没有说出藏起来的人是谁。"
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "事件线索清楚，措辞自然，没有需要消除的明显负担。"
+    },
+    {
+      "id": "hard:t1_2kgs11:b13a:mcq",
+      "decision": "KEEP",
+      "target": "谁把枪和盾牌交给了百夫长。",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“谁把枪和盾牌交给了百夫长”表达直接、自然。"
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "交付者、物品和接收者的关系清楚，选项均为简短人物称谓。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "枪、盾牌和百夫长提供了充分的事件定位。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "题干没有提供交付者的身份。"
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "问题简明且角色关系明确，无须改写。"
+    },
+    {
+      "id": "hard:t1_2chr26:4cb0:mcq",
+      "decision": "KEEP",
+      "target": "教导乌西雅敬畏神的人是谁。",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“谁教导乌西雅敬畏神”是惯常、直接的问法。"
+      },
+      "processing": {
+        "score": 0,
+        "evidence": "只需辨认教导者，四个人名选项不增加复杂的比较要求。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "乌西雅及“教导……敬畏神”已明确所问关系。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "题干未给出教导者。"
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "已是自然、明确的目标保持问法。"
+    },
+    {
+      "id": "hard:t1_judg9:6d68:mcq",
+      "decision": "REWRITE",
+      "target": "约坦呼叫示剑的众首领听他的话，希望由此产生什么结果。",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 2,
+        "evidence": "“是为了什么结果”搭配生硬，需要读者将其理解为“希望带来什么结果”。"
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "需区分约坦的呼吁与期望结果；这是目标本身所需的关系，选项也较短。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "约坦、示剑的众首领以及“听他的话”充分定位了这次呼吁。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "题干只交代呼吁，没有说出希望神也听他们的话。"
+      },
+      "alternative": "约坦呼叫示剑的众首领听他的话，希望这样能带来什么结果？",
+      "target_preservation": "preserved",
+      "reason": "改写保留参与者、呼吁与期望结果的关系及原有答案范围，只修复“为了什么结果”的不自然搭配；原选项可保留。"
+    },
+    {
+      "id": "transfer:handkerchief:repair:en",
+      "decision": "KEEP",
+      "target": "What happened to the sick people: their illnesses were cured and the evil spirits left them.",
+      "target_basis": "explicit",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“Cloths that had touched Paul” and “What happened to the sick?” are idiomatic and direct."
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "The reader retains one event anchor across two short sentences; the relative clause identifies the relevant cloths without unnecessary detail."
+      },
+      "context": {
+        "score": 0,
+        "evidence": "The cloths being taken to the sick clearly locates the event being asked about."
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "The setup states that the cloths were taken to the sick, not what subsequently happened to them."
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "The setup usefully identifies the event while leaving the intended outcome for respondents to supply."
+    },
+    {
+      "id": "transfer:handkerchief:original:zh",
+      "decision": "KEEP",
+      "target": "病人发生了什么变化：疾病和邪灵离开了他们。",
+      "target_basis": "explicit",
+      "naturalness": {
+        "score": 1,
+        "evidence": "“触摸过保罗的手帕和围裙”略显书面，但整句仍是可理解的正常表达。"
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "需读完“当……被带到病人那里时”这一事件定位，再判断结果；修饰语和时间框架并未形成明显的多层解码负担，选项也简短。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "接触过保罗的物品及其被带到病人那里，足以明确所问事件。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "题干未交代病人的变化；正确结果出现在选项中本身不构成泄露。"
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "虽然略显书面，但事件和结果的关系清楚，没有足以要求改写的可避免负担。"
+    },
+    {
+      "id": "hard:t1_1kgs13:a6cd:mcq",
+      "decision": "KEEP",
+      "target": "谁实际为王祷告了。",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“王求神人为他祷告，谁为王祷告了”表达自然，前半句定位请求，后半句询问实际行动者。"
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "需区分请求和实际祷告这两个相关动作，但角色清楚，选项结构简单。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "王提出祷告请求的背景有助于定位事件，没有明显无关信息。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "“王求神人为他祷告”只说明请求对象，并未断言神人实际祷告了。"
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "请求的背景不等于提供实际行动的答案；整体清楚、负担可管理。"
+    },
+    {
+      "id": "hard:t1_judg9:8e0b:mcq",
+      "decision": "KEEP",
+      "target": "橄榄树不肯作树木之王的原因，即这样做必须离开荣耀神和人的油。",
+      "target_basis": "inferred",
+      "naturalness": {
+        "score": 0,
+        "evidence": "“为什么不肯去作树木的王”问法自然，选项也能直接衔接问题。"
+      },
+      "processing": {
+        "score": 1,
+        "evidence": "需比较四种原因，并理解“那荣耀神和人的油”的修饰关系；这是所问理由的一部分，没有明显多余的结构负担。"
+      },
+      "context": {
+        "score": 0,
+        "evidence": "橄榄树拒绝作王这一事件已明确，无须补充其他树木的经历。"
+      },
+      "leakage": {
+        "score": 0,
+        "evidence": "题干只说明拒绝作王，没有说明拒绝的原因。"
+      },
+      "alternative": "",
+      "target_preservation": "not_applicable",
+      "reason": "问题直接询问目标原因，选项虽需比较，但没有实质性的可避免负担。"
+    }
+  ]
+}
