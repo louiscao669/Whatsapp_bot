@@ -40,19 +40,34 @@ export function renderContribution(payload) {
     el("section", { className: "chapter-log" }, [
       el("div", { className: "chapter-log-header" }, [
         el("div", {}, [
-          el("p", { className: "contribution-log-eyebrow", text: "Luke" }),
+          el("p", { className: "contribution-log-eyebrow", text: activityBooks(chapters) }),
           el("h2", { text: "Activity Log" })
         ])
       ]),
       el("div", { className: "chapter-activity-grid" }, chapters.map((chapter) => (
         el("span", {
-          className: `chapter-cell level-${Number(chapter.level || 0)}`,
-          title: `Luke ${chapter.chapter}: ${Number(chapter.answered_questions || 0)} answers`,
-          text: String(chapter.chapter)
+          className: `chapter-cell level-${Number(chapter.level || 0)}${activityBooks(chapters) === "Passages" ? " chapter-cell-labelled" : ""}`,
+          title: `${chapter.label || `${chapter.book || "Luke"} ${chapter.chapter}`}: ${Number(chapter.answered_questions || 0)} answers`,
+          text: activityCellText(chapter, chapters)
         })
       )))
     ])
   ]);
+}
+
+function activityBooks(chapters) {
+  const books = [...new Set(chapters.map((chapter) => chapter.book || "Luke"))];
+  return books.length === 1 ? books[0] : "Passages";
+}
+
+function activityCellText(chapter, chapters) {
+  // One book: chapter numbers alone are unambiguous (the old Luke grid).
+  // Several books: Judges 9 and Acts 9 would both read "9", so add the book.
+  if (new Set(chapters.map((item) => item.book || "Luke")).size <= 1) {
+    return String(chapter.chapter);
+  }
+  const short = String(chapter.book || "").replace(/^(\d)\s+/, "$1").slice(0, 4);
+  return `${short} ${chapter.chapter}`;
 }
 
 function chapterActivity(history) {

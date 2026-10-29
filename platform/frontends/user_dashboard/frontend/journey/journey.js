@@ -642,13 +642,17 @@ function showCompletedQuestion(question) {
         ? el("audio", { controls: true, src: review.participant_audio_url })
         : null
     ]),
-    detailBlock("Correct answer", [
-      el("p", { text: review.correct_answer || "No answer recorded" }),
-      review.correct_audio_url
-        ? el("audio", { controls: true, src: review.correct_audio_url })
-        : null
-    ]),
-    review.correctness
+    // Study (tier-1) items: the server withholds the answer key and verdict
+    // (IRB: accuracy is never shown), so the block is left out entirely.
+    review.feedback_hidden
+      ? null
+      : detailBlock("Correct answer", [
+        el("p", { text: review.correct_answer || "No answer recorded" }),
+        review.correct_audio_url
+          ? el("audio", { controls: true, src: review.correct_audio_url })
+          : null
+      ]),
+    !review.feedback_hidden && review.correctness
       ? el("p", { className: "question-review-status", text: `Status: ${review.correctness}` })
       : null
   ]);

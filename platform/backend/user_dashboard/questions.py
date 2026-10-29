@@ -61,7 +61,7 @@ def submit_dashboard_answer(
     from .profile import _participant_by_id
     from .rewards import _award_dashboard_currency
     from .scheduling import _schedule_dashboard_next_batch
-    from .serialization import _serialize_dashboard_question
+    from .serialization import _serialize_dashboard_question, answer_feedback_hidden
     from .store import _get_or_create_wallet
 
     assignment_id = (assignment_id or "").strip()
@@ -356,7 +356,10 @@ def submit_dashboard_answer(
             "batch_completed": batch_completed,
             "completed_batch_size": completed_batch_size,
             "next_assignment_id": next_assignment_id,
-            "is_correct": is_correct_label,
+            # Stored verdict is unchanged; only what the participant sees is.
+            "is_correct": (
+                None if answer_feedback_hidden(qa_item) else is_correct_label
+            ),
         },
         "next_question": next_question,
         "wallet": {
