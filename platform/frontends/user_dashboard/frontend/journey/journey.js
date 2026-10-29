@@ -32,7 +32,7 @@ export function renderJourney(payload, state = {}, actions = {}) {
     : answerTarget
     ? renderQuestionAnswerPage(answerTarget, actions)
     : selectedChapter
-    ? renderChapterPath(selectedChapter, state.journeyChapterIndex, actions)
+    ? renderChapterPath(selectedChapter, state.journeyChapterIndex, actions, state.journeyReturnBatchId)
     : renderStandaloneContinue(activeChapterIndex, actions);
   const header = selectedChapter || answerTarget || completion ? [] : [
     el("section", { className: "journey-hero" }, [
@@ -276,13 +276,13 @@ function renderOpenAnswer() {
   ]);
 }
 
-function renderChapterPath(chapter, index, actions) {
+function renderChapterPath(chapter, index, actions, returnBatchId) {
   const batches = pathBatches(chapter);
   const currentBatch = batches.find((batch) => batch.status === "active")
     || batches.find((batch) => batch.status !== "complete")
     || batches[batches.length - 1]
     || null;
-  scheduleCurrentQuestionJump();
+  scheduleCurrentQuestionJump(returnBatchId);
   return el("section", { className: "chapter-path-page" }, [
     el("div", { className: "chapter-path-toolbar" }, [
       el("button", {
@@ -605,9 +605,13 @@ function interpolate(start, end, count, index) {
   return Math.round(start + ((end - start) * index) / (count - 1));
 }
 
-function scheduleCurrentQuestionJump() {
+function scheduleCurrentQuestionJump(returnBatchId) {
   window.requestAnimationFrame?.(() => {
     window.requestAnimationFrame?.(() => {
+      if (returnBatchId) {
+        jumpToBatch(returnBatchId);
+        return;
+      }
       const current = document.querySelector('[data-current-question="true"]');
       current?.scrollIntoView({ behavior: "smooth", block: "center", inline: "center" });
     });

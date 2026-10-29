@@ -29,6 +29,7 @@ const state = {
   journeyChapterIndex: null,
   journeyAnswerAssignmentId: null,
   journeyAnswerQuestion: null,
+  journeyReturnBatchId: null,
   questionCompletion: null,
   startingBatch: false,
   claimingBatchRewardId: null,
@@ -260,6 +261,17 @@ function openQuestion(assignmentId) {
     showModal("This question is not ready yet.");
     return;
   }
+  state.journeyReturnBatchId = null;
+  for (const [chapterIndex, chapter] of (state.payload.journey?.chapters || []).entries()) {
+    const batch = (chapter.batches || []).find((candidate) => (
+      (candidate.questions || []).some((question) => question.assignment_id === assignmentId)
+    ));
+    if (batch) {
+      state.journeyReturnBatchId = batch.batch_id;
+      state.journeyChapterIndex = chapterIndex;
+      break;
+    }
+  }
   state.journeyAnswerAssignmentId = assignmentId;
   state.journeyAnswerQuestion = null;
   state.questionCompletion = null;
@@ -400,6 +412,7 @@ async function submitAnswer(assignmentId, responseText) {
     rememberDashboard();
     rememberProfilePhoto();
     const submission = payload.answer_submission || {};
+    state.journeyReturnBatchId = submission.batch_id || state.journeyReturnBatchId;
     const nextQuestion = payload.next_question || null;
     state.questionCompletion = null;
     state.journeyAnswerQuestion = nextQuestion;
