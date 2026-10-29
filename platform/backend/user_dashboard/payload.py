@@ -16,7 +16,7 @@ def get_user_dashboard_payload(db, participant_id: str, event_limit: int = 100):
     from .community import get_language_weekly_leaderboard
     from .journey import get_luke_chapter_activity, get_luke_journey_chapters
     from .profile import _participant_by_id, _profile_photo_url
-    from .scheduling import _materialize_due_dashboard_next_batch
+    from .scheduling import _materialize_due_dashboard_next_batch, _resume_unfinished_dashboard_batch
     from .serialization import _iso_datetime
     from .store import _get_or_create_wallet, get_equipped_cosmetics, get_store_payload
 
@@ -24,6 +24,7 @@ def get_user_dashboard_payload(db, participant_id: str, event_limit: int = 100):
     if not participant:
         return None
 
+    _resume_unfinished_dashboard_batch(db, participant)
     _materialize_due_dashboard_next_batch(db, participant)
     wallet = _get_or_create_wallet(db, participant)
     currency_events = db.scalars(

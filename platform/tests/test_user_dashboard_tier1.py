@@ -147,6 +147,22 @@ class DashboardJourneyTier1Tests(unittest.TestCase):
             for question in batch["questions"]
         ]
 
+    def test_refresh_recovers_missing_successor_once(self):
+        from unittest.mock import patch
+        from backend.user_dashboard.scheduling import _resume_unfinished_dashboard_batch
+        first = self._assign(self.judges_mcq)
+        first.status = AssignmentStatus.COMPLETED.value
+        self.db.flush()
+        with patch("backend.user_dashboard.scheduling.automatic_assignment_enabled", return_value=True), patch(
+            "backend.shared.assignment_selection.select_next_participant_qa_item",
+            return_value=(self.acts_open, None),
+        ):
+            result = _resume_unfinished_dashboard_batch(self.db, self.participant)
+            self.assertIsNotNone(result)
+            self.assertEqual(self.db.get(Assignment, result.assignment_id).batch_id, first.batch_id)
+            self.assertEqual(first.next_assignment_id, result.assignment_id)
+            self.assertIsNone(_resume_unfinished_dashboard_batch(self.db, self.participant))
+
     def test_short_historical_batch_does_not_lock_next_batch(self):
         first = self._assign(self.judges_mcq, "old-batch")
         first.status = AssignmentStatus.COMPLETED.value

@@ -220,3 +220,45 @@ def _materialize_due_dashboard_next_batch(db, participant):
         reminder.failure_reason = str(exc)
         reminder.updated_at = utc_now()
         return None
+
+
+def _resume_unfinished_dashboard_batch(db, participant):
+    """Recover a partial batch whose successor was never materialized."""
+    from backend.shared.assignment_selection import (
+        experiment_assignment_kwargs,
+        select_next_participant_qa_item,
+    )
+    from eten_shared.models import AssignmentStatus
+
+    if not (automatic_assignment_enabled() or experiment_assignment_enabled()):
+        return None
+    # Serialize recovery across simultaneous dashboard refreshes.
+    from eten_shared.models import Participant
+    db.scalar(select(Participant).where(Participant.id == participant.id).with_for_update())
+    if get_incomplete_assignment(db, participant):
+        return None
+    latest = db.scalar(
+        select(Assignment).where(Assignment.participant_id == participant.id)
+        .order_by(Assignment.assigned_at.desc(), Assignment.id.desc())
+    )
+    if not latest or latest.status != AssignmentStatus.COMPLETED.value or not latest.batch_id:
+        return None
+    rows = db.scalars(select(Assignment).where(
+        Assignment.participant_id == participant.id,
+        Assignment.batch_id == latest.batch_id,
+    )).all()
+    if len(rows) >= max(int(participant.preferred_batch_size or 3), 1):
+        return None
+    qa_item, cell = select_next_participant_qa_item(db, participant)
+    if not qa_item:
+        return None
+    session = get_or_create_participant_session(db, participant)
+    session.current_batch_id = latest.batch_id
+    session.current_assignment_id = latest.id
+    prompt = create_assignment_for_qa_item(
+        db, participant, session, qa_item,
+        completed_batch_size=len(rows), assignment_source="user_dashboard_recovery",
+        **experiment_assignment_kwargs(db, session, cell, qa_item),
+    )
+    db.flush()
+    return prompt
