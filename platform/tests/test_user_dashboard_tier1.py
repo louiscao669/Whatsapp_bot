@@ -147,6 +147,17 @@ class DashboardJourneyTier1Tests(unittest.TestCase):
             for question in batch["questions"]
         ]
 
+    def test_short_historical_batch_does_not_lock_next_batch(self):
+        first = self._assign(self.judges_mcq, "old-batch")
+        first.status = AssignmentStatus.COMPLETED.value
+        second = self._assign(self.acts_open, "new-batch")
+        self.db.flush()
+        batches = get_luke_journey_chapters(self.db, self.participant.id)[0]["batches"]
+        self.assertEqual(batches[0]["status"], "complete")
+        self.assertEqual(batches[1]["status"], "active")
+        self.assertEqual(batches[1]["questions"][0]["assignment_id"], second.id)
+        self.assertEqual(batches[1]["questions"][0]["status"], "current")
+
     def test_answer_persists_successor_for_reload_and_retry(self):
         first = self._assign(self.judges_mcq)
         second = self._assign(self.acts_open)

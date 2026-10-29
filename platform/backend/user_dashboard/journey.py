@@ -165,11 +165,16 @@ def get_luke_journey_chapters(db, participant_id):
     completed_questions = 0
     total_questions = 0
     active_batch_index = None
+    # A short historical batch must not block real assignments in later
+    # batches (for example after an experiment condition boundary).
     for index, batch in enumerate(batches):
         total_questions += len(batch["questions"])
         batch_completed = (
-            len(batch["questions"]) >= batch["target_size"]
-            and all(question["status"] == "complete" for question in batch["questions"])
+            all(question["status"] == "complete" for question in batch["questions"])
+            and (
+                len(batch["questions"]) >= batch["target_size"]
+                or index < len(batches) - 1
+            )
         )
         if batch_completed:
             batch["status"] = "complete"
