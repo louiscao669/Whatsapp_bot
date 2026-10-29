@@ -25,3 +25,14 @@ def test_outcomes_partition_denominator_and_do_not_treat_failures_as_e():
 def test_missing_response_stays_unresolved():
     recovered=recover_selected_choice(row('q1',None),row('q1',None))
     assert recovered['selected_choice'] is None
+
+
+def test_fallback_letters_are_failures_not_model_choices():
+    for choice in ('A','E'):
+        answer=row('q1',choice)|{'generation_error':'generated_answer is empty','selected_choice_source':'random_empty_response_fallback'}
+        recovered=recover_selected_choice(row('q1',choice),answer)
+        assert recovered['selected_choice'] is None
+        assert recovered['recorded_selected_choice']==choice
+        counts=metrics([recovered])
+        assert counts['mcq_unresolved_count']==1
+        assert counts['mcq_e_count']==counts['mcq_incorrect_ad_count']==0

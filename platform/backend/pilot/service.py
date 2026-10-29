@@ -102,6 +102,18 @@ class PilotNotFoundError(PilotError):
 DEFAULT_CONSENT_VERSION = os.getenv("PILOT_CONSENT_VERSION", "pilot-2026-09-07")
 
 
+def pilot_test_info_enabled() -> bool:
+    """Show TEST participants the "Testing only" panel (condition + answer key).
+
+    On by default. Set PILOT_SHOW_TEST_INFO=0 (e.g. for a recorded demo) to hide
+    it; the key is then not sent to the browser at all. Read per request, so a
+    service restart after editing .env is all it takes.
+    """
+    return os.getenv("PILOT_SHOW_TEST_INFO", "1").strip().lower() not in {
+        "0", "false", "no", "off",
+    }
+
+
 def _iso(value):
     return value.isoformat() if value is not None else None
 
@@ -549,7 +561,7 @@ def _serialize_question(db, participant, assignment, qa_item, trial):
         "focus_change_count": trial.focus_change_count,
         "reload_count": trial.reload_count,
     }
-    if is_test_participant(participant):
+    if is_test_participant(participant) and pilot_test_info_enabled():
         defect_type, defect_rate = defect_for_condition(trial.condition)
         correct_choice = None
         correct_answer = qa_item.expected_answer

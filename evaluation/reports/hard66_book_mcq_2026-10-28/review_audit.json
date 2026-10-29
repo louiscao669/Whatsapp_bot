@@ -1,0 +1,106 @@
+{
+  "status": "verified",
+  "rows_checked": 325,
+  "manual_score_overrides": 0,
+  "answer_key_distribution": {
+    "B": 16,
+    "A": 14,
+    "C": 19,
+    "D": 16
+  },
+  "configurations": [
+    {
+      "arm": "qwen2515b_closed_book",
+      "parser_counts": {
+        "single_letter": 65
+      },
+      "selected_choice_counts": {
+        "E": 51,
+        "B": 9,
+        "D": 3,
+        "C": 2
+      }
+    },
+    {
+      "arm": "qwen317b_nothink_closed_book",
+      "parser_counts": {
+        "single_letter": 61,
+        "explicit_label": 4
+      },
+      "selected_choice_counts": {
+        "E": 47,
+        "D": 11,
+        "C": 6,
+        "B": 1
+      }
+    },
+    {
+      "arm": "llama323b_closed_book",
+      "parser_counts": {
+        "single_letter": 65
+      },
+      "selected_choice_counts": {
+        "A": 30,
+        "C": 18,
+        "B": 12,
+        "D": 4,
+        "E": 1
+      }
+    },
+    {
+      "arm": "llama323b_open_book",
+      "parser_counts": {
+        "single_letter": 65
+      },
+      "selected_choice_counts": {
+        "B": 17,
+        "A": 16,
+        "C": 22,
+        "D": 10
+      }
+    },
+    {
+      "arm": "qwen317b_think_closed_book",
+      "parser_counts": {
+        "single_letter": 63,
+        "generation_failure": 2
+      },
+      "selected_choice_counts": {
+        "E": 15,
+        "C": 21,
+        "D": 11,
+        "B": 13,
+        "A": 3,
+        "no_final_choice": 2
+      }
+    }
+  ],
+  "llama_paired_transitions": [
+    {
+      "closed": "incorrect_ad",
+      "open": "correct",
+      "count": 23
+    },
+    {
+      "closed": "correct",
+      "open": "incorrect_ad",
+      "count": 2
+    },
+    {
+      "closed": "correct",
+      "open": "correct",
+      "count": 24
+    },
+    {
+      "closed": "incorrect_ad",
+      "open": "incorrect_ad",
+      "count": 15
+    },
+    {
+      "closed": "abstain_e",
+      "open": "correct",
+      "count": 1
+    }
+  ],
+  "review_note": "All four final answers containing an explicit label plus option text were inspected; their letter mappings are unambiguous. Both failed outputs have empty final content after reaching the 2500-token limit. No random fallback or imputed E was used."
+}

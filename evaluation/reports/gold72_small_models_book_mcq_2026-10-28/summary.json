@@ -1,0 +1,261 @@
+{
+  "configurations": [
+    {
+      "arm": "llama323b_closed_book",
+      "config": "llama323b",
+      "model": "llama3.2:3b",
+      "thinking": null,
+      "condition": "closed_book",
+      "n": 71,
+      "correct": 27,
+      "incorrect_ad": 44,
+      "abstain_e": 0,
+      "invalid": 0,
+      "failure": 0,
+      "accuracy": 0.38028169014084506,
+      "result_origin": "previous_llama_run"
+    },
+    {
+      "arm": "llama323b_open_book",
+      "config": "llama323b",
+      "model": "llama3.2:3b",
+      "thinking": null,
+      "condition": "open_book",
+      "n": 71,
+      "correct": 60,
+      "incorrect_ad": 11,
+      "abstain_e": 0,
+      "invalid": 0,
+      "failure": 0,
+      "accuracy": 0.8450704225352113,
+      "result_origin": "previous_llama_run"
+    },
+    {
+      "arm": "gemma34b_closed_book",
+      "config": "gemma34b",
+      "model": "gemma3:4b",
+      "thinking": null,
+      "condition": "closed_book",
+      "n": 71,
+      "correct": 31,
+      "incorrect_ad": 36,
+      "abstain_e": 4,
+      "invalid": 0,
+      "failure": 0,
+      "accuracy": 0.43661971830985913,
+      "result_origin": "new_run"
+    },
+    {
+      "arm": "gemma34b_open_book",
+      "config": "gemma34b",
+      "model": "gemma3:4b",
+      "thinking": null,
+      "condition": "open_book",
+      "n": 71,
+      "correct": 66,
+      "incorrect_ad": 2,
+      "abstain_e": 3,
+      "invalid": 0,
+      "failure": 0,
+      "accuracy": 0.9295774647887324,
+      "result_origin": "new_run"
+    },
+    {
+      "arm": "phi4mini38b_closed_book",
+      "config": "phi4mini38b",
+      "model": "phi4-mini:3.8b",
+      "thinking": null,
+      "condition": "closed_book",
+      "n": 71,
+      "correct": 31,
+      "incorrect_ad": 29,
+      "abstain_e": 11,
+      "invalid": 0,
+      "failure": 0,
+      "accuracy": 0.43661971830985913,
+      "result_origin": "new_run"
+    },
+    {
+      "arm": "phi4mini38b_open_book",
+      "config": "phi4mini38b",
+      "model": "phi4-mini:3.8b",
+      "thinking": null,
+      "condition": "open_book",
+      "n": 71,
+      "correct": 64,
+      "incorrect_ad": 6,
+      "abstain_e": 1,
+      "invalid": 0,
+      "failure": 0,
+      "accuracy": 0.9014084507042254,
+      "result_origin": "new_run"
+    },
+    {
+      "arm": "qwen253b_closed_book",
+      "config": "qwen253b",
+      "model": "qwen2.5:3b",
+      "thinking": null,
+      "condition": "closed_book",
+      "n": 71,
+      "correct": 17,
+      "incorrect_ad": 7,
+      "abstain_e": 47,
+      "invalid": 0,
+      "failure": 0,
+      "accuracy": 0.23943661971830985,
+      "result_origin": "new_run"
+    },
+    {
+      "arm": "qwen253b_open_book",
+      "config": "qwen253b",
+      "model": "qwen2.5:3b",
+      "thinking": null,
+      "condition": "open_book",
+      "n": 71,
+      "correct": 67,
+      "incorrect_ad": 2,
+      "abstain_e": 2,
+      "invalid": 0,
+      "failure": 0,
+      "accuracy": 0.9436619718309859,
+      "result_origin": "new_run"
+    }
+  ],
+  "transitions": [
+    {
+      "config": "gemma34b",
+      "accuracy_change_pp": 49.29577464788733,
+      "pairs": [
+        {
+          "closed": "abstain_e",
+          "open": "correct",
+          "count": 4
+        },
+        {
+          "closed": "correct",
+          "open": "abstain_e",
+          "count": 1
+        },
+        {
+          "closed": "correct",
+          "open": "correct",
+          "count": 30
+        },
+        {
+          "closed": "incorrect_ad",
+          "open": "abstain_e",
+          "count": 2
+        },
+        {
+          "closed": "incorrect_ad",
+          "open": "correct",
+          "count": 32
+        },
+        {
+          "closed": "incorrect_ad",
+          "open": "incorrect_ad",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "config": "phi4mini38b",
+      "accuracy_change_pp": 46.47887323943662,
+      "pairs": [
+        {
+          "closed": "abstain_e",
+          "open": "correct",
+          "count": 11
+        },
+        {
+          "closed": "correct",
+          "open": "correct",
+          "count": 29
+        },
+        {
+          "closed": "correct",
+          "open": "incorrect_ad",
+          "count": 2
+        },
+        {
+          "closed": "incorrect_ad",
+          "open": "abstain_e",
+          "count": 1
+        },
+        {
+          "closed": "incorrect_ad",
+          "open": "correct",
+          "count": 24
+        },
+        {
+          "closed": "incorrect_ad",
+          "open": "incorrect_ad",
+          "count": 4
+        }
+      ]
+    },
+    {
+      "config": "qwen253b",
+      "accuracy_change_pp": 70.4225352112676,
+      "pairs": [
+        {
+          "closed": "abstain_e",
+          "open": "abstain_e",
+          "count": 2
+        },
+        {
+          "closed": "abstain_e",
+          "open": "correct",
+          "count": 45
+        },
+        {
+          "closed": "correct",
+          "open": "correct",
+          "count": 16
+        },
+        {
+          "closed": "correct",
+          "open": "incorrect_ad",
+          "count": 1
+        },
+        {
+          "closed": "incorrect_ad",
+          "open": "correct",
+          "count": 6
+        },
+        {
+          "closed": "incorrect_ad",
+          "open": "incorrect_ad",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "config": "llama323b",
+      "accuracy_change_pp": 46.478873239436616,
+      "pairs": [
+        {
+          "closed": "correct",
+          "open": "correct",
+          "count": 26
+        },
+        {
+          "closed": "correct",
+          "open": "incorrect_ad",
+          "count": 1
+        },
+        {
+          "closed": "incorrect_ad",
+          "open": "correct",
+          "count": 34
+        },
+        {
+          "closed": "incorrect_ad",
+          "open": "incorrect_ad",
+          "count": 10
+        }
+      ]
+    }
+  ],
+  "design": "71 active accepted Gold72 MCQs, three new models, closed book and clean open book: 426 new responses. Questions, A-D choices, order, clean passage windows, system/user messages, generation settings and direct A-E scoring match the previous Llama 3.2 3B experiment. Only the model changes. Closed-book E means unable to determine from existing knowledge; open-book E means insufficient passage information. The earlier 142 Llama responses are reused only for comparison. No answer key, reference header, examples or previous turns are sent. No LLM judge, random fallback or imputed E. Each condition has one response per question."
+}

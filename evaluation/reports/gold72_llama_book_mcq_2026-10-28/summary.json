@@ -1,0 +1,93 @@
+{
+  "model": "llama3.2:3b",
+  "configurations": [
+    {
+      "dataset": "Gold72",
+      "arm": "llama323b_closed_book",
+      "config": "llama323b",
+      "model": "llama3.2:3b",
+      "thinking": null,
+      "condition": "closed_book",
+      "n": 71,
+      "correct": 27,
+      "incorrect_ad": 44,
+      "abstain_e": 0,
+      "invalid": 0,
+      "failure": 0,
+      "accuracy": 0.38028169014084506
+    },
+    {
+      "dataset": "Gold72",
+      "arm": "llama323b_open_book",
+      "config": "llama323b",
+      "model": "llama3.2:3b",
+      "thinking": null,
+      "condition": "open_book",
+      "n": 71,
+      "correct": 60,
+      "incorrect_ad": 11,
+      "abstain_e": 0,
+      "invalid": 0,
+      "failure": 0,
+      "accuracy": 0.8450704225352113
+    }
+  ],
+  "hard66_comparison": [
+    {
+      "dataset": "Hard66",
+      "arm": "llama323b_closed_book",
+      "config": "llama323b",
+      "model": "llama3.2:3b",
+      "thinking": null,
+      "condition": "closed_book",
+      "n": 65,
+      "correct": 26,
+      "incorrect_ad": 38,
+      "abstain_e": 1,
+      "invalid": 0,
+      "failure": 0,
+      "accuracy": 0.4,
+      "free_response_correct": 0
+    },
+    {
+      "dataset": "Hard66",
+      "arm": "llama323b_open_book",
+      "config": "llama323b",
+      "model": "llama3.2:3b",
+      "thinking": null,
+      "condition": "open_book",
+      "n": 65,
+      "correct": 48,
+      "incorrect_ad": 17,
+      "abstain_e": 0,
+      "invalid": 0,
+      "failure": 0,
+      "accuracy": 0.7384615384615385,
+      "free_response_correct": 43
+    }
+  ],
+  "transitions": [
+    {
+      "closed": "correct",
+      "open": "correct",
+      "count": 26
+    },
+    {
+      "closed": "correct",
+      "open": "incorrect_ad",
+      "count": 1
+    },
+    {
+      "closed": "incorrect_ad",
+      "open": "correct",
+      "count": 34
+    },
+    {
+      "closed": "incorrect_ad",
+      "open": "incorrect_ad",
+      "count": 10
+    }
+  ],
+  "design": "MCQ only: 71 active Gold72 questions with accepted rewrites, tested with Meta Llama 3.2 3B in closed-book and clean-passage open-book conditions (142 responses). The prompts, A-E parsing, settings and model weights match the Hard66 MCQ experiment. Original A-D choices and order are unchanged. Closed-book E means unable to answer from existing knowledge; open-book E retains the original passage-insufficiency meaning. Every question has its curated clean passage window, provided only in open book. No key, reference header, previous turns or examples are sent. Scoring is direct letter comparison, with E, wrong A-D answers, invalid outputs and failures separate. No LLM grader or random fallback is used.",
+  "strict_accuracy_change_pp": 46.478873239436616
+}

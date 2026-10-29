@@ -1,0 +1,49 @@
+{
+  "configurations": [
+    {
+      "config": "qwen2515b",
+      "n": 65,
+      "correct": 1,
+      "partial": 0,
+      "incorrect": 41,
+      "unknown": 23,
+      "failure": 0,
+      "strict_accuracy": 0.015384615384615385,
+      "mean_score": 0.015384615384615385,
+      "clean_mcq_correct": 56,
+      "omission30_mcq_correct": 44,
+      "recalled_and_omission30_correct": 0
+    },
+    {
+      "config": "qwen317b_nothink",
+      "n": 65,
+      "correct": 0,
+      "partial": 2,
+      "incorrect": 53,
+      "unknown": 10,
+      "failure": 0,
+      "strict_accuracy": 0.0,
+      "mean_score": 0.015384615384615385,
+      "clean_mcq_correct": 48,
+      "omission30_mcq_correct": 36,
+      "recalled_and_omission30_correct": 0
+    },
+    {
+      "config": "qwen317b_think",
+      "n": 65,
+      "correct": 1,
+      "partial": 4,
+      "incorrect": 55,
+      "unknown": 4,
+      "failure": 1,
+      "strict_accuracy": 0.015384615384615385,
+      "mean_score": 0.046153846153846156,
+      "clean_mcq_correct": 51,
+      "omission30_mcq_correct": 35,
+      "recalled_and_omission30_correct": 1
+    }
+  ],
+  "design": "65 latest active MCQ question stems, converted to free recall. No passages, references, answer options, keys, previous turns, or examples are sent to answer models. General Bible knowledge is explicitly allowed. One deterministic response per question and configuration. Empty completed responses are failures, never random choices. No matching with-passage free-response arm is run; historical MCQ scores are contextual comparisons, not an isolated passage effect.",
+  "judge_model": "gpt-4.1-mini",
+  "review_overrides": 26
+}

@@ -1,0 +1,72 @@
+{
+  "model": "llama3.2:3b",
+  "configurations": [
+    {
+      "condition": "closed_book",
+      "n": 65,
+      "correct": 0,
+      "partial": 0,
+      "incorrect": 16,
+      "unknown": 49,
+      "failure": 0,
+      "strict_accuracy": 0.0,
+      "mean_score": 0.0
+    },
+    {
+      "condition": "open_book",
+      "n": 65,
+      "correct": 43,
+      "partial": 3,
+      "incorrect": 10,
+      "unknown": 9,
+      "failure": 0,
+      "strict_accuracy": 0.6615384615384615,
+      "mean_score": 0.6846153846153846
+    }
+  ],
+  "design": "Same 65 Hard66 questions, Chinese answer keys, free-response format, local model, generation settings, and substantive grading criteria as the closed-book test. Each question receives its clean local passage window from the existing evaluation. No answer choices, answer key, chapter reference header, examples, or previous turns are sent. The answer instruction is adapted from Bible recall to using only the supplied passage. The grading prompt changes only its description of whether the answer model saw the passage. This is a comparison of the two task conditions, not a passage-only prompt ablation.",
+  "strict_accuracy_change_pp": 66.15384615384615,
+  "transitions": [
+    {
+      "closed": "incorrect",
+      "open": "correct",
+      "count": 13
+    },
+    {
+      "closed": "incorrect",
+      "open": "incorrect",
+      "count": 1
+    },
+    {
+      "closed": "incorrect",
+      "open": "partial",
+      "count": 1
+    },
+    {
+      "closed": "incorrect",
+      "open": "unknown",
+      "count": 1
+    },
+    {
+      "closed": "unknown",
+      "open": "correct",
+      "count": 30
+    },
+    {
+      "closed": "unknown",
+      "open": "incorrect",
+      "count": 9
+    },
+    {
+      "closed": "unknown",
+      "open": "partial",
+      "count": 2
+    },
+    {
+      "closed": "unknown",
+      "open": "unknown",
+      "count": 8
+    }
+  ],
+  "review_overrides": 7
+}

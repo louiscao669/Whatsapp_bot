@@ -164,6 +164,13 @@ class PilotApiTests(unittest.TestCase):
         self.assertEqual(response.get_json()["question"]["test_info"]["correct_answer"], "Something")
         self.assertEqual(response.headers["Cache-Control"], "no-store")
 
+        # Demo switch: PILOT_SHOW_TEST_INFO=0 hides the panel even for TEST
+        # participants, and the answer key never reaches the browser.
+        with patch.dict("os.environ", {"PILOT_SHOW_TEST_INFO": "0"}):
+            response = self.client.get(self._url("/question"))
+        self.assertNotIn("test_info", response.get_json()["question"])
+        self.assertNotIn("Something", response.get_data(as_text=True))
+
         with self._db() as db:
             db.get(Participant, self.participant_id).dashboard_preferences = {}
             db.commit()

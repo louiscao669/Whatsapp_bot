@@ -25,6 +25,13 @@ def recover_selected_choice(score, answer):
     result=dict(score)
     if score['q_type']!='mcq':return result
     assert replay.form_key(score)==replay.form_key(answer)
+    if answer.get('generation_error'):
+        # A fallback letter assigned after an empty response is not a model choice.
+        assert not score['direct_correct'], 'Correct fallback requires explicit scoring-policy review'
+        result['recorded_selected_choice']=answer.get('selected_choice')
+        result['selected_choice']=None
+        result['selected_choice_source']='failed_generation'
+        return result
     choice=answer.get('selected_choice')
     if choice not in ('A','B','C','D','E'):
         choice=score.get('selected_choice')
@@ -130,7 +137,7 @@ def build():
                      'Exact repeated model inputs share one newly generated response and are not independent repeats.',
                      'Gold open-question and other new coverage is separate from existing full-set totals.',
                      'Gold accepted English rewrites were translated into Chinese; options, keys, passages, and windows are preserved.',
-                     'E response labels are recovered from original answer logs because historical score files recorded these labels as null. Correctness scores are unchanged. Unresolved or failed responses are counted separately from E and incorrect A–D answers.',
+                     'E response labels are recovered from original answer logs because historical score files recorded these labels as null. Correctness scores are unchanged. Unresolved or failed responses, including fallback letters assigned after empty outputs, are counted separately from E and incorrect A–D answers.',
                      'Max grammar uses approved sentence defects; its coverage measure differs from 5–30% clause-content coverage.',
                      'The existing Hard66 maximum-grammar runs cover 57 MCQs across 8 passages; other Hard66 conditions cover 65 MCQs across 10 passages. Their original denominators are retained.'])
     replay.write(OUT/'results_data.json',data)
