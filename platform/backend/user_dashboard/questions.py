@@ -419,6 +419,20 @@ def submit_dashboard_answer_receipt(
     except ValueError as exc:
         raise DashboardAnswerError(str(exc)) from exc
 
+    # Project dashboard intake in this transaction so progression does not
+    # depend on the messenger worker being available. The durable receipt
+    # remains the deduplication key for retries and cross-surface delivery.
+    if receipt.status == "pending":
+        result = submit_dashboard_answer(
+            db, participant_id, assignment_id, receipt.raw_answer
+        )
+        receipt.response_id = result["answer_submission"]["response_id"]
+        receipt.status = "processed"
+        receipt.processed_at = utc_now()
+        result["answer_submission"]["receipt_id"] = receipt.id
+        db.flush()
+        return result
+
     next_assignment = (
         db.get(Assignment, assignment.next_assignment_id)
         if assignment.next_assignment_id

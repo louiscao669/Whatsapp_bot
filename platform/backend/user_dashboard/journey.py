@@ -167,8 +167,9 @@ def get_luke_journey_chapters(db, participant_id):
     active_batch_index = None
     for index, batch in enumerate(batches):
         total_questions += len(batch["questions"])
-        batch_completed = all(
-            question["status"] == "complete" for question in batch["questions"]
+        batch_completed = (
+            len(batch["questions"]) >= batch["target_size"]
+            and all(question["status"] == "complete" for question in batch["questions"])
         )
         if batch_completed:
             batch["status"] = "complete"
