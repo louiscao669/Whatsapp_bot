@@ -147,6 +147,15 @@ class DashboardJourneyTier1Tests(unittest.TestCase):
             for question in batch["questions"]
         ]
 
+    def test_answer_persists_successor_for_reload_and_retry(self):
+        first = self._assign(self.judges_mcq)
+        second = self._assign(self.acts_open)
+        result = submit_dashboard_answer(self.db, self.participant.id, first.id, "A")
+        self.assertEqual(result["next_question"]["assignment_id"], second.id)
+        self.db.flush()
+        self.db.expire_all()
+        self.assertEqual(self.db.get(Assignment, first.id).next_assignment_id, second.id)
+
     def test_tier1_assignments_appear_on_the_path_and_can_be_opened(self):
         first = self._assign(self.judges_mcq)
         second = self._assign(self.acts_open)

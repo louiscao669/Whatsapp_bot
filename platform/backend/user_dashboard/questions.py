@@ -331,6 +331,10 @@ def submit_dashboard_answer(
         elif not next_assignment:
             participant_session.state = SessionState.IDLE.value
 
+    # Keep the durable successor link for retries and dashboard reloads.
+    if next_assignment_id:
+        assignment.next_assignment_id = next_assignment_id
+
     _enqueue_outbox_notification(
         db,
         participant,
