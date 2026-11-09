@@ -133,7 +133,7 @@ def assign_disjoint(items, n_verses, width=WINDOW):
     return assignment, unplaced
 
 
-def assign_disjoint_ranked(items, n_verses, rank_by_item, width=WINDOW):
+def assign_disjoint_ranked(items, n_verses, rank_by_item, width=WINDOW, *, allowed_starts=None):
     """Maximum-cardinality schedule, using global QA rank as the tie-break.
 
     Every legal window for an item is an interval option. Options belonging to
@@ -147,11 +147,15 @@ def assign_disjoint_ranked(items, n_verses, rank_by_item, width=WINDOW):
 
     Unranked questions sort after every ranked question, but remain eligible
     when they are needed to preserve maximum capacity.
+    If supplied, allowed_starts restricts each item to its verified windows.
+    An omitted item has no eligible windows.
     """
     unranked = max(rank_by_item.values(), default=0) + len(items) + 1
     options = []
     for item_id, span in items:
         for start in candidate_starts(span, n_verses, width):
+            if allowed_starts is not None and start not in allowed_starts.get(item_id, ()):
+                continue
             options.append({
                 "item_id": item_id,
                 "start": start,
@@ -272,6 +276,10 @@ def self_test():
     )
     check("maximum question count remains above ranking preference",
           set(assign) == {"left", "right"})
+    assign, _ = assign_disjoint_ranked([("a", [2]), ("b", [5]), ("c", [8])], 9, {},
+                                      allowed_starts={"a": {1}, "b": {5}})
+    check("only verified windows can be placed",
+          assign == {"a": [1, 2, 3], "b": [5, 6, 7]})
     print()
     return 0 if all(checks) else 1
 

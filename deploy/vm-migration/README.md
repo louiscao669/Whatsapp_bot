@@ -179,8 +179,8 @@ after a week of the new box behaving.
 
 Plain HTTP on a bare IP: participants still see "Not secure" beside the consent
 form, and the app is exposed directly to the internet on 7860. Fixing that
-needs a hostname (Let's Encrypt will not certify an IP) plus nginx in front of
-gunicorn. When that happens, set `PLATFORM_BIND=127.0.0.1:7860` so the app is
+can use a hostname or a short-lived IP certificate plus nginx in front of
+gunicorn. See [the current HTTPS setup](../nginx/README.md). When that happens, set `PLATFORM_BIND=127.0.0.1:7860` so the app is
 reachable only through the proxy, and give nginx's `access_log` the same
 IP/participant-id redaction as `deploy/journald/` — it does not inherit the
 application's.

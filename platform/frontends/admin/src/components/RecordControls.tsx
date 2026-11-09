@@ -40,6 +40,14 @@ export function RecordControls({
   }
 
   async function startRecording() {
+    if (!window.isSecureContext) {
+      onError('Microphone recording requires HTTPS. Open the expert platform using its HTTPS address, or use localhost through an SSH tunnel.')
+      return
+    }
+    if (!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === 'undefined') {
+      onError('Audio recording is unavailable in this browser.')
+      return
+    }
     setState('recording')
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
@@ -97,6 +105,8 @@ export function RecordControls({
       }
       recorder.start()
     } catch (err) {
+      releaseStream()
+      mediaRecorderRef.current = null
       setState('idle')
       onError(
         `Microphone access denied or unavailable: ${

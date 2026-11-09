@@ -92,8 +92,8 @@ Two hooks in `gunicorn.conf.py` earn their place:
 gunicorn is still facing the internet directly on :7860 over plain HTTP. Adding
 nginx in front gives TLS (removing the browser's "Not secure" warning beside
 the consent form), serves `/pilot/static/` without touching Python, and drops
-scanner traffic before it reaches the app. That needs a hostname pointed at the
-VM — Let's Encrypt will not issue a certificate for a bare IP.
+scanner traffic before it reaches the app. Let's Encrypt now supports short-lived IP certificates. See
+[the current HTTPS setup](../nginx/README.md).
 
 When nginx is added, set `PLATFORM_BIND=127.0.0.1:7860` so the app is no longer
 reachable except through the proxy, and give nginx's own `access_log` the same

@@ -175,7 +175,7 @@ DE_NOVO_KEEP = ("Use the correct option exactly as given. Write the other three 
                 "from scratch.")
 
 
-def build_rewrite_system(window, menu="", de_novo=False):
+def build_rewrite_system(window, menu="", de_novo=False, language=None):
     """Put the answer context INSIDE the system prompt, not alongside it in the user turn."""
     text = REWRITE_SYSTEM_TEMPLATE.format(window=window, menu=menu)
     if de_novo:
@@ -188,11 +188,17 @@ def build_rewrite_system(window, menu="", de_novo=False):
         text = text.replace(
             "Keep the correct option exactly as it is. Rewrite only the other three.",
             DE_NOVO_KEEP, 1)
+    if language:
+        text = text.replace("Chinese reading-comprehension MCQ", f"{language} reading-comprehension MCQ")
+        text += f"\nWrite every option in {language}."
+        text += (" Supply a distinct candidate answer to what the stem asks. For a reason, give "
+                 "a concrete cause or purpose; wanting to perform the very action in the stem "
+                 "merely restates it. The same applies to an outcome that repeats the trigger.")
     return text
 
 
 def rewrite_distractors(client, model, item, question, window, ents=None, temperature=0.4,
-                        feedback=None, effort=None):
+                        feedback=None, effort=None, language=None):
     """Rewrite the three distractors; return a new option dict. Correct option untouched.
 
     ``window`` is the answer context, not the chapter. Grounding in the whole chapter is the
@@ -241,7 +247,7 @@ def rewrite_distractors(client, model, item, question, window, ents=None, temper
                 f"is it a possible answer to this exact question, or merely a true statement? "
                 f"JSON only.")
     out = chat(client, model,
-               [{"role": "system", "content": build_rewrite_system(window, menu, de_novo)},
+               [{"role": "system", "content": build_rewrite_system(window, menu, de_novo, language)},
                 {"role": "user", "content": user}], temperature, 400, effort)
     try:
         fixed = parse_json(out)
@@ -253,11 +259,13 @@ def rewrite_distractors(client, model, item, question, window, ents=None, temper
             raise DistractorGenerationError(
                 f"de-novo generation returned unparseable JSON for: {question[:60]}")
         return dict(item)                          # keep the original rather than lose the item
-    if not all(str(fixed.get(L, "")).strip() for L in LETTERS):
+    if not isinstance(fixed, dict) or not all(str(fixed.get(L, "")).strip() for L in LETTERS):
         if de_novo:
             raise DistractorGenerationError(
                 f"de-novo generation returned a blank option for: {question[:60]}")
         return dict(item)
+    if de_novo and any(not isinstance(fixed[L], str) for L in LETTERS):
+        raise DistractorGenerationError("de-novo generation requires four text options")
     # The rewrite may not move the key or touch the fact under test.
     result = {L: str(fixed[L]).strip() for L in LETTERS}
     result[correct] = item[correct]
@@ -358,7 +366,7 @@ def build_client(provider):
 #   * reasoning tokens are charged against the completion budget, so a small cap (the 8 we
 #     use for a single-letter answer) can be consumed entirely by reasoning and return an
 #     empty string. Give reasoning models headroom regardless of the caller's cap.
-REASONING_PREFIXES = ("gpt-5", "o1", "o3", "o4")
+REASONING_PREFIXES = ("gpt-5", "gpt-6", "o1", "o3", "o4")
 REASONING_MIN_COMPLETION_TOKENS = 2000
 
 
