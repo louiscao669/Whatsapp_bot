@@ -71,7 +71,133 @@ python evaluation/main.py \
   --force-answer
 ```
 
+## Compare clean Chinese passage translations
+
+The November 9 comparison uses the original high-quality passage prompt with
+`gpt-6.1-sol`. `gpt-6-astra` compares the two Chinese texts against the English
+in both anonymous presentation orders. Run these modules from the repository
+root. Model requests, responses, model IDs, and reviews are saved under
+`evaluation/runs/clean_passage_sol_astra_2026-11-09`.
+
+```bash
+python3 -m evaluation.scripts.pipeline.compare_clean_passages translate
+python3 -m evaluation.scripts.pipeline.compare_clean_passages review
+```
+
+Inspect the two diagnostic verses and the complete passage reviews before
+recording a decision. Supply exact Chinese quotations for the ambush target at
+Judges 9:25 and the shouted announcement at 2 Kings 7:11. For the saved run:
+
+```bash
+python3 -m evaluation.scripts.pipeline.compare_clean_passages decide \
+  --ambush-evidence 要对付亚比米勒 --shouting-evidence 高声传报
+python3 -m evaluation.scripts.pipeline.compare_clean_passages translate --remaining
+python3 -m evaluation.scripts.pipeline.compare_clean_passages review --remaining
+python3 -m evaluation.scripts.pipeline.compare_clean_passages finalize --all
+```
+
+`prepare_clean_passage_conditions base` rebuilds the omission levels and checks
+the word-by-word source. Run that module with `grammar` for reviewed 30% grammar
+edits. The release uses Astra to propose grammar edits for the six-verse Acts 20
+passage after Sol fell short of the requested coverage. The grammar and meaning
+checks use the same settings across all ten passages.
+For mistranslation, generate the usual length-scaled, independently judged
+`mistranslation_bank_sol_length_zh.json` banks against the run's `release` root,
+then use `prepare_clean_passage_conditions mistranslation` to extend coverage
+and render the nested doses. All three actions use
+`python3 -m evaluation.scripts.pipeline.prepare_clean_passage_conditions`.
+
+`check_clean_passage_questions` checks the saved Chinese MCQs on the new windows
+using local Ollama. `verify_clean_passage_release` reconstructs every condition,
+checks dose and window coverage, and publishes the immutable local passage pack
+under `evaluation/datasets/passages/tier1_zh_sol_v1_2026-11-09/`. Both are
+modules under `evaluation.scripts.pipeline`. Database import and participant
+assignment are separate operations.
+
+### Six defect levels on the Sol passages
+
+Run `python3 -m evaluation.scripts.pipeline.build_clean_passage_ladder` from
+the repository root to reproduce the 180 variants offline from the frozen
+November 9 passages and their reviewed defect banks. The output directory is
+`evaluation/datasets/passages/tier1_zh_sol_v1_defect_ladder_2026-11-09/`.
+Its manifest lists the passages, coverage tolerance and exceptions.
+
+Each passage JSON contains the clean and word-by-word controls plus six levels
+per defect family. For example, `conditions.mistranslation10.text` is the
+complete 10% passage. Its `actual_rate` is the measured fraction of source
+content affected. Use `verses` for question windows. These labels come from
+the clean passage when an omission removes a printed verse number. The
+`selected_edits` in each condition point into the family's `edits` table,
+which records exact character offsets and replacements on the clean text.
+
+Omission and mistranslation use progressively larger sets of edits. Grammar
+does the same except for Acts 20, which follows the historical rule allowing
+different subsets of its five approved edits at 30%. Four omission texts
+(15% and 30% in 2 Samuel 21 and Acts 20) were reselected to obtain six
+strictly nested levels. The pilot versions are available in the source pack.
+
+### Blinded Sol passages and reviewed MCQs
+
+Run `python3 -m evaluation.scripts.pipeline.blind_reviewed122` to reproduce the
+frozen bilingual release offline. The release uses the reviewed English and
+Chinese forms in `datasets/pseudonym_remap/name_map_tier1_sol_reviewed122.json`.
+The map records the parent map's checksum, both assigned names, the observed
+passages, and the scoped rules used for ambiguous forms.
+
+Under `evaluation/datasets/blinded/tier1_sol_reviewed122_v1/`, each passage file
+contains the English source and the 20 Chinese conditions. Each of the 180
+positive-dose conditions can be reconstructed from its blinded clean text and
+rebased edit spans. The measured rates use the blinded character counts.
+`qa/zh.json` and `qa/english.json` preserve item IDs, option order and keys
+and draw their verse windows from the corresponding released passages.
+`qa/pilot_review.json` carries the existing eligibility decisions.
+
+`audit/choices.json` is for researchers. It contains the names matched in each
+choice and the reviewed differences where the two source languages name someone
+differently. Use question stems, choices, and passage text for participant
+display. IDs, biblical references, eligibility, the map and the audit are
+research metadata.
+
 ## Translate QA Pairs To Chinese
+
+### Reviewed 122-question pilot bank
+
+From the repository root, start Ollama on its default local port (11434) with
+the `qwen3:8b` model installed. The verified writer uses Ollama 0.40.13,
+checks the model's SHA-256 digest, and uses temperature 0 and seed 2026.
+Run the translation and the two model checks:
+
+```bash
+python3 -m evaluation.scripts.pipeline.translate_reviewed122_zh
+python3 -m evaluation.scripts.pipeline.verify_reviewed122_zh \
+  --translations evaluation/runs/reviewed122_zh_focused_choices/zh.json \
+  --run-dir evaluation/runs/reviewed122_zh_focused_choices/review --check-fidelity
+python3 -m evaluation.scripts.pipeline.report_reviewed122_zh \
+  --translations evaluation/runs/reviewed122_zh_focused_choices/zh.json \
+  --run-dir evaluation/runs/reviewed122_zh_focused_choices/review
+```
+
+The writer uses `english.json` and `clean_zh_verses.json` under
+`evaluation/datasets/qa/reviewed122/`. It translates the stem and each lettered
+choice. Before translating, it uses the stem and all four English choices to identify
+the fact each option supplies. It drops descriptions that do not answer the question
+or distinguish the choices. It then checks the Chinese options against the original
+English and uses any findings to revise the draft. The script copies the key and source
+IDs from the English record.
+The run directory contains the generated `zh.json`, per-question completions,
+a manifest with the prompt, model digest, Ollama version, sampling settings
+and input hashes, and `result.json` with the output hash.
+
+Rerunning the first command resumes the same recipe. Use `--run-dir` with
+a fresh directory for a new generation, or add `--item SOURCE_ID` for a
+single-question replay. Exact text can vary with the inference runtime or hardware.
+The review directory contains a passage-only answer check in `blind_audit.json`
+and English-to-Chinese meaning checks for the stem and four choices in
+`fidelity_audit.json`. The final command writes `translation_report.json`.
+It combines those findings with checks for changes in what a question asks and
+the previous pilot's passage-evidence holds. The generated bank is a candidate for pilot review.
+
+### Other QA files
 
 Run from the repository root:
 
