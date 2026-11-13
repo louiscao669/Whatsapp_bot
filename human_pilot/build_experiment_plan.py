@@ -19,10 +19,10 @@ Design (HUMAN_PILOT_DESIGN_2026-07-27 §4/§5; DESIGNED_ASSIGNMENT_EXTENSION_202
   * group ORDER is shuffled independently per participant (seeded by participant_id, so
     it is stable across re-runs / resumption) -> breaks order x condition confounding.
 
-Block assignment: participants are taken in a fixed order (explicit --participant-ids, or
-all consented participants without a plan) and given block_index = position mod 8. 16
-participants -> two full balanced blocks. A non-multiple-of-8 count leaves the last block
-partial (the design tolerates down to N=12); a warning is printed.
+For Sol scratch, rotations continue from the saved regular-participant plans, including
+when enrolling readers in separate batches. The next four after the first eight alternate
+rotations so that at twelve readers each group has three clean observations. Sixteen
+readers complete two full squares.
 
 Idempotent: a participant that already has plan cells is skipped.
 
@@ -49,12 +49,11 @@ from _bootstrap import use_message_bot, use_platform  # noqa: E402
 use_message_bot()
 use_platform()  # backend.shared.config (loads .env) lives in platform/
 
-from sqlalchemy import func, select  # noqa: E402
+from sqlalchemy import func, select, text  # noqa: E402
 
 from eten_shared.database import get_session_factory  # noqa: E402
 from eten_shared.models import (  # noqa: E402
     ExperimentPlanCell,
-    ExperimentWindow,
     Participant,
 )
 
@@ -63,18 +62,44 @@ from eten_shared.models import (  # noqa: E402
 from eten_shared.experiment_plan import (  # noqa: E402
     GROUPS,
     LANGUAGE,
-    DEFAULT_QA_SET,
     QA_SETS,
+    QA_SUBSETS,
+    QA_SUBSET_PREF,
+    SOL_SCRATCH_SET,
+    TEST_PARTICIPANT_KEY,
     SLOTS,
     build_cells,
+    ExperimentPlanError,
+    is_study_qa_set,
     is_test_participant,
     qa_set_groups,
-    qa_set_window_count,
-    passage_index,
-    tier1_variant_gaps,
+    write_participant_plan,
 )
 
 CHAPTERS = GROUPS  # compatibility for older tests/imports
+
+
+def scratch_rotation_counts(db):
+    # grammar30 occurs exactly once per plan and uniquely identifies its rotation.
+    groups = qa_set_groups(SOL_SCRATCH_SET)
+    rows = db.execute(
+        select(ExperimentPlanCell.chapter, func.count())
+        .join(Participant, Participant.id == ExperimentPlanCell.participant_id)
+        .where(
+            ExperimentPlanCell.chapter.in_(groups),
+            ExperimentPlanCell.condition == "grammar30",
+            Participant.dashboard_preferences[QA_SUBSET_PREF].as_string() == SOL_SCRATCH_SET,
+            func.coalesce(Participant.dashboard_preferences[TEST_PARTICIPANT_KEY].as_boolean(), False).is_(False),
+        )
+        .group_by(ExperimentPlanCell.chapter)
+    )
+    return Counter({(SLOTS.index("grammar30") - (group - groups[0])) % len(SLOTS): n for group, n in rows})
+
+
+def next_scratch_rotation(counts):
+    rounds = min(counts[index] for index in range(len(SLOTS)))
+    order = (0, 2, 4, 6, 1, 3, 5, 7) if rounds % 2 else range(len(SLOTS))
+    return next(rotation for rotation in order if counts[rotation] == rounds)
 
 
 def resolve_participants(db, args):
@@ -106,7 +131,8 @@ def main():
     grp.add_argument("--all-consented", action="store_true",
                      help="plan every consented participant without an existing plan")
     ap.add_argument("--language", default=LANGUAGE)
-    ap.add_argument("--qa-set", choices=sorted(QA_SETS), default=DEFAULT_QA_SET,
+    study_sets = sorted(key for key in (*QA_SETS, *QA_SUBSETS) if is_study_qa_set(key))
+    ap.add_argument("--qa-set", choices=study_sets, default=SOL_SCRATCH_SET,
                     help="question set to serve these participants (default: %(default)s; "
                          "hard66 needs human_pilot/pilot_import_hard66.py first)")
     ap.add_argument("--database-url", default=None, help="overrides DATABASE_URL env")
@@ -128,31 +154,19 @@ def main():
     written = skipped = 0
     balance = defaultdict(Counter)          # chapter -> Counter(condition)
     per_participant_slots = {}
-    missing_passage = set()
 
     with factory() as db:
+        if args.qa_set == SOL_SCRATCH_SET:
+            if not args.dry_run and db.get_bind().dialect.name == "postgresql":
+                db.execute(text("SELECT pg_advisory_xact_lock(742908166)"))
+            rotations = scratch_rotation_counts(db)
         participants = resolve_participants(db, args)
         if not participants:
             print("No participants to plan.")
             return
-        if len(participants) % 8 != 0:
+        if len(participants) % 8 != 0 and args.qa_set != SOL_SCRATCH_SET:
             print(f"  [warn] {len(participants)} participants is not a multiple of 8 -- "
                   f"the last block is partial (Latin square unbalanced; design tolerates >=12).")
-        pidx = passage_index(db, args.language)
-        tier1_mode = bool(db.scalar(select(func.count(ExperimentWindow.id))))
-        if QA_SETS[args.qa_set]["group_offset"] and not tier1_mode:
-            sys.exit(f"REFUSING: question set {args.qa_set!r} needs the tier-1 window import.")
-        if tier1_mode and not qa_set_window_count(db, args.qa_set):
-            sys.exit(f"REFUSING: question set {args.qa_set!r} has no imported questions.")
-        if tier1_mode:
-            gaps = tier1_variant_gaps(db, args.language, args.qa_set)
-            if gaps:
-                sys.exit(
-                    f"REFUSING: {len(gaps)} tier-1 source-passage/condition variants are "
-                    f"missing (first: {sorted(gaps)[:6]}). Run human_pilot/pilot_import.py "
-                    "and generate any missing condition outputs before building plans."
-                )
-
         for position, participant in enumerate(participants):
             existing = db.scalar(
                 select(ExperimentPlanCell.id).where(
@@ -163,33 +177,30 @@ def main():
                 skipped += 1
                 continue
             block_index = position % len(SLOTS)
-            cells = build_cells(participant.id, block_index, args.qa_set)
+            if args.qa_set == SOL_SCRATCH_SET:
+                if is_test_participant(participant):
+                    skipped += 1
+                    continue
+                block_index = next_scratch_rotation(rotations)
+                rotations[block_index] += 1
+            try:
+                cells = write_participant_plan(
+                    db, participant, block_index, args.language, qa_set=args.qa_set,
+                    dry_run=args.dry_run,
+                )
+            except ExperimentPlanError as exc:
+                sys.exit(f"Cannot create the participant plan: {exc}")
             per_participant_slots[participant.id] = Counter(c[1] for c in cells)
-            for chapter, condition, seq in cells:
-                # A tier-1 group can span two source passages, so there is no
-                # truthful single passage FK. Delivery resolves dynamically from
-                # (QAItem.passage_id, condition). Legacy Luke plans keep the FK.
-                passage_id = None if tier1_mode else pidx.get((chapter, condition))
-                if passage_id is None and not tier1_mode:
-                    missing_passage.add((chapter, condition))
+            for chapter, condition, _ in cells:
                 balance[chapter][condition] += 1
-                if not args.dry_run:
-                    db.add(ExperimentPlanCell(
-                        participant_id=participant.id,
-                        chapter=chapter,
-                        condition=condition,
-                        experiment_passage_id=passage_id,
-                        sequence_index=seq,
-                        status="pending",
-                    ))
                 written += 1
-            if not args.dry_run:
-                db.commit()
+        if not args.dry_run:
+            db.commit()
 
     # ---- report ----
     print(f"Planned {len(per_participant_slots)} participants "
           f"({written} cells{' [DRY-RUN]' if args.dry_run else ''}); "
-          f"{skipped} already had a plan.")
+          f"{skipped} skipped.")
     print("\nLatin-square balance (chapter -> condition counts across planned participants):")
     conds = SLOTS[:1] + SLOTS[2:]  # unique condition keys, clean once
     print("  ch  " + "  ".join(f"{c[:9]:>9}" for c in conds))
@@ -203,10 +214,6 @@ def main():
           f"{'ALL OK' if not bad else f'{len(bad)} PARTICIPANTS OFF'}")
     for pid, sl in list(bad.items())[:3]:
         print(f"  off: {pid} -> {sl}")
-    if missing_passage:
-        print(f"\n  [warn] {len(missing_passage)} (chapter,condition) cells had NO experiment_passage "
-              f"(FK left null -- run human_pilot/pilot_import.py first): "
-              f"{sorted(missing_passage)[:6]}{' ...' if len(missing_passage) > 6 else ''}")
 
 
 if __name__ == "__main__":
