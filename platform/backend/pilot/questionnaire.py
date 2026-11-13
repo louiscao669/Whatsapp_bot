@@ -73,10 +73,11 @@ def questionnaire_language() -> str:
     return os.getenv("PILOT_QUESTIONNAIRE_LANGUAGE", DEFAULT_LANGUAGE).strip() or DEFAULT_LANGUAGE
 
 
-def _participant(db, participant_id):
-    participant = db.scalars(
-        select(Participant).where(Participant.id == (participant_id or "").strip())
-    ).first()
+def _participant(db, participant_id, *, for_update=False):
+    query = select(Participant).where(Participant.id == (participant_id or "").strip())
+    if for_update:
+        query = query.with_for_update()
+    participant = db.scalars(query).first()
     if participant is None:
         raise QuestionnaireNotFoundError("Participant not found")
     return participant
@@ -133,6 +134,14 @@ def get_questionnaire_state(db, participant_id):
     payload["language"] = instrument["language"]
     if payload["required"] and status != SCREENED_OUT:
         payload["instrument"] = instrument
+        row = _response_row(db, participant) if participant.consented else None
+        if row is not None:
+            payload["answers"] = {
+                step: getattr(row, f"{step}_answers") or {}
+                for step in STEPS[:STEPS.index(status)]
+                if step != "religion" or row.religion_consent
+            }
+            payload["religion_consent"] = row.religion_consent
     return payload
 
 
@@ -149,6 +158,9 @@ def _increment_screenouts(db):
 
 def _screen_out(db, participant):
     _increment_screenouts(db)
+    db.execute(delete(PilotQuestionnaireResponse).where(
+        PilotQuestionnaireResponse.participant_id == participant.id
+    ))
     if is_test_participant(participant):
         prefs = dict(participant.dashboard_preferences or {})
         prefs[SCREENED_OUT_KEY] = True
@@ -162,11 +174,11 @@ def _screen_out(db, participant):
     return {"status": SCREENED_OUT, "deleted": True}
 
 
-def submit_questionnaire_section(db, participant_id, section_id, answers, *, religion_consent=None):
+def submit_questionnaire_section(db, participant_id, section_id, answers, *, religion_consent=None, edit=False):
     """Save one section. Returns the next status; never a score or a verdict
     beyond eligibility (which the participant has to be told)."""
 
-    participant = _participant(db, participant_id)
+    participant = _participant(db, participant_id, for_update=True)
     if not participant.consented:
         raise QuestionnaireError("Consent is required before the questionnaire")
     participant.last_seen_at = utc_now()  # admin "Last seen"; see service._seen
@@ -177,10 +189,11 @@ def submit_questionnaire_section(db, participant_id, section_id, answers, *, rel
         return {"status": status}
     if section_id not in STEPS:
         raise QuestionnaireError(f"Unknown questionnaire section '{section_id}'")
-    if STEPS.index(section_id) < STEPS.index(status):
-        # Already saved (e.g. a network retry). Never overwrite earlier answers.
+    previously_saved = STEPS.index(section_id) < STEPS.index(status)
+    if previously_saved and edit is not True:
+        # Unmarked repeat submissions are network retries.
         return {"status": status}
-    if section_id != status:
+    if not previously_saved and section_id != status:
         raise QuestionnaireError(f"Expected section '{status}', got '{section_id}'")
 
     try:
@@ -199,23 +212,18 @@ def submit_questionnaire_section(db, participant_id, section_id, answers, *, rel
     except QuestionnaireValidationError as exc:
         raise QuestionnaireError(str(exc)) from exc
 
+    row = _response_row(db, participant)
     if section_id == "eligibility":
         if not is_eligible(cleaned):
             return _screen_out(db, participant)
-        row = PilotQuestionnaireResponse(
-            participant_id=participant.id,
-            instrument_version=INSTRUMENT_VERSION,
-            language=questionnaire_language(),
-            status="eligibility",
-            eligibility_answers=cleaned,
-            eligible_at=utc_now(),
-        )
-        db.add(row)
-        db.flush()
-        return {"status": next_step("eligibility")}
-
-    row = _response_row(db, participant)
-    if section_id == "background":
+        if row is None:
+            row = PilotQuestionnaireResponse(
+                participant_id=participant.id, instrument_version=INSTRUMENT_VERSION,
+                language=questionnaire_language(), eligible_at=utc_now(),
+            )
+            db.add(row)
+        row.eligibility_answers = cleaned
+    elif section_id == "background":
         row.background_answers = cleaned
     elif section_id == "religion":
         row.religion_consent = religion_consent
@@ -227,9 +235,10 @@ def submit_questionnaire_section(db, participant_id, section_id, answers, *, rel
         row.familiarity_answered = score["answered"]
         row.familiarity_score = score["score"]
         row.completed_at = utc_now()
-    row.status = section_id
+    if not previously_saved:
+        row.status = section_id
     db.flush()
-    return {"status": next_step(section_id) or COMPLETE}
+    return {"status": next_step(row.status) or COMPLETE}
 
 
 def _iso(value):

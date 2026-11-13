@@ -273,13 +273,48 @@ class FlowTests(QuestionnaireTestBase):
         self.assertIsNone(self._row())
         self.assertEqual(self._screenouts(), 0)
 
-    def test_sections_must_come_in_order_and_are_never_overwritten(self):
+    def test_sections_must_come_in_order_and_retries_do_not_overwrite(self):
         self.assertEqual(self._post("background", {}).status_code, 400)
         self._post("eligibility", ELIGIBLE)
         retry = self._post("eligibility", {**ELIGIBLE, "a3_reading_comfort": "very_comfortable"})
         self.assertEqual(retry.get_json(), {"status": "background"})
         self.assertEqual(self._row().eligibility_answers["a3_reading_comfort"], "comfortable")
         self.assertEqual(self._post("familiarity", {}).status_code, 400)
+
+    def test_revisit_restores_and_replaces_answers_without_skipping_or_reopening(self):
+        self._post("eligibility", ELIGIBLE)
+        self.assertEqual(self._post("familiarity", {}, edit=True).status_code, 400)
+        self._post("background", {"b1_age_band": "25_34"})
+        self._post("religion", {"c4_chinese_bible": "never"}, religion_consent=True)
+        state = self.client.get(self._url("/questionnaire")).get_json()
+        self.assertEqual(state["answers"]["background"]["b1_age_band"], "25_34")
+        self.assertEqual(state["answers"]["religion"]["c4_chinese_bible"], "never")
+        self.assertTrue(state["religion_consent"])
+        changed = {**ELIGIBLE, "a2_first_language": "other_chinese", "a2_other_variety": "粤语"}
+        self.assertEqual(self._post("eligibility", changed, edit=True).get_json()["status"], "familiarity")
+        self._post("background", {}, edit=True)
+        self._post("religion", {}, religion_consent=False, edit=True)
+        state = self.client.get(self._url("/questionnaire")).get_json()
+        self.assertEqual(state["answers"]["eligibility"]["a2_other_variety"], "粤语")
+        self.assertIsNone(state["answers"]["background"]["b1_age_band"])
+        self.assertFalse(state["religion_consent"])
+        self.assertNotIn("religion", state["answers"])
+        self.assertIsNone(self._row().religion_answers)
+        self._post("familiarity", {})
+        self.assertEqual(self._post("eligibility", ELIGIBLE, edit=True).get_json(), {"status": "complete"})
+        self.assertEqual(self._row().eligibility_answers["a2_other_variety"], "粤语")
+        self.assertNotIn("answers", self.client.get(self._url("/questionnaire")).get_json())
+
+    def test_edit_to_ineligible_erases_saved_answers(self):
+        for test in (False, True):
+            with self.factory() as db:
+                pid = self._make_participant(db, test=test)
+                db.commit()
+            self._post("eligibility", ELIGIBLE, pid)
+            self._post("background", {"b1_age_band": "25_34"}, pid)
+            result = self._post("eligibility", {**ELIGIBLE, "a1_age_18_plus": "no"}, pid, edit=True)
+            self.assertEqual(result.get_json(), {"status": "screened_out", "deleted": not test})
+            self.assertIsNone(self._row(pid))
 
     def test_section_c_needs_an_explicit_choice(self):
         self._post("eligibility", ELIGIBLE)

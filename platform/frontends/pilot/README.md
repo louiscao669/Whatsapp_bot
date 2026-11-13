@@ -17,7 +17,11 @@ Participants created with the admin's **Create test participant** action see a
 **Testing only** panel on every question. It shows the passage condition and
 defect percentage (or clean / word-by-word), plus the correct choice and text
 for MCQs, or the expected answer for open questions. The answer is the key from
-the clean source; a defective passage may change or omit its evidence.
+the clean source; a defective passage may change or omit its evidence. The
+yellow panel appears between the excerpt and the question. For each changed
+verse it shows the clean wording and the wording actually served. Fully omitted
+verses from the question window are identified explicitly. If the passage has
+defects elsewhere and this excerpt is unchanged, the panel says so.
 
 The existing server-side `test_participant` flag controls this feature. Regular
 participants receive neither the panel nor its condition/answer data in the
@@ -43,7 +47,9 @@ defaults to `en` — `zh` exists but is not IRB-approved):
 
 The server enforces the order: `GET /question` returns `state: "questionnaire"`
 (no question, no assignment minted) until it is complete. A reload resumes at
-the section that is due.
+the section that is due. Until they choose **Finish and start reading**, readers
+can use **Previous** to revisit a questionnaire page and change or clear their
+answers. Declining Section C after previously agreeing removes its saved answers.
 
 **Screen-out.** An ineligible participant sees a thank-you screen. Their answers
 are not stored, `pilot_screenout_counts` is incremented (anonymous, per

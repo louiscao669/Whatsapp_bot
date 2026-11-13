@@ -166,6 +166,7 @@ def pilot_questionnaire_submit(participant_id):
                 body.get("section"),
                 body.get("answers"),
                 religion_consent=body.get("religion_consent"),
+                edit=body.get("edit") is True,
             )
             db.commit()
     except QuestionnaireError as exc:
