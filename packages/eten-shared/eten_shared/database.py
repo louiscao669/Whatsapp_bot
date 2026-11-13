@@ -696,24 +696,24 @@ def _run_startup_migrations(engine: Engine):
         ):
             connection.execute(text(statement))
 
-        # Question sets share experiment_windows: gold72 uses window groups 1-8,
-        # hard66 uses 101-108 (eten_shared.experiment_plan.QA_SETS). The original
-        # tier-1 migration allowed only 1-8. Rewritten only when the live definition
-        # still lacks the hard66 range, so a normal start takes no table lock.
+        # Match the group ranges in experiment_plan.QA_SETS. An up-to-date
+        # deployment skips ALTER TABLE, including on subsequent worker starts.
         connection.execute(text("""
             DO $$
             BEGIN
                 IF EXISTS (
                     SELECT 1 FROM pg_constraint
                     WHERE conname = 'experiment_windows_group_index_check'
-                      AND pg_get_constraintdef(oid) NOT LIKE '%101%'
+                      AND conrelid = to_regclass('public.experiment_windows')
+                      AND pg_get_constraintdef(oid) NOT LIKE '%301%'
                 ) THEN
                     ALTER TABLE experiment_windows
-                        DROP CONSTRAINT experiment_windows_group_index_check;
-                    ALTER TABLE experiment_windows
+                        DROP CONSTRAINT experiment_windows_group_index_check,
                         ADD CONSTRAINT experiment_windows_group_index_check
                         CHECK ((group_index BETWEEN 1 AND 8)
-                               OR (group_index BETWEEN 101 AND 108));
+                               OR (group_index BETWEEN 101 AND 108)
+                               OR (group_index BETWEEN 201 AND 208)
+                               OR (group_index BETWEEN 301 AND 308));
                 END IF;
             END $$;
         """))

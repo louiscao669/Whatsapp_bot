@@ -12,6 +12,8 @@ skip flagged participants so a test run can neither shift a real participant's
 Latin-square block nor leak into results.
 """
 
+from __future__ import annotations
+
 import random
 
 from sqlalchemy import func, select
@@ -23,6 +25,7 @@ from eten_shared.models import (
     Participant,
     QAItem,
 )
+from eten_shared.recordings import participant_language_code
 from eten_shared.wh_type import group_by_wh_type
 
 # 8 condition slots. Two "clean" anchors (pooled). The strings MUST match
@@ -122,8 +125,25 @@ TEST_PARTICIPANT_KEY = "test_participant"
 QA_SETS = {
     "gold72": {"group_offset": 0, "passage_prefix": "", "label": "gold72 (prepared set)"},
     "hard66": {"group_offset": 100, "passage_prefix": "hard66/", "label": "hard66 (strong set)"},
+    "reviewed122": {"group_offset": 200, "passage_prefix": "reviewed122/",
+                    "label": "Reviewed Chinese MCQs (earlier passages)", "language": "zh", "test_only": True},
+    "reviewed122_sol": {"group_offset": 300, "passage_prefix": "reviewed122_sol/",
+                        "label": "Sol Chinese · natural names", "language": "zh", "test_only": True},
 }
 DEFAULT_QA_SET = "gold72"
+SOL_SCRATCH_SET = "reviewed122_sol_scratch"
+
+# These choices share the original questions, passage variants, and window groups.
+QA_SUBSETS = {
+    "reviewed122_sol_prepared": ("reviewed122_sol", "Prepared60", "Sol Chinese · prepared QAs"),
+    SOL_SCRATCH_SET: ("reviewed122_sol", "Hard77", "Sol Chinese · generated from scratch"),
+}
+QA_SUBSET_PREF = "qa_subset"
+
+
+def is_test_bank_passage(passage_id):
+    return any((passage_id or "").startswith(config["passage_prefix"])
+               for config in QA_SETS.values() if config.get("test_only"))
 
 
 class ExperimentPlanError(Exception):
@@ -131,6 +151,8 @@ class ExperimentPlanError(Exception):
 
 
 def qa_set_config(qa_set):
+    if qa_set in QA_SUBSETS:
+        qa_set = QA_SUBSETS[qa_set][0]
     try:
         return QA_SETS[qa_set or DEFAULT_QA_SET]
     except KeyError:
@@ -142,6 +164,11 @@ def qa_set_config(qa_set):
 def qa_set_groups(qa_set=DEFAULT_QA_SET):
     offset = qa_set_config(qa_set)["group_offset"]
     return [offset + group for group in GROUPS]
+
+
+def is_study_qa_set(qa_set):
+    """Only the scratch subset of the reviewed Sol bank is released for study plans."""
+    return qa_set == SOL_SCRATCH_SET or not qa_set_config(qa_set).get("test_only")
 
 
 def build_cells(participant_id: str, block_index: int, qa_set: str = DEFAULT_QA_SET):
@@ -180,8 +207,18 @@ def tier1_mode(db) -> bool:
 def qa_set_window_count(db, qa_set) -> int:
     groups = qa_set_groups(qa_set)
     return db.scalar(
-        select(func.count(ExperimentWindow.id)).where(ExperimentWindow.group_index.in_(groups))
+        select(func.count(ExperimentWindow.id)).where(
+            ExperimentWindow.group_index.in_(groups), *qa_source_filters(qa_set)
+        )
     ) or 0
+
+
+def qa_source_filters(qa_set):
+    if qa_set not in QA_SUBSETS:
+        return ()
+    parent, source, _ = QA_SUBSETS[qa_set]
+    prefix = QA_SETS[parent]["passage_prefix"] + source + "/"
+    return (ExperimentWindow.source_passage_id.startswith(prefix, autoescape=True),)
 
 
 def qa_set_wh_type_counts(db, qa_set, question_types=None) -> dict:
@@ -196,7 +233,8 @@ def qa_set_wh_type_counts(db, qa_set, question_types=None) -> dict:
         .join(ExperimentWindow, ExperimentWindow.qa_item_id == QAItem.id)
         .where(
             ExperimentWindow.group_index.in_(qa_set_groups(qa_set)),
-            QAItem.active.is_(True),
+            *qa_source_filters(qa_set),
+            *([] if qa_set_config(qa_set).get("test_only") else [QAItem.active.is_(True)]),
             QAItem.review_removed_at.is_(None),
             *([QAItem.question_type.in_(sorted(question_types))] if question_types else []),
         )
@@ -207,10 +245,12 @@ def qa_set_wh_type_counts(db, qa_set, question_types=None) -> dict:
 def available_qa_sets(db):
     """Question sets with imported windows, in QA_SETS order: [(key, label, n_windows)]."""
     out = []
-    for key, config in QA_SETS.items():
+    labels = {key: config["label"] for key, config in QA_SETS.items()}
+    labels.update({key: label for key, (_, _, label) in QA_SUBSETS.items()})
+    for key, label in labels.items():
         count = qa_set_window_count(db, key)
         if count:
-            out.append((key, config["label"], count))
+            out.append((key, label, count))
     return out
 
 
@@ -221,7 +261,7 @@ def tier1_variant_gaps(db, language, qa_set=None):
     """
     stmt = select(ExperimentWindow.source_passage_id).distinct()
     if qa_set is not None:
-        stmt = stmt.where(ExperimentWindow.group_index.in_(qa_set_groups(qa_set)))
+        stmt = stmt.where(ExperimentWindow.group_index.in_(qa_set_groups(qa_set)), *qa_source_filters(qa_set))
     source_ids = set(db.scalars(stmt).all())
     present = set(db.execute(
         select(ExperimentPassage.source_passage_id, ExperimentPassage.condition).where(
@@ -238,7 +278,7 @@ def tier1_variant_gaps(db, language, qa_set=None):
 
 
 def write_participant_plan(db, participant, block_index: int, language: str = LANGUAGE,
-                           qa_set: str = DEFAULT_QA_SET, conditions=None):
+                           qa_set: str | None = None, conditions=None, *, dry_run=False):
     """Stage one participant's plan cells (caller commits). Returns the cell tuples.
 
     Same checks as the CLI: refuses when nothing is imported, when a tier-1 variant is
@@ -248,7 +288,15 @@ def write_participant_plan(db, participant, block_index: int, language: str = LA
     Latin-square rotation is unchanged, so the kept cells are exactly the full
     plan's cells for those conditions.
     """
+    if qa_set is None:
+        qa_set = DEFAULT_QA_SET if is_test_participant(participant) else SOL_SCRATCH_SET
     config = qa_set_config(qa_set)
+    if not is_study_qa_set(qa_set) and not is_test_participant(participant):
+        raise ExperimentPlanError(f"{qa_set} is available to test participants only")
+    if config.get("language", language) != language:
+        raise ExperimentPlanError(f"{qa_set} requires language {config['language']}")
+    if qa_set == SOL_SCRATCH_SET and participant_language_code(participant) != language:
+        raise ExperimentPlanError("Set the participant’s target language to Chinese (zh) before planning.")
     existing = db.scalar(
         select(ExperimentPlanCell.id).where(ExperimentPlanCell.participant_id == participant.id)
     )
@@ -281,6 +329,19 @@ def write_participant_plan(db, participant, block_index: int, language: str = LA
         cells = [cell for cell in cells if cell[1] in conditions]
         if not cells:
             raise ExperimentPlanError("None of the plan's conditions were chosen")
+    if not is_tier1:
+        missing = [(chapter, condition) for chapter, condition, _ in cells if (chapter, condition) not in pidx]
+        if missing:
+            raise ExperimentPlanError(f"Missing passage variants for {language}: {missing}")
+    if dry_run:
+        return cells
+    prefs = dict(participant.dashboard_preferences or {})
+    if qa_set in QA_SUBSETS:
+        prefs[QA_SUBSET_PREF] = qa_set
+    else:
+        prefs.pop(QA_SUBSET_PREF, None)
+    if prefs != (participant.dashboard_preferences or {}):
+        participant.dashboard_preferences = prefs
     for chapter, condition, seq in cells:
         db.add(ExperimentPlanCell(
             participant_id=participant.id,
@@ -310,11 +371,17 @@ def participants_qa_sets(db, participant_ids):
     if not participant_ids:
         return {}
     rows = db.execute(
-        select(ExperimentPlanCell.participant_id, func.min(ExperimentPlanCell.chapter))
+        select(ExperimentPlanCell.participant_id, func.min(ExperimentPlanCell.chapter),
+               Participant.dashboard_preferences[QA_SUBSET_PREF].as_string())
+        .join(Participant, Participant.id == ExperimentPlanCell.participant_id)
         .where(ExperimentPlanCell.participant_id.in_(list(participant_ids)))
-        .group_by(ExperimentPlanCell.participant_id)
+        .group_by(ExperimentPlanCell.participant_id, Participant.id)
     ).all()
-    return {pid: qa_set_for_group(group) for pid, group in rows}
+    result = {}
+    for pid, group, subset in rows:
+        bank = qa_set_for_group(group)
+        result[pid] = subset if subset in QA_SUBSETS and QA_SUBSETS[subset][0] == bank else bank
+    return result
 
 
 def participant_qa_set(db, participant_id):

@@ -32,6 +32,7 @@ from eten_shared.experiment_plan import (
     PARTICIPANT_CONDITIONS_KEY,
     PARTICIPANT_QUALITY_DIMENSIONS_KEY,
     QA_SETS,
+    QA_SUBSETS,
     QUALITY_DIMENSIONS,
     SLOTS,
     TEST_PARTICIPANT_KEY,
@@ -164,8 +165,10 @@ def create_test_participant(db, *, display_name=None, language=None, build_plan=
     """
 
     qa_set = (qa_set or DEFAULT_QA_SET).strip()
-    if qa_set not in QA_SETS:
+    if qa_set not in QA_SETS and qa_set not in QA_SUBSETS:
         raise TestParticipantError(f"Unknown question set '{qa_set}'")
+    if qa_set in QA_SUBSETS and not build_plan:
+        raise TestParticipantError("A question-source restriction needs a pilot plan")
     wh_list = _parse_wh_types(wh_types)
     form_list = _parse_question_forms(question_forms)
     if wh_list and not build_plan:
