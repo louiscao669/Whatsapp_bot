@@ -19,9 +19,9 @@
 // Everything under /pilot/static/ is served immutable for a year, so an
 // unversioned module URL would pin participants to a stale build forever.
 // Bump all of them together when the frontend changes.
-import { createPilotApi, parseParticipantIdFromLocation } from "./api.js?v=20261026a";
-import { createAttentionTimers, createTrialStore, resumeActiveMs } from "./timing.js?v=20261026a";
-import { renderQuestionnaire, renderScreenedOut } from "./questionnaire.js?v=20261026a";
+import { createPilotApi, parseParticipantIdFromLocation } from "./api.js?v=20261111a";
+import { createAttentionTimers, createTrialStore, resumeActiveMs } from "./timing.js?v=20261111a";
+import { renderQuestionnaire, renderScreenedOut } from "./questionnaire.js?v=20261111a";
 
 const root = document.querySelector("#pilot");
 const participantId = parseParticipantIdFromLocation();
@@ -146,16 +146,50 @@ function renderTestInfo(info) {
   } else if (info.defect_type) {
     condition = defectLabels[info.defect_type] || info.defect_type;
     if (typeof info.defect_rate === "number") {
-      condition += ` · ${Math.round(info.defect_rate * 100)}%`;
+      condition += ` · ${Math.round(info.defect_rate * 100)}% target for the full passage`;
     }
   }
 
   const details = element("dl", "pilot-test-details");
   details.append(element("dt", "", "Passage condition"), element("dd", "", condition));
+  const descriptions = {
+    omission: "Words or clauses were removed from the clean translation.",
+    mistranslation: "Wording was replaced to change the meaning.",
+    grammar: "The translation uses altered grammar or word order.",
+    google_word_by_word: "The passage uses a word-by-word translation."
+  };
+  if (info.condition !== "clean" && descriptions[info.defect_type]) {
+    details.append(element("dt", "", "Defect description"),
+      element("dd", "", descriptions[info.defect_type]));
+    const changes = info.verse_changes;
+    if (Array.isArray(changes) && changes.length) {
+      changes.forEach((change) => {
+        const comparison = element("dd", "pilot-test-comparison");
+        for (const [label, text] of [["Clean wording", change.clean],
+                                     ["Shown wording", change.shown || "Entire verse omitted."]]) {
+          const line = element("div");
+          line.append(element("span", "pilot-test-wording-label", label), document.createTextNode(text));
+          comparison.append(line);
+        }
+        details.append(element("dt", "", `Verse ${change.verse}`), comparison);
+      });
+    } else {
+      details.append(element("dt", "", "This excerpt"), element("dd", "",
+        Array.isArray(changes) ? "The wording matches the clean verses here." : "A verse comparison is unavailable."));
+    }
+  }
   const answer = info.correct_answer
     ? `${info.correct_choice ? `${info.correct_choice}. ` : ""}${info.correct_answer}`
     : "No answer key configured";
   details.append(element("dt", "", "Correct answer (clean source)"), element("dd", "", answer));
+  if (info.manually_written_fields?.length) {
+    const fields = info.manually_written_fields;
+    const letters = fields.filter((field) => field !== "Q");
+    const labels = [];
+    if (fields.includes("Q")) labels.push("Question");
+    if (letters.length) labels.push(`${letters.length === 1 ? "Option" : "Options"} ${letters.join(", ")}`);
+    details.append(element("dt", "", "Manually written wording"), element("dd", "", labels.join(" · ")));
+  }
   panel.append(details, element("p", "pilot-test-note",
     "This is the answer key from the clean passage. A defective passage may change or omit the evidence."
   ));
@@ -166,9 +200,6 @@ function renderQuestion(question) {
   root.replaceChildren();
   const card = element("section", "pilot-card");
   card.append(element("p", "pilot-step", `Question ${question.question_number}`));
-  if (question.test_info) {
-    card.append(renderTestInfo(question.test_info));
-  }
 
   // `passage_lines` is the delivered text as one paragraph, the same layout for
   // every condition (a per-verse split used to break omission passages exactly
@@ -189,6 +220,9 @@ function renderQuestion(question) {
     card.append(passage);
   }
 
+  if (question.test_info) {
+    card.append(renderTestInfo(question.test_info));
+  }
   card.append(element("h1", "pilot-question", question.question));
 
   const form = element("form", "pilot-form");

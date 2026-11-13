@@ -33,6 +33,7 @@ from eten_shared.domain.assignments import (
     surrounding_passage_text,
 )
 from eten_shared.experiment_plan import is_test_participant
+from eten_shared.manual_wording import manual_fields
 from eten_shared.mcq import (
     choice_letters_for_item,
     choice_letters_for_type,
@@ -43,6 +44,8 @@ from eten_shared.models import (
     AnswerReceipt,
     Assignment,
     AssignmentStatus,
+    ExperimentPassage,
+    ExperimentPassageVerse,
     ExperimentPlanCell,
     Participant,
     PilotQuestionTrial,
@@ -69,6 +72,7 @@ from eten_shared.pilot_trials import (
     validate_count,
 )
 from eten_shared.repo_paths import REPO_ROOT
+from eten_shared.recordings import participant_language_code
 from sqlalchemy import func, select, text
 
 # The dashboard already owns the one correct way to turn a plan cell into an
@@ -515,6 +519,39 @@ def _passage_lines(delivered_text):
     return [text] if text else []
 
 
+def _test_excerpt_changes(db, participant, assignment, trial):
+    """Compare the assigned verses with clean text from the same passage bank."""
+    meta = trial.trial_metadata or {}
+    shown = assignment.passage_verse_numbers or []
+    if not shown or not meta.get("passage_id") or not trial.condition or trial.condition == "clean":
+        return None
+    # Include a whole verse omitted from the question's original window as well
+    # as any neighboring verses added when the shorter excerpt was padded.
+    labels = set(shown)
+    if trial.condition.startswith("omission") and meta.get("window_key"):
+        labels.update(meta["window_key"].split("|"))
+    verse = ExperimentPassageVerse
+    rows = db.execute(
+        select(ExperimentPassage.condition, verse.verse_number, verse.text)
+        .join(verse, verse.experiment_passage_id == ExperimentPassage.id)
+        .where(ExperimentPassage.source_passage_id == meta["passage_id"],
+               ExperimentPassage.language == participant_language_code(participant),
+               ExperimentPassage.condition.in_(["clean", trial.condition]),
+               verse.verse_number.in_(labels))
+        .order_by(verse.position)
+    )
+    clean, variant = {}, {}
+    for condition, label, wording in rows:
+        target = clean if condition == "clean" else variant
+        target[label] = " ".join(wording.split())
+    if not labels.issubset(clean) or not set(shown).issubset(variant):
+        return None
+    if " ".join(variant[n] for n in shown) != " ".join((assignment.passage_text or "").split()):
+        return None
+    return [{"verse": n, "clean": before, "shown": variant.get(n, "")}
+            for n, before in clean.items() if before != variant.get(n, "")]
+
+
 def _serialize_question(db, participant, assignment, qa_item, trial):
     """The participant-facing question payload.
 
@@ -577,6 +614,15 @@ def _serialize_question(db, participant, assignment, qa_item, trial):
             "correct_choice": correct_choice,
             "correct_answer": correct_answer,
         }
+        if question_type == "mcq":
+            bank = (qa_item.passage_id or "").split("/", 1)[0]
+            fields = manual_fields(bank, qa_item.form_group_id, qa_item.question_text,
+                                   qa_item.mcq_choices or [], qa_item.mcq_correct_choice)
+            if fields:
+                payload["test_info"]["manually_written_fields"] = fields
+        changes = _test_excerpt_changes(db, participant, assignment, trial)
+        if changes is not None:
+            payload["test_info"]["verse_changes"] = changes
     return payload
 
 
