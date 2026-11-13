@@ -345,5 +345,7 @@ def audit_falseness(chain, question, options, correct, window):
 # The three verdict helpers live in audit_verdicts.py -- no langchain, no pydantic -- so the
 # offline self-tests can exercise the decision rule (only 'supported' fails). Re-exported here
 # so callers keep importing them from this module.
-from audit_verdicts import (falseness_failing_letters, falseness_feedback,   # noqa: E402,F401
-                            falseness_status_counts)
+if __package__:
+    from .audit_verdicts import falseness_failing_letters, falseness_feedback, falseness_status_counts
+else:
+    from audit_verdicts import falseness_failing_letters, falseness_feedback, falseness_status_counts

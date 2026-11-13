@@ -155,6 +155,18 @@ its discriminating power.
 
 Whatever its source, rule 2 still binds: the option must be false for this passage.
 
+Compare the whole menu. If only the key's person is named in the excerpt, try other
+plausible people from the excerpt so the reader has to understand the relationship.
+Avoid sets of alternatives imported from unrelated episodes. Prefer people, objects,
+actions and results in the excerpt put into a wrong relationship, including an
+attempt confused with a success. Use the shortest natural phrasing for each choice;
+avoid repeating shared settings or adding a second consequence to every alternative.
+Borrow both the actors and the actions: reusing local nouns in three invented episodes
+still makes the distractors easy to eliminate. Avoid a single named employer among three
+worker labels when that grouping alone identifies the key. For lists, rotate recurring
+members across positions and avoid putting an entity missing from the key in the same
+position in all three distractors.
+
 4. MATCH THE ANSWER'S TYPE.
 All four options must answer the same KIND of question as the correct one. If the answer is a
 person, every option is a person; a reason, every option a reason; a place, every option a
@@ -163,6 +175,8 @@ place; a duration, every option a duration.
 5. KEEP THE FOUR OPTIONS PARALLEL.
 Parallel in grammar, length and specificity, so the correct one does not stand out. Do not let
 it be either the only option echoing the context's wording or the only option avoiding it.
+For an action question, use plain verbs and nouns. Include a descriptive modifier only if
+the question asks for it or the choice needs it to express a distinct wrong answer.
 
 Output STRICT JSON only: {{"A":"...","B":"...","C":"...","D":"...","correct":"<letter>"}}
 Keep "correct" exactly as given."""
@@ -999,5 +1013,8 @@ def parse_args():
 
 
 if __name__ == "__main__":
+    if sys.argv[1:2] == ["sol"]:
+        from evaluation.scripts.mcq.preparation.sol_distractors import main as run_sol_pipeline
+        sys.exit(run_sol_pipeline(sys.argv[2:]))
     _a = parse_args()
     sys.exit(self_test() if _a.self_test else run(_a))
