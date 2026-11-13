@@ -55,6 +55,8 @@ DEFAULT_TABLE = EVAL_DIR / "datasets/pseudonym_remap/english_pseudonyms.json"
 QA_TEXT_FIELDS = {
     "content",
     "question",
+    "choices",
+    "verses",
     "Q",
     "A",
     "answer",
@@ -71,7 +73,13 @@ QA_KEYWORD_FIELDS = {
     "concept_synonyms",
     "optional",
 }
-QA_NESTED_CONTAINERS = {"open", "mcq", "anchors"}
+# These fields may store strings under answer letters or chapter:verse labels.
+def qa_text_key(parent, child):
+    if parent == "verses" and re.fullmatch(r"\d+:\d+", child):
+        return parent
+    if parent in {"choices", "mcq_options", "A"} and re.fullmatch(r"[A-Z]", child):
+        return parent
+    return child
 
 # Possessive suffixes, including the curly apostrophe that appears in the NIV
 # text ("water's edge" uses U+2019).
@@ -235,13 +243,7 @@ def pseudonymize_qa_value(
             ]
         return [pseudonymize_qa_value(item, key, rules, counts) for item in value]
     if isinstance(value, dict):
-        result = {}
-        for inner_key, inner in value.items():
-            if inner_key in QA_NESTED_CONTAINERS or isinstance(inner, (dict, list)):
-                result[inner_key] = pseudonymize_qa_value(inner, inner_key, rules, counts)
-            else:
-                result[inner_key] = pseudonymize_qa_value(inner, inner_key, rules, counts)
-        return result
+        return {k: pseudonymize_qa_value(v, qa_text_key(key, k), rules, counts) for k, v in value.items()}
     return value
 
 
@@ -273,7 +275,7 @@ def collect_strings(value: Any, key: str | None, out: list[str]) -> None:
             collect_strings(item, key, out)
     elif isinstance(value, dict):
         for inner_key, inner in value.items():
-            collect_strings(inner, inner_key, out)
+            collect_strings(inner, qa_text_key(key, inner_key), out)
 
 
 def parse_args() -> argparse.Namespace:

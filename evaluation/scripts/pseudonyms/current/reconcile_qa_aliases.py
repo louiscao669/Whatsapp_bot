@@ -47,20 +47,10 @@ import sys
 from pathlib import Path
 from typing import Any
 
-# Kept in sync with pseudonymize_english_source.py -- the fields that actually
-# reach a model or the scoring rubric.
-QA_TEXT_FIELDS = {
-    "content",
-    "question",
-    "Q",
-    "A",
-    "answer",
-    "expected_answer",
-    "mcq_stem",
-    "mcq_options",
-    "original_question",
-    "original_answer",
-}
+if __package__:
+    from .pseudonymize_english_source import QA_TEXT_FIELDS, qa_text_key
+else:  # Direct script invocation by build_tier1_pseudonymized.sh.
+    from pseudonymize_english_source import QA_TEXT_FIELDS, qa_text_key
 
 # Capitalized words that are not names: sentence starters, interrogatives, and
 # the handful of title-case function words that survive the scan. Deliberately
@@ -105,7 +95,7 @@ def collect_text(value: Any, key: str | None, out: list[str]) -> None:
             collect_text(item, key, out)
     elif isinstance(value, dict):
         for inner_key, inner in value.items():
-            collect_text(inner, inner_key, out)
+            collect_text(inner, qa_text_key(key, inner_key), out)
 
 
 # Characters after which a capital is just sentence case, not a name. The tag
