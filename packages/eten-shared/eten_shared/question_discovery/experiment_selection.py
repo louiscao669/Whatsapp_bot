@@ -54,6 +54,10 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from eten_shared.domain.qa_eligibility import qa_item_is_assignable
+from eten_shared.experiment_plan import (
+    QA_SETS, QA_SUBSET_PREF, SOL_SCRATCH_SET, is_test_participant, qa_set_for_group,
+    qa_source_filters,
+)
 from eten_shared.models import Assignment, ExperimentPlanCell, ExperimentWindow, QAItem
 from eten_shared.question_forms import filter_candidates_by_form, participant_question_forms
 from eten_shared.recordings import participant_question_audio_satisfied
@@ -203,10 +207,9 @@ def _current_cell(cells: List[ExperimentPlanCell]) -> Optional[ExperimentPlanCel
 def _cell_candidates(db: Session, cell: ExperimentPlanCell, participant) -> List[QAItem]:
     """Eligible, not-yet-assigned QAItems for this cell's window group.
 
-    Keeps the production eligibility filters verbatim: ``qa_item_is_assignable`` (active +
-    not review-removed) and ``participant_question_audio_satisfied`` — the latter IS the
-    flag-parameterized gate (honors REQUIRE_QUESTION_AUDIO; text mode passes everything,
-    audio mode requires matching-language question audio).
+    Reviewed items stay out of general assignment. Their current review window and
+    the participant's planned bank determine eligibility here. All banks respect
+    review removal and the configured question-audio requirement.
     """
     assigned_ids = set(
         db.scalars(
@@ -215,19 +218,27 @@ def _cell_candidates(db: Session, cell: ExperimentPlanCell, participant) -> List
             )
         ).all()
     )
+    bank = qa_set_for_group(cell.chapter)
+    reviewed_bank = QA_SETS.get(bank, {}).get("test_only", False)
+    subset = (participant.dashboard_preferences or {}).get(QA_SUBSET_PREF) if reviewed_bank else None
+    if reviewed_bank and not is_test_participant(participant):
+        if bank != "reviewed122_sol" or subset != SOL_SCRATCH_SET:
+            return []
     window_items = db.scalars(
         select(QAItem)
         .join(ExperimentWindow, ExperimentWindow.qa_item_id == QAItem.id)
         .where(
             ExperimentWindow.group_index == cell.chapter,
-            QAItem.active.is_(True),
+            QAItem.passage_id == ExperimentWindow.source_passage_id,
+            *qa_source_filters(subset),
+            *([] if reviewed_bank else [QAItem.active.is_(True)]),
             QAItem.review_removed_at.is_(None),
         )
         .order_by(ExperimentWindow.sequence_index)
     ).all()
     # Backwards-compatible Luke path for databases that have not imported the
     # tier-1 experiment_windows table/pool.
-    items = window_items or db.scalars(
+    items = window_items if window_items or reviewed_bank else db.scalars(
         select(QAItem).where(
             QAItem.passage_id == f"luke{cell.chapter}",
             QAItem.active.is_(True),
@@ -239,7 +250,8 @@ def _cell_candidates(db: Session, cell: ExperimentPlanCell, participant) -> List
         for item in items
         if item.id not in assigned_ids
         and (not item.automatic_form or item.question_type == item.automatic_form)
-        and qa_item_is_assignable(item)
+        # Reviewed items are eligible through their current release window above.
+        and (reviewed_bank or qa_item_is_assignable(item))
         and participant_question_audio_satisfied(db, item.id, participant)
     ]
 
