@@ -558,6 +558,53 @@ LLM_QUALITY_PROMPTS = {
 }
 
 
+def llm_translation_messages(text, target_language, quality, glossary=None):
+    """Build the passage translator input used by the quality pipeline."""
+    prompt_instruction = LLM_QUALITY_PROMPTS[quality].format(
+        target_language=target_language
+    )
+    prompt_instruction += (
+        " Preserve every token matching __[A-Z0-9_]+__ exactly, including "
+        "capitalization and underscores. Never lowercase, translate, split, "
+        "or add spaces inside these tokens."
+    )
+    if glossary:
+        # Without a fixed target-side rendering, each call transliterates the
+        # pseudonyms independently: the passage came out with 塔杜尔 for "Tadul"
+        # while the questions used 卢丹 for "Ludan" and left "Lidor" in Latin
+        # script. Questions then referred to entities the passage never named,
+        # and MCQ accuracy fell below chance. The name map already fixes one
+        # rendering per entity; this hands it to the model.
+        prompt_instruction += (
+            " Render these names EXACTLY as given, every time they occur; "
+            "do not transliterate them yourself and do not leave them in the "
+            "source script."
+        )
+    return [
+        {
+            "role": "system",
+            "content": (
+                "You are a translation engine for controlled "
+                "evaluation experiments. Return only the translated "
+                "text, with no markdown or explanation."
+            ),
+        },
+        {
+            "role": "user",
+            "content": json.dumps(
+                {
+                    "instruction": prompt_instruction,
+                    "source_language": "English",
+                    "target_language": target_language,
+                    **({"name_glossary": glossary} if glossary else {}),
+                    "text": text,
+                },
+                ensure_ascii=False,
+            ),
+        },
+    ]
+
+
 def llm_prompt_translate(
     texts: str | Iterable[str],
     *,
@@ -588,26 +635,6 @@ def llm_prompt_translate(
 
     model = model or os.getenv("OPENAI_TRANSLATION_MODEL", "gpt-4.1-mini")
     client = OpenAI()
-    prompt_instruction = LLM_QUALITY_PROMPTS[quality].format(
-        target_language=target_language
-    )
-    prompt_instruction += (
-        " Preserve every token matching __[A-Z0-9_]+__ exactly, including "
-        "capitalization and underscores. Never lowercase, translate, split, "
-        "or add spaces inside these tokens."
-    )
-    if glossary:
-        # Without a fixed target-side rendering, each call transliterates the
-        # pseudonyms independently: the passage came out with 塔杜尔 for "Tadul"
-        # while the questions used 卢丹 for "Ludan" and left "Lidor" in Latin
-        # script. Questions then referred to entities the passage never named,
-        # and MCQ accuracy fell below chance. The name map already fixes one
-        # rendering per entity; this hands it to the model.
-        prompt_instruction += (
-            " Render these names EXACTLY as given, every time they occur; "
-            "do not transliterate them yourself and do not leave them in the "
-            "source script."
-        )
     # The Responses API accepts temperature but not seed -- seed is a
     # chat.completions parameter. Passing it raises TypeError, so it is
     # accepted for interface symmetry and ignored here.
@@ -623,29 +650,7 @@ def llm_prompt_translate(
                 response = client.responses.create(
                     model=model,
                     **sampling,
-                    input=[
-                        {
-                            "role": "system",
-                            "content": (
-                                "You are a translation engine for controlled "
-                                "evaluation experiments. Return only the translated "
-                                "text, with no markdown or explanation."
-                            ),
-                        },
-                        {
-                            "role": "user",
-                            "content": json.dumps(
-                                {
-                                    "instruction": prompt_instruction,
-                                    "source_language": "English",
-                                    "target_language": target_language,
-                                    **({"name_glossary": glossary} if glossary else {}),
-                                    "text": text,
-                                },
-                                ensure_ascii=False,
-                            ),
-                        },
-                    ],
+                    input=llm_translation_messages(text, target_language, quality, glossary),
                 )
                 outputs.append(extract_openai_text(response).strip())
                 last_error = None

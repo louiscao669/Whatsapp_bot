@@ -17,6 +17,9 @@ import re
 import shutil
 import sys
 from collections import Counter, defaultdict
+from concurrent.futures import ThreadPoolExecutor
+from contextlib import nullcontext
+from threading import Lock
 from pathlib import Path
 from typing import Callable
 
@@ -1064,6 +1067,7 @@ class GrammarMeaningCache:
             "judge": {"model": model, "prompt_sha256": json_digest(MEANING_JUDGE_PROMPT),
                       "schema_sha256": json_digest(MEANING_JUDGE_SCHEMA)},
         }
+        self.write_lock = Lock()
         self.paths = {field: bank_dir / filename for field, filename in (
             ("readings", "meaning_readings.json"), ("reviews", "meaning_judgments.json"),
         )}
@@ -1087,8 +1091,9 @@ class GrammarMeaningCache:
                     raise GrammarError(f"Missing cached meaning reading {reading_key}; offline mode makes no API calls.")
                 reading = validate_meaning_reading(self.reader(read_request), candidate)
                 reading_record = {"reader": self.identity["reader"], "request": read_request, "reading": reading}
-                self.data["readings"]["readings"][reading_key] = reading_record
-                write_json_atomic(self.paths["readings"], self.data["readings"])
+                with self.write_lock:
+                    reading_record = self.data["readings"]["readings"].setdefault(reading_key, reading_record)
+                    write_json_atomic(self.paths["readings"], self.data["readings"])
             if (
                 not isinstance(reading_record, dict) or reading_record.get("reader") != self.identity["reader"]
                 or reading_record.get("request") != read_request
@@ -1102,8 +1107,9 @@ class GrammarMeaningCache:
             )
             record = {"reviewer": self.identity, "request": request,
                       "review": {"candidate_reading": reading, "judgment": judgment}}
-            self.data["reviews"]["reviews"][key] = record
-            write_json_atomic(self.paths["reviews"], self.data["reviews"])
+            with self.write_lock:
+                record = self.data["reviews"]["reviews"].setdefault(key, record)
+                write_json_atomic(self.paths["reviews"], self.data["reviews"])
         if (
             not isinstance(record, dict) or record.get("reviewer") != self.identity
             or record.get("request") != request
@@ -1197,6 +1203,7 @@ class GrammarJudgmentCache:
         evaluator: Callable[[dict], dict] | None = None, offline: bool = False,
         unit_mode: str = "clause",
     ):
+        self.write_lock = Lock()
         self.path = path
         self.unit_mode = unit_mode
         self.identity = {
@@ -1220,8 +1227,9 @@ class GrammarJudgmentCache:
                 raise GrammarError(f"Missing cached grammar judgment {key}; offline mode makes no API calls.")
             judgment = validate_judgment(self.evaluator(request))
             record = {"judge": self.identity, "request": request, "judgment": judgment}
-            self.data["judgments"][key] = record
-            write_json_atomic(self.path, self.data)
+            with self.write_lock:
+                record = self.data["judgments"].setdefault(key, record)
+                write_json_atomic(self.path, self.data)
         if not isinstance(record, dict) or record.get("judge") != self.identity or record.get("request") != request:
             raise GrammarError(f"Grammar cache entry does not match its key: {key}")
         return key, validate_judgment(record.get("judgment"))
@@ -1405,8 +1413,11 @@ def build_grammar_bank(
     unit_mode: str = "clause",
     preserved_bank: dict | None = None,
     historical_attempts: dict[int, list[dict]] | None = None,
+    review_workers: int = 1,
 ) -> dict:
     """Extend a bank with bounded, cached retries of unapproved clauses only."""
+    if not 1 <= review_workers <= 8:
+        raise GrammarError("review_workers must be between 1 and 8")
     if max_candidates < 1:
         raise GrammarError("max_candidates must be positive.")
     if proposal_batch_size < 1:
@@ -1507,6 +1518,50 @@ def build_grammar_bank(
     def enough():
         return affected >= target and len(entries) >= min_approved_candidates
 
+    def review_clause(index, proposals, round_number, proposal_id):
+        counts = Counter()
+        unit = units[index]
+        if not proposals:
+            attempts[index].append({"round": round_number, "outcome": "no_candidate"})
+        for proposal in proposals:
+            candidate = proposal["edited_clause"]
+            if candidate in seen[index]:
+                counts["duplicates"] += 1
+                # The original rejection is already in the feedback.
+                continue
+            seen[index].add(candidate)
+            operations = [LLM_OPERATION]
+            feedback = {"round": round_number, "edited_clause": candidate}
+            if not valid_structural_candidate(unit["text"], candidate, operations):
+                counts["hard_rejected"] += 1
+                attempts[index].append({**feedback, "outcome": "hard_check_rejected",
+                    "feedback": "Preserve characters, punctuation positions, protected terms and verse markers."})
+                continue
+            request = {
+                "original_passage": text, "clause_start": offsets[index],
+                "original_clause": unit["text"], "edited_clause": candidate,
+            }
+            judgment_id, judgment = cache.evaluate(request)
+            counts["evaluated"] += 1
+            if not judgment_accepts(judgment, candidate):
+                attempts[index].append({**feedback, "outcome": "grammar_rejected", "feedback": judgment})
+                continue
+            meaning_id, meaning_review = meaning_cache.evaluate(request)
+            counts["meaning_evaluated"] += 1
+            if not meaning_review_accepts(meaning_review, candidate):
+                counts["meaning_rejected"] += 1
+                attempts[index].append({**feedback, "outcome": "meaning_rejected", "feedback": meaning_review})
+                continue
+            return {
+                "unit_index": index, "verse": unit["verse"],
+                "content_chars": unit["content_chars"], "original_text": unit["text"],
+                "corrupted_text": candidate, "operations": operations,
+                "proposal_id": proposal_id, "proposal": proposal,
+                "judgment_id": judgment_id, "judgment": judgment,
+                "meaning_review_id": meaning_id, "meaning_review": meaning_review,
+            }, counts
+        return None, counts
+
     # Replaying deterministic requests recovers interruptions and lost bank files
     # from caches. Retry batches depend only on the preceding complete round, not
     # on the requested dose; extending coverage preserves the approved prefix.
@@ -1566,52 +1621,24 @@ def build_grammar_bank(
             proposal_id, response = proposal_cache.generate(proposal_request)
             groups = {group["unit_index"]: group["candidates"] for group in response["clauses"]}
             generated += sum(len(candidates) for candidates in groups.values())
-            for index in batch:
-                if enough():
-                    break
-                unit = units[index]
-                if not groups[index]:
-                    attempts[index].append({"round": round_number, "outcome": "no_candidate"})
-                for proposal in groups[index]:
-                    candidate = proposal["edited_clause"]
-                    if candidate in seen[index]:
-                        duplicates += 1
-                        # The original rejection is already in the feedback.
-                        continue
-                    seen[index].add(candidate)
-                    operations = [LLM_OPERATION]
-                    feedback = {"round": round_number, "edited_clause": candidate}
-                    if not valid_structural_candidate(unit["text"], candidate, operations):
-                        hard_rejected += 1
-                        attempts[index].append({**feedback, "outcome": "hard_check_rejected",
-                            "feedback": "Preserve characters, punctuation positions, protected terms and verse markers."})
-                        continue
-                    request = {
-                        "original_passage": text, "clause_start": offsets[index],
-                        "original_clause": unit["text"], "edited_clause": candidate,
-                    }
-                    judgment_id, judgment = cache.evaluate(request)
-                    evaluated += 1
-                    if not judgment_accepts(judgment, candidate):
-                        attempts[index].append({**feedback, "outcome": "grammar_rejected", "feedback": judgment})
-                        continue
-                    meaning_id, meaning_review = meaning_cache.evaluate(request)
-                    meaning_evaluated += 1
-                    if not meaning_review_accepts(meaning_review, candidate):
-                        meaning_rejected += 1
-                        attempts[index].append({**feedback, "outcome": "meaning_rejected", "feedback": meaning_review})
-                        continue
-                    entries.append({
-                        "unit_index": index, "verse": unit["verse"],
-                        "content_chars": unit["content_chars"], "original_text": unit["text"],
-                        "corrupted_text": candidate, "operations": operations,
-                        "proposal_id": proposal_id, "proposal": proposal,
-                        "judgment_id": judgment_id, "judgment": judgment,
-                        "meaning_review_id": meaning_id, "meaning_review": meaning_review,
-                    })
-                    affected += unit["content_chars"]
-                    accepted.add(index)
-                    break
+            # Candidate order within a clause and the accepted prefix across clauses are fixed.
+            with (ThreadPoolExecutor(max_workers=review_workers) if review_workers > 1 else nullcontext()) as pool:
+                def review_index(index):
+                    return review_clause(index, groups[index], round_number, proposal_id)
+
+                results = pool.map(review_index, batch) if pool else map(review_index, batch)
+                for entry, counts in results:
+                    evaluated += counts["evaluated"]
+                    duplicates += counts["duplicates"]
+                    hard_rejected += counts["hard_rejected"]
+                    meaning_evaluated += counts["meaning_evaluated"]
+                    meaning_rejected += counts["meaning_rejected"]
+                    if entry is not None:
+                        entries.append(entry)
+                        affected += entry["content_chars"]
+                        accepted.add(entry["unit_index"])
+                    if enough():
+                        break
     if entries[:len(previous_entries)] != previous_entries:
         raise GrammarError("Extension would change previously approved grammar edits; bank was not replaced.")
     bank = {
@@ -2173,6 +2200,8 @@ def parse_args() -> argparse.Namespace:
         default=[format_rate(rate) for rate in DEFAULT_RATES],
         help="Grammar affected-clause rates, e.g. 5%% 10%% 0.15. Default: 0%% 5%% 10%% 15%% 20%% 30%%.",
     )
+    parser.add_argument("--review-workers", type=int, choices=range(1,9), default=1,
+                        help="Parallel independent clause reviews within each proposal batch.")
     parser.add_argument("--seed", type=int, default=2026)
     parser.add_argument(
         "--judge-model", default=os.getenv("OPENAI_GRAMMAR_MODEL") or "gpt-4o-mini",
@@ -2242,6 +2271,7 @@ def prepare_grammar_banks(
     generator: Callable[[dict], dict] | None = None,
     min_approved_candidates: int = 0,
     retry_rounds: int = DEFAULT_RETRY_ROUNDS,
+    review_workers: int = 1,
 ) -> dict[str, dict]:
     bank_dir = output_dir / "_grammar_bank"
     cache = GrammarJudgmentCache(
@@ -2262,7 +2292,7 @@ def prepare_grammar_banks(
             cache=cache, max_candidates=max_candidates,
             proposal_cache=proposal_cache, proposal_batch_size=proposal_batch_size,
             min_approved_candidates=min_approved_candidates,
-            retry_rounds=retry_rounds,
+            retry_rounds=retry_rounds, review_workers=review_workers,
         )
     return banks
 
@@ -2336,7 +2366,7 @@ def main() -> int:
                     model=args.judge_model, max_candidates=args.max_candidates_per_clause,
                     offline=args.offline,
                     generator_model=args.generator_model, proposal_batch_size=args.proposal_batch_size,
-                    retry_rounds=args.retry_rounds,
+                    retry_rounds=args.retry_rounds, review_workers=args.review_workers,
                 )
                 has_shortfall = False
                 for filename, bank in banks.items():

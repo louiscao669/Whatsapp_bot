@@ -116,6 +116,18 @@ def test_bank_and_rejections_are_reused_offline_even_after_bank_file_is_lost(tmp
     )
 
 
+def test_parallel_clause_reviews_preserve_serial_bank_and_offline_replay(tmp_path, proposals):
+    serial, parallel = tmp_path / "serial", tmp_path / "parallel"
+    expected = build(serial, make_cache(serial, []))
+    observed = grammar.build_grammar_bank(
+        TEXT, bank_dir=parallel, seed=42, max_rate=.30, max_candidates=2,
+        cache=make_cache(parallel, []), review_workers=4,
+    )
+    assert observed == expected
+    (parallel / f"bank_{observed['bank_id']}.json").unlink()
+    assert build(parallel, make_cache(parallel, [], offline=True)) == expected
+
+
 def test_extending_bank_keeps_previous_prefix_and_does_not_rejudge(tmp_path, proposals):
     calls = []
     cache = make_cache(tmp_path, calls)
