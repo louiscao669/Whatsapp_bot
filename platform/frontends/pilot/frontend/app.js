@@ -21,7 +21,7 @@
 // Bump all of them together when the frontend changes.
 import { createPilotApi, parseParticipantIdFromLocation } from "./api.js?v=20261111a";
 import { createAttentionTimers, createTrialStore, resumeActiveMs } from "./timing.js?v=20261111a";
-import { renderQuestionnaire, renderScreenedOut } from "./questionnaire.js?v=20261111a";
+import { renderQuestionnaire, renderScreenedOut } from "./questionnaire.js?v=20261113a";
 
 const root = document.querySelector("#pilot");
 const participantId = parseParticipantIdFromLocation();

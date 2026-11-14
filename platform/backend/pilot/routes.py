@@ -153,6 +153,8 @@ def pilot_questionnaire_state(participant_id):
 def pilot_questionnaire_submit(participant_id):
     """Save one section: ``{"section": ..., "answers": {...}}``.
 
+    To finalize a screen-out, resubmit Section A with the reviewed
+    ``confirm_exclusions`` answers in ``confirmed_exclusions``.
     Section C also needs an explicit boolean ``religion_consent`` (the separate
     consent prompt that precedes it).
     """
@@ -167,6 +169,7 @@ def pilot_questionnaire_submit(participant_id):
                 body.get("answers"),
                 religion_consent=body.get("religion_consent"),
                 edit=body.get("edit") is True,
+                confirmed_exclusions=body.get("confirmed_exclusions"),
             )
             db.commit()
     except QuestionnaireError as exc:

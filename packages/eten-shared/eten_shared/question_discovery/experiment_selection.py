@@ -3,7 +3,8 @@
 Unlike ``selection.py`` (a coverage optimizer that spreads scarce responses across
 under-answered items), this serves a **prescribed** per-participant Latin square: each
 chapter is shown under exactly one condition, in a per-participant randomized chapter
-order, one condition's passage per chapter. The plan lives in ``experiment_plan_cells``
+order for block delivery. The web pilot interleaves questions across these same cells.
+The plan lives in ``experiment_plan_cells``
 (written once by ``human_pilot/build_experiment_plan.py``); this module only reads it and
 flips a cell ``pending -> active -> done``.
 
@@ -48,6 +49,7 @@ from __future__ import annotations
 
 import hashlib
 import os
+from collections import Counter, defaultdict
 from typing import Callable, List, Optional, Tuple
 
 from sqlalchemy import select
@@ -58,7 +60,7 @@ from eten_shared.experiment_plan import (
     QA_SETS, QA_SUBSET_PREF, SOL_SCRATCH_SET, is_test_participant, qa_set_for_group,
     qa_source_filters,
 )
-from eten_shared.models import Assignment, ExperimentPlanCell, ExperimentWindow, QAItem
+from eten_shared.models import Assignment, ExperimentPlanCell, ExperimentWindow, PilotQuestionTrial, QAItem
 from eten_shared.question_forms import filter_candidates_by_form, participant_question_forms
 from eten_shared.recordings import participant_question_audio_satisfied
 from eten_shared.wh_type import classify_wh_type, parse_wh_types, participant_wh_types
@@ -204,20 +206,21 @@ def _current_cell(cells: List[ExperimentPlanCell]) -> Optional[ExperimentPlanCel
     return pending[0] if pending else None
 
 
-def _cell_candidates(db: Session, cell: ExperimentPlanCell, participant) -> List[QAItem]:
+def _assigned_item_ids(db, participant):
+    return set(db.scalars(select(Assignment.qa_item_id).where(
+        Assignment.participant_id == participant.id
+    )))
+
+
+def _cell_candidates(db: Session, cell: ExperimentPlanCell, participant, *, assigned_ids=None) -> List[QAItem]:
     """Eligible, not-yet-assigned QAItems for this cell's window group.
 
     Reviewed items stay out of general assignment. Their current review window and
     the participant's planned bank determine eligibility here. All banks respect
     review removal and the configured question-audio requirement.
     """
-    assigned_ids = set(
-        db.scalars(
-            select(Assignment.qa_item_id).where(
-                Assignment.participant_id == participant.id
-            )
-        ).all()
-    )
+    if assigned_ids is None:
+        assigned_ids = _assigned_item_ids(db, participant)
     bank = qa_set_for_group(cell.chapter)
     reviewed_bank = QA_SETS.get(bank, {}).get("test_only", False)
     subset = (participant.dashboard_preferences or {}).get(QA_SUBSET_PREF) if reviewed_bank else None
@@ -257,6 +260,83 @@ def _cell_candidates(db: Session, cell: ExperimentPlanCell, participant) -> List
 
 
 # -------------------------------------------------------------------------- public
+def _eligible_remaining(db, cell, participant, assigned_ids, strict_keep, form_keep):
+    items = _cell_candidates(db, cell, participant, assigned_ids=assigned_ids)
+    return filter_candidates_by_form(filter_candidates_by_wh_type(items, strict_keep), form_keep)
+
+
+def _next_interleaved_cell(cells, remaining, history, participant_id):
+    """Spread each group's questions across the session and separate defect types.
+
+    Counts include queued, unseen questions. History is the actual presentation
+    order, so a reload or background pre-mint cannot move a reader forward.
+    """
+    by_id = {cell.id: cell for cell in cells}
+    # Both omission doses share a family, as do both mistranslation doses.
+    families = {cell.id: cell.condition.rstrip("0123456789") for cell in cells}
+    family_counts = Counter()
+    for cell_id, count in remaining.items():
+        family_counts[families[cell_id]] += count
+    shown = Counter(history)
+    last = by_id[history[-1]] if history else None
+    total = sum(remaining.values())
+
+    def priority(cell_id):
+        cell = by_id[cell_id]
+        family = families[cell_id]
+        # Take a majority family now if allowed, while enough separators remain.
+        # If only one family remains, still alternate doses and groups.
+        return (
+            last is not None and family == families[last.id],
+            family_counts[family] * 2 <= total,
+            last is not None and cell.condition == last.condition,
+            last is not None and cell_id == last.id,
+            shown[cell_id] / (shown[cell_id] + remaining[cell_id]),
+            hashlib.sha256(f"{participant_id}:{len(history)}:{cell.chapter}".encode()).digest(),
+        )
+
+    return by_id[min(remaining, key=priority)]
+
+
+def select_next_interleaved_cell_item(db, participant, waiting):
+    """Select a web pilot question from the existing plan, including its queued items."""
+    cells = _plan_cells(db, participant)
+    queued = defaultdict(list)
+    for assignment in waiting:
+        queued[assignment.experiment_cell_id].append(assignment)
+
+    assigned_ids = _assigned_item_ids(db, participant)
+    strict_keep = participant_wh_filter(participant)
+    form_keep = participant_question_forms(participant)
+    available = {}
+    remaining = {}
+    for cell in cells:
+        items = [] if cell.status == "done" else _eligible_remaining(
+            db, cell, participant, assigned_ids, strict_keep, form_keep
+        )
+        count = len(items) + len(queued[cell.id])
+        if count:
+            available[cell.id] = items
+            remaining[cell.id] = count
+        else:
+            cell.status = "done"
+    if not remaining:
+        return None, None
+
+    history = db.scalars(
+        select(Assignment.experiment_cell_id)
+        .join(PilotQuestionTrial, PilotQuestionTrial.assignment_id == Assignment.id)
+        .where(Assignment.participant_id == participant.id,
+               Assignment.experiment_cell_id.in_([cell.id for cell in cells]))
+        .order_by(PilotQuestionTrial.sequence_index)
+    ).all()
+    cell = _next_interleaved_cell(cells, remaining, history, participant.id)
+    if queued[cell.id]:
+        return queued[cell.id][0].qa_item, cell
+    cell.status = "active"
+    return active_strategy()(cell, available[cell.id], participant), cell
+
+
 def select_next_experiment_cell_item(
     db: Session, participant, strategy: Optional[Strategy] = None
 ) -> Tuple[Optional[QAItem], Optional[ExperimentPlanCell]]:
@@ -276,13 +356,10 @@ def select_next_experiment_cell_item(
     # mechanics: a cell with no item of an allowed form is exhausted and skipped.
     form_keep = participant_question_forms(participant)
     cells = _plan_cells(db, participant)
+    assigned_ids = _assigned_item_ids(db, participant)
     cell = _current_cell(cells)
     while cell is not None:
-        remaining = _cell_candidates(db, cell, participant)
-        if strict_keep:
-            remaining = filter_candidates_by_wh_type(remaining, strict_keep)
-        if form_keep:
-            remaining = filter_candidates_by_form(remaining, form_keep)
+        remaining = _eligible_remaining(db, cell, participant, assigned_ids, strict_keep, form_keep)
         if remaining:
             if cell.status != "active":
                 cell.status = "active"

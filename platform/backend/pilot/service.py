@@ -247,47 +247,18 @@ def record_consent(db, participant_id, agreed, version=None):
     }
 
 
-def _answered_assignment_ids(db, participant):
-    return set(
-        db.scalars(
-            select(AnswerReceipt.assignment_id).where(
-                AnswerReceipt.participant_id == participant.id
-            )
-        ).all()
-    )
-
-
 def _open_pilot_assignments(db, participant):
-    """Unanswered assignments in the pilot's presentation order.
-
-    Order is the *existing* plan order -- the plan cell's ``sequence_index``
-    first (the Latin square's per-participant condition order), then the
-    assignment chain's own creation order. Nothing here is hardcoded; the pilot
-    presents whatever the assignment system already decided.
-    """
-
-    answered = _answered_assignment_ids(db, participant)
-    rows = db.execute(
-        select(Assignment, ExperimentPlanCell)
-        .outerjoin(
-            ExperimentPlanCell, Assignment.experiment_cell_id == ExperimentPlanCell.id
-        )
+    """Keep an already-presented question first, with unseen assignments in creation order."""
+    return db.scalars(
+        select(Assignment)
+        .outerjoin(PilotQuestionTrial, Assignment.id == PilotQuestionTrial.assignment_id)
         .where(
             Assignment.participant_id == participant.id,
             Assignment.status == AssignmentStatus.ASSIGNED.value,
+            ~select(AnswerReceipt.id).where(AnswerReceipt.assignment_id == Assignment.id).exists(),
         )
+        .order_by(PilotQuestionTrial.id.is_(None), Assignment.assigned_at, Assignment.id)
     ).all()
-    candidates = [(a, cell) for a, cell in rows if a.id not in answered]
-    # Sorted in Python rather than SQL so NULL cell ordering is explicit and
-    # identical on SQLite (tests) and PostgreSQL (production).
-    candidates.sort(
-        key=lambda pair: (
-            pair[1].sequence_index if pair[1] is not None else 1_000_000,
-            _as_utc(pair[0].assigned_at),
-            pair[0].id,
-        )
-    )
-    return [assignment for assignment, _cell in candidates]
 
 
 def _lock_participant_for_mint(db, participant_id):
@@ -324,21 +295,31 @@ def _mint_next_assignment(db, participant, *, advance_session_pointer=True):
     at presentation time, by ``_point_session_at_assignment``.
     """
 
-    if not (automatic_assignment_enabled() or experiment_assignment_enabled()):
-        return None
-
     _lock_participant_for_mint(db, participant.id)
-    # Re-read under the lock: inline delivery reuses any waiting question.
-    # Pre-minting expects one question on screen and creates only its successor.
     already_open = _open_pilot_assignments(db, participant)
-    if advance_session_pointer and already_open:
-        return already_open[0]
-    if not advance_session_pointer and len(already_open) != 1:
+    designed = experiment_assignment_enabled()
+    current = already_open[0] if already_open else None
+    presented = current is not None and db.scalar(
+        select(PilotQuestionTrial.id).where(PilotQuestionTrial.assignment_id == current.id)
+    ) is not None
+    if advance_session_pointer and current and (
+        presented or not designed or not current.experiment_cell_id
+    ):
+        return current
+    if not advance_session_pointer and (len(already_open) != 1 or not presented):
         return None
 
-    qa_item, cell = select_next_participant_qa_item(db, participant)
-    if qa_item is None:
+    if not (designed or automatic_assignment_enabled()):
         return None
+    # Include pre-minted questions from older, grouped plans in the interleave.
+    # Reuse their saved assignments when their group comes up.
+    waiting = already_open if advance_session_pointer else []
+    qa_item, cell = select_next_participant_qa_item(db, participant, pilot_waiting=waiting)
+    if qa_item is None:
+        return waiting[0] if waiting else None
+    for assignment in waiting:
+        if assignment.qa_item_id == qa_item.id:
+            return assignment
     participant_session = get_or_create_participant_session(db, participant)
     pointer_before = (
         participant_session.current_assignment_id,
@@ -705,12 +686,7 @@ def get_pilot_state(db, participant_id, consent_version=None):
             "progress": _progress(db, participant, pilot_session),
         }
 
-    assignment = None
-    open_assignments = _open_pilot_assignments(db, participant)
-    if open_assignments:
-        assignment = open_assignments[0]
-    else:
-        assignment = _mint_next_assignment(db, participant)
+    assignment = _mint_next_assignment(db, participant)
 
     qa_item = None
     if assignment is not None:
@@ -1026,9 +1002,6 @@ def premint_next_assignment(db, participant_id):
     """
 
     participant = _participant(db, participant_id)
-    open_assignments = _open_pilot_assignments(db, participant)
-    if len(open_assignments) != 1:
-        return None
     return _mint_next_assignment(db, participant, advance_session_pointer=False)
 
 

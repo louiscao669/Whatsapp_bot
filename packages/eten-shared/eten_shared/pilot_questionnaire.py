@@ -23,13 +23,10 @@ Rules implemented here:
 
   * Section A is required; eligibility is decided by Section A only.
     A1 = yes, A2 in {mandarin, other_chinese}, A3 != not_comfortable.
-  * Sections B-D are optional item by item.
+  * The current pilot administers Sections A–C. Sections B and C are optional item by item.
   * Section C is preceded by its own consent prompt (stated in the approved
-    questionnaire); declining skips to D.
-  * Section D is scored server-side only. The key never leaves this module:
-    :func:`public_instrument` strips it, and no response ever reports a score
-    to the participant (approved questionnaire: "Participants are never shown
-    their score").
+    questionnaire). Finishing or skipping it starts the reading task.
+  * The original Section D definition is retained for interpreting historical exports.
 
 Codes (option values and item ids) are the stable data contract. Labels may
 change without touching stored data.
@@ -39,22 +36,22 @@ from __future__ import annotations
 
 from typing import Dict, List, Optional
 
-INSTRUMENT_VERSION = "bgq-en-v1.0-2026-08-31"
+INSTRUMENT_VERSION = "bgq-en-a-c-2026-11-13"
 DEFAULT_LANGUAGE = "en"  # the approved instrument is English-only (IRB 26-08-10268)
 
 PREFER_NOT = {"code": "prefer_not_to_say", "zh": "不愿透露", "en": "Prefer not to say"}
 NOT_SURE = {"code": "not_sure", "zh": "不确定", "en": "Not sure"}
 
 #: Ordered steps. ``eligibility`` is Section A, then B, then the Section C
-#: consent prompt + C items (one step), then D.
-STEPS = ("eligibility", "background", "religion", "familiarity")
+#: consent prompt + C items (one step).
+STEPS = ("eligibility", "background", "religion")
 
 
 def _opt(code, zh, en):
     return {"code": code, "zh": zh, "en": en}
 
 
-SECTIONS: List[dict] = [
+EXPORT_SECTIONS: List[dict] = [
     {
         "id": "eligibility",
         "label": "A",
@@ -74,6 +71,11 @@ SECTIONS: List[dict] = [
                 "text": {
                     "zh": "普通话（汉语）是您的第一语言（母语）吗？",
                     "en": "Is Mandarin Chinese your first (native) language?",
+                },
+                "confirmation_help": {
+                    "zh": "如果您的母语是粤语等其他汉语变体，可以返回选择“另一种汉语方言或变体”。",
+                    "en": "If your first language is another Chinese variety, such as Cantonese, "
+                    "you can go back and select “Another Chinese variety”.",
                 },
                 "options": [
                     _opt("mandarin", "是", "Yes"),
@@ -378,6 +380,9 @@ SECTIONS: List[dict] = [
     },
 ]
 
+# Keep all original item codes in exports, including historical Section D answers.
+SECTIONS = [entry for entry in EXPORT_SECTIONS if entry["id"] in STEPS]
+
 #: Section D key (administration note, reviewer reference). Server-side only.
 _FAMILIARITY_KEY: Dict[str, str] = {
     "d1_good_samaritan": "b",
@@ -404,6 +409,10 @@ UI_TEXT = {
         "specify_placeholder": "请注明",
         "text_placeholder": "请填写",
         "saving": "正在保存……",
+        "check_eligibility_title": "请核对您的回答",
+        "check_eligibility_body": "根据以下回答，您不符合本研究的参与条件。如果选错了，可以返回修改。如果回答无误，请确认并结束参与。",
+        "edit_eligibility": "返回修改回答",
+        "confirm_screenout": "回答无误，结束参与",
         "screened_out_title": "感谢您的关注",
         "screened_out_body": "本研究需要年满18岁、以汉语为第一语言、并能较舒适地阅读中文的参与者。"
         "根据您的回答，您不符合本研究的参与条件，因此不会再向您提出其他问题。"
@@ -421,6 +430,11 @@ UI_TEXT = {
         "specify_placeholder": "Please specify",
         "text_placeholder": "Type here",
         "saving": "Saving…",
+        "check_eligibility_title": "Please check your answers",
+        "check_eligibility_body": "Based on the answers below, you do not meet the study requirements. "
+        "If you selected an answer by mistake, you can edit it. If your answers are accurate, confirm to end your participation.",
+        "edit_eligibility": "Edit my answers",
+        "confirm_screenout": "Confirm and end participation",
         "screened_out_title": "Thank you for your interest",
         "screened_out_body": "This study needs readers who are 18 or older, whose first language is "
         "Chinese, and who are comfortable reading Chinese. Based on your answers you are not "
@@ -531,19 +545,26 @@ def validate_section_answers(section_id: str, answers) -> Dict[str, Optional[str
     return cleaned
 
 
-def is_eligible(eligibility_answers: Dict[str, Optional[str]]) -> bool:
-    """Section A screening rule from the administration note v1.0."""
+def eligibility_exclusions(answers: Dict[str, Optional[str]]) -> Dict[str, Optional[str]]:
+    """Return the Section A answers that fail the screening criteria."""
 
-    return (
-        eligibility_answers.get("a1_age_18_plus") == "yes"
-        and eligibility_answers.get("a2_first_language") in ELIGIBLE_FIRST_LANGUAGE
-        and eligibility_answers.get("a3_reading_comfort") is not None
-        and eligibility_answers.get("a3_reading_comfort") not in INELIGIBLE_READING
-    )
+    exclusions = {}
+    if answers.get("a1_age_18_plus") != "yes":
+        exclusions["a1_age_18_plus"] = answers.get("a1_age_18_plus")
+    if answers.get("a2_first_language") not in ELIGIBLE_FIRST_LANGUAGE:
+        exclusions["a2_first_language"] = answers.get("a2_first_language")
+    comfort = answers.get("a3_reading_comfort")
+    if comfort is None or comfort in INELIGIBLE_READING:
+        exclusions["a3_reading_comfort"] = comfort
+    return exclusions
+
+
+def is_eligible(eligibility_answers: Dict[str, Optional[str]]) -> bool:
+    return not eligibility_exclusions(eligibility_answers)
 
 
 def score_familiarity(answers: Dict[str, Optional[str]]) -> dict:
-    """Section D covariate. Never returned to the participant.
+    """Score an archived response from the original four-section survey.
 
     ``score`` = correct / 7 (PRESURVEY_DEMOGRAPHICS: "Not sure" and wrong both
     count 0; a skipped item also counts 0). ``answered`` excludes skipped items

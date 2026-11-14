@@ -2,10 +2,8 @@
  * Background & eligibility questionnaire: shown after consent, before Question 1.
  *
  * One section per screen, in the server's order (A eligibility -> B background
- * -> C consent prompt + items -> D familiarity). The server decides which
+ * -> C consent prompt + optional items). The server decides which
  * section is due; earlier sections can be edited until the questionnaire is finished.
- * Nothing here scores or reveals anything: the Section D key never reaches the
- * browser and no response carries a score.
  *
  * Like the rest of the pilot frontend: no timers and no polling. Every request
  * is triggered by a click.
@@ -63,10 +61,50 @@ export function renderQuestionnaire(root, api, state, { onDone, onScreenedOut })
       return;
     }
     drafts[sectionId] = answers;
+    if (result.confirm_exclusions) {
+      showEligibilityConfirmation(answers, result.confirm_exclusions);
+      return;
+    }
     if (sectionId === "religion") religionConsent = extra.religion_consent;
     due = result.status;
     const next = sections[sections.indexOf(sectionById(sectionId)) + 1];
     route(sectionById(due) && next ? next.id : due);
+  }
+
+  function showEligibilityConfirmation(answers, exclusions) {
+    const card = el("section", "pilot-card pilot-questionnaire");
+    const heading = el("h1", "pilot-title", ui.check_eligibility_title);
+    heading.tabIndex = -1;
+    card.append(heading, el("p", "pilot-body", ui.check_eligibility_body));
+
+    const details = el("dl");
+    const items = sectionById("eligibility").items.filter((item) => item.id in exclusions);
+    for (const item of items) {
+      const selected = item.options.find((option) => option.code === exclusions[item.id]);
+      const answer = el("dd", "pilot-q-item", label(selected, language));
+      if (item.confirmation_help) {
+        answer.append(el("p", "pilot-q-help", label(item.confirmation_help, language)));
+      }
+      details.append(el("dt", "pilot-q-text", label(item.text, language)), answer);
+    }
+
+    const actions = el("div", "pilot-consent-actions");
+    const edit = el("button", "pilot-submit", ui.edit_eligibility);
+    const confirm = el("button", "pilot-submit pilot-decline", ui.confirm_screenout);
+    const status = el("p", "pilot-status");
+    edit.type = confirm.type = "button";
+    edit.addEventListener("click", () => {
+      showSection("eligibility");
+      root.querySelector(`input[name="${items[0].id}"]:checked`).focus();
+    });
+    confirm.addEventListener("click", () =>
+      send("eligibility", answers, { confirmed_exclusions: exclusions }, { buttons: [edit, confirm], status })
+    );
+    actions.append(edit, confirm);
+    card.append(details, actions, status);
+    root.replaceChildren(card);
+    window.scrollTo(0, 0);
+    heading.focus();
   }
 
   function route(status) {
