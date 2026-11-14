@@ -15,14 +15,16 @@ Latin-square block nor leak into results.
 from __future__ import annotations
 
 import random
+from collections import Counter
 
-from sqlalchemy import func, select
+from sqlalchemy import func, select, text, update
 
 from eten_shared.models import (
     ExperimentPassage,
     ExperimentPlanCell,
     ExperimentWindow,
     Participant,
+    PilotRotationCount,
     QAItem,
 )
 from eten_shared.recordings import participant_language_code
@@ -353,6 +355,61 @@ def write_participant_plan(db, participant, block_index: int, language: str = LA
             status="pending",
         ))
     db.flush()
+    return cells
+
+
+def scratch_rotation_counts(db, *, for_update=False):
+    """Lock before allocating. The CLI and admin share this transaction and lock key."""
+    if for_update:
+        if db.get_bind().dialect.name == "postgresql":
+            db.execute(text("SELECT pg_advisory_xact_lock(742908166)"))
+        elif db.get_bind().dialect.name == "sqlite":
+            # Acquire the write lock even when enrolling the very first reader.
+            db.execute(update(PilotRotationCount).where(False).values(issued=0))
+    saved = dict(db.execute(select(PilotRotationCount.rotation, PilotRotationCount.issued)).all())
+    if saved:
+        return Counter(saved)
+
+    # Seed from existing real plans once. Afterwards screen-outs can delete all
+    # personal records without changing the sequence of already issued rotations.
+    # grammar30 occurs exactly once per plan and uniquely identifies its rotation.
+    groups = qa_set_groups(SOL_SCRATCH_SET)
+    rows = db.execute(
+        select(ExperimentPlanCell.chapter, func.count())
+        .join(Participant, Participant.id == ExperimentPlanCell.participant_id)
+        .where(
+            ExperimentPlanCell.chapter.in_(groups),
+            ExperimentPlanCell.condition == "grammar30",
+            Participant.dashboard_preferences[QA_SUBSET_PREF].as_string() == SOL_SCRATCH_SET,
+            func.coalesce(Participant.dashboard_preferences[TEST_PARTICIPANT_KEY].as_boolean(), False).is_(False),
+        )
+        .group_by(ExperimentPlanCell.chapter)
+    )
+    counts = Counter({(SLOTS.index("grammar30") - (group - groups[0])) % len(SLOTS): n for group, n in rows})
+    if for_update:
+        db.add_all(PilotRotationCount(rotation=i, issued=counts[i]) for i in range(len(SLOTS)))
+        db.flush()
+    return counts
+
+
+def write_next_scratch_plan(db, participant, counts, language=LANGUAGE, *, dry_run=False):
+    """Use counts locked by scratch_rotation_counts, or simulated counts in a dry run."""
+    if is_test_participant(participant):
+        raise ExperimentPlanError("Study rotations are reserved for real participants.")
+    rounds = min(counts[i] for i in range(len(SLOTS)))
+    order = (0, 2, 4, 6, 1, 3, 5, 7) if rounds % 2 else range(len(SLOTS))
+    rotation = next(i for i in order if counts[i] == rounds)
+    cells = write_participant_plan(db, participant, rotation, language, qa_set=SOL_SCRATCH_SET,
+                                   dry_run=dry_run)
+    if not dry_run:
+        participant.dashboard_preferences = {
+            **participant.dashboard_preferences,
+            "study_enrollment_number": sum(counts.values()) + 1,
+            "study_rotation": rotation + 1,
+        }
+        db.execute(update(PilotRotationCount).where(PilotRotationCount.rotation == rotation)
+                   .values(issued=PilotRotationCount.issued + 1))
+    counts[rotation] += 1
     return cells
 
 

@@ -260,7 +260,8 @@ def _cell_candidates(db: Session, cell: ExperimentPlanCell, participant, *, assi
 
 
 # -------------------------------------------------------------------------- public
-def _eligible_remaining(db, cell, participant, assigned_ids, strict_keep, form_keep):
+def remaining_cell_items(db, cell, participant, assigned_ids, strict_keep, form_keep):
+    """Eligible questions for this cell, used for both enrollment and delivery."""
     items = _cell_candidates(db, cell, participant, assigned_ids=assigned_ids)
     return filter_candidates_by_form(filter_candidates_by_wh_type(items, strict_keep), form_keep)
 
@@ -311,7 +312,7 @@ def select_next_interleaved_cell_item(db, participant, waiting):
     available = {}
     remaining = {}
     for cell in cells:
-        items = [] if cell.status == "done" else _eligible_remaining(
+        items = [] if cell.status == "done" else remaining_cell_items(
             db, cell, participant, assigned_ids, strict_keep, form_keep
         )
         count = len(items) + len(queued[cell.id])
@@ -359,7 +360,7 @@ def select_next_experiment_cell_item(
     assigned_ids = _assigned_item_ids(db, participant)
     cell = _current_cell(cells)
     while cell is not None:
-        remaining = _eligible_remaining(db, cell, participant, assigned_ids, strict_keep, form_keep)
+        remaining = remaining_cell_items(db, cell, participant, assigned_ids, strict_keep, form_keep)
         if remaining:
             if cell.status != "active":
                 cell.status = "active"

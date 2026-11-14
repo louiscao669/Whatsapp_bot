@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ApiError, getCachedApiData } from '../api/client'
 import { fetchParticipants, type ParticipantRow } from '../api/participants'
+import { StudyParticipantPanel } from '../components/StudyParticipantPanel'
 import { TestParticipantPanel } from '../components/TestParticipantPanel'
 
 const PARTICIPANTS_PATH = '/api/v1/participants'
@@ -41,6 +42,7 @@ export function ParticipantsPage() {
       <p className="hint">
         Admin-only view of assigned questions, progress, and response scoring buckets.
       </p>
+      <StudyParticipantPanel onCreated={loadParticipants} />
       <TestParticipantPanel onCreated={loadParticipants} />
       <div className="table-wrap">
         <table className="data-table">

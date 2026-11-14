@@ -649,6 +649,14 @@ class ExperimentPassageVerse(Base):
     )
 
 
+class PilotRotationCount(Base):
+    """Anonymous totals for issued Sol study rotations, including deleted plans."""
+
+    __tablename__ = "pilot_rotation_counts"
+    rotation: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=False)
+    issued: Mapped[int] = mapped_column(Integer, nullable=False)
+
+
 class ExperimentPlanCell(Base):
     """One Latin-square cell of a designed experiment: a participant's assigned
     condition for a single chapter. ``chapter`` selects the per-chapter QAItem

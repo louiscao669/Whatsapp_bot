@@ -653,6 +653,12 @@ def _run_startup_migrations(engine: Engine):
             )
             """,
             "ALTER TABLE pilot_screenout_counts ENABLE ROW LEVEL SECURITY",
+            """
+            CREATE TABLE IF NOT EXISTS pilot_rotation_counts (
+                rotation integer PRIMARY KEY, issued integer NOT NULL
+            )
+            """,
+            "ALTER TABLE pilot_rotation_counts ENABLE ROW LEVEL SECURITY",
             # Admin sign-in. These live in supabase/schema.sql too, but a
             # database created before they were added to it has neither, and
             # the failure mode is that nobody can log in to the platform at

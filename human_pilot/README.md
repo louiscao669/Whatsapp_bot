@@ -175,7 +175,14 @@ Use Chinese study accounts with target language `zh`. Each reader goes through c
 and the background questionnaire at their own `/pilot/<participant-id>` link.
 The regular interface withholds the answer key, defect details and editorial labels.
 
-From the project directory on the VM, substitute the actual regular participant IDs.
+In the admin platform open **Participants → Study enrollment → Create study participant**.
+Copy the personal pilot link for that reader. You can retrieve the link later from the
+participant’s detail page. Each enrollment issues the next rotation in a group of eight.
+Admin test runs have a separate rotation. An unused link or a screen-out still counts
+as an issued rotation. A screen-out deletes the reader’s personal data.
+
+For existing regular participant IDs, the CLI uses the same rotation counts.
+From the project directory on the VM, substitute those participant IDs.
 The first command previews the assignments. The second saves them.
 
 ```sh

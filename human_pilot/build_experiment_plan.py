@@ -49,7 +49,7 @@ from _bootstrap import use_message_bot, use_platform  # noqa: E402
 use_message_bot()
 use_platform()  # backend.shared.config (loads .env) lives in platform/
 
-from sqlalchemy import func, select, text  # noqa: E402
+from sqlalchemy import select  # noqa: E402
 
 from eten_shared.database import get_session_factory  # noqa: E402
 from eten_shared.models import (  # noqa: E402
@@ -64,9 +64,7 @@ from eten_shared.experiment_plan import (  # noqa: E402
     LANGUAGE,
     QA_SETS,
     QA_SUBSETS,
-    QA_SUBSET_PREF,
     SOL_SCRATCH_SET,
-    TEST_PARTICIPANT_KEY,
     SLOTS,
     build_cells,
     ExperimentPlanError,
@@ -74,32 +72,11 @@ from eten_shared.experiment_plan import (  # noqa: E402
     is_test_participant,
     qa_set_groups,
     write_participant_plan,
+    scratch_rotation_counts,
+    write_next_scratch_plan,
 )
 
 CHAPTERS = GROUPS  # compatibility for older tests/imports
-
-
-def scratch_rotation_counts(db):
-    # grammar30 occurs exactly once per plan and uniquely identifies its rotation.
-    groups = qa_set_groups(SOL_SCRATCH_SET)
-    rows = db.execute(
-        select(ExperimentPlanCell.chapter, func.count())
-        .join(Participant, Participant.id == ExperimentPlanCell.participant_id)
-        .where(
-            ExperimentPlanCell.chapter.in_(groups),
-            ExperimentPlanCell.condition == "grammar30",
-            Participant.dashboard_preferences[QA_SUBSET_PREF].as_string() == SOL_SCRATCH_SET,
-            func.coalesce(Participant.dashboard_preferences[TEST_PARTICIPANT_KEY].as_boolean(), False).is_(False),
-        )
-        .group_by(ExperimentPlanCell.chapter)
-    )
-    return Counter({(SLOTS.index("grammar30") - (group - groups[0])) % len(SLOTS): n for group, n in rows})
-
-
-def next_scratch_rotation(counts):
-    rounds = min(counts[index] for index in range(len(SLOTS)))
-    order = (0, 2, 4, 6, 1, 3, 5, 7) if rounds % 2 else range(len(SLOTS))
-    return next(rotation for rotation in order if counts[rotation] == rounds)
 
 
 def resolve_participants(db, args):
@@ -157,9 +134,7 @@ def main():
 
     with factory() as db:
         if args.qa_set == SOL_SCRATCH_SET:
-            if not args.dry_run and db.get_bind().dialect.name == "postgresql":
-                db.execute(text("SELECT pg_advisory_xact_lock(742908166)"))
-            rotations = scratch_rotation_counts(db)
+            rotations = scratch_rotation_counts(db, for_update=not args.dry_run)
         participants = resolve_participants(db, args)
         if not participants:
             print("No participants to plan.")
@@ -176,18 +151,16 @@ def main():
             if existing:
                 skipped += 1
                 continue
-            block_index = position % len(SLOTS)
-            if args.qa_set == SOL_SCRATCH_SET:
-                if is_test_participant(participant):
-                    skipped += 1
-                    continue
-                block_index = next_scratch_rotation(rotations)
-                rotations[block_index] += 1
             try:
-                cells = write_participant_plan(
-                    db, participant, block_index, args.language, qa_set=args.qa_set,
-                    dry_run=args.dry_run,
-                )
+                if args.qa_set == SOL_SCRATCH_SET:
+                    if is_test_participant(participant):
+                        skipped += 1
+                        continue
+                    cells = write_next_scratch_plan(db, participant, rotations, args.language,
+                                                    dry_run=args.dry_run)
+                else:
+                    cells = write_participant_plan(db, participant, position % len(SLOTS),
+                                                   args.language, qa_set=args.qa_set, dry_run=args.dry_run)
             except ExperimentPlanError as exc:
                 sys.exit(f"Cannot create the participant plan: {exc}")
             per_participant_slots[participant.id] = Counter(c[1] for c in cells)

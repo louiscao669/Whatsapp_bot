@@ -24,7 +24,7 @@ are not sent back through it (``legacy``); nothing about them changes.
 
 import os
 
-from eten_shared.experiment_plan import is_test_participant
+from eten_shared.experiment_plan import QA_SUBSET_PREF, SOL_SCRATCH_SET, is_test_participant, scratch_rotation_counts
 from eten_shared.models import (
     AnswerReceipt,
     Participant,
@@ -157,6 +157,9 @@ def _increment_screenouts(db):
 
 
 def _screen_out(db, participant):
+    if not is_test_participant(participant) and (participant.dashboard_preferences or {}).get(QA_SUBSET_PREF) == SOL_SCRATCH_SET:
+        # A pre-existing study plan can screen out before the first admin enrollment.
+        scratch_rotation_counts(db, for_update=True)
     _increment_screenouts(db)
     db.execute(delete(PilotQuestionnaireResponse).where(
         PilotQuestionnaireResponse.participant_id == participant.id

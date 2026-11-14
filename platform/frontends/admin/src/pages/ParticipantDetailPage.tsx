@@ -200,27 +200,29 @@ function ParticipantDetail({ participantId }: { participantId: string }) {
         {participant.display_name || participant.participant_id}
         {participant.is_test ? <span className="test-badge">TEST</span> : null}
       </h2>
-      {participant.is_test ? (
+      {participant.is_test || participant.qa_set === 'reviewed122_sol_scratch' ? (
         <section className="detail-card">
-          <h3>Test participant</h3>
+          <h3>{participant.is_test ? 'Test participant' : 'Study participant'}</h3>
           <p className="test-participant-link">
             Pilot link:{' '}
             <a href={pilotUrl(participant.id)} target="_blank" rel="noreferrer">
               {pilotUrl(participant.id)}
             </a>
           </p>
-          <p className="hint">
-            Excluded from plan building and pilot exports. Deleting removes its plan,
-            assignments and answers; it cannot be undone.
-          </p>
-          <button
-            type="button"
-            className="btn-danger"
-            disabled={deleting}
-            onClick={handleDeleteTestParticipant}
-          >
-            {deleting ? 'Deleting…' : 'Delete test participant'}
-          </button>
+          {participant.is_test && <>
+            <p className="hint">
+              Excluded from plan building and pilot exports. Deleting removes its plan,
+              assignments and answers; it cannot be undone.
+            </p>
+            <button
+              type="button"
+              className="btn-danger"
+              disabled={deleting}
+              onClick={handleDeleteTestParticipant}
+            >
+              {deleting ? 'Deleting…' : 'Delete test participant'}
+            </button>
+          </>}
         </section>
       ) : null}
       {error ? <p className="error-message">{error}</p> : null}
