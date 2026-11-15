@@ -169,8 +169,18 @@ every condition, including when a mistranslation supports another option.
 
 ## Launch the Chinese from-scratch study
 
-After uploading the runtime, restart `eten-platform` on the VM. The released questions
-already in the hosted database are available through the regular participant plan.
+The Git release includes `sol_scratch66_windows_v1.json`. It fixes the Chinese verse text for each of the 66 windows under all seven conditions. Over a cohort of eight readers, each window appears twice clean and once in each of the other six conditions. The importer applies these window passages to the from-scratch bank only. Both Sol banks receive the current answer-choice wording.
+
+Run the importer first without flags that write, then with `--apply`. To read back the persisted questions, keys, choices, groups and passages across all eight rotations, run:
+
+```bash
+.venv/bin/python human_pilot/pilot_import_reviewed122.py --qa-set reviewed122_sol --verify-installed
+```
+
+A successful check reports 66 windows, 330 dose variants, zero held, eight rotations and 528 presentations. This check creates no participant records. In-progress or previously shown assignments keep their displayed text. Unseen queued assignments receive the revised window.
+
+The 15% and 30% doses use the countable Chinese characters in the clean window as denominator, with a tolerance of two percentage points. Omission counts deleted source characters. Grammar and mistranslation count the source spans replaced. The release retains the 320 passing variants from the matched draw. Ten previously held variants were repaired. Each records its earlier dose and repair provenance. Five of the ten use a documented phrase fallback, including both omission doses in Acts 23:25–26. Each repaired grammar passage passed a separate model review for a recognizable structural error and preserved meaning. Source spans intersecting the annotated answer evidence are recorded independently of the dose. Such an intersection alone does not establish that a reader can no longer recover the answer.
+
 Use Chinese study accounts with target language `zh`. Each reader goes through consent
 and the background questionnaire at their own `/pilot/<participant-id>` link.
 The regular interface withholds the answer key, defect details and editorial labels.

@@ -228,7 +228,7 @@ def test_retiring_items_preserves_other_windows_and_assignment_history(monkeypat
     Base.metadata.create_all(engine)
     with Session(engine) as db:
         with monkeypatch.context() as patch:
-            patch.setattr(importer, "load_bank", lambda *args, **kwargs: [])
+            patch.setattr(importer, "load_bank", lambda *args, retired_only=False: [] if retired_only else eligible)
             importer.install(db, old_rows, qa_set=key, apply=True)
         def windows():
             return {w.content_id: (w.id, w.qa_item_id, w.group_index, w.sequence_index)
@@ -264,7 +264,7 @@ def test_sol_bank_binds_all_windows_and_serves_the_participant(monkeypatch, plan
     from sqlalchemy.orm import sessionmaker
     from backend import create_app
     from eten_shared.experiment_plan import ExperimentPlanError, write_participant_plan
-    from eten_shared.models import AnswerReceipt, Assignment
+    from eten_shared.models import AnswerReceipt, Assignment, ExperimentWindow
 
     key = importer.SOL_SET
     rows = importer.load_bank(key)
@@ -274,6 +274,9 @@ def test_sol_bank_binds_all_windows_and_serves_the_participant(monkeypatch, plan
     count = sum(source is None or row["source"] == source for row in rows)
     by_id = {r["id"]: r for r in rows}
     packs = {p.stem: json.loads(p.read_text()) for p in importer.SOL_RELEASE.glob("t1_*.json")}
+    windows = {w["id"]: w for w in json.loads(importer.SOL_WINDOWS.read_text())["windows"]}
+    for pid, release in importer.sol_wbw_release(packs).items():
+        packs[pid]["conditions"]["wbw"] = release
     engine = create_engine("sqlite://")
     Base.metadata.create_all(engine)
     factory = sessionmaker(engine, autoflush=False, expire_on_commit=False)
@@ -290,7 +293,10 @@ def test_sol_bank_binds_all_windows_and_serves_the_participant(monkeypatch, plan
             for condition in set(SLOTS):
                 passage_variant = packs[r["passage_id"]]["conditions"][condition]
                 p = resolve_experiment_passage(db, ExperimentPlanCell(condition=condition), item, "zh")
-                assert p.passage_text == passage_variant["text"]
+                if r["source"] == "Hard77" and condition in importer.window_release.DOSES:
+                    passage_variant = windows[r["id"]]["conditions"][condition]
+                else:
+                    assert p.passage_text == passage_variant["text"]
                 snapshot = experiment_passage_assignment_kwargs(db, p, item)
                 labels = snapshot["passage_verse_numbers"]
                 assert labels and snapshot["passage_text"] == " ".join(passage_variant["verses"][n] for n in labels)
@@ -301,7 +307,21 @@ def test_sol_bank_binds_all_windows_and_serves_the_participant(monkeypatch, plan
 
     monkeypatch.setattr("backend.admin.api.participants.get_session_factory", lambda: factory)
     monkeypatch.setattr("backend.pilot.routes.get_session_factory", lambda: factory)
-    monkeypatch.setattr("backend.pilot.routes.run_in_background", lambda *args, **kw: None)
+    legacy_queue = []
+
+    def run_background(job, *args, key=None, **kwargs):
+        with factory.begin() as db:
+            if regular and not legacy_queue and key and key[0] == "premint":
+                # An in-progress link may already have a same-group successor
+                # queued by the previous release. Preserve it for a later turn.
+                with monkeypatch.context() as old:
+                    old.setattr("backend.pilot.service.select_next_participant_qa_item",
+                                lambda db, participant, **kw: select_next_experiment_cell_item(db, participant))
+                    legacy_queue.append(job(db, *args, **kwargs).id)
+                return
+            job(db, *args, **kwargs)
+
+    monkeypatch.setattr("backend.pilot.routes.run_in_background", run_background)
     monkeypatch.setenv("PILOT_QUESTIONNAIRE_ENABLED", "1")
     monkeypatch.setenv("ENABLE_EXPERIMENT_ASSIGNMENT", "true")
     monkeypatch.setenv("REQUIRE_QUESTION_AUDIO", "false")
@@ -331,6 +351,9 @@ def test_sol_bank_binds_all_windows_and_serves_the_participant(monkeypatch, plan
     assert len(expected) == count
     with factory() as db:
         assert participant_qa_set(db, pid) == plan_key
+        plan = {cell.chapter: cell.condition for cell in db.scalars(
+            select(ExperimentPlanCell).where(ExperimentPlanCell.participant_id == pid)
+        )}
     prefix = "/pilot/api/" + pid
     assert client.post(prefix + "/consent", json={"agreed": True}).status_code == 200
     for section, data in [
@@ -338,18 +361,22 @@ def test_sol_bank_binds_all_windows_and_serves_the_participant(monkeypatch, plan
                                      "a3_reading_comfort": "comfortable"}}),
         ("background", {"answers": {"b1_age_band": "25_34"}}),
         ("religion", {"answers": {}, "religion_consent": False}),
-        ("familiarity", {"answers": {}}),
     ]:
         response = client.post(prefix + "/questionnaire", json={"section": section, **data})
         assert response.status_code == 200, response.get_json()
     answered = set()
+    assignment_ids = []
     conditions = set()
+    previous_family = None
     for _ in range(count):
         response = client.get(prefix + "/question")
         assert response.status_code == 200, response.get_json()
         question = response.get_json()["question"]
         assert question is not None
         assignment_id = question["assignment_id"]
+        assignment_ids.append(assignment_id)
+        if not answered:
+            assert client.get(prefix + "/question").get_json()["question"]["assignment_id"] == assignment_id
         with factory() as db:
             assignment = db.get(Assignment, assignment_id)
             item = db.get(QAItem, question["qa_item_id"])
@@ -357,9 +384,16 @@ def test_sol_bank_binds_all_windows_and_serves_the_participant(monkeypatch, plan
             row = by_id[item.form_group_id]
             assert row["id"] not in answered
             answered.add(row["id"])
-            condition = db.get(ExperimentPlanCell, assignment.experiment_cell_id).condition
+            cell = db.get(ExperimentPlanCell, assignment.experiment_cell_id)
+            window = db.scalar(select(ExperimentWindow).where(ExperimentWindow.qa_item_id == item.id))
+            condition = cell.condition
+            assert cell.chapter == window.group_index and condition == plan[window.group_index]
+            family = condition.rstrip("0123456789")
+            assert family != previous_family
+            previous_family = family
             conditions.add(condition)
-            verses = packs[row["passage_id"]]["conditions"][condition]["verses"]
+            verses = (windows[row["id"]]["conditions"][condition]["verses"] if row["source"] == "Hard77"
+                      else packs[row["passage_id"]]["conditions"][condition]["verses"])
             if regular:
                 assert not {"test_info", "condition", "defect_type", "defect_rate", "correct_choice",
                             "correct_answer", "verse_changes", "manually_written_fields"} & question.keys()
@@ -380,14 +414,107 @@ def test_sol_bank_binds_all_windows_and_serves_the_participant(monkeypatch, plan
             assert question["passage_text"] == " ".join(verses[v] for v in assignment.passage_verse_numbers)
             assert question["question"] == row["question"]
             assert [c["text"] for c in question["choices"]] == row["choices"]
-            assert question["choices"][-1] == {"letter": "E", "text": "根据这段文字无法判断"}
+            assert question["choices"][-1] == {"letter": "E", "text": "无法判断"}
         assert client.post(prefix + "/question/viewed", json={"assignment_id": assignment_id}).status_code == 200
         answer = client.post(prefix + "/answers", json={"assignment_id": assignment_id,
                              "submission_id": str(uuid4()), "answer": "E" if len(answered) == 1 else row["correct"],
                              "active_time_ms": 1000})
         assert answer.status_code == 200, answer.get_json()
     assert answered == expected and conditions == set(SLOTS)
+    if regular:
+        assert len(legacy_queue) == 1 and legacy_queue[0] in assignment_ids[2:]
     assert client.get(prefix + "/question").get_json()["state"] == "complete"
     with factory() as db:
         receipts = db.scalars(select(AnswerReceipt)).all()
         assert len(receipts) == count and sum(r.raw_answer == "E" for r in receipts) == 1
+
+
+def test_sol_wbw_upgrade_preserves_delivered_and_refreshes_queued_windows():
+    from eten_shared.models import Assignment, ExperimentWindow, utc_now
+
+    engine = create_engine("sqlite://")
+    Base.metadata.create_all(engine)
+    rows = importer.load_bank(importer.SOL_SET)
+    previous = json.loads((importer.SOL_RELEASE / "t1_judg9.json").read_text())["conditions"]["wbw"]
+    with Session(engine) as db:
+        importer.install(db, rows, qa_set=importer.SOL_SET, apply=True)
+        source = "reviewed122_sol/Hard77/t1_judg9"
+        passage = db.scalar(select(ExperimentPassage).where(ExperimentPassage.source_passage_id == source,
+                                                            ExperimentPassage.condition == "wbw"))
+        passage.passage_text = previous["text"]
+        for verse in passage.verses:
+            verse.text = previous["verses"][verse.verse_number]
+        window = next(w for w in db.scalars(select(ExperimentWindow).where(ExperimentWindow.source_passage_id == source))
+                      if "9:30" in w.verse_numbers)
+        before = " ".join(previous["verses"][n] for n in window.verse_numbers)
+        assignments = []
+        for delivered in (False, True):
+            reader = Participant()
+            db.add(reader)
+            db.flush()
+            cell = ExperimentPlanCell(participant_id=reader.id, chapter=window.group_index, condition="wbw",
+                                      sequence_index=0, status="active")
+            db.add(cell)
+            db.flush()
+            item = Assignment(participant_id=reader.id, experiment_cell_id=cell.id, qa_item_id=window.qa_item_id,
+                              passage_text=before, passage_verse_numbers=window.verse_numbers,
+                              delivered_at=utc_now() if delivered else None)
+            db.add(item)
+            assignments.append(item)
+        db.flush()
+        importer.install(db, rows, qa_set=importer.SOL_SET)
+        assert [a.passage_text for a in assignments] == [before, before]
+        for _ in range(2):
+            importer.install(db, rows, qa_set=importer.SOL_SET, apply=True)
+        updated = experiment_passage_assignment_kwargs(db, passage, assignments[0].qa_item)
+        assert assignments[0].passage_text == updated["passage_text"]
+        assert "西布勒" in updated["passage_text"] and "耶比底" not in updated["passage_text"]
+        assert assignments[1].passage_text == before and "西布勒" not in before
+
+
+def test_window_release_restores_omitted_verse_only_for_unseen_assignments(monkeypatch):
+    from eten_shared.models import Assignment, ExperimentWindow, utc_now
+
+    engine = create_engine("sqlite://")
+    Base.metadata.create_all(engine)
+    rows = importer.load_bank(importer.SOL_SET)
+    manifest = json.loads(importer.SOL_WINDOWS.read_text())
+    record = next(w for w in manifest["windows"] if w["id"] == "2chr_26_1-23/v6-8:1")
+    prefix = "reviewed122_sol/Hard77/"
+    layout = sorted([*rows, *importer.load_bank(importer.SOL_SET, retired_only=True)], key=importer.slot_order)
+    with Session(engine) as db:
+        with monkeypatch.context() as parent:
+            parent.setattr(importer.window_release, "validate_release", lambda *args: {})
+            importer.install(db, rows, qa_set=importer.SOL_SET, apply=True)
+        window = db.scalar(select(ExperimentWindow).where(ExperimentWindow.content_id == record["id"]))
+        qa = db.get(QAItem, window.qa_item_id)
+        passage = resolve_experiment_passage(db, ExperimentPlanCell(condition="omission15"), qa, "zh")
+        previous = experiment_passage_assignment_kwargs(db, passage, qa)
+        assert previous["passage_verse_numbers"] == ["26:6", "26:8"]
+        with pytest.raises(ValueError, match="Installed window differs"):
+            importer.window_release.verify_installed(db, manifest, rows, prefix, layout)
+        assignments = []
+        for delivered in (False, True):
+            reader = Participant()
+            db.add(reader)
+            db.flush()
+            cell = ExperimentPlanCell(participant_id=reader.id, chapter=window.group_index, condition="omission15",
+                                      sequence_index=0, status="active")
+            db.add(cell)
+            db.flush()
+            a = Assignment(participant_id=reader.id, experiment_cell_id=cell.id, qa_item_id=qa.id,
+                           delivered_at=utc_now() if delivered else None, **previous)
+            db.add(a)
+            assignments.append(a)
+        db.flush()
+        importer.install(db, rows, qa_set=importer.SOL_SET)
+        assert assignments[0].passage_verse_numbers == previous["passage_verse_numbers"]
+        for _ in range(2):
+            importer.install(db, rows, qa_set=importer.SOL_SET, apply=True)
+        fresh, seen = assignments
+        assert fresh.passage_verse_numbers == record["verses"]
+        assert fresh.passage_text == " ".join(record["conditions"]["omission15"]["verses"].values())
+        assert seen.passage_text == previous["passage_text"]
+        assert seen.passage_verse_numbers == previous["passage_verse_numbers"]
+        report = importer.window_release.verify_installed(db, manifest, rows, prefix, layout)
+        assert report["verified_question_presentations"] == 528
