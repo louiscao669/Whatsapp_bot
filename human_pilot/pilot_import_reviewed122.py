@@ -30,9 +30,9 @@ SOL_BANK = BANK.with_name(SOL_SET)
 CANNOT_TELL = "无法判断"
 SOL_RELEASE = ROOT / "evaluation/datasets/passages/tier1_zh_sol_v1_defect_ladder_2026-11-09"
 SOL_WBW_RELEASE = SOL_RELEASE.with_name("sol_wbw_names_v1.json")
-SOL_WBW_SHA256 = "d41e010ced04eae82a0b0463494bd27d7a7ae8872d14d09b02ebb5f5a81c1f7b"
+SOL_WBW_SHA256 = "adcd0d4aea0a04174a8268eeacddb578a0bd73314cb0dd8f94ff7cfb64f69baf"
 SOL_WINDOWS = SOL_RELEASE.with_name("sol_scratch66_windows_v1.json")
-SOL_WINDOWS_SHA256 = "9f0c8e68d88503312f5889fa4e19da69a49ec49931a366ccf8413ffc430d7843"
+SOL_WINDOWS_SHA256 = "40640b442513d1c75f84b5101a165c50f59af219587a84aab881a027594fdec7"
 PREFIX = QA_SETS[SET]["passage_prefix"]
 
 
@@ -52,7 +52,7 @@ def checked_json(path, expected_hash):
 
 
 SOL_CHOICE_RELEASE = checked_json(SOL_BANK / "choice_release.json",
-                                  "e61a50533b72047f23c34407b2e7f817fda3cf775a1ec31bee7b9edc5eba1167")
+                                  "6b79618e0c91573529a1ba5729e15e1521afc3968a9571e994437c67daea4e29")
 SOL_REVISIONS = SOL_CHOICE_RELEASE["revisions"]
 SOL_PREDECESSORS = SOL_CHOICE_RELEASE.get("replacement_predecessors", {})
 
@@ -72,6 +72,13 @@ def validate_sol_dispositions(dispositions, rows):
     baseline = []
     for decision in dispositions:
         cid = decision["id"]
+        if decision.get("held_from_pilot"):
+            if (decision != SOL_CHOICE_RELEASE.get("manual_holds", {}).get(cid)
+                    or decision.get("status") != "withheld" or decision.get("retired_from_pilot")
+                    or decision.get("decision_type") != "manual_hold" or not decision.get("reason")):
+                raise ValueError(f"Invalid temporary hold for {cid}")
+            baseline.append({"id": SOL_PREDECESSORS.get(cid, cid), "status": "eligible"})
+            continue
         if "final_mcq_review" in decision:
             finding = decision["final_mcq_review"]
             validate_final_review(by_id[cid], finding)
@@ -101,7 +108,7 @@ def validate_sol_dispositions(dispositions, rows):
         raise ValueError("Unexpected changes to the original Sol pilot roster")
 
 
-def load_bank(qa_set=SET, *, retired_only=False):
+def load_bank(qa_set=SET, *, retired_only=False, include_held=False):
     if qa_set == SOL_SET:
         # The Sol release appends the pilot's fixed abstention to the reviewed A–D choices.
         rows = checked_json(SOL_BANK / "zh.json", SOL_CHOICE_RELEASE["zh_sha256"])
@@ -114,12 +121,13 @@ def load_bank(qa_set=SET, *, retired_only=False):
     if (len(rows) != len(decisions) or len(rows) != len(dispositions) or len(rows) != 122
             or {r["id"] for r in rows} != set(decisions) or set(decisions.values()) - {"eligible", "withheld"}):
         raise ValueError("Incomplete disposition for the 122 source questions")
-    retired = {r["id"] for r in dispositions if r.get("retired_from_pilot")}
+    held = {r["id"] for r in dispositions if r.get("held_from_pilot")}
+    retired = {r["id"] for r in dispositions if r.get("retired_from_pilot")} | held
     if any(decisions[cid] != "withheld" for cid in retired):
         raise ValueError("A retired question cannot also be eligible")
     if retired_only:
         return sorted((r for r in rows if r["id"] in retired), key=slot_order)
-    result = [r for r in rows if decisions[r["id"]] == "eligible"]
+    result = [r for r in rows if decisions[r["id"]] == "eligible" or (include_held and r["id"] in held)]
     if len(result) < len(GROUPS):
         raise ValueError("Too few eligible questions for the pilot plan")
     extra = [CANNOT_TELL] if qa_set == SOL_SET else []
@@ -146,7 +154,7 @@ def sol_wbw_release(source_ids):
 def source_passages(db, source_ids, qa_set):
     if qa_set == SOL_SET:
         manifest = checked_json(SOL_RELEASE / "manifest.json",
-                                "f9e6f6132146d954ed17d0f21107794b8b5f6e3072ce09f0e7e2a5f16c4bb241")
+                                "9cb1c3622653ccb0fadd1687fef81a49ca767c05b525d1814f21a2bb0b47b7a0")
         if manifest["release_id"] != SOL_RELEASE.name or set(manifest["files"]) != {f"{p}.json" for p in source_ids}:
             raise ValueError("The QA and Sol release passage IDs differ")
         result = {}
@@ -243,7 +251,7 @@ def install(db, rows, *, apply=False, qa_set=SET):
     overrides = {}
     if qa_set == SOL_SET:
         manifest = checked_json(SOL_WINDOWS, SOL_WINDOWS_SHA256)
-        overrides = window_release.validate_release(manifest, load_bank(SOL_SET), original)
+        overrides = window_release.validate_release(manifest, load_bank(SOL_SET, include_held=True), original)
     aliases = sorted({(r["source"],r["passage_id"]) for r in layout})
     def alias(source, pid):
         return f"{config['passage_prefix']}{source}/{pid}"
@@ -325,6 +333,7 @@ def install(db, rows, *, apply=False, qa_set=SET):
                        sequence_index=100*offset+index,window_key="|".join(labels),verse_numbers=labels,
                        window_ordinals=[list(clean).index(n) for n in labels])
         if r["id"] in retired_ids:
+            temporary_hold = r["id"] in SOL_CHOICE_RELEASE.get("manual_holds", {})
             for version_id in [*prior_ids, qid]:
                 content_id = prior_ids.get(version_id, r["id"])
                 if old_item := existing_items.get(version_id):
@@ -333,8 +342,18 @@ def install(db, rows, *, apply=False, qa_set=SET):
                         remove_qa_item_from_review(old_item)
                 if old_window := existing_windows.get(version_id):
                     require_match(old_window, dict(wfields, qa_item_id=version_id, content_id=content_id))
-                    if apply:
+                    if apply and r["id"] not in SOL_CHOICE_RELEASE.get("manual_holds", {}):
                         db.delete(old_window)
+            if apply and temporary_hold and not any(version in existing_windows for version in [*prior_ids, qid]):
+                # Keep the complete roster in a fresh installation, with the held
+                # item removed from delivery and its original group unchanged.
+                held_item = existing_items.get(qid)
+                if held_item is None:
+                    held_item = QAItem(id=qid, **qfields)
+                    db.add(held_item)
+                remove_qa_item_from_review(held_item)
+                db.flush()
+                db.add(ExperimentWindow(**wfields))
             continue
         groups[group]+=1
         if (qid in existing_items and qa_set == SOL_SET and r["choices"][4:] == [CANNOT_TELL]
@@ -370,8 +389,10 @@ def install(db, rows, *, apply=False, qa_set=SET):
     result = dict(qa_set=qa_set, questions=len(rows), existing=len(existing_windows),
                   passages=len(aliases)*len(set(SLOTS)), groups=dict(groups))
     if qa_set == SOL_SET:
-        result.update(window_release=manifest["release"], scratch_windows=len(manifest["windows"]),
-                      dose_variants=len(manifest["windows"]) * len(window_release.DOSES), held=0)
+        eligible_windows = len(manifest["windows"]) - len(manifest.get("held_for_review", []))
+        result.update(window_release=manifest["release"], scratch_windows=eligible_windows,
+                      dose_variants=eligible_windows * len(window_release.DOSES),
+                      held=len(manifest.get("held_for_review", [])))
     return result
 
 
@@ -446,7 +467,7 @@ def main():
     def verify(db):
         manifest = checked_json(SOL_WINDOWS, SOL_WINDOWS_SHA256)
         originals = source_passages(db, {r["passage_id"] for r in rows}, SOL_SET)
-        window_release.validate_release(manifest, rows, originals)
+        window_release.validate_release(manifest, load_bank(SOL_SET, include_held=True), originals)
         layout = sorted([*rows, *load_bank(SOL_SET, retired_only=True)], key=slot_order)
         return window_release.verify_installed(db, manifest, rows, QA_SETS[SOL_SET]["passage_prefix"] + "Hard77/", layout)
     if args.verify_installed and args.qa_set != SOL_SET:

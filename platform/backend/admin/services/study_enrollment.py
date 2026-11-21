@@ -2,14 +2,14 @@
 
 from uuid import UUID
 
-from sqlalchemy import select
+from sqlalchemy import select, func
 
 from eten_shared.domain.assignments import experiment_assignment_enabled
 from eten_shared.experiment_plan import (
     LANGUAGE, SOL_SCRATCH_SET, SLOTS, ExperimentPlanError, is_test_participant,
     scratch_rotation_counts, write_next_scratch_plan,
 )
-from eten_shared.models import ExperimentPlanCell, Participant
+from eten_shared.models import ExperimentPlanCell, ExperimentWindow, QAItem, Participant
 from eten_shared.question_discovery.experiment_selection import participant_wh_filter, remaining_cell_items
 from eten_shared.question_forms import participant_question_forms
 
@@ -44,9 +44,20 @@ def enroll_study_participant(db, request_id, label):
             len(remaining_cell_items(db, cell, participant, set(), strict_keep, form_keep))
             for cell in cells
         ]
-        if len(group_sizes) != len(SLOTS) or not all(group_sizes) or sum(group_sizes) != 66:
+        # Keep a held question's window as a reversible roster entry. A missing
+        # window still fails the completeness check; an explicitly removed QA
+        # reduces the expected number of served questions.
+        roster = (select(ExperimentWindow).join(QAItem, QAItem.id == ExperimentWindow.qa_item_id)
+                  .where(ExperimentWindow.source_passage_id.startswith('reviewed122_sol/Hard77/', autoescape=True)))
+        roster_total = db.scalar(select(func.count()).select_from(roster.subquery()))
+        held_total = db.scalar(select(func.count()).select_from(
+            roster.where(QAItem.review_removed_at.is_not(None)).subquery()))
+        expected_count = 66 - held_total
+        if (roster_total != 66 or len(group_sizes) != len(SLOTS) or not all(group_sizes)
+                or sum(group_sizes) != expected_count):
             raise ExperimentPlanError(
-                f"The study can serve {sum(group_sizes)} of 66 questions. Check the Sol from-scratch "
+                f"The study can serve {sum(group_sizes)} of {expected_count} eligible questions "
+                f"({held_total} held). Check the Sol from-scratch "
                 "bank and the question audio and type filters before enrolling."
             )
         number = participant.dashboard_preferences["study_enrollment_number"]

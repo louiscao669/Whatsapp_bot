@@ -96,7 +96,10 @@ def verify_installed(db, manifest, rows, prefix, layout):
     wrows = db.execute(select(ExperimentWindow, QAItem).join(QAItem, ExperimentWindow.qa_item_id == QAItem.id)
                        .where(ExperimentWindow.source_passage_id.startswith(prefix, autoescape=True))).all()
     saved = {w.content_id: (w, qa) for w, qa in wrows}
-    if len(saved) != len(wrows) or set(saved) != set(expected):
+    held = set(manifest.get("held_for_review", []))
+    if (len(saved) != len(wrows) or set(saved) - held != set(expected)
+            or any(qa.review_removed_at is None for cid, (_, qa) in saved.items() if cid in held)
+            or any(qa.review_removed_at is not None for cid, (_, qa) in saved.items() if cid not in held)):
         raise ValueError("The installed from-scratch question roster differs from the release")
     passages = db.scalars(select(ExperimentPassage).options(selectinload(ExperimentPassage.verses))
                           .where(ExperimentPassage.source_passage_id.startswith(prefix, autoescape=True),
@@ -108,6 +111,8 @@ def verify_installed(db, manifest, rows, prefix, layout):
     offset = min(plans[0]) - 1
     encounters = Counter()
     for w in manifest["windows"]:
+        if w["id"] in held:
+            continue
         item, qa = saved[w["id"]]
         row = expected[w["id"]]
         source = prefix + w["passage_id"]
@@ -122,7 +127,7 @@ def verify_installed(db, manifest, rows, prefix, layout):
             if {n: actual.get(n) for n in item.verse_numbers} != w["conditions"][key]["verses"]:
                 raise ValueError(f"Installed window differs: {w['id']} / {key}")
             encounters[key] += 1
-    if encounters != Counter({key: 66 * SLOTS.count(key) for key in set(SLOTS)}):
+    if encounters != Counter({key: len(expected) * SLOTS.count(key) for key in set(SLOTS)}):
         raise ValueError("Unbalanced eight-rotation study")
-    return dict(release=manifest["release"], verified_windows=len(saved), verified_dose_variants=66*len(DOSES),
-                held=0, verified_rotations=len(plans), verified_question_presentations=sum(encounters.values()))
+    return dict(release=manifest["release"], verified_windows=len(expected), verified_dose_variants=len(expected)*len(DOSES),
+                held=len(held), verified_rotations=len(plans), verified_question_presentations=sum(encounters.values()))
