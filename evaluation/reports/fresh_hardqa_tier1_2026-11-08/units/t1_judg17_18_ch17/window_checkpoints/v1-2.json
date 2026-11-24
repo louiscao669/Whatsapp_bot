@@ -1,0 +1,408 @@
+{
+  "config_digest": "b695f7707fb56c289f78e263db4eb0e918c13f67b225d32ee2c69080e2ad8e51",
+  "data": {
+    "kept": [
+      {
+        "question": "Who utters the curse that Micah heard?",
+        "answer": "Micah’s mother",
+        "answer_verse": 2,
+        "wrong_answer": "Micah",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "His mother",
+            "support": "said to his mother, | I heard you utter a curse"
+          }
+        ],
+        "distinct_readings": [
+          "His mother"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "It hinges on resolving the pronoun “you” in “I heard you utter a curse” (mother) stated once, with a single clear answer that is relevant but secondary to the confession-blessing exchange."
+        },
+        "window_verses": [
+          1,
+          2
+        ],
+        "window_text": {
+          "1": "Now a man named Micah from the hill country of Ephraim",
+          "2": "said to his mother, “The eleven hundred shekels of silver that were taken from you and about which I heard you utter a curse—I have that silver with me; I took it.” Then his mother said, “The Lord bless you, my son!”"
+        },
+        "reading_groups": [
+          "Micah's mother uttered the curse"
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "micah"
+          ],
+          "answer_verse": 2,
+          "answer_verse_original": 2,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 2",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Who utters the curse that Micah heard?",
+            "readings": [
+              {
+                "answer": "His mother",
+                "support": "said to his mother, | I heard you utter a curse"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Micah says to his mother, “I heard you utter a curse,” so the “you” is his mother, matching the key."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "Micah addresses his mother and says he heard “you” utter a curse, identifying the curser as his mother.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "Item 1 most demands parsing the embedded clause and second-person pronoun to identify the agent of “utter,” with a plausible misparse (Micah) yet a single clear answer (his mother).",
+        "window_structure_max": 9.0,
+        "content_id": "v1-2:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Who takes the silver from Micah’s mother?",
+        "answer": "Micah",
+        "answer_verse": 2,
+        "wrong_answer": "Micah’s mother",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "Micah",
+            "support": "a man named Micah | I took it."
+          },
+          {
+            "answer": "Her son",
+            "support": "I took it. | The Lord bless you, my son!"
+          }
+        ],
+        "distinct_readings": [
+          "Micah",
+          "Her son"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "Identifying that the speaker’s “I took it” refers to Micah and that the theft was from his mother requires mapping first-person speech to the named speaker, stated once, unambiguous, and central to the passage."
+        },
+        "window_verses": [
+          1,
+          2
+        ],
+        "window_text": {
+          "1": "Now a man named Micah from the hill country of Ephraim",
+          "2": "said to his mother, “The eleven hundred shekels of silver that were taken from you and about which I heard you utter a curse—I have that silver with me; I took it.” Then his mother said, “The Lord bless you, my son!”"
+        },
+        "reading_groups": [
+          "Micah (her son) took the silver from his mother"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "answer leaks into question: micah",
+            "bare-name answer 'Micah': names survive translation"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "micah"
+          ],
+          "answer_verse": 2,
+          "answer_verse_original": 2,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 2",
+          "readings_failures": []
+        },
+        "content_id": "v1-2:2"
+      },
+      {
+        "question": "After Micah admits taking the silver, what does his mother do?",
+        "answer": "She blesses Micah",
+        "answer_verse": 2,
+        "wrong_answer": "She utters a curse",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "She blesses him.",
+            "support": "Then his mother said, “The Lord bless you, my son!”"
+          }
+        ],
+        "distinct_readings": [
+          "She blesses him."
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "The sequence marker “Then” ties her action to his confession and the content of her speech shows she blesses him, a single clear, central action stated once."
+        },
+        "window_verses": [
+          1,
+          2
+        ],
+        "window_text": {
+          "1": "Now a man named Micah from the hill country of Ephraim",
+          "2": "said to his mother, “The eleven hundred shekels of silver that were taken from you and about which I heard you utter a curse—I have that silver with me; I took it.” Then his mother said, “The Lord bless you, my son!”"
+        },
+        "reading_groups": [
+          "She blesses him (Micah)"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "question too complex: stacked clauses (1 comma(s), 1 subordinator(s))",
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "micah"
+          ],
+          "answer_verse": 2,
+          "answer_verse_original": 2,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 2",
+          "readings_failures": []
+        },
+        "content_id": "v1-2:3"
+      },
+      {
+        "question": "When Micah’s mother speaks after his confession, who is blessed?",
+        "answer": "Micah",
+        "answer_verse": 2,
+        "wrong_answer": "The Lord",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "Micah",
+            "support": "The Lord bless you, my son!"
+          }
+        ],
+        "distinct_readings": [
+          "Micah"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "It depends on resolving “you, my son” in her blessing to Micah, a single occurrence with one unambiguous referent that is central to the exchange."
+        },
+        "window_verses": [
+          1,
+          2
+        ],
+        "window_text": {
+          "1": "Now a man named Micah from the hill country of Ephraim",
+          "2": "said to his mother, “The eleven hundred shekels of silver that were taken from you and about which I heard you utter a curse—I have that silver with me; I took it.” Then his mother said, “The Lord bless you, my son!”"
+        },
+        "reading_groups": [
+          "Micah is the one blessed"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: mother",
+            "answer leaks into question: micah",
+            "question too complex: stacked clauses (1 comma(s), 2 subordinator(s))",
+            "bare-name answer 'Micah': names survive translation"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "mother"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "micah"
+          ],
+          "answer_verse": 2,
+          "answer_verse_original": 2,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 2",
+          "readings_failures": []
+        },
+        "content_id": "v1-2:4"
+      },
+      {
+        "question": "Who speaks first to Micah’s mother?",
+        "answer": "Micah",
+        "answer_verse": 1,
+        "wrong_answer": "His mother",
+        "relation": "sequence",
+        "readings": [],
+        "distinct_readings": [],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "Determining the first speaker relies on the narrative order and “Then his mother said,” a once-stated sequence with a single clear answer that is helpful but not the core confession detail."
+        },
+        "window_verses": [
+          1,
+          2
+        ],
+        "window_text": {
+          "1": "Now a man named Micah from the hill country of Ephraim",
+          "2": "said to his mother, “The eleven hundred shekels of silver that were taken from you and about which I heard you utter a curse—I have that silver with me; I took it.” Then his mother said, “The Lord bless you, my son!”"
+        },
+        "audit": {
+          "passed": false,
+          "failures": [
+            "answer leaks into question: micah",
+            "bare-name answer 'Micah': names survive translation"
+          ],
+          "notes": [
+            "corrected metadata from 2 to 1; Q/A evidence matches verse(s) [1] better than the claimed 2",
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "micah"
+          ],
+          "answer_verse": 1,
+          "answer_verse_original": 2,
+          "answer_verse_corrected": true,
+          "answer_verse_note": "corrected metadata from 2 to 1; Q/A evidence matches verse(s) [1] better than the claimed 2",
+          "readings_failures": []
+        },
+        "content_id": "v1-2:5"
+      },
+      {
+        "question": "The silver is taken from whom, according to Micah?",
+        "answer": "Micah’s mother",
+        "answer_verse": 2,
+        "wrong_answer": "Micah",
+        "relation": "participant",
+        "readings": [
+          {
+            "answer": "his mother",
+            "support": "said to his mother, | taken from you"
+          }
+        ],
+        "distinct_readings": [
+          "his mother"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "Answering requires linking “taken from you” to the addressee (his mother), a single-clause fact with one clear answer that is important to the scene’s setup."
+        },
+        "window_verses": [
+          1,
+          2
+        ],
+        "window_text": {
+          "1": "Now a man named Micah from the hill country of Ephraim",
+          "2": "said to his mother, “The eleven hundred shekels of silver that were taken from you and about which I heard you utter a curse—I have that silver with me; I took it.” Then his mother said, “The Lord bless you, my son!”"
+        },
+        "reading_groups": [
+          "It was taken from his mother"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: hybrid window selector — Item 1 most demands parsing the embedded clause and second-person pronoun to identify the agent of “utter,” with a plausible misparse (Micah) yet a single clear answer (his mother)."
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "micah"
+          ],
+          "answer_verse": 2,
+          "answer_verse_original": 2,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 2",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "The silver is taken from whom, according to Micah?",
+            "readings": [
+              {
+                "answer": "his mother",
+                "support": "said to his mother, | taken from you"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Micah addresses his mother and says the silver was “taken from you,” so it was taken from his mother."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "Micah says the silver was “taken from you” to his mother, matching “Micah’s mother.”",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "Item 1 most demands parsing the embedded clause and second-person pronoun to identify the agent of “utter,” with a plausible misparse (Micah) yet a single clear answer (his mother).",
+        "content_id": "v1-2:6"
+      }
+    ],
+    "report": {
+      "window_id": "v1-2",
+      "verses": [
+        1,
+        2
+      ],
+      "generated": 6,
+      "scored": 6,
+      "kept": 1,
+      "survivors_before_window_selection": 2,
+      "window_selection_rejected": 1,
+      "repair_attempted": 0,
+      "repaired": 0,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

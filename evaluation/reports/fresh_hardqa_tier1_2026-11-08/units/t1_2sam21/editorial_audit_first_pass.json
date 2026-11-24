@@ -1,0 +1,185 @@
+{
+  "counts": {
+    "keep": 2,
+    "review": 1
+  },
+  "items": [
+    {
+      "id": "v15-17:1",
+      "reference": "2 Samuel 21:15–17",
+      "question": "Who kills the Philistine?",
+      "answer": "Abishai kills the Philistine.",
+      "competitor": "David",
+      "window_text": {
+        "15": "Once again there was a battle between the Philistines and Israel. David went down with his men to fight against the Philistines, and he became exhausted.",
+        "16": "And Ishbi-Benob, one of the descendants of Rapha, whose bronze spearhead weighed three hundred shekels and who was armed with a new sword, said he would kill David.",
+        "17": "But Abishai son of Zeruiah came to David’s rescue; he struck the Philistine down and killed him. Then David’s men swore to him, saying, “Never again will you go out with us to battle, so that the lamp of Israel will not be extinguished.”"
+      },
+      "original_question": "Who kills the Philistine?",
+      "original_answer": "Abishai kills the Philistine.",
+      "edit": {},
+      "checks": {
+        "blind": {
+          "model": "gpt-5",
+          "mode": "enforce",
+          "question": "Who kills the Philistine?",
+          "readings": [
+            {
+              "answer": "Abishai son of Zeruiah",
+              "support": "Abishai son of Zeruiah came to David’s rescue; he struck the Philistine down and killed him"
+            }
+          ],
+          "assessments": [
+            {
+              "number": 1,
+              "classification": "equivalent_to_key",
+              "reason": "Verse 17 states, “Abishai son of Zeruiah… struck the Philistine down and killed him,” matching the key."
+            }
+          ],
+          "verdict": "pass",
+          "reason": "The text explicitly says Abishai son of Zeruiah killed the Philistine.",
+          "status": "passed"
+        },
+        "reader": {
+          "id": "v15-17:1",
+          "key": "unique",
+          "wording": "clear",
+          "comprehension": "meaningful",
+          "quote": "Abishai son of Zeruiah came to David’s rescue; he struck the Philistine down and killed him.",
+          "contrast": "Abishai, the rescuer and killer, versus David, the intended victim being rescued.",
+          "reason": "The passage explicitly identifies Abishai as the person who struck down and killed the Philistine. Tracking the roles matters because David participates in the battle but does not perform this killing."
+        },
+        "editor": {
+          "id": "v15-17:1",
+          "key": "unique",
+          "wording": "clear",
+          "comprehension": "meaningful",
+          "quote": "Abishai son of Zeruiah came to David’s rescue; he struck the Philistine down and killed him.",
+          "contrast": "Abishai, the rescuer and killer, versus David, the exhausted man whom the Philistine intended to kill.",
+          "reason": "David is a plausible alternative because he went to fight the Philistines, but the passage explicitly assigns the killing to Abishai."
+        }
+      },
+      "item_decision": "keep",
+      "final_decision": "keep"
+    },
+    {
+      "id": "v18-19:1",
+      "reference": "2 Samuel 21:18–19",
+      "question": "Who is killed at Gob in the battle where the enemy’s spear was unusually thick?",
+      "answer": "the brother of Goliath the Gittite",
+      "competitor": "Saph",
+      "window_text": {
+        "18": "In the course of time, there was another battle with the Philistines, at Gob. At that time Sibbekai the Hushathite killed Saph, one of the descendants of Rapha.",
+        "19": "In another battle with the Philistines at Gob, Elhanan son of Jair the Bethlehemite killed the brother of Goliath the Gittite, who had a spear with a shaft like a weaver’s rod."
+      },
+      "original_question": "Who is killed at Gob in the battle where the enemy’s spear was unusually thick?",
+      "original_answer": "the brother of Goliath the Gittite",
+      "edit": {},
+      "checks": {
+        "blind": {
+          "model": "gpt-5",
+          "mode": "enforce",
+          "question": "Who is killed at Gob in the battle where the enemy’s spear was unusually thick?",
+          "readings": [
+            {
+              "answer": "the brother of Goliath the Gittite",
+              "support": "killed the brother of Goliath the Gittite, who had a spear with a shaft like a weaver’s rod"
+            }
+          ],
+          "assessments": [
+            {
+              "number": 1,
+              "classification": "equivalent_to_key",
+              "reason": "Verse 19 says at Gob Elhanan \"killed the brother of Goliath the Gittite, who had a spear with a shaft like a weaver’s rod,\" matching the description of an unusually thick spear."
+            }
+          ],
+          "verdict": "pass",
+          "reason": "Verse 19 explicitly identifies the slain man as the brother of Goliath the Gittite, whose spear shaft was like a weaver’s rod.",
+          "status": "passed"
+        },
+        "reader": {
+          "id": "v18-19:1",
+          "key": "unique",
+          "wording": "clear",
+          "comprehension": "meaningful",
+          "quote": "Elhanan son of Jair the Bethlehemite killed the brother of Goliath the Gittite, who had a spear with a shaft like a weaver’s rod.",
+          "contrast": "The reader must distinguish Goliath’s brother from Saph by linking the unusually large spear shaft to the correct battle at Gob.",
+          "reason": "Both men were killed in battles at Gob, but only Goliath’s brother is described as having a spear with a shaft like a weaver’s rod. The identifying detail uniquely supports the key."
+        },
+        "editor": {
+          "id": "v18-19:1",
+          "key": "unique",
+          "wording": "rewrite",
+          "comprehension": "meaningful",
+          "quote": "Elhanan son of Jair the Bethlehemite killed the brother of Goliath the Gittite, who had a spear with a shaft like a weaver’s rod.",
+          "contrast": "Saph, who is killed in one battle at Gob, versus Goliath’s brother, who is killed in the battle associated with the distinctive spear.",
+          "reason": "The spear detail uniquely identifies the second battle and therefore Goliath’s brother, not Saph. The stem should use the passage’s wording, “a shaft like a weaver’s rod,” rather than interpreting it as “unusually thick,” and “enemy’s” is an avoidable generic reference. Resolving which of two similar battles at Gob contains the spear detail is a meaningful event-association distinction."
+        }
+      },
+      "item_decision": "review",
+      "final_decision": "review"
+    },
+    {
+      "id": "v20-22:1",
+      "reference": "2 Samuel 21:20–22",
+      "question": "Who are defeated by David and his men?",
+      "answer": "The four descendants of Rapha in Gath",
+      "competitor": "David and his men",
+      "window_text": {
+        "20": "In still another battle, which took place at Gath, there was a huge man with six fingers on each hand and six toes on each foot—twenty-four in all. He also was descended from Rapha.",
+        "21": "When he taunted Israel, Jonathan son of Shimeah, David’s brother, killed him.",
+        "22": "These four were descendants of Rapha in Gath, and they fell at the hands of David and his men."
+      },
+      "original_question": "Who are defeated by David and his men?",
+      "original_answer": "The four descendants of Rapha in Gath",
+      "edit": {},
+      "checks": {
+        "blind": {
+          "model": "gpt-5",
+          "mode": "enforce",
+          "question": "Who are defeated by David and his men?",
+          "readings": [
+            {
+              "answer": "The four descendants of Rapha in Gath",
+              "support": "These four were descendants of Rapha in Gath, and they fell at the hands of David and his men."
+            }
+          ],
+          "assessments": [
+            {
+              "number": 1,
+              "classification": "equivalent_to_key",
+              "reason": "The passage explicitly states, “These four were descendants of Rapha in Gath, and they fell at the hands of David and his men,” which directly answers the question."
+            }
+          ],
+          "verdict": "pass",
+          "reason": "The text clearly says the four descendants of Rapha in Gath fell at the hands of David and his men.",
+          "status": "passed"
+        },
+        "editor": {
+          "id": "v20-22:1",
+          "key": "unique",
+          "wording": "clear",
+          "comprehension": "meaningful",
+          "quote": "These four were descendants of Rapha in Gath, and they fell at the hands of David and his men.",
+          "contrast": "The four descendants of Rapha are the defeated recipients; David and his men are the agents who defeated them.",
+          "reason": "Although the nearby phrase “David and his men” could be mistaken for the answer, the passive wording “defeated by” asks for those defeated. The final verse explicitly identifies them as the four descendants of Rapha in Gath."
+        },
+        "reader": {
+          "id": "v20-22:1",
+          "key": "unique",
+          "wording": "clear",
+          "comprehension": "meaningful",
+          "quote": "These four were descendants of Rapha in Gath, and they fell at the hands of David and his men.",
+          "contrast": "The four descendants of Rapha are the defeated group; David and his men are the victors.",
+          "reason": "The phrase “fell at the hands of” clearly distinguishes those defeated from those who defeated them, fully supporting the key."
+        }
+      },
+      "item_decision": "keep",
+      "final_decision": "keep"
+    }
+  ],
+  "duplicate_judgments": [
+    [],
+    []
+  ]
+}

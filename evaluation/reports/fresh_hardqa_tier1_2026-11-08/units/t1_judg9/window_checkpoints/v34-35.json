@@ -1,0 +1,675 @@
+{
+  "config_digest": "bf29cf564aae7d15d3bd5bdbff20af59f16e06874e5bad45e83aa6623bdff95a",
+  "data": {
+    "kept": [],
+    "rejected": [
+      {
+        "question": "Where do Abimelek’s troops hide?",
+        "answer": "near Shechem",
+        "answer_verse": 34,
+        "wrong_answer": "at the entrance of the city gate",
+        "relation": "direction",
+        "readings": [
+          {
+            "answer": "near Shechem",
+            "support": "near Shechem"
+          }
+        ],
+        "distinct_readings": [
+          "near Shechem"
+        ],
+        "scores": {
+          "structure_dependence": 4.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "The answer is the single location phrase “near Shechem,” inferred from “took up concealed positions,” stated once and unambiguous, and moderately central to the scene."
+        },
+        "window_verses": [
+          34,
+          35
+        ],
+        "window_text": {
+          "34": "So Abimelek and all his troops set out by night and took up concealed positions near Shechem in four companies.",
+          "35": "Now Gaal son of Ebed had gone out and was standing at the entrance of the city gate just as Abimelek and his troops came out from their hiding place."
+        },
+        "reading_groups": [
+          "Near Shechem"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 4.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 34,
+          "answer_verse_original": 34,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "consistent",
+          "readings_failures": []
+        },
+        "content_id": "v34-35:1"
+      },
+      {
+        "question": "While Gaal stands at the gate, who comes out of hiding?",
+        "answer": "Abimelek and his troops",
+        "answer_verse": 35,
+        "wrong_answer": "Gaal son of Ebed",
+        "relation": "participant",
+        "readings": [
+          {
+            "answer": "Abimelek and his troops",
+            "support": "Abimelek and his troops came out from their hiding place"
+          }
+        ],
+        "distinct_readings": [
+          "Abimelek and his troops"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "It hinges on linking the time clause to the subject of “came out from their hiding place,” stated once with a single clear actor, central to the action."
+        },
+        "window_verses": [
+          34,
+          35
+        ],
+        "window_text": {
+          "34": "So Abimelek and all his troops set out by night and took up concealed positions near Shechem in four companies.",
+          "35": "Now Gaal son of Ebed had gone out and was standing at the entrance of the city gate just as Abimelek and his troops came out from their hiding place."
+        },
+        "reading_groups": [
+          "Abimelek and his troops"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: gaal, gat, stand",
+            "question too complex: stacked clauses (1 comma(s), 1 subordinator(s))"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "gaal",
+            "gat",
+            "stand"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 35,
+          "answer_verse_original": 35,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 35",
+          "readings_failures": []
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "While Gaal stands at the gate, who comes out of hiding?",
+            "after": "Who comes out from hiding?",
+            "note": "Removed leaking words and subordinate clause to simplify the question.",
+            "failures_before": [
+              "location leak: gaal, gat, stand",
+              "question too complex: stacked clauses (1 comma(s), 1 subordinator(s))"
+            ],
+            "scores_before": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "It hinges on linking the time clause to the subject of “came out from their hiding place,” stated once with a single clear actor, central to the action."
+            },
+            "accepted": false,
+            "reason": "failed full rejudgment",
+            "suitability_judgment": {
+              "Q": "Who comes out from hiding?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "The phrase “from hiding” clearly matches “came out from their hiding place,” identifying Abimelek and his troops as the sole answer."
+            },
+            "failures_after": [
+              "dangling answer reference: his"
+            ],
+            "scores_after": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 10.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "The verse links the action \"came out from their hiding place\" specifically to Abimelek and his troops (not Gaal), stated once with a single clear answer that is central to the ambush scene."
+            },
+            "scores_used": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 10.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "The verse links the action \"came out from their hiding place\" specifically to Abimelek and his troops (not Gaal), stated once with a single clear answer that is central to the ambush scene."
+            }
+          }
+        ],
+        "content_id": "v34-35:2"
+      },
+      {
+        "question": "Who sets out by night?",
+        "answer": "Abimelek and all his troops",
+        "answer_verse": 34,
+        "wrong_answer": "Gaal son of Ebed",
+        "relation": "participant",
+        "readings": [
+          {
+            "answer": "Abimelek and all his troops",
+            "support": "Abimelek and all his troops set out by night"
+          }
+        ],
+        "distinct_readings": [
+          "Abimelek and all his troops"
+        ],
+        "scores": {
+          "structure_dependence": 3.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "This is a direct retrieval of the subject of “set out by night” from one clause, with one unambiguous answer and fairly central to the setup."
+        },
+        "window_verses": [
+          34,
+          35
+        ],
+        "window_text": {
+          "34": "So Abimelek and all his troops set out by night and took up concealed positions near Shechem in four companies.",
+          "35": "Now Gaal son of Ebed had gone out and was standing at the entrance of the city gate just as Abimelek and his troops came out from their hiding place."
+        },
+        "reading_groups": [
+          "Abimelek and all his troops"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "dangling answer reference: his",
+            "lexical: structure_dependence 3.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 34,
+          "answer_verse_original": 34,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 34",
+          "readings_failures": []
+        },
+        "content_id": "v34-35:3"
+      },
+      {
+        "question": "What do Abimelek’s troops do before they leave hiding?",
+        "answer": "take concealed positions near Shechem",
+        "answer_verse": 34,
+        "wrong_answer": "Gaal goes out and stands at the gate",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "They take up concealed positions near Shechem in four companies.",
+            "support": "took up concealed positions near Shechem in four companies"
+          },
+          {
+            "answer": "They set out by night.",
+            "support": "set out by night"
+          }
+        ],
+        "distinct_readings": [
+          "They take up concealed positions near Shechem in four companies.",
+          "They set out by night."
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 4.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "It requires sequencing across verses and paraphrase (“concealed positions” = hiding), but multiple actions occurred before leaving hiding (e.g., set out by night), reducing uniqueness of the answer despite its centrality."
+        },
+        "window_verses": [
+          34,
+          35
+        ],
+        "window_text": {
+          "34": "So Abimelek and all his troops set out by night and took up concealed positions near Shechem in four companies.",
+          "35": "Now Gaal son of Ebed had gone out and was standing at the entrance of the city gate just as Abimelek and his troops came out from their hiding place."
+        },
+        "reading_groups": [
+          "They take up concealed positions near Shechem in four companies.",
+          "They set out by night."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "2 defensible readings: They take up concealed positions near Shechem in four companies. | They set out by night.",
+            "ambiguous: answer_certainty 4.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 34,
+          "answer_verse_original": 34,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 34",
+          "readings_failures": [
+            "2 defensible readings: They take up concealed positions near Shechem in four companies. | They set out by night."
+          ]
+        },
+        "content_id": "v34-35:4"
+      },
+      {
+        "question": "Who comes out from hiding as Gaal stands at the city gate?",
+        "answer": "Abimelek and his troops",
+        "answer_verse": 35,
+        "wrong_answer": "Gaal son of Ebed",
+        "relation": "participant",
+        "readings": [
+          {
+            "answer": "Abimelek and his troops",
+            "support": "Abimelek and his troops came out from their hiding place"
+          }
+        ],
+        "distinct_readings": [
+          "Abimelek and his troops"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "Identifying that it is Abimelek and his troops (not Gaal) who emerge depends on clause relations stated once, clearly, and central to the ambush moment."
+        },
+        "window_verses": [
+          34,
+          35
+        ],
+        "window_text": {
+          "34": "So Abimelek and all his troops set out by night and took up concealed positions near Shechem in four companies.",
+          "35": "Now Gaal son of Ebed had gone out and was standing at the entrance of the city gate just as Abimelek and his troops came out from their hiding place."
+        },
+        "reading_groups": [
+          "Abimelek and his troops come out from hiding"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: city, gaal, gat"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "city",
+            "gaal",
+            "gat"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 35,
+          "answer_verse_original": 35,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 35",
+          "readings_failures": []
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "Who comes out from hiding as Gaal stands at the city gate?",
+            "after": "Who comes out from hiding?",
+            "note": "Removed the leaking names and location phrase to eliminate the location leak.",
+            "failures_before": [
+              "location leak: city, gaal, gat"
+            ],
+            "scores_before": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "Identifying that it is Abimelek and his troops (not Gaal) who emerge depends on clause relations stated once, clearly, and central to the ambush moment."
+            },
+            "accepted": false,
+            "reason": "failed full rejudgment",
+            "suitability_judgment": {
+              "Q": "Who comes out from hiding?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "Clear, natural question with a single explicit answer in the window (Abimelek and his troops)."
+            },
+            "failures_after": [
+              "dangling answer reference: his"
+            ],
+            "scores_after": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "The clause explicitly says “Abimelek and his troops came out from their hiding place,” requiring correct subject–verb linkage and distinguishing this from Gaal who merely “went out,” stated once, unambiguous, and central to the ambush action."
+            },
+            "scores_used": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "The clause explicitly says “Abimelek and his troops came out from their hiding place,” requiring correct subject–verb linkage and distinguishing this from Gaal who merely “went out,” stated once, unambiguous, and central to the ambush action."
+            }
+          }
+        ],
+        "content_id": "v34-35:5"
+      },
+      {
+        "question": "Where do Abimelek and his troops hide?",
+        "answer": "near Shechem",
+        "answer_verse": 34,
+        "wrong_answer": "the city gate",
+        "relation": "direction",
+        "readings": [
+          {
+            "answer": "Near Shechem",
+            "support": "took up concealed positions near Shechem"
+          }
+        ],
+        "distinct_readings": [
+          "Near Shechem"
+        ],
+        "scores": {
+          "structure_dependence": 2.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 5.0,
+          "runs": 1,
+          "reason": "The location “near Shechem” is a directly stated phrase occurring once, unambiguous, and mainly background setting."
+        },
+        "window_verses": [
+          34,
+          35
+        ],
+        "window_text": {
+          "34": "So Abimelek and all his troops set out by night and took up concealed positions near Shechem in four companies.",
+          "35": "Now Gaal son of Ebed had gone out and was standing at the entrance of the city gate just as Abimelek and his troops came out from their hiding place."
+        },
+        "reading_groups": [
+          "Near Shechem is where they hide"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 2.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 34,
+          "answer_verse_original": 34,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 34",
+          "readings_failures": []
+        },
+        "content_id": "v34-35:6"
+      },
+      {
+        "question": "Who hides in four groups near Shechem?",
+        "answer": "Abimelek and all his troops",
+        "answer_verse": 34,
+        "wrong_answer": "Gaal son of Ebed",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "Abimelek and all his troops",
+            "support": "Abimelek and all his troops set out by night and took up concealed positions near Shechem in four companies."
+          }
+        ],
+        "distinct_readings": [
+          "Abimelek and all his troops"
+        ],
+        "scores": {
+          "structure_dependence": 5.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "The subject must be chosen between named figures based on the clause describing taking concealed positions once, with a single clear answer important to the setup."
+        },
+        "window_verses": [
+          34,
+          35
+        ],
+        "window_text": {
+          "34": "So Abimelek and all his troops set out by night and took up concealed positions near Shechem in four companies.",
+          "35": "Now Gaal son of Ebed had gone out and was standing at the entrance of the city gate just as Abimelek and his troops came out from their hiding place."
+        },
+        "reading_groups": [
+          "Abimelek and all his troops are the ones hiding in four groups near Shechem"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: four, near, shechem",
+            "dangling answer reference: his",
+            "lexical: structure_dependence 5.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "four",
+            "near",
+            "shechem"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 34,
+          "answer_verse_original": 34,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 34",
+          "readings_failures": []
+        },
+        "content_id": "v34-35:7"
+      },
+      {
+        "question": "From where do Abimelek and his troops come out?",
+        "answer": "the hiding place of Abimelek and his troops",
+        "answer_verse": 34,
+        "wrong_answer": "the city gate",
+        "relation": "direction",
+        "readings": [
+          {
+            "answer": "their hiding place",
+            "support": "came out from their hiding place"
+          },
+          {
+            "answer": "concealed positions near Shechem",
+            "support": "took up concealed positions near Shechem | came out from their hiding place"
+          }
+        ],
+        "distinct_readings": [
+          "their hiding place",
+          "concealed positions near Shechem"
+        ],
+        "scores": {
+          "structure_dependence": 2.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "The phrase “from their hiding place” can be lifted directly from the text, appears once, is unambiguous, and relates to the key action."
+        },
+        "window_verses": [
+          34,
+          35
+        ],
+        "window_text": {
+          "34": "So Abimelek and all his troops set out by night and took up concealed positions near Shechem in four companies.",
+          "35": "Now Gaal son of Ebed had gone out and was standing at the entrance of the city gate just as Abimelek and his troops came out from their hiding place."
+        },
+        "reading_groups": [
+          "From their hiding place (the concealed positions near Shechem)"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 2.0 (need 7.0)"
+          ],
+          "notes": [
+            "corrected metadata from 35 to 34; reading support and question relation identify verse 34",
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "abimelek",
+            "troop"
+          ],
+          "answer_verse": 34,
+          "answer_verse_original": 35,
+          "answer_verse_corrected": true,
+          "answer_verse_note": "corrected metadata from 35 to 34; reading support and question relation identify verse 34",
+          "readings_failures": []
+        },
+        "content_id": "v34-35:8"
+      },
+      {
+        "question": "What is Gaal doing when Abimelek comes out from hiding?",
+        "answer": "standing by the city gate",
+        "answer_verse": 35,
+        "wrong_answer": "taking concealed positions near Shechem",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "standing at the entrance of the city gate",
+            "support": "was standing at the entrance of the city gate | just as Abimelek and his troops came out from their hiding place"
+          }
+        ],
+        "distinct_readings": [
+          "standing at the entrance of the city gate"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "It requires aligning the time clause with Gaal’s ongoing action (“was standing at the city gate”), which is stated once, clearly, and is moderately central to the scene."
+        },
+        "window_verses": [
+          34,
+          35
+        ],
+        "window_text": {
+          "34": "So Abimelek and all his troops set out by night and took up concealed positions near Shechem in four companies.",
+          "35": "Now Gaal son of Ebed had gone out and was standing at the entrance of the city gate just as Abimelek and his troops came out from their hiding place."
+        },
+        "reading_groups": [
+          "Gaal is standing at the entrance of the city gate"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: gaal"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "gaal"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 35,
+          "answer_verse_original": 35,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 35",
+          "readings_failures": []
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "What is Gaal doing when Abimelek comes out from hiding?",
+            "after": "What is the son doing when Abimelek comes out from hiding?",
+            "note": "Replaced the leaking name with an established noun phrase to avoid the location leak.",
+            "failures_before": [
+              "location leak: gaal"
+            ],
+            "scores_before": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 9.0,
+              "centrality": 6.0,
+              "runs": 1,
+              "reason": "It requires aligning the time clause with Gaal’s ongoing action (“was standing at the city gate”), which is stated once, clearly, and is moderately central to the scene."
+            },
+            "accepted": false,
+            "reason": "removed as weak question: It uses an invented label (“the son”) instead of naming Gaal, making the wording unnatural textual scaffolding.",
+            "suitability_judgment": {
+              "Q": "What is the son doing when Abimelek comes out from hiding?",
+              "clear_referents": true,
+              "natural_wording": false,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": true,
+              "reason": "It uses an invented label (“the son”) instead of naming Gaal, making the wording unnatural textual scaffolding."
+            }
+          }
+        ],
+        "content_id": "v34-35:9"
+      }
+    ],
+    "report": {
+      "window_id": "v34-35",
+      "verses": [
+        34,
+        35
+      ],
+      "generated": 9,
+      "scored": 9,
+      "kept": 0,
+      "survivors_before_window_selection": 0,
+      "window_selection_rejected": 0,
+      "repair_attempted": 3,
+      "repaired": 0,
+      "window_retries_used": 1,
+      "score_runs": 1
+    }
+  }
+}

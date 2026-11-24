@@ -1,0 +1,488 @@
+{
+  "config_digest": "461cd474a457824ff5ea5448cd730bf20a2fd8df81463fd77daa90ec465ec12c",
+  "data": {
+    "kept": [
+      {
+        "question": "Whom does Elisha call a murderer in this scene?",
+        "answer": "the king",
+        "answer_verse": 32,
+        "wrong_answer": "the messenger",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "the king",
+            "support": "The king sent a messenger ahead | this murderer is sending someone to cut off my head"
+          }
+        ],
+        "distinct_readings": [
+          "the king"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "Identifying “this murderer” as the king requires linking Elisha’s accusation to the sender of the messenger and the master behind him, a single relational inference stated once and central to the conflict."
+        },
+        "window_verses": [
+          32,
+          33
+        ],
+        "window_text": {
+          "32": "Now Elisha was sitting in his house, and the elders were sitting with him. The king sent a messenger ahead, but before he arrived, Elisha said to the elders, “Don’t you see how this murderer is sending someone to cut off my head? Look, when the messenger comes, shut the door and hold it shut against him. Is not the sound of his master’s footsteps behind him?”",
+          "33": "While he was still talking to them, the messenger came down to him. The king said, “This disaster is from the Lord. Why should I wait for the Lord any longer?”"
+        },
+        "reading_groups": [
+          "the king"
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 32,
+          "answer_verse_original": 32,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 32",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Whom does Elisha call a murderer in this scene?",
+            "readings": [
+              {
+                "answer": "the king",
+                "support": "The king sent a messenger ahead | this murderer is sending someone to cut off my head"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Elisha says “this murderer is sending someone to cut off my head,” and the passage has just said “The king sent a messenger ahead,” identifying the murderer as the king."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The passage links “this murderer” to the one sending the beheader, which is explicitly the king who sent the messenger.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It hinges on resolving that “this murderer” refers to the king—the sender whose footsteps follow the messenger—rather than the arriving messenger, yielding strong structural dependence with a single clear answer.",
+        "window_structure_max": 9.0,
+        "content_id": "v32-33:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Whose footsteps does Elisha say are behind the messenger?",
+        "answer": "the messenger's master, the king",
+        "answer_verse": 32,
+        "wrong_answer": "the Lord",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "His master's",
+            "support": "his master’s footsteps"
+          }
+        ],
+        "distinct_readings": [
+          "His master's"
+        ],
+        "scores": {
+          "structure_dependence": 3.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 5.0,
+          "runs": 1,
+          "reason": "The phrase “his master’s footsteps” is stated directly in the text once, with little relational work beyond spotting the noun phrase."
+        },
+        "window_verses": [
+          32,
+          33
+        ],
+        "window_text": {
+          "32": "Now Elisha was sitting in his house, and the elders were sitting with him. The king sent a messenger ahead, but before he arrived, Elisha said to the elders, “Don’t you see how this murderer is sending someone to cut off my head? Look, when the messenger comes, shut the door and hold it shut against him. Is not the sound of his master’s footsteps behind him?”",
+          "33": "While he was still talking to them, the messenger came down to him. The king said, “This disaster is from the Lord. Why should I wait for the Lord any longer?”"
+        },
+        "reading_groups": [
+          "the messenger’s master (the king)"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 3.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "messenger"
+          ],
+          "answer_verse": 32,
+          "answer_verse_original": 32,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 32",
+          "readings_failures": []
+        },
+        "content_id": "v32-33:2"
+      },
+      {
+        "question": "Who has not yet arrived when Elisha speaks to the elders?",
+        "answer": "the messenger",
+        "answer_verse": 32,
+        "wrong_answer": "the king",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "the messenger",
+            "support": "The king sent a messenger ahead, but before he arrived, Elisha said to the elders"
+          },
+          {
+            "answer": "the king",
+            "support": "Is not the sound of his master’s footsteps behind him?"
+          }
+        ],
+        "distinct_readings": [
+          "the messenger",
+          "the king"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "Determining that the “he” who had not arrived is the messenger depends on pronoun antecedent resolution in a single timing clause."
+        },
+        "window_verses": [
+          32,
+          33
+        ],
+        "window_text": {
+          "32": "Now Elisha was sitting in his house, and the elders were sitting with him. The king sent a messenger ahead, but before he arrived, Elisha said to the elders, “Don’t you see how this murderer is sending someone to cut off my head? Look, when the messenger comes, shut the door and hold it shut against him. Is not the sound of his master’s footsteps behind him?”",
+          "33": "While he was still talking to them, the messenger came down to him. The king said, “This disaster is from the Lord. Why should I wait for the Lord any longer?”"
+        },
+        "reading_groups": [
+          "the messenger",
+          "the king"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: elder",
+            "2 defensible readings: the messenger | the king",
+            "competitor 'the king' is itself defensible — the item is ambiguous, not discriminating"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "elder"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 32,
+          "answer_verse_original": 32,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 32",
+          "readings_failures": [
+            "2 defensible readings: the messenger | the king",
+            "competitor 'the king' is itself defensible — the item is ambiguous, not discriminating"
+          ]
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "Who has not yet arrived when Elisha speaks to the elders?",
+            "after": "Who has not yet arrived when Elisha speaks?",
+            "note": "Removed the location-leaking word 'elders' while preserving the timing and ask.",
+            "failures_before": [
+              "location leak: elder",
+              "2 defensible readings: the messenger | the king",
+              "competitor 'the king' is itself defensible — the item is ambiguous, not discriminating"
+            ],
+            "scores_before": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 9.0,
+              "centrality": 6.0,
+              "runs": 1,
+              "reason": "Determining that the “he” who had not arrived is the messenger depends on pronoun antecedent resolution in a single timing clause."
+            },
+            "accepted": false,
+            "reason": "failed full rejudgment",
+            "suitability_judgment": {
+              "Q": "Who has not yet arrived when Elisha speaks?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "It clearly targets the clause “before he arrived” in v32, whose referent is the messenger, making it a clear, direct, and uniquely answerable question from the window."
+            },
+            "failures_after": [
+              "2 defensible readings: The messenger had not yet arrived | The king had not yet arrived",
+              "competitor 'the king' is itself defensible — the item is ambiguous, not discriminating"
+            ],
+            "scores_after": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 9.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "The reader must resolve the pronoun in “before he arrived” to the messenger and track the timing, a single, central clause that yields one clear answer."
+            },
+            "scores_used": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 9.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "The reader must resolve the pronoun in “before he arrived” to the messenger and track the timing, a single, central clause that yields one clear answer."
+            }
+          }
+        ],
+        "content_id": "v32-33:3"
+      },
+      {
+        "question": "To whom does the messenger come while Elisha still talks?",
+        "answer": "Elisha",
+        "answer_verse": 33,
+        "wrong_answer": "the elders",
+        "relation": "direction",
+        "readings": [
+          {
+            "answer": "Elisha",
+            "support": "Elisha said to the elders, | While he was still talking to them, the messenger came down to him."
+          }
+        ],
+        "distinct_readings": [
+          "Elisha"
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "Identifying that the messenger came “to him” meaning Elisha requires resolving multiple pronouns tied to the prior subject and marks the key arrival."
+        },
+        "window_verses": [
+          32,
+          33
+        ],
+        "window_text": {
+          "32": "Now Elisha was sitting in his house, and the elders were sitting with him. The king sent a messenger ahead, but before he arrived, Elisha said to the elders, “Don’t you see how this murderer is sending someone to cut off my head? Look, when the messenger comes, shut the door and hold it shut against him. Is not the sound of his master’s footsteps behind him?”",
+          "33": "While he was still talking to them, the messenger came down to him. The king said, “This disaster is from the Lord. Why should I wait for the Lord any longer?”"
+        },
+        "reading_groups": [
+          "Elisha"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: still, talk",
+            "answer leaks into question: elisha",
+            "bare-name answer 'Elisha': names survive translation"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "still",
+            "talk"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "elisha"
+          ],
+          "answer_verse": 33,
+          "answer_verse_original": 33,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 33",
+          "readings_failures": []
+        },
+        "content_id": "v32-33:4"
+      },
+      {
+        "question": "Who speaks after the messenger reaches Elisha?",
+        "answer": "the king",
+        "answer_verse": 32,
+        "wrong_answer": "Elisha",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "The king",
+            "support": "The king said"
+          }
+        ],
+        "distinct_readings": [
+          "The king"
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "Linking the sequence—messenger arrives, then “The king said”—requires tracking event order and speaker identification in adjacent clauses central to the scene."
+        },
+        "window_verses": [
+          32,
+          33
+        ],
+        "window_text": {
+          "32": "Now Elisha was sitting in his house, and the elders were sitting with him. The king sent a messenger ahead, but before he arrived, Elisha said to the elders, “Don’t you see how this murderer is sending someone to cut off my head? Look, when the messenger comes, shut the door and hold it shut against him. Is not the sound of his master’s footsteps behind him?”",
+          "33": "While he was still talking to them, the messenger came down to him. The king said, “This disaster is from the Lord. Why should I wait for the Lord any longer?”"
+        },
+        "reading_groups": [
+          "the king speaks"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: outside top structure band (7 vs window max 9)"
+          ],
+          "notes": [
+            "corrected metadata from 33 to 32; reading support and question relation identify verse 32",
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 32,
+          "answer_verse_original": 33,
+          "answer_verse_corrected": true,
+          "answer_verse_note": "corrected metadata from 33 to 32; reading support and question relation identify verse 32",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Who speaks after the messenger reaches Elisha?",
+            "readings": [
+              {
+                "answer": "The king",
+                "support": "The king said"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Verse 33 states, “While he was still talking… the messenger came… The king said,” so the speaker after the messenger arrives is explicitly the king."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The passage explicitly states “The king said” immediately after the messenger arrives.",
+            "status": "passed"
+          }
+        },
+        "content_id": "v32-33:5"
+      },
+      {
+        "question": "Against whom does Elisha tell the elders to hold the door shut?",
+        "answer": "the messenger",
+        "answer_verse": 32,
+        "wrong_answer": "the king",
+        "relation": "direction",
+        "readings": [
+          {
+            "answer": "the messenger",
+            "support": "when the messenger comes, shut the door and hold it shut against him"
+          }
+        ],
+        "distinct_readings": [
+          "the messenger"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "Resolving the pronoun “him” back to “the messenger” in Elisha’s instruction requires grammatical linkage found only in this clause and is a key action in the scene."
+        },
+        "window_verses": [
+          32,
+          33
+        ],
+        "window_text": {
+          "32": "Now Elisha was sitting in his house, and the elders were sitting with him. The king sent a messenger ahead, but before he arrived, Elisha said to the elders, “Don’t you see how this murderer is sending someone to cut off my head? Look, when the messenger comes, shut the door and hold it shut against him. Is not the sound of his master’s footsteps behind him?”",
+          "33": "While he was still talking to them, the messenger came down to him. The king said, “This disaster is from the Lord. Why should I wait for the Lord any longer?”"
+        },
+        "reading_groups": [
+          "the messenger"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: hybrid window selector — It hinges on resolving that “this murderer” refers to the king—the sender whose footsteps follow the messenger—rather than the arriving messenger, yielding strong structural dependence with a single clear answer."
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 32,
+          "answer_verse_original": 32,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 32",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Against whom does Elisha tell the elders to hold the door shut?",
+            "readings": [
+              {
+                "answer": "the messenger",
+                "support": "when the messenger comes, shut the door and hold it shut against him"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The passage says, “when the messenger comes, shut the door and hold it shut against him,” clearly identifying the messenger as the one against whom to hold the door."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The verse explicitly instructs to hold the door shut against the messenger, matching the key.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It hinges on resolving that “this murderer” refers to the king—the sender whose footsteps follow the messenger—rather than the arriving messenger, yielding strong structural dependence with a single clear answer.",
+        "content_id": "v32-33:6"
+      }
+    ],
+    "report": {
+      "window_id": "v32-33",
+      "verses": [
+        32,
+        33
+      ],
+      "generated": 6,
+      "scored": 6,
+      "kept": 1,
+      "survivors_before_window_selection": 3,
+      "window_selection_rejected": 2,
+      "repair_attempted": 1,
+      "repaired": 0,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

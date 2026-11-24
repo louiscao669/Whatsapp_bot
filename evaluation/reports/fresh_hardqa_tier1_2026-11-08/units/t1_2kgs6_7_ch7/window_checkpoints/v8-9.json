@@ -1,0 +1,465 @@
+{
+  "config_digest": "dff75e11c2f634febed8a35c540545c7c544680968ac4cebd050ba973dc16c6d",
+  "data": {
+    "kept": [
+      {
+        "question": "What do the men plan to report to the royal palace?",
+        "answer": "The good news.",
+        "answer_verse": 9,
+        "wrong_answer": "The silver, gold, and clothes they hid.",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "the good news",
+            "support": "This is a day of good news | report this to the royal palace"
+          }
+        ],
+        "distinct_readings": [
+          "the good news"
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "Resolving the demonstrative \"this\" to its antecedent \"good news\" is necessary to identify the content of their report."
+        },
+        "window_verses": [
+          8,
+          9
+        ],
+        "window_text": {
+          "8": "The men who had leprosy reached the edge of the camp, entered one of the tents and ate and drank. Then they took silver, gold and clothes, and went off and hid them. They returned and entered another tent and took some things from it and hid them also.",
+          "9": "Then they said to each other, “What we’re doing is not right. This is a day of good news and we are keeping it to ourselves. If we wait until daylight, punishment will overtake us. Let’s go at once and report this to the royal palace.”"
+        },
+        "reading_groups": [
+          "They plan to report the good news."
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 9,
+          "answer_verse_original": 9,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 9",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "What do the men plan to report to the royal palace?",
+            "readings": [
+              {
+                "answer": "the good news",
+                "support": "This is a day of good news | report this to the royal palace"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The men say, “This is a day of good news” and then, “Let’s go at once and report this to the royal palace,” so the “this” they plan to report is the good news."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The text explicitly ties “this” to “a day of good news,” so they plan to report the good news.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It hinges on resolving the pronoun “this” in “report this to the royal palace” to the prior clause “a day of good news,” a grammatical referent decision that yields a single clear answer and has a plausible misparse competitor.",
+        "window_structure_max": 7.0,
+        "content_id": "v8-9:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "After the men eat and drink, what do they do next?",
+        "answer": "They take silver, gold, and clothes and hide them.",
+        "answer_verse": 8,
+        "wrong_answer": "They return and enter another tent.",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "They take silver, gold, and clothes and go hide them.",
+            "support": "Then they took silver, gold and clothes, and went off and hid them."
+          }
+        ],
+        "distinct_readings": [
+          "They take silver, gold, and clothes and go hide them."
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 6.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "The answer depends on following the sequence immediately after eating and drinking to the next action, though a similar take-and-hide action occurs later."
+        },
+        "window_verses": [
+          8,
+          9
+        ],
+        "window_text": {
+          "8": "The men who had leprosy reached the edge of the camp, entered one of the tents and ate and drank. Then they took silver, gold and clothes, and went off and hid them. They returned and entered another tent and took some things from it and hid them also.",
+          "9": "Then they said to each other, “What we’re doing is not right. This is a day of good news and we are keeping it to ourselves. If we wait until daylight, punishment will overtake us. Let’s go at once and report this to the royal palace.”"
+        },
+        "reading_groups": [
+          "They take valuables (silver, gold, clothes) and hide them."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "question too complex: stacked clauses (1 comma(s), 1 subordinator(s))",
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 8,
+          "answer_verse_original": 8,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 8",
+          "readings_failures": []
+        },
+        "content_id": "v8-9:2"
+      },
+      {
+        "question": "At that moment, what are the men doing with the news?",
+        "answer": "Keeping it to themselves.",
+        "answer_verse": 9,
+        "wrong_answer": "Reporting it to the royal palace.",
+        "relation": "modality",
+        "readings": [
+          {
+            "answer": "Keeping it to themselves.",
+            "support": "This is a day of good news and we are keeping it to ourselves."
+          }
+        ],
+        "distinct_readings": [
+          "Keeping it to themselves."
+        ],
+        "scores": {
+          "structure_dependence": 4.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "The answer is a direct clause in the speech (“we are keeping it to ourselves”) with minimal relational inference."
+        },
+        "window_verses": [
+          8,
+          9
+        ],
+        "window_text": {
+          "8": "The men who had leprosy reached the edge of the camp, entered one of the tents and ate and drank. Then they took silver, gold and clothes, and went off and hid them. They returned and entered another tent and took some things from it and hid them also.",
+          "9": "Then they said to each other, “What we’re doing is not right. This is a day of good news and we are keeping it to ourselves. If we wait until daylight, punishment will overtake us. Let’s go at once and report this to the royal palace.”"
+        },
+        "reading_groups": [
+          "They are keeping the news to themselves."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 4.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 9,
+          "answer_verse_original": 9,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 9",
+          "readings_failures": []
+        },
+        "content_id": "v8-9:3"
+      },
+      {
+        "question": "Whom do the men speak to when they decide to report?",
+        "answer": "Each other.",
+        "answer_verse": 9,
+        "wrong_answer": "The royal palace.",
+        "relation": "participant",
+        "readings": [
+          {
+            "answer": "each other",
+            "support": "Then they said to each other"
+          }
+        ],
+        "distinct_readings": [
+          "each other"
+        ],
+        "scores": {
+          "structure_dependence": 3.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 10.0,
+          "centrality": 5.0,
+          "runs": 1,
+          "reason": "\"To each other\" is explicitly stated alongside their decision to report, requiring straightforward phrase retrieval."
+        },
+        "window_verses": [
+          8,
+          9
+        ],
+        "window_text": {
+          "8": "The men who had leprosy reached the edge of the camp, entered one of the tents and ate and drank. Then they took silver, gold and clothes, and went off and hid them. They returned and entered another tent and took some things from it and hid them also.",
+          "9": "Then they said to each other, “What we’re doing is not right. This is a day of good news and we are keeping it to ourselves. If we wait until daylight, punishment will overtake us. Let’s go at once and report this to the royal palace.”"
+        },
+        "reading_groups": [
+          "They speak to each other."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: report",
+            "no gradeable content in answer 'Each other.'",
+            "lexical: structure_dependence 3.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "report"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 9,
+          "answer_verse_original": 9,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "answer has no content terms; unverifiable",
+          "readings_failures": []
+        },
+        "content_id": "v8-9:4"
+      },
+      {
+        "question": "Before they return to enter another tent, what do they do with the first things they take?",
+        "answer": "They hide them.",
+        "answer_verse": 8,
+        "wrong_answer": "They eat and drink.",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "They go off and hide them.",
+            "support": "went off and hid them"
+          }
+        ],
+        "distinct_readings": [
+          "They go off and hide them."
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 7.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "It hinges on temporal order (“before they return”) and linking the pronoun “them” to the first items, not just spotting a word."
+        },
+        "window_verses": [
+          8,
+          9
+        ],
+        "window_text": {
+          "8": "The men who had leprosy reached the edge of the camp, entered one of the tents and ate and drank. Then they took silver, gold and clothes, and went off and hid them. They returned and entered another tent and took some things from it and hid them also.",
+          "9": "Then they said to each other, “What we’re doing is not right. This is a day of good news and we are keeping it to ourselves. If we wait until daylight, punishment will overtake us. Let’s go at once and report this to the royal palace.”"
+        },
+        "reading_groups": [
+          "They hide the first items they took."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: another, enter, return",
+            "dangling pronoun: they, they, they",
+            "dangling answer reference: They, them",
+            "question too complex: stacked clauses (1 comma(s), 1 subordinator(s))"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "another",
+            "enter",
+            "return"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 8,
+          "answer_verse_original": 8,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 8",
+          "readings_failures": []
+        },
+        "content_id": "v8-9:5"
+      },
+      {
+        "question": "If they wait, until what time will punishment overtake the men?",
+        "answer": "Until daylight.",
+        "answer_verse": 9,
+        "wrong_answer": "At once.",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "until daylight",
+            "support": "until daylight"
+          }
+        ],
+        "distinct_readings": [
+          "until daylight"
+        ],
+        "scores": {
+          "structure_dependence": 2.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "The time marker \"daylight\" is a single explicit word in the conditional clause."
+        },
+        "window_verses": [
+          8,
+          9
+        ],
+        "window_text": {
+          "8": "The men who had leprosy reached the edge of the camp, entered one of the tents and ate and drank. Then they took silver, gold and clothes, and went off and hid them. They returned and entered another tent and took some things from it and hid them also.",
+          "9": "Then they said to each other, “What we’re doing is not right. This is a day of good news and we are keeping it to ourselves. If we wait until daylight, punishment will overtake us. Let’s go at once and report this to the royal palace.”"
+        },
+        "reading_groups": [
+          "Until daylight."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "dangling pronoun: they",
+            "question too complex: stacked clauses (1 comma(s), 1 subordinator(s))",
+            "question changes passage meaning: In v9, “until daylight” modifies their waiting (“If we wait until daylight”), not the punishment overtaking them.",
+            "unnatural question: Awkwardly attaches “until” to the overtaking rather than the waiting; a more natural phrasing is “If they wait until when…?”",
+            "lexical: structure_dependence 2.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 9,
+          "answer_verse_original": 9,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 9",
+          "readings_failures": [
+            "question changes passage meaning: In v9, “until daylight” modifies their waiting (“If we wait until daylight”), not the punishment overtaking them.",
+            "unnatural question: Awkwardly attaches “until” to the overtaking rather than the waiting; a more natural phrasing is “If they wait until when…?”"
+          ]
+        },
+        "content_id": "v8-9:6"
+      },
+      {
+        "question": "How many tents do the men enter before they speak about the news?",
+        "answer": "Two.",
+        "answer_verse": 8,
+        "wrong_answer": "One.",
+        "relation": "quantity",
+        "readings": [
+          {
+            "answer": "Two",
+            "support": "entered one of the tents | entered another tent"
+          }
+        ],
+        "distinct_readings": [
+          "Two"
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "It requires tracking events across sentences and counting the two tents entered prior to their conversation."
+        },
+        "window_verses": [
+          8,
+          9
+        ],
+        "window_text": {
+          "8": "The men who had leprosy reached the edge of the camp, entered one of the tents and ate and drank. Then they took silver, gold and clothes, and went off and hid them. They returned and entered another tent and took some things from it and hid them also.",
+          "9": "Then they said to each other, “What we’re doing is not right. This is a day of good news and we are keeping it to ourselves. If we wait until daylight, punishment will overtake us. Let’s go at once and report this to the royal palace.”"
+        },
+        "reading_groups": [
+          "They enter two tents before speaking."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: hybrid window selector — It hinges on resolving the pronoun “this” in “report this to the royal palace” to the prior clause “a day of good news,” a grammatical referent decision that yields a single clear answer and has a plausible misparse competitor."
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 8,
+          "answer_verse_original": 8,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 8",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "How many tents do the men enter before they speak about the news?",
+            "readings": [
+              {
+                "answer": "Two",
+                "support": "entered one of the tents | entered another tent"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The passage states they “entered one of the tents” and later “entered another tent,” after which they spoke, so the total is two."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The text explicitly describes entering one tent and then another before speaking, matching the key of two.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It hinges on resolving the pronoun “this” in “report this to the royal palace” to the prior clause “a day of good news,” a grammatical referent decision that yields a single clear answer and has a plausible misparse competitor.",
+        "content_id": "v8-9:7"
+      }
+    ],
+    "report": {
+      "window_id": "v8-9",
+      "verses": [
+        8,
+        9
+      ],
+      "generated": 7,
+      "scored": 7,
+      "kept": 1,
+      "survivors_before_window_selection": 2,
+      "window_selection_rejected": 1,
+      "repair_attempted": 0,
+      "repaired": 0,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

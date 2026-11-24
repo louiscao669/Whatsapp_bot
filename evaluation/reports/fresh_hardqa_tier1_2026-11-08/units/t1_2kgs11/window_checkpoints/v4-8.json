@@ -1,0 +1,901 @@
+{
+  "config_digest": "35c6b9487afefbfbca0dd7d7a3df8b147d1a9fbd4ee9dccb39a57ae2c9155f3b",
+  "data": {
+    "kept": [],
+    "rejected": [
+      {
+        "question": "What does Jehoiada do next after he makes them swear?",
+        "answer": "He shows them the king’s son.",
+        "answer_verse": 4,
+        "wrong_answer": "He commands them.",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "He shows them the king’s son.",
+            "support": "Then he showed them the king’s son."
+          }
+        ],
+        "distinct_readings": [
+          "He shows them the king’s son."
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "It hinges on the sequence marker “Then” following the oath, stated once and unambiguously central to the setup."
+        },
+        "window_verses": [
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "window_text": {
+          "4": "In the seventh year Jehoiada sent for the commanders of units of a hundred, the Carites and the guards and had them brought to him at the temple of the Lord. He made a covenant with them and put them under oath at the temple of the Lord. Then he showed them the king’s son.",
+          "5": "He commanded them, saying, “This is what you are to do: You who are in the three companies that are going on duty on the Sabbath—a third of you guarding the royal palace,",
+          "6": "a third at the Sur Gate, and a third at the gate behind the guard, who take turns guarding the temple—",
+          "7": "and you who are in the other two companies that normally go off Sabbath duty are all to guard the temple for the king.",
+          "8": "Station yourselves around the king, each of you with weapon in hand. Anyone who approaches your ranks is to be put to death. Stay close to the king wherever he goes.”"
+        },
+        "reading_groups": [
+          "He shows them the king’s son"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "dangling answer reference: them",
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 4,
+          "answer_verse_original": 4,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 4",
+          "readings_failures": []
+        },
+        "content_id": "v4-8:1"
+      },
+      {
+        "question": "Who guards the temple for the king on the Sabbath?",
+        "answer": "The two companies that go off duty.",
+        "answer_verse": 7,
+        "wrong_answer": "The three companies going on duty.",
+        "relation": "quantity",
+        "readings": [
+          {
+            "answer": "Those in the other two companies that normally go off Sabbath duty",
+            "support": "you who are in the other two companies that normally go off Sabbath duty are all to guard the temple for the king"
+          }
+        ],
+        "distinct_readings": [
+          "Those in the other two companies that normally go off Sabbath duty"
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "The reader must link the subject “the other two companies that normally go off Sabbath duty” to the predicate “are all to guard the temple,” a single, clear instruction central to the orders."
+        },
+        "window_verses": [
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "window_text": {
+          "4": "In the seventh year Jehoiada sent for the commanders of units of a hundred, the Carites and the guards and had them brought to him at the temple of the Lord. He made a covenant with them and put them under oath at the temple of the Lord. Then he showed them the king’s son.",
+          "5": "He commanded them, saying, “This is what you are to do: You who are in the three companies that are going on duty on the Sabbath—a third of you guarding the royal palace,",
+          "6": "a third at the Sur Gate, and a third at the gate behind the guard, who take turns guarding the temple—",
+          "7": "and you who are in the other two companies that normally go off Sabbath duty are all to guard the temple for the king.",
+          "8": "Station yourselves around the king, each of you with weapon in hand. Anyone who approaches your ranks is to be put to death. Stay close to the king wherever he goes.”"
+        },
+        "reading_groups": [
+          "The other two companies that normally go off duty guard the temple"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "quotes the passage: quotes verse 7: 'the temple for the king'"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 7,
+          "answer_verse_original": 7,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 7",
+          "readings_failures": []
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "Who guards the temple for the king on the Sabbath?",
+            "after": "On the Sabbath, who is assigned to protect the king at the temple?",
+            "note": "Paraphrased 'the temple for the king' to avoid quoting the verse.",
+            "failures_before": [
+              "quotes the passage: quotes verse 7: 'the temple for the king'"
+            ],
+            "scores_before": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "The reader must link the subject “the other two companies that normally go off Sabbath duty” to the predicate “are all to guard the temple,” a single, clear instruction central to the orders."
+            },
+            "accepted": false,
+            "reason": "failed full rejudgment",
+            "suitability_judgment": {
+              "Q": "On the Sabbath, who is assigned to protect the king at the temple?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "The question is clear and natural, and the passage assigns the duty to the two companies that normally go off Sabbath duty, yielding a single defensible answer from the window."
+            },
+            "failures_after": [
+              "2 defensible readings: The two off-duty companies are assigned to guard the temple for the king | All companies (both on-duty and off-duty) are assigned to protect the king at the temple",
+              "lexical: structure_dependence 6.0 (need 7.0)"
+            ],
+            "scores_after": {
+              "structure_dependence": 6.0,
+              "statement_uniqueness": 8.0,
+              "answer_certainty": 9.0,
+              "centrality": 9.0,
+              "runs": 1,
+              "reason": "Among several companies mentioned, only v7 assigns the two companies that normally go off Sabbath duty to guard the temple for the king on the Sabbath, yielding one clear and central answer."
+            },
+            "scores_used": {
+              "structure_dependence": 6.0,
+              "statement_uniqueness": 8.0,
+              "answer_certainty": 9.0,
+              "centrality": 9.0,
+              "runs": 1,
+              "reason": "Among several companies mentioned, only v7 assigns the two companies that normally go off Sabbath duty to guard the temple for the king on the Sabbath, yielding one clear and central answer."
+            }
+          }
+        ],
+        "content_id": "v4-8:2"
+      },
+      {
+        "question": "Besides the gates, what do the on-duty men guard?",
+        "answer": "The royal palace.",
+        "answer_verse": 5,
+        "wrong_answer": "The temple.",
+        "relation": "participant",
+        "readings": [
+          {
+            "answer": "the royal palace",
+            "support": "a third of you guarding the royal palace"
+          },
+          {
+            "answer": "the king",
+            "support": "You who are in the three companies that are going on duty on the Sabbath | Station yourselves around the king"
+          }
+        ],
+        "distinct_readings": [
+          "the royal palace",
+          "the king"
+        ],
+        "scores": {
+          "structure_dependence": 4.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "It requires selecting the non-gate item from a listed set (“guarding the royal palace”), which is mentioned once and is part of the duty details."
+        },
+        "window_verses": [
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "window_text": {
+          "4": "In the seventh year Jehoiada sent for the commanders of units of a hundred, the Carites and the guards and had them brought to him at the temple of the Lord. He made a covenant with them and put them under oath at the temple of the Lord. Then he showed them the king’s son.",
+          "5": "He commanded them, saying, “This is what you are to do: You who are in the three companies that are going on duty on the Sabbath—a third of you guarding the royal palace,",
+          "6": "a third at the Sur Gate, and a third at the gate behind the guard, who take turns guarding the temple—",
+          "7": "and you who are in the other two companies that normally go off Sabbath duty are all to guard the temple for the king.",
+          "8": "Station yourselves around the king, each of you with weapon in hand. Anyone who approaches your ranks is to be put to death. Stay close to the king wherever he goes.”"
+        },
+        "reading_groups": [
+          "They guard the royal palace",
+          "They guard the king"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "2 defensible readings: They guard the royal palace | They guard the king",
+            "lexical: structure_dependence 4.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 5,
+          "answer_verse_original": 5,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 5",
+          "readings_failures": [
+            "2 defensible readings: They guard the royal palace | They guard the king"
+          ]
+        },
+        "content_id": "v4-8:3"
+      },
+      {
+        "question": "What happens to anyone who comes near the ranks?",
+        "answer": "He is killed.",
+        "answer_verse": 8,
+        "wrong_answer": "He must take an oath.",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "They are to be put to death.",
+            "support": "Anyone who approaches your ranks is to be put to death."
+          }
+        ],
+        "distinct_readings": [
+          "They are to be put to death."
+        ],
+        "scores": {
+          "structure_dependence": 4.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "The consequence clause (“is to be put to death”) is explicit in one place and directly answers the condition, forming a key security rule."
+        },
+        "window_verses": [
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "window_text": {
+          "4": "In the seventh year Jehoiada sent for the commanders of units of a hundred, the Carites and the guards and had them brought to him at the temple of the Lord. He made a covenant with them and put them under oath at the temple of the Lord. Then he showed them the king’s son.",
+          "5": "He commanded them, saying, “This is what you are to do: You who are in the three companies that are going on duty on the Sabbath—a third of you guarding the royal palace,",
+          "6": "a third at the Sur Gate, and a third at the gate behind the guard, who take turns guarding the temple—",
+          "7": "and you who are in the other two companies that normally go off Sabbath duty are all to guard the temple for the king.",
+          "8": "Station yourselves around the king, each of you with weapon in hand. Anyone who approaches your ranks is to be put to death. Stay close to the king wherever he goes.”"
+        },
+        "reading_groups": [
+          "They are to be put to death"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: rank",
+            "dangling answer reference: He",
+            "lexical: structure_dependence 4.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "rank"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 8,
+          "answer_verse_original": 8,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 8",
+          "readings_failures": []
+        },
+        "content_id": "v4-8:4"
+      },
+      {
+        "question": "Who must the men stay close to?",
+        "answer": "The king.",
+        "answer_verse": 8,
+        "wrong_answer": "The temple of the Lord.",
+        "relation": "direction",
+        "readings": [
+          {
+            "answer": "the king",
+            "support": "Stay close to the king wherever he goes."
+          }
+        ],
+        "distinct_readings": [
+          "the king"
+        ],
+        "scores": {
+          "structure_dependence": 2.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "It is a direct imperative naming a single noun target (“the king”), stated once and clearly part of the instructions."
+        },
+        "window_verses": [
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "window_text": {
+          "4": "In the seventh year Jehoiada sent for the commanders of units of a hundred, the Carites and the guards and had them brought to him at the temple of the Lord. He made a covenant with them and put them under oath at the temple of the Lord. Then he showed them the king’s son.",
+          "5": "He commanded them, saying, “This is what you are to do: You who are in the three companies that are going on duty on the Sabbath—a third of you guarding the royal palace,",
+          "6": "a third at the Sur Gate, and a third at the gate behind the guard, who take turns guarding the temple—",
+          "7": "and you who are in the other two companies that normally go off Sabbath duty are all to guard the temple for the king.",
+          "8": "Station yourselves around the king, each of you with weapon in hand. Anyone who approaches your ranks is to be put to death. Stay close to the king wherever he goes.”"
+        },
+        "reading_groups": [
+          "The king"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 2.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 8,
+          "answer_verse_original": 8,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 8",
+          "readings_failures": []
+        },
+        "content_id": "v4-8:5"
+      },
+      {
+        "question": "Who sends for the commanders, the Carites, and the guards?",
+        "answer": "Jehoiada.",
+        "answer_verse": 4,
+        "wrong_answer": "The king’s son.",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "Jehoiada",
+            "support": "Jehoiada sent for the commanders of units of a hundred, the Carites and the guards"
+          }
+        ],
+        "distinct_readings": [
+          "Jehoiada"
+        ],
+        "scores": {
+          "structure_dependence": 2.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 5.0,
+          "runs": 1,
+          "reason": "The subject of the opening narrative clause is plainly “Jehoiada,” a single-occurrence background fact setting up the orders."
+        },
+        "window_verses": [
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "window_text": {
+          "4": "In the seventh year Jehoiada sent for the commanders of units of a hundred, the Carites and the guards and had them brought to him at the temple of the Lord. He made a covenant with them and put them under oath at the temple of the Lord. Then he showed them the king’s son.",
+          "5": "He commanded them, saying, “This is what you are to do: You who are in the three companies that are going on duty on the Sabbath—a third of you guarding the royal palace,",
+          "6": "a third at the Sur Gate, and a third at the gate behind the guard, who take turns guarding the temple—",
+          "7": "and you who are in the other two companies that normally go off Sabbath duty are all to guard the temple for the king.",
+          "8": "Station yourselves around the king, each of you with weapon in hand. Anyone who approaches your ranks is to be put to death. Stay close to the king wherever he goes.”"
+        },
+        "reading_groups": [
+          "Jehoiada sent for them"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: carit",
+            "question too complex: stacked clauses (2 comma(s), 0 subordinator(s))",
+            "quotes the passage: quotes verse 4: 'the carites and the guards'",
+            "bare-name answer 'Jehoiada.': names survive translation",
+            "lexical: structure_dependence 2.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "carit"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 4,
+          "answer_verse_original": 4,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 4",
+          "readings_failures": []
+        },
+        "content_id": "v4-8:6"
+      },
+      {
+        "question": "What does Jehoiada do before he reveals the king’s son?",
+        "answer": "He makes a covenant with them and puts them under oath.",
+        "answer_verse": 4,
+        "wrong_answer": "He commands them about the Sabbath duty.",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "He makes a covenant with them and puts them under oath at the temple of the Lord.",
+            "support": "He made a covenant with them and put them under oath at the temple of the Lord."
+          },
+          {
+            "answer": "He summons the commanders, the Carites, and the guards and has them brought to him at the temple of the Lord.",
+            "support": "Jehoiada sent for the commanders of units of a hundred, the Carites and the guards and had them brought to him at the temple of the Lord."
+          }
+        ],
+        "distinct_readings": [
+          "He makes a covenant with them and puts them under oath at the temple of the Lord.",
+          "He summons the commanders, the Carites, and the guards and has them brought to him at the temple of the Lord."
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "Requires reading the temporal sequence in v4 (covenant and oath before “then he showed them”), a uniquely stated fact with a clear single answer that is central to the setup."
+        },
+        "window_verses": [
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "window_text": {
+          "4": "In the seventh year Jehoiada sent for the commanders of units of a hundred, the Carites and the guards and had them brought to him at the temple of the Lord. He made a covenant with them and put them under oath at the temple of the Lord. Then he showed them the king’s son.",
+          "5": "He commanded them, saying, “This is what you are to do: You who are in the three companies that are going on duty on the Sabbath—a third of you guarding the royal palace,",
+          "6": "a third at the Sur Gate, and a third at the gate behind the guard, who take turns guarding the temple—",
+          "7": "and you who are in the other two companies that normally go off Sabbath duty are all to guard the temple for the king.",
+          "8": "Station yourselves around the king, each of you with weapon in hand. Anyone who approaches your ranks is to be put to death. Stay close to the king wherever he goes.”"
+        },
+        "reading_groups": [
+          "He makes a covenant with them and puts them under oath (at the temple).",
+          "He summons/has brought to him the commanders, the Carites, and the guards (to the temple)."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: son",
+            "dangling answer reference: them, them",
+            "2 defensible readings: He makes a covenant with them and puts them under oath (at the temple). | He summons/has brought to him the commanders, the Carites, and the guards (to the temple)."
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "son"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 4,
+          "answer_verse_original": 4,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 4",
+          "readings_failures": [
+            "2 defensible readings: He makes a covenant with them and puts them under oath (at the temple). | He summons/has brought to him the commanders, the Carites, and the guards (to the temple)."
+          ]
+        },
+        "content_id": "v4-8:7"
+      },
+      {
+        "question": "Who takes turns guarding the temple?",
+        "answer": "the guard",
+        "answer_verse": 6,
+        "wrong_answer": "the other two companies",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "the guard",
+            "support": "the guard, who take turns guarding the temple—"
+          }
+        ],
+        "distinct_readings": [
+          "the guard"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 8.0,
+          "centrality": 4.0,
+          "runs": 1,
+          "reason": "Resolves the relative clause “who take turns guarding the temple” to its antecedent (“the guard”), stated once with a mostly clear single answer though somewhat peripheral."
+        },
+        "window_verses": [
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "window_text": {
+          "4": "In the seventh year Jehoiada sent for the commanders of units of a hundred, the Carites and the guards and had them brought to him at the temple of the Lord. He made a covenant with them and put them under oath at the temple of the Lord. Then he showed them the king’s son.",
+          "5": "He commanded them, saying, “This is what you are to do: You who are in the three companies that are going on duty on the Sabbath—a third of you guarding the royal palace,",
+          "6": "a third at the Sur Gate, and a third at the gate behind the guard, who take turns guarding the temple—",
+          "7": "and you who are in the other two companies that normally go off Sabbath duty are all to guard the temple for the king.",
+          "8": "Station yourselves around the king, each of you with weapon in hand. Anyone who approaches your ranks is to be put to death. Stay close to the king wherever he goes.”"
+        },
+        "reading_groups": [
+          "The guard take turns guarding the temple."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "answer leaks into question: guard",
+            "incidental: centrality 4.0 (need 5.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "guard"
+          ],
+          "answer_verse": 6,
+          "answer_verse_original": 6,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 6",
+          "readings_failures": []
+        },
+        "content_id": "v4-8:8"
+      },
+      {
+        "question": "What are the other two companies to do?",
+        "answer": "guard the temple for the king",
+        "answer_verse": 7,
+        "wrong_answer": "guard the royal palace",
+        "relation": "participant",
+        "readings": [
+          {
+            "answer": "Guard the temple for the king.",
+            "support": "are all to guard the temple for the king"
+          }
+        ],
+        "distinct_readings": [
+          "Guard the temple for the king."
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "Directly extracts the assigned duty of the “other two companies” from one line, uniquely stated and unambiguous, and part of the core instructions."
+        },
+        "window_verses": [
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "window_text": {
+          "4": "In the seventh year Jehoiada sent for the commanders of units of a hundred, the Carites and the guards and had them brought to him at the temple of the Lord. He made a covenant with them and put them under oath at the temple of the Lord. Then he showed them the king’s son.",
+          "5": "He commanded them, saying, “This is what you are to do: You who are in the three companies that are going on duty on the Sabbath—a third of you guarding the royal palace,",
+          "6": "a third at the Sur Gate, and a third at the gate behind the guard, who take turns guarding the temple—",
+          "7": "and you who are in the other two companies that normally go off Sabbath duty are all to guard the temple for the king.",
+          "8": "Station yourselves around the king, each of you with weapon in hand. Anyone who approaches your ranks is to be put to death. Stay close to the king wherever he goes.”"
+        },
+        "reading_groups": [
+          "They are to guard the temple for the king."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 7,
+          "answer_verse_original": 7,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 7",
+          "readings_failures": []
+        },
+        "content_id": "v4-8:9"
+      },
+      {
+        "question": "What happens to anyone who comes near the ranks?",
+        "answer": "is put to death",
+        "answer_verse": 8,
+        "wrong_answer": "is put under oath",
+        "relation": "modality",
+        "readings": [
+          {
+            "answer": "They are to be put to death.",
+            "support": "Anyone who approaches your ranks is to be put to death."
+          }
+        ],
+        "distinct_readings": [
+          "They are to be put to death."
+        ],
+        "scores": {
+          "structure_dependence": 3.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "It quotes a single explicit penalty clause (“Anyone who approaches your ranks is to be put to death”), making it unambiguous and fairly central to the orders."
+        },
+        "window_verses": [
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "window_text": {
+          "4": "In the seventh year Jehoiada sent for the commanders of units of a hundred, the Carites and the guards and had them brought to him at the temple of the Lord. He made a covenant with them and put them under oath at the temple of the Lord. Then he showed them the king’s son.",
+          "5": "He commanded them, saying, “This is what you are to do: You who are in the three companies that are going on duty on the Sabbath—a third of you guarding the royal palace,",
+          "6": "a third at the Sur Gate, and a third at the gate behind the guard, who take turns guarding the temple—",
+          "7": "and you who are in the other two companies that normally go off Sabbath duty are all to guard the temple for the king.",
+          "8": "Station yourselves around the king, each of you with weapon in hand. Anyone who approaches your ranks is to be put to death. Stay close to the king wherever he goes.”"
+        },
+        "reading_groups": [
+          "They are to be put to death."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: rank",
+            "lexical: structure_dependence 3.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "rank"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 8,
+          "answer_verse_original": 8,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 8",
+          "readings_failures": []
+        },
+        "content_id": "v4-8:10"
+      },
+      {
+        "question": "Who makes the covenant with the commanders at the temple?",
+        "answer": "Jehoiada",
+        "answer_verse": 4,
+        "wrong_answer": "the commanders",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "Jehoiada",
+            "support": "Jehoiada sent for the commanders | He made a covenant with them and put them under oath at the temple of the Lord."
+          }
+        ],
+        "distinct_readings": [
+          "Jehoiada"
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "Requires linking the pronoun “He” to Jehoiada across sentences to identify the covenant-maker, uniquely stated and clear, of moderate centrality."
+        },
+        "window_verses": [
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "window_text": {
+          "4": "In the seventh year Jehoiada sent for the commanders of units of a hundred, the Carites and the guards and had them brought to him at the temple of the Lord. He made a covenant with them and put them under oath at the temple of the Lord. Then he showed them the king’s son.",
+          "5": "He commanded them, saying, “This is what you are to do: You who are in the three companies that are going on duty on the Sabbath—a third of you guarding the royal palace,",
+          "6": "a third at the Sur Gate, and a third at the gate behind the guard, who take turns guarding the temple—",
+          "7": "and you who are in the other two companies that normally go off Sabbath duty are all to guard the temple for the king.",
+          "8": "Station yourselves around the king, each of you with weapon in hand. Anyone who approaches your ranks is to be put to death. Stay close to the king wherever he goes.”"
+        },
+        "reading_groups": [
+          "Jehoiada makes the covenant."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "bare-name answer 'Jehoiada': names survive translation"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 4,
+          "answer_verse_original": 4,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 4",
+          "readings_failures": []
+        },
+        "content_id": "v4-8:11"
+      },
+      {
+        "question": "Whom does Jehoiada have brought to him at the temple?",
+        "answer": "the commanders, the Carites, and the guards",
+        "answer_verse": 4,
+        "wrong_answer": "the king’s son",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "the commanders of units of a hundred, the Carites and the guards",
+            "support": "the commanders of units of a hundred, the Carites and the guards"
+          }
+        ],
+        "distinct_readings": [
+          "the commanders of units of a hundred, the Carites and the guards"
+        ],
+        "scores": {
+          "structure_dependence": 4.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 10.0,
+          "centrality": 5.0,
+          "runs": 1,
+          "reason": "Asks for the list of groups Jehoiada had brought to him, which can be spotted directly from the nouns in v4, uniquely stated and clear, of moderate importance."
+        },
+        "window_verses": [
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "window_text": {
+          "4": "In the seventh year Jehoiada sent for the commanders of units of a hundred, the Carites and the guards and had them brought to him at the temple of the Lord. He made a covenant with them and put them under oath at the temple of the Lord. Then he showed them the king’s son.",
+          "5": "He commanded them, saying, “This is what you are to do: You who are in the three companies that are going on duty on the Sabbath—a third of you guarding the royal palace,",
+          "6": "a third at the Sur Gate, and a third at the gate behind the guard, who take turns guarding the temple—",
+          "7": "and you who are in the other two companies that normally go off Sabbath duty are all to guard the temple for the king.",
+          "8": "Station yourselves around the king, each of you with weapon in hand. Anyone who approaches your ranks is to be put to death. Stay close to the king wherever he goes.”"
+        },
+        "reading_groups": [
+          "The commanders of units of a hundred, the Carites, and the guards."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "quotes the passage: quotes verse 4: 'brought to him at the'",
+            "lexical: structure_dependence 4.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 4,
+          "answer_verse_original": 4,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 4",
+          "readings_failures": []
+        },
+        "content_id": "v4-8:12"
+      },
+      {
+        "question": "How many thirds are posted at gates?",
+        "answer": "two thirds",
+        "answer_verse": 6,
+        "wrong_answer": "one third",
+        "relation": "quantity",
+        "readings": [
+          {
+            "answer": "Two",
+            "support": "a third at the Sur Gate, and a third at the gate behind the guard"
+          }
+        ],
+        "distinct_readings": [
+          "Two"
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 10.0,
+          "centrality": 4.0,
+          "runs": 1,
+          "reason": "Demands counting the two “a third at [gate]” placements across lines, a unique inference with a single numeric answer but a relatively minor detail."
+        },
+        "window_verses": [
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "window_text": {
+          "4": "In the seventh year Jehoiada sent for the commanders of units of a hundred, the Carites and the guards and had them brought to him at the temple of the Lord. He made a covenant with them and put them under oath at the temple of the Lord. Then he showed them the king’s son.",
+          "5": "He commanded them, saying, “This is what you are to do: You who are in the three companies that are going on duty on the Sabbath—a third of you guarding the royal palace,",
+          "6": "a third at the Sur Gate, and a third at the gate behind the guard, who take turns guarding the temple—",
+          "7": "and you who are in the other two companies that normally go off Sabbath duty are all to guard the temple for the king.",
+          "8": "Station yourselves around the king, each of you with weapon in hand. Anyone who approaches your ranks is to be put to death. Stay close to the king wherever he goes.”"
+        },
+        "reading_groups": [
+          "Two thirds are at gates (Sur Gate and the gate behind the guard)."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: gat",
+            "incidental: centrality 4.0 (need 5.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "gat"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "third"
+          ],
+          "answer_verse": 6,
+          "answer_verse_original": 6,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 6",
+          "readings_failures": []
+        },
+        "content_id": "v4-8:13"
+      }
+    ],
+    "report": {
+      "window_id": "v4-8",
+      "verses": [
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "generated": 13,
+      "scored": 13,
+      "kept": 0,
+      "survivors_before_window_selection": 0,
+      "window_selection_rejected": 0,
+      "repair_attempted": 1,
+      "repaired": 0,
+      "window_retries_used": 1,
+      "score_runs": 1
+    }
+  }
+}

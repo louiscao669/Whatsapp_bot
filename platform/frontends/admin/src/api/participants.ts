@@ -111,6 +111,20 @@ export function fetchParticipants() {
   return apiFetch<{ participants: ParticipantRow[] }>('/api/v1/participants')
 }
 
+export type CreatedStudyParticipant = {
+  participant_id: string
+  display_name: string
+  enrollment_number: number
+  rotation: number
+}
+
+export function createStudyParticipant(requestId: string, displayName: string) {
+  return apiFetch<CreatedStudyParticipant>('/api/v1/participants/study', {
+    method: 'POST',
+    body: JSON.stringify({ request_id: requestId, display_name: displayName }),
+  })
+}
+
 export function fetchParticipantDetail(participantId: string) {
   return apiFetch<ParticipantDetail>(`/api/v1/participants/${participantId}`)
 }

@@ -1,0 +1,18 @@
+{
+  "model": "gpt-5.6-sol",
+  "effort": "high",
+  "selection_prompt": "can you get the strong QAs from all the passages\n\nEarlier selection criteria:\nPipeline generates and scores candidates. Give me the kept output plus passage windows. Return only genuinely strong candidates, checking naturalness, self-containment, answer completeness, and discriminating value. Exclude items that are vague, unnatural, incidental, duplicate another survivor, or are unlikely to distinguish answerers. Judge each concept as written. An otherwise good QA can survive a metadata correction.\n\nJudge the question exactly as a participant would hear it. Identify the smallest piece of reasoning needed for a complete answer and check what a careless reader could actually confuse. Reserve high scores for a meaningful distinction that the stem asks naturally and the window resolves.\n\nGive credit to short, plain questions when grammar assigns different roles or actions to nearby participants. Give credit when an indirect utterance has to be interpreted, or when the reader must distinguish what is proposed, authorized, underway or accomplished. A possible stylistic polish is a minor issue if the excerpt clearly resolves the intended meaning.\n\nLower the score when the apparent difficulty comes from translating an abstract label for a person, statement or event back into the passage. Also lower it when the key merely repeats an explicit fact or reason and the supposed rival has no plausible connection to the event. Check whether a later sentence gives away the answer without the interpretation the question appears to test.\n\nEvaluate the proposed competitor against the actual wording. A weak supplied competitor alone does not disqualify a sound open question if a substantive inference remains; a nearby name alone does not establish a useful contrast. In the reason for the score, identify the decisive distinction or shortcut.",
+  "common_instructions": "These are candidates for a Bible-translation comprehension study. Use only the supplied materials.\nThe competing answer is a proposed misreading. Rate each question's suitability as written on\na common 0–1000 scale, higher means stronger. Spread scores enough to rank closely matched\nquestions. Give each item one short concrete reason. Do not change the items or drop rows.\nReturn JSON only: {\"items\":[{\"id\":\"opaque ID\",\"score\":integer,\"why\":\"short reason\"}]}.",
+  "orders": [
+    null,
+    67411,
+    81937
+  ],
+  "scope": "Only the selection prompt changes. Reuse original blinded batches, matched baseline calls, 19-removal quota and opaque-ID tie-break. No labels, review text or worked cases go to the model.",
+  "review_hash": "bbb257c3300d6049a490d34048d2862d34de93b69110c0304c98625dbe98e403",
+  "evaluation": "Compare the six with the editor's judgments, the other 79 with historical decisions, and all 85 with historical decisions. The other 79 were used in earlier benchmarking, so this is an internal comparison.",
+  "batches": {
+    "development": "041bc58b96d3e6073f40376b12478ff1b81b0f73feba2b2cd00105c437849370",
+    "holdout": "c8a1ac34d185dc2e9a0e666153fedb0a8db7d2fc1a455240e78f93d244c0fb99"
+  }
+}

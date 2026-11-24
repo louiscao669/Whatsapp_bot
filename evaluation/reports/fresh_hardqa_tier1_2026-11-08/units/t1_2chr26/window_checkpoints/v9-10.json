@@ -1,0 +1,494 @@
+{
+  "config_digest": "06f6fd33124ccf69d50b7d020984e70e0c73dd874d345ad168bb1c04d96f7dac",
+  "data": {
+    "kept": [
+      {
+        "question": "What does Uzziah fortify after building in Jerusalem?",
+        "answer": "Uzziah fortifies the towers.",
+        "answer_verse": 9,
+        "wrong_answer": "Uzziah fortifies the gates.",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "the towers",
+            "support": "built towers in Jerusalem | he fortified them"
+          }
+        ],
+        "distinct_readings": [
+          "the towers"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 10.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "It requires resolving the pronoun “them” to the towers built in Jerusalem, a single unique clause, with an unambiguous answer central to his works there."
+        },
+        "window_verses": [
+          9,
+          10
+        ],
+        "window_text": {
+          "9": "Uzziah built towers in Jerusalem at the Corner Gate, at the Valley Gate and at the angle of the wall, and he fortified them.",
+          "10": "He also built towers in the wilderness and dug many cisterns, because he had much livestock in the foothills and in the plain. He had people working his fields and vineyards in the hills and in the fertile lands, for he loved the soil."
+        },
+        "reading_groups": [
+          "the towers"
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "uzziah"
+          ],
+          "answer_verse": 9,
+          "answer_verse_original": 9,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 9",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "What does Uzziah fortify after building in Jerusalem?",
+            "readings": [
+              {
+                "answer": "the towers",
+                "support": "built towers in Jerusalem | he fortified them"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The passage says Uzziah “built towers in Jerusalem… and he fortified them,” so “them” clearly refers to the towers he built."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "“He fortified them” directly refers to the towers Uzziah built in Jerusalem.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It hinges on resolving the pronoun “them” to the head noun “towers” rather than the nearby “gates,” maximizing structural dependence with a clear, single answer and a plausible competitor misparse.",
+        "window_structure_max": 8.0,
+        "content_id": "v9-10:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "What does Uzziah do because he has much livestock?",
+        "answer": "Uzziah digs many cisterns.",
+        "answer_verse": 10,
+        "wrong_answer": "Uzziah builds towers in the wilderness.",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "He built towers in the wilderness and dug many cisterns.",
+            "support": "built towers in the wilderness and dug many cisterns, because he had much livestock in the foothills and in the plain"
+          },
+          {
+            "answer": "He dug many cisterns.",
+            "support": "dug many cisterns, because he had much livestock in the foothills and in the plain"
+          }
+        ],
+        "distinct_readings": [
+          "He built towers in the wilderness and dug many cisterns.",
+          "He dug many cisterns."
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 10.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "The answer depends on the causal link (“because he had much livestock”) to the action “dug many cisterns,” stated once and clearly central to verse 10."
+        },
+        "window_verses": [
+          9,
+          10
+        ],
+        "window_text": {
+          "9": "Uzziah built towers in Jerusalem at the Corner Gate, at the Valley Gate and at the angle of the wall, and he fortified them.",
+          "10": "He also built towers in the wilderness and dug many cisterns, because he had much livestock in the foothills and in the plain. He had people working his fields and vineyards in the hills and in the fertile lands, for he loved the soil."
+        },
+        "reading_groups": [
+          "He built towers in the wilderness and dug many cisterns.",
+          "He dug many cisterns."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "2 defensible readings: He built towers in the wilderness and dug many cisterns. | He dug many cisterns."
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "uzziah"
+          ],
+          "answer_verse": 10,
+          "answer_verse_original": 10,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 10",
+          "readings_failures": [
+            "2 defensible readings: He built towers in the wilderness and dug many cisterns. | He dug many cisterns."
+          ]
+        },
+        "content_id": "v9-10:2"
+      },
+      {
+        "question": "What does Uzziah build in the wilderness?",
+        "answer": "Uzziah builds towers.",
+        "answer_verse": 10,
+        "wrong_answer": "Uzziah digs cisterns.",
+        "relation": "direction",
+        "readings": [
+          {
+            "answer": "Towers",
+            "support": "built towers in the wilderness"
+          }
+        ],
+        "distinct_readings": [
+          "Towers"
+        ],
+        "scores": {
+          "structure_dependence": 2.0,
+          "statement_uniqueness": 10.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "This is a direct retrieval of a noun phrase (“towers”) stated once and plainly central but not structurally demanding."
+        },
+        "window_verses": [
+          9,
+          10
+        ],
+        "window_text": {
+          "9": "Uzziah built towers in Jerusalem at the Corner Gate, at the Valley Gate and at the angle of the wall, and he fortified them.",
+          "10": "He also built towers in the wilderness and dug many cisterns, because he had much livestock in the foothills and in the plain. He had people working his fields and vineyards in the hills and in the fertile lands, for he loved the soil."
+        },
+        "reading_groups": [
+          "Towers"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: wildernes",
+            "lexical: structure_dependence 2.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "wildernes"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "build",
+            "uzziah"
+          ],
+          "answer_verse": 10,
+          "answer_verse_original": 10,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 10",
+          "readings_failures": []
+        },
+        "content_id": "v9-10:3"
+      },
+      {
+        "question": "Who works the fields and vineyards of Uzziah?",
+        "answer": "Uzziah’s people work his fields and vineyards.",
+        "answer_verse": 10,
+        "wrong_answer": "Uzziah’s livestock work his fields and vineyards.",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "people",
+            "support": "people working his fields and vineyards"
+          }
+        ],
+        "distinct_readings": [
+          "people"
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 10.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 2,
+          "reason": "It directly identifies the agent as “people” from a single clause with a clear, unique answer of moderate importance."
+        },
+        "window_verses": [
+          9,
+          10
+        ],
+        "window_text": {
+          "9": "Uzziah built towers in Jerusalem at the Corner Gate, at the Valley Gate and at the angle of the wall, and he fortified them.",
+          "10": "He also built towers in the wilderness and dug many cisterns, because he had much livestock in the foothills and in the plain. He had people working his fields and vineyards in the hills and in the fertile lands, for he loved the soil."
+        },
+        "reading_groups": [
+          "Because he loved the soil"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "answer leaks into question: field, uzziah, vineyard, work",
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "field",
+            "uzziah",
+            "vineyard",
+            "work"
+          ],
+          "answer_verse": 10,
+          "answer_verse_original": 10,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 10",
+          "readings_failures": []
+        },
+        "content_id": "v9-10:4"
+      },
+      {
+        "question": "Why does Uzziah have people work his fields and vineyards?",
+        "answer": "Because Uzziah loves the soil.",
+        "answer_verse": 10,
+        "wrong_answer": "Because Uzziah has much livestock.",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "Because he loved the soil.",
+            "support": "for he loved the soil."
+          }
+        ],
+        "distinct_readings": [
+          "Because he loved the soil."
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 10.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 2,
+          "reason": "It directly identifies the agent as “people” from a single clause with a clear, unique answer of moderate importance."
+        },
+        "window_verses": [
+          9,
+          10
+        ],
+        "window_text": {
+          "9": "Uzziah built towers in Jerusalem at the Corner Gate, at the Valley Gate and at the angle of the wall, and he fortified them.",
+          "10": "He also built towers in the wilderness and dug many cisterns, because he had much livestock in the foothills and in the plain. He had people working his fields and vineyards in the hills and in the fertile lands, for he loved the soil."
+        },
+        "reading_groups": [
+          "Because he loved the soil"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "uzziah"
+          ],
+          "answer_verse": 10,
+          "answer_verse_original": 10,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 10",
+          "readings_failures": []
+        },
+        "content_id": "v9-10:5"
+      },
+      {
+        "question": "In which areas do people work Uzziah’s fields and vineyards?",
+        "answer": "In the hills and in the fertile lands.",
+        "answer_verse": 10,
+        "wrong_answer": "In the foothills and in the plain.",
+        "relation": "direction",
+        "readings": [
+          {
+            "answer": "in the hills and in the fertile lands",
+            "support": "in the hills and in the fertile lands"
+          }
+        ],
+        "distinct_readings": [
+          "in the hills and in the fertile lands"
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 10.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "One must attach the correct location phrase to the fields/vineyards (not the livestock), which is stated once and yields a single clear pair of areas."
+        },
+        "window_verses": [
+          9,
+          10
+        ],
+        "window_text": {
+          "9": "Uzziah built towers in Jerusalem at the Corner Gate, at the Valley Gate and at the angle of the wall, and he fortified them.",
+          "10": "He also built towers in the wilderness and dug many cisterns, because he had much livestock in the foothills and in the plain. He had people working his fields and vineyards in the hills and in the fertile lands, for he loved the soil."
+        },
+        "reading_groups": [
+          "in the hills and in the fertile lands"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: hybrid window selector — It hinges on resolving the pronoun “them” to the head noun “towers” rather than the nearby “gates,” maximizing structural dependence with a clear, single answer and a plausible competitor misparse."
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 10,
+          "answer_verse_original": 10,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 10",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "In which areas do people work Uzziah’s fields and vineyards?",
+            "readings": [
+              {
+                "answer": "in the hills and in the fertile lands",
+                "support": "in the hills and in the fertile lands"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The passage states, “He had people working his fields and vineyards in the hills and in the fertile lands,” which matches the answer exactly."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The text explicitly says the fields and vineyards were worked “in the hills and in the fertile lands,” matching the key.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It hinges on resolving the pronoun “them” to the head noun “towers” rather than the nearby “gates,” maximizing structural dependence with a clear, single answer and a plausible competitor misparse.",
+        "content_id": "v9-10:6"
+      },
+      {
+        "question": "Where are the towers that Uzziah fortifies?",
+        "answer": "In Jerusalem at the gates and the wall’s angle.",
+        "answer_verse": 9,
+        "wrong_answer": "In the wilderness.",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "In Jerusalem at the Corner Gate, at the Valley Gate, and at the angle of the wall.",
+            "support": "in Jerusalem at the Corner Gate, at the Valley Gate and at the angle of the wall"
+          }
+        ],
+        "distinct_readings": [
+          "In Jerusalem at the Corner Gate, at the Valley Gate, and at the angle of the wall."
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 10.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "It requires linking the fortified object to the previously built towers and recalling their specific Jerusalem locations, uniquely stated and clear."
+        },
+        "window_verses": [
+          9,
+          10
+        ],
+        "window_text": {
+          "9": "Uzziah built towers in Jerusalem at the Corner Gate, at the Valley Gate and at the angle of the wall, and he fortified them.",
+          "10": "He also built towers in the wilderness and dug many cisterns, because he had much livestock in the foothills and in the plain. He had people working his fields and vineyards in the hills and in the fertile lands, for he loved the soil."
+        },
+        "reading_groups": [
+          "In Jerusalem at the Corner Gate, at the Valley Gate, and at the angle of the wall"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: hybrid window selector — It hinges on resolving the pronoun “them” to the head noun “towers” rather than the nearby “gates,” maximizing structural dependence with a clear, single answer and a plausible competitor misparse."
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 9,
+          "answer_verse_original": 9,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 9",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Where are the towers that Uzziah fortifies?",
+            "readings": [
+              {
+                "answer": "In Jerusalem at the Corner Gate, at the Valley Gate, and at the angle of the wall.",
+                "support": "in Jerusalem at the Corner Gate, at the Valley Gate and at the angle of the wall"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The passage states he built towers “in Jerusalem at the Corner Gate, at the Valley Gate and at the angle of the wall, and he fortified them,” matching the key’s locations."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The verse explicitly says the fortified towers were in Jerusalem at the gates and the wall’s angle.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It hinges on resolving the pronoun “them” to the head noun “towers” rather than the nearby “gates,” maximizing structural dependence with a clear, single answer and a plausible competitor misparse.",
+        "content_id": "v9-10:7"
+      }
+    ],
+    "report": {
+      "window_id": "v9-10",
+      "verses": [
+        9,
+        10
+      ],
+      "generated": 7,
+      "scored": 7,
+      "kept": 1,
+      "survivors_before_window_selection": 3,
+      "window_selection_rejected": 2,
+      "repair_attempted": 0,
+      "repaired": 0,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

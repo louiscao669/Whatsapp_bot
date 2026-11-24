@@ -1,0 +1,458 @@
+{
+  "config_digest": "aa9a4ffb136753ab8c88dc7d6aa0d6565d57c9e02752d2709077174115ee4d5f",
+  "data": {
+    "kept": [
+      {
+        "question": "Whose consent are the ambushers waiting for now?",
+        "answer": "The commander’s.",
+        "answer_verse": 21,
+        "wrong_answer": "The Sanhedrin’s.",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "The commander’s",
+            "support": "The commander | waiting for your consent"
+          }
+        ],
+        "distinct_readings": [
+          "The commander’s"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "It requires resolving the pronoun \"your\" in the speech to the commander, which is stated only there and yields an unambiguous, plot-relevant answer."
+        },
+        "window_verses": [
+          19,
+          20,
+          21,
+          22
+        ],
+        "window_text": {
+          "19": "The commander took the young man by the hand, drew him aside and asked, “What is it you want to tell me?”",
+          "20": "He said: “Some Jews have agreed to ask you to bring Paul before the Sanhedrin tomorrow on the pretext of wanting more accurate information about him.",
+          "21": "Don’t give in to them, because more than forty of them are waiting in ambush for him. They have taken an oath not to eat or drink until they have killed him. They are ready now, waiting for your consent to their request.”",
+          "22": "The commander dismissed the young man with this warning: “Don’t tell anyone that you have reported this to me.”"
+        },
+        "reading_groups": [
+          "They are waiting for the commander's consent"
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 21,
+          "answer_verse_original": 21,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 21",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Whose consent are the ambushers waiting for now?",
+            "readings": [
+              {
+                "answer": "The commander’s",
+                "support": "The commander | waiting for your consent"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "In v.21 the young man says they are “waiting for your consent,” and he is speaking to the commander (v.19), so the consent is the commander’s."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "Verse 21 explicitly says the ambushers are waiting for “your consent,” referring to the commander addressed in verse 19.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It requires resolving the second-person pronoun “your” in the young man’s report (“waiting for your consent”) to the commander, yielding one clear answer with a plausible misparse (the Sanhedrin).",
+        "window_structure_max": 8.0,
+        "content_id": "v19-22:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Why does the young man tell the commander not to go along with the Jews?",
+        "answer": "Because more than forty of them are waiting in ambush to kill Paul.",
+        "answer_verse": 21,
+        "wrong_answer": "Because they want more accurate information about Paul.",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "Because more than forty men are lying in ambush to kill Paul.",
+            "support": "because more than forty of them are waiting in ambush for him | until they have killed him"
+          },
+          {
+            "answer": "Because they are ready now and waiting for the commander's consent.",
+            "support": "They are ready now, waiting for your consent to their request."
+          }
+        ],
+        "distinct_readings": [
+          "Because more than forty men are lying in ambush to kill Paul.",
+          "Because they are ready now and waiting for the commander's consent."
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "It ties the young man's instruction \"Don't give in\" to the explicit because-clause about an ambush, stated once with a single clear answer central to the warning."
+        },
+        "window_verses": [
+          19,
+          20,
+          21,
+          22
+        ],
+        "window_text": {
+          "19": "The commander took the young man by the hand, drew him aside and asked, “What is it you want to tell me?”",
+          "20": "He said: “Some Jews have agreed to ask you to bring Paul before the Sanhedrin tomorrow on the pretext of wanting more accurate information about him.",
+          "21": "Don’t give in to them, because more than forty of them are waiting in ambush for him. They have taken an oath not to eat or drink until they have killed him. They are ready now, waiting for your consent to their request.”",
+          "22": "The commander dismissed the young man with this warning: “Don’t tell anyone that you have reported this to me.”"
+        },
+        "reading_groups": [
+          "Because more than forty men are lying in ambush to kill Paul",
+          "Because they are ready now and waiting for the commander's consent"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "dangling answer reference: them",
+            "2 defensible readings: Because more than forty men are lying in ambush to kill Paul | Because they are ready now and waiting for the commander's consent"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 21,
+          "answer_verse_original": 21,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 21",
+          "readings_failures": [
+            "2 defensible readings: Because more than forty men are lying in ambush to kill Paul | Because they are ready now and waiting for the commander's consent"
+          ]
+        },
+        "content_id": "v19-22:2"
+      },
+      {
+        "question": "After hearing the report, what does the commander do with the young man?",
+        "answer": "He dismisses him and warns him not to tell anyone.",
+        "answer_verse": 22,
+        "wrong_answer": "He takes him aside and asks for his message.",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "He dismisses the young man with a warning not to tell anyone.",
+            "support": "dismissed the young man | “Don’t tell anyone that you have reported this to me.”"
+          }
+        ],
+        "distinct_readings": [
+          "He dismisses the young man with a warning not to tell anyone."
+        ],
+        "scores": {
+          "structure_dependence": 5.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "The narrative explicitly states the action (“dismissed the young man with this warning”) once, giving a clear answer that is relevant though not the core ambush detail."
+        },
+        "window_verses": [
+          19,
+          20,
+          21,
+          22
+        ],
+        "window_text": {
+          "19": "The commander took the young man by the hand, drew him aside and asked, “What is it you want to tell me?”",
+          "20": "He said: “Some Jews have agreed to ask you to bring Paul before the Sanhedrin tomorrow on the pretext of wanting more accurate information about him.",
+          "21": "Don’t give in to them, because more than forty of them are waiting in ambush for him. They have taken an oath not to eat or drink until they have killed him. They are ready now, waiting for your consent to their request.”",
+          "22": "The commander dismissed the young man with this warning: “Don’t tell anyone that you have reported this to me.”"
+        },
+        "reading_groups": [
+          "He dismisses the young man and warns him not to tell anyone"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: report",
+            "question too complex: stacked clauses (1 comma(s), 1 subordinator(s))",
+            "lexical: structure_dependence 5.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "report"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 22,
+          "answer_verse_original": 22,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 22",
+          "readings_failures": []
+        },
+        "content_id": "v19-22:3"
+      },
+      {
+        "question": "What reason do the Jews give for asking to bring Paul?",
+        "answer": "To get more accurate information about Paul.",
+        "answer_verse": 20,
+        "wrong_answer": "To kill Paul.",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "To obtain more accurate information about him.",
+            "support": "on the pretext of wanting more accurate information about him"
+          }
+        ],
+        "distinct_readings": [
+          "To obtain more accurate information about him."
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "It extracts the stated pretext—wanting more accurate information about him—occurring once, unambiguously and importantly for the scheme."
+        },
+        "window_verses": [
+          19,
+          20,
+          21,
+          22
+        ],
+        "window_text": {
+          "19": "The commander took the young man by the hand, drew him aside and asked, “What is it you want to tell me?”",
+          "20": "He said: “Some Jews have agreed to ask you to bring Paul before the Sanhedrin tomorrow on the pretext of wanting more accurate information about him.",
+          "21": "Don’t give in to them, because more than forty of them are waiting in ambush for him. They have taken an oath not to eat or drink until they have killed him. They are ready now, waiting for your consent to their request.”",
+          "22": "The commander dismissed the young man with this warning: “Don’t tell anyone that you have reported this to me.”"
+        },
+        "reading_groups": [
+          "They claim it is to obtain more accurate information about Paul"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: paul",
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "paul"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "paul"
+          ],
+          "answer_verse": 20,
+          "answer_verse_original": 20,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 20",
+          "readings_failures": []
+        },
+        "content_id": "v19-22:4"
+      },
+      {
+        "question": "Who does the commander warn not to tell anyone?",
+        "answer": "The young man.",
+        "answer_verse": 22,
+        "wrong_answer": "Paul.",
+        "relation": "participant",
+        "readings": [
+          {
+            "answer": "the young man",
+            "support": "dismissed the young man with this warning: “Don’t tell anyone"
+          }
+        ],
+        "distinct_readings": [
+          "the young man"
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 9.0,
+          "centrality": 5.0,
+          "runs": 1,
+          "reason": "Identifying the addressee of “Don’t tell anyone” as the young man relies on context and pronoun resolution, is only given here, and is unambiguous but less central."
+        },
+        "window_verses": [
+          19,
+          20,
+          21,
+          22
+        ],
+        "window_text": {
+          "19": "The commander took the young man by the hand, drew him aside and asked, “What is it you want to tell me?”",
+          "20": "He said: “Some Jews have agreed to ask you to bring Paul before the Sanhedrin tomorrow on the pretext of wanting more accurate information about him.",
+          "21": "Don’t give in to them, because more than forty of them are waiting in ambush for him. They have taken an oath not to eat or drink until they have killed him. They are ready now, waiting for your consent to their request.”",
+          "22": "The commander dismissed the young man with this warning: “Don’t tell anyone that you have reported this to me.”"
+        },
+        "reading_groups": [
+          "The young man is the one warned"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: hybrid window selector — It requires resolving the second-person pronoun “your” in the young man’s report (“waiting for your consent”) to the commander, yielding one clear answer with a plausible misparse (the Sanhedrin)."
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 22,
+          "answer_verse_original": 22,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 22",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Who does the commander warn not to tell anyone?",
+            "readings": [
+              {
+                "answer": "the young man",
+                "support": "dismissed the young man with this warning: “Don’t tell anyone"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Verse 22 explicitly says the commander dismissed “the young man” with the warning, “Don’t tell anyone…,” so the warned person is the young man."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The passage states the commander warned “the young man” not to tell anyone.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It requires resolving the second-person pronoun “your” in the young man’s report (“waiting for your consent”) to the commander, yielding one clear answer with a plausible misparse (the Sanhedrin).",
+        "content_id": "v19-22:5"
+      },
+      {
+        "question": "To whom has the young man given his report?",
+        "answer": "The commander.",
+        "answer_verse": 22,
+        "wrong_answer": "The Sanhedrin.",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "the commander",
+            "support": "The commander dismissed the young man with this warning: | you have reported this to me."
+          }
+        ],
+        "distinct_readings": [
+          "the commander"
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 3.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "Linking “reported this to me” to the commander requires pronoun resolution, but this fact is also made clear by the surrounding dialogue, leaving a single certain answer."
+        },
+        "window_verses": [
+          19,
+          20,
+          21,
+          22
+        ],
+        "window_text": {
+          "19": "The commander took the young man by the hand, drew him aside and asked, “What is it you want to tell me?”",
+          "20": "He said: “Some Jews have agreed to ask you to bring Paul before the Sanhedrin tomorrow on the pretext of wanting more accurate information about him.",
+          "21": "Don’t give in to them, because more than forty of them are waiting in ambush for him. They have taken an oath not to eat or drink until they have killed him. They are ready now, waiting for your consent to their request.”",
+          "22": "The commander dismissed the young man with this warning: “Don’t tell anyone that you have reported this to me.”"
+        },
+        "reading_groups": [
+          "He reported to the commander"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: hybrid window selector — It requires resolving the second-person pronoun “your” in the young man’s report (“waiting for your consent”) to the commander, yielding one clear answer with a plausible misparse (the Sanhedrin)."
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 22,
+          "answer_verse_original": 22,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 22",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "To whom has the young man given his report?",
+            "readings": [
+              {
+                "answer": "the commander",
+                "support": "The commander dismissed the young man with this warning: | you have reported this to me."
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Verse 22 quotes the commander saying, “Don’t tell anyone that you have reported this to me,” showing the young man reported to the commander."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The passage explicitly states the young man reported to “me,” spoken by the commander.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It requires resolving the second-person pronoun “your” in the young man’s report (“waiting for your consent”) to the commander, yielding one clear answer with a plausible misparse (the Sanhedrin).",
+        "content_id": "v19-22:6"
+      }
+    ],
+    "report": {
+      "window_id": "v19-22",
+      "verses": [
+        19,
+        20,
+        21,
+        22
+      ],
+      "generated": 6,
+      "scored": 6,
+      "kept": 1,
+      "survivors_before_window_selection": 3,
+      "window_selection_rejected": 2,
+      "repair_attempted": 0,
+      "repaired": 0,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

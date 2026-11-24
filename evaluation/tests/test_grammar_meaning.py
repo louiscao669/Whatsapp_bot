@@ -19,15 +19,84 @@ def request(candidate=GOOD):
 
 
 def reading(**overrides):
-    return {"primary_reading": "David and his servants went down to fight the Philistines.",
+    return {"processing_difficulty": "high", "first_read_grammar": "obvious", "first_read_span": "仆人",
+            "primary_reading": "David and his servants went down to fight the Philistines.",
             "participant_roles": "David and servants fight the Philistines.",
             "event_structure": "Movement followed by fighting.", "modifier_scope": "David's servants.",
             "interpretation_status": "clear", "alternative_readings": [], **overrides}
 
 
 def judgment(**overrides):
-    return {"explanation": "Test semantic comparison.", "risk_spans": [],
+    return {"explanation": "Test semantic comparison.", "risk_spans": [], "semantic_status": "preserved",
             **{field: "yes" for field in g.MEANING_FIELDS}, **overrides}
+
+
+@pytest.mark.parametrize("rating", ["subtle", "none", "uncertain"])
+def test_clear_meaning_alone_does_not_qualify_as_an_obvious_edit(rating):
+    result = {"candidate_reading": reading(first_read_grammar=rating, first_read_span=""),
+              "judgment": judgment()}
+    assert not g.meaning_review_accepts(result, GOOD)
+
+
+def test_first_read_evidence_must_occur_in_candidate():
+    with pytest.raises(g.GrammarError, match="first-read"):
+        g.validate_meaning_reading(reading(first_read_span="absent"), GOOD)
+
+
+def test_archived_meaning_approval_only_replays_under_its_original_policy():
+    previous = reading()
+    del previous["first_read_grammar"], previous["first_read_span"]
+    del previous["processing_difficulty"]
+    comparison = judgment(); del comparison["semantic_status"]
+    review = {"candidate_reading": previous, "judgment": comparison}
+    assert g.meaning_review_accepts(review, GOOD, policy=g.LEGACY_MEANING_POLICY)
+    with pytest.raises(g.GrammarError, match="invalid object"):
+        g.meaning_review_accepts(review, GOOD)
+
+
+def test_previous_first_read_policy_remains_replayable_without_promoting_it():
+    previous = reading(); del previous["processing_difficulty"]
+    comparison = judgment(); del comparison["semantic_status"]
+    review = {"candidate_reading": previous, "judgment": comparison}
+    assert g.meaning_review_accepts(review, GOOD, policy=g.FIRST_READ_MEANING_POLICY)
+    with pytest.raises(g.GrammarError, match="invalid object"):
+        g.meaning_review_accepts(review, GOOD)
+
+
+def test_high_processing_difficulty_can_pass():
+    review = {"candidate_reading": reading(processing_difficulty="high"), "judgment": judgment()}
+    assert g.meaning_review_outcome(review, GOOD) == "pass"
+    assert g.meaning_review_accepts(review, GOOD)
+
+
+def test_new_plausible_meaning_is_flagged_not_automatically_approved():
+    review = {"candidate_reading": reading(interpretation_status="ambiguous", alternative_readings=[
+        {"reading": "Continues fighting rather than descending.", "evidence_span": "作战下去"}]),
+        "judgment": judgment(semantic_status="new_ambiguity", no_new_plausible_meaning="no", risk_spans=["作战下去"])}
+    assert g.meaning_review_outcome(review, BAD) == "flagged"
+    assert not g.meaning_review_accepts(review, BAD)
+
+
+@pytest.mark.parametrize("status", ["changed", "unrecoverable"])
+def test_confirmed_semantic_failure_needs_repair(status):
+    review = {"candidate_reading": reading(), "judgment": judgment(
+        semantic_status=status, event_structure_preserved="no", risk_spans=["作战下去"])}
+    assert g.meaning_review_outcome(review, BAD) == "needs_repair"
+
+
+def test_preexisting_ambiguity_is_not_a_new_semantic_failure():
+    review = {"candidate_reading": reading(interpretation_status="ambiguous", alternative_readings=[
+        {"reading": "An already ambiguous servant reference.", "evidence_span": "仆人"}]),
+        "judgment": judgment(semantic_status="preexisting_ambiguity")}
+    assert g.meaning_review_outcome(review, GOOD) == "pass"
+
+
+@pytest.mark.parametrize("decision,expected", [("no", "needs_repair"), ("uncertain", "flagged")])
+def test_semantic_fidelity_does_not_hide_ineffective_grammar(decision, expected):
+    grammar = {**{k: "yes" for k in g.JUDGMENT_FIELDS}, "structural_error": decision,
+               "error_span": "仆人", "explanation": "Specific grammar assessment."}
+    review = {"candidate_reading": reading(), "judgment": judgment()}
+    assert g.grammar_review_outcome(grammar, review, GOOD) == expected
 
 
 def test_reader_receives_edited_context_without_source_or_prior_rationale(tmp_path, fake_meaning_models):

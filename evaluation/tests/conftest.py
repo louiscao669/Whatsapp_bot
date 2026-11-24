@@ -15,6 +15,8 @@ def fake_meaning_models(monkeypatch):
     def read(self, request):
         calls["reading"].append(copy.deepcopy(request))
         return {
+            "processing_difficulty": "high",
+            "first_read_grammar": "obvious", "first_read_span": request["focus_clause"],
             "primary_reading": "Synthetic reading.", "participant_roles": "Synthetic roles.",
             "event_structure": "Synthetic event.", "modifier_scope": "Synthetic modifiers.",
             "interpretation_status": "clear", "alternative_readings": [],
@@ -22,7 +24,7 @@ def fake_meaning_models(monkeypatch):
 
     def compare(self, request):
         calls["comparison"].append(copy.deepcopy(request))
-        return {"explanation": "Synthetic comparison.", "risk_spans": [],
+        return {"explanation": "Synthetic comparison.", "risk_spans": [], "semantic_status": "preserved",
                 **{field: "yes" for field in grammar.MEANING_FIELDS}}
 
     monkeypatch.setattr(grammar.GPTMeaningReader, "__call__", read)

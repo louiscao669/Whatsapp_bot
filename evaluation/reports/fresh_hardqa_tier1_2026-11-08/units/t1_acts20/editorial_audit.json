@@ -1,0 +1,127 @@
+{
+  "counts": {
+    "keep": 2
+  },
+  "items": [
+    {
+      "id": "v7-9:1",
+      "reference": "Acts 20:7–9",
+      "question": "Why does Paul keep speaking so late?",
+      "answer": "Paul intends to leave the next day.",
+      "competitor": "to break bread",
+      "window_text": {
+        "7": "On the first day of the week we came together to break bread. Paul spoke to the people and, because he intended to leave the next day, kept on talking until midnight.",
+        "8": "There were many lamps in the upstairs room where we were meeting.",
+        "9": "Seated in a window was a young man named Eutychus, who was sinking into a deep sleep as Paul talked on and on. When he was sound asleep, he fell to the ground from the third story and was picked up dead."
+      },
+      "original_question": "Why does Paul keep speaking so late?",
+      "original_answer": "Paul intends to leave the next day.",
+      "edit": {},
+      "checks": {
+        "blind": {
+          "model": "gpt-5",
+          "mode": "enforce",
+          "question": "Why does Paul keep speaking so late?",
+          "readings": [
+            {
+              "answer": "Because he intended to leave the next day.",
+              "support": "because he intended to leave the next day,"
+            }
+          ],
+          "assessments": [
+            {
+              "number": 1,
+              "classification": "equivalent_to_key",
+              "reason": "The passage explicitly says Paul “kept on talking until midnight” because “he intended to leave the next day,” matching the key."
+            }
+          ],
+          "verdict": "pass",
+          "reason": "The text directly states Paul spoke late because he planned to leave the next day.",
+          "status": "passed"
+        },
+        "reader": {
+          "id": "v7-9:1",
+          "key": "unique",
+          "wording": "clear",
+          "comprehension": "meaningful",
+          "quote": "because he intended to leave the next day, kept on talking until midnight.",
+          "contrast": "Paul’s impending departure versus the gathering’s purpose of breaking bread.",
+          "reason": "The causal phrase directly explains why Paul continued speaking until midnight. Breaking bread explains why the group gathered, not why Paul spoke so late."
+        },
+        "editor": {
+          "id": "v7-9:1",
+          "key": "unique",
+          "wording": "clear",
+          "comprehension": "meaningful",
+          "quote": "because he intended to leave the next day",
+          "contrast": "Paul speaks late because he plans to leave the next day, not because the group came together to break bread.",
+          "reason": "The window explicitly links Paul’s continued speaking to his planned departure. Breaking bread explains why the group gathered, not why he kept speaking until midnight."
+        }
+      },
+      "item_decision": "keep",
+      "final_decision": "keep"
+    },
+    {
+      "id": "v10-12:1",
+      "reference": "Acts 20:10–12",
+      "question": "Whom does Paul say is alive?",
+      "answer": "the young man",
+      "competitor": "Paul",
+      "window_text": {
+        "10": "Paul went down, threw himself on the young man and put his arms around him. “Don’t be alarmed,” he said. “He’s alive!”",
+        "11": "Then he went upstairs again and broke bread and ate. After talking until daylight, he left.",
+        "12": "The people took the young man home alive and were greatly comforted."
+      },
+      "original_question": "Whom does Paul say is alive?",
+      "original_answer": "the young man",
+      "edit": {},
+      "checks": {
+        "blind": {
+          "model": "gpt-5",
+          "mode": "enforce",
+          "question": "Whom does Paul say is alive?",
+          "readings": [
+            {
+              "answer": "the young man",
+              "support": "the young man | He’s alive!"
+            }
+          ],
+          "assessments": [
+            {
+              "number": 1,
+              "classification": "equivalent_to_key",
+              "reason": "The text says Paul threw himself on “the young man” and then said, “He’s alive!”, so the referent is the young man, matching the key."
+            }
+          ],
+          "verdict": "pass",
+          "reason": "Paul’s statement “He’s alive!” clearly refers to the young man mentioned immediately before.",
+          "status": "passed"
+        },
+        "reader": {
+          "id": "v10-12:1",
+          "key": "unique",
+          "wording": "clear",
+          "comprehension": "meaningful",
+          "quote": "Paul went down, threw himself on the young man and put his arms around him. “Don’t be alarmed,” he said. “He’s alive!”",
+          "contrast": "The young man is the person Paul declares alive, not Paul, who is the speaker and actor.",
+          "reason": "The context of Paul embracing the young man identifies the referent of “He’s,” and verse 12 confirms that the young man was taken home alive. The question tests pronoun reference and distinguishes the speaker from the person being described."
+        },
+        "editor": {
+          "id": "v10-12:1",
+          "key": "unique",
+          "wording": "clear",
+          "comprehension": "meaningful",
+          "quote": "Paul went down, threw himself on the young man and put his arms around him. “Don’t be alarmed,” he said. “He’s alive!”",
+          "contrast": "The pronoun “he” refers to the young man, not to Paul, who is speaking.",
+          "reason": "The preceding actions center on the young man, and verse 12 confirms that the people took the young man home alive. The question clearly tests pronoun reference."
+        }
+      },
+      "item_decision": "keep",
+      "final_decision": "keep"
+    }
+  ],
+  "duplicate_judgments": [
+    [],
+    []
+  ]
+}

@@ -1,0 +1,486 @@
+{
+  "config_digest": "aa9a4ffb136753ab8c88dc7d6aa0d6565d57c9e02752d2709077174115ee4d5f",
+  "data": {
+    "kept": [
+      {
+        "question": "When do the more than forty men plan to kill Paul?",
+        "answer": "Before he reaches the priests and elders",
+        "answer_verse": 14,
+        "wrong_answer": "When he is before the Sanhedrin",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "Before he gets here.",
+            "support": "We are ready to kill him before he gets here."
+          }
+        ],
+        "distinct_readings": [
+          "Before he gets here."
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 8.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "The timing depends on interpreting the deictic “before he gets here” (i.e., before he reaches the priests/elders), a single clause requiring relational inference."
+        },
+        "window_verses": [
+          12,
+          13,
+          14,
+          15
+        ],
+        "window_text": {
+          "12": "The next morning some Jews formed a conspiracy and bound themselves with an oath not to eat or drink until they had killed Paul.",
+          "13": "More than forty men were involved in this plot.",
+          "14": "They went to the chief priests and the elders and said, “We have taken a solemn oath not to eat anything until we have killed Paul.",
+          "15": "Now then, you and the Sanhedrin petition the commander to bring him before you on the pretext of wanting more accurate information about his case. We are ready to kill him before he gets here.”"
+        },
+        "reading_groups": [
+          "before he arrives (“before he gets here”)"
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "corrected metadata from 15 to 14; Q/A evidence matches verse(s) [14] better than the claimed 15",
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 14,
+          "answer_verse_original": 15,
+          "answer_verse_corrected": true,
+          "answer_verse_note": "corrected metadata from 15 to 14; Q/A evidence matches verse(s) [14] better than the claimed 15",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "When do the more than forty men plan to kill Paul?",
+            "readings": [
+              {
+                "answer": "Before he gets here.",
+                "support": "We are ready to kill him before he gets here."
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The text says, “We are ready to kill him before he gets here,” with “here” referring to the chief priests and elders/Sanhedrin, matching “before he reaches the priests and elders.”"
+              }
+            ],
+            "verdict": "pass",
+            "reason": "Verse 15 explicitly states they plan to kill Paul “before he gets here,” i.e., before he reaches the priests and elders.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It hinges on the temporal clause “before he gets here,” contrasting arrival vs. appearance before the Sanhedrin, with a plausible misparse placing the attack at the hearing.",
+        "window_structure_max": 8.0,
+        "content_id": "v12-15:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Who swears to stop eating and drinking until Paul is killed?",
+        "answer": "Some Jews who form the plot",
+        "answer_verse": 12,
+        "wrong_answer": "Paul",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "some Jews",
+            "support": "some Jews formed a conspiracy and bound themselves with an oath not to eat or drink until they had killed Paul."
+          },
+          {
+            "answer": "more than forty men",
+            "support": "More than forty men were involved in this plot. | We have taken a solemn oath not to eat anything until we have killed Paul."
+          }
+        ],
+        "distinct_readings": [
+          "some Jews",
+          "more than forty men"
+        ],
+        "scores": {
+          "structure_dependence": 2.0,
+          "statement_uniqueness": 2.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "The subject “some Jews” is directly stated (and the vow repeated), yielding a simple noun-spot with a single unambiguous answer central to the plot."
+        },
+        "window_verses": [
+          12,
+          13,
+          14,
+          15
+        ],
+        "window_text": {
+          "12": "The next morning some Jews formed a conspiracy and bound themselves with an oath not to eat or drink until they had killed Paul.",
+          "13": "More than forty men were involved in this plot.",
+          "14": "They went to the chief priests and the elders and said, “We have taken a solemn oath not to eat anything until we have killed Paul.",
+          "15": "Now then, you and the Sanhedrin petition the commander to bring him before you on the pretext of wanting more accurate information about his case. We are ready to kill him before he gets here.”"
+        },
+        "reading_groups": [
+          "the conspirators (some Jews, over forty men) who took the oath"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "bare-name answer 'Some Jews who form the plot': names survive translation",
+            "lexical: structure_dependence 2.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 12,
+          "answer_verse_original": 12,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 12",
+          "readings_failures": []
+        },
+        "content_id": "v12-15:2"
+      },
+      {
+        "question": "Whom do the chief priests and elders plan to ask to bring Paul?",
+        "answer": "The commander",
+        "answer_verse": 14,
+        "wrong_answer": "The Sanhedrin",
+        "relation": "direction",
+        "readings": [
+          {
+            "answer": "the commander",
+            "support": "petition the commander to bring him"
+          }
+        ],
+        "distinct_readings": [
+          "the commander"
+        ],
+        "scores": {
+          "structure_dependence": 4.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "The clause “you … petition the commander to bring him” uniquely names the addressee (the commander) and requires modest role-mapping but is unambiguous."
+        },
+        "window_verses": [
+          12,
+          13,
+          14,
+          15
+        ],
+        "window_text": {
+          "12": "The next morning some Jews formed a conspiracy and bound themselves with an oath not to eat or drink until they had killed Paul.",
+          "13": "More than forty men were involved in this plot.",
+          "14": "They went to the chief priests and the elders and said, “We have taken a solemn oath not to eat anything until we have killed Paul.",
+          "15": "Now then, you and the Sanhedrin petition the commander to bring him before you on the pretext of wanting more accurate information about his case. We are ready to kill him before he gets here.”"
+        },
+        "reading_groups": [
+          "the commander"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 4.0 (need 7.0)"
+          ],
+          "notes": [
+            "corrected metadata from 15 to 14; reading support and question relation identify verse 14",
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 14,
+          "answer_verse_original": 15,
+          "answer_verse_corrected": true,
+          "answer_verse_note": "corrected metadata from 15 to 14; reading support and question relation identify verse 14",
+          "readings_failures": []
+        },
+        "content_id": "v12-15:3"
+      },
+      {
+        "question": "Before whom do the chief priests and elders ask the commander to bring Paul?",
+        "answer": "The Sanhedrin",
+        "answer_verse": 14,
+        "wrong_answer": "The commander",
+        "relation": "direction",
+        "readings": [
+          {
+            "answer": "Before the chief priests and elders",
+            "support": "bring him before you | the chief priests and the elders"
+          },
+          {
+            "answer": "Before the Sanhedrin",
+            "support": "you and the Sanhedrin | bring him before you"
+          }
+        ],
+        "distinct_readings": [
+          "Before the chief priests and elders",
+          "Before the Sanhedrin"
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "It relies on resolving the pronoun in “bring him before you” to the council (the Sanhedrin), a single, relational reference with a clear intended target."
+        },
+        "window_verses": [
+          12,
+          13,
+          14,
+          15
+        ],
+        "window_text": {
+          "12": "The next morning some Jews formed a conspiracy and bound themselves with an oath not to eat or drink until they had killed Paul.",
+          "13": "More than forty men were involved in this plot.",
+          "14": "They went to the chief priests and the elders and said, “We have taken a solemn oath not to eat anything until we have killed Paul.",
+          "15": "Now then, you and the Sanhedrin petition the commander to bring him before you on the pretext of wanting more accurate information about his case. We are ready to kill him before he gets here.”"
+        },
+        "reading_groups": [
+          "before the chief priests and elders",
+          "before the Sanhedrin"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "2 defensible readings: before the chief priests and elders | before the Sanhedrin",
+            "bare-name answer 'The Sanhedrin': names survive translation"
+          ],
+          "notes": [
+            "corrected metadata from 15 to 14; reading support and question relation identify verse 14",
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 14,
+          "answer_verse_original": 15,
+          "answer_verse_corrected": true,
+          "answer_verse_note": "corrected metadata from 15 to 14; reading support and question relation identify verse 14",
+          "readings_failures": [
+            "2 defensible readings: before the chief priests and elders | before the Sanhedrin"
+          ]
+        },
+        "content_id": "v12-15:4"
+      },
+      {
+        "question": "Why do the chief priests and elders say they want Paul brought?",
+        "answer": "To learn more about his case",
+        "answer_verse": 15,
+        "wrong_answer": "To kill Paul",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "To get more accurate information about his case.",
+            "support": "on the pretext of wanting more accurate information about his case"
+          },
+          {
+            "answer": "Because it serves the conspirators’ plan to ambush and kill him.",
+            "support": "Now then, you and the Sanhedrin petition the commander to bring him before you | We are ready to kill him before he gets here"
+          }
+        ],
+        "distinct_readings": [
+          "To get more accurate information about his case.",
+          "Because it serves the conspirators’ plan to ambush and kill him."
+        ],
+        "scores": {
+          "structure_dependence": 5.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "The purpose is given once in a subordinate clause (“on the pretext of wanting more accurate information about his case”) and is explicit and unique."
+        },
+        "window_verses": [
+          12,
+          13,
+          14,
+          15
+        ],
+        "window_text": {
+          "12": "The next morning some Jews formed a conspiracy and bound themselves with an oath not to eat or drink until they had killed Paul.",
+          "13": "More than forty men were involved in this plot.",
+          "14": "They went to the chief priests and the elders and said, “We have taken a solemn oath not to eat anything until we have killed Paul.",
+          "15": "Now then, you and the Sanhedrin petition the commander to bring him before you on the pretext of wanting more accurate information about his case. We are ready to kill him before he gets here.”"
+        },
+        "reading_groups": [
+          "to get more accurate information about his case (the stated pretext)",
+          "to enable the conspirators’ ambush and killing (the real motive)"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "dangling pronoun: they",
+            "2 defensible readings: to get more accurate information about his case (the stated pretext) | to enable the conspirators’ ambush and killing (the real motive)",
+            "competitor 'To kill Paul' is itself defensible — the item is ambiguous, not discriminating",
+            "lexical: structure_dependence 5.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 15,
+          "answer_verse_original": 15,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 15",
+          "readings_failures": [
+            "2 defensible readings: to get more accurate information about his case (the stated pretext) | to enable the conspirators’ ambush and killing (the real motive)",
+            "competitor 'To kill Paul' is itself defensible — the item is ambiguous, not discriminating"
+          ]
+        },
+        "content_id": "v12-15:5"
+      },
+      {
+        "question": "Whom do the more than forty men bind themselves to kill?",
+        "answer": "Paul",
+        "answer_verse": 12,
+        "wrong_answer": "The commander",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "Paul",
+            "support": "until they had killed Paul"
+          }
+        ],
+        "distinct_readings": [
+          "Paul"
+        ],
+        "scores": {
+          "structure_dependence": 2.0,
+          "statement_uniqueness": 2.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "“Paul” is named directly (and repeated) as the target of the oath, making this a straightforward noun identification central to the plot."
+        },
+        "window_verses": [
+          12,
+          13,
+          14,
+          15
+        ],
+        "window_text": {
+          "12": "The next morning some Jews formed a conspiracy and bound themselves with an oath not to eat or drink until they had killed Paul.",
+          "13": "More than forty men were involved in this plot.",
+          "14": "They went to the chief priests and the elders and said, “We have taken a solemn oath not to eat anything until we have killed Paul.",
+          "15": "Now then, you and the Sanhedrin petition the commander to bring him before you on the pretext of wanting more accurate information about his case. We are ready to kill him before he gets here.”"
+        },
+        "reading_groups": [
+          "Paul"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "bare-name answer 'Paul': names survive translation",
+            "lexical: structure_dependence 2.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 12,
+          "answer_verse_original": 12,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 12",
+          "readings_failures": []
+        },
+        "content_id": "v12-15:6"
+      },
+      {
+        "question": "To whom do the more than forty men report their oath?",
+        "answer": "The chief priests and the elders",
+        "answer_verse": 14,
+        "wrong_answer": "The commander",
+        "relation": "participant",
+        "readings": [
+          {
+            "answer": "the chief priests and the elders",
+            "support": "They went to the chief priests and the elders and said"
+          }
+        ],
+        "distinct_readings": [
+          "the chief priests and the elders"
+        ],
+        "scores": {
+          "structure_dependence": 3.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 5.0,
+          "runs": 1,
+          "reason": "The recipients are explicitly named once (“the chief priests and the elders”), making it a simple role mapping that is unique and unambiguous though not the core event."
+        },
+        "window_verses": [
+          12,
+          13,
+          14,
+          15
+        ],
+        "window_text": {
+          "12": "The next morning some Jews formed a conspiracy and bound themselves with an oath not to eat or drink until they had killed Paul.",
+          "13": "More than forty men were involved in this plot.",
+          "14": "They went to the chief priests and the elders and said, “We have taken a solemn oath not to eat anything until we have killed Paul.",
+          "15": "Now then, you and the Sanhedrin petition the commander to bring him before you on the pretext of wanting more accurate information about his case. We are ready to kill him before he gets here.”"
+        },
+        "reading_groups": [
+          "the chief priests and the elders"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "dangling pronoun: their",
+            "lexical: structure_dependence 3.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 14,
+          "answer_verse_original": 14,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 14",
+          "readings_failures": []
+        },
+        "content_id": "v12-15:7"
+      }
+    ],
+    "report": {
+      "window_id": "v12-15",
+      "verses": [
+        12,
+        13,
+        14,
+        15
+      ],
+      "generated": 7,
+      "scored": 7,
+      "kept": 1,
+      "survivors_before_window_selection": 1,
+      "window_selection_rejected": 0,
+      "repair_attempted": 0,
+      "repaired": 0,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

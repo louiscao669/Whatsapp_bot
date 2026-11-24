@@ -17,6 +17,8 @@ Included:
   Tier-1 easy QAs, canonical Gold-72 five-option QAs, and canonical Strong-66 QAs.
 - The Tier-1 passage catalog, Gold-72 item/window files, pilot partition, and
   original/canonical QA verse-window maps.
+- The reviewed Chinese MCQs, their eligibility decisions, and the natural-name
+  Sol passage release for the [119-question test participant](../human_pilot/README.md#test-the-reviewed-chinese-mcqs-with-the-sol-passages).
 
 `QA_algorithm/scripts` is offline research and is not imported by the running
 services. Its inputs, outputs, simulations and model-fitting code are excluded,

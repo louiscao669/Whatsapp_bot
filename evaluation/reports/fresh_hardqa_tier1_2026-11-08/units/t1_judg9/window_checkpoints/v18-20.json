@@ -1,0 +1,739 @@
+{
+  "config_digest": "bf29cf564aae7d15d3bd5bdbff20af59f16e06874e5bad45e83aa6623bdff95a",
+  "data": {
+    "kept": [
+      {
+        "question": "What is called down if the citizens have not acted rightly toward Jerub-Baal?",
+        "answer": "Fire between Abimelek and the citizens, each destroying the other.",
+        "answer_verse": 20,
+        "wrong_answer": "Mutual joy between Abimelek and the citizens.",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "Fire to come from Abimelek to consume the citizens of Shechem and Beth Millo, and fire to come from the citizens to consume Abimelek.",
+            "support": "let fire come out from Abimelek and consume you, the citizens of Shechem and Beth Millo | let fire come out from you, the citizens of Shechem and Beth Millo, and consume Abimelek"
+          }
+        ],
+        "distinct_readings": [
+          "Fire to come from Abimelek to consume the citizens of Shechem and Beth Millo, and fire to come from the citizens to consume Abimelek."
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 10.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "Answering requires linking the negative condition to the imprecation and tracking the bidirectional ‘fire from X to consume Y’ relation, a single explicit and central statement in this window."
+        },
+        "window_verses": [
+          18,
+          19,
+          20
+        ],
+        "window_text": {
+          "18": "But today you have revolted against my father’s family. You have murdered his seventy sons on a single stone and have made Abimelek, the son of his female slave, king over the citizens of Shechem because he is related to you.",
+          "19": "So have you acted honorably and in good faith toward Jerub-Baal and his family today? If you have, may Abimelek be your joy, and may you be his, too!",
+          "20": "But if you have not, let fire come out from Abimelek and consume you, the citizens of Shechem and Beth Millo, and let fire come out from you, the citizens of Shechem and Beth Millo, and consume Abimelek!”"
+        },
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "citizen"
+          ],
+          "answer_verse": 20,
+          "answer_verse_original": 20,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "consistent",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "What is called down if the citizens have not acted rightly toward Jerub-Baal?",
+            "readings": [
+              {
+                "answer": "Fire to come from Abimelek to consume the citizens of Shechem and Beth Millo, and fire to come from the citizens to consume Abimelek.",
+                "support": "let fire come out from Abimelek and consume you, the citizens of Shechem and Beth Millo | let fire come out from you, the citizens of Shechem and Beth Millo, and consume Abimelek"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The reading matches v.20 exactly: “let fire come out from Abimelek and consume you… and let fire come out from you… and consume Abimelek,” which is mutual destruction by fire between Abimelek and the citizens."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "Verse 20 explicitly calls for fire from Abimelek to consume the citizens and fire from the citizens to consume Abimelek, i.e., mutual destruction.",
+            "status": "passed"
+          }
+        },
+        "scores_after_repair_raw": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 10.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "Answering requires linking the negative condition to the imprecation and tracking the bidirectional ‘fire from X to consume Y’ relation, a single explicit and central statement in this window."
+        },
+        "repaired": true,
+        "repair_attempted": true,
+        "question_before_repair": "What is called down if they have not acted rightly toward Jerub-Baal?",
+        "scores_before_repair": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "This summarizes the conditional curse in verse 20—mutual consuming fire between Abimelek and the citizens—stated once and central, with a single clear concept in a good translation."
+        },
+        "audit_before_repair": {
+          "passed": false,
+          "failures": [
+            "dangling pronoun: they"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 20,
+          "answer_verse_original": 20,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "consistent",
+          "readings_failures": []
+        },
+        "repair_log": [
+          {
+            "before": "What is called down if they have not acted rightly toward Jerub-Baal?",
+            "after": "What is called down if the citizens have not acted rightly toward Jerub-Baal?",
+            "note": "Replaced dangling pronoun \"they\" with the explicit noun \"the citizens.\"",
+            "failures_before": [
+              "dangling pronoun: they"
+            ],
+            "scores_before": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 9.0,
+              "centrality": 9.0,
+              "runs": 1,
+              "reason": "This summarizes the conditional curse in verse 20—mutual consuming fire between Abimelek and the citizens—stated once and central, with a single clear concept in a good translation."
+            },
+            "accepted": true,
+            "reason": "passed full rejudgment",
+            "suitability_judgment": {
+              "Q": "What is called down if the citizens have not acted rightly toward Jerub-Baal?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "It clearly targets the conditional curse in verse 20, which directly states that fire is invoked to consume Abimelek and the citizens, yielding a single clear answer from the window."
+            },
+            "failures_after": [],
+            "scores_after": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 10.0,
+              "answer_certainty": 10.0,
+              "centrality": 9.0,
+              "runs": 1,
+              "reason": "Answering requires linking the negative condition to the imprecation and tracking the bidirectional ‘fire from X to consume Y’ relation, a single explicit and central statement in this window."
+            },
+            "scores_used": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 10.0,
+              "answer_certainty": 10.0,
+              "centrality": 9.0,
+              "runs": 1,
+              "reason": "Answering requires linking the negative condition to the imprecation and tracking the bidirectional ‘fire from X to consume Y’ relation, a single explicit and central statement in this window."
+            }
+          }
+        ],
+        "window_selection_reason": "Item 2 hinges on the conditional polarity and bidirectional “fire from X to consume Y” structure in v20, giving one clear answer and a plausible opposite competitor drawn from v19.",
+        "window_structure_max": 8.0,
+        "content_id": "v18-20:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Why did the citizens of Shechem set Abimelek as king over them?",
+        "answer": "Because Abimelek is related to the citizens of Shechem.",
+        "answer_verse": 18,
+        "wrong_answer": "Because Abimelek is the son of his female slave.",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "Because he is related to them.",
+            "support": "because he is related to you"
+          }
+        ],
+        "distinct_readings": [
+          "Because he is related to them."
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 2,
+          "reason": "The answer hinges on the causal clause “because he is related to you,” stated once, unambiguous, and central to why they crowned him."
+        },
+        "window_verses": [
+          18,
+          19,
+          20
+        ],
+        "window_text": {
+          "18": "But today you have revolted against my father’s family. You have murdered his seventy sons on a single stone and have made Abimelek, the son of his female slave, king over the citizens of Shechem because he is related to you.",
+          "19": "So have you acted honorably and in good faith toward Jerub-Baal and his family today? If you have, may Abimelek be your joy, and may you be his, too!",
+          "20": "But if you have not, let fire come out from Abimelek and consume you, the citizens of Shechem and Beth Millo, and let fire come out from you, the citizens of Shechem and Beth Millo, and consume Abimelek!”"
+        },
+        "reading_groups": [
+          "Over the citizens of Shechem"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "abimelek",
+            "citizen",
+            "shechem"
+          ],
+          "answer_verse": 18,
+          "answer_verse_original": 18,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 18",
+          "readings_failures": []
+        },
+        "content_id": "v18-20:2"
+      },
+      {
+        "question": "From whom does fire go out to consume the citizens of Shechem and Beth Millo?",
+        "answer": "From Abimelek.",
+        "answer_verse": 20,
+        "wrong_answer": "From the citizens of Shechem and Beth Millo.",
+        "relation": "direction",
+        "readings": [
+          {
+            "answer": "Abimelek",
+            "support": "let fire come out from Abimelek and consume you, the citizens of Shechem and Beth Millo"
+          }
+        ],
+        "distinct_readings": [
+          "Abimelek"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 2,
+          "reason": "Among two mirrored curse clauses, this requires tracking the direction “fire comes out from Abimelek” toward the citizens, which is stated once and is clear but not incidental."
+        },
+        "window_verses": [
+          18,
+          19,
+          20
+        ],
+        "window_text": {
+          "18": "But today you have revolted against my father’s family. You have murdered his seventy sons on a single stone and have made Abimelek, the son of his female slave, king over the citizens of Shechem because he is related to you.",
+          "19": "So have you acted honorably and in good faith toward Jerub-Baal and his family today? If you have, may Abimelek be your joy, and may you be his, too!",
+          "20": "But if you have not, let fire come out from Abimelek and consume you, the citizens of Shechem and Beth Millo, and let fire come out from you, the citizens of Shechem and Beth Millo, and consume Abimelek!”"
+        },
+        "reading_groups": [
+          "Abimelek is consumed by the fire from the citizens"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: beth, millo",
+            "quotes the passage: quotes verse 20: 'the citizens of shechem and'",
+            "bare-name answer 'From Abimelek.': names survive translation"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "beth",
+            "millo"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 20,
+          "answer_verse_original": 20,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 20",
+          "readings_failures": []
+        },
+        "content_id": "v18-20:3"
+      },
+      {
+        "question": "Who is consumed by the fire that goes out from the citizens of Shechem and Beth Millo?",
+        "answer": "Abimelek.",
+        "answer_verse": 20,
+        "wrong_answer": "The citizens of Shechem and Beth Millo.",
+        "relation": "direction",
+        "readings": [
+          {
+            "answer": "Abimelek",
+            "support": "let fire come out from you, the citizens of Shechem and Beth Millo, and consume Abimelek"
+          }
+        ],
+        "distinct_readings": [
+          "Abimelek"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 2,
+          "reason": "Among two mirrored curse clauses, this requires tracking the direction “fire comes out from Abimelek” toward the citizens, which is stated once and is clear but not incidental."
+        },
+        "window_verses": [
+          18,
+          19,
+          20
+        ],
+        "window_text": {
+          "18": "But today you have revolted against my father’s family. You have murdered his seventy sons on a single stone and have made Abimelek, the son of his female slave, king over the citizens of Shechem because he is related to you.",
+          "19": "So have you acted honorably and in good faith toward Jerub-Baal and his family today? If you have, may Abimelek be your joy, and may you be his, too!",
+          "20": "But if you have not, let fire come out from Abimelek and consume you, the citizens of Shechem and Beth Millo, and let fire come out from you, the citizens of Shechem and Beth Millo, and consume Abimelek!”"
+        },
+        "reading_groups": [
+          "Abimelek is consumed by the fire from the citizens"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: beth, millo",
+            "quotes the passage: quotes verse 20: 'the citizens of shechem and'",
+            "bare-name answer 'Abimelek.': names survive translation"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "beth",
+            "millo"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 20,
+          "answer_verse_original": 20,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 20",
+          "readings_failures": []
+        },
+        "content_id": "v18-20:4"
+      },
+      {
+        "question": "Toward whom must the citizens of Shechem show honor and good faith?",
+        "answer": "Jerub-Baal and his family.",
+        "answer_verse": 19,
+        "wrong_answer": "Abimelek.",
+        "relation": "participant",
+        "readings": [
+          {
+            "answer": "Jerub-Baal and his family",
+            "support": "toward Jerub-Baal and his family"
+          }
+        ],
+        "distinct_readings": [
+          "Jerub-Baal and his family"
+        ],
+        "scores": {
+          "structure_dependence": 4.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "It directly extracts the prepositional object of “acted honorably and in good faith toward Jerub-Baal and his family,” which is stated once and clear though less pivotal than the curse."
+        },
+        "window_verses": [
+          18,
+          19,
+          20
+        ],
+        "window_text": {
+          "18": "But today you have revolted against my father’s family. You have murdered his seventy sons on a single stone and have made Abimelek, the son of his female slave, king over the citizens of Shechem because he is related to you.",
+          "19": "So have you acted honorably and in good faith toward Jerub-Baal and his family today? If you have, may Abimelek be your joy, and may you be his, too!",
+          "20": "But if you have not, let fire come out from Abimelek and consume you, the citizens of Shechem and Beth Millo, and let fire come out from you, the citizens of Shechem and Beth Millo, and consume Abimelek!”"
+        },
+        "reading_groups": [
+          "Toward Jerub-Baal and his family"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 4.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 19,
+          "answer_verse_original": 19,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 19",
+          "readings_failures": []
+        },
+        "content_id": "v18-20:5"
+      },
+      {
+        "question": "Over whom did the citizens of Shechem set Abimelek as king?",
+        "answer": "The citizens of Shechem.",
+        "answer_verse": 18,
+        "wrong_answer": "Jerub-Baal and his family.",
+        "relation": "direction",
+        "readings": [
+          {
+            "answer": "the citizens of Shechem",
+            "support": "king over the citizens of Shechem"
+          }
+        ],
+        "distinct_readings": [
+          "the citizens of Shechem"
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 2,
+          "reason": "The answer hinges on the causal clause “because he is related to you,” stated once, unambiguous, and central to why they crowned him."
+        },
+        "window_verses": [
+          18,
+          19,
+          20
+        ],
+        "window_text": {
+          "18": "But today you have revolted against my father’s family. You have murdered his seventy sons on a single stone and have made Abimelek, the son of his female slave, king over the citizens of Shechem because he is related to you.",
+          "19": "So have you acted honorably and in good faith toward Jerub-Baal and his family today? If you have, may Abimelek be your joy, and may you be his, too!",
+          "20": "But if you have not, let fire come out from Abimelek and consume you, the citizens of Shechem and Beth Millo, and let fire come out from you, the citizens of Shechem and Beth Millo, and consume Abimelek!”"
+        },
+        "reading_groups": [
+          "Over the citizens of Shechem"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "answer leaks into question: citizen, shechem",
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "citizen",
+            "shechem"
+          ],
+          "answer_verse": 18,
+          "answer_verse_original": 18,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 18",
+          "readings_failures": []
+        },
+        "content_id": "v18-20:6"
+      },
+      {
+        "question": "Why do the people make Abimelek king over Shechem?",
+        "answer": "Because he is their relative.",
+        "answer_verse": 18,
+        "wrong_answer": "Because he is the son of the slave woman.",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "Because he is related to them.",
+            "support": "because he is related to you"
+          }
+        ],
+        "distinct_readings": [
+          "Because he is related to them."
+        ],
+        "scores": {
+          "structure_dependence": 5.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "The causal clause “because he is related to you” must be identified as the reason, stated once and unambiguous, and it is pertinent to the accusation."
+        },
+        "window_verses": [
+          18,
+          19,
+          20
+        ],
+        "window_text": {
+          "18": "But today you have revolted against my father’s family. You have murdered his seventy sons on a single stone and have made Abimelek, the son of his female slave, king over the citizens of Shechem because he is related to you.",
+          "19": "So have you acted honorably and in good faith toward Jerub-Baal and his family today? If you have, may Abimelek be your joy, and may you be his, too!",
+          "20": "But if you have not, let fire come out from Abimelek and consume you, the citizens of Shechem and Beth Millo, and let fire come out from you, the citizens of Shechem and Beth Millo, and consume Abimelek!”"
+        },
+        "reading_groups": [
+          "Because he is related to them"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 5.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 18,
+          "answer_verse_original": 18,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 18",
+          "readings_failures": []
+        },
+        "content_id": "v18-20:7"
+      },
+      {
+        "question": "From whom is the fire to come that burns the citizens of Shechem and Beth Millo?",
+        "answer": "From Abimelek.",
+        "answer_verse": 20,
+        "wrong_answer": "From the citizens of Shechem and Beth Millo.",
+        "relation": "direction",
+        "readings": [
+          {
+            "answer": "Abimelek",
+            "support": "let fire come out from Abimelek and consume you, the citizens of Shechem and Beth Millo"
+          }
+        ],
+        "distinct_readings": [
+          "Abimelek"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 2,
+          "reason": "It requires mapping direction in a mirrored curse—selecting Abimelek as the fire’s source toward the citizens—from one specific clause, with a single clear answer central to the curse."
+        },
+        "window_verses": [
+          18,
+          19,
+          20
+        ],
+        "window_text": {
+          "18": "But today you have revolted against my father’s family. You have murdered his seventy sons on a single stone and have made Abimelek, the son of his female slave, king over the citizens of Shechem because he is related to you.",
+          "19": "So have you acted honorably and in good faith toward Jerub-Baal and his family today? If you have, may Abimelek be your joy, and may you be his, too!",
+          "20": "But if you have not, let fire come out from Abimelek and consume you, the citizens of Shechem and Beth Millo, and let fire come out from you, the citizens of Shechem and Beth Millo, and consume Abimelek!”"
+        },
+        "reading_groups": [
+          "It is to burn Abimelek"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: beth, millo",
+            "quotes the passage: quotes verse 20: 'the citizens of shechem and'",
+            "bare-name answer 'From Abimelek.': names survive translation"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "beth",
+            "millo"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 20,
+          "answer_verse_original": 20,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 20",
+          "readings_failures": []
+        },
+        "content_id": "v18-20:8"
+      },
+      {
+        "question": "Whom is the fire from the citizens of Shechem and Beth Millo to burn?",
+        "answer": "Abimelek.",
+        "answer_verse": 20,
+        "wrong_answer": "The citizens of Shechem and Beth Millo.",
+        "relation": "direction",
+        "readings": [
+          {
+            "answer": "Abimelek",
+            "support": "fire come out from you, the citizens of Shechem and Beth Millo, and consume Abimelek"
+          }
+        ],
+        "distinct_readings": [
+          "Abimelek"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 2,
+          "reason": "It requires mapping direction in a mirrored curse—selecting Abimelek as the fire’s source toward the citizens—from one specific clause, with a single clear answer central to the curse."
+        },
+        "window_verses": [
+          18,
+          19,
+          20
+        ],
+        "window_text": {
+          "18": "But today you have revolted against my father’s family. You have murdered his seventy sons on a single stone and have made Abimelek, the son of his female slave, king over the citizens of Shechem because he is related to you.",
+          "19": "So have you acted honorably and in good faith toward Jerub-Baal and his family today? If you have, may Abimelek be your joy, and may you be his, too!",
+          "20": "But if you have not, let fire come out from Abimelek and consume you, the citizens of Shechem and Beth Millo, and let fire come out from you, the citizens of Shechem and Beth Millo, and consume Abimelek!”"
+        },
+        "reading_groups": [
+          "It is to burn Abimelek"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: beth, millo",
+            "quotes the passage: quotes verse 20: 'the citizens of shechem and'",
+            "bare-name answer 'Abimelek.': names survive translation"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "beth",
+            "millo"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 20,
+          "answer_verse_original": 20,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 20",
+          "readings_failures": []
+        },
+        "content_id": "v18-20:9"
+      },
+      {
+        "question": "When will Abimelek and the people be each other’s joy?",
+        "answer": "If they have treated Jerub-Baal and his family rightly.",
+        "answer_verse": 19,
+        "wrong_answer": "If they have not acted rightly.",
+        "relation": "polarity",
+        "readings": [
+          {
+            "answer": "If they have acted honorably and in good faith toward Jerub-Baal and his family today.",
+            "support": "acted honorably and in good faith toward Jerub-Baal and his family today | If you have, may Abimelek be your joy, and may you be his, too!"
+          }
+        ],
+        "distinct_readings": [
+          "If they have acted honorably and in good faith toward Jerub-Baal and his family today."
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "It hinges on the conditional link to having acted rightly toward Jerub-Baal and his family, stated once and clearly defining the blessing side of the contrast."
+        },
+        "window_verses": [
+          18,
+          19,
+          20
+        ],
+        "window_text": {
+          "18": "But today you have revolted against my father’s family. You have murdered his seventy sons on a single stone and have made Abimelek, the son of his female slave, king over the citizens of Shechem because he is related to you.",
+          "19": "So have you acted honorably and in good faith toward Jerub-Baal and his family today? If you have, may Abimelek be your joy, and may you be his, too!",
+          "20": "But if you have not, let fire come out from Abimelek and consume you, the citizens of Shechem and Beth Millo, and let fire come out from you, the citizens of Shechem and Beth Millo, and consume Abimelek!”"
+        },
+        "reading_groups": [
+          "If they have acted honorably and in good faith toward Jerub-Baal and his family today"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: hybrid window selector — Item 2 hinges on the conditional polarity and bidirectional “fire from X to consume Y” structure in v20, giving one clear answer and a plausible opposite competitor drawn from v19."
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 19,
+          "answer_verse_original": 19,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 19",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "When will Abimelek and the people be each other’s joy?",
+            "readings": [
+              {
+                "answer": "If they have acted honorably and in good faith toward Jerub-Baal and his family today.",
+                "support": "acted honorably and in good faith toward Jerub-Baal and his family today | If you have, may Abimelek be your joy, and may you be his, too!"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Verse 19 explicitly states the condition: if they have acted honorably and in good faith toward Jerub-Baal and his family, then Abimelek will be their joy and they his, matching the key’s “treated rightly” paraphrase."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "Verse 19 clearly sets the condition for mutual joy as having acted honorably and in good faith toward Jerub-Baal and his family.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "Item 2 hinges on the conditional polarity and bidirectional “fire from X to consume Y” structure in v20, giving one clear answer and a plausible opposite competitor drawn from v19.",
+        "content_id": "v18-20:10"
+      }
+    ],
+    "report": {
+      "window_id": "v18-20",
+      "verses": [
+        18,
+        19,
+        20
+      ],
+      "generated": 10,
+      "scored": 10,
+      "kept": 1,
+      "survivors_before_window_selection": 2,
+      "window_selection_rejected": 1,
+      "repair_attempted": 1,
+      "repaired": 1,
+      "window_retries_used": 1,
+      "score_runs": 1
+    }
+  }
+}

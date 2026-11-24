@@ -1,0 +1,410 @@
+[
+  {
+    "question": "Who is expected to make the image in the mother’s vow?",
+    "answer": "her son",
+    "answer_verse": 3,
+    "wrong_answer": "the silversmith",
+    "relation": "modality",
+    "readings": [
+      {
+        "answer": "Her son",
+        "support": "for my son to make an image"
+      }
+    ],
+    "distinct_readings": [
+      "Her son"
+    ],
+    "scores": {
+      "structure_dependence": 8.0,
+      "statement_uniqueness": 9.0,
+      "answer_certainty": 10.0,
+      "centrality": 7.0,
+      "runs": 1,
+      "reason": "One must parse the clause 'for my son to make' to identify the agent, which is stated once, clearly points to the son, and is important to the vow's content."
+    },
+    "window_verses": [
+      3,
+      4
+    ],
+    "window_text": {
+      "3": "When he returned the eleven hundred shekels of silver to his mother, she said, “I solemnly consecrate my silver to the Lord for my son to make an image overlaid with silver. I will give it back to you.”",
+      "4": "So after he returned the silver to his mother, she took two hundred shekels of silver and gave them to a silversmith, who used them to make the idol. And it was put in Micah’s house."
+    },
+    "reading_groups": [
+      "Her son is expected to make the image per the vow"
+    ],
+    "audit": {
+      "passed": true,
+      "failures": [],
+      "notes": [
+        "distractor check skipped: none stated by this output tier"
+      ],
+      "location_leak_terms": [],
+      "distractors_found": [],
+      "distractors_missing": false,
+      "answer_leak_terms": [],
+      "answer_verse": 3,
+      "answer_verse_original": 3,
+      "answer_verse_corrected": false,
+      "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 3",
+      "readings_failures": [],
+      "answerability": {
+        "model": "gpt-5",
+        "mode": "enforce",
+        "question": "Who is expected to make the image in the mother’s vow?",
+        "readings": [
+          {
+            "answer": "Her son",
+            "support": "for my son to make an image"
+          }
+        ],
+        "assessments": [
+          {
+            "number": 1,
+            "classification": "equivalent_to_key",
+            "reason": "The vow explicitly says, “for my son to make an image,” indicating the son is expected to make it."
+          }
+        ],
+        "verdict": "pass",
+        "reason": "The passage states “for my son to make an image,” matching the key’s answer of her son.",
+        "status": "passed"
+      }
+    },
+    "window_selection_reason": "It hinges on parsing the vow’s purpose clause (“for my son to make”), distinguishing intended maker from the later actor, yielding a single clear answer with a plausible competitor from verse 4.",
+    "window_structure_max": 8.0,
+    "content_id": "v3-4:1",
+    "rank_in_batch": 1,
+    "rank_reason": "The top items hinge on parsing pronouns, control, and changing roles in specific clauses that occur only once and can flip if grammar is lost, while the bottom items are repeated or obvious place/possessor facts that survive scrambling.",
+    "final_rank": 1
+  },
+  {
+    "question": "Who serves as priest for Micah?",
+    "answer": "one of Micah’s sons",
+    "answer_verse": 5,
+    "wrong_answer": "Micah",
+    "relation": "participant",
+    "readings": [
+      {
+        "answer": "one of his sons",
+        "support": "installed one of his sons as his priest"
+      }
+    ],
+    "distinct_readings": [
+      "one of his sons"
+    ],
+    "scores": {
+      "structure_dependence": 8.0,
+      "statement_uniqueness": 9.0,
+      "answer_certainty": 10.0,
+      "centrality": 7.0,
+      "runs": 1,
+      "reason": "It requires resolving that “his priest” refers to Micah and identifying the subject performing the installation, a single-clause fact stated once and central to verse 5."
+    },
+    "window_verses": [
+      5,
+      6
+    ],
+    "window_text": {
+      "5": "Now this man Micah had a shrine, and he made an ephod and some household gods and installed one of his sons as his priest.",
+      "6": "In those days Israel had no king; everyone did as they saw fit."
+    },
+    "reading_groups": [
+      "Micah’s priest is one of his sons"
+    ],
+    "audit": {
+      "passed": true,
+      "failures": [],
+      "notes": [
+        "distractor check skipped: none stated by this output tier"
+      ],
+      "location_leak_terms": [],
+      "distractors_found": [],
+      "distractors_missing": false,
+      "answer_leak_terms": [
+        "micah"
+      ],
+      "answer_verse": 5,
+      "answer_verse_original": 5,
+      "answer_verse_corrected": false,
+      "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 5",
+      "readings_failures": [],
+      "answerability": {
+        "model": "gpt-5",
+        "mode": "enforce",
+        "question": "Who serves as priest for Micah?",
+        "readings": [
+          {
+            "answer": "one of his sons",
+            "support": "installed one of his sons as his priest"
+          }
+        ],
+        "assessments": [
+          {
+            "number": 1,
+            "classification": "equivalent_to_key",
+            "reason": "The passage states Micah \"installed one of his sons as his priest,\" which matches \"one of Micah’s sons.\""
+          }
+        ],
+        "verdict": "pass",
+        "reason": "The text explicitly says Micah made one of his sons his priest, matching the key.",
+        "status": "passed"
+      }
+    },
+    "window_selection_reason": "It best tests grammatical roles and referents—parsing “he installed one of his sons as his priest” to identify who served as priest—with a plausible misparse competitor (Micah) and natural wording.",
+    "window_structure_max": 8.0,
+    "content_id": "v5-6:1",
+    "rank_in_batch": 2,
+    "rank_reason": "The top items hinge on parsing pronouns, control, and changing roles in specific clauses that occur only once and can flip if grammar is lost, while the bottom items are repeated or obvious place/possessor facts that survive scrambling.",
+    "final_rank": 2
+  },
+  {
+    "question": "Who utters the curse that Micah heard?",
+    "answer": "Micah’s mother",
+    "answer_verse": 2,
+    "wrong_answer": "Micah",
+    "relation": "agent-patient",
+    "readings": [
+      {
+        "answer": "His mother",
+        "support": "said to his mother, | I heard you utter a curse"
+      }
+    ],
+    "distinct_readings": [
+      "His mother"
+    ],
+    "scores": {
+      "structure_dependence": 9.0,
+      "statement_uniqueness": 9.0,
+      "answer_certainty": 10.0,
+      "centrality": 6.0,
+      "runs": 1,
+      "reason": "It hinges on resolving the pronoun “you” in “I heard you utter a curse” (mother) stated once, with a single clear answer that is relevant but secondary to the confession-blessing exchange."
+    },
+    "window_verses": [
+      1,
+      2
+    ],
+    "window_text": {
+      "1": "Now a man named Micah from the hill country of Ephraim",
+      "2": "said to his mother, “The eleven hundred shekels of silver that were taken from you and about which I heard you utter a curse—I have that silver with me; I took it.” Then his mother said, “The Lord bless you, my son!”"
+    },
+    "reading_groups": [
+      "Micah's mother uttered the curse"
+    ],
+    "audit": {
+      "passed": true,
+      "failures": [],
+      "notes": [
+        "distractor check skipped: none stated by this output tier"
+      ],
+      "location_leak_terms": [],
+      "distractors_found": [],
+      "distractors_missing": false,
+      "answer_leak_terms": [
+        "micah"
+      ],
+      "answer_verse": 2,
+      "answer_verse_original": 2,
+      "answer_verse_corrected": false,
+      "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 2",
+      "readings_failures": [],
+      "answerability": {
+        "model": "gpt-5",
+        "mode": "enforce",
+        "question": "Who utters the curse that Micah heard?",
+        "readings": [
+          {
+            "answer": "His mother",
+            "support": "said to his mother, | I heard you utter a curse"
+          }
+        ],
+        "assessments": [
+          {
+            "number": 1,
+            "classification": "equivalent_to_key",
+            "reason": "Micah says to his mother, “I heard you utter a curse,” so the “you” is his mother, matching the key."
+          }
+        ],
+        "verdict": "pass",
+        "reason": "Micah addresses his mother and says he heard “you” utter a curse, identifying the curser as his mother.",
+        "status": "passed"
+      }
+    },
+    "window_selection_reason": "Item 1 most demands parsing the embedded clause and second-person pronoun to identify the agent of “utter,” with a plausible misparse (Micah) yet a single clear answer (his mother).",
+    "window_structure_max": 9.0,
+    "content_id": "v1-2:1",
+    "rank_in_batch": 3,
+    "rank_reason": "The top items hinge on parsing pronouns, control, and changing roles in specific clauses that occur only once and can flip if grammar is lost, while the bottom items are repeated or obvious place/possessor facts that survive scrambling.",
+    "final_rank": 3
+  },
+  {
+    "question": "In whose house does the young man live?",
+    "answer": "The young man lives in Micah’s house.",
+    "answer_verse": 12,
+    "wrong_answer": "The young man lives in the young man’s house.",
+    "relation": "referent",
+    "readings": [
+      {
+        "answer": "Micah’s house",
+        "support": "Then Micah installed the Levite | lived in his house."
+      }
+    ],
+    "distinct_readings": [
+      "Micah’s house"
+    ],
+    "scores": {
+      "structure_dependence": 7.0,
+      "statement_uniqueness": 9.0,
+      "answer_certainty": 9.0,
+      "centrality": 6.0,
+      "runs": 1,
+      "reason": "Answering requires resolving the pronoun in “lived in his house” to Micah, which is uniquely stated and very likely but requires relational parsing."
+    },
+    "window_verses": [
+      9,
+      10,
+      11,
+      12,
+      13
+    ],
+    "window_text": {
+      "9": "Micah asked him, “Where are you from?” “I’m a Levite from Bethlehem in Judah,” he said, “and I’m looking for a place to stay.”",
+      "10": "Then Micah said to him, “Live with me and be my father and priest, and I’ll give you ten shekels of silver a year, your clothes and your food.”",
+      "11": "So the Levite agreed to live with him, and the young man became like one of his sons to him.",
+      "12": "Then Micah installed the Levite, and the young man became his priest and lived in his house.",
+      "13": "And Micah said, “Now I know that the Lord will be good to me, since this Levite has become my priest.”"
+    },
+    "reading_groups": [
+      "The young man lives in Micah’s house"
+    ],
+    "audit": {
+      "passed": true,
+      "failures": [],
+      "notes": [
+        "distractor check skipped: none stated by this output tier"
+      ],
+      "location_leak_terms": [],
+      "distractors_found": [],
+      "distractors_missing": false,
+      "answer_leak_terms": [
+        "hous",
+        "liv",
+        "young"
+      ],
+      "answer_verse": 12,
+      "answer_verse_original": 12,
+      "answer_verse_corrected": false,
+      "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 12",
+      "readings_failures": [],
+      "answerability": {
+        "model": "gpt-5",
+        "mode": "enforce",
+        "question": "In whose house does the young man live?",
+        "readings": [
+          {
+            "answer": "Micah’s house",
+            "support": "Then Micah installed the Levite | lived in his house."
+          }
+        ],
+        "assessments": [
+          {
+            "number": 1,
+            "classification": "equivalent_to_key",
+            "reason": "Verse 12 says the young man became his priest and lived in his house; with Micah as the referent from the prior clause and invitation (v.10), “his house” is Micah’s."
+          }
+        ],
+        "verdict": "pass",
+        "reason": "The passage explicitly says the young man lived in Micah’s house (v.12).",
+        "status": "passed"
+      }
+    },
+    "window_selection_reason": "It hinges on resolving the pronoun “his house” in v.12 to Micah, a structurally grounded referent decision clearly supported by the context, and the competitor reflects the plausible misparse.",
+    "window_structure_max": 7.0,
+    "content_id": "v9-13:1",
+    "rank_in_batch": 4,
+    "rank_reason": "The top items hinge on parsing pronouns, control, and changing roles in specific clauses that occur only once and can flip if grammar is lost, while the bottom items are repeated or obvious place/possessor facts that survive scrambling.",
+    "final_rank": 4
+  },
+  {
+    "question": "From which place does the young Levite set out?",
+    "answer": "The young Levite leaves from Bethlehem in Judah.",
+    "answer_verse": 8,
+    "wrong_answer": "The young Levite leaves from Micah’s house in the hill country of Ephraim.",
+    "relation": "direction",
+    "readings": [
+      {
+        "answer": "Bethlehem in Judah",
+        "support": "from Bethlehem in Judah | left that town"
+      }
+    ],
+    "distinct_readings": [
+      "Bethlehem in Judah"
+    ],
+    "scores": {
+      "structure_dependence": 8.0,
+      "statement_uniqueness": 8.0,
+      "answer_certainty": 10.0,
+      "centrality": 7.0,
+      "runs": 1,
+      "reason": "Determining the origin requires resolving that “that town” refers to Bethlehem in Judah and distinguishing origin from destination, stated once and unambiguous."
+    },
+    "window_verses": [
+      7,
+      8
+    ],
+    "window_text": {
+      "7": "A young Levite from Bethlehem in Judah, who had been living within the clan of Judah,",
+      "8": "left that town in search of some other place to stay. On his way he came to Micah’s house in the hill country of Ephraim."
+    },
+    "reading_groups": [
+      "He sets out from Bethlehem in Judah"
+    ],
+    "audit": {
+      "passed": true,
+      "failures": [],
+      "notes": [
+        "corrected metadata from 7 to 8; reading support and question relation identify verse 8",
+        "distractor check skipped: none stated by this output tier"
+      ],
+      "location_leak_terms": [],
+      "distractors_found": [],
+      "distractors_missing": false,
+      "answer_leak_terms": [
+        "levit",
+        "young"
+      ],
+      "answer_verse": 8,
+      "answer_verse_original": 7,
+      "answer_verse_corrected": true,
+      "answer_verse_note": "corrected metadata from 7 to 8; reading support and question relation identify verse 8",
+      "readings_failures": [],
+      "answerability": {
+        "model": "gpt-5",
+        "mode": "enforce",
+        "question": "From which place does the young Levite set out?",
+        "readings": [
+          {
+            "answer": "Bethlehem in Judah",
+            "support": "from Bethlehem in Judah | left that town"
+          }
+        ],
+        "assessments": [
+          {
+            "number": 1,
+            "classification": "equivalent_to_key",
+            "reason": "The text states he was “from Bethlehem in Judah” and that he “left that town,” making Bethlehem in Judah the place he set out from."
+          }
+        ],
+        "verdict": "pass",
+        "reason": "The passage explicitly says he was from Bethlehem in Judah and left that town, matching the key.",
+        "status": "passed"
+      }
+    },
+    "window_selection_reason": "It hinges on resolving the referent of “that town” and the movement sequence, distinguishing the origin (Bethlehem) from the later destination (Micah’s house), with a plausible misparse yielding the competitor.",
+    "window_structure_max": 8.0,
+    "content_id": "v7-8:1",
+    "rank_in_batch": 5,
+    "rank_reason": "The top items hinge on parsing pronouns, control, and changing roles in specific clauses that occur only once and can flip if grammar is lost, while the bottom items are repeated or obvious place/possessor facts that survive scrambling.",
+    "final_rank": 5
+  }
+]

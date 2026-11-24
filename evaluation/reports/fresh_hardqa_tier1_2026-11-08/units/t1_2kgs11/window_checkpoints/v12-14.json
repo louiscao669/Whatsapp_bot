@@ -1,0 +1,518 @@
+{
+  "config_digest": "35c6b9487afefbfbca0dd7d7a3df8b147d1a9fbd4ee9dccb39a57ae2c9155f3b",
+  "data": {
+    "kept": [
+      {
+        "question": "Who gives the covenant copy to the king’s son?",
+        "answer": "Jehoiada gives the covenant copy to the king’s son.",
+        "answer_verse": 12,
+        "wrong_answer": "The king’s son gives the covenant copy to Jehoiada.",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "Jehoiada",
+            "support": "Jehoiada brought out the king’s son and put the crown on him; he presented him with a copy of the covenant"
+          }
+        ],
+        "distinct_readings": [
+          "Jehoiada"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "Identifying the giver requires resolving the pronoun “he” to Jehoiada in a single clause, which is uniquely stated, unambiguous, and a secondary but relevant coronation detail."
+        },
+        "window_verses": [
+          12,
+          13,
+          14
+        ],
+        "window_text": {
+          "12": "Jehoiada brought out the king’s son and put the crown on him; he presented him with a copy of the covenant and proclaimed him king. They anointed him, and the people clapped their hands and shouted, “Long live the king!”",
+          "13": "When Athaliah heard the noise made by the guards and the people, she went to the people at the temple of the Lord.",
+          "14": "She looked and there was the king, standing by the pillar, as the custom was. The officers and the trumpeters were beside the king, and all the people of the land were rejoicing and blowing trumpets. Then Athaliah tore her robes and called out, “Treason! Treason!”"
+        },
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "copy",
+            "covenant",
+            "giv",
+            "king",
+            "son"
+          ],
+          "answer_verse": 12,
+          "answer_verse_original": 12,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 12",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Who gives the covenant copy to the king’s son?",
+            "readings": [
+              {
+                "answer": "Jehoiada",
+                "support": "Jehoiada brought out the king’s son and put the crown on him; he presented him with a copy of the covenant"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The passage states, “Jehoiada brought out the king’s son... he presented him with a copy of the covenant,” clearly identifying Jehoiada as the giver."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The text explicitly says Jehoiada presented the king’s son with a copy of the covenant.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "Answering requires resolving the pronoun references in verse 12 to identify Jehoiada as the agent presenting the covenant copy to the king’s son, while the competitor reflects a plausible role-reversal misparse.",
+        "window_structure_max": 9.0,
+        "content_id": "v12-14:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Why does Athaliah go to the people at the temple?",
+        "answer": "Because she hears the guards and the people making noise.",
+        "answer_verse": 13,
+        "wrong_answer": "Because she sees the king by the pillar.",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "Because she heard the noise made by the guards and the people.",
+            "support": "When Athaliah heard the noise made by the guards and the people"
+          }
+        ],
+        "distinct_readings": [
+          "Because she heard the noise made by the guards and the people."
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "The reader must link the temporal subordinate clause (“When she heard the noise…”) to her action as its motive, a unique statement with a clear single cause that is moderately central to the scene."
+        },
+        "window_verses": [
+          12,
+          13,
+          14
+        ],
+        "window_text": {
+          "12": "Jehoiada brought out the king’s son and put the crown on him; he presented him with a copy of the covenant and proclaimed him king. They anointed him, and the people clapped their hands and shouted, “Long live the king!”",
+          "13": "When Athaliah heard the noise made by the guards and the people, she went to the people at the temple of the Lord.",
+          "14": "She looked and there was the king, standing by the pillar, as the custom was. The officers and the trumpeters were beside the king, and all the people of the land were rejoicing and blowing trumpets. Then Athaliah tore her robes and called out, “Treason! Treason!”"
+        },
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: templ",
+            "quotes the passage: quotes verse 13: 'to the people at the'"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "templ"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 13,
+          "answer_verse_original": 13,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 13",
+          "readings_failures": []
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "Why does Athaliah go to the people at the temple?",
+            "after": "Why does Athaliah go to the crowd?",
+            "note": "Removed the leaking location word and paraphrased the quoted phrase.",
+            "failures_before": [
+              "location leak: templ",
+              "quotes the passage: quotes verse 13: 'to the people at the'"
+            ],
+            "scores_before": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 9.0,
+              "centrality": 6.0,
+              "runs": 1,
+              "reason": "The reader must link the temporal subordinate clause (“When she heard the noise…”) to her action as its motive, a unique statement with a clear single cause that is moderately central to the scene."
+            },
+            "accepted": false,
+            "reason": "removed: no LLM suitability verdict",
+            "suitability_judgment": null
+          }
+        ],
+        "content_id": "v12-14:2"
+      },
+      {
+        "question": "Whom do they anoint before the cheering begins?",
+        "answer": "The king’s son is anointed.",
+        "answer_verse": 12,
+        "wrong_answer": "Jehoiada is anointed.",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "The king’s son",
+            "support": "the king’s son | They anointed him,"
+          },
+          {
+            "answer": "The king",
+            "support": "proclaimed him king. They anointed him"
+          }
+        ],
+        "distinct_readings": [
+          "The king’s son",
+          "The king"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "This requires resolving the pronoun “him” to the king’s son and the event order before the cheering, uniquely stated, unambiguous, and central to the coronation."
+        },
+        "window_verses": [
+          12,
+          13,
+          14
+        ],
+        "window_text": {
+          "12": "Jehoiada brought out the king’s son and put the crown on him; he presented him with a copy of the covenant and proclaimed him king. They anointed him, and the people clapped their hands and shouted, “Long live the king!”",
+          "13": "When Athaliah heard the noise made by the guards and the people, she went to the people at the temple of the Lord.",
+          "14": "She looked and there was the king, standing by the pillar, as the custom was. The officers and the trumpeters were beside the king, and all the people of the land were rejoicing and blowing trumpets. Then Athaliah tore her robes and called out, “Treason! Treason!”"
+        },
+        "audit": {
+          "passed": false,
+          "failures": [
+            "dangling pronoun: they"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "anoint"
+          ],
+          "answer_verse": 12,
+          "answer_verse_original": 12,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 12",
+          "readings_failures": []
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "Whom do they anoint before the cheering begins?",
+            "after": "Who is anointed before the cheering begins?",
+            "note": "Removed the dangling pronoun by rephrasing to passive voice.",
+            "failures_before": [
+              "dangling pronoun: they"
+            ],
+            "scores_before": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 9.0,
+              "runs": 1,
+              "reason": "This requires resolving the pronoun “him” to the king’s son and the event order before the cheering, uniquely stated, unambiguous, and central to the coronation."
+            },
+            "accepted": false,
+            "reason": "removed: no LLM suitability verdict",
+            "suitability_judgment": null
+          }
+        ],
+        "content_id": "v12-14:3"
+      },
+      {
+        "question": "After Athaliah sees the king by the pillar, what does she do?",
+        "answer": "Athaliah tears her robes and calls out about treason.",
+        "answer_verse": 14,
+        "wrong_answer": "Athaliah crowns the king.",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "She tears her robes and calls out “Treason! Treason!”",
+            "support": "Then Athaliah tore her robes and called out, “Treason! Treason!”"
+          }
+        ],
+        "distinct_readings": [
+          "She tears her robes and calls out “Treason! Treason!”"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "One must follow the narrative sequence and resolve “she” as Athaliah to report her reaction, which is uniquely stated, clear, and central to the episode."
+        },
+        "window_verses": [
+          12,
+          13,
+          14
+        ],
+        "window_text": {
+          "12": "Jehoiada brought out the king’s son and put the crown on him; he presented him with a copy of the covenant and proclaimed him king. They anointed him, and the people clapped their hands and shouted, “Long live the king!”",
+          "13": "When Athaliah heard the noise made by the guards and the people, she went to the people at the temple of the Lord.",
+          "14": "She looked and there was the king, standing by the pillar, as the custom was. The officers and the trumpeters were beside the king, and all the people of the land were rejoicing and blowing trumpets. Then Athaliah tore her robes and called out, “Treason! Treason!”"
+        },
+        "audit": {
+          "passed": false,
+          "failures": [
+            "question too complex: stacked clauses (1 comma(s), 1 subordinator(s))"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "athaliah"
+          ],
+          "answer_verse": 14,
+          "answer_verse_original": 14,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 14",
+          "readings_failures": []
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "After Athaliah sees the king by the pillar, what does she do?",
+            "after": "What does Athaliah do upon seeing the king by the pillar?",
+            "note": "Reduced to one simple clause using a prepositional phrase.",
+            "failures_before": [
+              "question too complex: stacked clauses (1 comma(s), 1 subordinator(s))"
+            ],
+            "scores_before": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "One must follow the narrative sequence and resolve “she” as Athaliah to report her reaction, which is uniquely stated, clear, and central to the episode."
+            },
+            "accepted": false,
+            "reason": "removed: no LLM suitability verdict",
+            "suitability_judgment": null
+          }
+        ],
+        "content_id": "v12-14:4"
+      },
+      {
+        "question": "Who makes the noise that Athaliah hears?",
+        "answer": "The guards and the people make the noise.",
+        "answer_verse": 13,
+        "wrong_answer": "The trumpeters make the noise.",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "The guards and the people.",
+            "support": "the noise made by the guards and the people"
+          }
+        ],
+        "distinct_readings": [
+          "The guards and the people."
+        ],
+        "scores": {
+          "structure_dependence": 3.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 5.0,
+          "runs": 1,
+          "reason": "The source of the noise is directly named as a noun phrase in one place, with an unambiguous answer that is only moderately central."
+        },
+        "window_verses": [
+          12,
+          13,
+          14
+        ],
+        "window_text": {
+          "12": "Jehoiada brought out the king’s son and put the crown on him; he presented him with a copy of the covenant and proclaimed him king. They anointed him, and the people clapped their hands and shouted, “Long live the king!”",
+          "13": "When Athaliah heard the noise made by the guards and the people, she went to the people at the temple of the Lord.",
+          "14": "She looked and there was the king, standing by the pillar, as the custom was. The officers and the trumpeters were beside the king, and all the people of the land were rejoicing and blowing trumpets. Then Athaliah tore her robes and called out, “Treason! Treason!”"
+        },
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 3.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "nois"
+          ],
+          "answer_verse": 13,
+          "answer_verse_original": 13,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 13",
+          "readings_failures": []
+        },
+        "content_id": "v12-14:5"
+      },
+      {
+        "question": "Who stands beside the king when Athaliah looks?",
+        "answer": "The officers and the trumpeters stand beside the king.",
+        "answer_verse": 14,
+        "wrong_answer": "The guards stand beside the king.",
+        "relation": "participant",
+        "readings": [
+          {
+            "answer": "The officers and the trumpeters",
+            "support": "The officers and the trumpeters were beside the king"
+          }
+        ],
+        "distinct_readings": [
+          "The officers and the trumpeters"
+        ],
+        "scores": {
+          "structure_dependence": 3.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 4.0,
+          "runs": 1,
+          "reason": "The phrase “the officers and the trumpeters were beside the king” is explicitly stated once with a single clear answer and is a descriptive detail."
+        },
+        "window_verses": [
+          12,
+          13,
+          14
+        ],
+        "window_text": {
+          "12": "Jehoiada brought out the king’s son and put the crown on him; he presented him with a copy of the covenant and proclaimed him king. They anointed him, and the people clapped their hands and shouted, “Long live the king!”",
+          "13": "When Athaliah heard the noise made by the guards and the people, she went to the people at the temple of the Lord.",
+          "14": "She looked and there was the king, standing by the pillar, as the custom was. The officers and the trumpeters were beside the king, and all the people of the land were rejoicing and blowing trumpets. Then Athaliah tore her robes and called out, “Treason! Treason!”"
+        },
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: look",
+            "lexical: structure_dependence 3.0 (need 7.0)",
+            "incidental: centrality 4.0 (need 5.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "look"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "king",
+            "stand"
+          ],
+          "answer_verse": 14,
+          "answer_verse_original": 14,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 14",
+          "readings_failures": []
+        },
+        "content_id": "v12-14:6"
+      },
+      {
+        "question": "After hearing the noise, to whom does Athaliah go?",
+        "answer": "Athaliah goes to the people at the temple.",
+        "answer_verse": 13,
+        "wrong_answer": "Athaliah goes to the king by the pillar.",
+        "relation": "direction",
+        "readings": [
+          {
+            "answer": "the people at the temple of the Lord",
+            "support": "she went to the people at the temple of the Lord"
+          }
+        ],
+        "distinct_readings": [
+          "the people at the temple of the Lord"
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 5.0,
+          "runs": 1,
+          "reason": "It requires tying the hearing to her movement and selecting the indirect object “the people at the temple,” uniquely stated with a single clear answer and moderate centrality."
+        },
+        "window_verses": [
+          12,
+          13,
+          14
+        ],
+        "window_text": {
+          "12": "Jehoiada brought out the king’s son and put the crown on him; he presented him with a copy of the covenant and proclaimed him king. They anointed him, and the people clapped their hands and shouted, “Long live the king!”",
+          "13": "When Athaliah heard the noise made by the guards and the people, she went to the people at the temple of the Lord.",
+          "14": "She looked and there was the king, standing by the pillar, as the custom was. The officers and the trumpeters were beside the king, and all the people of the land were rejoicing and blowing trumpets. Then Athaliah tore her robes and called out, “Treason! Treason!”"
+        },
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: nois",
+            "question too complex: stacked clauses (1 comma(s), 1 subordinator(s))",
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "nois"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "athaliah"
+          ],
+          "answer_verse": 13,
+          "answer_verse_original": 13,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 13",
+          "readings_failures": []
+        },
+        "content_id": "v12-14:7"
+      }
+    ],
+    "report": {
+      "window_id": "v12-14",
+      "verses": [
+        12,
+        13,
+        14
+      ],
+      "generated": 7,
+      "scored": 7,
+      "kept": 1,
+      "survivors_before_window_selection": 1,
+      "window_selection_rejected": 0,
+      "repair_attempted": 3,
+      "repaired": 0,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

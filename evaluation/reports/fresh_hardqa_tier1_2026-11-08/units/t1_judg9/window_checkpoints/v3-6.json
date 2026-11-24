@@ -1,0 +1,548 @@
+{
+  "config_digest": "bf29cf564aae7d15d3bd5bdbff20af59f16e06874e5bad45e83aa6623bdff95a",
+  "data": {
+    "kept": [
+      {
+        "question": "Who says Abimelek is their relative?",
+        "answer": "the citizens of Shechem",
+        "answer_verse": 3,
+        "wrong_answer": "the brothers",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "the citizens of Shechem",
+            "support": "the citizens of Shechem | for they said, “He is related to us.”"
+          }
+        ],
+        "distinct_readings": [
+          "the citizens of Shechem"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "Attributing the quoted speech requires resolving the pronoun “they” to the citizens, it’s stated once, clearly yields one answer, and is moderately central as their motive."
+        },
+        "window_verses": [
+          3,
+          4,
+          5,
+          6
+        ],
+        "window_text": {
+          "3": "When the brothers repeated all this to the citizens of Shechem, they were inclined to follow Abimelek, for they said, “He is related to us.”",
+          "4": "They gave him seventy shekels of silver from the temple of Baal-Berith, and Abimelek used it to hire reckless scoundrels, who became his followers.",
+          "5": "He went to his father’s home in Ophrah and on one stone murdered his seventy brothers, the sons of Jerub-Baal. But Jotham, the youngest son of Jerub-Baal, escaped by hiding.",
+          "6": "Then all the citizens of Shechem and Beth Millo gathered beside the great tree at the pillar in Shechem to crown Abimelek king."
+        },
+        "reading_groups": [
+          "the citizens of Shechem say he is their relative"
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 3,
+          "answer_verse_original": 3,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 3",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Who says Abimelek is their relative?",
+            "readings": [
+              {
+                "answer": "the citizens of Shechem",
+                "support": "the citizens of Shechem | for they said, “He is related to us.”"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "In verse 3, the antecedent of “they” is “the citizens of Shechem,” and it says, “for they said, ‘He is related to us.’”"
+              }
+            ],
+            "verdict": "pass",
+            "reason": "Verse 3 explicitly attributes the statement to the citizens of Shechem.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It most depends on resolving the pronoun antecedents (“they” and “us”) in v3 to the citizens of Shechem rather than the brothers, a plausible misparse, while remaining clear and central.",
+        "window_structure_max": 9.0,
+        "content_id": "v3-6:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Who hires the reckless scoundrels with the silver?",
+        "answer": "Abimelek",
+        "answer_verse": 4,
+        "wrong_answer": "the citizens of Shechem",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "Abimelek",
+            "support": "Abimelek used it to hire reckless scoundrels"
+          }
+        ],
+        "distinct_readings": [
+          "Abimelek"
+        ],
+        "scores": {
+          "structure_dependence": 3.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "The clause directly names Abimelek as the hirer, stated once with a single clear answer and relevant to the ensuing events."
+        },
+        "window_verses": [
+          3,
+          4,
+          5,
+          6
+        ],
+        "window_text": {
+          "3": "When the brothers repeated all this to the citizens of Shechem, they were inclined to follow Abimelek, for they said, “He is related to us.”",
+          "4": "They gave him seventy shekels of silver from the temple of Baal-Berith, and Abimelek used it to hire reckless scoundrels, who became his followers.",
+          "5": "He went to his father’s home in Ophrah and on one stone murdered his seventy brothers, the sons of Jerub-Baal. But Jotham, the youngest son of Jerub-Baal, escaped by hiding.",
+          "6": "Then all the citizens of Shechem and Beth Millo gathered beside the great tree at the pillar in Shechem to crown Abimelek king."
+        },
+        "reading_groups": [
+          "Abimelek hires the scoundrels with the silver"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "bare-name answer 'Abimelek': names survive translation",
+            "lexical: structure_dependence 3.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 4,
+          "answer_verse_original": 4,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 4",
+          "readings_failures": []
+        },
+        "content_id": "v3-6:2"
+      },
+      {
+        "question": "What do the hired scoundrels become for Abimelek?",
+        "answer": "his followers",
+        "answer_verse": 4,
+        "wrong_answer": "the citizens of Shechem",
+        "relation": "participant",
+        "readings": [
+          {
+            "answer": "his followers",
+            "support": "who became his followers"
+          }
+        ],
+        "distinct_readings": [
+          "his followers"
+        ],
+        "scores": {
+          "structure_dependence": 3.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 5.0,
+          "runs": 1,
+          "reason": "The result is explicitly given as “became his followers,” uniquely and unambiguously, with moderate importance."
+        },
+        "window_verses": [
+          3,
+          4,
+          5,
+          6
+        ],
+        "window_text": {
+          "3": "When the brothers repeated all this to the citizens of Shechem, they were inclined to follow Abimelek, for they said, “He is related to us.”",
+          "4": "They gave him seventy shekels of silver from the temple of Baal-Berith, and Abimelek used it to hire reckless scoundrels, who became his followers.",
+          "5": "He went to his father’s home in Ophrah and on one stone murdered his seventy brothers, the sons of Jerub-Baal. But Jotham, the youngest son of Jerub-Baal, escaped by hiding.",
+          "6": "Then all the citizens of Shechem and Beth Millo gathered beside the great tree at the pillar in Shechem to crown Abimelek king."
+        },
+        "reading_groups": [
+          "They become his followers"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 3.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 4,
+          "answer_verse_original": 4,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 4",
+          "readings_failures": []
+        },
+        "content_id": "v3-6:3"
+      },
+      {
+        "question": "Who kills Abimelek’s brothers?",
+        "answer": "Abimelek",
+        "answer_verse": 5,
+        "wrong_answer": "the citizens of Shechem",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "Abimelek",
+            "support": "Abimelek used it | murdered his seventy brothers"
+          }
+        ],
+        "distinct_readings": [
+          "Abimelek"
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "Identifying the killer requires tracking the subject “he” back to Abimelek, it’s stated once, clearly answerable, and central to the passage."
+        },
+        "window_verses": [
+          3,
+          4,
+          5,
+          6
+        ],
+        "window_text": {
+          "3": "When the brothers repeated all this to the citizens of Shechem, they were inclined to follow Abimelek, for they said, “He is related to us.”",
+          "4": "They gave him seventy shekels of silver from the temple of Baal-Berith, and Abimelek used it to hire reckless scoundrels, who became his followers.",
+          "5": "He went to his father’s home in Ophrah and on one stone murdered his seventy brothers, the sons of Jerub-Baal. But Jotham, the youngest son of Jerub-Baal, escaped by hiding.",
+          "6": "Then all the citizens of Shechem and Beth Millo gathered beside the great tree at the pillar in Shechem to crown Abimelek king."
+        },
+        "reading_groups": [
+          "Abimelek kills his brothers"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "answer leaks into question: abimelek",
+            "bare-name answer 'Abimelek': names survive translation"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "abimelek"
+          ],
+          "answer_verse": 5,
+          "answer_verse_original": 5,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 5",
+          "readings_failures": []
+        },
+        "content_id": "v3-6:4"
+      },
+      {
+        "question": "Which son of Jerub-Baal escapes by hiding?",
+        "answer": "Jotham",
+        "answer_verse": 5,
+        "wrong_answer": "Abimelek",
+        "relation": "polarity",
+        "readings": [
+          {
+            "answer": "Jotham",
+            "support": "Jotham, the youngest son of Jerub-Baal, escaped by hiding"
+          }
+        ],
+        "distinct_readings": [
+          "Jotham"
+        ],
+        "scores": {
+          "structure_dependence": 2.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 5.0,
+          "runs": 1,
+          "reason": "The text explicitly names Jotham as the escaping son, uniquely and unambiguously, with moderate relevance."
+        },
+        "window_verses": [
+          3,
+          4,
+          5,
+          6
+        ],
+        "window_text": {
+          "3": "When the brothers repeated all this to the citizens of Shechem, they were inclined to follow Abimelek, for they said, “He is related to us.”",
+          "4": "They gave him seventy shekels of silver from the temple of Baal-Berith, and Abimelek used it to hire reckless scoundrels, who became his followers.",
+          "5": "He went to his father’s home in Ophrah and on one stone murdered his seventy brothers, the sons of Jerub-Baal. But Jotham, the youngest son of Jerub-Baal, escaped by hiding.",
+          "6": "Then all the citizens of Shechem and Beth Millo gathered beside the great tree at the pillar in Shechem to crown Abimelek king."
+        },
+        "reading_groups": [
+          "Jotham escapes by hiding"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: jerub",
+            "bare-name answer 'Jotham': names survive translation",
+            "lexical: structure_dependence 2.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "jerub"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 5,
+          "answer_verse_original": 5,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 5",
+          "readings_failures": []
+        },
+        "content_id": "v3-6:5"
+      },
+      {
+        "question": "Why do the citizens of Shechem and Beth Millo gather?",
+        "answer": "to make Abimelek king",
+        "answer_verse": 6,
+        "wrong_answer": "to hire reckless scoundrels",
+        "relation": "purpose",
+        "readings": [
+          {
+            "answer": "To crown Abimelek king.",
+            "support": "to crown Abimelek king"
+          }
+        ],
+        "distinct_readings": [
+          "To crown Abimelek king."
+        ],
+        "scores": {
+          "structure_dependence": 4.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "The stated purpose “to crown Abimelek king” must be read as the reason for gathering, appears once, is clear, and is central to the scene."
+        },
+        "window_verses": [
+          3,
+          4,
+          5,
+          6
+        ],
+        "window_text": {
+          "3": "When the brothers repeated all this to the citizens of Shechem, they were inclined to follow Abimelek, for they said, “He is related to us.”",
+          "4": "They gave him seventy shekels of silver from the temple of Baal-Berith, and Abimelek used it to hire reckless scoundrels, who became his followers.",
+          "5": "He went to his father’s home in Ophrah and on one stone murdered his seventy brothers, the sons of Jerub-Baal. But Jotham, the youngest son of Jerub-Baal, escaped by hiding.",
+          "6": "Then all the citizens of Shechem and Beth Millo gathered beside the great tree at the pillar in Shechem to crown Abimelek king."
+        },
+        "reading_groups": [
+          "They gather to crown Abimelek king"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: beth, millo",
+            "quotes the passage: quotes verse 6: 'the citizens of shechem and'",
+            "lexical: structure_dependence 4.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "beth",
+            "millo"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 6,
+          "answer_verse_original": 6,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 6",
+          "readings_failures": []
+        },
+        "content_id": "v3-6:6"
+      },
+      {
+        "question": "Whom do the citizens plan to make king?",
+        "answer": "Abimelek",
+        "answer_verse": 6,
+        "wrong_answer": "Jotham",
+        "relation": "patient",
+        "readings": [
+          {
+            "answer": "Abimelek",
+            "support": "to crown Abimelek king"
+          }
+        ],
+        "distinct_readings": [
+          "Abimelek"
+        ],
+        "scores": {
+          "structure_dependence": 2.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "The object of the purpose phrase is Abimelek, directly stated once with no ambiguity and crucial to the episode’s climax."
+        },
+        "window_verses": [
+          3,
+          4,
+          5,
+          6
+        ],
+        "window_text": {
+          "3": "When the brothers repeated all this to the citizens of Shechem, they were inclined to follow Abimelek, for they said, “He is related to us.”",
+          "4": "They gave him seventy shekels of silver from the temple of Baal-Berith, and Abimelek used it to hire reckless scoundrels, who became his followers.",
+          "5": "He went to his father’s home in Ophrah and on one stone murdered his seventy brothers, the sons of Jerub-Baal. But Jotham, the youngest son of Jerub-Baal, escaped by hiding.",
+          "6": "Then all the citizens of Shechem and Beth Millo gathered beside the great tree at the pillar in Shechem to crown Abimelek king."
+        },
+        "reading_groups": [
+          "They intend to make Abimelek king"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "bare-name answer 'Abimelek': names survive translation",
+            "lexical: structure_dependence 2.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 6,
+          "answer_verse_original": 6,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 6",
+          "readings_failures": []
+        },
+        "content_id": "v3-6:7"
+      },
+      {
+        "question": "Why do the citizens of Shechem choose to follow Abimelek?",
+        "answer": "because he is their relative",
+        "answer_verse": 3,
+        "wrong_answer": "because he hires reckless scoundrels",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "Because he is related to them.",
+            "support": "for they said, “He is related to us.”"
+          }
+        ],
+        "distinct_readings": [
+          "Because he is related to them."
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "The causal link introduced by “for they said” must be connected to the citizens, is given once, unambiguous, and key to their decision."
+        },
+        "window_verses": [
+          3,
+          4,
+          5,
+          6
+        ],
+        "window_text": {
+          "3": "When the brothers repeated all this to the citizens of Shechem, they were inclined to follow Abimelek, for they said, “He is related to us.”",
+          "4": "They gave him seventy shekels of silver from the temple of Baal-Berith, and Abimelek used it to hire reckless scoundrels, who became his followers.",
+          "5": "He went to his father’s home in Ophrah and on one stone murdered his seventy brothers, the sons of Jerub-Baal. But Jotham, the youngest son of Jerub-Baal, escaped by hiding.",
+          "6": "Then all the citizens of Shechem and Beth Millo gathered beside the great tree at the pillar in Shechem to crown Abimelek king."
+        },
+        "reading_groups": [
+          "They follow him because he is related to them"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: hybrid window selector — It most depends on resolving the pronoun antecedents (“they” and “us”) in v3 to the citizens of Shechem rather than the brothers, a plausible misparse, while remaining clear and central."
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 3,
+          "answer_verse_original": 3,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 3",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Why do the citizens of Shechem choose to follow Abimelek?",
+            "readings": [
+              {
+                "answer": "Because he is related to them.",
+                "support": "for they said, “He is related to us.”"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The passage says they followed Abimelek because “He is related to us,” which matches the key’s reason that he is their relative."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The text explicitly gives the reason: they followed Abimelek because he was related to them.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It most depends on resolving the pronoun antecedents (“they” and “us”) in v3 to the citizens of Shechem rather than the brothers, a plausible misparse, while remaining clear and central.",
+        "content_id": "v3-6:8"
+      }
+    ],
+    "report": {
+      "window_id": "v3-6",
+      "verses": [
+        3,
+        4,
+        5,
+        6
+      ],
+      "generated": 8,
+      "scored": 8,
+      "kept": 1,
+      "survivors_before_window_selection": 2,
+      "window_selection_rejected": 1,
+      "repair_attempted": 0,
+      "repaired": 0,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

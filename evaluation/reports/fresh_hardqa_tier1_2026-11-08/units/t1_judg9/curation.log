@@ -1,0 +1,29 @@
+verse format: inline — 57 verses, longest run 57 (line-based parser gave 24 verses, longest run 8)
+Retry reader_fa32d3c68bd2c153da7d: ValueError
+Retry editor_62d5de98b46c64fb74a5: ValueError
+Retry editor_62d5de98b46c64fb74a5: ValueError
+Traceback (most recent call last):
+  File "/Users/louiscao/whatsapp-bot/eten-whatsapp-bot/evaluation/scripts/mcq/diagnostics/curate_generated_chapter.py", line 169, in <module>
+    run(parser.parse_args())
+  File "/Users/louiscao/whatsapp-bot/eten-whatsapp-bot/evaluation/scripts/mcq/diagnostics/curate_generated_chapter.py", line 104, in run
+    k,p=jobs[job];checks[k][p]=job.result()["items"][0]
+                               ^^^^^^^^^^^^
+  File "/Users/louiscao/.pyenv/versions/3.11.9/lib/python3.11/concurrent/futures/_base.py", line 449, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/louiscao/.pyenv/versions/3.11.9/lib/python3.11/concurrent/futures/_base.py", line 401, in __get_result
+    raise self._exception
+  File "/Users/louiscao/.pyenv/versions/3.11.9/lib/python3.11/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/louiscao/whatsapp-bot/eten-whatsapp-bot/evaluation/scripts/mcq/diagnostics/curate_generated_chapter.py", line 96, in call
+    return rules.ask(client,f"{name}_{token}",prompt,batch,schema,output_dir=directory)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/louiscao/whatsapp-bot/eten-whatsapp-bot/evaluation/scripts/mcq/diagnostics/check_hard85_rules.py", line 122, in ask
+    result=validate(json.loads(response.output_text),records,schema)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/louiscao/whatsapp-bot/eten-whatsapp-bot/evaluation/scripts/mcq/diagnostics/check_hard85_rules.py", line 93, in validate
+    raise ValueError(f"Unverified support for {g['id']}")
+ValueError: Unverified support for v46-49:1
+verse format: inline — 57 verses, longest run 57 (line-based parser gave 24 verses, longest run 8)
+Final decisions: {'keep': 14, 'revise': 1, 'review': 1}

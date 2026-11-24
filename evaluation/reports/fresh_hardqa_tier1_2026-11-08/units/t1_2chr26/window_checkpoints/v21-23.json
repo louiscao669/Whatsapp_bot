@@ -1,0 +1,521 @@
+{
+  "config_digest": "06f6fd33124ccf69d50b7d020984e70e0c73dd874d345ad168bb1c04d96f7dac",
+  "data": {
+    "kept": [
+      {
+        "question": "Why is Uzziah buried near his family, not with them?",
+        "answer": "Because people said he was leprous.",
+        "answer_verse": 23,
+        "wrong_answer": "Because the cemetery belongs to the kings.",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "Because people said he had leprosy.",
+            "support": "for people said, “He had leprosy.”"
+          }
+        ],
+        "distinct_readings": [
+          "Because people said he had leprosy."
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "It relies on the causal clause in v23—“for people said, ‘He had leprosy’”—which uniquely explains the unusual burial placement and is unambiguous and important to the death/burial detail."
+        },
+        "window_verses": [
+          21,
+          22,
+          23
+        ],
+        "window_text": {
+          "21": "King Uzziah had leprosy until the day he died. He lived in a separate house—leprous, and banned from the temple of the Lord. Jotham his son had charge of the palace and governed the people of the land.",
+          "22": "The other events of Uzziah’s reign, from beginning to end, are recorded by the prophet Isaiah son of Amoz.",
+          "23": "Uzziah rested with his ancestors and was buried near them in a cemetery that belonged to the kings, for people said, “He had leprosy.” And Jotham his son succeeded him as king."
+        },
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 23,
+          "answer_verse_original": 23,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 23",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Why is Uzziah buried near his family, not with them?",
+            "readings": [
+              {
+                "answer": "Because people said he had leprosy.",
+                "support": "for people said, “He had leprosy.”"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Verse 23 explicitly gives the reason: he was buried near them \"for people said, 'He had leprosy,'\" which matches the key's wording."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The passage states he was buried near the kings because people said he had leprosy.",
+            "status": "passed"
+          }
+        },
+        "scores_after_repair_raw": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "It relies on the causal clause in v23—“for people said, ‘He had leprosy’”—which uniquely explains the unusual burial placement and is unambiguous and important to the death/burial detail."
+        },
+        "repaired": true,
+        "repair_attempted": true,
+        "question_before_repair": "Why is Uzziah buried near his ancestors, not with them?",
+        "scores_before_repair": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "The causal link is carried only by the clause 'for people said, He had leprosy,' requiring connecting the reason to the burial location."
+        },
+        "audit_before_repair": {
+          "passed": false,
+          "failures": [
+            "location leak: ancestor",
+            "2 defensible readings: Because he had leprosy | Because people said he had leprosy"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "ancestor"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 23,
+          "answer_verse_original": 23,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 23",
+          "readings_failures": [
+            "2 defensible readings: Because he had leprosy | Because people said he had leprosy"
+          ]
+        },
+        "repair_log": [
+          {
+            "before": "Why is Uzziah buried near his ancestors, not with them?",
+            "after": "Why is Uzziah buried near his family, not with them?",
+            "note": "Replaced the leaking word 'ancestors' with 'family' to remove the location clue.",
+            "failures_before": [
+              "location leak: ancestor",
+              "2 defensible readings: Because he had leprosy | Because people said he had leprosy"
+            ],
+            "scores_before": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 6.0,
+              "runs": 1,
+              "reason": "The causal link is carried only by the clause 'for people said, He had leprosy,' requiring connecting the reason to the burial location."
+            },
+            "accepted": true,
+            "reason": "passed full rejudgment",
+            "suitability_judgment": {
+              "Q": "Why is Uzziah buried near his family, not with them?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "The question naturally refers to Uzziah’s burial near his ancestors and asks for the explicit reason given in the text—his leprosy—yielding a single, unambiguous answer."
+            },
+            "failures_after": [],
+            "scores_after": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 9.0,
+              "centrality": 7.0,
+              "runs": 1,
+              "reason": "It relies on the causal clause in v23—“for people said, ‘He had leprosy’”—which uniquely explains the unusual burial placement and is unambiguous and important to the death/burial detail."
+            },
+            "scores_used": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 9.0,
+              "centrality": 7.0,
+              "runs": 1,
+              "reason": "It relies on the causal clause in v23—“for people said, ‘He had leprosy’”—which uniquely explains the unusual burial placement and is unambiguous and important to the death/burial detail."
+            }
+          }
+        ],
+        "window_selection_reason": "The causal link “for people said, ‘He had leprosy’” directly governs the burial location, yielding one clear answer, whereas Item 1’s “after” admits two subsequent mentions (people said… and Jotham became king), risking ambiguity.",
+        "window_structure_max": 8.0,
+        "content_id": "v21-23:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Where is Uzziah buried in relation to his ancestors?",
+        "answer": "Near his ancestors, in the kings’ cemetery.",
+        "answer_verse": 23,
+        "wrong_answer": "With his ancestors.",
+        "relation": "direction",
+        "readings": [
+          {
+            "answer": "Near them",
+            "support": "was buried near them"
+          }
+        ],
+        "distinct_readings": [
+          "Near them"
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "The reader must distinguish the burial detail 'near them' from the idiom 'rested with his ancestors,' which is stated once and unambiguous but not the main focus."
+        },
+        "window_verses": [
+          21,
+          22,
+          23
+        ],
+        "window_text": {
+          "21": "King Uzziah had leprosy until the day he died. He lived in a separate house—leprous, and banned from the temple of the Lord. Jotham his son had charge of the palace and governed the people of the land.",
+          "22": "The other events of Uzziah’s reign, from beginning to end, are recorded by the prophet Isaiah son of Amoz.",
+          "23": "Uzziah rested with his ancestors and was buried near them in a cemetery that belonged to the kings, for people said, “He had leprosy.” And Jotham his son succeeded him as king."
+        },
+        "reading_groups": [
+          "Buried near his ancestors"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: ancestor",
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "ancestor"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "ancestor"
+          ],
+          "answer_verse": 23,
+          "answer_verse_original": 23,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 23",
+          "readings_failures": []
+        },
+        "content_id": "v21-23:2"
+      },
+      {
+        "question": "What does Jotham do while Uzziah lives apart with leprosy?",
+        "answer": "Jotham runs the palace and governs the people.",
+        "answer_verse": 21,
+        "wrong_answer": "Jotham lives in a separate house, banned from the temple.",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "He had charge of the palace.",
+            "support": "Jotham his son had charge of the palace"
+          },
+          {
+            "answer": "He governed the people of the land.",
+            "support": "governed the people of the land"
+          }
+        ],
+        "distinct_readings": [
+          "He had charge of the palace.",
+          "He governed the people of the land."
+        ],
+        "scores": {
+          "structure_dependence": 4.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "Jotham’s duties are directly stated in one clause linked to Uzziah’s condition, making retrieval straightforward and central to the situation."
+        },
+        "window_verses": [
+          21,
+          22,
+          23
+        ],
+        "window_text": {
+          "21": "King Uzziah had leprosy until the day he died. He lived in a separate house—leprous, and banned from the temple of the Lord. Jotham his son had charge of the palace and governed the people of the land.",
+          "22": "The other events of Uzziah’s reign, from beginning to end, are recorded by the prophet Isaiah son of Amoz.",
+          "23": "Uzziah rested with his ancestors and was buried near them in a cemetery that belonged to the kings, for people said, “He had leprosy.” And Jotham his son succeeded him as king."
+        },
+        "reading_groups": [
+          "He had charge of the palace",
+          "He governed the people of the land"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: liv",
+            "2 defensible readings: He had charge of the palace | He governed the people of the land",
+            "answer 'Jotham runs the palace and governs the people.' is not among the defensible readings",
+            "lexical: structure_dependence 4.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "liv"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "jotham"
+          ],
+          "answer_verse": 21,
+          "answer_verse_original": 21,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 21",
+          "readings_failures": [
+            "2 defensible readings: He had charge of the palace | He governed the people of the land",
+            "answer 'Jotham runs the palace and governs the people.' is not among the defensible readings"
+          ]
+        },
+        "content_id": "v21-23:3"
+      },
+      {
+        "question": "Whose son is Jotham who governs the people?",
+        "answer": "Jotham is Uzziah’s son.",
+        "answer_verse": 21,
+        "wrong_answer": "Jotham is Amoz’s son.",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "King Uzziah",
+            "support": "King Uzziah | Jotham his son had charge of the palace and governed the people of the land."
+          }
+        ],
+        "distinct_readings": [
+          "King Uzziah"
+        ],
+        "scores": {
+          "structure_dependence": 3.0,
+          "statement_uniqueness": 2.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "Jotham is identified as Uzziah’s son twice in the window, so it is easy, repeated information with a single clear answer."
+        },
+        "window_verses": [
+          21,
+          22,
+          23
+        ],
+        "window_text": {
+          "21": "King Uzziah had leprosy until the day he died. He lived in a separate house—leprous, and banned from the temple of the Lord. Jotham his son had charge of the palace and governed the people of the land.",
+          "22": "The other events of Uzziah’s reign, from beginning to end, are recorded by the prophet Isaiah son of Amoz.",
+          "23": "Uzziah rested with his ancestors and was buried near them in a cemetery that belonged to the kings, for people said, “He had leprosy.” And Jotham his son succeeded him as king."
+        },
+        "reading_groups": [
+          "Jotham is the son of King Uzziah"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 3.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "jotham",
+            "son"
+          ],
+          "answer_verse": 21,
+          "answer_verse_original": 21,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 21",
+          "readings_failures": []
+        },
+        "content_id": "v21-23:4"
+      },
+      {
+        "question": "What does the prophet Isaiah son of Amoz do with Uzziah’s reign?",
+        "answer": "He records the other events from start to finish.",
+        "answer_verse": 22,
+        "wrong_answer": "He becomes king after Uzziah is buried.",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "He records the other events of Uzziah’s reign from beginning to end.",
+            "support": "The other events of Uzziah’s reign, from beginning to end, are recorded by the prophet Isaiah son of Amoz."
+          }
+        ],
+        "distinct_readings": [
+          "He records the other events of Uzziah’s reign from beginning to end."
+        ],
+        "scores": {
+          "structure_dependence": 3.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 4.0,
+          "runs": 1,
+          "reason": "Isaiah’s action is given in a single explicit clause about recording the other events, which is peripheral to the main narrative."
+        },
+        "window_verses": [
+          21,
+          22,
+          23
+        ],
+        "window_text": {
+          "21": "King Uzziah had leprosy until the day he died. He lived in a separate house—leprous, and banned from the temple of the Lord. Jotham his son had charge of the palace and governed the people of the land.",
+          "22": "The other events of Uzziah’s reign, from beginning to end, are recorded by the prophet Isaiah son of Amoz.",
+          "23": "Uzziah rested with his ancestors and was buried near them in a cemetery that belonged to the kings, for people said, “He had leprosy.” And Jotham his son succeeded him as king."
+        },
+        "reading_groups": [
+          "He records the other events of Uzziah’s reign from beginning to end"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: amoz, isaiah",
+            "quotes the passage: quotes verse 22: 'the prophet isaiah son of'",
+            "lexical: structure_dependence 3.0 (need 7.0)",
+            "incidental: centrality 4.0 (need 5.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "amoz",
+            "isaiah"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 22,
+          "answer_verse_original": 22,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 22",
+          "readings_failures": []
+        },
+        "content_id": "v21-23:5"
+      },
+      {
+        "question": "What happens after Uzziah is buried?",
+        "answer": "Jotham his son becomes king.",
+        "answer_verse": 23,
+        "wrong_answer": "People say he was leprous.",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "Jotham his son succeeds him as king.",
+            "support": "And Jotham his son succeeded him as king."
+          }
+        ],
+        "distinct_readings": [
+          "Jotham his son succeeds him as king."
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "This depends on narrative sequence to infer that Jotham succeeds after the burial, a single explicit but highly central event."
+        },
+        "window_verses": [
+          21,
+          22,
+          23
+        ],
+        "window_text": {
+          "21": "King Uzziah had leprosy until the day he died. He lived in a separate house—leprous, and banned from the temple of the Lord. Jotham his son had charge of the palace and governed the people of the land.",
+          "22": "The other events of Uzziah’s reign, from beginning to end, are recorded by the prophet Isaiah son of Amoz.",
+          "23": "Uzziah rested with his ancestors and was buried near them in a cemetery that belonged to the kings, for people said, “He had leprosy.” And Jotham his son succeeded him as king."
+        },
+        "reading_groups": [
+          "Jotham his son succeeds him as king"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: hybrid window selector — The causal link “for people said, ‘He had leprosy’” directly governs the burial location, yielding one clear answer, whereas Item 1’s “after” admits two subsequent mentions (people said… and Jotham became king), risking ambiguity."
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 23,
+          "answer_verse_original": 23,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 23",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "What happens after Uzziah is buried?",
+            "readings": [
+              {
+                "answer": "Jotham his son succeeds him as king.",
+                "support": "And Jotham his son succeeded him as king."
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The passage states, “And Jotham his son succeeded him as king,” immediately after mentioning Uzziah’s burial, matching the key’s event."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The text explicitly says that after Uzziah was buried, his son Jotham became/succeeded him as king.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "The causal link “for people said, ‘He had leprosy’” directly governs the burial location, yielding one clear answer, whereas Item 1’s “after” admits two subsequent mentions (people said… and Jotham became king), risking ambiguity.",
+        "content_id": "v21-23:6"
+      }
+    ],
+    "report": {
+      "window_id": "v21-23",
+      "verses": [
+        21,
+        22,
+        23
+      ],
+      "generated": 6,
+      "scored": 6,
+      "kept": 1,
+      "survivors_before_window_selection": 2,
+      "window_selection_rejected": 1,
+      "repair_attempted": 1,
+      "repaired": 1,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

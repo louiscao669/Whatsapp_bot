@@ -1,0 +1,420 @@
+{
+  "config_digest": "b0991f1ba2b445d3df4f52b862699ab4503b7987dc7b00c3305bb02dbfcacb5f",
+  "data": {
+    "kept": [
+      {
+        "question": "Whom does Paul say is alive?",
+        "answer": "the young man",
+        "answer_verse": 10,
+        "wrong_answer": "Paul",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "the young man",
+            "support": "the young man | He’s alive!"
+          }
+        ],
+        "distinct_readings": [
+          "the young man"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "It requires linking Paul’s speech \"He’s alive!\" to its antecedent \"the young man,\" a unique and central claim."
+        },
+        "window_verses": [
+          10,
+          11,
+          12
+        ],
+        "window_text": {
+          "10": "Paul went down, threw himself on the young man and put his arms around him. “Don’t be alarmed,” he said. “He’s alive!”",
+          "11": "Then he went upstairs again and broke bread and ate. After talking until daylight, he left.",
+          "12": "The people took the young man home alive and were greatly comforted."
+        },
+        "reading_groups": [
+          "Paul says the young man is alive"
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 10,
+          "answer_verse_original": 10,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 10",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Whom does Paul say is alive?",
+            "readings": [
+              {
+                "answer": "the young man",
+                "support": "the young man | He’s alive!"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The text says Paul threw himself on “the young man” and then said, “He’s alive!”, so the referent is the young man, matching the key."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "Paul’s statement “He’s alive!” clearly refers to the young man mentioned immediately before.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It most hinges on resolving the pronoun in “He’s alive!” to the young man rather than Paul—a clear referent decision driven by the passage’s structure.",
+        "window_structure_max": 9.0,
+        "content_id": "v10-12:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "After Paul says the young man lives, where does he go?",
+        "answer": "upstairs",
+        "answer_verse": 10,
+        "wrong_answer": "down",
+        "relation": "direction",
+        "readings": [
+          {
+            "answer": "upstairs",
+            "support": "Then he went upstairs again"
+          }
+        ],
+        "distinct_readings": [
+          "upstairs"
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 5.0,
+          "runs": 1,
+          "reason": "One must follow the sequence and resolve \"he\" as Paul to find that he then went upstairs again, uniquely stated and clear."
+        },
+        "window_verses": [
+          10,
+          11,
+          12
+        ],
+        "window_text": {
+          "10": "Paul went down, threw himself on the young man and put his arms around him. “Don’t be alarmed,” he said. “He’s alive!”",
+          "11": "Then he went upstairs again and broke bread and ate. After talking until daylight, he left.",
+          "12": "The people took the young man home alive and were greatly comforted."
+        },
+        "reading_groups": [
+          "He goes upstairs (again)"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: paul",
+            "question too complex: stacked clauses (1 comma(s), 1 subordinator(s))",
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "corrected metadata from 11 to 10; reading support and question relation identify verse 10",
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "paul"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 10,
+          "answer_verse_original": 11,
+          "answer_verse_corrected": true,
+          "answer_verse_note": "corrected metadata from 11 to 10; reading support and question relation identify verse 10",
+          "readings_failures": []
+        },
+        "content_id": "v10-12:2"
+      },
+      {
+        "question": "Right after Paul goes upstairs again, what does he do?",
+        "answer": "He breaks bread and eats.",
+        "answer_verse": 11,
+        "wrong_answer": "He talks until daylight.",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "He broke bread and ate",
+            "support": "broke bread and ate"
+          }
+        ],
+        "distinct_readings": [
+          "He broke bread and ate"
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 5.0,
+          "runs": 1,
+          "reason": "Identifying the immediate subsequent action depends on temporal order, yielding the unique action \"broke bread and ate.\""
+        },
+        "window_verses": [
+          10,
+          11,
+          12
+        ],
+        "window_text": {
+          "10": "Paul went down, threw himself on the young man and put his arms around him. “Don’t be alarmed,” he said. “He’s alive!”",
+          "11": "Then he went upstairs again and broke bread and ate. After talking until daylight, he left.",
+          "12": "The people took the young man home alive and were greatly comforted."
+        },
+        "reading_groups": [
+          "He broke bread and ate"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: again, upstair",
+            "question too complex: stacked clauses (1 comma(s), 1 subordinator(s))",
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "again",
+            "upstair"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 11,
+          "answer_verse_original": 11,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 11",
+          "readings_failures": []
+        },
+        "content_id": "v10-12:3"
+      },
+      {
+        "question": "Who takes the young man home alive?",
+        "answer": "the people",
+        "answer_verse": 12,
+        "wrong_answer": "Paul",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "The people",
+            "support": "The people took the young man home alive"
+          }
+        ],
+        "distinct_readings": [
+          "The people"
+        ],
+        "scores": {
+          "structure_dependence": 5.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "Determining the agent of the action relies on reading the subject \"the people,\" a single explicit statement amid multiple actors."
+        },
+        "window_verses": [
+          10,
+          11,
+          12
+        ],
+        "window_text": {
+          "10": "Paul went down, threw himself on the young man and put his arms around him. “Don’t be alarmed,” he said. “He’s alive!”",
+          "11": "Then he went upstairs again and broke bread and ate. After talking until daylight, he left.",
+          "12": "The people took the young man home alive and were greatly comforted."
+        },
+        "reading_groups": [
+          "The people take him home alive"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "no gradeable content in answer 'the people'",
+            "quotes the passage: quotes verse 12: 'the young man home alive'",
+            "lexical: structure_dependence 5.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 12,
+          "answer_verse_original": 12,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 12",
+          "readings_failures": []
+        },
+        "content_id": "v10-12:4"
+      },
+      {
+        "question": "Who leaves after the long talk?",
+        "answer": "Paul",
+        "answer_verse": 11,
+        "wrong_answer": "the people",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "Paul",
+            "support": "Paul went down | After talking until daylight, he left."
+          }
+        ],
+        "distinct_readings": [
+          "Paul"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 5.0,
+          "runs": 1,
+          "reason": "Pronoun resolution and sequence tracking show that the \"he\" who left after talking until daylight is Paul, stated once and unambiguous."
+        },
+        "window_verses": [
+          10,
+          11,
+          12
+        ],
+        "window_text": {
+          "10": "Paul went down, threw himself on the young man and put his arms around him. “Don’t be alarmed,” he said. “He’s alive!”",
+          "11": "Then he went upstairs again and broke bread and ate. After talking until daylight, he left.",
+          "12": "The people took the young man home alive and were greatly comforted."
+        },
+        "reading_groups": [
+          "Paul leaves after talking until daylight"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: talk",
+            "bare-name answer 'Paul': names survive translation"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "talk"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 11,
+          "answer_verse_original": 11,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 11",
+          "readings_failures": []
+        },
+        "content_id": "v10-12:5"
+      },
+      {
+        "question": "Whom does Paul put his arms around?",
+        "answer": "the young man",
+        "answer_verse": 10,
+        "wrong_answer": "himself",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "the young man",
+            "support": "threw himself on the young man and put his arms around him"
+          }
+        ],
+        "distinct_readings": [
+          "the young man"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "Resolving the pronoun \"him\" to \"the young man\" requires tracking the action within the sentence, stated once and central to the revival scene."
+        },
+        "window_verses": [
+          10,
+          11,
+          12
+        ],
+        "window_text": {
+          "10": "Paul went down, threw himself on the young man and put his arms around him. “Don’t be alarmed,” he said. “He’s alive!”",
+          "11": "Then he went upstairs again and broke bread and ate. After talking until daylight, he left.",
+          "12": "The people took the young man home alive and were greatly comforted."
+        },
+        "reading_groups": [
+          "Paul puts his arms around the young man"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: hybrid window selector — It most hinges on resolving the pronoun in “He’s alive!” to the young man rather than Paul—a clear referent decision driven by the passage’s structure."
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 10,
+          "answer_verse_original": 10,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 10",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Whom does Paul put his arms around?",
+            "readings": [
+              {
+                "answer": "the young man",
+                "support": "threw himself on the young man and put his arms around him"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Verse 10 explicitly says Paul \"put his arms around him\" referring to \"the young man,\" matching the key."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The passage states Paul put his arms around “the young man,” matching the key exactly.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It most hinges on resolving the pronoun in “He’s alive!” to the young man rather than Paul—a clear referent decision driven by the passage’s structure.",
+        "content_id": "v10-12:6"
+      }
+    ],
+    "report": {
+      "window_id": "v10-12",
+      "verses": [
+        10,
+        11,
+        12
+      ],
+      "generated": 6,
+      "scored": 6,
+      "kept": 1,
+      "survivors_before_window_selection": 2,
+      "window_selection_rejected": 1,
+      "repair_attempted": 0,
+      "repaired": 0,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

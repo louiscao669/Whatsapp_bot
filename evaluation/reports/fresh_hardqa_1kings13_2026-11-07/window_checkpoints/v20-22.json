@@ -1,0 +1,986 @@
+{
+  "config_digest": "7d0f9ca5b001dd4aafd08cfe62ee0ee1709a4cee0d45b80852aceee348ef06c5",
+  "data": {
+    "kept": [
+      {
+        "question": "Whom does the old prophet say disobeyed the Lord’s word?",
+        "answer": "the man of God",
+        "answer_verse": 20,
+        "wrong_answer": "the old prophet",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "the man of God who had come from Judah",
+            "support": "the man of God who had come from Judah | You have defied the word of the Lord"
+          }
+        ],
+        "distinct_readings": [
+          "the man of God who had come from Judah"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "It hinges on identifying that the second-person “you” in the oracle refers to the man of God, a single explicit but relational cue."
+        },
+        "window_verses": [
+          20,
+          21,
+          22
+        ],
+        "window_text": {
+          "20": "While they were sitting at the table, the word of the Lord came to the old prophet who had brought him back.",
+          "21": "He cried out to the man of God who had come from Judah, “This is what the Lord says: ‘You have defied the word of the Lord and have not kept the command the Lord your God gave you.",
+          "22": "You came back and ate bread and drank water in the place where he told you not to eat or drink. Therefore your body will not be buried in the tomb of your ancestors.’”"
+        },
+        "reading_groups": [
+          "the man of God from Judah is said to have disobeyed"
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "corrected metadata from 21 to 20; reading support and question relation identify verse 20",
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 20,
+          "answer_verse_original": 21,
+          "answer_verse_corrected": true,
+          "answer_verse_note": "corrected metadata from 21 to 20; reading support and question relation identify verse 20",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Whom does the old prophet say disobeyed the Lord’s word?",
+            "readings": [
+              {
+                "answer": "the man of God who had come from Judah",
+                "support": "the man of God who had come from Judah | You have defied the word of the Lord"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The passage says, “He cried out to the man of God who had come from Judah… ‘You have defied the word of the Lord,’” so the disobedient one is the man of God (from Judah)."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The text directly identifies the man of God from Judah as the one who defied the Lord’s word.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It hinges on resolving the second-person “you” in the prophecy to the man of God rather than the old prophet, a clear and central referent decision with a plausible misparse.",
+        "window_structure_max": 9.0,
+        "content_id": "v20-22:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Who gets the Lord’s message as the old prophet and the man from Judah sit?",
+        "answer": "the old prophet",
+        "answer_verse": 20,
+        "wrong_answer": "the man from Judah",
+        "relation": "participant",
+        "readings": [
+          {
+            "answer": "the old prophet",
+            "support": "the word of the Lord came to the old prophet"
+          }
+        ],
+        "distinct_readings": [
+          "the old prophet"
+        ],
+        "scores": {
+          "structure_dependence": 2.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 5.0,
+          "runs": 1,
+          "reason": "The recipient (“the old prophet”) is stated directly in one clause and is unambiguous, though mainly scene-setting."
+        },
+        "window_verses": [
+          20,
+          21,
+          22
+        ],
+        "window_text": {
+          "20": "While they were sitting at the table, the word of the Lord came to the old prophet who had brought him back.",
+          "21": "He cried out to the man of God who had come from Judah, “This is what the Lord says: ‘You have defied the word of the Lord and have not kept the command the Lord your God gave you.",
+          "22": "You came back and ate bread and drank water in the place where he told you not to eat or drink. Therefore your body will not be buried in the tomb of your ancestors.’”"
+        },
+        "reading_groups": [
+          "The old prophet gets the Lord’s message"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "answer leaks into question: old, prophet",
+            "lexical: structure_dependence 2.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "old",
+            "prophet"
+          ],
+          "answer_verse": 20,
+          "answer_verse_original": 20,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 20",
+          "readings_failures": []
+        },
+        "content_id": "v20-22:2"
+      },
+      {
+        "question": "What had the old prophet done to the man from Judah before this?",
+        "answer": "The old prophet had brought the man from Judah back.",
+        "answer_verse": 20,
+        "wrong_answer": "The old prophet cried out to the man from Judah.",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "He had brought him back.",
+            "support": "the old prophet who had brought him back"
+          }
+        ],
+        "distinct_readings": [
+          "He had brought him back."
+        ],
+        "scores": {
+          "structure_dependence": 5.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 3.0,
+          "runs": 1,
+          "reason": "The action comes from a relative clause (“who had brought him back”), requiring linking the clause to the old prophet but stated only once and clearly."
+        },
+        "window_verses": [
+          20,
+          21,
+          22
+        ],
+        "window_text": {
+          "20": "While they were sitting at the table, the word of the Lord came to the old prophet who had brought him back.",
+          "21": "He cried out to the man of God who had come from Judah, “This is what the Lord says: ‘You have defied the word of the Lord and have not kept the command the Lord your God gave you.",
+          "22": "You came back and ate bread and drank water in the place where he told you not to eat or drink. Therefore your body will not be buried in the tomb of your ancestors.’”"
+        },
+        "reading_groups": [
+          "He had brought him back"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 5.0 (need 7.0)",
+            "incidental: centrality 3.0 (need 5.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "judah",
+            "old",
+            "prophet"
+          ],
+          "answer_verse": 20,
+          "answer_verse_original": 20,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 20",
+          "readings_failures": []
+        },
+        "content_id": "v20-22:3"
+      },
+      {
+        "question": "To whom does the old prophet direct his cry?",
+        "answer": "the man from Judah",
+        "answer_verse": 20,
+        "wrong_answer": "the Lord",
+        "relation": "participant",
+        "readings": [
+          {
+            "answer": "the man of God who had come from Judah",
+            "support": "to the man of God who had come from Judah"
+          }
+        ],
+        "distinct_readings": [
+          "the man of God who had come from Judah"
+        ],
+        "scores": {
+          "structure_dependence": 3.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "The object of the preposition is explicit (“to the man of God who had come from Judah”), uniquely stated and central to the address."
+        },
+        "window_verses": [
+          20,
+          21,
+          22
+        ],
+        "window_text": {
+          "20": "While they were sitting at the table, the word of the Lord came to the old prophet who had brought him back.",
+          "21": "He cried out to the man of God who had come from Judah, “This is what the Lord says: ‘You have defied the word of the Lord and have not kept the command the Lord your God gave you.",
+          "22": "You came back and ate bread and drank water in the place where he told you not to eat or drink. Therefore your body will not be buried in the tomb of your ancestors.’”"
+        },
+        "reading_groups": [
+          "To the man of God from Judah"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 3.0 (need 7.0)"
+          ],
+          "notes": [
+            "corrected metadata from 21 to 20; reading support and question relation identify verse 20",
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 20,
+          "answer_verse_original": 21,
+          "answer_verse_corrected": true,
+          "answer_verse_note": "corrected metadata from 21 to 20; reading support and question relation identify verse 20",
+          "readings_failures": []
+        },
+        "content_id": "v20-22:4"
+      },
+      {
+        "question": "Why is the man from Judah told his body will not be buried with his fathers?",
+        "answer": "The man from Judah went back and ate and drank where the Lord forbade.",
+        "answer_verse": 22,
+        "wrong_answer": "Because he came from Judah.",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "Because he came back and ate and drank where he was forbidden to.",
+            "support": "You came back and ate bread and drank water in the place where he told you not to eat or drink. | Therefore your body will not be buried in the tomb of your ancestors."
+          },
+          {
+            "answer": "Because he defied the word of the Lord and did not keep God’s command.",
+            "support": "You have defied the word of the Lord and have not kept the command the Lord your God gave you."
+          }
+        ],
+        "distinct_readings": [
+          "Because he came back and ate and drank where he was forbidden to.",
+          "Because he defied the word of the Lord and did not keep God’s command."
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "It requires connecting the causal clause (“You came back and ate...”) to the consequence introduced by “Therefore,” a single, central rationale."
+        },
+        "window_verses": [
+          20,
+          21,
+          22
+        ],
+        "window_text": {
+          "20": "While they were sitting at the table, the word of the Lord came to the old prophet who had brought him back.",
+          "21": "He cried out to the man of God who had come from Judah, “This is what the Lord says: ‘You have defied the word of the Lord and have not kept the command the Lord your God gave you.",
+          "22": "You came back and ate bread and drank water in the place where he told you not to eat or drink. Therefore your body will not be buried in the tomb of your ancestors.’”"
+        },
+        "reading_groups": [
+          "He came back and ate/drank where forbidden",
+          "He defied the Lord’s word/did not keep the command"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "quotes the passage: quotes verse 22: 'body will not be buried'",
+            "answer is a description, not an identification: 'The man from Judah went back and ate and drank where the Lord forbade.'",
+            "2 defensible readings: He came back and ate/drank where forbidden | He defied the Lord’s word/did not keep the command"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "judah"
+          ],
+          "answer_verse": 22,
+          "answer_verse_original": 22,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 22",
+          "readings_failures": [
+            "2 defensible readings: He came back and ate/drank where forbidden | He defied the Lord’s word/did not keep the command"
+          ]
+        },
+        "content_id": "v20-22:5"
+      },
+      {
+        "question": "Who told the man from Judah not to take food or water there?",
+        "answer": "the Lord",
+        "answer_verse": 22,
+        "wrong_answer": "the old prophet",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "The Lord your God",
+            "support": "the Lord your God | where he told you not to eat or drink"
+          },
+          {
+            "answer": "The Lord",
+            "support": "This is what the Lord says | where he told you not to eat or drink"
+          }
+        ],
+        "distinct_readings": [
+          "The Lord your God",
+          "The Lord"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "Identifying the antecedent of “he told you” as the Lord requires pronoun resolution across clauses, stated once and important to the charge."
+        },
+        "window_verses": [
+          20,
+          21,
+          22
+        ],
+        "window_text": {
+          "20": "While they were sitting at the table, the word of the Lord came to the old prophet who had brought him back.",
+          "21": "He cried out to the man of God who had come from Judah, “This is what the Lord says: ‘You have defied the word of the Lord and have not kept the command the Lord your God gave you.",
+          "22": "You came back and ate bread and drank water in the place where he told you not to eat or drink. Therefore your body will not be buried in the tomb of your ancestors.’”"
+        },
+        "reading_groups": [
+          "The Lord (your God)"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "alternatives in question: question lists the alternatives",
+            "bare-name answer 'the Lord': names survive translation"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 22,
+          "answer_verse_original": 22,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 22",
+          "readings_failures": []
+        },
+        "content_id": "v20-22:6"
+      },
+      {
+        "question": "Whose body is warned it will not rest in his fathers’ tomb?",
+        "answer": "the man from Judah",
+        "answer_verse": 22,
+        "wrong_answer": "the old prophet",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "The man of God from Judah",
+            "support": "the man of God who had come from Judah | Therefore your body will not be buried in the tomb of your ancestors"
+          }
+        ],
+        "distinct_readings": [
+          "The man of God from Judah"
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "It requires resolving the second-person pronoun (“your body”) to the addressed man of God from Judah, a single, central detail of the prophecy."
+        },
+        "window_verses": [
+          20,
+          21,
+          22
+        ],
+        "window_text": {
+          "20": "While they were sitting at the table, the word of the Lord came to the old prophet who had brought him back.",
+          "21": "He cried out to the man of God who had come from Judah, “This is what the Lord says: ‘You have defied the word of the Lord and have not kept the command the Lord your God gave you.",
+          "22": "You came back and ate bread and drank water in the place where he told you not to eat or drink. Therefore your body will not be buried in the tomb of your ancestors.’”"
+        },
+        "reading_groups": [
+          "The man of God from Judah"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: tomb",
+            "dangling pronoun: it, his",
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "tomb"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 22,
+          "answer_verse_original": 22,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 22",
+          "readings_failures": []
+        },
+        "content_id": "v20-22:7"
+      },
+      {
+        "question": "Who receives the Lord’s message while they sit at the table?",
+        "answer": "the old prophet",
+        "answer_verse": 20,
+        "wrong_answer": "the man of God",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "the old prophet who had brought him back",
+            "support": "the word of the Lord came to the old prophet who had brought him back"
+          }
+        ],
+        "distinct_readings": [
+          "the old prophet who had brought him back"
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "The text explicitly says the word of the Lord came to the old prophet, requiring mapping recipient roles but stated once and clearly."
+        },
+        "window_verses": [
+          20,
+          21,
+          22
+        ],
+        "window_text": {
+          "20": "While they were sitting at the table, the word of the Lord came to the old prophet who had brought him back.",
+          "21": "He cried out to the man of God who had come from Judah, “This is what the Lord says: ‘You have defied the word of the Lord and have not kept the command the Lord your God gave you.",
+          "22": "You came back and ate bread and drank water in the place where he told you not to eat or drink. Therefore your body will not be buried in the tomb of your ancestors.’”"
+        },
+        "reading_groups": [
+          "the old prophet (who brought him back) receives the word of the Lord"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: sit, tabl",
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "sit",
+            "tabl"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 20,
+          "answer_verse_original": 20,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 20",
+          "readings_failures": []
+        },
+        "content_id": "v20-22:8"
+      },
+      {
+        "question": "Why will the man of God not be buried with his ancestors?",
+        "answer": "because he went back and ate and drank there",
+        "answer_verse": 22,
+        "wrong_answer": "because the old prophet brought him back",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "Because he came back and ate bread and drank water where God had told him not to.",
+            "support": "You came back and ate bread and drank water in the place where he told you not to eat or drink. | Therefore your body will not be buried in the tomb of your ancestors."
+          },
+          {
+            "answer": "Because he defied the word of the Lord and did not keep the command God gave him.",
+            "support": "You have defied the word of the Lord and have not kept the command | Therefore your body will not be buried in the tomb of your ancestors."
+          }
+        ],
+        "distinct_readings": [
+          "Because he came back and ate bread and drank water where God had told him not to.",
+          "Because he defied the word of the Lord and did not keep the command God gave him."
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "The causal link is explicit (“Therefore”) to the act of returning to eat and drink where forbidden, and is given only here."
+        },
+        "window_verses": [
+          20,
+          21,
+          22
+        ],
+        "window_text": {
+          "20": "While they were sitting at the table, the word of the Lord came to the old prophet who had brought him back.",
+          "21": "He cried out to the man of God who had come from Judah, “This is what the Lord says: ‘You have defied the word of the Lord and have not kept the command the Lord your God gave you.",
+          "22": "You came back and ate bread and drank water in the place where he told you not to eat or drink. Therefore your body will not be buried in the tomb of your ancestors.’”"
+        },
+        "reading_groups": [
+          "Because he returned and ate/drank where God forbade (i.e., defied the Lord’s command)"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "answerability multiple_answers: Verse 21 states he defied the Lord’s word and did not keep the command, which is the general reason underlying the specific act in verse 22 that leads to the stated consequence."
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 22,
+          "answer_verse_original": 22,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 22",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Why will the man of God not be buried with his ancestors?",
+            "readings": [
+              {
+                "answer": "Because he came back and ate bread and drank water where God had told him not to.",
+                "support": "You came back and ate bread and drank water in the place where he told you not to eat or drink. | Therefore your body will not be buried in the tomb of your ancestors."
+              },
+              {
+                "answer": "Because he defied the word of the Lord and did not keep the command God gave him.",
+                "support": "You have defied the word of the Lord and have not kept the command | Therefore your body will not be buried in the tomb of your ancestors."
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "It matches verse 22 exactly: he came back and ate and drank where he was told not to, and therefore would not be buried with his ancestors."
+              },
+              {
+                "number": 2,
+                "classification": "defensible_alternative",
+                "reason": "Verse 21 states he defied the Lord’s word and did not keep the command, which is the general reason underlying the specific act in verse 22 that leads to the stated consequence."
+              }
+            ],
+            "verdict": "multiple_answers",
+            "reason": "Verse 21 states he defied the Lord’s word and did not keep the command, which is the general reason underlying the specific act in verse 22 that leads to the stated consequence.",
+            "status": "flagged"
+          }
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "Why will the man of God not be buried with his ancestors?",
+            "after": "What did the man of God do that led to not being buried with his ancestors?",
+            "note": "Focused on the specific action to avoid multiple valid reasons.",
+            "failures_before": [
+              "answerability multiple_answers: Verse 21 states he defied the Lord’s word and did not keep the command, which is the general reason underlying the specific act in verse 22 that leads to the stated consequence."
+            ],
+            "scores_before": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "The causal link is explicit (“Therefore”) to the act of returning to eat and drink where forbidden, and is given only here."
+            },
+            "accepted": false,
+            "reason": "removed as weak question: Both “defied the word/did not keep the command” and “came back and ate and drank where forbidden” are defensible answers.",
+            "suitability_judgment": {
+              "Q": "What did the man of God do that led to not being buried with his ancestors?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": false,
+              "remove": true,
+              "reason": "Both “defied the word/did not keep the command” and “came back and ate and drank where forbidden” are defensible answers."
+            }
+          }
+        ],
+        "content_id": "v20-22:9"
+      },
+      {
+        "question": "Who gave the command the man of God failed to keep?",
+        "answer": "the Lord",
+        "answer_verse": 21,
+        "wrong_answer": "the old prophet",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "The Lord your God",
+            "support": "the command the Lord your God gave you"
+          }
+        ],
+        "distinct_readings": [
+          "The Lord your God"
+        ],
+        "scores": {
+          "structure_dependence": 3.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 5.0,
+          "runs": 1,
+          "reason": "The clause directly names the giver as “the Lord your God,” a straightforward identification stated once."
+        },
+        "window_verses": [
+          20,
+          21,
+          22
+        ],
+        "window_text": {
+          "20": "While they were sitting at the table, the word of the Lord came to the old prophet who had brought him back.",
+          "21": "He cried out to the man of God who had come from Judah, “This is what the Lord says: ‘You have defied the word of the Lord and have not kept the command the Lord your God gave you.",
+          "22": "You came back and ate bread and drank water in the place where he told you not to eat or drink. Therefore your body will not be buried in the tomb of your ancestors.’”"
+        },
+        "reading_groups": [
+          "the Lord (the Lord your God) gave the command"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: god",
+            "bare-name answer 'the Lord': names survive translation",
+            "lexical: structure_dependence 3.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "god"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 21,
+          "answer_verse_original": 21,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 21",
+          "readings_failures": []
+        },
+        "content_id": "v20-22:10"
+      },
+      {
+        "question": "Whose body will not be buried with his ancestors?",
+        "answer": "the man of God",
+        "answer_verse": 22,
+        "wrong_answer": "the old prophet",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "The man of God from Judah.",
+            "support": "the man of God who had come from Judah | Therefore your body will not be buried in the tomb of your ancestors."
+          }
+        ],
+        "distinct_readings": [
+          "The man of God from Judah."
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "It requires resolving the pronoun “your” in the judgment to the man of God, a single, central relational reference."
+        },
+        "window_verses": [
+          20,
+          21,
+          22
+        ],
+        "window_text": {
+          "20": "While they were sitting at the table, the word of the Lord came to the old prophet who had brought him back.",
+          "21": "He cried out to the man of God who had come from Judah, “This is what the Lord says: ‘You have defied the word of the Lord and have not kept the command the Lord your God gave you.",
+          "22": "You came back and ate bread and drank water in the place where he told you not to eat or drink. Therefore your body will not be buried in the tomb of your ancestors.’”"
+        },
+        "reading_groups": [
+          "the man of God (from Judah)"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "dangling pronoun: his",
+            "quotes the passage: quotes verse 22: 'body will not be buried'"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 22,
+          "answer_verse_original": 22,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 22",
+          "readings_failures": []
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "Whose body will not be buried with his ancestors?",
+            "after": "Which man will not be laid to rest with his ancestors?",
+            "note": "Bound the pronoun to an antecedent and paraphrased the burial wording.",
+            "failures_before": [
+              "dangling pronoun: his",
+              "quotes the passage: quotes verse 22: 'body will not be buried'"
+            ],
+            "scores_before": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "It requires resolving the pronoun “your” in the judgment to the man of God, a single, central relational reference."
+            },
+            "accepted": false,
+            "reason": "failed full rejudgment",
+            "suitability_judgment": {
+              "Q": "Which man will not be laid to rest with his ancestors?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "Only the man of God who came from Judah is declared not to be buried with his ancestors."
+            },
+            "failures_after": [
+              "dangling pronoun: his"
+            ],
+            "scores_after": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 9.0,
+              "runs": 1,
+              "reason": "The reader must link the pronoun “your” in the judgment to its addressee (“the man of God”), a uniquely stated fact with a single clear answer that is central to the passage’s key pronouncement."
+            },
+            "scores_used": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 9.0,
+              "runs": 1,
+              "reason": "The reader must link the pronoun “your” in the judgment to its addressee (“the man of God”), a uniquely stated fact with a single clear answer that is central to the passage’s key pronouncement."
+            }
+          }
+        ],
+        "content_id": "v20-22:11"
+      },
+      {
+        "question": "Who calls to the man who had come?",
+        "answer": "the old prophet",
+        "answer_verse": 20,
+        "wrong_answer": "the man of God",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "the old prophet who had brought him back",
+            "support": "the old prophet who had brought him back | He cried out to the man of God who had come from Judah"
+          }
+        ],
+        "distinct_readings": [
+          "the old prophet who had brought him back"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "Identifying the caller requires resolving the pronoun “He” back to “the old prophet,” a single stated clause with an unambiguous answer that is important to the scene though not the main judgment."
+        },
+        "window_verses": [
+          20,
+          21,
+          22
+        ],
+        "window_text": {
+          "20": "While they were sitting at the table, the word of the Lord came to the old prophet who had brought him back.",
+          "21": "He cried out to the man of God who had come from Judah, “This is what the Lord says: ‘You have defied the word of the Lord and have not kept the command the Lord your God gave you.",
+          "22": "You came back and ate bread and drank water in the place where he told you not to eat or drink. Therefore your body will not be buried in the tomb of your ancestors.’”"
+        },
+        "reading_groups": [
+          "The caller is the old prophet who had brought him back"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: hybrid window selector — It hinges on resolving the second-person “you” in the prophecy to the man of God rather than the old prophet, a clear and central referent decision with a plausible misparse."
+          ],
+          "notes": [
+            "corrected metadata from 21 to 20; Q/A evidence matches verse(s) [20] better than the claimed 21",
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 20,
+          "answer_verse_original": 21,
+          "answer_verse_corrected": true,
+          "answer_verse_note": "corrected metadata from 21 to 20; Q/A evidence matches verse(s) [20] better than the claimed 21",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Who calls to the man who had come?",
+            "readings": [
+              {
+                "answer": "the old prophet who had brought him back",
+                "support": "the old prophet who had brought him back | He cried out to the man of God who had come from Judah"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Verse 21 says “He cried out to the man of God,” with “He” referring back to “the old prophet who had brought him back” in verse 20, matching the key’s ‘the old prophet.’"
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The text explicitly identifies the caller as the old prophet who had brought him back.",
+            "status": "passed"
+          }
+        },
+        "scores_after_repair_raw": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "Identifying the caller requires resolving the pronoun “He” back to “the old prophet,” a single stated clause with an unambiguous answer that is important to the scene though not the main judgment."
+        },
+        "repaired": true,
+        "repair_attempted": true,
+        "question_before_repair": "Who cries out to the man of God?",
+        "scores_before_repair": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "Resolving the pronoun “he” back to the old prophet is necessary, the statement occurs once, and the referent is clear in context."
+        },
+        "audit_before_repair": {
+          "passed": false,
+          "failures": [
+            "location leak: god",
+            "quotes the passage: quotes verse 21: 'out to the man of'"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "god"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 21,
+          "answer_verse_original": 21,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 21",
+          "readings_failures": []
+        },
+        "repair_log": [
+          {
+            "before": "Who cries out to the man of God?",
+            "after": "Who calls to the man who had come?",
+            "note": "Removed leaking word and paraphrased to avoid quoting the verse.",
+            "failures_before": [
+              "location leak: god",
+              "quotes the passage: quotes verse 21: 'out to the man of'"
+            ],
+            "scores_before": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 9.0,
+              "centrality": 6.0,
+              "runs": 1,
+              "reason": "Resolving the pronoun “he” back to the old prophet is necessary, the statement occurs once, and the referent is clear in context."
+            },
+            "accepted": true,
+            "reason": "passed full rejudgment",
+            "suitability_judgment": {
+              "Q": "Who calls to the man who had come?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "The caller is uniquely the old prophet identified in the window."
+            },
+            "failures_after": [],
+            "scores_after": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 7.0,
+              "runs": 1,
+              "reason": "Identifying the caller requires resolving the pronoun “He” back to “the old prophet,” a single stated clause with an unambiguous answer that is important to the scene though not the main judgment."
+            },
+            "scores_used": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 7.0,
+              "runs": 1,
+              "reason": "Identifying the caller requires resolving the pronoun “He” back to “the old prophet,” a single stated clause with an unambiguous answer that is important to the scene though not the main judgment."
+            }
+          }
+        ],
+        "window_selection_reason": "It hinges on resolving the second-person “you” in the prophecy to the man of God rather than the old prophet, a clear and central referent decision with a plausible misparse.",
+        "content_id": "v20-22:12"
+      }
+    ],
+    "report": {
+      "window_id": "v20-22",
+      "verses": [
+        20,
+        21,
+        22
+      ],
+      "generated": 12,
+      "scored": 12,
+      "kept": 1,
+      "survivors_before_window_selection": 2,
+      "window_selection_rejected": 1,
+      "repair_attempted": 3,
+      "repaired": 1,
+      "window_retries_used": 1,
+      "score_runs": 1
+    }
+  }
+}

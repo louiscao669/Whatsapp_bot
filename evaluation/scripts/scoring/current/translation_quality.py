@@ -9,6 +9,9 @@ as Transformers or deep-translator are not installed.
 from __future__ import annotations
 
 import argparse
+from bisect import bisect_right
+from functools import lru_cache
+from hashlib import sha256
 import json
 import os
 import re
@@ -432,18 +435,204 @@ def wbw_join(pairs: "list[tuple[str, str]]", keep_spaces: bool = False) -> str:
     return "".join(out)
 
 
+def wbw_name_matches(english, names):
+    if not names:
+        return ()
+    alternatives = "|".join(re.escape(n) for n in sorted(names, key=len, reverse=True))
+    return re.finditer(r"(?<![\w-])(?:" + alternatives + r")(?![\w-])", english)
+
+
+def _verse_paragraphs(text):
+    # A paragraph boundary or a new numbered line starts a verse. Ignore trailing whitespace.
+    return re.split(r"\n[ \t]*\n\s*|\n(?=\d+[ \t])", text.strip())
+
+
+def _verse_marker(paragraph):
+    match = re.match(r"(\d+)\s+", paragraph)
+    return match[1] if match else None
+
+
+def _verse_body(paragraph):
+    return re.sub(r"^\d+\s+", "", paragraph, count=1).strip()
+
+
+def review_wbw_source_names(english, names, non_names, reference=None):
+    """Check each source occurrence in its own clean verse and flag unreviewed capitals."""
+    paragraphs = _verse_paragraphs(english)
+    if reference is not None and len(paragraphs) != len(reference):
+        raise TranslationQualityError("English and clean Chinese have different verse counts.")
+    unknown = []
+    count = 0
+    for index, paragraph in enumerate(paragraphs):
+        label, clean = reference[index] if reference is not None else (_verse_marker(paragraph) or str(index+1), None)
+        remaining = list(paragraph)
+        for match in wbw_name_matches(paragraph, names):
+            name = match[0]
+            if clean is not None and names[name] not in clean:
+                raise TranslationQualityError(f"Name needs review in verse {label}: {name} → {names[name]} "
+                                              "is absent from the clean Chinese verse.")
+            remaining[match.start():match.end()] = " " * len(name)
+            count += 1
+        candidates = set(re.findall(r"\b[A-Z][A-Za-z-]*", "".join(remaining)))
+        for candidate in sorted(candidates.difference(non_names)):
+            unknown.append(f"{candidate} (verse {label})")
+    if unknown:
+        raise TranslationQualityError("Possible proper names need review: " + ", ".join(unknown))
+    return count
+
+
+def protect_wbw_names(pairs, names):
+    """Replace only Google token spans belonging to a case-sensitive reviewed name."""
+    english = " ".join(word for word, _ in pairs)
+    starts = []
+    offset = 0
+    for word, _ in pairs:
+        starts.append(offset)
+        offset += len(word) + 1
+    output, checks = [], []
+    next_pair = 0
+    for match in wbw_name_matches(english, names):
+        name = match[0]
+        expected = names[name]
+        start = bisect_right(starts, match.start()) - 1
+        end = bisect_right(starts, match.end() - 1) - 1
+        if start < next_pair:
+            raise TranslationQualityError(f"Overlapping named tokens near {name}")
+        output.extend(pairs[next_pair:start])
+        target = wbw_join(pairs[start:end + 1])
+        source = english[starts[start]:starts[end] + len(pairs[end][0])]
+        # Number/quote/punctuation attached by Google belongs to the surrounding verse.
+        # 的 belongs to the English possessive and survives a changed spelling.
+        # Israel—though is one legacy Google token; its rest is ordinary translated prose.
+        prefix = english[starts[start]:match.start()]
+        suffix = english[match.end():starts[end] + len(pairs[end][0])]
+        if re.search(r"[A-Za-z]", prefix + re.sub(r"^[’']s\b", "", suffix)):
+            if expected not in target:
+                raise TranslationQualityError(f"cannot isolate {name} inside {source!r}")
+            old = expected
+        else:
+            body = re.fullmatch(r"([^\w]*)([\u3400-\u9fffA-Za-z·]+?)(的?)([^\w]*(?:\d+\s*)?)", target)
+            if body is None:
+                raise TranslationQualityError(f"cannot isolate named span {source!r} in {target!r}")
+            old = body[2]
+            target = body[1] + expected + body[3] + body[4]
+        checks.append((match.start(), name, old, expected))
+        output.append((source, target))
+        next_pair = end + 1
+    output.extend(pairs[next_pair:])
+    return output, checks
+
+
+_WBW_DATA = Path(__file__).resolve().parents[3] / "datasets"
+_SOL_WBW_PARENT = _WBW_DATA / "passages/tier1_zh_sol_v1_defect_ladder_2026-11-09"
+
+
+@lru_cache(maxsize=1)
+def _sol_wbw_reference_index():
+    """Index exact English verses for full passages and contiguous Sol excerpts."""
+    config = json.loads((_WBW_DATA / "perturbations/sol_wbw_names.json").read_text(encoding="utf-8"))
+    sources = []
+    for pid, filename in config["source_files"].items():
+        english = (_WBW_DATA / "passages/tier1_bsb" / filename).read_text(encoding="utf-8")
+        pack = json.loads((_SOL_WBW_PARENT / f"{pid}.json").read_text(encoding="utf-8"))
+        if sha256(english.encode()).hexdigest() != pack["english_sha256"]:
+            raise TranslationQualityError(f"The Sol English source differs from the clean release for {pid}.")
+        verses = list(pack["conditions"]["clean"]["verses"].items())
+        paragraphs = _verse_paragraphs(english)
+        markers = [chapter if verse == "1" else verse for chapter, verse in
+                   (label.split(":") for label, _ in verses)]
+        if [_verse_marker(p) for p in paragraphs] != markers:
+            raise TranslationQualityError(f"The English and clean verse labels differ for {pid}.")
+        sources.append((paragraphs, [_verse_body(p) for p in paragraphs], verses))
+    return config, sources
+
+
+def _wbw_reference(source, sources, supplied=False):
+    paragraphs = _verse_paragraphs(source)
+    bodies = [_verse_body(p) for p in paragraphs]
+    possible = []
+    for originals, corpus, verses in sources:
+        for start, body in enumerate(corpus):
+            if body != bodies[0] or corpus[start:start + len(bodies)] != bodies:
+                continue
+            if all(_verse_marker(p) in (None, _verse_marker(q))
+                   for p, q in zip(paragraphs, originals[start:])):
+                possible.append(verses[start:start + len(bodies)])
+    if len(possible) > 1:
+        if supplied:
+            return None
+        raise TranslationQualityError("Ambiguous Sol excerpt. Supply its clean Chinese passage.")
+    return possible[0] if possible else None
+
+
+def wbw_name_review(texts, glossary=None, clean_texts=None, reference_sources=None):
+    """Resolve references and review names before translation or reuse of an existing output."""
+    texts = ensure_texts(texts)
+    supplied = [None] * len(texts) if clean_texts is None else ensure_texts(clean_texts)
+    originals = texts if reference_sources is None else ensure_texts(reference_sources)
+    if len(supplied) != len(texts) or len(originals) != len(texts):
+        raise TranslationQualityError("Supply one clean passage per English passage.")
+    config, sources = _sol_wbw_reference_index()
+    canonical = {**config["components"], **config["names"]}
+    names = {**canonical, **(glossary or {})}
+    non_names = set(config["reviewed_non_names"])
+    audit = []
+    for source, original, clean in zip(texts, originals, supplied):
+        reference = _wbw_reference(original, sources, supplied=clean is not None)
+        kind = "Sol" if reference is not None else "glossary"
+        # Caller glossaries can extend the inventory (including study pseudonyms).
+        # For a recognized Sol verse the released spellings are authoritative.
+        if reference is not None and glossary:
+            for match in wbw_name_matches(source, canonical):
+                key = match[0]
+                if names[key] != canonical[key]:
+                    raise TranslationQualityError(f"Name needs review: {key} has conflicting Sol and caller spellings.")
+        if clean is not None:
+            paragraphs = _verse_paragraphs(source)
+            supplied_verses = _verse_paragraphs(clean)
+            if (len(paragraphs) != len(supplied_verses)
+                    or any(_verse_marker(a) != _verse_marker(b) for a, b in zip(paragraphs, supplied_verses))):
+                raise TranslationQualityError("The supplied clean passage must have the same verse markers as the English.")
+            labels = ([label for label, _ in reference] if reference is not None else
+                      [_verse_marker(p) or str(i) for i, p in enumerate(paragraphs, 1)])
+            reference = list(zip(labels, map(_verse_body, supplied_verses)))
+            kind = "supplied"
+        checked = review_wbw_source_names(source, names, non_names, reference)
+        audit.append({"checked_occurrences": checked,
+                      "reference": kind,
+                      "verses": [label for label, _ in reference] if reference is not None else [],
+                      "reference_sha256": sha256(json.dumps(reference, ensure_ascii=False).encode()).hexdigest()
+                      if reference is not None else None})
+    return names, audit
+
+
+def wbw_name_checks_enabled(source_language, target_language, glossary=None):
+    chinese = source_language.lower() in {"english", "en"} and normalize_target_language(target_language) == "zh-CN"
+    return chinese and (bool(glossary) or not os.getenv("WBW_NAME_OVERRIDES_DISABLED"))
+
+
 def google_word_by_word(
     texts: str | Iterable[str],
     *,
     target_language: str = "zh-CN",
     source_language: str = "en",
     sleep_seconds: float = 0.0,
+    glossary: Optional[dict[str, str]] = None,
+    wbw_clean_texts: str | Iterable[str] | None = None,
+    wbw_reference_sources: str | Iterable[str] | None = None,
 ) -> list[str]:
     """Lowest baseline: translate each whitespace token independently.
 
     This intentionally destroys phrase-level context. It is useful as a weak
     floor, not as a realistic user-facing translator.
     """
+
+    texts = ensure_texts(texts)
+    names, name_audit = {}, []
+    if wbw_name_checks_enabled(source_language, target_language, glossary):
+        names, name_audit = wbw_name_review(texts, glossary, wbw_clean_texts, wbw_reference_sources)
+    elif wbw_clean_texts is not None:
+        raise TranslationQualityError("A clean Chinese reference requires the English-to-Chinese WBW name check.")
 
     try:
         from deep_translator import GoogleTranslator
@@ -461,7 +650,8 @@ def google_word_by_word(
     # --- wbw resilience (patched) ---
     cache_path = _wbw_cache_path(source_language, target_language)
     cache = _wbw_load_cache(cache_path)
-    name_overrides = _wbw_load_name_overrides()
+    chinese = normalize_target_language(target_language) == "zh-CN" and source_language.lower() in {"english", "en"}
+    name_overrides = _wbw_load_name_overrides() if chinese else {}
     attempts = int(os.getenv("WBW_TOKEN_RETRIES", "3"))
     base_delay = float(os.getenv("WBW_RETRY_BASE_DELAY", "0.5"))
     # Pause after every LIVE request (cache hits are free). Google's public
@@ -472,9 +662,10 @@ def google_word_by_word(
     stats = {"tokens": 0, "requests": 0, "cache_hits": 0, "fallbacks": 0,
              "name_overrides": 0, "fallback_tokens": []}
 
+    stats["name_review"] = name_audit
     keep_spaces = bool(os.getenv("WBW_KEEP_SPACES"))
     outputs = []
-    for text in ensure_texts(texts):
+    for index, text in enumerate(texts):
         translated_words = []   # (source token, rendered token)
         for word in text.split(" "):
             if not word:
@@ -520,6 +711,10 @@ def google_word_by_word(
                 if stats["requests"] % 25 == 0:
                     _wbw_save_cache(cache_path, cache)
             translated_words.append((word, rendered))
+        if names and chinese:
+            translated_words, protected = protect_wbw_names(translated_words, names)
+            if len(protected) != name_audit[index]["checked_occurrences"]:
+                raise TranslationQualityError("The translated name spans differ from the reviewed source.")
         outputs.append(wbw_join(translated_words, keep_spaces))
 
     _wbw_save_cache(cache_path, cache)
@@ -558,6 +753,53 @@ LLM_QUALITY_PROMPTS = {
 }
 
 
+def llm_translation_messages(text, target_language, quality, glossary=None):
+    """Build the passage translator input used by the quality pipeline."""
+    prompt_instruction = LLM_QUALITY_PROMPTS[quality].format(
+        target_language=target_language
+    )
+    prompt_instruction += (
+        " Preserve every token matching __[A-Z0-9_]+__ exactly, including "
+        "capitalization and underscores. Never lowercase, translate, split, "
+        "or add spaces inside these tokens."
+    )
+    if glossary:
+        # Without a fixed target-side rendering, each call transliterates the
+        # pseudonyms independently: the passage came out with 塔杜尔 for "Tadul"
+        # while the questions used 卢丹 for "Ludan" and left "Lidor" in Latin
+        # script. Questions then referred to entities the passage never named,
+        # and MCQ accuracy fell below chance. The name map already fixes one
+        # rendering per entity; this hands it to the model.
+        prompt_instruction += (
+            " Render these names EXACTLY as given, every time they occur; "
+            "do not transliterate them yourself and do not leave them in the "
+            "source script."
+        )
+    return [
+        {
+            "role": "system",
+            "content": (
+                "You are a translation engine for controlled "
+                "evaluation experiments. Return only the translated "
+                "text, with no markdown or explanation."
+            ),
+        },
+        {
+            "role": "user",
+            "content": json.dumps(
+                {
+                    "instruction": prompt_instruction,
+                    "source_language": "English",
+                    "target_language": target_language,
+                    **({"name_glossary": glossary} if glossary else {}),
+                    "text": text,
+                },
+                ensure_ascii=False,
+            ),
+        },
+    ]
+
+
 def llm_prompt_translate(
     texts: str | Iterable[str],
     *,
@@ -588,26 +830,6 @@ def llm_prompt_translate(
 
     model = model or os.getenv("OPENAI_TRANSLATION_MODEL", "gpt-4.1-mini")
     client = OpenAI()
-    prompt_instruction = LLM_QUALITY_PROMPTS[quality].format(
-        target_language=target_language
-    )
-    prompt_instruction += (
-        " Preserve every token matching __[A-Z0-9_]+__ exactly, including "
-        "capitalization and underscores. Never lowercase, translate, split, "
-        "or add spaces inside these tokens."
-    )
-    if glossary:
-        # Without a fixed target-side rendering, each call transliterates the
-        # pseudonyms independently: the passage came out with 塔杜尔 for "Tadul"
-        # while the questions used 卢丹 for "Ludan" and left "Lidor" in Latin
-        # script. Questions then referred to entities the passage never named,
-        # and MCQ accuracy fell below chance. The name map already fixes one
-        # rendering per entity; this hands it to the model.
-        prompt_instruction += (
-            " Render these names EXACTLY as given, every time they occur; "
-            "do not transliterate them yourself and do not leave them in the "
-            "source script."
-        )
     # The Responses API accepts temperature but not seed -- seed is a
     # chat.completions parameter. Passing it raises TypeError, so it is
     # accepted for interface symmetry and ignored here.
@@ -623,29 +845,7 @@ def llm_prompt_translate(
                 response = client.responses.create(
                     model=model,
                     **sampling,
-                    input=[
-                        {
-                            "role": "system",
-                            "content": (
-                                "You are a translation engine for controlled "
-                                "evaluation experiments. Return only the translated "
-                                "text, with no markdown or explanation."
-                            ),
-                        },
-                        {
-                            "role": "user",
-                            "content": json.dumps(
-                                {
-                                    "instruction": prompt_instruction,
-                                    "source_language": "English",
-                                    "target_language": target_language,
-                                    **({"name_glossary": glossary} if glossary else {}),
-                                    "text": text,
-                                },
-                                ensure_ascii=False,
-                            ),
-                        },
-                    ],
+                    input=llm_translation_messages(text, target_language, quality, glossary),
                 )
                 outputs.append(extract_openai_text(response).strip())
                 last_error = None
@@ -867,12 +1067,17 @@ def translate_with_method(
     temperature: Optional[float] = None,
     seed: Optional[int] = None,
     glossary: Optional[dict[str, str]] = None,
+    wbw_clean_texts: str | Iterable[str] | None = None,
+    wbw_reference_sources: str | Iterable[str] | None = None,
 ) -> list[str]:
     if method == "google_word_by_word":
         return google_word_by_word(
             texts,
             target_language=target_language,
             source_language=source_language,
+            glossary=glossary,
+            wbw_clean_texts=wbw_clean_texts,
+            wbw_reference_sources=wbw_reference_sources,
         )
     if method == "llm_prompt_low":
         return llm_prompt_translate(
@@ -974,6 +1179,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--target-language", default="Simplified Chinese")
     parser.add_argument("--source-language", default="en")
+    parser.add_argument("--wbw-clean-passage", type=Path, help="Clean Chinese reference with matching verse markers.")
     parser.add_argument("--helsinki-model")
     parser.add_argument("--mbart-model")
     parser.add_argument("--nllb-distilled-model")
@@ -998,6 +1204,8 @@ def main() -> int:
         if not is_supported_method(args.method):
             raise TranslationQualityError(f"Unknown translation method: {args.method}")
         validate_nllb_dropout_rate(args.nllb_dropout_rate)
+        if args.wbw_clean_passage and args.method != "google_word_by_word":
+            raise TranslationQualityError("--wbw-clean-passage is for the Google word-by-word method.")
         translations = translate_with_method(
             source_texts,
             args.method,
@@ -1009,6 +1217,7 @@ def main() -> int:
             nllb_model=args.nllb_model,
             nllb_dropout_rate=args.nllb_dropout_rate,
             openai_model=args.openai_model,
+            wbw_clean_texts=read_texts_from_json_or_text(args.wbw_clean_passage) if args.wbw_clean_passage else None,
         )
         output_json = method_output_path(args.output_path, args.method)
         method_dropout_rate = parse_nllb_dropout_rate(args.method)
@@ -1021,6 +1230,7 @@ def main() -> int:
                 "target_language": args.target_language,
                 "nllb_dropout_rate": method_dropout_rate,
                 "translations": translations,
+                **({"name_review": last_wbw_fallbacks()["name_review"]} if args.method == "google_word_by_word" else {}),
             },
         )
     except TranslationQualityError as exc:

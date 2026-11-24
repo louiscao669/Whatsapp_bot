@@ -1,0 +1,413 @@
+{
+  "config_digest": "aa9a4ffb136753ab8c88dc7d6aa0d6565d57c9e02752d2709077174115ee4d5f",
+  "data": {
+    "kept": [
+      {
+        "question": "Who receives the order to ready the force?",
+        "answer": "the two centurions",
+        "answer_verse": 23,
+        "wrong_answer": "the two hundred soldiers",
+        "relation": "participant",
+        "readings": [
+          {
+            "answer": "two of his centurions",
+            "support": "he called two of his centurions and ordered them"
+          }
+        ],
+        "distinct_readings": [
+          "two of his centurions"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "It requires linking “ordered them” back to “two of his centurions,” a single, unambiguous reference that is moderately central to the setup."
+        },
+        "window_verses": [
+          23,
+          24
+        ],
+        "window_text": {
+          "23": "Then he called two of his centurions and ordered them, “Get ready a detachment of two hundred soldiers, seventy horsemen and two hundred spearmen to go to Caesarea at nine tonight.",
+          "24": "Provide horses for Paul so that he may be taken safely to Governor Felix.”"
+        },
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 23,
+          "answer_verse_original": 23,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 23",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Who receives the order to ready the force?",
+            "readings": [
+              {
+                "answer": "two of his centurions",
+                "support": "he called two of his centurions and ordered them"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The passage says, “he called two of his centurions and ordered them,” so the recipients of the order are the two centurions."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The verse explicitly states the order was given to the two centurions.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It hinges on resolving the pronoun “them” to the centurions as the recipients of the order—distinct from the troops being prepared—while the competitor reflects a plausible misparse.",
+        "window_structure_max": 8.0,
+        "content_id": "v23-24:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Where are the two hundred soldiers, seventy horsemen, and two hundred spearmen told to go?",
+        "answer": "Caesarea",
+        "answer_verse": 23,
+        "wrong_answer": "Governor Felix",
+        "relation": "direction",
+        "readings": [
+          {
+            "answer": "Caesarea",
+            "support": "to go to Caesarea"
+          }
+        ],
+        "distinct_readings": [
+          "Caesarea"
+        ],
+        "scores": {
+          "structure_dependence": 2.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "The destination is explicitly named once as “to go to Caesarea,” leaving no ambiguity and it is central to the movement described."
+        },
+        "window_verses": [
+          23,
+          24
+        ],
+        "window_text": {
+          "23": "Then he called two of his centurions and ordered them, “Get ready a detachment of two hundred soldiers, seventy horsemen and two hundred spearmen to go to Caesarea at nine tonight.",
+          "24": "Provide horses for Paul so that he may be taken safely to Governor Felix.”"
+        },
+        "audit": {
+          "passed": false,
+          "failures": [
+            "repetitive question: repeats 'two hundred'",
+            "question too complex: stacked clauses (2 comma(s), 0 subordinator(s))",
+            "quotes the passage: quotes verse 23: 'two hundred soldiers seventy horsemen'",
+            "bare-name answer 'Caesarea': names survive translation",
+            "lexical: structure_dependence 2.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 23,
+          "answer_verse_original": 23,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 23",
+          "readings_failures": []
+        },
+        "content_id": "v23-24:2"
+      },
+      {
+        "question": "For whom are horses to be provided?",
+        "answer": "Paul",
+        "answer_verse": 24,
+        "wrong_answer": "the seventy horsemen",
+        "relation": "participant",
+        "readings": [
+          {
+            "answer": "Paul",
+            "support": "horses for Paul"
+          }
+        ],
+        "distinct_readings": [
+          "Paul"
+        ],
+        "scores": {
+          "structure_dependence": 2.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "“Provide horses for Paul” states the recipient directly once and unambiguously, and it is important though somewhat detail-level."
+        },
+        "window_verses": [
+          23,
+          24
+        ],
+        "window_text": {
+          "23": "Then he called two of his centurions and ordered them, “Get ready a detachment of two hundred soldiers, seventy horsemen and two hundred spearmen to go to Caesarea at nine tonight.",
+          "24": "Provide horses for Paul so that he may be taken safely to Governor Felix.”"
+        },
+        "audit": {
+          "passed": false,
+          "failures": [
+            "bare-name answer 'Paul': names survive translation",
+            "lexical: structure_dependence 2.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 24,
+          "answer_verse_original": 24,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 24",
+          "readings_failures": []
+        },
+        "content_id": "v23-24:3"
+      },
+      {
+        "question": "Why are horses provided for Paul?",
+        "answer": "To bring Paul safely to Governor Felix",
+        "answer_verse": 24,
+        "wrong_answer": "To let the troops go to Caesarea at nine",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "So that he may be taken safely to Governor Felix.",
+            "support": "so that he may be taken safely to Governor Felix"
+          }
+        ],
+        "distinct_readings": [
+          "So that he may be taken safely to Governor Felix."
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "It relies on interpreting the purpose clause “so that he may be taken safely to Governor Felix,” which is stated once and central to the action."
+        },
+        "window_verses": [
+          23,
+          24
+        ],
+        "window_text": {
+          "23": "Then he called two of his centurions and ordered them, “Get ready a detachment of two hundred soldiers, seventy horsemen and two hundred spearmen to go to Caesarea at nine tonight.",
+          "24": "Provide horses for Paul so that he may be taken safely to Governor Felix.”"
+        },
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: paul"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "paul"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "paul"
+          ],
+          "answer_verse": 24,
+          "answer_verse_original": 24,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 24",
+          "readings_failures": []
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "Why are horses provided for Paul?",
+            "after": "Why are horses provided for the prisoner?",
+            "note": "Replaced the leaking name with a neutral noun phrase.",
+            "failures_before": [
+              "location leak: paul"
+            ],
+            "scores_before": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "It relies on interpreting the purpose clause “so that he may be taken safely to Governor Felix,” which is stated once and central to the action."
+            },
+            "accepted": false,
+            "reason": "failed full rejudgment",
+            "suitability_judgment": {
+              "Q": "Why are horses provided for the prisoner?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "It clearly refers to Paul (the only person given horses) and asks for the explicitly stated purpose, which has a single answer in the window."
+            },
+            "failures_after": [
+              "question changes passage meaning: The passage says, “Provide horses for Paul,” but does not state he is “the prisoner.”"
+            ],
+            "scores_after": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 10.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "It asks for the purpose of providing horses, captured only in the single purpose clause “so that he may be taken safely to Governor Felix,” which is unambiguous and central to the transport plan."
+            },
+            "scores_used": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 10.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "It asks for the purpose of providing horses, captured only in the single purpose clause “so that he may be taken safely to Governor Felix,” which is unambiguous and central to the transport plan."
+            }
+          }
+        ],
+        "content_id": "v23-24:4"
+      },
+      {
+        "question": "Who is to be taken safely to the governor?",
+        "answer": "Paul",
+        "answer_verse": 24,
+        "wrong_answer": "Governor Felix",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "Paul",
+            "support": "for Paul so that he may be taken safely to Governor Felix."
+          }
+        ],
+        "distinct_readings": [
+          "Paul"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "Answering requires resolving the pronoun “he” to Paul in a single clause, yielding one clear answer about the main objective."
+        },
+        "window_verses": [
+          23,
+          24
+        ],
+        "window_text": {
+          "23": "Then he called two of his centurions and ordered them, “Get ready a detachment of two hundred soldiers, seventy horsemen and two hundred spearmen to go to Caesarea at nine tonight.",
+          "24": "Provide horses for Paul so that he may be taken safely to Governor Felix.”"
+        },
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: governor",
+            "bare-name answer 'Paul': names survive translation"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "governor"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 24,
+          "answer_verse_original": 24,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 24",
+          "readings_failures": []
+        },
+        "content_id": "v23-24:5"
+      },
+      {
+        "question": "Which two kinds of fighters are ordered in the same number?",
+        "answer": "the soldiers and the spearmen",
+        "answer_verse": 23,
+        "wrong_answer": "the soldiers and the horsemen",
+        "relation": "quantity",
+        "readings": [
+          {
+            "answer": "soldiers and spearmen",
+            "support": "two hundred soldiers | two hundred spearmen"
+          }
+        ],
+        "distinct_readings": [
+          "soldiers and spearmen"
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 4.0,
+          "runs": 1,
+          "reason": "This needs comparing the listed numbers to see soldiers and spearmen both at two hundred, a unique but more peripheral detail."
+        },
+        "window_verses": [
+          23,
+          24
+        ],
+        "window_text": {
+          "23": "Then he called two of his centurions and ordered them, “Get ready a detachment of two hundred soldiers, seventy horsemen and two hundred spearmen to go to Caesarea at nine tonight.",
+          "24": "Provide horses for Paul so that he may be taken safely to Governor Felix.”"
+        },
+        "audit": {
+          "passed": false,
+          "failures": [
+            "incidental: centrality 4.0 (need 5.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 23,
+          "answer_verse_original": 23,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 23",
+          "readings_failures": []
+        },
+        "content_id": "v23-24:6"
+      }
+    ],
+    "report": {
+      "window_id": "v23-24",
+      "verses": [
+        23,
+        24
+      ],
+      "generated": 6,
+      "scored": 6,
+      "kept": 1,
+      "survivors_before_window_selection": 1,
+      "window_selection_rejected": 0,
+      "repair_attempted": 1,
+      "repaired": 0,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

@@ -1,0 +1,473 @@
+{
+  "config_digest": "dff75e11c2f634febed8a35c540545c7c544680968ac4cebd050ba973dc16c6d",
+  "data": {
+    "kept": [
+      {
+        "question": "Who did the people trample to death?",
+        "answer": "the officer the king put in charge of the gate",
+        "answer_verse": 17,
+        "wrong_answer": "the king",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "The officer on whose arm the king leaned",
+            "support": "the officer on whose arm he leaned | the people trampled him in the gateway, and he died"
+          }
+        ],
+        "distinct_readings": [
+          "The officer on whose arm the king leaned"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "Identifying “him” as the officer requires resolving pronouns and roles, it is stated only in this clause, yields a single clear answer in a good translation, and is central to the event described in the window."
+        },
+        "window_verses": [
+          17,
+          18
+        ],
+        "window_text": {
+          "17": "Now the king had put the officer on whose arm he leaned in charge of the gate, and the people trampled him in the gateway, and he died, just as the man of God had foretold when the king came down to his house.",
+          "18": "It happened as the man of God had said to the king: “About this time tomorrow, a seah of the finest flour will sell for a shekel and two seahs of barley for a shekel at the gate of Samaria.”"
+        },
+        "reading_groups": [
+          "the officer on whose arm the king leaned (gate officer)"
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 17,
+          "answer_verse_original": 17,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 17",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Who did the people trample to death?",
+            "readings": [
+              {
+                "answer": "The officer on whose arm the king leaned",
+                "support": "the officer on whose arm he leaned | the people trampled him in the gateway, and he died"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The verse states the king put “the officer on whose arm he leaned” in charge of the gate, and that he was trampled and died; this matches the key’s identification."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The text directly identifies the trampled person as the officer the king leaned on and had put in charge of the gate.",
+            "status": "passed"
+          }
+        },
+        "scores_after_repair_raw": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "Identifying “him” as the officer requires resolving pronouns and roles, it is stated only in this clause, yields a single clear answer in a good translation, and is central to the event described in the window."
+        },
+        "repaired": true,
+        "repair_attempted": true,
+        "question_before_repair": "Who do the people trample to death in the gateway?",
+        "scores_before_repair": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "Identifying the victim requires resolving the pronoun 'him' to the officer appointed over the gate, a single-stated, unambiguous, and central event in the verse."
+        },
+        "audit_before_repair": {
+          "passed": false,
+          "failures": [
+            "location leak: gateway"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "gateway"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 17,
+          "answer_verse_original": 17,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 17",
+          "readings_failures": []
+        },
+        "repair_log": [
+          {
+            "before": "Who do the people trample to death in the gateway?",
+            "after": "Who did the people trample to death?",
+            "note": "Removed the leaking location word 'gateway'.",
+            "failures_before": [
+              "location leak: gateway"
+            ],
+            "scores_before": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 9.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "Identifying the victim requires resolving the pronoun 'him' to the officer appointed over the gate, a single-stated, unambiguous, and central event in the verse."
+            },
+            "accepted": true,
+            "reason": "passed full rejudgment",
+            "suitability_judgment": {
+              "Q": "Who did the people trample to death?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "The verse clearly states that the officer on whose arm the king leaned was trampled and died, yielding a single, direct answer."
+            },
+            "failures_after": [],
+            "scores_after": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 9.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "Identifying “him” as the officer requires resolving pronouns and roles, it is stated only in this clause, yields a single clear answer in a good translation, and is central to the event described in the window."
+            },
+            "scores_used": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 9.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "Identifying “him” as the officer requires resolving pronouns and roles, it is stated only in this clause, yields a single clear answer in a good translation, and is central to the event described in the window."
+            }
+          }
+        ],
+        "window_selection_reason": "It hinges on resolving the pronoun “him” and agent–patient roles to see the trampled one is the gate officer, not the king, giving a single clear answer with a plausible misparse competitor.",
+        "window_structure_max": 9.0,
+        "content_id": "v17-18:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "What causes the officer’s death at the gate?",
+        "answer": "the people trample the officer in the gateway",
+        "answer_verse": 17,
+        "wrong_answer": "the king puts him over the gate",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "Being trampled by the people",
+            "support": "the people trampled him in the gateway, and he died"
+          },
+          {
+            "answer": "Being put in charge of the gate by the king (which placed him there)",
+            "support": "the king had put the officer on whose arm he leaned in charge of the gate | and the people trampled him in the gateway, and he died"
+          }
+        ],
+        "distinct_readings": [
+          "Being trampled by the people",
+          "Being put in charge of the gate by the king (which placed him there)"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "You must link the death to its cause in the coordination ('the people trampled him ... and he died'), which is stated once, yields one answer, and is central to the scene."
+        },
+        "window_verses": [
+          17,
+          18
+        ],
+        "window_text": {
+          "17": "Now the king had put the officer on whose arm he leaned in charge of the gate, and the people trampled him in the gateway, and he died, just as the man of God had foretold when the king came down to his house.",
+          "18": "It happened as the man of God had said to the king: “About this time tomorrow, a seah of the finest flour will sell for a shekel and two seahs of barley for a shekel at the gate of Samaria.”"
+        },
+        "reading_groups": [
+          "Immediate cause: being trampled by the people.",
+          "Background/occasion: being put in charge of the gate by the king."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "answer is a description, not an identification: 'the people trample the officer in the gateway'",
+            "2 defensible readings: Immediate cause: being trampled by the people. | Background/occasion: being put in charge of the gate by the king.",
+            "competitor 'the king puts him over the gate' is itself defensible — the item is ambiguous, not discriminating"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "officer"
+          ],
+          "answer_verse": 17,
+          "answer_verse_original": 17,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 17",
+          "readings_failures": [
+            "2 defensible readings: Immediate cause: being trampled by the people. | Background/occasion: being put in charge of the gate by the king.",
+            "competitor 'the king puts him over the gate' is itself defensible — the item is ambiguous, not discriminating"
+          ]
+        },
+        "content_id": "v17-18:2"
+      },
+      {
+        "question": "To whom does the man of God speak about the selling?",
+        "answer": "the king",
+        "answer_verse": 18,
+        "wrong_answer": "the officer",
+        "relation": "participant",
+        "readings": [
+          {
+            "answer": "the king",
+            "support": "as the man of God had said to the king"
+          }
+        ],
+        "distinct_readings": [
+          "the king"
+        ],
+        "scores": {
+          "structure_dependence": 2.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 10.0,
+          "centrality": 4.0,
+          "runs": 1,
+          "reason": "The addressee 'the king' is explicitly named in a single prepositional phrase, with no ambiguity, though it is peripheral to the main action."
+        },
+        "window_verses": [
+          17,
+          18
+        ],
+        "window_text": {
+          "17": "Now the king had put the officer on whose arm he leaned in charge of the gate, and the people trampled him in the gateway, and he died, just as the man of God had foretold when the king came down to his house.",
+          "18": "It happened as the man of God had said to the king: “About this time tomorrow, a seah of the finest flour will sell for a shekel and two seahs of barley for a shekel at the gate of Samaria.”"
+        },
+        "reading_groups": [
+          "He speaks to the king."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 2.0 (need 7.0)",
+            "incidental: centrality 4.0 (need 5.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 18,
+          "answer_verse_original": 18,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 18",
+          "readings_failures": []
+        },
+        "content_id": "v17-18:3"
+      },
+      {
+        "question": "How much barley sells for one shekel in the man of God’s word?",
+        "answer": "two seahs of barley",
+        "answer_verse": 18,
+        "wrong_answer": "a seah of the finest flour",
+        "relation": "quantity",
+        "readings": [
+          {
+            "answer": "two seahs",
+            "support": "two seahs of barley for a shekel"
+          }
+        ],
+        "distinct_readings": [
+          "two seahs"
+        ],
+        "scores": {
+          "structure_dependence": 4.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "The quantity 'two seahs of barley for a shekel' must be selected from two parallel price statements, is stated once, uniquely answerable, and central to the quoted prediction."
+        },
+        "window_verses": [
+          17,
+          18
+        ],
+        "window_text": {
+          "17": "Now the king had put the officer on whose arm he leaned in charge of the gate, and the people trampled him in the gateway, and he died, just as the man of God had foretold when the king came down to his house.",
+          "18": "It happened as the man of God had said to the king: “About this time tomorrow, a seah of the finest flour will sell for a shekel and two seahs of barley for a shekel at the gate of Samaria.”"
+        },
+        "reading_groups": [
+          "Two seahs (of barley) per shekel."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 4.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "barley"
+          ],
+          "answer_verse": 18,
+          "answer_verse_original": 18,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 18",
+          "readings_failures": []
+        },
+        "content_id": "v17-18:4"
+      },
+      {
+        "question": "Where does the man of God say the selling will happen?",
+        "answer": "at the gate of Samaria",
+        "answer_verse": 18,
+        "wrong_answer": "in the gateway",
+        "relation": "direction",
+        "readings": [
+          {
+            "answer": "at the gate of Samaria",
+            "support": "at the gate of Samaria"
+          }
+        ],
+        "distinct_readings": [
+          "at the gate of Samaria"
+        ],
+        "scores": {
+          "structure_dependence": 2.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 5.0,
+          "runs": 1,
+          "reason": "The location 'at the gate of Samaria' is an explicit phrase stated once, unambiguous, and only moderately central to the prophecy."
+        },
+        "window_verses": [
+          17,
+          18
+        ],
+        "window_text": {
+          "17": "Now the king had put the officer on whose arm he leaned in charge of the gate, and the people trampled him in the gateway, and he died, just as the man of God had foretold when the king came down to his house.",
+          "18": "It happened as the man of God had said to the king: “About this time tomorrow, a seah of the finest flour will sell for a shekel and two seahs of barley for a shekel at the gate of Samaria.”"
+        },
+        "reading_groups": [
+          "At the gate of Samaria."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 2.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 18,
+          "answer_verse_original": 18,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 18",
+          "readings_failures": []
+        },
+        "content_id": "v17-18:5"
+      },
+      {
+        "question": "On whose arm does the king lean?",
+        "answer": "the officer’s arm",
+        "answer_verse": 17,
+        "wrong_answer": "the man of God’s arm",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "the officer",
+            "support": "the officer on whose arm he leaned"
+          }
+        ],
+        "distinct_readings": [
+          "the officer"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 3.0,
+          "runs": 1,
+          "reason": "Deriving this requires resolving the relative clause 'on whose arm he leaned' to the king and identifying 'whose' as the officer, stated once, clear, and a secondary detail."
+        },
+        "window_verses": [
+          17,
+          18
+        ],
+        "window_text": {
+          "17": "Now the king had put the officer on whose arm he leaned in charge of the gate, and the people trampled him in the gateway, and he died, just as the man of God had foretold when the king came down to his house.",
+          "18": "It happened as the man of God had said to the king: “About this time tomorrow, a seah of the finest flour will sell for a shekel and two seahs of barley for a shekel at the gate of Samaria.”"
+        },
+        "reading_groups": [
+          "The officer’s arm (the officer on whom the king leaned)."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "incidental: centrality 3.0 (need 5.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "arm"
+          ],
+          "answer_verse": 17,
+          "answer_verse_original": 17,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 17",
+          "readings_failures": []
+        },
+        "content_id": "v17-18:6"
+      }
+    ],
+    "report": {
+      "window_id": "v17-18",
+      "verses": [
+        17,
+        18
+      ],
+      "generated": 6,
+      "scored": 6,
+      "kept": 1,
+      "survivors_before_window_selection": 1,
+      "window_selection_rejected": 0,
+      "repair_attempted": 1,
+      "repaired": 1,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

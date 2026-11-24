@@ -122,6 +122,7 @@ def build_passage(args, passage: str) -> dict:
                 max_candidates=args.candidates, proposal_batch_size=args.batch_size,
                 retry_rounds=args.retry_rounds, unit_mode="sentence",
                 preserved_bank=preserved_bank, historical_attempts=historical_attempts,
+                review_workers=getattr(args, "review_workers", 1),
             )
             banks[filename] = bank
             reports[filename] = sentence_audit(text, bank)
@@ -159,6 +160,8 @@ def parse_args(argv=None):
     parser.add_argument("--batch-size", type=int, default=4)
     parser.add_argument("--retry-rounds", type=int, default=4)
     parser.add_argument("--workers", type=int, default=4)
+    parser.add_argument("--review-workers", type=int, choices=range(1,9), default=1,
+                        help="Review independent sentences in each proposal batch concurrently.")
     parser.add_argument("--seed", type=int, default=2026)
     parser.add_argument("--offline", action="store_true")
     args = parser.parse_args(argv)

@@ -1,0 +1,458 @@
+{
+  "config_digest": "bab5a848f20f60ea534214d9358795f20d975515f4adb1ac077513ba4e1247aa",
+  "data": {
+    "kept": [
+      {
+        "question": "From what place do the Danites continue toward the hill country?",
+        "answer": "From the camp near Kiriath Jearim.",
+        "answer_verse": 12,
+        "wrong_answer": "From Zorah and Eshtaol.",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "Mahaneh Dan, west of Kiriath Jearim",
+            "support": "the place west of Kiriath Jearim is called Mahaneh Dan to this day | From there they went on to the hill country"
+          },
+          {
+            "answer": "Near Kiriath Jearim in Judah",
+            "support": "set up camp near Kiriath Jearim in Judah | From there they went on to the hill country"
+          }
+        ],
+        "distinct_readings": [
+          "Mahaneh Dan, west of Kiriath Jearim",
+          "Near Kiriath Jearim in Judah"
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "Answering requires resolving the anaphor “From there” to the immediately prior camp near Kiriath Jearim, a single-occurrence detail that is unambiguous in a clear translation and fairly central to the travel route."
+        },
+        "window_verses": [
+          11,
+          12,
+          13
+        ],
+        "window_text": {
+          "11": "Then six hundred men of the Danites, armed for battle, set out from Zorah and Eshtaol.",
+          "12": "On their way they set up camp near Kiriath Jearim in Judah. This is why the place west of Kiriath Jearim is called Mahaneh Dan to this day.",
+          "13": "From there they went on to the hill country of Ephraim and came to Micah’s house."
+        },
+        "reading_groups": [
+          "They continue from the camp near Kiriath Jearim, i.e., Mahaneh Dan"
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 12,
+          "answer_verse_original": 12,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 12",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "From what place do the Danites continue toward the hill country?",
+            "readings": [
+              {
+                "answer": "Mahaneh Dan, west of Kiriath Jearim",
+                "support": "the place west of Kiriath Jearim is called Mahaneh Dan to this day | From there they went on to the hill country"
+              },
+              {
+                "answer": "Near Kiriath Jearim in Judah",
+                "support": "set up camp near Kiriath Jearim in Judah | From there they went on to the hill country"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The text names the place west of Kiriath Jearim as Mahaneh Dan and then says “From there they went on to the hill country,” which is the same camp near Kiriath Jearim referenced by the key."
+              },
+              {
+                "number": 2,
+                "classification": "equivalent_to_key",
+                "reason": "“Set up camp near Kiriath Jearim in Judah” followed by “From there they went on” directly matches the key’s “From the camp near Kiriath Jearim.”"
+              }
+            ],
+            "verdict": "pass",
+            "reason": "“From there they went on” clearly refers back to the camp near Kiriath Jearim (called Mahaneh Dan), so both readings match the key.",
+            "status": "passed"
+          }
+        },
+        "scores_after_repair_raw": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "Answering requires resolving the anaphor “From there” to the immediately prior camp near Kiriath Jearim, a single-occurrence detail that is unambiguous in a clear translation and fairly central to the travel route."
+        },
+        "repaired": true,
+        "repair_attempted": true,
+        "question_before_repair": "From what place do the Danites go on to the hill country?",
+        "scores_before_repair": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 9.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "You must resolve the anaphor “from there” back to the prior camp near Kiriath Jearim, a uniquely implied location with one clear answer important to the route."
+        },
+        "audit_before_repair": {
+          "passed": false,
+          "failures": [
+            "quotes the passage: quotes verse 13: 'on to the hill country'"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 12,
+          "answer_verse_original": 12,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 12",
+          "readings_failures": []
+        },
+        "repair_log": [
+          {
+            "before": "From what place do the Danites go on to the hill country?",
+            "after": "From what place do the Danites continue toward the hill country?",
+            "note": "Paraphrased the quoted phrase to avoid directly quoting the passage.",
+            "failures_before": [
+              "quotes the passage: quotes verse 13: 'on to the hill country'"
+            ],
+            "scores_before": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 8.0,
+              "answer_certainty": 9.0,
+              "centrality": 6.0,
+              "runs": 1,
+              "reason": "You must resolve the anaphor “from there” back to the prior camp near Kiriath Jearim, a uniquely implied location with one clear answer important to the route."
+            },
+            "accepted": true,
+            "reason": "passed full rejudgment",
+            "suitability_judgment": {
+              "Q": "From what place do the Danites continue toward the hill country?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "The question clearly refers to the Danites leaving their camp near Kiriath Jearim (called Mahaneh Dan) and this location is explicitly given in the window."
+            },
+            "failures_after": [],
+            "scores_after": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 9.0,
+              "centrality": 7.0,
+              "runs": 1,
+              "reason": "Answering requires resolving the anaphor “From there” to the immediately prior camp near Kiriath Jearim, a single-occurrence detail that is unambiguous in a clear translation and fairly central to the travel route."
+            },
+            "scores_used": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 9.0,
+              "centrality": 7.0,
+              "runs": 1,
+              "reason": "Answering requires resolving the anaphor “From there” to the immediately prior camp near Kiriath Jearim, a single-occurrence detail that is unambiguous in a clear translation and fairly central to the travel route."
+            }
+          }
+        ],
+        "window_selection_reason": "It hinges on resolving the referent of “there” in v.13—identifying the immediate departure point as the camp near Kiriath Jearim (Mahaneh Dan) rather than the earlier origin Zorah and Eshtaol—yielding a single clear answer with a plausible competitor.",
+        "window_structure_max": 7.0,
+        "content_id": "v11-13:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Why is the place west of Kiriath Jearim given that name?",
+        "answer": "Because the Danites set up camp there.",
+        "answer_verse": 12,
+        "wrong_answer": "Because the Danites set out from Zorah and Eshtaol.",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "Because they set up camp near Kiriath Jearim",
+            "support": "they set up camp near Kiriath Jearim in Judah. This is why the place west of Kiriath Jearim is called Mahaneh Dan to this day."
+          }
+        ],
+        "distinct_readings": [
+          "Because they set up camp near Kiriath Jearim"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 3.0,
+          "runs": 1,
+          "reason": "It requires linking the Danites’ camping to the naming via a causal clause stated once, with a single clear answer, though the naming is a side note to the journey."
+        },
+        "window_verses": [
+          11,
+          12,
+          13
+        ],
+        "window_text": {
+          "11": "Then six hundred men of the Danites, armed for battle, set out from Zorah and Eshtaol.",
+          "12": "On their way they set up camp near Kiriath Jearim in Judah. This is why the place west of Kiriath Jearim is called Mahaneh Dan to this day.",
+          "13": "From there they went on to the hill country of Ephraim and came to Micah’s house."
+        },
+        "reading_groups": [
+          "It is named because the Danites set up camp near Kiriath Jearim"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: jearim, kiriath",
+            "quotes the passage: quotes verse 12: 'the place west of kiriath'",
+            "incidental: centrality 3.0 (need 5.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "jearim",
+            "kiriath"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 12,
+          "answer_verse_original": 12,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 12",
+          "readings_failures": []
+        },
+        "content_id": "v11-13:2"
+      },
+      {
+        "question": "What do the Danites reach after the hill country of Ephraim?",
+        "answer": "Micah’s house.",
+        "answer_verse": 13,
+        "wrong_answer": "Kiriath Jearim.",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "Micah’s house",
+            "support": "came to Micah’s house"
+          }
+        ],
+        "distinct_readings": [
+          "Micah’s house"
+        ],
+        "scores": {
+          "structure_dependence": 5.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "Identifying the destination after the hill country relies on the sequence of clauses and yields the single explicit arrival point, Micah’s house, central to the movement."
+        },
+        "window_verses": [
+          11,
+          12,
+          13
+        ],
+        "window_text": {
+          "11": "Then six hundred men of the Danites, armed for battle, set out from Zorah and Eshtaol.",
+          "12": "On their way they set up camp near Kiriath Jearim in Judah. This is why the place west of Kiriath Jearim is called Mahaneh Dan to this day.",
+          "13": "From there they went on to the hill country of Ephraim and came to Micah’s house."
+        },
+        "reading_groups": [
+          "Micah’s house"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: country, ephraim, hill",
+            "quotes the passage: quotes verse 13: 'the hill country of ephraim'",
+            "lexical: structure_dependence 5.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "country",
+            "ephraim",
+            "hill"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 13,
+          "answer_verse_original": 13,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 13",
+          "readings_failures": []
+        },
+        "content_id": "v11-13:3"
+      },
+      {
+        "question": "Where do the Danites set up camp in relation to Kiriath Jearim?",
+        "answer": "Near Kiriath Jearim.",
+        "answer_verse": 12,
+        "wrong_answer": "West of Kiriath Jearim.",
+        "relation": "direction",
+        "readings": [
+          {
+            "answer": "Near Kiriath Jearim.",
+            "support": "near Kiriath Jearim"
+          },
+          {
+            "answer": "West of Kiriath Jearim.",
+            "support": "set up camp | the place west of Kiriath Jearim"
+          }
+        ],
+        "distinct_readings": [
+          "Near Kiriath Jearim.",
+          "West of Kiriath Jearim."
+        ],
+        "scores": {
+          "structure_dependence": 2.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 10.0,
+          "centrality": 5.0,
+          "runs": 1,
+          "reason": "The location “near Kiriath Jearim” is a directly stated phrase easy to spot, stated once with a single unambiguous answer and moderately central to the route."
+        },
+        "window_verses": [
+          11,
+          12,
+          13
+        ],
+        "window_text": {
+          "11": "Then six hundred men of the Danites, armed for battle, set out from Zorah and Eshtaol.",
+          "12": "On their way they set up camp near Kiriath Jearim in Judah. This is why the place west of Kiriath Jearim is called Mahaneh Dan to this day.",
+          "13": "From there they went on to the hill country of Ephraim and came to Micah’s house."
+        },
+        "reading_groups": [
+          "Near Kiriath Jearim",
+          "West of Kiriath Jearim"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: jearim, kiriath",
+            "2 defensible readings: Near Kiriath Jearim | West of Kiriath Jearim",
+            "competitor 'West of Kiriath Jearim.' is itself defensible — the item is ambiguous, not discriminating",
+            "bare-name answer 'Near Kiriath Jearim.': names survive translation",
+            "lexical: structure_dependence 2.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "jearim",
+            "kiriath"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "jearim",
+            "kiriath"
+          ],
+          "answer_verse": 12,
+          "answer_verse_original": 12,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 12",
+          "readings_failures": [
+            "2 defensible readings: Near Kiriath Jearim | West of Kiriath Jearim",
+            "competitor 'West of Kiriath Jearim.' is itself defensible — the item is ambiguous, not discriminating"
+          ]
+        },
+        "content_id": "v11-13:4"
+      },
+      {
+        "question": "What do the Danites do on the way before they reach the hill country?",
+        "answer": "They set up camp near Kiriath Jearim.",
+        "answer_verse": 12,
+        "wrong_answer": "They come to Micah’s house.",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "They set up camp near Kiriath Jearim in Judah.",
+            "support": "On their way they set up camp near Kiriath Jearim in Judah."
+          }
+        ],
+        "distinct_readings": [
+          "They set up camp near Kiriath Jearim in Judah."
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "It depends on temporal order—recognizing they camped on the way before proceeding—stated once with a clear single answer relevant to the journey."
+        },
+        "window_verses": [
+          11,
+          12,
+          13
+        ],
+        "window_text": {
+          "11": "Then six hundred men of the Danites, armed for battle, set out from Zorah and Eshtaol.",
+          "12": "On their way they set up camp near Kiriath Jearim in Judah. This is why the place west of Kiriath Jearim is called Mahaneh Dan to this day.",
+          "13": "From there they went on to the hill country of Ephraim and came to Micah’s house."
+        },
+        "reading_groups": [
+          "They set up camp near Kiriath Jearim in Judah"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: way",
+            "dangling answer reference: They",
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "way"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 12,
+          "answer_verse_original": 12,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 12",
+          "readings_failures": []
+        },
+        "content_id": "v11-13:5"
+      }
+    ],
+    "report": {
+      "window_id": "v11-13",
+      "verses": [
+        11,
+        12,
+        13
+      ],
+      "generated": 5,
+      "scored": 5,
+      "kept": 1,
+      "survivors_before_window_selection": 1,
+      "window_selection_rejected": 0,
+      "repair_attempted": 1,
+      "repaired": 1,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

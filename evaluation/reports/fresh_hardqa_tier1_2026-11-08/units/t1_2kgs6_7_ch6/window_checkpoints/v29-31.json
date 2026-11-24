@@ -1,0 +1,544 @@
+{
+  "config_digest": "461cd474a457824ff5ea5448cd730bf20a2fd8df81463fd77daa90ec465ec12c",
+  "data": {
+    "kept": [
+      {
+        "question": "Who hides the son the next day?",
+        "answer": "the other woman",
+        "answer_verse": 29,
+        "wrong_answer": "the woman who speaks to the king",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "the other woman",
+            "support": "I said to her | she had hidden him"
+          }
+        ],
+        "distinct_readings": [
+          "the other woman"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "Requires resolving pronouns in “I said to her… but she had hidden him,” stated once, yielding a clear referent (the other woman) that is important to the complaint but not the main event."
+        },
+        "window_verses": [
+          29,
+          30,
+          31
+        ],
+        "window_text": {
+          "29": "So we cooked my son and ate him. The next day I said to her, ‘Give up your son so we may eat him,’ but she had hidden him.”",
+          "30": "When the king heard the woman’s words, he tore his robes. As he went along the wall, the people looked, and they saw that, under his robes, he had sackcloth on his body.",
+          "31": "He said, “May God deal with me, be it ever so severely, if the head of Elisha son of Shaphat remains on his shoulders today!”"
+        },
+        "reading_groups": [
+          "The other woman hid her son"
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 29,
+          "answer_verse_original": 29,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 29",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Who hides the son the next day?",
+            "readings": [
+              {
+                "answer": "the other woman",
+                "support": "I said to her | she had hidden him"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The verse says, “I said to her… but she had hidden him,” so “she” refers to the other woman addressed, matching “the other woman.”"
+              }
+            ],
+            "verdict": "pass",
+            "reason": "“I said to her… but she had hidden him” identifies the hider as the other woman.",
+            "status": "passed"
+          }
+        },
+        "scores_after_repair_raw": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "Requires resolving pronouns in “I said to her… but she had hidden him,” stated once, yielding a clear referent (the other woman) that is important to the complaint but not the main event."
+        },
+        "repaired": true,
+        "repair_attempted": true,
+        "question_before_repair": "Who hides her son the next day?",
+        "scores_before_repair": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "The answer hinges on tracking “she” back to the other woman in the dialogue, a single explicit clause that is clear and important to the grievance."
+        },
+        "audit_before_repair": {
+          "passed": false,
+          "failures": [
+            "dangling pronoun: her"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 29,
+          "answer_verse_original": 29,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 29",
+          "readings_failures": []
+        },
+        "repair_log": [
+          {
+            "before": "Who hides her son the next day?",
+            "after": "Who hides the son the next day?",
+            "note": "Replaced the unbound pronoun with a passage-established noun phrase.",
+            "failures_before": [
+              "dangling pronoun: her"
+            ],
+            "scores_before": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 7.0,
+              "runs": 1,
+              "reason": "The answer hinges on tracking “she” back to the other woman in the dialogue, a single explicit clause that is clear and important to the grievance."
+            },
+            "accepted": true,
+            "reason": "passed full rejudgment",
+            "suitability_judgment": {
+              "Q": "Who hides the son the next day?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "The question clearly refers to the other woman who hid her son as stated in verse 29, yielding a single, direct answer."
+            },
+            "failures_after": [],
+            "scores_after": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 9.0,
+              "centrality": 6.0,
+              "runs": 1,
+              "reason": "Requires resolving pronouns in “I said to her… but she had hidden him,” stated once, yielding a clear referent (the other woman) that is important to the complaint but not the main event."
+            },
+            "scores_used": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 9.0,
+              "centrality": 6.0,
+              "runs": 1,
+              "reason": "Requires resolving pronouns in “I said to her… but she had hidden him,” stated once, yielding a clear referent (the other woman) that is important to the complaint but not the main event."
+            }
+          }
+        ],
+        "window_selection_reason": "It hinges on resolving pronouns in the dialogue (“I said to her… but she had hidden him”) to identify the non-speaking woman, with a plausible competitor confusing her with the speaker, whereas the vow’s speaker is more obvious and its competitor less plausible.",
+        "window_structure_max": 8.0,
+        "content_id": "v29-31:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Whose son is eaten first?",
+        "answer": "the woman who speaks to the king",
+        "answer_verse": 29,
+        "wrong_answer": "the other woman’s son",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "the speaker’s son",
+            "support": "we cooked my son and ate him"
+          }
+        ],
+        "distinct_readings": [
+          "the speaker’s son"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "Identifying that “my son” refers to the speaking woman requires resolving the speaker’s pronoun against the two women, and it’s stated once and crucial to the complaint."
+        },
+        "window_verses": [
+          29,
+          30,
+          31
+        ],
+        "window_text": {
+          "29": "So we cooked my son and ate him. The next day I said to her, ‘Give up your son so we may eat him,’ but she had hidden him.”",
+          "30": "When the king heard the woman’s words, he tore his robes. As he went along the wall, the people looked, and they saw that, under his robes, he had sackcloth on his body.",
+          "31": "He said, “May God deal with me, be it ever so severely, if the head of Elisha son of Shaphat remains on his shoulders today!”"
+        },
+        "reading_groups": [
+          "The speaker’s son is eaten first"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "answer is a description, not an identification: 'the woman who speaks to the king'"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 29,
+          "answer_verse_original": 29,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 29",
+          "readings_failures": []
+        },
+        "content_id": "v29-31:2"
+      },
+      {
+        "question": "After he hears the woman speak, what does the king do?",
+        "answer": "he tears his robes",
+        "answer_verse": 30,
+        "wrong_answer": "he vows to take Elisha’s head",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "He tears his robes.",
+            "support": "he tore his robes."
+          },
+          {
+            "answer": "He goes along the wall.",
+            "support": "As he went along the wall,"
+          },
+          {
+            "answer": "He vows that Elisha’s head will not remain on his shoulders today.",
+            "support": "if the head of Elisha son of Shaphat remains on his shoulders today!"
+          }
+        ],
+        "distinct_readings": [
+          "He tears his robes.",
+          "He goes along the wall.",
+          "He vows that Elisha’s head will not remain on his shoulders today."
+        ],
+        "scores": {
+          "structure_dependence": 4.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "The action “he tore his robes” is directly stated after the hearing cue, uniquely given, unambiguous, and central to the king’s reaction."
+        },
+        "window_verses": [
+          29,
+          30,
+          31
+        ],
+        "window_text": {
+          "29": "So we cooked my son and ate him. The next day I said to her, ‘Give up your son so we may eat him,’ but she had hidden him.”",
+          "30": "When the king heard the woman’s words, he tore his robes. As he went along the wall, the people looked, and they saw that, under his robes, he had sackcloth on his body.",
+          "31": "He said, “May God deal with me, be it ever so severely, if the head of Elisha son of Shaphat remains on his shoulders today!”"
+        },
+        "reading_groups": [
+          "He tears his robes",
+          "He goes along the wall",
+          "He vows regarding Elisha’s head"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: woman",
+            "dangling pronoun: he",
+            "question too complex: stacked clauses (1 comma(s), 1 subordinator(s))",
+            "3 defensible readings: He tears his robes | He goes along the wall | He vows regarding Elisha’s head",
+            "competitor 'he vows to take Elisha’s head' is itself defensible — the item is ambiguous, not discriminating",
+            "lexical: structure_dependence 4.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "woman"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 30,
+          "answer_verse_original": 30,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 30",
+          "readings_failures": [
+            "3 defensible readings: He tears his robes | He goes along the wall | He vows regarding Elisha’s head",
+            "competitor 'he vows to take Elisha’s head' is itself defensible — the item is ambiguous, not discriminating"
+          ]
+        },
+        "content_id": "v29-31:3"
+      },
+      {
+        "question": "Who sees what is under the king’s robes?",
+        "answer": "the people",
+        "answer_verse": 30,
+        "wrong_answer": "the king",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "the people",
+            "support": "the people looked, and they saw that, under his robes, he had sackcloth on his body"
+          }
+        ],
+        "distinct_readings": [
+          "the people"
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "One must link the pronoun “they” back to “the people,” a single clear statement that is unambiguous but somewhat less central than the king’s acts."
+        },
+        "window_verses": [
+          29,
+          30,
+          31
+        ],
+        "window_text": {
+          "29": "So we cooked my son and ate him. The next day I said to her, ‘Give up your son so we may eat him,’ but she had hidden him.”",
+          "30": "When the king heard the woman’s words, he tore his robes. As he went along the wall, the people looked, and they saw that, under his robes, he had sackcloth on his body.",
+          "31": "He said, “May God deal with me, be it ever so severely, if the head of Elisha son of Shaphat remains on his shoulders today!”"
+        },
+        "reading_groups": [
+          "The people see under the king’s robes"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: king, rob",
+            "no gradeable content in answer 'the people'",
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "king",
+            "rob"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 30,
+          "answer_verse_original": 30,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 30",
+          "readings_failures": []
+        },
+        "content_id": "v29-31:4"
+      },
+      {
+        "question": "Who speaks the vow about the man's head?",
+        "answer": "the king",
+        "answer_verse": 31,
+        "wrong_answer": "Elisha",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "The king",
+            "support": "the king | He said, “May God deal with me, be it ever so severely, if the head of Elisha son of Shaphat remains on his shoulders today!”"
+          }
+        ],
+        "distinct_readings": [
+          "The king"
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "Identifying the speaker needs linking “He said” back to “the king,” a single occurrence that is unambiguous and central to the passage’s outcome."
+        },
+        "window_verses": [
+          29,
+          30,
+          31
+        ],
+        "window_text": {
+          "29": "So we cooked my son and ate him. The next day I said to her, ‘Give up your son so we may eat him,’ but she had hidden him.”",
+          "30": "When the king heard the woman’s words, he tore his robes. As he went along the wall, the people looked, and they saw that, under his robes, he had sackcloth on his body.",
+          "31": "He said, “May God deal with me, be it ever so severely, if the head of Elisha son of Shaphat remains on his shoulders today!”"
+        },
+        "reading_groups": [
+          "The king speaks the vow"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: hybrid window selector — It hinges on resolving pronouns in the dialogue (“I said to her… but she had hidden him”) to identify the non-speaking woman, with a plausible competitor confusing her with the speaker, whereas the vow’s speaker is more obvious and its competitor less plausible."
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 31,
+          "answer_verse_original": 31,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 31",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Who speaks the vow about the man's head?",
+            "readings": [
+              {
+                "answer": "The king",
+                "support": "the king | He said, “May God deal with me, be it ever so severely, if the head of Elisha son of Shaphat remains on his shoulders today!”"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Verse 30 introduces “the king,” and verse 31 continues with “He said,” making the king the speaker of the vow about Elisha’s head."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The subject “the king” in v30 carries into v31’s “He said,” so the king speaks the vow.",
+            "status": "passed"
+          }
+        },
+        "scores_after_repair_raw": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "Identifying the speaker needs linking “He said” back to “the king,” a single occurrence that is unambiguous and central to the passage’s outcome."
+        },
+        "repaired": true,
+        "repair_attempted": true,
+        "question_before_repair": "Who speaks the vow about Elisha’s head?",
+        "scores_before_repair": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "Resolving “He said” to the king through the preceding pronoun chain is required; the vow occurs once, is clear, and is pivotal to the scene’s climax."
+        },
+        "audit_before_repair": {
+          "passed": false,
+          "failures": [
+            "location leak: elisha"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "elisha"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 31,
+          "answer_verse_original": 31,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 31",
+          "readings_failures": []
+        },
+        "repair_log": [
+          {
+            "before": "Who speaks the vow about Elisha’s head?",
+            "after": "Who speaks the vow about the man's head?",
+            "note": "Removed the location-leaking name and used generic wording.",
+            "failures_before": [
+              "location leak: elisha"
+            ],
+            "scores_before": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 9.0,
+              "runs": 1,
+              "reason": "Resolving “He said” to the king through the preceding pronoun chain is required; the vow occurs once, is clear, and is pivotal to the scene’s climax."
+            },
+            "accepted": true,
+            "reason": "passed full rejudgment",
+            "suitability_judgment": {
+              "Q": "Who speaks the vow about the man's head?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "The oath about Elisha’s head is explicitly spoken by the king in verse 31, providing one clear, direct answer."
+            },
+            "failures_after": [],
+            "scores_after": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "Identifying the speaker needs linking “He said” back to “the king,” a single occurrence that is unambiguous and central to the passage’s outcome."
+            },
+            "scores_used": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "Identifying the speaker needs linking “He said” back to “the king,” a single occurrence that is unambiguous and central to the passage’s outcome."
+            }
+          }
+        ],
+        "window_selection_reason": "It hinges on resolving pronouns in the dialogue (“I said to her… but she had hidden him”) to identify the non-speaking woman, with a plausible competitor confusing her with the speaker, whereas the vow’s speaker is more obvious and its competitor less plausible.",
+        "content_id": "v29-31:5"
+      }
+    ],
+    "report": {
+      "window_id": "v29-31",
+      "verses": [
+        29,
+        30,
+        31
+      ],
+      "generated": 5,
+      "scored": 5,
+      "kept": 1,
+      "survivors_before_window_selection": 2,
+      "window_selection_rejected": 1,
+      "repair_attempted": 2,
+      "repaired": 2,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

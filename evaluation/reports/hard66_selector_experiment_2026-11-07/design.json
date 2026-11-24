@@ -1,0 +1,44 @@
+{
+  "prompts": {
+    "original_request": "can you get the strong QAs from all the passages",
+    "historical_context": "can you get the strong QAs from all the passages\n\nEarlier selection criteria:\nPipeline generates and scores candidates. Give me the kept output plus passage windows. Return only genuinely strong candidates, checking naturalness, self-containment, answer completeness, and discriminating value. Exclude items that are vague, unnatural, incidental, duplicate another survivor, or are unlikely to distinguish answerers. Judge each concept as written. An otherwise good QA can survive a metadata correction.",
+    "luke_examples": "can you get the strong QAs from all the passages\n\nPipeline generates and scores candidates. Give me the kept output plus passage windows. Return only genuinely strong candidates, checking naturalness, self-containment, answer completeness, and discriminating value. Exclude items that are vague, unnatural, incidental, duplicate another survivor, or are unlikely to distinguish answerers. Judge each concept as written. An otherwise good QA can survive a metadata correction.\nExamples from a different passage used in the earlier discussion: identifying whom Simeon\nasks God to dismiss and distinguishing the host from the angel as speaker were strong.\nNaming a bird, redirecting a crowd's reaction from an act to a person, or relying on an\nunnamed speaker were weak. Use these principles even when an answer happens to be a name.\nNotice when vague synonyms introduced just to avoid giving clues make a simple event obscure.",
+    "claude_artifact_rubric": "Select questions that demand a relational inference about the passage.\nAssess four dimensions: structure dependence, uniqueness of the statement, answer certainty\nand centrality. Would an error in participant, agent, cause, sequence, scope or reference\nchange the answer? How plausible is the competing answer under a misreading? Choose the\nbest probes across these four dimensions, giving greatest weight to structural dependence.",
+    "ordinary_reader": "Edit an open-response comprehension test for ordinary readers who have\nnever encountered these stories. Try answering from each exact excerpt. Check whether an\nunprompted reader understands the question on first reading, can give one complete answer\nin everyday words and can see exactly why it is right. Give full credit to paraphrases and\nco-referring labels. Penalize reverse-engineered wording, author-only referents, vague answer\nkeys and artificial difficulty. Prefer a real comprehension task over trivial retrieval.",
+    "damaged_translation": "Curate items for detecting meaning lost in translation. Compare a\ncareful reading to one in which a key relation is damaged while the passage words and names\nsurvive. Is there a specific plausible incorrect answer under the damaged reading? Could a\nreader shortcut the question using a single token, general knowledge or common sense?\nKeep only natural, unambiguous, substantial questions that a clean reader can answer and\nthat make those two readers diverge. Reject strained contrasts and incidental details.",
+    "editorial_panel": "Examine each item from three perspectives: a participant trying to parse\nthe stem naturally, a grader deciding which open responses count, and an editor choosing what\nis worth testing. Resolve disagreements using the exact window. Reward a clear, important\ndistinction about this event. Cut opaque generic stand-ins, empty or circular keys, duplicate\nconcepts, arbitrary sequence boundaries, easy word spotting and forced Bible-quiz wording.\nMeaningful direct questions can be strong. For each item name the decisive strength or flaw."
+  },
+  "common_instructions": "These are candidates for a Bible-translation comprehension study. Use only the supplied materials.\nThe competing answer is a proposed misreading. Rate each question's suitability as written on\na common 0–1000 scale, higher means stronger. Spread scores enough to rank closely matched\nquestions. Give each item one short concrete reason. Do not change the items or drop rows.\nReturn JSON only: {\"items\":[{\"id\":\"opaque ID\",\"score\":integer,\"why\":\"short reason\"}]}.",
+  "models": {
+    "original_low": [
+      "gpt-5.6-sol",
+      "low"
+    ],
+    "original_high": [
+      "gpt-5.6-sol",
+      "high"
+    ],
+    "sol_high": [
+      "gpt-6.1-sol",
+      "high"
+    ],
+    "astra_high": [
+      "gpt-6-astra",
+      "high"
+    ]
+  },
+  "claude_panel": [
+    "historical_context",
+    "editorial_panel"
+  ],
+  "development": "All source passages except Judges",
+  "holdout": "All three source passages from Judges",
+  "metric": "Removal F1, then balanced accuracy; lexicographic model/prompt as final tie-break.",
+  "quota": "Reject round(19/85 * split size) per split. For the full-bank reconstruction reject the 19 lowest absolute scores. Ties use opaque ID.",
+  "source_chat": "01a01108-19fa-7382-b032-96e2e0403cc6",
+  "claude_artifact": "https://claude.ai/epitaxy/artifact/KE19Ma4JwD58oVfqs8mcst",
+  "batches": {
+    "development": "041bc58b96d3e6073f40376b12478ff1b81b0f73feba2b2cd00105c437849370",
+    "holdout": "c8a1ac34d185dc2e9a0e666153fedb0a8db7d2fc1a455240e78f93d244c0fb99"
+  }
+}

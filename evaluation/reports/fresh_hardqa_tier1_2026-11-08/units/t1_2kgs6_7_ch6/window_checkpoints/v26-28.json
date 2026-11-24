@@ -1,0 +1,539 @@
+{
+  "config_digest": "461cd474a457824ff5ea5448cd730bf20a2fd8df81463fd77daa90ec465ec12c",
+  "data": {
+    "kept": [
+      {
+        "question": "Whose son is meant to be eaten first in the women’s plan?",
+        "answer": "the son of the woman who cries to the king",
+        "answer_verse": 28,
+        "wrong_answer": "the son of the other woman",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "The speaker’s son (the first woman’s son).",
+            "support": "Give up your son so we may eat him today"
+          }
+        ],
+        "distinct_readings": [
+          "The speaker’s son (the first woman’s son)."
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "Resolving that “your son” in the quoted speech refers to the speaker (the woman crying to the king) requires pronoun resolution within nested dialogue, it is stated only once, has a single clear answer, and is a detail of the plan rather than the main event."
+        },
+        "window_verses": [
+          26,
+          27,
+          28
+        ],
+        "window_text": {
+          "26": "As the king of Israel was passing by on the wall, a woman cried to him, “Help me, my lord the king!”",
+          "27": "The king replied, “If the Lord does not help you, where can I get help for you? From the threshing floor? From the winepress?”",
+          "28": "Then he asked her, “What’s the matter?” She answered, “This woman said to me, ‘Give up your son so we may eat him today, and tomorrow we’ll eat my son.’"
+        },
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "son"
+          ],
+          "answer_verse": 28,
+          "answer_verse_original": 28,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 28",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Whose son is meant to be eaten first in the women’s plan?",
+            "readings": [
+              {
+                "answer": "The speaker’s son (the first woman’s son).",
+                "support": "Give up your son so we may eat him today"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The speaker—the woman crying to the king—reports the other woman said, “Give up your son so we may eat him today,” indicating the first to be eaten was the speaker’s own son."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The passage shows the crying woman was asked to give up “your son” for eating today, matching the key that it is her son first.",
+            "status": "passed"
+          }
+        },
+        "scores_after_repair_raw": {
+          "structure_dependence": 10.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "Resolving that “your son” in the quoted speech refers to the speaker (the woman crying to the king) requires pronoun resolution within nested dialogue, it is stated only once, has a single clear answer, and is a detail of the plan rather than the main event."
+        },
+        "repaired": true,
+        "repair_attempted": true,
+        "question_before_repair": "Whose son is meant to be eaten first in their plan?",
+        "scores_before_repair": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "Determining whose son is eaten first hinges on pronoun/role mapping within the quoted plan, stated once, unambiguous, and central to the shocking complaint."
+        },
+        "audit_before_repair": {
+          "passed": false,
+          "failures": [
+            "dangling pronoun: their"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "son"
+          ],
+          "answer_verse": 28,
+          "answer_verse_original": 28,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 28",
+          "readings_failures": []
+        },
+        "repair_log": [
+          {
+            "before": "Whose son is meant to be eaten first in their plan?",
+            "after": "Whose son is meant to be eaten first in the women’s plan?",
+            "note": "Replaced dangling pronoun with explicit noun phrase \"the women\".",
+            "failures_before": [
+              "dangling pronoun: their"
+            ],
+            "scores_before": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "Determining whose son is eaten first hinges on pronoun/role mapping within the quoted plan, stated once, unambiguous, and central to the shocking complaint."
+            },
+            "accepted": true,
+            "reason": "passed full rejudgment",
+            "suitability_judgment": {
+              "Q": "Whose son is meant to be eaten first in the women’s plan?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "The plan explicitly says “give up your son … today,” making the referents clear and the answer uniquely the speaker’s son."
+            },
+            "failures_after": [],
+            "scores_after": {
+              "structure_dependence": 10.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 6.0,
+              "runs": 1,
+              "reason": "Resolving that “your son” in the quoted speech refers to the speaker (the woman crying to the king) requires pronoun resolution within nested dialogue, it is stated only once, has a single clear answer, and is a detail of the plan rather than the main event."
+            },
+            "scores_used": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 6.0,
+              "runs": 1,
+              "reason": "Resolving that “your son” in the quoted speech refers to the speaker (the woman crying to the king) requires pronoun resolution within nested dialogue, it is stated only once, has a single clear answer, and is a detail of the plan rather than the main event."
+            }
+          }
+        ],
+        "window_selection_reason": "It most strongly hinges on parsing reported speech and pronoun reference to determine whose son is first, with a plausible competitor that misassigns the pronouns, while yielding a single clear answer.",
+        "window_structure_max": 9.0,
+        "content_id": "v26-28:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "On which day do they plan to eat the other woman's son?",
+        "answer": "tomorrow",
+        "answer_verse": 28,
+        "wrong_answer": "today",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "Tomorrow",
+            "support": "tomorrow we’ll eat my son"
+          }
+        ],
+        "distinct_readings": [
+          "Tomorrow"
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "The day ('tomorrow') must be tied to 'my son' meaning the other woman's child, a single-clause fact with one clear answer and moderate centrality."
+        },
+        "window_verses": [
+          26,
+          27,
+          28
+        ],
+        "window_text": {
+          "26": "As the king of Israel was passing by on the wall, a woman cried to him, “Help me, my lord the king!”",
+          "27": "The king replied, “If the Lord does not help you, where can I get help for you? From the threshing floor? From the winepress?”",
+          "28": "Then he asked her, “What’s the matter?” She answered, “This woman said to me, ‘Give up your son so we may eat him today, and tomorrow we’ll eat my son.’"
+        },
+        "audit": {
+          "passed": false,
+          "failures": [
+            "dangling pronoun: they"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 28,
+          "answer_verse_original": 28,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 28",
+          "readings_failures": []
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "On which day do they plan to eat the other woman's son?",
+            "after": "On which day do the women plan to eat the other woman's son?",
+            "note": "Replaced dangling pronoun with explicit noun phrase \"the women\".",
+            "failures_before": [
+              "dangling pronoun: they"
+            ],
+            "scores_before": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 6.0,
+              "runs": 1,
+              "reason": "The day ('tomorrow') must be tied to 'my son' meaning the other woman's child, a single-clause fact with one clear answer and moderate centrality."
+            },
+            "accepted": false,
+            "reason": "removed as weak question: The phrase “the other woman's son” lacks a fixed viewpoint and is ambiguous, so either “today” or “tomorrow” could be defended.",
+            "suitability_judgment": {
+              "Q": "On which day do the women plan to eat the other woman's son?",
+              "clear_referents": false,
+              "natural_wording": true,
+              "directly_answerable": false,
+              "single_defensible_answer": false,
+              "remove": true,
+              "reason": "The phrase “the other woman's son” lacks a fixed viewpoint and is ambiguous, so either “today” or “tomorrow” could be defended."
+            }
+          }
+        ],
+        "content_id": "v26-28:2"
+      },
+      {
+        "question": "What does the king say must happen before he can help the woman?",
+        "answer": "he says he cannot help her without the Lord",
+        "answer_verse": 26,
+        "wrong_answer": "he says he can help from the threshing floor or the winepress",
+        "relation": "modality",
+        "readings": [
+          {
+            "answer": "The Lord must help her.",
+            "support": "If the Lord does not help you"
+          }
+        ],
+        "distinct_readings": [
+          "The Lord must help her."
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 9.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "The answer hinges on interpreting the conditional rhetorical question that the Lord’s help is a prerequisite, which is expressed essentially once, yields a single unambiguous answer, and reflects the central point of the king’s reply."
+        },
+        "window_verses": [
+          26,
+          27,
+          28
+        ],
+        "window_text": {
+          "26": "As the king of Israel was passing by on the wall, a woman cried to him, “Help me, my lord the king!”",
+          "27": "The king replied, “If the Lord does not help you, where can I get help for you? From the threshing floor? From the winepress?”",
+          "28": "Then he asked her, “What’s the matter?” She answered, “This woman said to me, ‘Give up your son so we may eat him today, and tomorrow we’ll eat my son.’"
+        },
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: outside top structure band (7 vs window max 9)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "help"
+          ],
+          "answer_verse": 26,
+          "answer_verse_original": 26,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 26",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "What does the king say must happen before he can help the woman?",
+            "readings": [
+              {
+                "answer": "The Lord must help her.",
+                "support": "If the Lord does not help you"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The king says, “If the Lord does not help you, where can I get help for you?”, implying her help must first come from the Lord before he can help."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The verse explicitly states the king’s dependence on the Lord for help, matching the key’s meaning.",
+            "status": "passed"
+          }
+        },
+        "scores_after_repair_raw": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 9.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "The answer hinges on interpreting the conditional rhetorical question that the Lord’s help is a prerequisite, which is expressed essentially once, yields a single unambiguous answer, and reflects the central point of the king’s reply."
+        },
+        "repaired": true,
+        "repair_attempted": true,
+        "question_before_repair": "What does the king say about helping the woman who cries to him?",
+        "scores_before_repair": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 8.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "Summarizing the king's reply requires interpreting his rhetorical questions about help, a unique statement with a fairly clear single gist and central to the exchange."
+        },
+        "audit_before_repair": {
+          "passed": false,
+          "failures": [
+            "answerability multiple_answers: It cites the king’s follow-up rhetorical questions about sources of help (“From the threshing floor? From the winepress?”), which are part of what he says about helping her, though it omits the explicit dependence on the Lord emphasized by the key."
+          ],
+          "notes": [
+            "corrected metadata from 27 to 26; Q/A evidence matches verse(s) [26] better than the claimed 27",
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "help"
+          ],
+          "answer_verse": 26,
+          "answer_verse_original": 27,
+          "answer_verse_corrected": true,
+          "answer_verse_note": "corrected metadata from 27 to 26; Q/A evidence matches verse(s) [26] better than the claimed 27",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "What does the king say about helping the woman who cries to him?",
+            "readings": [
+              {
+                "answer": "He says that unless the Lord helps her, he cannot help her.",
+                "support": "If the Lord does not help you, where can I get help for you?"
+              },
+              {
+                "answer": "He asks whether help could come from the threshing floor or the winepress.",
+                "support": "From the threshing floor? From the winepress?"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "It directly paraphrases the king’s statement, “If the Lord does not help you, where can I get help for you?”, matching the key’s meaning that he cannot help without the Lord."
+              },
+              {
+                "number": 2,
+                "classification": "defensible_alternative",
+                "reason": "It cites the king’s follow-up rhetorical questions about sources of help (“From the threshing floor? From the winepress?”), which are part of what he says about helping her, though it omits the explicit dependence on the Lord emphasized by the key."
+              }
+            ],
+            "verdict": "multiple_answers",
+            "reason": "It cites the king’s follow-up rhetorical questions about sources of help (“From the threshing floor? From the winepress?”), which are part of what he says about helping her, though it omits the explicit dependence on the Lord emphasized by the key.",
+            "status": "flagged"
+          }
+        },
+        "repair_log": [
+          {
+            "before": "What does the king say about helping the woman who cries to him?",
+            "after": "What does the king say must happen before he can help the woman?",
+            "note": "Focused on the condition he states to avoid multiple plausible answers.",
+            "failures_before": [
+              "answerability multiple_answers: It cites the king’s follow-up rhetorical questions about sources of help (“From the threshing floor? From the winepress?”), which are part of what he says about helping her, though it omits the explicit dependence on the Lord emphasized by the key."
+            ],
+            "scores_before": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 8.0,
+              "centrality": 7.0,
+              "runs": 1,
+              "reason": "Summarizing the king's reply requires interpreting his rhetorical questions about help, a unique statement with a fairly clear single gist and central to the exchange."
+            },
+            "accepted": true,
+            "reason": "passed full rejudgment",
+            "suitability_judgment": {
+              "Q": "What does the king say must happen before he can help the woman?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "He says that unless the Lord helps her, he cannot help her, so the required prior event is the Lord’s help."
+            },
+            "failures_after": [],
+            "scores_after": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 8.0,
+              "answer_certainty": 9.0,
+              "centrality": 7.0,
+              "runs": 1,
+              "reason": "The answer hinges on interpreting the conditional rhetorical question that the Lord’s help is a prerequisite, which is expressed essentially once, yields a single unambiguous answer, and reflects the central point of the king’s reply."
+            },
+            "scores_used": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 8.0,
+              "answer_certainty": 9.0,
+              "centrality": 7.0,
+              "runs": 1,
+              "reason": "The answer hinges on interpreting the conditional rhetorical question that the Lord’s help is a prerequisite, which is expressed essentially once, yields a single unambiguous answer, and reflects the central point of the king’s reply."
+            }
+          }
+        ],
+        "content_id": "v26-28:3"
+      },
+      {
+        "question": "Who tells the woman who cries to the king to give up her son?",
+        "answer": "the other woman she talks about",
+        "answer_verse": 28,
+        "wrong_answer": "the woman who cries to the king",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "This woman",
+            "support": "This woman said to me, ‘Give up your son"
+          }
+        ],
+        "distinct_readings": [
+          "This woman"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "Identifying 'who' requires tracking the speech relation ('This woman said to me') stated once, with a single clear answer, and it's relevant but not the main point."
+        },
+        "window_verses": [
+          26,
+          27,
+          28
+        ],
+        "window_text": {
+          "26": "As the king of Israel was passing by on the wall, a woman cried to him, “Help me, my lord the king!”",
+          "27": "The king replied, “If the Lord does not help you, where can I get help for you? From the threshing floor? From the winepress?”",
+          "28": "Then he asked her, “What’s the matter?” She answered, “This woman said to me, ‘Give up your son so we may eat him today, and tomorrow we’ll eat my son.’"
+        },
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: hybrid window selector — It most strongly hinges on parsing reported speech and pronoun reference to determine whose son is first, with a plausible competitor that misassigns the pronouns, while yielding a single clear answer."
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "woman"
+          ],
+          "answer_verse": 28,
+          "answer_verse_original": 28,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 28",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Who tells the woman who cries to the king to give up her son?",
+            "readings": [
+              {
+                "answer": "This woman",
+                "support": "This woman said to me, ‘Give up your son"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The text says, “She answered, ‘This woman said to me, ‘Give up your son…’,” indicating it was the other woman she is talking about who told her to give up her son."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The passage explicitly attributes the demand to “This woman,” i.e., the other woman she refers to.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It most strongly hinges on parsing reported speech and pronoun reference to determine whose son is first, with a plausible competitor that misassigns the pronouns, while yielding a single clear answer.",
+        "content_id": "v26-28:4"
+      }
+    ],
+    "report": {
+      "window_id": "v26-28",
+      "verses": [
+        26,
+        27,
+        28
+      ],
+      "generated": 4,
+      "scored": 4,
+      "kept": 1,
+      "survivors_before_window_selection": 3,
+      "window_selection_rejected": 2,
+      "repair_attempted": 3,
+      "repaired": 2,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

@@ -1,0 +1,504 @@
+{
+  "config_digest": "bab5a848f20f60ea534214d9358795f20d975515f4adb1ac077513ba4e1247aa",
+  "data": {
+    "kept": [
+      {
+        "question": "Whose lives do the Danites say will be lost if Micah argues?",
+        "answer": "Micah and his family.",
+        "answer_verse": 25,
+        "wrong_answer": "some of the men",
+        "relation": "participant",
+        "readings": [
+          {
+            "answer": "Micah and his family",
+            "support": "you and your family will lose your lives"
+          }
+        ],
+        "distinct_readings": [
+          "Micah and his family"
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "Extracting “you and your family” as referring to Micah and his family requires pronoun resolution within a conditional threat stated once and central to the confrontation."
+        },
+        "window_verses": [
+          24,
+          25,
+          26
+        ],
+        "window_text": {
+          "24": "He replied, “You took the gods I made, and my priest, and went away. What else do I have? How can you ask, ‘What’s the matter with you?’”",
+          "25": "The Danites answered, “Don’t argue with us, or some of the men may get angry and attack you, and you and your family will lose your lives.”",
+          "26": "So the Danites went their way, and Micah, seeing that they were too strong for him, turned around and went back home."
+        },
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "micah"
+          ],
+          "answer_verse": 25,
+          "answer_verse_original": 25,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 25",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Whose lives do the Danites say will be lost if Micah argues?",
+            "readings": [
+              {
+                "answer": "Micah and his family",
+                "support": "you and your family will lose your lives"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Verse 25 directly says “you and your family will lose your lives,” referring to Micah and his family."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The passage explicitly states “you and your family will lose your lives,” identifying Micah and his family.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It most strongly depends on correctly resolving the pronouns in the Danites’ threat—recognizing that “you and your family” (Micah) are the ones who will lose their lives, not “some of the men”—yielding a single clear answer with a plausible misparse competitor.",
+        "window_structure_max": 8.0,
+        "content_id": "v24-26:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Why does Micah turn back home?",
+        "answer": "He sees the Danites are too strong for him.",
+        "answer_verse": 26,
+        "wrong_answer": "Because the Danites tell him not to argue.",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "Because they were too strong for him.",
+            "support": "seeing that they were too strong for him"
+          },
+          {
+            "answer": "Because of the Danites’ threat that if he argued they might attack and he and his family would lose their lives.",
+            "support": "Don’t argue with us, or some of the men may get angry and attack you, and you and your family will lose your lives"
+          }
+        ],
+        "distinct_readings": [
+          "Because they were too strong for him.",
+          "Because of the Danites’ threat that if he argued they might attack and he and his family would lose their lives."
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "The reason is given in a single causal clause (“seeing that they were too strong for him”), requiring relation parsing and stated only once, with a single clear answer central to the episode’s resolution."
+        },
+        "window_verses": [
+          24,
+          25,
+          26
+        ],
+        "window_text": {
+          "24": "He replied, “You took the gods I made, and my priest, and went away. What else do I have? How can you ask, ‘What’s the matter with you?’”",
+          "25": "The Danites answered, “Don’t argue with us, or some of the men may get angry and attack you, and you and your family will lose your lives.”",
+          "26": "So the Danites went their way, and Micah, seeing that they were too strong for him, turned around and went back home."
+        },
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: micah"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "micah"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 26,
+          "answer_verse_original": 26,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 26",
+          "readings_failures": []
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "Why does Micah turn back home?",
+            "after": "Why does the man turn back home?",
+            "note": "Replaced verse-unique name with a neutral noun phrase to avoid location leak.",
+            "failures_before": [
+              "location leak: micah"
+            ],
+            "scores_before": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "The reason is given in a single causal clause (“seeing that they were too strong for him”), requiring relation parsing and stated only once, with a single clear answer central to the episode’s resolution."
+            },
+            "accepted": false,
+            "reason": "failed full rejudgment",
+            "suitability_judgment": {
+              "Q": "Why does the man turn back home?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "It clearly refers to Micah and the text gives one explicit reason: he saw they were too strong for him."
+            },
+            "failures_after": [
+              "2 defensible readings: Because they were too strong for him | Because the Danites threatened him if he argued / told him not to argue",
+              "competitor 'Because the Danites tell him not to argue.' is itself defensible — the item is ambiguous, not discriminating"
+            ],
+            "scores_after": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 9.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "It targets the causal relation in the clause “seeing that they were too strong for him,” stated once; a clear translation gives one definite reason that drives the outcome."
+            },
+            "scores_used": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 9.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "It targets the causal relation in the clause “seeing that they were too strong for him,” stated once; a clear translation gives one definite reason that drives the outcome."
+            }
+          }
+        ],
+        "content_id": "v24-26:2"
+      },
+      {
+        "question": "Who goes their way after the warning?",
+        "answer": "The Danites.",
+        "answer_verse": 26,
+        "wrong_answer": "Micah",
+        "relation": "direction",
+        "readings": [
+          {
+            "answer": "The Danites",
+            "support": "So the Danites went their way"
+          }
+        ],
+        "distinct_readings": [
+          "The Danites"
+        ],
+        "scores": {
+          "structure_dependence": 4.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "The line “the Danites went their way” can be spotted directly, though tied to sequence after the warning, appears once, with a single clear answer of moderate narrative importance."
+        },
+        "window_verses": [
+          24,
+          25,
+          26
+        ],
+        "window_text": {
+          "24": "He replied, “You took the gods I made, and my priest, and went away. What else do I have? How can you ask, ‘What’s the matter with you?’”",
+          "25": "The Danites answered, “Don’t argue with us, or some of the men may get angry and attack you, and you and your family will lose your lives.”",
+          "26": "So the Danites went their way, and Micah, seeing that they were too strong for him, turned around and went back home."
+        },
+        "audit": {
+          "passed": false,
+          "failures": [
+            "dangling pronoun: their",
+            "lexical: structure_dependence 4.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 26,
+          "answer_verse_original": 26,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 26",
+          "readings_failures": []
+        },
+        "content_id": "v24-26:3"
+      },
+      {
+        "question": "Who took the gods and the priest from Micah?",
+        "answer": "The Danites.",
+        "answer_verse": 24,
+        "wrong_answer": "Micah",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "The Danites",
+            "support": "You took the gods I made, and my priest | The Danites answered"
+          }
+        ],
+        "distinct_readings": [
+          "The Danites"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "Linking “you took the gods… and my priest” to the Danites requires discourse-role resolution, is stated once, clearly answerable, and central to the conflict."
+        },
+        "window_verses": [
+          24,
+          25,
+          26
+        ],
+        "window_text": {
+          "24": "He replied, “You took the gods I made, and my priest, and went away. What else do I have? How can you ask, ‘What’s the matter with you?’”",
+          "25": "The Danites answered, “Don’t argue with us, or some of the men may get angry and attack you, and you and your family will lose your lives.”",
+          "26": "So the Danites went their way, and Micah, seeing that they were too strong for him, turned around and went back home."
+        },
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: hybrid window selector — It most strongly depends on correctly resolving the pronouns in the Danites’ threat—recognizing that “you and your family” (Micah) are the ones who will lose their lives, not “some of the men”—yielding a single clear answer with a plausible misparse competitor."
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 24,
+          "answer_verse_original": 24,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 24",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Who took the gods and the priest from Micah?",
+            "readings": [
+              {
+                "answer": "The Danites",
+                "support": "You took the gods I made, and my priest | The Danites answered"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "In v24 the speaker says “You took the gods I made, and my priest,” and in v25 “The Danites answered,” identifying the “you” as the Danites."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The text shows the Danites are the addressed “you” who took Micah’s gods and priest.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It most strongly depends on correctly resolving the pronouns in the Danites’ threat—recognizing that “you and your family” (Micah) are the ones who will lose their lives, not “some of the men”—yielding a single clear answer with a plausible misparse competitor.",
+        "content_id": "v24-26:4"
+      },
+      {
+        "question": "Who is too strong for the man?",
+        "answer": "The Danites.",
+        "answer_verse": 26,
+        "wrong_answer": "some of the men",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "The Danites",
+            "support": "the Danites | they were too strong for him"
+          }
+        ],
+        "distinct_readings": [
+          "The Danites"
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "It requires resolving the pronoun “they” to its antecedent “the Danites,” a single, unambiguous reference that is important to the action though secondary to the causal why."
+        },
+        "window_verses": [
+          24,
+          25,
+          26
+        ],
+        "window_text": {
+          "24": "He replied, “You took the gods I made, and my priest, and went away. What else do I have? How can you ask, ‘What’s the matter with you?’”",
+          "25": "The Danites answered, “Don’t argue with us, or some of the men may get angry and attack you, and you and your family will lose your lives.”",
+          "26": "So the Danites went their way, and Micah, seeing that they were too strong for him, turned around and went back home."
+        },
+        "reading_groups": [
+          "The Danites are too strong for him"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: hybrid window selector — It most strongly depends on correctly resolving the pronouns in the Danites’ threat—recognizing that “you and your family” (Micah) are the ones who will lose their lives, not “some of the men”—yielding a single clear answer with a plausible misparse competitor."
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 26,
+          "answer_verse_original": 26,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 26",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Who is too strong for the man?",
+            "readings": [
+              {
+                "answer": "The Danites",
+                "support": "the Danites | they were too strong for him"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Verse 26 says, “Micah, seeing that they were too strong for him,” and the antecedent of “they” is the Danites from verses 25–26, so the Danites are too strong for the man."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The passage explicitly identifies the Danites as the ones who were too strong for Micah.",
+            "status": "passed"
+          }
+        },
+        "scores_after_repair_raw": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "It requires resolving the pronoun “they” to its antecedent “the Danites,” a single, unambiguous reference that is important to the action though secondary to the causal why."
+        },
+        "repaired": true,
+        "repair_attempted": true,
+        "question_before_repair": "Who is too strong for Micah?",
+        "scores_before_repair": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "Identifying “they” as the Danites requires pronoun resolution to the prior subject, stated once with an unambiguous, central answer."
+        },
+        "audit_before_repair": {
+          "passed": false,
+          "failures": [
+            "location leak: micah"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "micah"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 26,
+          "answer_verse_original": 26,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 26",
+          "readings_failures": []
+        },
+        "repair_log": [
+          {
+            "before": "Who is too strong for Micah?",
+            "after": "Who is too strong for the man?",
+            "note": "Replaced verse-unique name with a neutral noun phrase to avoid location leak.",
+            "failures_before": [
+              "location leak: micah"
+            ],
+            "scores_before": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 7.0,
+              "runs": 1,
+              "reason": "Identifying “they” as the Danites requires pronoun resolution to the prior subject, stated once with an unambiguous, central answer."
+            },
+            "accepted": true,
+            "reason": "passed full rejudgment",
+            "suitability_judgment": {
+              "Q": "Who is too strong for the man?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "The referents are clear (the man is Micah; they are the Danites) and the text states the Danites are too strong for him."
+            },
+            "failures_after": [],
+            "scores_after": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 9.0,
+              "centrality": 7.0,
+              "runs": 1,
+              "reason": "It requires resolving the pronoun “they” to its antecedent “the Danites,” a single, unambiguous reference that is important to the action though secondary to the causal why."
+            },
+            "scores_used": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 9.0,
+              "centrality": 7.0,
+              "runs": 1,
+              "reason": "It requires resolving the pronoun “they” to its antecedent “the Danites,” a single, unambiguous reference that is important to the action though secondary to the causal why."
+            }
+          }
+        ],
+        "window_selection_reason": "It most strongly depends on correctly resolving the pronouns in the Danites’ threat—recognizing that “you and your family” (Micah) are the ones who will lose their lives, not “some of the men”—yielding a single clear answer with a plausible misparse competitor.",
+        "content_id": "v24-26:5"
+      }
+    ],
+    "report": {
+      "window_id": "v24-26",
+      "verses": [
+        24,
+        25,
+        26
+      ],
+      "generated": 5,
+      "scored": 5,
+      "kept": 1,
+      "survivors_before_window_selection": 3,
+      "window_selection_rejected": 2,
+      "repair_attempted": 2,
+      "repaired": 1,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

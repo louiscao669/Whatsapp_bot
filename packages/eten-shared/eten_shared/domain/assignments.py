@@ -13,6 +13,7 @@ from eten_shared.domain.bible_books import LEGACY_TRANSLATION_BOOK, qa_item_book
 from eten_shared.domain.batch_schedules import cancel_pending_next_batch_schedules
 from eten_shared.domain.batch_size_nudges import clamp_batch_size
 from eten_shared.domain.qa_eligibility import qa_item_is_assignable
+from eten_shared.experiment_plan import QA_SETS, is_test_bank_passage
 from eten_shared.languages import canonical_language_code
 from eten_shared.models import (
     Assignment,
@@ -300,7 +301,14 @@ def experiment_passage_assignment_kwargs(db: Session, experiment_passage, qa_ite
         # delivery length from surviving verses, so window LENGTH stops signalling whether
         # the answer is still there (see pad_window_verses). Verses other items' windows
         # claim are avoided where possible, to keep the added overlap minimal.
-        if len(verses) < PASSAGE_DELIVERY_VERSE_COUNT:
+        sol_window = qa_item.passage_id.startswith(QA_SETS["reviewed122_sol"]["passage_prefix"])
+        reviewed_clean = is_test_bank_passage(qa_item.passage_id) and experiment_passage.condition == "clean"
+        allow_missing = experiment_passage.condition in ("omission15", "omission30")
+        if len(verses) != len(experiment_window.verse_numbers) and (reviewed_clean or (sol_window and not allow_missing)):
+            return {}
+        # Sol questions have reviewed boundaries of varying lengths. Use the surviving
+        # text inside them; borrowing a neighbouring verse can repeat another question.
+        if len(verses) < PASSAGE_DELIVERY_VERSE_COUNT and not (sol_window or reviewed_clean):
             occupied = {
                 number
                 for other in db.scalars(

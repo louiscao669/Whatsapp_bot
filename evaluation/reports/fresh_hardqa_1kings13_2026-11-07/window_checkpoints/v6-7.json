@@ -1,0 +1,472 @@
+{
+  "config_digest": "7d0f9ca5b001dd4aafd08cfe62ee0ee1709a4cee0d45b80852aceee348ef06c5",
+  "data": {
+    "kept": [
+      {
+        "question": "Who prays for the king?",
+        "answer": "the man of God",
+        "answer_verse": 6,
+        "wrong_answer": "the king",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "the man of God",
+            "support": "pray for me | So the man of God interceded with the Lord"
+          }
+        ],
+        "distinct_readings": [
+          "the man of God"
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 5.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "Identifying the pray-er requires linking the king’s request to the clause “the man of God interceded,” stated once, yielding a single clear answer central to the healing event."
+        },
+        "window_verses": [
+          6,
+          7
+        ],
+        "window_text": {
+          "6": "Then the king said to the man of God, “Intercede with the Lord your God and pray for me that my hand may be restored.” So the man of God interceded with the Lord, and the king’s hand was restored and became as it was before.",
+          "7": "The king said to the man of God, “Come home with me for a meal, and I will give you a gift.”"
+        },
+        "reading_groups": [
+          "The man of God prays for the king"
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 6,
+          "answer_verse_original": 6,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 6",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Who prays for the king?",
+            "readings": [
+              {
+                "answer": "the man of God",
+                "support": "pray for me | So the man of God interceded with the Lord"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The passage states the king asked the man of God to pray and then 'the man of God interceded with the Lord,' showing he is the one who prayed for the king."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "It explicitly says the man of God interceded with the Lord for the king.",
+            "status": "passed"
+          }
+        },
+        "scores_after_repair_raw": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 5.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "Identifying the pray-er requires linking the king’s request to the clause “the man of God interceded,” stated once, yielding a single clear answer central to the healing event."
+        },
+        "repaired": true,
+        "repair_attempted": true,
+        "question_before_repair": "Who prays to the Lord for the king?",
+        "scores_before_repair": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "Identifying the agent of intercession requires reading the subject of the action in one clause, stated once, unambiguous, and central to the miracle."
+        },
+        "audit_before_repair": {
+          "passed": false,
+          "failures": [
+            "location leak: lord"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "lord"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 6,
+          "answer_verse_original": 6,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 6",
+          "readings_failures": []
+        },
+        "repair_log": [
+          {
+            "before": "Who prays to the Lord for the king?",
+            "after": "Who prays for the king?",
+            "note": "Removed the leaking word 'Lord'.",
+            "failures_before": [
+              "location leak: lord"
+            ],
+            "scores_before": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "Identifying the agent of intercession requires reading the subject of the action in one clause, stated once, unambiguous, and central to the miracle."
+            },
+            "accepted": true,
+            "reason": "passed full rejudgment",
+            "suitability_judgment": {
+              "Q": "Who prays for the king?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "The verse explicitly states that the man of God interceded with the Lord for the king, yielding a single clear answer."
+            },
+            "failures_after": [],
+            "scores_after": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 5.0,
+              "answer_certainty": 10.0,
+              "centrality": 9.0,
+              "runs": 1,
+              "reason": "Identifying the pray-er requires linking the king’s request to the clause “the man of God interceded,” stated once, yielding a single clear answer central to the healing event."
+            },
+            "scores_used": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 5.0,
+              "answer_certainty": 10.0,
+              "centrality": 9.0,
+              "runs": 1,
+              "reason": "Identifying the pray-er requires linking the king’s request to the clause “the man of God interceded,” stated once, yielding a single clear answer central to the healing event."
+            }
+          }
+        ],
+        "window_selection_reason": "Identifying who actually prays hinges on parsing the agent of the intercession (man of God vs. the king), is highly central, and has a plausible misparse, whereas the sequence item is slightly less central.",
+        "window_structure_max": 7.0,
+        "content_id": "v6-7:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Which person has a healed hand after the man of God prays?",
+        "answer": "the king",
+        "answer_verse": 6,
+        "wrong_answer": "the man of God",
+        "relation": "participant",
+        "readings": [
+          {
+            "answer": "the king",
+            "support": "the king’s hand was restored"
+          }
+        ],
+        "distinct_readings": [
+          "the king"
+        ],
+        "scores": {
+          "structure_dependence": 5.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "The possession relation ('the king’s hand was restored') is explicit once, yields one answer, and is central to the healing event."
+        },
+        "window_verses": [
+          6,
+          7
+        ],
+        "window_text": {
+          "6": "Then the king said to the man of God, “Intercede with the Lord your God and pray for me that my hand may be restored.” So the man of God interceded with the Lord, and the king’s hand was restored and became as it was before.",
+          "7": "The king said to the man of God, “Come home with me for a meal, and I will give you a gift.”"
+        },
+        "reading_groups": [
+          "The king is the one whose hand is healed"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: pray",
+            "lexical: structure_dependence 5.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "pray"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 6,
+          "answer_verse_original": 6,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 6",
+          "readings_failures": []
+        },
+        "content_id": "v6-7:2"
+      },
+      {
+        "question": "For what does the king ask the man of God to pray?",
+        "answer": "for the king’s hand to be restored",
+        "answer_verse": 6,
+        "wrong_answer": "for a meal and a gift",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "That his hand may be restored.",
+            "support": "that my hand may be restored"
+          },
+          {
+            "answer": "For him (the king).",
+            "support": "pray for me"
+          }
+        ],
+        "distinct_readings": [
+          "That his hand may be restored.",
+          "For him (the king)."
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 6.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "It requires parsing the content of the request clause ('that my hand may be restored'), which is supported by the outcome, uniquely answerable, and central to the episode."
+        },
+        "window_verses": [
+          6,
+          7
+        ],
+        "window_text": {
+          "6": "Then the king said to the man of God, “Intercede with the Lord your God and pray for me that my hand may be restored.” So the man of God interceded with the Lord, and the king’s hand was restored and became as it was before.",
+          "7": "The king said to the man of God, “Come home with me for a meal, and I will give you a gift.”"
+        },
+        "reading_groups": [
+          "That the king’s hand may be restored",
+          "For the king (on his behalf)"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "2 defensible readings: That the king’s hand may be restored | For the king (on his behalf)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "king"
+          ],
+          "answer_verse": 6,
+          "answer_verse_original": 6,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 6",
+          "readings_failures": [
+            "2 defensible readings: That the king’s hand may be restored | For the king (on his behalf)"
+          ]
+        },
+        "content_id": "v6-7:3"
+      },
+      {
+        "question": "What does the king say after his hand is healed?",
+        "answer": "The king invites the man of God home for food and offers a gift",
+        "answer_verse": 7,
+        "wrong_answer": "The king asks the man of God to pray for healing",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "Come home with me for a meal, and I will give you a gift.",
+            "support": "Come home with me for a meal, and I will give you a gift."
+          }
+        ],
+        "distinct_readings": [
+          "Come home with me for a meal, and I will give you a gift."
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "There are two kingly speeches and the answer depends on temporal order (after healing), selecting a single explicit invitation-and-gift offer that is clear though slightly less central than the healing itself."
+        },
+        "window_verses": [
+          6,
+          7
+        ],
+        "window_text": {
+          "6": "Then the king said to the man of God, “Intercede with the Lord your God and pray for me that my hand may be restored.” So the man of God interceded with the Lord, and the king’s hand was restored and became as it was before.",
+          "7": "The king said to the man of God, “Come home with me for a meal, and I will give you a gift.”"
+        },
+        "reading_groups": [
+          "After healing, the king invites the man of God for a meal and offers a gift"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: hybrid window selector — Identifying who actually prays hinges on parsing the agent of the intercession (man of God vs. the king), is highly central, and has a plausible misparse, whereas the sequence item is slightly less central."
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "king"
+          ],
+          "answer_verse": 7,
+          "answer_verse_original": 7,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 7",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "What does the king say after his hand is healed?",
+            "readings": [
+              {
+                "answer": "Come home with me for a meal, and I will give you a gift.",
+                "support": "Come home with me for a meal, and I will give you a gift."
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The quoted response exactly matches verse 7 and conveys the same meaning as the key: the king invites him home for a meal and offers a gift."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The passage states the king says, “Come home with me for a meal, and I will give you a gift,” matching the key.",
+            "status": "passed"
+          }
+        },
+        "scores_after_repair_raw": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "There are two kingly speeches and the answer depends on temporal order (after healing), selecting a single explicit invitation-and-gift offer that is clear though slightly less central than the healing itself."
+        },
+        "repaired": true,
+        "repair_attempted": true,
+        "question_before_repair": "What does the king say to the man of God after the king’s hand is healed?",
+        "scores_before_repair": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "You must locate the post-healing speech and capture its two-part content (meal invitation and gift), stated once with a clear reading though less central than the healing."
+        },
+        "audit_before_repair": {
+          "passed": false,
+          "failures": [
+            "repetitive question: repeats 'the king'",
+            "quotes the passage: quotes verse 6: 'to the man of god'"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "god",
+            "king"
+          ],
+          "answer_verse": 7,
+          "answer_verse_original": 7,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 7",
+          "readings_failures": []
+        },
+        "repair_log": [
+          {
+            "before": "What does the king say to the man of God after the king’s hand is healed?",
+            "after": "What does the king say after his hand is healed?",
+            "note": "Removed the quoted phrase and replaced the repeated noun with a pronoun.",
+            "failures_before": [
+              "repetitive question: repeats 'the king'",
+              "quotes the passage: quotes verse 6: 'to the man of god'"
+            ],
+            "scores_before": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 9.0,
+              "centrality": 6.0,
+              "runs": 1,
+              "reason": "You must locate the post-healing speech and capture its two-part content (meal invitation and gift), stated once with a clear reading though less central than the healing."
+            },
+            "accepted": true,
+            "reason": "passed full rejudgment",
+            "suitability_judgment": {
+              "Q": "What does the king say after his hand is healed?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "After the restoration, the text directly records the king saying, “Come home with me for a meal, and I will give you a gift,” providing one clear answer."
+            },
+            "failures_after": [],
+            "scores_after": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 9.0,
+              "centrality": 7.0,
+              "runs": 1,
+              "reason": "There are two kingly speeches and the answer depends on temporal order (after healing), selecting a single explicit invitation-and-gift offer that is clear though slightly less central than the healing itself."
+            },
+            "scores_used": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 9.0,
+              "centrality": 7.0,
+              "runs": 1,
+              "reason": "There are two kingly speeches and the answer depends on temporal order (after healing), selecting a single explicit invitation-and-gift offer that is clear though slightly less central than the healing itself."
+            }
+          }
+        ],
+        "window_selection_reason": "Identifying who actually prays hinges on parsing the agent of the intercession (man of God vs. the king), is highly central, and has a plausible misparse, whereas the sequence item is slightly less central.",
+        "content_id": "v6-7:4"
+      }
+    ],
+    "report": {
+      "window_id": "v6-7",
+      "verses": [
+        6,
+        7
+      ],
+      "generated": 4,
+      "scored": 4,
+      "kept": 1,
+      "survivors_before_window_selection": 2,
+      "window_selection_rejected": 1,
+      "repair_attempted": 2,
+      "repaired": 2,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

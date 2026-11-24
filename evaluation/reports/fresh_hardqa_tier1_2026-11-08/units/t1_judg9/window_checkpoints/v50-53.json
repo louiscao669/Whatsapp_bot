@@ -1,0 +1,383 @@
+{
+  "config_digest": "bf29cf564aae7d15d3bd5bdbff20af59f16e06874e5bad45e83aa6623bdff95a",
+  "data": {
+    "kept": [
+      {
+        "question": "Why does Abimelek go to the tower entrance?",
+        "answer": "to burn the tower",
+        "answer_verse": 52,
+        "wrong_answer": "to climb to the roof",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "To set it on fire.",
+            "support": "approached the entrance to the tower to set it on fire"
+          }
+        ],
+        "distinct_readings": [
+          "To set it on fire."
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 10.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "The purpose clause “to set it on fire” is a relational detail carried in one subordinate phrase, with one unambiguous answer that drives the action."
+        },
+        "window_verses": [
+          50,
+          51,
+          52,
+          53
+        ],
+        "window_text": {
+          "50": "Next Abimelek went to Thebez and besieged it and captured it.",
+          "51": "Inside the city, however, was a strong tower, to which all the men and women—all the people of the city—had fled. They had locked themselves in and climbed up on the tower roof.",
+          "52": "Abimelek went to the tower and attacked it. But as he approached the entrance to the tower to set it on fire,",
+          "53": "a woman dropped an upper millstone on his head and cracked his skull."
+        },
+        "reading_groups": [
+          "To set/burn the tower on fire"
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "tower"
+          ],
+          "answer_verse": 52,
+          "answer_verse_original": 52,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 52",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Why does Abimelek go to the tower entrance?",
+            "readings": [
+              {
+                "answer": "To set it on fire.",
+                "support": "approached the entrance to the tower to set it on fire"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The verse says he approached the tower entrance “to set it on fire,” which is the same as going there to burn the tower."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The text explicitly states he went to the tower entrance “to set it on fire,” matching the key’s “to burn the tower.”",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "Item 1 hinges on the purpose clause (“to set it on fire”) and contrasts with a plausible misparse from v51 about climbing to the roof, while the answer is unambiguous.",
+        "window_structure_max": 9.0,
+        "content_id": "v50-53:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "What place does Abimelek capture before he goes to the tower?",
+        "answer": "the city Thebez",
+        "answer_verse": 50,
+        "wrong_answer": "the tower",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "Thebez",
+            "support": "Abimelek went to Thebez and besieged it and captured it"
+          }
+        ],
+        "distinct_readings": [
+          "Thebez"
+        ],
+        "scores": {
+          "structure_dependence": 5.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "Identifying Thebez as the place captured relies mildly on the sequence before the tower episode, is stated once, has a single clear answer, and is important setup for the scene."
+        },
+        "window_verses": [
+          50,
+          51,
+          52,
+          53
+        ],
+        "window_text": {
+          "50": "Next Abimelek went to Thebez and besieged it and captured it.",
+          "51": "Inside the city, however, was a strong tower, to which all the men and women—all the people of the city—had fled. They had locked themselves in and climbed up on the tower roof.",
+          "52": "Abimelek went to the tower and attacked it. But as he approached the entrance to the tower to set it on fire,",
+          "53": "a woman dropped an upper millstone on his head and cracked his skull."
+        },
+        "reading_groups": [
+          "Thebez, the city he captured"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 5.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 50,
+          "answer_verse_original": 50,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 50",
+          "readings_failures": []
+        },
+        "content_id": "v50-53:2"
+      },
+      {
+        "question": "Where do the city people go at the tower?",
+        "answer": "the roof",
+        "answer_verse": 51,
+        "wrong_answer": "the entrance",
+        "relation": "direction",
+        "readings": [
+          {
+            "answer": "On the tower roof",
+            "support": "climbed up on the tower roof"
+          },
+          {
+            "answer": "Inside the tower",
+            "support": "a strong tower | They had locked themselves in"
+          },
+          {
+            "answer": "To the strong tower",
+            "support": "a strong tower, to which all the men and women—all the people of the city—had fled"
+          }
+        ],
+        "distinct_readings": [
+          "On the tower roof",
+          "Inside the tower",
+          "To the strong tower"
+        ],
+        "scores": {
+          "structure_dependence": 5.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 6.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "Choosing “the roof” requires selecting among possible locations (inside vs. roof) from a single mention, with some ambiguity in wording but moderately relevant to the scene."
+        },
+        "window_verses": [
+          50,
+          51,
+          52,
+          53
+        ],
+        "window_text": {
+          "50": "Next Abimelek went to Thebez and besieged it and captured it.",
+          "51": "Inside the city, however, was a strong tower, to which all the men and women—all the people of the city—had fled. They had locked themselves in and climbed up on the tower roof.",
+          "52": "Abimelek went to the tower and attacked it. But as he approached the entrance to the tower to set it on fire,",
+          "53": "a woman dropped an upper millstone on his head and cracked his skull."
+        },
+        "reading_groups": [
+          "On the tower roof",
+          "Inside the tower",
+          "To the strong tower"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "3 defensible readings: On the tower roof | Inside the tower | To the strong tower",
+            "ambiguous: answer_certainty 6.0 (need 7.0)",
+            "lexical: structure_dependence 5.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 51,
+          "answer_verse_original": 51,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 51",
+          "readings_failures": [
+            "3 defensible readings: On the tower roof | Inside the tower | To the strong tower"
+          ]
+        },
+        "content_id": "v50-53:3"
+      },
+      {
+        "question": "Who drops a stone on Abimelek’s head?",
+        "answer": "a woman",
+        "answer_verse": 53,
+        "wrong_answer": "Abimelek",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "A woman",
+            "support": "a woman dropped an upper millstone on his head"
+          }
+        ],
+        "distinct_readings": [
+          "A woman"
+        ],
+        "scores": {
+          "structure_dependence": 2.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "“A woman” is explicitly stated and easily spotted, appears once, is unambiguous, and is pivotal to the event."
+        },
+        "window_verses": [
+          50,
+          51,
+          52,
+          53
+        ],
+        "window_text": {
+          "50": "Next Abimelek went to Thebez and besieged it and captured it.",
+          "51": "Inside the city, however, was a strong tower, to which all the men and women—all the people of the city—had fled. They had locked themselves in and climbed up on the tower roof.",
+          "52": "Abimelek went to the tower and attacked it. But as he approached the entrance to the tower to set it on fire,",
+          "53": "a woman dropped an upper millstone on his head and cracked his skull."
+        },
+        "reading_groups": [
+          "A woman drops it"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: head",
+            "lexical: structure_dependence 2.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "head"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 53,
+          "answer_verse_original": 53,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 53",
+          "readings_failures": []
+        },
+        "content_id": "v50-53:4"
+      },
+      {
+        "question": "Whose skull is cracked by the stone?",
+        "answer": "Abimelek’s skull",
+        "answer_verse": 53,
+        "wrong_answer": "the woman’s",
+        "relation": "patient",
+        "readings": [
+          {
+            "answer": "Abimelek's",
+            "support": "Abimelek went to the tower and attacked it. But as he approached the entrance to the tower to set it on fire, | a woman dropped an upper millstone on his head and cracked his skull."
+          }
+        ],
+        "distinct_readings": [
+          "Abimelek's"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "Resolving the pronoun “his” back to Abimelek requires grammatical linkage found once, yields a single answer, and is central to the outcome."
+        },
+        "window_verses": [
+          50,
+          51,
+          52,
+          53
+        ],
+        "window_text": {
+          "50": "Next Abimelek went to Thebez and besieged it and captured it.",
+          "51": "Inside the city, however, was a strong tower, to which all the men and women—all the people of the city—had fled. They had locked themselves in and climbed up on the tower roof.",
+          "52": "Abimelek went to the tower and attacked it. But as he approached the entrance to the tower to set it on fire,",
+          "53": "a woman dropped an upper millstone on his head and cracked his skull."
+        },
+        "reading_groups": [
+          "Abimelek’s skull is cracked"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: hybrid window selector — Item 1 hinges on the purpose clause (“to set it on fire”) and contrasts with a plausible misparse from v51 about climbing to the roof, while the answer is unambiguous."
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "skull"
+          ],
+          "answer_verse": 53,
+          "answer_verse_original": 53,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 53",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Whose skull is cracked by the stone?",
+            "readings": [
+              {
+                "answer": "Abimelek's",
+                "support": "Abimelek went to the tower and attacked it. But as he approached the entrance to the tower to set it on fire, | a woman dropped an upper millstone on his head and cracked his skull."
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The pronouns “his head” and “his skull” in verse 53 clearly refer back to Abimelek, who is the subject approaching the tower entrance."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "Verse 53 explicitly says a woman dropped a millstone on Abimelek’s head and cracked his skull.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "Item 1 hinges on the purpose clause (“to set it on fire”) and contrasts with a plausible misparse from v51 about climbing to the roof, while the answer is unambiguous.",
+        "content_id": "v50-53:5"
+      }
+    ],
+    "report": {
+      "window_id": "v50-53",
+      "verses": [
+        50,
+        51,
+        52,
+        53
+      ],
+      "generated": 5,
+      "scored": 5,
+      "kept": 1,
+      "survivors_before_window_selection": 2,
+      "window_selection_rejected": 1,
+      "repair_attempted": 0,
+      "repaired": 0,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

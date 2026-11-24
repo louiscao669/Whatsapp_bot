@@ -333,6 +333,9 @@ def apply_mistranslations(
     bank: dict,
     selected_group_indices: list[int] | None = None,
 ) -> tuple[str, dict]:
+    if bank.get("schema_version") == 3:
+        from evaluation.scripts.variants.banks.mistranslation_bundles import apply_bank
+        return apply_bank(text, bank, rate=rate, seed=seed, selected_group_indices=selected_group_indices)
     if bank.get("schema_version") == 2 or "validation" in bank:
         try:
             validate_reviewed_bank(bank, text)
@@ -472,6 +475,8 @@ def create_variant(
     force: bool,
     selections: dict[str, list[int]] | None = None,
 ) -> Path:
+    if bank.get("schema_version") == 3:
+        raise MistranslationError("Occurrence/bundle banks must use the window pipeline and its final combined review.")
     variant_name = format_rate(rate)
     variant_dir = output_dir / variant_name
     reviewed = bank.get("schema_version") == 2 or "validation" in bank

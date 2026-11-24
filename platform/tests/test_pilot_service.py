@@ -216,6 +216,23 @@ class PilotPresentationTests(PilotServiceTestCase):
         self.assertIsNone(info["correct_choice"])
         self.assertIsNone(info["correct_answer"])
 
+    def test_manual_option_label_requires_test_flag_and_exact_sol_version(self):
+        item = self.open_item
+        item.question_type = "mcq"
+        item.passage_id = "reviewed122_sol/Hard77/t1_1kgs13"
+        item.form_group_id = "1kgs_13_1-34/v33-34:1"
+        item.question_text = "耶罗波安没有做哪件事？"
+        item.mcq_choices = ["继续行恶", "再次设立丘坛祭司", "改掉自己的恶行", "任命愿意作丘坛祭司的人", "根据这段文字无法判断"]
+        item.mcq_correct_choice = "C"
+        self.db.flush()
+        def question():
+            return get_pilot_state(self.db, self.participant.id)["question"]
+        self.assertNotIn("test_info", question())
+        self.participant.dashboard_preferences = {TEST_PARTICIPANT_KEY: True}
+        self.assertEqual(question()["test_info"]["manually_written_fields"], ["A", "C"])
+        item.mcq_choices = ["旧选项", *item.mcq_choices[1:]]
+        self.assertNotIn("manually_written_fields", question()["test_info"])
+
     def test_presentation_creates_a_trial_without_starting_the_clock(self):
         get_pilot_state(self.db, self.participant.id)
 

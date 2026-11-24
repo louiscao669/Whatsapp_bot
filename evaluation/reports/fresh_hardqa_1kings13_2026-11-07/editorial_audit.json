@@ -1,0 +1,731 @@
+{
+  "counts": {
+    "keep": 11,
+    "drop": 1
+  },
+  "items": [
+    {
+      "id": "v1-3:1",
+      "reference": "1 Kings 13:1–3",
+      "question": "Who will sacrifice the priests on the altar?",
+      "answer": "the son named Josiah",
+      "competitor": "Jeroboam",
+      "window_text": {
+        "1": "By the word of the Lord a man of God came from Judah to Bethel, as Jeroboam was standing by the altar to make an offering.",
+        "2": "By the word of the Lord he cried out against the altar: “Altar, altar! This is what the Lord says: ‘A son named Josiah will be born to the house of David. On you he will sacrifice the priests of the high places who make offerings here, and human bones will be burned on you.’”",
+        "3": "That same day the man of God gave a sign: “This is the sign the Lord has declared: The altar will be split apart and the ashes on it will be poured out.”"
+      },
+      "original_question": "Who will sacrifice the priests on the altar?",
+      "original_answer": "the son named Josiah",
+      "edit": {},
+      "checks": {
+        "blind": {
+          "model": "gpt-5",
+          "mode": "enforce",
+          "question": "Who will sacrifice the priests on the altar?",
+          "readings": [
+            {
+              "answer": "A son named Josiah",
+              "support": "A son named Josiah | he will sacrifice the priests"
+            }
+          ],
+          "assessments": [
+            {
+              "number": 1,
+              "classification": "equivalent_to_key",
+              "reason": "Verse 2 states, “A son named Josiah… On you he will sacrifice the priests,” so Josiah is the one who will sacrifice the priests on the altar."
+            }
+          ],
+          "verdict": "pass",
+          "reason": "The passage explicitly says a son named Josiah will sacrifice the priests on the altar.",
+          "status": "passed"
+        },
+        "editor": {
+          "id": "v1-3:1",
+          "key": "unique",
+          "wording": "clear",
+          "comprehension": "meaningful",
+          "quote": "A son named Josiah will be born to the house of David. On you he will sacrifice the priests",
+          "contrast": "Josiah as the future sacrificer versus Jeroboam, who is merely standing by the altar to make an offering.",
+          "reason": "Jeroboam is a plausible alternative because he is the nearby person at the altar, but the prophecy introduces Josiah and then uses “he” for the one who will sacrifice the priests. The question clearly tests who performs the predicted action."
+        },
+        "reader": {
+          "id": "v1-3:1",
+          "key": "unique",
+          "wording": "clear",
+          "comprehension": "meaningful",
+          "quote": "A son named Josiah will be born to the house of David. On you he will sacrifice the priests",
+          "contrast": "Josiah is the future actor who will sacrifice the priests, not Jeroboam, who is merely standing by the altar.",
+          "reason": "The pronoun “he” refers to the immediately named son, Josiah, so the window clearly and uniquely supports the key."
+        }
+      },
+      "item_decision": "keep",
+      "final_decision": "keep"
+    },
+    {
+      "id": "v4-5:1",
+      "reference": "1 Kings 13:4–5",
+      "question": "Whom does the king order to be seized?",
+      "answer": "the man of God",
+      "competitor": "King Jeroboam",
+      "window_text": {
+        "4": "When King Jeroboam heard what the man of God cried out against the altar at Bethel, he stretched out his hand from the altar and said, “Seize him!” But the hand he stretched out toward the man shriveled up, so that he could not pull it back.",
+        "5": "Also, the altar was split apart and its ashes poured out according to the sign given by the man of God by the word of the Lord."
+      },
+      "original_question": "Whom does the king order to be seized?",
+      "original_answer": "the man of God",
+      "edit": {},
+      "checks": {
+        "blind": {
+          "model": "gpt-5",
+          "mode": "enforce",
+          "question": "Whom does the king order to be seized?",
+          "readings": [
+            {
+              "answer": "the man of God",
+              "support": "the man of God | Seize him!"
+            }
+          ],
+          "assessments": [
+            {
+              "number": 1,
+              "classification": "equivalent_to_key",
+              "reason": "“Seize him!” unambiguously refers back to “the man of God,” so the king orders the man of God to be seized."
+            }
+          ],
+          "verdict": "pass",
+          "reason": "“Seize him!” clearly refers to the previously mentioned man of God, matching the key.",
+          "status": "passed"
+        },
+        "editor": {
+          "id": "v4-5:1",
+          "key": "unique",
+          "wording": "clear",
+          "comprehension": "meaningful",
+          "quote": "When King Jeroboam heard what the man of God cried out against the altar at Bethel, he stretched out his hand from the altar and said, “Seize him!”",
+          "contrast": "King Jeroboam gives the order; the man of God is the person he orders seized.",
+          "reason": "The alternative reading that Jeroboam orders himself seized is not plausible. “Him” refers to the man of God whose words provoked the king, and the next sentence confirms that the king stretched his hand toward that man. Resolving the pronoun’s referent is a concrete actor-versus-recipient distinction."
+        },
+        "reader": {
+          "id": "v4-5:1",
+          "key": "unique",
+          "wording": "clear",
+          "comprehension": "meaningful",
+          "quote": "When King Jeroboam heard what the man of God cried out against the altar at Bethel, he stretched out his hand from the altar and said, “Seize him!”",
+          "contrast": "King Jeroboam gives the order; the man of God is the person to be seized.",
+          "reason": "The pronoun “him” refers to the man of God whose words prompted Jeroboam’s command. The question tests actor versus recipient, not merely recall of a name."
+        }
+      },
+      "item_decision": "keep",
+      "final_decision": "keep"
+    },
+    {
+      "id": "v6-7:1",
+      "reference": "1 Kings 13:6–7",
+      "question": "Who prays for the king?",
+      "answer": "the man of God",
+      "competitor": "the king",
+      "window_text": {
+        "6": "Then the king said to the man of God, “Intercede with the Lord your God and pray for me that my hand may be restored.” So the man of God interceded with the Lord, and the king’s hand was restored and became as it was before.",
+        "7": "The king said to the man of God, “Come home with me for a meal, and I will give you a gift.”"
+      },
+      "original_question": "Who prays for the king?",
+      "original_answer": "the man of God",
+      "edit": {},
+      "checks": {
+        "blind": {
+          "model": "gpt-5",
+          "mode": "enforce",
+          "question": "Who prays for the king?",
+          "readings": [
+            {
+              "answer": "the man of God",
+              "support": "pray for me | So the man of God interceded with the Lord"
+            }
+          ],
+          "assessments": [
+            {
+              "number": 1,
+              "classification": "equivalent_to_key",
+              "reason": "The passage states the king asked the man of God to pray and then 'the man of God interceded with the Lord,' showing he is the one who prayed for the king."
+            }
+          ],
+          "verdict": "pass",
+          "reason": "It explicitly says the man of God interceded with the Lord for the king.",
+          "status": "passed"
+        },
+        "reader": {
+          "id": "v6-7:1",
+          "key": "unique",
+          "wording": "clear",
+          "comprehension": "meaningful",
+          "quote": "So the man of God interceded with the Lord",
+          "contrast": "The man of God prays for the king; the king is the requester and beneficiary, not the one who performs the prayer.",
+          "reason": "The king asks the man of God to pray for him, and the next sentence confirms that the man of God intercedes."
+        },
+        "editor": {
+          "id": "v6-7:1",
+          "key": "unique",
+          "wording": "clear",
+          "comprehension": "meaningful",
+          "quote": "So the man of God interceded with the Lord",
+          "contrast": "The man of God prays, while the king requests and benefits from the prayer.",
+          "reason": "Although the king asks for prayer and could be mistaken for the one praying, the narration explicitly identifies the man of God as the intercessor."
+        }
+      },
+      "item_decision": "keep",
+      "final_decision": "keep"
+    },
+    {
+      "id": "v8-10:1",
+      "reference": "1 Kings 13:8–10",
+      "question": "Why would the man of God not eat with the king?",
+      "answer": "The Lord had commanded him not to eat or drink there.",
+      "competitor": "Because the king offered only half his possessions.",
+      "window_text": {
+        "8": "But the man of God answered the king, “Even if you were to give me half your possessions, I would not go with you, nor would I eat bread or drink water here.",
+        "9": "For I was commanded by the word of the Lord: ‘You must not eat bread or drink water or return by the way you came.’”",
+        "10": "So he took another road and did not return by the way he had come to Bethel."
+      },
+      "original_question": "Why does the man of God refuse the king?",
+      "original_answer": "Because God’s word commanded him.",
+      "edit": {
+        "question": "Why would the man of God not eat with the king?",
+        "answer": "The Lord had commanded him not to eat or drink there.",
+        "reason": "States the specific refusal and the relevant part of the command in the key."
+      },
+      "checks": {
+        "blind": {
+          "model": "gpt-5",
+          "mode": "enforce",
+          "question": "Why would the man of God not eat with the king?",
+          "readings": [
+            {
+              "answer": "Because the word of the Lord had commanded him not to eat or drink there.",
+              "support": "For I was commanded by the word of the Lord: | You must not eat bread or drink water"
+            }
+          ],
+          "assessments": [
+            {
+              "number": 1,
+              "classification": "equivalent_to_key",
+              "reason": "Verse 9 states, “For I was commanded by the word of the Lord: ‘You must not eat bread or drink water,’” directly explaining why he would not eat with the king."
+            }
+          ],
+          "verdict": "pass",
+          "reason": "The passage explicitly says the Lord commanded him not to eat or drink there, matching the key.",
+          "status": "passed"
+        },
+        "reader": {
+          "id": "v8-10:1",
+          "key": "unique",
+          "wording": "clear",
+          "comprehension": "meaningful",
+          "quote": "For I was commanded by the word of the Lord: ‘You must not eat bread or drink water or return by the way you came.’",
+          "contrast": "The Lord’s prohibition versus the king’s offer of possessions.",
+          "reason": "The man explicitly gives the Lord’s command as his reason for refusing food and drink; the size of the king’s offer is not the cause."
+        },
+        "editor": {
+          "id": "v8-10:1",
+          "key": "unique",
+          "wording": "clear",
+          "comprehension": "meaningful",
+          "quote": "For I was commanded by the word of the Lord: ‘You must not eat bread or drink water or return by the way you came.’",
+          "contrast": "The Lord’s prohibition versus dissatisfaction with the king’s offer.",
+          "reason": "The word “For” directly gives the reason for his refusal: the Lord had commanded him not to eat or drink there. The offer of half the king’s possessions is a hypothetical concession, not the cause of the refusal."
+        }
+      },
+      "item_decision": "keep",
+      "final_decision": "keep"
+    },
+    {
+      "id": "v11-14:1",
+      "reference": "1 Kings 13:11–14",
+      "question": "What did the old prophet do just before speaking to the man of God?",
+      "answer": "He found the man of God sitting under an oak tree.",
+      "competitor": "The old prophet mounts the donkey.",
+      "window_text": {
+        "11": "Now there was a certain old prophet living in Bethel, whose sons came and told him all that the man of God had done there that day. They also told their father what he had said to the king.",
+        "12": "Their father asked them, “Which way did he go?” And his sons showed him which road the man of God from Judah had taken.",
+        "13": "So he said to his sons, “Saddle the donkey for me.” And when they had saddled the donkey for him, he mounted it",
+        "14": "and rode after the man of God. He found him sitting under an oak tree and asked, “Are you the man of God who came from Judah?” “I am,” he replied."
+      },
+      "original_question": "What does the old prophet do just before he asks the man of God?",
+      "original_answer": "The old prophet finds the man of God sitting under an oak tree.",
+      "edit": {
+        "question": "What did the old prophet do just before speaking to the man of God?",
+        "answer": "He found the man of God sitting under an oak tree.",
+        "reason": "Completes the original stem’s unfinished-sounding phrase while keeping the encounter and its order."
+      },
+      "checks": {
+        "blind": {
+          "model": "gpt-5",
+          "mode": "enforce",
+          "question": "What did the old prophet do just before speaking to the man of God?",
+          "readings": [
+            {
+              "answer": "He found him sitting under an oak tree.",
+              "support": "He found him sitting under an oak tree"
+            }
+          ],
+          "assessments": [
+            {
+              "number": 1,
+              "classification": "equivalent_to_key",
+              "reason": "Verse 14 states, “He found him sitting under an oak tree and asked,” so finding him under the oak directly precedes speaking; “him” clearly refers to the man of God."
+            }
+          ],
+          "verdict": "pass",
+          "reason": "The text explicitly says he found the man of God sitting under an oak tree immediately before asking him a question.",
+          "status": "passed"
+        },
+        "reader": {
+          "id": "v11-14:1",
+          "key": "unique",
+          "wording": "clear",
+          "comprehension": "meaningful",
+          "quote": "He found him sitting under an oak tree and asked",
+          "contrast": "The old prophet found the man of God immediately before asking him a question; mounting the donkey happened earlier.",
+          "reason": "The sequence directly links finding the man under the tree with the prophet’s subsequent speech, so the key identifies the uniquely immediate prior action."
+        },
+        "editor": {
+          "id": "v11-14:1",
+          "key": "unique",
+          "wording": "clear",
+          "comprehension": "meaningful",
+          "quote": "He found him sitting under an oak tree and asked",
+          "contrast": "Finding the man of God under the oak tree immediately before asking him versus mounting the donkey earlier.",
+          "reason": "The sequence resolves the plausible temporal misreading: mounting the donkey occurred before the journey, while finding the man directly precedes the old prophet’s speech. The stem clearly asks for that immediately preceding action."
+        }
+      },
+      "item_decision": "keep",
+      "final_decision": "keep"
+    },
+    {
+      "id": "v15-17:1",
+      "reference": "1 Kings 13:15–17",
+      "question": "Why does the man of God refuse to eat there?",
+      "answer": "because the word of the Lord told him not to",
+      "competitor": "because the prophet told him to come and eat",
+      "window_text": {
+        "15": "So the prophet said to him, “Come home with me and eat.”",
+        "16": "The man of God said, “I cannot turn back and go with you, nor can I eat bread or drink water with you in this place.",
+        "17": "I have been told by the word of the Lord: ‘You must not eat bread or drink water there or return by the way you came.’”"
+      },
+      "original_question": "Why does the man of God refuse to eat there?",
+      "original_answer": "because the word of the Lord told him not to",
+      "edit": {},
+      "checks": {
+        "blind": {
+          "model": "gpt-5",
+          "mode": "enforce",
+          "question": "Why does the man of God refuse to eat there?",
+          "readings": [
+            {
+              "answer": "Because the word of the Lord told him not to eat or drink there.",
+              "support": "I have been told by the word of the Lord: | You must not eat bread or drink water there"
+            }
+          ],
+          "assessments": [
+            {
+              "number": 1,
+              "classification": "equivalent_to_key",
+              "reason": "Verse 17 explicitly says he was told by the word of the Lord not to eat or drink there, matching the key’s reason."
+            }
+          ],
+          "verdict": "pass",
+          "reason": "Verse 17 states the command from the word of the Lord not to eat or drink there, which explains his refusal.",
+          "status": "passed"
+        },
+        "editor": {
+          "id": "v15-17:1",
+          "key": "unique",
+          "wording": "clear",
+          "comprehension": "meaningful",
+          "quote": "I have been told by the word of the Lord: ‘You must not eat bread or drink water there or return by the way you came.’",
+          "contrast": "The reader must distinguish the prophet’s invitation from the Lord’s prohibition, which is the man’s reason for refusing.",
+          "reason": "The man explicitly grounds his refusal in the command he received from the Lord. The prophet’s invitation prompted the refusal but did not explain why he refused."
+        },
+        "reader": {
+          "id": "v15-17:1",
+          "key": "unique",
+          "wording": "clear",
+          "comprehension": "meaningful",
+          "quote": "I have been told by the word of the Lord: ‘You must not eat bread or drink water there or return by the way you came.’",
+          "contrast": "The Lord’s prohibition is the reason for the refusal, whereas the prophet’s invitation is what the man refuses.",
+          "reason": "The man directly explains that he refuses because the word of the Lord forbade him from eating or drinking there. This tests understanding of the cause of his refusal rather than merely retrieving who invited him."
+        }
+      },
+      "item_decision": "keep",
+      "final_decision": "drop",
+      "duplicate_reason": "Confirmed duplicate of v8-10:1"
+    },
+    {
+      "id": "v18-19:1",
+      "reference": "1 Kings 13:18–19",
+      "question": "Who lies to the man of God?",
+      "answer": "the old prophet",
+      "competitor": "the man of God",
+      "window_text": {
+        "18": "The old prophet answered, “I too am a prophet, as you are. And an angel said to me by the word of the Lord: ‘Bring him back with you to your house so that he may eat bread and drink water.’” (But he was lying to him.)",
+        "19": "So the man of God returned with him and ate and drank in his house."
+      },
+      "original_question": "Who lies to the man of God?",
+      "original_answer": "the old prophet",
+      "edit": {},
+      "checks": {
+        "blind": {
+          "model": "gpt-5",
+          "mode": "enforce",
+          "question": "Who lies to the man of God?",
+          "readings": [
+            {
+              "answer": "The old prophet",
+              "support": "The old prophet answered | he was lying to him"
+            }
+          ],
+          "assessments": [
+            {
+              "number": 1,
+              "classification": "equivalent_to_key",
+              "reason": "Verse 18 identifies “the old prophet” as the speaker and adds “(But he was lying to him),” so the old prophet is the one who lies to the man of God."
+            }
+          ],
+          "verdict": "pass",
+          "reason": "The passage explicitly states that the old prophet was lying to him.",
+          "status": "passed"
+        },
+        "reader": {
+          "id": "v18-19:1",
+          "key": "unique",
+          "wording": "clear",
+          "comprehension": "meaningful",
+          "quote": "The old prophet answered, “I too am a prophet, as you are. And an angel said to me by the word of the Lord: ‘Bring him back with you to your house so that he may eat bread and drink water.’” (But he was lying to him.)",
+          "contrast": "The old prophet is the liar; the man of God is the person being deceived.",
+          "reason": "The parenthetical comment refers back to the old prophet’s speech, so “he” is the old prophet and “him” is the man of God. Resolving those pronouns requires distinguishing the actor from the recipient."
+        },
+        "editor": {
+          "id": "v18-19:1",
+          "key": "unique",
+          "wording": "clear",
+          "comprehension": "meaningful",
+          "quote": "The old prophet answered, “I too am a prophet, as you are. And an angel said to me by the word of the Lord: ‘Bring him back with you to your house so that he may eat bread and drink water.’” (But he was lying to him.)",
+          "contrast": "The old prophet as the liar versus the man of God as the person being lied to.",
+          "reason": "Although the pronouns could momentarily be reversed, the old prophet is the speaker in the preceding sentence, so “he” refers to him and “him” refers to the man of God. The question clearly tests actor versus recipient."
+        }
+      },
+      "item_decision": "keep",
+      "final_decision": "keep"
+    },
+    {
+      "id": "v20-22:1",
+      "reference": "1 Kings 13:20–22",
+      "question": "Whom does the old prophet say disobeyed the Lord’s word?",
+      "answer": "the man of God",
+      "competitor": "the old prophet",
+      "window_text": {
+        "20": "While they were sitting at the table, the word of the Lord came to the old prophet who had brought him back.",
+        "21": "He cried out to the man of God who had come from Judah, “This is what the Lord says: ‘You have defied the word of the Lord and have not kept the command the Lord your God gave you.",
+        "22": "You came back and ate bread and drank water in the place where he told you not to eat or drink. Therefore your body will not be buried in the tomb of your ancestors.’”"
+      },
+      "original_question": "Whom does the old prophet say disobeyed the Lord’s word?",
+      "original_answer": "the man of God",
+      "edit": {},
+      "checks": {
+        "blind": {
+          "model": "gpt-5",
+          "mode": "enforce",
+          "question": "Whom does the old prophet say disobeyed the Lord’s word?",
+          "readings": [
+            {
+              "answer": "the man of God who had come from Judah",
+              "support": "the man of God who had come from Judah | You have defied the word of the Lord"
+            }
+          ],
+          "assessments": [
+            {
+              "number": 1,
+              "classification": "equivalent_to_key",
+              "reason": "The passage says, “He cried out to the man of God who had come from Judah… ‘You have defied the word of the Lord,’” so the disobedient one is the man of God (from Judah)."
+            }
+          ],
+          "verdict": "pass",
+          "reason": "The text directly identifies the man of God from Judah as the one who defied the Lord’s word.",
+          "status": "passed"
+        },
+        "reader": {
+          "id": "v20-22:1",
+          "key": "unique",
+          "wording": "clear",
+          "comprehension": "meaningful",
+          "quote": "He cried out to the man of God who had come from Judah, “This is what the Lord says: ‘You have defied the word of the Lord",
+          "contrast": "The man of God is the person accused of disobedience, while the old prophet is the messenger delivering the accusation.",
+          "reason": "The old prophet addresses the man of God directly as “you” and says that he defied the Lord’s word. This uniquely supports the key."
+        },
+        "editor": {
+          "id": "v20-22:1",
+          "key": "unique",
+          "wording": "clear",
+          "comprehension": "meaningful",
+          "quote": "He cried out to the man of God who had come from Judah, “This is what the Lord says: ‘You have defied the word of the Lord",
+          "contrast": "The man of God is the person accused of disobedience, while the old prophet is the speaker delivering the accusation.",
+          "reason": "The old prophet addresses the man of God as “you” and says that he defied the Lord’s word. This resolves the possible confusion between the speaker and the person accused."
+        }
+      },
+      "item_decision": "keep",
+      "final_decision": "keep"
+    },
+    {
+      "id": "v23-25:1",
+      "reference": "1 Kings 13:23–25",
+      "question": "Who is killed by the lion?",
+      "answer": "the man of God",
+      "competitor": "the prophet who brought him back",
+      "window_text": {
+        "23": "When the man of God had finished eating and drinking, the prophet who had brought him back saddled his donkey for him.",
+        "24": "As he went on his way, a lion met him on the road and killed him, and his body was left lying on the road, with both the donkey and the lion standing beside it.",
+        "25": "Some people who passed by saw the body lying there, with the lion standing beside the body, and they went and reported it in the city where the old prophet lived."
+      },
+      "original_question": "Who is killed by the lion?",
+      "original_answer": "the man of God",
+      "edit": {},
+      "checks": {
+        "blind": {
+          "model": "gpt-5",
+          "mode": "enforce",
+          "question": "Who is killed by the lion?",
+          "readings": [
+            {
+              "answer": "the man of God",
+              "support": "the man of God | a lion met him on the road and killed him"
+            }
+          ],
+          "assessments": [
+            {
+              "number": 1,
+              "classification": "equivalent_to_key",
+              "reason": "Verse 24 says “a lion met him on the road and killed him,” where “him” refers back to “the man of God” in verse 23."
+            }
+          ],
+          "verdict": "pass",
+          "reason": "The passage explicitly indicates the lion killed the man of God by pronoun reference from verse 24 to verse 23.",
+          "status": "passed"
+        },
+        "editor": {
+          "id": "v23-25:1",
+          "key": "unique",
+          "wording": "clear",
+          "comprehension": "meaningful",
+          "quote": "the prophet who had brought him back saddled his donkey for him.\n24  As he went on his way, a lion met him on the road and killed him",
+          "contrast": "The man of God, who receives the saddled donkey and resumes his journey, versus the prophet who brought him back.",
+          "reason": "The repeated pronouns could briefly suggest the nearer noun, “the prophet,” but “saddled his donkey for him” distinguishes the prophet from the traveler. The traveler is the man of God, so he is the one the lion kills."
+        },
+        "reader": {
+          "id": "v23-25:1",
+          "key": "unique",
+          "wording": "clear",
+          "comprehension": "meaningful",
+          "quote": "the prophet who had brought him back saddled his donkey for him.\n24  As he went on his way, a lion met him on the road and killed him",
+          "contrast": "The reader must resolve whether the traveler killed by the lion is the man of God or the prophet who brought him back.",
+          "reason": "The prophet saddles the donkey for the man of God, after which the beneficiary continues on his way and is killed. Thus the pronouns in verse 24 refer to the man of God, not the prophet."
+        }
+      },
+      "item_decision": "keep",
+      "final_decision": "keep"
+    },
+    {
+      "id": "v26-30:1",
+      "reference": "1 Kings 13:26–30",
+      "question": "In whose burial place is the body laid?",
+      "answer": "the prophet's own tomb",
+      "competitor": "the man of God's tomb",
+      "window_text": {
+        "26": "When the prophet who had brought him back from his journey heard of it, he said, “It is the man of God who defied the word of the Lord. The Lord has given him over to the lion, which has mauled him and killed him, as the word of the Lord had warned him.”",
+        "27": "The prophet said to his sons, “Saddle the donkey for me,” and they did so.",
+        "28": "Then he went out and found the body lying on the road, with the donkey and the lion standing beside it. The lion had neither eaten the body nor mauled the donkey.",
+        "29": "So the prophet picked up the body of the man of God, laid it on the donkey, and brought it back to his own city to mourn for him and bury him.",
+        "30": "Then he laid the body in his own tomb, and they mourned over him and said, “Alas, my brother!”"
+      },
+      "original_question": "In whose burial place is the body laid?",
+      "original_answer": "the prophet's own tomb",
+      "edit": {},
+      "checks": {
+        "blind": {
+          "model": "gpt-5",
+          "mode": "enforce",
+          "question": "In whose burial place is the body laid?",
+          "readings": [
+            {
+              "answer": "The prophet's own tomb",
+              "support": "So the prophet picked up the body of the man of God | he laid the body in his own tomb"
+            }
+          ],
+          "assessments": [
+            {
+              "number": 1,
+              "classification": "equivalent_to_key",
+              "reason": "Verse 30 explicitly says, “Then he laid the body in his own tomb,” referring to the prophet, so “the prophet’s own tomb” matches the text."
+            }
+          ],
+          "verdict": "pass",
+          "reason": "The text states the prophet laid the body in his own tomb, matching the key.",
+          "status": "passed"
+        },
+        "reader": {
+          "id": "v26-30:1",
+          "key": "unique",
+          "wording": "clear",
+          "comprehension": "meaningful",
+          "quote": "Then he laid the body in his own tomb",
+          "contrast": "The prophet’s own tomb versus the dead man of God’s tomb.",
+          "reason": "The prophet remains the actor who retrieves and buries the body, so “his own tomb” refers to the prophet’s tomb. The question clearly tests the possessor of the burial place rather than mere word retrieval."
+        },
+        "editor": {
+          "id": "v26-30:1",
+          "key": "unique",
+          "wording": "clear",
+          "comprehension": "meaningful",
+          "quote": "Then he laid the body in his own tomb",
+          "contrast": "Whether the tomb belongs to the prophet or to the dead man of God.",
+          "reason": "The man of God is the body’s owner, so his tomb is a plausible initial misreading. But the continuing actor is the prophet, and “his own tomb” refers to that prophet’s burial place. The question and key clearly resolve the pronoun reference."
+        }
+      },
+      "item_decision": "keep",
+      "final_decision": "keep"
+    },
+    {
+      "id": "v31-32:1",
+      "reference": "1 Kings 13:31–32",
+      "question": "What reason did the father give his sons for wanting to be buried beside the man of God?",
+      "answer": "He was certain the man of God’s message from the Lord would come true.",
+      "competitor": "Because he has just buried the man of God.",
+      "window_text": {
+        "31": "After burying him, he said to his sons, “When I die, bury me in the grave where the man of God is buried; lay my bones beside his bones.",
+        "32": "For the message he declared by the word of the Lord against the altar in Bethel and against all the shrines on the high places in the towns of Samaria will certainly come true.”"
+      },
+      "original_question": "Why does the man ask his sons to bury him beside the man of God?",
+      "original_answer": "Because the man of God’s message from the Lord is sure to happen.",
+      "edit": {
+        "question": "What reason did the father give his sons for wanting to be buried beside the man of God?",
+        "answer": "He was certain the man of God’s message from the Lord would come true.",
+        "reason": "Identifies the speaker through his sons and distinguishes him from the man of God he buried."
+      },
+      "checks": {
+        "blind": {
+          "model": "gpt-5",
+          "mode": "enforce",
+          "question": "What reason did the father give his sons for wanting to be buried beside the man of God?",
+          "readings": [
+            {
+              "answer": "Because the message the man of God declared by the word of the Lord will certainly come true.",
+              "support": "For the message he declared by the word of the Lord against the altar in Bethel and against all the shrines on the high places in the towns of Samaria will certainly come true."
+            }
+          ],
+          "assessments": [
+            {
+              "number": 1,
+              "classification": "equivalent_to_key",
+              "reason": "The passage explicitly gives the reason: “For the message he declared by the word of the Lord … will certainly come true,” which matches the key’s claim that he was certain the man of God’s message from the Lord would come true."
+            }
+          ],
+          "verdict": "pass",
+          "reason": "The text directly states the reason as certainty that the man of God’s message by the word of the Lord would come true.",
+          "status": "passed"
+        },
+        "reader": {
+          "id": "v31-32:1",
+          "key": "unique",
+          "wording": "clear",
+          "comprehension": "meaningful",
+          "quote": "For the message he declared by the word of the Lord against the altar in Bethel and against all the shrines on the high places in the towns of Samaria will certainly come true.",
+          "contrast": "The stated reason—certainty that the Lord’s message would come true—versus the preceding fact that he had buried the man of God.",
+          "reason": "The word “For” directly connects the burial request to the certainty that the man of God’s message will be fulfilled. The stem clearly asks for that reason, not merely what happened beforehand."
+        },
+        "editor": {
+          "id": "v31-32:1",
+          "key": "unique",
+          "wording": "clear",
+          "comprehension": "meaningful",
+          "quote": "For the message he declared by the word of the Lord against the altar in Bethel and against all the shrines on the high places in the towns of Samaria will certainly come true.",
+          "contrast": "The father’s stated reason—the certainty of the man of God’s prophecy—is distinguished from the incidental fact that he had just buried him.",
+          "reason": "The opening “For” explicitly makes the prophecy’s certain fulfillment the reason for the burial request. The key captures that causal relation, and the stem clearly asks for it."
+        }
+      },
+      "item_decision": "keep",
+      "final_decision": "keep"
+    },
+    {
+      "id": "v33-34:1",
+      "reference": "1 Kings 13:33–34",
+      "question": "Who consecrates people who want to be priests?",
+      "answer": "Jeroboam consecrates them.",
+      "competitor": "Anyone who wanted to become a priest",
+      "window_text": {
+        "33": "Even after this, Jeroboam did not change his evil ways, but once more appointed priests for the high places from all sorts of people. Anyone who wanted to become a priest he consecrated for the high places.",
+        "34": "This was the sin of the house of Jeroboam that led to its downfall and to its destruction from the face of the earth."
+      },
+      "original_question": "Who consecrates people who want to be priests?",
+      "original_answer": "Jeroboam consecrates them.",
+      "edit": {},
+      "checks": {
+        "blind": {
+          "model": "gpt-5",
+          "mode": "enforce",
+          "question": "Who consecrates people who want to be priests?",
+          "readings": [
+            {
+              "answer": "Jeroboam",
+              "support": "Jeroboam | Anyone who wanted to become a priest he consecrated"
+            }
+          ],
+          "assessments": [
+            {
+              "number": 1,
+              "classification": "equivalent_to_key",
+              "reason": "In verse 33, the subject is Jeroboam; the clause \"Anyone who wanted to become a priest he consecrated\" uses \"he\" referring back to Jeroboam."
+            }
+          ],
+          "verdict": "pass",
+          "reason": "The pronoun \"he\" in the passage clearly refers to Jeroboam, establishing that Jeroboam consecrates those who want to be priests.",
+          "status": "passed"
+        },
+        "reader": {
+          "id": "v33-34:1",
+          "key": "unique",
+          "wording": "clear",
+          "comprehension": "meaningful",
+          "quote": "Jeroboam did not change his evil ways, but once more appointed priests for the high places from all sorts of people. Anyone who wanted to become a priest he consecrated for the high places.",
+          "contrast": "Jeroboam is the person performing the consecration; anyone wanting to become a priest is the recipient.",
+          "reason": "The pronoun “he” refers to Jeroboam, the named actor in the preceding sentence. Answering requires distinguishing the actor from the people he consecrated."
+        },
+        "editor": {
+          "id": "v33-34:1",
+          "key": "unique",
+          "wording": "clear",
+          "comprehension": "meaningful",
+          "quote": "Anyone who wanted to become a priest he consecrated for the high places.",
+          "contrast": "Jeroboam is the one performing the consecration; those wanting to become priests are its recipients.",
+          "reason": "The reader must resolve “he” as Jeroboam and distinguish that actor from the fronted object, “Anyone who wanted to become a priest.” The wording and key correctly resolve this relationship."
+        }
+      },
+      "item_decision": "keep",
+      "final_decision": "keep"
+    }
+  ],
+  "duplicate_judgments": [
+    [
+      {
+        "preferred": "v8-10:1",
+        "redundant": "v15-17:1",
+        "reason": "Both ask why the man of God refuses an invitation to eat in Bethel, with the same answer: the Lord had commanded him not to eat or drink there. The earlier scene with the king is preferable because the two items otherwise test the same repeated inference, and its key states the specific prohibition more completely."
+      }
+    ],
+    [
+      {
+        "preferred": "v8-10:1",
+        "redundant": "v15-17:1",
+        "reason": "Both ask why the man of God refuses to eat in Bethel, with the same answer: the Lord had commanded him not to eat or drink there. The scenes merely change the person inviting him (the king versus the old prophet). v8-10:1 is preferred because it tests the earlier occurrence; the wording and keys are otherwise comparably clear and complete."
+      }
+    ]
+  ]
+}

@@ -1,0 +1,407 @@
+{
+  "config_digest": "bf29cf564aae7d15d3bd5bdbff20af59f16e06874e5bad45e83aa6623bdff95a",
+  "data": {
+    "kept": [
+      {
+        "question": "What happens if the trees do not accept the thornbush as king?",
+        "answer": "Fire comes from the thornbush and burns the cedars of Lebanon.",
+        "answer_verse": 15,
+        "wrong_answer": "The trees come to find shade under the thornbush.",
+        "relation": "polarity",
+        "readings": [
+          {
+            "answer": "Fire comes out of the thornbush and consumes the cedars of Lebanon.",
+            "support": "but if not, then let fire come out of the thornbush and consume the cedars of Lebanon"
+          }
+        ],
+        "distinct_readings": [
+          "Fire comes out of the thornbush and consumes the cedars of Lebanon."
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "It requires linking the negated condition to its consequence (fire from the thornbush consuming the cedars), a single, unambiguous clause central to the fable."
+        },
+        "window_verses": [
+          15,
+          16,
+          17
+        ],
+        "window_text": {
+          "15": "“The thornbush said to the trees, ‘If you really want to anoint me king over you, come and take refuge in my shade; but if not, then let fire come out of the thornbush and consume the cedars of Lebanon!’",
+          "16": "“Have you acted honorably and in good faith by making Abimelek king? Have you been fair to Jerub-Baal and his family? Have you treated him as he deserves?",
+          "17": "Remember that my father fought for you and risked his life to rescue you from the hand of Midian."
+        },
+        "reading_groups": [
+          "Fire from the thornbush consumes the cedars of Lebanon"
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "thornbush"
+          ],
+          "answer_verse": 15,
+          "answer_verse_original": 15,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 15",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "What happens if the trees do not accept the thornbush as king?",
+            "readings": [
+              {
+                "answer": "Fire comes out of the thornbush and consumes the cedars of Lebanon.",
+                "support": "but if not, then let fire come out of the thornbush and consume the cedars of Lebanon"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Matches verse 15 exactly: “but if not, then let fire come out of the thornbush and consume the cedars of Lebanon,” which is equivalent to the key’s wording."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "Verse 15 clearly states that if not, fire will come from the thornbush and consume/burn the cedars of Lebanon.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It cleanly tests the conditional polarity in verse 15—choosing the correct apodosis (“if not… then fire”)—with a single clear answer and a plausible competitor from the opposite branch.",
+        "window_structure_max": 9.0,
+        "content_id": "v15-17:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "From where does the fire come in the thornbush’s threat?",
+        "answer": "From the thornbush.",
+        "answer_verse": 15,
+        "wrong_answer": "From the cedars of Lebanon.",
+        "relation": "direction",
+        "readings": [
+          {
+            "answer": "Out of the thornbush",
+            "support": "out of the thornbush"
+          }
+        ],
+        "distinct_readings": [
+          "Out of the thornbush"
+        ],
+        "scores": {
+          "structure_dependence": 2.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "The source is explicitly named (“out of the thornbush”) in one place, making it a straightforward word-spotting detail within the main threat."
+        },
+        "window_verses": [
+          15,
+          16,
+          17
+        ],
+        "window_text": {
+          "15": "“The thornbush said to the trees, ‘If you really want to anoint me king over you, come and take refuge in my shade; but if not, then let fire come out of the thornbush and consume the cedars of Lebanon!’",
+          "16": "“Have you acted honorably and in good faith by making Abimelek king? Have you been fair to Jerub-Baal and his family? Have you treated him as he deserves?",
+          "17": "Remember that my father fought for you and risked his life to rescue you from the hand of Midian."
+        },
+        "reading_groups": [
+          "The fire comes from/out of the thornbush"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: thornbush",
+            "answer leaks into question: thornbush",
+            "lexical: structure_dependence 2.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "thornbush"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "thornbush"
+          ],
+          "answer_verse": 15,
+          "answer_verse_original": 15,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 15",
+          "readings_failures": []
+        },
+        "content_id": "v15-17:2"
+      },
+      {
+        "question": "Under what condition are the trees told to come for shade?",
+        "answer": "If they truly want the thornbush as king.",
+        "answer_verse": 15,
+        "wrong_answer": "If they do not want him as king.",
+        "relation": "modality",
+        "readings": [
+          {
+            "answer": "If they really wanted to anoint the thornbush king over them.",
+            "support": "If you really want to anoint me king over you"
+          }
+        ],
+        "distinct_readings": [
+          "If they really wanted to anoint the thornbush king over them."
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "The reader must select the correct conditional clause (“if you really want to anoint me king”), which is stated once and clearly governs the action."
+        },
+        "window_verses": [
+          15,
+          16,
+          17
+        ],
+        "window_text": {
+          "15": "“The thornbush said to the trees, ‘If you really want to anoint me king over you, come and take refuge in my shade; but if not, then let fire come out of the thornbush and consume the cedars of Lebanon!’",
+          "16": "“Have you acted honorably and in good faith by making Abimelek king? Have you been fair to Jerub-Baal and his family? Have you treated him as he deserves?",
+          "17": "Remember that my father fought for you and risked his life to rescue you from the hand of Midian."
+        },
+        "reading_groups": [
+          "If they really want to anoint the thornbush as king"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "dangling answer reference: they",
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 15,
+          "answer_verse_original": 15,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 15",
+          "readings_failures": []
+        },
+        "content_id": "v15-17:3"
+      },
+      {
+        "question": "When Abimelek is made king, who is the man to treat as he deserves?",
+        "answer": "Jerub-Baal.",
+        "answer_verse": 16,
+        "wrong_answer": "Abimelek.",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "Jerub-Baal",
+            "support": "Jerub-Baal | Have you treated him as he deserves?"
+          }
+        ],
+        "distinct_readings": [
+          "Jerub-Baal"
+        ],
+        "scores": {
+          "structure_dependence": 4.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "It mainly requires resolving the pronoun “him” to the nearby named referent Jerub-Baal, uniquely stated and unambiguous in context."
+        },
+        "window_verses": [
+          15,
+          16,
+          17
+        ],
+        "window_text": {
+          "15": "“The thornbush said to the trees, ‘If you really want to anoint me king over you, come and take refuge in my shade; but if not, then let fire come out of the thornbush and consume the cedars of Lebanon!’",
+          "16": "“Have you acted honorably and in good faith by making Abimelek king? Have you been fair to Jerub-Baal and his family? Have you treated him as he deserves?",
+          "17": "Remember that my father fought for you and risked his life to rescue you from the hand of Midian."
+        },
+        "reading_groups": [
+          "Jerub-Baal is the one to be treated as he deserves"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: abimelek",
+            "question too complex: stacked clauses (1 comma(s), 1 subordinator(s))",
+            "bare-name answer 'Jerub-Baal.': names survive translation",
+            "lexical: structure_dependence 4.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "abimelek"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 16,
+          "answer_verse_original": 16,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 16",
+          "readings_failures": []
+        },
+        "content_id": "v15-17:4"
+      },
+      {
+        "question": "Who fought for you and risked his life to rescue you from Midian?",
+        "answer": "Jerub-Baal.",
+        "answer_verse": 17,
+        "wrong_answer": "Abimelek.",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "my father",
+            "support": "my father fought for you and risked his life to rescue you from the hand of Midian"
+          },
+          {
+            "answer": "Jerub-Baal",
+            "support": "Jerub-Baal | my father fought for you"
+          }
+        ],
+        "distinct_readings": [
+          "my father",
+          "Jerub-Baal"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 8.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "The answer hinges on resolving “my father” in v17 to Jerub-Baal mentioned just prior, a unique cross-sentence reference with a single clear referent."
+        },
+        "window_verses": [
+          15,
+          16,
+          17
+        ],
+        "window_text": {
+          "15": "“The thornbush said to the trees, ‘If you really want to anoint me king over you, come and take refuge in my shade; but if not, then let fire come out of the thornbush and consume the cedars of Lebanon!’",
+          "16": "“Have you acted honorably and in good faith by making Abimelek king? Have you been fair to Jerub-Baal and his family? Have you treated him as he deserves?",
+          "17": "Remember that my father fought for you and risked his life to rescue you from the hand of Midian."
+        },
+        "reading_groups": [
+          "Jerub-Baal (the speaker’s father) did this"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: midian",
+            "dangling pronoun: his",
+            "quotes the passage: quotes verse 17: 'fought for you and risked'",
+            "bare-name answer 'Jerub-Baal.': names survive translation"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "midian"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 17,
+          "answer_verse_original": 17,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 17",
+          "readings_failures": []
+        },
+        "content_id": "v15-17:5"
+      },
+      {
+        "question": "For what purpose did Jerub-Baal risk his life?",
+        "answer": "To free you from Midian’s power.",
+        "answer_verse": 17,
+        "wrong_answer": "To make Abimelek king.",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "To rescue them from the hand of Midian",
+            "support": "to rescue you from the hand of Midian"
+          }
+        ],
+        "distinct_readings": [
+          "To rescue them from the hand of Midian"
+        ],
+        "scores": {
+          "structure_dependence": 5.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "It requires extracting the purpose relation (“to rescue you from the hand of Midian”), which is stated once and clearly expressed."
+        },
+        "window_verses": [
+          15,
+          16,
+          17
+        ],
+        "window_text": {
+          "15": "“The thornbush said to the trees, ‘If you really want to anoint me king over you, come and take refuge in my shade; but if not, then let fire come out of the thornbush and consume the cedars of Lebanon!’",
+          "16": "“Have you acted honorably and in good faith by making Abimelek king? Have you been fair to Jerub-Baal and his family? Have you treated him as he deserves?",
+          "17": "Remember that my father fought for you and risked his life to rescue you from the hand of Midian."
+        },
+        "reading_groups": [
+          "To rescue them/you from the hand/power of Midian"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 5.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 17,
+          "answer_verse_original": 17,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 17",
+          "readings_failures": []
+        },
+        "content_id": "v15-17:6"
+      }
+    ],
+    "report": {
+      "window_id": "v15-17",
+      "verses": [
+        15,
+        16,
+        17
+      ],
+      "generated": 6,
+      "scored": 6,
+      "kept": 1,
+      "survivors_before_window_selection": 1,
+      "window_selection_rejected": 0,
+      "repair_attempted": 0,
+      "repaired": 0,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

@@ -1,0 +1,318 @@
+{
+  "config_digest": "bab5a848f20f60ea534214d9358795f20d975515f4adb1ac077513ba4e1247aa",
+  "data": {
+    "kept": [
+      {
+        "question": "Who is asked to consult God?",
+        "answer": "the priest",
+        "answer_verse": 5,
+        "wrong_answer": "God",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "The priest",
+            "support": "Please inquire of God | The priest answered them"
+          }
+        ],
+        "distinct_readings": [
+          "The priest"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 9.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "Identifying that “they said to him” targets the priest requires resolving the pronoun to “the priest” across verses; this is stated once, yields a single answer, and is central to the exchange."
+        },
+        "window_verses": [
+          5,
+          6
+        ],
+        "window_text": {
+          "5": "Then they said to him, “Please inquire of God to learn whether our journey will be successful.”",
+          "6": "The priest answered them, “Go in peace. Your journey has the Lord’s approval.”"
+        },
+        "reading_groups": [
+          "The person asked to inquire of God is the priest"
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "corrected metadata from 6 to 5; reading support and question relation identify verse 5",
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 5,
+          "answer_verse_original": 6,
+          "answer_verse_corrected": true,
+          "answer_verse_note": "corrected metadata from 6 to 5; reading support and question relation identify verse 5",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Who is asked to consult God?",
+            "readings": [
+              {
+                "answer": "The priest",
+                "support": "Please inquire of God | The priest answered them"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "In v5 they speak to “him,” and v6 clarifies “The priest answered them,” identifying the one asked to consult God as the priest."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "Verse 6 identifies the “him” of verse 5 as “the priest,” matching the key.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It strongly depends on resolving the pronoun “him” in v5 via v6 and distinguishing the addressee from “God,” yielding a single clear answer: the priest.",
+        "window_structure_max": 8.0,
+        "content_id": "v5-6:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Whose approval does the journey have in the reply?",
+        "answer": "the Lord's",
+        "answer_verse": 6,
+        "wrong_answer": "the priest's",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "The Lord’s",
+            "support": "the Lord’s approval"
+          }
+        ],
+        "distinct_readings": [
+          "The Lord’s"
+        ],
+        "scores": {
+          "structure_dependence": 2.0,
+          "statement_uniqueness": 10.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "“The Lord’s approval” is quoted directly in the reply, stated exactly once, unambiguous, and central to the message given."
+        },
+        "window_verses": [
+          5,
+          6
+        ],
+        "window_text": {
+          "5": "Then they said to him, “Please inquire of God to learn whether our journey will be successful.”",
+          "6": "The priest answered them, “Go in peace. Your journey has the Lord’s approval.”"
+        },
+        "reading_groups": [
+          "The journey has the Lord’s approval"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "bare-name answer \"the Lord's\": names survive translation",
+            "lexical: structure_dependence 2.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 6,
+          "answer_verse_original": 6,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 6",
+          "readings_failures": []
+        },
+        "content_id": "v5-6:2"
+      },
+      {
+        "question": "Why is someone asked to ask God?",
+        "answer": "to find out if the journey will succeed",
+        "answer_verse": 5,
+        "wrong_answer": "to be told to go in peace",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "To learn whether their journey will be successful.",
+            "support": "to learn whether our journey will be successful"
+          }
+        ],
+        "distinct_readings": [
+          "To learn whether their journey will be successful."
+        ],
+        "scores": {
+          "structure_dependence": 5.0,
+          "statement_uniqueness": 10.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "The purpose clause “to learn whether our journey will be successful” directly answers why, appears once, is unambiguous, and is central to the request."
+        },
+        "window_verses": [
+          5,
+          6
+        ],
+        "window_text": {
+          "5": "Then they said to him, “Please inquire of God to learn whether our journey will be successful.”",
+          "6": "The priest answered them, “Go in peace. Your journey has the Lord’s approval.”"
+        },
+        "reading_groups": [
+          "So they can learn whether their journey will be successful"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 5.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 5,
+          "answer_verse_original": 5,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 5",
+          "readings_failures": []
+        },
+        "content_id": "v5-6:3"
+      },
+      {
+        "question": "Who gives a blessing of peace after the request?",
+        "answer": "the priest",
+        "answer_verse": 6,
+        "wrong_answer": "the ones who asked him",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "The priest",
+            "support": "The priest answered them, “Go in peace."
+          }
+        ],
+        "distinct_readings": [
+          "The priest"
+        ],
+        "scores": {
+          "structure_dependence": 3.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "Speaker attribution is explicit (“The priest answered… ‘Go in peace’”), so minimal structure is needed; it is stated once, unambiguous, and relevant though not the sole focus."
+        },
+        "window_verses": [
+          5,
+          6
+        ],
+        "window_text": {
+          "5": "Then they said to him, “Please inquire of God to learn whether our journey will be successful.”",
+          "6": "The priest answered them, “Go in peace. Your journey has the Lord’s approval.”"
+        },
+        "reading_groups": [
+          "The priest is the one who says “Go in peace” after the request"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 3.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 6,
+          "answer_verse_original": 6,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 6",
+          "readings_failures": []
+        },
+        "content_id": "v5-6:4"
+      },
+      {
+        "question": "Whom does the priest answer?",
+        "answer": "the ones who spoke to him",
+        "answer_verse": 6,
+        "wrong_answer": "God",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "them",
+            "support": "The priest answered them"
+          }
+        ],
+        "distinct_readings": [
+          "them"
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 9.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "Resolving “them” to the earlier “they” requires cross-verse pronoun linkage; the fact is stated once with a clear answer, though it is somewhat secondary to the core message."
+        },
+        "window_verses": [
+          5,
+          6
+        ],
+        "window_text": {
+          "5": "Then they said to him, “Please inquire of God to learn whether our journey will be successful.”",
+          "6": "The priest answered them, “Go in peace. Your journey has the Lord’s approval.”"
+        },
+        "reading_groups": [
+          "He answers the people who addressed him (“them”)"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "answer is a description, not an identification: 'the ones who spoke to him'"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 6,
+          "answer_verse_original": 6,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 6",
+          "readings_failures": []
+        },
+        "content_id": "v5-6:5"
+      }
+    ],
+    "report": {
+      "window_id": "v5-6",
+      "verses": [
+        5,
+        6
+      ],
+      "generated": 5,
+      "scored": 5,
+      "kept": 1,
+      "survivors_before_window_selection": 1,
+      "window_selection_rejected": 0,
+      "repair_attempted": 0,
+      "repaired": 0,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

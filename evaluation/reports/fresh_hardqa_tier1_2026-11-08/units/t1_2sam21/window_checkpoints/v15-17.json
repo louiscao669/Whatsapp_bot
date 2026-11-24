@@ -1,0 +1,737 @@
+{
+  "config_digest": "58e99b143ab1f5b94000e5a3e978b07cc3d26ae3c113b7a77a492b2388d596d6",
+  "data": {
+    "kept": [
+      {
+        "question": "Who kills the Philistine?",
+        "answer": "Abishai kills the Philistine.",
+        "answer_verse": 17,
+        "wrong_answer": "David",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "Abishai son of Zeruiah",
+            "support": "Abishai son of Zeruiah came to David’s rescue; he struck the Philistine down and killed him"
+          }
+        ],
+        "distinct_readings": [
+          "Abishai son of Zeruiah"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "Identifying the killer requires resolving the pronoun 'he' to Abishai, said once and central to the action."
+        },
+        "window_verses": [
+          15,
+          16,
+          17
+        ],
+        "window_text": {
+          "15": "Once again there was a battle between the Philistines and Israel. David went down with his men to fight against the Philistines, and he became exhausted.",
+          "16": "And Ishbi-Benob, one of the descendants of Rapha, whose bronze spearhead weighed three hundred shekels and who was armed with a new sword, said he would kill David.",
+          "17": "But Abishai son of Zeruiah came to David’s rescue; he struck the Philistine down and killed him. Then David’s men swore to him, saying, “Never again will you go out with us to battle, so that the lamp of Israel will not be extinguished.”"
+        },
+        "reading_groups": [
+          "Abishai son of Zeruiah killed the Philistine"
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "kill",
+            "philistin"
+          ],
+          "answer_verse": 17,
+          "answer_verse_original": 17,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 17",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Who kills the Philistine?",
+            "readings": [
+              {
+                "answer": "Abishai son of Zeruiah",
+                "support": "Abishai son of Zeruiah came to David’s rescue; he struck the Philistine down and killed him"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Verse 17 states, “Abishai son of Zeruiah… struck the Philistine down and killed him,” matching the key."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The text explicitly says Abishai son of Zeruiah killed the Philistine.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It most strongly tests grammatical agent resolution—identifying that the “he … killed him” refers to Abishai, not David—while remaining unambiguous and central with a plausible misparse competitor.",
+        "window_structure_max": 9.0,
+        "content_id": "v15-17:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Who says he will kill David?",
+        "answer": "Ishbi-Benob says he will kill David.",
+        "answer_verse": 16,
+        "wrong_answer": "Abishai",
+        "relation": "modality",
+        "readings": [
+          {
+            "answer": "Ishbi-Benob",
+            "support": "Ishbi-Benob, one of the descendants of Rapha, whose bronze spearhead weighed three hundred shekels and who was armed with a new sword, said he would kill David."
+          }
+        ],
+        "distinct_readings": [
+          "Ishbi-Benob"
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "Attribution of the threat must be linked to the correct speaker (Ishbi-Benob), stated once and clearly central to the conflict."
+        },
+        "window_verses": [
+          15,
+          16,
+          17
+        ],
+        "window_text": {
+          "15": "Once again there was a battle between the Philistines and Israel. David went down with his men to fight against the Philistines, and he became exhausted.",
+          "16": "And Ishbi-Benob, one of the descendants of Rapha, whose bronze spearhead weighed three hundred shekels and who was armed with a new sword, said he would kill David.",
+          "17": "But Abishai son of Zeruiah came to David’s rescue; he struck the Philistine down and killed him. Then David’s men swore to him, saying, “Never again will you go out with us to battle, so that the lamp of Israel will not be extinguished.”"
+        },
+        "reading_groups": [
+          "Ishbi-Benob is the one who said he would kill David"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "dangling pronoun: he",
+            "bare-name answer 'Ishbi-Benob says he will kill David.': names survive translation"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "david",
+            "kill"
+          ],
+          "answer_verse": 16,
+          "answer_verse_original": 16,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 16",
+          "readings_failures": []
+        },
+        "content_id": "v15-17:2"
+      },
+      {
+        "question": "Who comes to David’s rescue?",
+        "answer": "Abishai comes to David’s rescue.",
+        "answer_verse": 17,
+        "wrong_answer": "David’s men",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "Abishai son of Zeruiah",
+            "support": "Abishai son of Zeruiah came to David’s rescue"
+          }
+        ],
+        "distinct_readings": [
+          "Abishai son of Zeruiah"
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "The clause 'came to David’s rescue' must be tied to its subject Abishai, which is stated once and is a key event."
+        },
+        "window_verses": [
+          15,
+          16,
+          17
+        ],
+        "window_text": {
+          "15": "Once again there was a battle between the Philistines and Israel. David went down with his men to fight against the Philistines, and he became exhausted.",
+          "16": "And Ishbi-Benob, one of the descendants of Rapha, whose bronze spearhead weighed three hundred shekels and who was armed with a new sword, said he would kill David.",
+          "17": "But Abishai son of Zeruiah came to David’s rescue; he struck the Philistine down and killed him. Then David’s men swore to him, saying, “Never again will you go out with us to battle, so that the lamp of Israel will not be extinguished.”"
+        },
+        "reading_groups": [
+          "Abishai son of Zeruiah came to David’s rescue"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "com",
+            "david",
+            "rescu"
+          ],
+          "answer_verse": 17,
+          "answer_verse_original": 17,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 17",
+          "readings_failures": []
+        },
+        "content_id": "v15-17:3"
+      },
+      {
+        "question": "What happens before Abishai rescues David?",
+        "answer": "Ishbi-Benob says he will kill David.",
+        "answer_verse": 17,
+        "wrong_answer": "David’s men vow that David must not go to battle again.",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "Ishbi-Benob says he will kill David",
+            "support": "said he would kill David."
+          },
+          {
+            "answer": "David becomes exhausted",
+            "support": "he became exhausted."
+          },
+          {
+            "answer": "David goes down with his men to fight the Philistines",
+            "support": "David went down with his men to fight against the Philistines,"
+          },
+          {
+            "answer": "There is a battle between the Philistines and Israel",
+            "support": "Once again there was a battle between the Philistines and Israel."
+          }
+        ],
+        "distinct_readings": [
+          "Ishbi-Benob says he will kill David",
+          "David becomes exhausted",
+          "David goes down with his men to fight the Philistines",
+          "There is a battle between the Philistines and Israel"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 2.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "Multiple events precede the rescue (battle, David’s exhaustion, the threat), so the expected answer is not uniquely determined."
+        },
+        "window_verses": [
+          15,
+          16,
+          17
+        ],
+        "window_text": {
+          "15": "Once again there was a battle between the Philistines and Israel. David went down with his men to fight against the Philistines, and he became exhausted.",
+          "16": "And Ishbi-Benob, one of the descendants of Rapha, whose bronze spearhead weighed three hundred shekels and who was armed with a new sword, said he would kill David.",
+          "17": "But Abishai son of Zeruiah came to David’s rescue; he struck the Philistine down and killed him. Then David’s men swore to him, saying, “Never again will you go out with us to battle, so that the lamp of Israel will not be extinguished.”"
+        },
+        "reading_groups": [
+          "Ishbi-Benob says he will kill David",
+          "David becomes exhausted",
+          "David goes down with his men to fight the Philistines",
+          "There is a battle between the Philistines and Israel"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: abishai, rescu",
+            "4 defensible readings: Ishbi-Benob says he will kill David | David becomes exhausted | David goes down with his men to fight the Philistines",
+            "ambiguous: answer_certainty 2.0 (need 7.0)"
+          ],
+          "notes": [
+            "corrected metadata from 16 to 17; reading support and question relation identify verse 17",
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "abishai",
+            "rescu"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "david"
+          ],
+          "answer_verse": 17,
+          "answer_verse_original": 16,
+          "answer_verse_corrected": true,
+          "answer_verse_note": "corrected metadata from 16 to 17; reading support and question relation identify verse 17",
+          "readings_failures": [
+            "4 defensible readings: Ishbi-Benob says he will kill David | David becomes exhausted | David goes down with his men to fight the Philistines"
+          ]
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "What happens before Abishai rescues David?",
+            "after": "What happens before David is helped?",
+            "note": "Replaced 'Abishai' and 'rescues' with neutral phrasing to remove location leak.",
+            "failures_before": [
+              "location leak: abishai, rescu",
+              "4 defensible readings: Ishbi-Benob says he will kill David | David becomes exhausted | David goes down with his men to fight the Philistines",
+              "ambiguous: answer_certainty 2.0 (need 7.0)"
+            ],
+            "scores_before": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 2.0,
+              "centrality": 7.0,
+              "runs": 1,
+              "reason": "Multiple events precede the rescue (battle, David’s exhaustion, the threat), so the expected answer is not uniquely determined."
+            },
+            "accepted": false,
+            "reason": "removed as weak question: Multiple different events occur prior to David being helped, so more than one answer would be defensible.",
+            "suitability_judgment": {
+              "Q": "What happens before David is helped?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": false,
+              "remove": true,
+              "reason": "Multiple different events occur prior to David being helped, so more than one answer would be defensible."
+            }
+          }
+        ],
+        "content_id": "v15-17:4"
+      },
+      {
+        "question": "Why do David’s men tell David not to go out with them again?",
+        "answer": "To keep the lamp of Israel from going out.",
+        "answer_verse": 17,
+        "wrong_answer": "Because David became exhausted.",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "So that the lamp of Israel will not be extinguished.",
+            "support": "so that the lamp of Israel will not be extinguished."
+          },
+          {
+            "answer": "Because he became exhausted and had to be rescued.",
+            "support": "he became exhausted | came to David’s rescue"
+          }
+        ],
+        "distinct_readings": [
+          "So that the lamp of Israel will not be extinguished.",
+          "Because he became exhausted and had to be rescued."
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "The purpose clause 'so that the lamp of Israel will not be extinguished' uniquely gives the reason and is unambiguous."
+        },
+        "window_verses": [
+          15,
+          16,
+          17
+        ],
+        "window_text": {
+          "15": "Once again there was a battle between the Philistines and Israel. David went down with his men to fight against the Philistines, and he became exhausted.",
+          "16": "And Ishbi-Benob, one of the descendants of Rapha, whose bronze spearhead weighed three hundred shekels and who was armed with a new sword, said he would kill David.",
+          "17": "But Abishai son of Zeruiah came to David’s rescue; he struck the Philistine down and killed him. Then David’s men swore to him, saying, “Never again will you go out with us to battle, so that the lamp of Israel will not be extinguished.”"
+        },
+        "reading_groups": [
+          "Purpose: so that the lamp of Israel will not be extinguished",
+          "Cause: because David became exhausted and had to be rescued"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "2 defensible readings: Purpose: so that the lamp of Israel will not be extinguished | Cause: because David became exhausted and had to be rescued",
+            "competitor 'Because David became exhausted.' is itself defensible — the item is ambiguous, not discriminating"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "out"
+          ],
+          "answer_verse": 17,
+          "answer_verse_original": 17,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 17",
+          "readings_failures": [
+            "2 defensible readings: Purpose: so that the lamp of Israel will not be extinguished | Cause: because David became exhausted and had to be rescued",
+            "competitor 'Because David became exhausted.' is itself defensible — the item is ambiguous, not discriminating"
+          ]
+        },
+        "content_id": "v15-17:5"
+      },
+      {
+        "question": "What happens after the Philistine is killed?",
+        "answer": "David’s men vow to David he must not go to battle again.",
+        "answer_verse": 17,
+        "wrong_answer": "Ishbi-Benob says he will kill David.",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "David’s men swear to David that he will never again go out with them to battle.",
+            "support": "Then David’s men swore to him"
+          }
+        ],
+        "distinct_readings": [
+          "David’s men swear to David that he will never again go out with them to battle."
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "The reader must track the sequence (after the killing, the men swear), which is stated once, yields a single clear answer, and is central to the passage’s outcome."
+        },
+        "window_verses": [
+          15,
+          16,
+          17
+        ],
+        "window_text": {
+          "15": "Once again there was a battle between the Philistines and Israel. David went down with his men to fight against the Philistines, and he became exhausted.",
+          "16": "And Ishbi-Benob, one of the descendants of Rapha, whose bronze spearhead weighed three hundred shekels and who was armed with a new sword, said he would kill David.",
+          "17": "But Abishai son of Zeruiah came to David’s rescue; he struck the Philistine down and killed him. Then David’s men swore to him, saying, “Never again will you go out with us to battle, so that the lamp of Israel will not be extinguished.”"
+        },
+        "reading_groups": [
+          "David’s men swear/vow David must not go out to battle again"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: hybrid window selector — It most strongly tests grammatical agent resolution—identifying that the “he … killed him” refers to Abishai, not David—while remaining unambiguous and central with a plausible misparse competitor."
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 17,
+          "answer_verse_original": 17,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 17",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "What happens after the Philistine is killed?",
+            "readings": [
+              {
+                "answer": "David’s men swear to David that he will never again go out with them to battle.",
+                "support": "Then David’s men swore to him"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Verse 17 says, “Then David’s men swore to him, saying, ‘Never again will you go out with us to battle,’” which directly matches the reading that after the Philistine is killed, David’s men swear he will not go to battle again."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The text explicitly states that after the Philistine is killed, David’s men swear David will not go out to battle again.",
+            "status": "passed"
+          }
+        },
+        "scores_after_repair_raw": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "The reader must track the sequence (after the killing, the men swear), which is stated once, yields a single clear answer, and is central to the passage’s outcome."
+        },
+        "repaired": true,
+        "repair_attempted": true,
+        "question_before_repair": "What happens after Abishai kills the Philistine?",
+        "scores_before_repair": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "Determining the next event relies on narrative sequence—David’s men swearing—which is uniquely stated and clearly follows the killing."
+        },
+        "audit_before_repair": {
+          "passed": false,
+          "failures": [
+            "location leak: abishai"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "abishai"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 17,
+          "answer_verse_original": 17,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 17",
+          "readings_failures": []
+        },
+        "repair_log": [
+          {
+            "before": "What happens after Abishai kills the Philistine?",
+            "after": "What happens after the Philistine is killed?",
+            "note": "Removed 'Abishai' by using passive construction to avoid location leak.",
+            "failures_before": [
+              "location leak: abishai"
+            ],
+            "scores_before": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 9.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "Determining the next event relies on narrative sequence—David’s men swearing—which is uniquely stated and clearly follows the killing."
+            },
+            "accepted": true,
+            "reason": "passed full rejudgment",
+            "suitability_judgment": {
+              "Q": "What happens after the Philistine is killed?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "Immediately after the Philistine is killed, the text uniquely reports that David’s men swear to David."
+            },
+            "failures_after": [],
+            "scores_after": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "The reader must track the sequence (after the killing, the men swear), which is stated once, yields a single clear answer, and is central to the passage’s outcome."
+            },
+            "scores_used": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "The reader must track the sequence (after the killing, the men swear), which is stated once, yields a single clear answer, and is central to the passage’s outcome."
+            }
+          }
+        ],
+        "window_selection_reason": "It most strongly tests grammatical agent resolution—identifying that the “he … killed him” refers to Abishai, not David—while remaining unambiguous and central with a plausible misparse competitor.",
+        "content_id": "v15-17:6"
+      },
+      {
+        "question": "To whom do the men make their promise?",
+        "answer": "They make their vow to David.",
+        "answer_verse": 17,
+        "wrong_answer": "Abishai",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "David",
+            "support": "David’s men swore to him | Never again will you go out with us to battle"
+          }
+        ],
+        "distinct_readings": [
+          "David"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "Identifying the addressee requires resolving the pronoun in “swore to him” to David, a uniquely stated relation with a clear answer that is important to the concluding action."
+        },
+        "window_verses": [
+          15,
+          16,
+          17
+        ],
+        "window_text": {
+          "15": "Once again there was a battle between the Philistines and Israel. David went down with his men to fight against the Philistines, and he became exhausted.",
+          "16": "And Ishbi-Benob, one of the descendants of Rapha, whose bronze spearhead weighed three hundred shekels and who was armed with a new sword, said he would kill David.",
+          "17": "But Abishai son of Zeruiah came to David’s rescue; he struck the Philistine down and killed him. Then David’s men swore to him, saying, “Never again will you go out with us to battle, so that the lamp of Israel will not be extinguished.”"
+        },
+        "reading_groups": [
+          "They make their promise to David"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: hybrid window selector — It most strongly tests grammatical agent resolution—identifying that the “he … killed him” refers to Abishai, not David—while remaining unambiguous and central with a plausible misparse competitor."
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 17,
+          "answer_verse_original": 17,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 17",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "To whom do the men make their promise?",
+            "readings": [
+              {
+                "answer": "David",
+                "support": "David’s men swore to him | Never again will you go out with us to battle"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The text states “David’s men swore to him,” and the following statement addresses David directly (“Never again will you go out with us to battle”), so the promise is made to David."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The passage explicitly says “David’s men swore to him,” with “him” being David.",
+            "status": "passed"
+          }
+        },
+        "scores_after_repair_raw": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "Identifying the addressee requires resolving the pronoun in “swore to him” to David, a uniquely stated relation with a clear answer that is important to the concluding action."
+        },
+        "repaired": true,
+        "repair_attempted": true,
+        "question_before_repair": "To whom do David’s men make their vow?",
+        "scores_before_repair": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "It requires resolving the pronoun 'him' in 'swore to him' to David, stated once with a single clear referent."
+        },
+        "audit_before_repair": {
+          "passed": false,
+          "failures": [
+            "answer leaks into question: david, vow"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "david",
+            "vow"
+          ],
+          "answer_verse": 17,
+          "answer_verse_original": 17,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 17",
+          "readings_failures": []
+        },
+        "repair_log": [
+          {
+            "before": "To whom do David’s men make their vow?",
+            "after": "To whom do the men make their promise?",
+            "note": "Removed 'David' and 'vow' and used neutral terms to prevent answer leaks.",
+            "failures_before": [
+              "answer leaks into question: david, vow"
+            ],
+            "scores_before": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 6.0,
+              "runs": 1,
+              "reason": "It requires resolving the pronoun 'him' in 'swore to him' to David, stated once with a single clear referent."
+            },
+            "accepted": true,
+            "reason": "passed full rejudgment",
+            "suitability_judgment": {
+              "Q": "To whom do the men make their promise?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "The passage states that David’s men swore to him, so the addressee is unambiguous."
+            },
+            "failures_after": [],
+            "scores_after": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 9.0,
+              "centrality": 7.0,
+              "runs": 1,
+              "reason": "Identifying the addressee requires resolving the pronoun in “swore to him” to David, a uniquely stated relation with a clear answer that is important to the concluding action."
+            },
+            "scores_used": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 9.0,
+              "centrality": 7.0,
+              "runs": 1,
+              "reason": "Identifying the addressee requires resolving the pronoun in “swore to him” to David, a uniquely stated relation with a clear answer that is important to the concluding action."
+            }
+          }
+        ],
+        "window_selection_reason": "It most strongly tests grammatical agent resolution—identifying that the “he … killed him” refers to Abishai, not David—while remaining unambiguous and central with a plausible misparse competitor.",
+        "content_id": "v15-17:7"
+      }
+    ],
+    "report": {
+      "window_id": "v15-17",
+      "verses": [
+        15,
+        16,
+        17
+      ],
+      "generated": 7,
+      "scored": 7,
+      "kept": 1,
+      "survivors_before_window_selection": 3,
+      "window_selection_rejected": 2,
+      "repair_attempted": 3,
+      "repaired": 2,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

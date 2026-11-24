@@ -191,6 +191,13 @@ create table if not exists experiment_passage_verses (
 create index if not exists idx_experiment_passage_verses_passage_id
     on experiment_passage_verses(experiment_passage_id);
 
+create table if not exists public.pilot_rotation_counts (
+    rotation integer primary key,
+    issued integer not null
+);
+
+alter table public.pilot_rotation_counts enable row level security;
+
 create table if not exists experiment_plan_cells (
     id text primary key default gen_random_uuid()::text,
     participant_id text not null references participants(id) on delete cascade,

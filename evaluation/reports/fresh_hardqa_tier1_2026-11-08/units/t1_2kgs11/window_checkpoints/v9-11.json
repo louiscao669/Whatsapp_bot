@@ -1,0 +1,496 @@
+{
+  "config_digest": "35c6b9487afefbfbca0dd7d7a3df8b147d1a9fbd4ee9dccb39a57ae2c9155f3b",
+  "data": {
+    "kept": [
+      {
+        "question": "Who gives the temple weapons to the commanders?",
+        "answer": "Jehoiada the priest",
+        "answer_verse": 10,
+        "wrong_answer": "the commanders",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "Jehoiada the priest",
+            "support": "Jehoiada the priest | Then he gave the commanders the spears and shields"
+          }
+        ],
+        "distinct_readings": [
+          "Jehoiada the priest"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "Resolving the pronoun “he” in “Then he gave the commanders...” back to Jehoiada requires pronoun-antecedent structure understanding."
+        },
+        "window_verses": [
+          9,
+          10,
+          11
+        ],
+        "window_text": {
+          "9": "The commanders of units of a hundred did just as Jehoiada the priest ordered. Each one took his men—those who were going on duty on the Sabbath and those who were going off duty—and came to Jehoiada the priest.",
+          "10": "Then he gave the commanders the spears and shields that had belonged to King David and that were in the temple of the Lord.",
+          "11": "The guards, each with weapon in hand, stationed themselves around the king—near the altar and the temple, from the south side to the north side of the temple."
+        },
+        "reading_groups": [
+          "Jehoiada the priest gives the weapons."
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 10,
+          "answer_verse_original": 10,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 10",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Who gives the temple weapons to the commanders?",
+            "readings": [
+              {
+                "answer": "Jehoiada the priest",
+                "support": "Jehoiada the priest | Then he gave the commanders the spears and shields"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "In v.10, “Then he gave the commanders the spears and shields” refers back to Jehoiada the priest from v.9, so Jehoiada is the one who gives the weapons."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The pronoun “he” in v.10 clearly refers to Jehoiada the priest, matching the key.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It hinges on resolving the pronoun “he” in v.10—identifying Jehoiada, not the nearby “commanders,” as the agent who gives the weapons—making the competitor a plausible misparse and the answer certain.",
+        "window_structure_max": 9.0,
+        "content_id": "v9-11:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Whose orders do the commanders follow?",
+        "answer": "Jehoiada the priest",
+        "answer_verse": 9,
+        "wrong_answer": "the king",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "Jehoiada the priest's",
+            "support": "did just as Jehoiada the priest ordered"
+          }
+        ],
+        "distinct_readings": [
+          "Jehoiada the priest's"
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "The clause “did just as Jehoiada the priest ordered” ties the commanders’ obedience to Jehoiada’s orders explicitly."
+        },
+        "window_verses": [
+          9,
+          10,
+          11
+        ],
+        "window_text": {
+          "9": "The commanders of units of a hundred did just as Jehoiada the priest ordered. Each one took his men—those who were going on duty on the Sabbath and those who were going off duty—and came to Jehoiada the priest.",
+          "10": "Then he gave the commanders the spears and shields that had belonged to King David and that were in the temple of the Lord.",
+          "11": "The guards, each with weapon in hand, stationed themselves around the king—near the altar and the temple, from the south side to the north side of the temple."
+        },
+        "reading_groups": [
+          "They follow Jehoiada the priest's orders."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 9,
+          "answer_verse_original": 9,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 9",
+          "readings_failures": []
+        },
+        "content_id": "v9-11:2"
+      },
+      {
+        "question": "Which men do the commanders take on the Sabbath?",
+        "answer": "both the men starting and the men finishing duty",
+        "answer_verse": 9,
+        "wrong_answer": "only the men starting duty",
+        "relation": "quantity",
+        "readings": [
+          {
+            "answer": "Those who were going on duty on the Sabbath and those who were going off duty",
+            "support": "those who were going on duty on the Sabbath and those who were going off duty"
+          }
+        ],
+        "distinct_readings": [
+          "Those who were going on duty on the Sabbath and those who were going off duty"
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "An appositive phrase specifies they took both those going on duty on the Sabbath and those going off duty."
+        },
+        "window_verses": [
+          9,
+          10,
+          11
+        ],
+        "window_text": {
+          "9": "The commanders of units of a hundred did just as Jehoiada the priest ordered. Each one took his men—those who were going on duty on the Sabbath and those who were going off duty—and came to Jehoiada the priest.",
+          "10": "Then he gave the commanders the spears and shields that had belonged to King David and that were in the temple of the Lord.",
+          "11": "The guards, each with weapon in hand, stationed themselves around the king—near the altar and the temple, from the south side to the north side of the temple."
+        },
+        "reading_groups": [
+          "Both those going on duty and those going off duty."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: sabbath"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "sabbath"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 9,
+          "answer_verse_original": 9,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 9",
+          "readings_failures": []
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "Which men do the commanders take on the Sabbath?",
+            "after": "Which men do the commanders take for the duty rotation?",
+            "note": "Removed the word causing a location leak and used neutral phrasing.",
+            "failures_before": [
+              "location leak: sabbath"
+            ],
+            "scores_before": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 6.0,
+              "runs": 1,
+              "reason": "An appositive phrase specifies they took both those going on duty on the Sabbath and those going off duty."
+            },
+            "accepted": false,
+            "reason": "failed full rejudgment",
+            "suitability_judgment": {
+              "Q": "Which men do the commanders take for the duty rotation?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "The question clearly refers to the commanders in verse 9 and asks which men they took, which the text specifies as those going on duty and those going off duty."
+            },
+            "failures_after": [
+              "lexical: structure_dependence 5.0 (need 7.0)"
+            ],
+            "scores_after": {
+              "structure_dependence": 5.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 7.0,
+              "runs": 1,
+              "reason": "The text explicitly identifies the men as both those going on duty and those going off duty (v.9), a single clear statement giving one unambiguous answer that is moderately central to the setup of the guard arrangement."
+            },
+            "scores_used": {
+              "structure_dependence": 5.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 7.0,
+              "runs": 1,
+              "reason": "The text explicitly identifies the men as both those going on duty and those going off duty (v.9), a single clear statement giving one unambiguous answer that is moderately central to the setup of the guard arrangement."
+            }
+          }
+        ],
+        "content_id": "v9-11:3"
+      },
+      {
+        "question": "After taking their men, whom do the commanders go to?",
+        "answer": "Jehoiada the priest",
+        "answer_verse": 9,
+        "wrong_answer": "the king",
+        "relation": "direction",
+        "readings": [
+          {
+            "answer": "Jehoiada the priest",
+            "support": "came to Jehoiada the priest."
+          }
+        ],
+        "distinct_readings": [
+          "Jehoiada the priest"
+        ],
+        "scores": {
+          "structure_dependence": 3.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "The text directly states they “came to Jehoiada the priest,” naming the destination once."
+        },
+        "window_verses": [
+          9,
+          10,
+          11
+        ],
+        "window_text": {
+          "9": "The commanders of units of a hundred did just as Jehoiada the priest ordered. Each one took his men—those who were going on duty on the Sabbath and those who were going off duty—and came to Jehoiada the priest.",
+          "10": "Then he gave the commanders the spears and shields that had belonged to King David and that were in the temple of the Lord.",
+          "11": "The guards, each with weapon in hand, stationed themselves around the king—near the altar and the temple, from the south side to the north side of the temple."
+        },
+        "reading_groups": [
+          "They go to Jehoiada the priest."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "dangling pronoun: their",
+            "question too complex: stacked clauses (1 comma(s), 1 subordinator(s))",
+            "lexical: structure_dependence 3.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 9,
+          "answer_verse_original": 9,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 9",
+          "readings_failures": []
+        },
+        "content_id": "v9-11:4"
+      },
+      {
+        "question": "Whose were the weapons given from the temple?",
+        "answer": "King David",
+        "answer_verse": 10,
+        "wrong_answer": "Jehoiada the priest",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "King David's",
+            "support": "had belonged to King David"
+          }
+        ],
+        "distinct_readings": [
+          "King David's"
+        ],
+        "scores": {
+          "structure_dependence": 4.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 5.0,
+          "runs": 1,
+          "reason": "The relative clause “had belonged to King David” directly identifies the prior owner once."
+        },
+        "window_verses": [
+          9,
+          10,
+          11
+        ],
+        "window_text": {
+          "9": "The commanders of units of a hundred did just as Jehoiada the priest ordered. Each one took his men—those who were going on duty on the Sabbath and those who were going off duty—and came to Jehoiada the priest.",
+          "10": "Then he gave the commanders the spears and shields that had belonged to King David and that were in the temple of the Lord.",
+          "11": "The guards, each with weapon in hand, stationed themselves around the king—near the altar and the temple, from the south side to the north side of the temple."
+        },
+        "reading_groups": [
+          "They belonged to King David."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "unnatural question: Awkward phrasing; more natural would be 'Whose were the weapons that were in the temple?' or 'To whom did the weapons belong?'",
+            "bare-name answer 'King David': names survive translation",
+            "lexical: structure_dependence 4.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 10,
+          "answer_verse_original": 10,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "consistent",
+          "readings_failures": [
+            "unnatural question: Awkward phrasing; more natural would be 'Whose were the weapons that were in the temple?' or 'To whom did the weapons belong?'"
+          ]
+        },
+        "content_id": "v9-11:5"
+      },
+      {
+        "question": "Around whom do the guards take their positions?",
+        "answer": "the king",
+        "answer_verse": 11,
+        "wrong_answer": "the temple",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "the king",
+            "support": "stationed themselves around the king"
+          }
+        ],
+        "distinct_readings": [
+          "the king"
+        ],
+        "scores": {
+          "structure_dependence": 2.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "It plainly states the guards stationed themselves around “the king,” a direct noun reference."
+        },
+        "window_verses": [
+          9,
+          10,
+          11
+        ],
+        "window_text": {
+          "9": "The commanders of units of a hundred did just as Jehoiada the priest ordered. Each one took his men—those who were going on duty on the Sabbath and those who were going off duty—and came to Jehoiada the priest.",
+          "10": "Then he gave the commanders the spears and shields that had belonged to King David and that were in the temple of the Lord.",
+          "11": "The guards, each with weapon in hand, stationed themselves around the king—near the altar and the temple, from the south side to the north side of the temple."
+        },
+        "reading_groups": [
+          "Around the king."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 2.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 11,
+          "answer_verse_original": 11,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 11",
+          "readings_failures": []
+        },
+        "content_id": "v9-11:6"
+      },
+      {
+        "question": "Which group stands armed around the king?",
+        "answer": "the guards",
+        "answer_verse": 11,
+        "wrong_answer": "the commanders",
+        "relation": "participant",
+        "readings": [
+          {
+            "answer": "The guards",
+            "support": "The guards, each with weapon in hand, stationed themselves around the king"
+          }
+        ],
+        "distinct_readings": [
+          "The guards"
+        ],
+        "scores": {
+          "structure_dependence": 2.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "The subject “The guards, each with weapon in hand” explicitly names the armed group around the king."
+        },
+        "window_verses": [
+          9,
+          10,
+          11
+        ],
+        "window_text": {
+          "9": "The commanders of units of a hundred did just as Jehoiada the priest ordered. Each one took his men—those who were going on duty on the Sabbath and those who were going off duty—and came to Jehoiada the priest.",
+          "10": "Then he gave the commanders the spears and shields that had belonged to King David and that were in the temple of the Lord.",
+          "11": "The guards, each with weapon in hand, stationed themselves around the king—near the altar and the temple, from the south side to the north side of the temple."
+        },
+        "reading_groups": [
+          "The guards stand armed around the king."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 2.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 11,
+          "answer_verse_original": 11,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 11",
+          "readings_failures": []
+        },
+        "content_id": "v9-11:7"
+      }
+    ],
+    "report": {
+      "window_id": "v9-11",
+      "verses": [
+        9,
+        10,
+        11
+      ],
+      "generated": 7,
+      "scored": 7,
+      "kept": 1,
+      "survivors_before_window_selection": 1,
+      "window_selection_rejected": 0,
+      "repair_attempted": 1,
+      "repaired": 0,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

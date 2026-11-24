@@ -1,0 +1,361 @@
+{
+  "config_digest": "7d0f9ca5b001dd4aafd08cfe62ee0ee1709a4cee0d45b80852aceee348ef06c5",
+  "data": {
+    "kept": [
+      {
+        "question": "Who is killed by the lion?",
+        "answer": "the man of God",
+        "answer_verse": 24,
+        "wrong_answer": "the prophet who brought him back",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "the man of God",
+            "support": "the man of God | a lion met him on the road and killed him"
+          }
+        ],
+        "distinct_readings": [
+          "the man of God"
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 9.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "The reader must link the pronoun “him” to the man of God, the killing is stated once, the referent is clear in context, and this death is central to the scene."
+        },
+        "window_verses": [
+          23,
+          24,
+          25
+        ],
+        "window_text": {
+          "23": "When the man of God had finished eating and drinking, the prophet who had brought him back saddled his donkey for him.",
+          "24": "As he went on his way, a lion met him on the road and killed him, and his body was left lying on the road, with both the donkey and the lion standing beside it.",
+          "25": "Some people who passed by saw the body lying there, with the lion standing beside the body, and they went and reported it in the city where the old prophet lived."
+        },
+        "reading_groups": [
+          "The man of God is the one killed by the lion."
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 24,
+          "answer_verse_original": 24,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 24",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Who is killed by the lion?",
+            "readings": [
+              {
+                "answer": "the man of God",
+                "support": "the man of God | a lion met him on the road and killed him"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Verse 24 says “a lion met him on the road and killed him,” where “him” refers back to “the man of God” in verse 23."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The passage explicitly indicates the lion killed the man of God by pronoun reference from verse 24 to verse 23.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "This question hinges on resolving the pronoun referent (“he/him”) to identify who the lion killed—the man of God rather than the prophet—making it strongly structure-dependent with a plausible misparse competitor.",
+        "window_structure_max": 7.0,
+        "content_id": "v23-25:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Whose donkey does the prophet saddle?",
+        "answer": "the man of God’s donkey",
+        "answer_verse": 23,
+        "wrong_answer": "the prophet’s donkey",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "the man of God's",
+            "support": "the prophet who had brought him back saddled his donkey for him"
+          },
+          {
+            "answer": "the prophet's own",
+            "support": "the prophet who had brought him back saddled his donkey"
+          }
+        ],
+        "distinct_readings": [
+          "the man of God's",
+          "the prophet's own"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 3.0,
+          "centrality": 3.0,
+          "runs": 1,
+          "reason": "Identifying whose “his donkey” refers to requires pronoun/possessive resolution in a single clause, it’s only stated here, the referent is ambiguous even in good translations, and the detail is peripheral."
+        },
+        "window_verses": [
+          23,
+          24,
+          25
+        ],
+        "window_text": {
+          "23": "When the man of God had finished eating and drinking, the prophet who had brought him back saddled his donkey for him.",
+          "24": "As he went on his way, a lion met him on the road and killed him, and his body was left lying on the road, with both the donkey and the lion standing beside it.",
+          "25": "Some people who passed by saw the body lying there, with the lion standing beside the body, and they went and reported it in the city where the old prophet lived."
+        },
+        "reading_groups": [
+          "It is the man of God’s donkey.",
+          "It is the prophet’s own donkey."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "2 defensible readings: It is the man of God’s donkey. | It is the prophet’s own donkey.",
+            "competitor 'the prophet’s donkey' is itself defensible — the item is ambiguous, not discriminating",
+            "ambiguous: answer_certainty 3.0 (need 7.0)",
+            "incidental: centrality 3.0 (need 5.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "donkey"
+          ],
+          "answer_verse": 23,
+          "answer_verse_original": 23,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 23",
+          "readings_failures": [
+            "2 defensible readings: It is the man of God’s donkey. | It is the prophet’s own donkey.",
+            "competitor 'the prophet’s donkey' is itself defensible — the item is ambiguous, not discriminating"
+          ]
+        },
+        "content_id": "v23-25:2"
+      },
+      {
+        "question": "What happens after the man of God leaves?",
+        "answer": "a lion meets the man of God and kills the man of God",
+        "answer_verse": 24,
+        "wrong_answer": "the prophet saddles the man of God’s donkey",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "A lion meets him on the road and kills him.",
+            "support": "As he went on his way, a lion met him on the road and killed him"
+          },
+          {
+            "answer": "His body is left lying on the road with the donkey and the lion standing beside it.",
+            "support": "and his body was left lying on the road, with both the donkey and the lion standing beside it"
+          },
+          {
+            "answer": "Passersby see the body and report it in the old prophet’s city.",
+            "support": "Some people who passed by saw the body lying there, with the lion standing beside the body, and they went and reported it in the city where the old prophet lived"
+          }
+        ],
+        "distinct_readings": [
+          "A lion meets him on the road and kills him.",
+          "His body is left lying on the road with the donkey and the lion standing beside it.",
+          "Passersby see the body and report it in the old prophet’s city."
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 9.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "Understanding that 'as he went on his way' signals the next event requires sequencing and relation tracking, the event is given once, it’s unambiguous, and it is the passage’s main action."
+        },
+        "window_verses": [
+          23,
+          24,
+          25
+        ],
+        "window_text": {
+          "23": "When the man of God had finished eating and drinking, the prophet who had brought him back saddled his donkey for him.",
+          "24": "As he went on his way, a lion met him on the road and killed him, and his body was left lying on the road, with both the donkey and the lion standing beside it.",
+          "25": "Some people who passed by saw the body lying there, with the lion standing beside the body, and they went and reported it in the city where the old prophet lived."
+        },
+        "reading_groups": [
+          "A lion meets him on the road and kills him.",
+          "His body is left on the road with the donkey and the lion standing beside it.",
+          "Passersby see the body and report it in the old prophet’s city."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "3 defensible readings: A lion meets him on the road and kills him. | His body is left on the road with the donkey and the lion standing beside it. | Passersby see the body and report it in the old prophet’s city."
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "god"
+          ],
+          "answer_verse": 24,
+          "answer_verse_original": 24,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "consistent",
+          "readings_failures": [
+            "3 defensible readings: A lion meets him on the road and kills him. | His body is left on the road with the donkey and the lion standing beside it. | Passersby see the body and report it in the old prophet’s city."
+          ]
+        },
+        "content_id": "v23-25:3"
+      },
+      {
+        "question": "Where do the people report what they saw?",
+        "answer": "in the city where the old prophet lived",
+        "answer_verse": 25,
+        "wrong_answer": "on the road",
+        "relation": "direction",
+        "readings": [
+          {
+            "answer": "In the city where the old prophet lived",
+            "support": "in the city where the old prophet lived"
+          }
+        ],
+        "distinct_readings": [
+          "In the city where the old prophet lived"
+        ],
+        "scores": {
+          "structure_dependence": 3.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 4.0,
+          "runs": 1,
+          "reason": "The location is a verbatim phrase ('in the city where the old prophet lived'), stated only once, unequivocal, and relatively incidental to the main event."
+        },
+        "window_verses": [
+          23,
+          24,
+          25
+        ],
+        "window_text": {
+          "23": "When the man of God had finished eating and drinking, the prophet who had brought him back saddled his donkey for him.",
+          "24": "As he went on his way, a lion met him on the road and killed him, and his body was left lying on the road, with both the donkey and the lion standing beside it.",
+          "25": "Some people who passed by saw the body lying there, with the lion standing beside the body, and they went and reported it in the city where the old prophet lived."
+        },
+        "reading_groups": [
+          "In the city where the old prophet lived."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 3.0 (need 7.0)",
+            "incidental: centrality 4.0 (need 5.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 25,
+          "answer_verse_original": 25,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 25",
+          "readings_failures": []
+        },
+        "content_id": "v23-25:4"
+      },
+      {
+        "question": "Who stands by the body when the people pass by?",
+        "answer": "the lion",
+        "answer_verse": 25,
+        "wrong_answer": "the donkey and the lion",
+        "relation": "participant",
+        "readings": [
+          {
+            "answer": "the lion",
+            "support": "with the lion standing beside the body"
+          }
+        ],
+        "distinct_readings": [
+          "the lion"
+        ],
+        "scores": {
+          "structure_dependence": 2.0,
+          "statement_uniqueness": 2.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "This is a straightforward word spot ('the lion'), repeated across verses, unambiguous, and moderately central as part of the sign accompanying the death."
+        },
+        "window_verses": [
+          23,
+          24,
+          25
+        ],
+        "window_text": {
+          "23": "When the man of God had finished eating and drinking, the prophet who had brought him back saddled his donkey for him.",
+          "24": "As he went on his way, a lion met him on the road and killed him, and his body was left lying on the road, with both the donkey and the lion standing beside it.",
+          "25": "Some people who passed by saw the body lying there, with the lion standing beside the body, and they went and reported it in the city where the old prophet lived."
+        },
+        "reading_groups": [
+          "The lion stands by the body at that time."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: pass",
+            "lexical: structure_dependence 2.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "pass"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 25,
+          "answer_verse_original": 25,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 25",
+          "readings_failures": []
+        },
+        "content_id": "v23-25:5"
+      }
+    ],
+    "report": {
+      "window_id": "v23-25",
+      "verses": [
+        23,
+        24,
+        25
+      ],
+      "generated": 5,
+      "scored": 5,
+      "kept": 1,
+      "survivors_before_window_selection": 1,
+      "window_selection_rejected": 0,
+      "repair_attempted": 0,
+      "repaired": 0,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

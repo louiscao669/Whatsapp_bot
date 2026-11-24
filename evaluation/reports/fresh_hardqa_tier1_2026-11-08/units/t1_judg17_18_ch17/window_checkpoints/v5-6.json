@@ -1,0 +1,459 @@
+{
+  "config_digest": "b695f7707fb56c289f78e263db4eb0e918c13f67b225d32ee2c69080e2ad8e51",
+  "data": {
+    "kept": [
+      {
+        "question": "Who serves as priest for Micah?",
+        "answer": "one of Micah’s sons",
+        "answer_verse": 5,
+        "wrong_answer": "Micah",
+        "relation": "participant",
+        "readings": [
+          {
+            "answer": "one of his sons",
+            "support": "installed one of his sons as his priest"
+          }
+        ],
+        "distinct_readings": [
+          "one of his sons"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "It requires resolving that “his priest” refers to Micah and identifying the subject performing the installation, a single-clause fact stated once and central to verse 5."
+        },
+        "window_verses": [
+          5,
+          6
+        ],
+        "window_text": {
+          "5": "Now this man Micah had a shrine, and he made an ephod and some household gods and installed one of his sons as his priest.",
+          "6": "In those days Israel had no king; everyone did as they saw fit."
+        },
+        "reading_groups": [
+          "Micah’s priest is one of his sons"
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "micah"
+          ],
+          "answer_verse": 5,
+          "answer_verse_original": 5,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 5",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Who serves as priest for Micah?",
+            "readings": [
+              {
+                "answer": "one of his sons",
+                "support": "installed one of his sons as his priest"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The passage states Micah \"installed one of his sons as his priest,\" which matches \"one of Micah’s sons.\""
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The text explicitly says Micah made one of his sons his priest, matching the key.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It best tests grammatical roles and referents—parsing “he installed one of his sons as his priest” to identify who served as priest—with a plausible misparse competitor (Micah) and natural wording.",
+        "window_structure_max": 8.0,
+        "content_id": "v5-6:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Who makes the ephod and the household gods?",
+        "answer": "Micah",
+        "answer_verse": 5,
+        "wrong_answer": "one of his sons",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "Micah",
+            "support": "this man Micah had a shrine, and he made an ephod and some household gods"
+          }
+        ],
+        "distinct_readings": [
+          "Micah"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "Identifying the maker requires linking the pronoun “he” to Micah (not the son), stated once, uniquely answerable, and central to the verse."
+        },
+        "window_verses": [
+          5,
+          6
+        ],
+        "window_text": {
+          "5": "Now this man Micah had a shrine, and he made an ephod and some household gods and installed one of his sons as his priest.",
+          "6": "In those days Israel had no king; everyone did as they saw fit."
+        },
+        "reading_groups": [
+          "Micah is the maker of the ephod and household gods"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "bare-name answer 'Micah': names survive translation"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 5,
+          "answer_verse_original": 5,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 5",
+          "readings_failures": []
+        },
+        "content_id": "v5-6:2"
+      },
+      {
+        "question": "Whose priest does one of Micah's sons become?",
+        "answer": "Micah's",
+        "answer_verse": 5,
+        "wrong_answer": "Israel's",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "Micah's",
+            "support": "this man Micah | his priest"
+          }
+        ],
+        "distinct_readings": [
+          "Micah's"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "Resolving whose priest he became hinges on the possessive “his” referring to Micah, stated once, with a single clear answer, and central to the action."
+        },
+        "window_verses": [
+          5,
+          6
+        ],
+        "window_text": {
+          "5": "Now this man Micah had a shrine, and he made an ephod and some household gods and installed one of his sons as his priest.",
+          "6": "In those days Israel had no king; everyone did as they saw fit."
+        },
+        "reading_groups": [
+          "He becomes Micah’s priest"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "answer leaks into question: micah",
+            "bare-name answer \"Micah's\": names survive translation"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "micah"
+          ],
+          "answer_verse": 5,
+          "answer_verse_original": 5,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 5",
+          "readings_failures": []
+        },
+        "content_id": "v5-6:3"
+      },
+      {
+        "question": "What is missing in Israel in those days?",
+        "answer": "a king",
+        "answer_verse": 6,
+        "wrong_answer": "a priest",
+        "relation": "polarity",
+        "readings": [
+          {
+            "answer": "a king",
+            "support": "Israel had no king"
+          }
+        ],
+        "distinct_readings": [
+          "a king"
+        ],
+        "scores": {
+          "structure_dependence": 2.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "“Had no king” directly supplies the noun king, stated once, unambiguous, and a key point of the contextual summary in verse 6."
+        },
+        "window_verses": [
+          5,
+          6
+        ],
+        "window_text": {
+          "5": "Now this man Micah had a shrine, and he made an ephod and some household gods and installed one of his sons as his priest.",
+          "6": "In those days Israel had no king; everyone did as they saw fit."
+        },
+        "reading_groups": [
+          "Israel lacked a king"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: days, israel",
+            "lexical: structure_dependence 2.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "days",
+            "israel"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 6,
+          "answer_verse_original": 6,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 6",
+          "readings_failures": []
+        },
+        "content_id": "v5-6:4"
+      },
+      {
+        "question": "Who lacks a king in those days?",
+        "answer": "Israel",
+        "answer_verse": 6,
+        "wrong_answer": "Micah",
+        "relation": "polarity",
+        "readings": [
+          {
+            "answer": "Israel",
+            "support": "Israel had no king"
+          }
+        ],
+        "distinct_readings": [
+          "Israel"
+        ],
+        "scores": {
+          "structure_dependence": 2.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "The answer is the named subject 'Israel' directly tied to 'had no king,' a single explicit statement that is important but more contextual."
+        },
+        "window_verses": [
+          5,
+          6
+        ],
+        "window_text": {
+          "5": "Now this man Micah had a shrine, and he made an ephod and some household gods and installed one of his sons as his priest.",
+          "6": "In those days Israel had no king; everyone did as they saw fit."
+        },
+        "reading_groups": [
+          "Israel had no king"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: days",
+            "bare-name answer 'Israel': names survive translation",
+            "lexical: structure_dependence 2.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "days"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 6,
+          "answer_verse_original": 6,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 6",
+          "readings_failures": []
+        },
+        "content_id": "v5-6:5"
+      },
+      {
+        "question": "Whose priest does the son become?",
+        "answer": "Micah’s",
+        "answer_verse": 5,
+        "wrong_answer": "Israel’s",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "Micah's",
+            "support": "this man Micah | installed one of his sons as his priest"
+          }
+        ],
+        "distinct_readings": [
+          "Micah's"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "It hinges on pronoun resolution of 'his' to Micah in the clause about installing a priest, uniquely stated and central to the event in verse 5."
+        },
+        "window_verses": [
+          5,
+          6
+        ],
+        "window_text": {
+          "5": "Now this man Micah had a shrine, and he made an ephod and some household gods and installed one of his sons as his priest.",
+          "6": "In those days Israel had no king; everyone did as they saw fit."
+        },
+        "reading_groups": [
+          "The son becomes Micah’s priest"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "bare-name answer 'Micah’s': names survive translation"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 5,
+          "answer_verse_original": 5,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 5",
+          "readings_failures": []
+        },
+        "content_id": "v5-6:6"
+      },
+      {
+        "question": "What does Micah make, rather than only have?",
+        "answer": "an ephod and some household gods",
+        "answer_verse": 5,
+        "wrong_answer": "a shrine",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "An ephod and some household gods",
+            "support": "he made an ephod and some household gods"
+          }
+        ],
+        "distinct_readings": [
+          "An ephod and some household gods"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "The reader must distinguish the verbs (had vs. made) to select the correct objects, a single, clear statement central to Micah’s actions."
+        },
+        "window_verses": [
+          5,
+          6
+        ],
+        "window_text": {
+          "5": "Now this man Micah had a shrine, and he made an ephod and some household gods and installed one of his sons as his priest.",
+          "6": "In those days Israel had no king; everyone did as they saw fit."
+        },
+        "reading_groups": [
+          "He makes an ephod and household gods"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: hybrid window selector — It best tests grammatical roles and referents—parsing “he installed one of his sons as his priest” to identify who served as priest—with a plausible misparse competitor (Micah) and natural wording."
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 5,
+          "answer_verse_original": 5,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 5",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "What does Micah make, rather than only have?",
+            "readings": [
+              {
+                "answer": "An ephod and some household gods",
+                "support": "he made an ephod and some household gods"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The passage explicitly says “he made an ephod and some household gods,” matching the key exactly."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The window directly states Micah made “an ephod and some household gods,” which answers the question and matches the key.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It best tests grammatical roles and referents—parsing “he installed one of his sons as his priest” to identify who served as priest—with a plausible misparse competitor (Micah) and natural wording.",
+        "content_id": "v5-6:7"
+      }
+    ],
+    "report": {
+      "window_id": "v5-6",
+      "verses": [
+        5,
+        6
+      ],
+      "generated": 7,
+      "scored": 7,
+      "kept": 1,
+      "survivors_before_window_selection": 2,
+      "window_selection_rejected": 1,
+      "repair_attempted": 0,
+      "repaired": 0,
+      "window_retries_used": 1,
+      "score_runs": 1
+    }
+  }
+}

@@ -1,0 +1,708 @@
+{
+  "config_digest": "35c6b9487afefbfbca0dd7d7a3df8b147d1a9fbd4ee9dccb39a57ae2c9155f3b",
+  "data": {
+    "kept": [
+      {
+        "question": "Why does Jehoiada say to take the woman out before killing her?",
+        "answer": "Jehoiada says the woman must not be killed inside the temple.",
+        "answer_verse": 15,
+        "wrong_answer": "to let the troops kill her followers",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "Because she must not be put to death in the temple of the Lord.",
+            "support": "She must not be put to death in the temple of the Lord."
+          }
+        ],
+        "distinct_readings": [
+          "Because she must not be put to death in the temple of the Lord."
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "The causal clause (“For… she must not be put to death in the temple of the Lord”) uniquely gives the reason, which is central to the action of moving her."
+        },
+        "window_verses": [
+          15,
+          16
+        ],
+        "window_text": {
+          "15": "Jehoiada the priest ordered the commanders of units of a hundred, who were in charge of the troops: “Bring her out between the ranks and put to the sword anyone who follows her.” For the priest had said, “She must not be put to death in the temple of the Lord.”",
+          "16": "So they seized her as she reached the place where the horses enter the palace grounds, and there she was put to death."
+        },
+        "reading_groups": [
+          "Because she must not be killed in the temple of the Lord"
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "jehoiada",
+            "kill",
+            "woman"
+          ],
+          "answer_verse": 15,
+          "answer_verse_original": 15,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 15",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Why does Jehoiada say to take the woman out before killing her?",
+            "readings": [
+              {
+                "answer": "Because she must not be put to death in the temple of the Lord.",
+                "support": "She must not be put to death in the temple of the Lord."
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The passage explicitly states, “She must not be put to death in the temple of the Lord,” matching the key’s reason that she must not be killed inside the temple."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The text directly gives the reason: she must not be executed in the temple.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It cleanly tests the causal clause (“For the priest had said…”) about the temple execution prohibition, with a plausible misparse competitor about killing followers, and yields one clear answer.",
+        "window_structure_max": 8.0,
+        "content_id": "v15-16:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Who is to be killed if they follow her?",
+        "answer": "Anyone who follows her.",
+        "answer_verse": 15,
+        "wrong_answer": "Her.",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "Anyone who follows her",
+            "support": "anyone who follows her"
+          }
+        ],
+        "distinct_readings": [
+          "Anyone who follows her"
+        ],
+        "scores": {
+          "structure_dependence": 5.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "The clause 'put to the sword anyone who follows her' gives a single explicit target, but requires linking the condition to the object rather than confusing it with 'she'."
+        },
+        "window_verses": [
+          15,
+          16
+        ],
+        "window_text": {
+          "15": "Jehoiada the priest ordered the commanders of units of a hundred, who were in charge of the troops: “Bring her out between the ranks and put to the sword anyone who follows her.” For the priest had said, “She must not be put to death in the temple of the Lord.”",
+          "16": "So they seized her as she reached the place where the horses enter the palace grounds, and there she was put to death."
+        },
+        "reading_groups": [
+          "Anyone who follows her is to be killed"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "dangling pronoun: they, her",
+            "dangling answer reference: her",
+            "lexical: structure_dependence 5.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "follow"
+          ],
+          "answer_verse": 15,
+          "answer_verse_original": 15,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 15",
+          "readings_failures": []
+        },
+        "content_id": "v15-16:2"
+      },
+      {
+        "question": "Why do the commanders take her out before she dies?",
+        "answer": "Because the priest said not to kill her in the temple.",
+        "answer_verse": 15,
+        "wrong_answer": "Because she reached the horses’ entrance to the palace grounds.",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "Because she must not be put to death in the temple of the Lord.",
+            "support": "For the priest had said, “She must not be put to death in the temple of the Lord.”"
+          },
+          {
+            "answer": "Because Jehoiada the priest ordered them to bring her out.",
+            "support": "Jehoiada the priest ordered the commanders of units of a hundred, who were in charge of the troops: “Bring her out between the ranks"
+          }
+        ],
+        "distinct_readings": [
+          "Because she must not be put to death in the temple of the Lord.",
+          "Because Jehoiada the priest ordered them to bring her out."
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "The reason is given once by the causal 'For the priest had said...' and must be inferred as the motive for removing her from the temple."
+        },
+        "window_verses": [
+          15,
+          16
+        ],
+        "window_text": {
+          "15": "Jehoiada the priest ordered the commanders of units of a hundred, who were in charge of the troops: “Bring her out between the ranks and put to the sword anyone who follows her.” For the priest had said, “She must not be put to death in the temple of the Lord.”",
+          "16": "So they seized her as she reached the place where the horses enter the palace grounds, and there she was put to death."
+        },
+        "reading_groups": [
+          "Because she must not be put to death in the temple of the Lord",
+          "Because Jehoiada the priest ordered them to bring her out"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "dangling pronoun: her, she",
+            "2 defensible readings: Because she must not be put to death in the temple of the Lord | Because Jehoiada the priest ordered them to bring her out"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 15,
+          "answer_verse_original": 15,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 15",
+          "readings_failures": [
+            "2 defensible readings: Because she must not be put to death in the temple of the Lord | Because Jehoiada the priest ordered them to bring her out"
+          ]
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "Why do the commanders take her out before she dies?",
+            "after": "Why do the commanders move the execution outside the temple?",
+            "note": "Replaced dangling pronouns with neutral wording about relocating the execution.",
+            "failures_before": [
+              "dangling pronoun: her, she",
+              "2 defensible readings: Because she must not be put to death in the temple of the Lord | Because Jehoiada the priest ordered them to bring her out"
+            ],
+            "scores_before": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "The reason is given once by the causal 'For the priest had said...' and must be inferred as the motive for removing her from the temple."
+            },
+            "accepted": false,
+            "reason": "failed full rejudgment",
+            "suitability_judgment": {
+              "Q": "Why do the commanders move the execution outside the temple?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "The verse explicitly states the reason: the priest said she must not be put to death in the temple of the Lord."
+            },
+            "failures_after": [
+              "location leak: templ",
+              "2 defensible readings: Because the priest forbade killing her in the temple | Because Jehoiada ordered them to take her out"
+            ],
+            "scores_after": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "The passage explicitly gives the causal reason (“For the priest had said…”), stated once and unambiguously, and it drives the main action of moving the execution outside."
+            },
+            "scores_used": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "The passage explicitly gives the causal reason (“For the priest had said…”), stated once and unambiguously, and it drives the main action of moving the execution outside."
+            }
+          }
+        ],
+        "content_id": "v15-16:3"
+      },
+      {
+        "question": "Where is she put to death?",
+        "answer": "At the place where the horses enter the palace grounds.",
+        "answer_verse": 16,
+        "wrong_answer": "In the temple of the Lord.",
+        "relation": "location",
+        "readings": [
+          {
+            "answer": "At the place where the horses enter the palace grounds",
+            "support": "the place where the horses enter the palace grounds"
+          }
+        ],
+        "distinct_readings": [
+          "At the place where the horses enter the palace grounds"
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "'There she was put to death' refers back to 'the place where the horses enter the palace grounds,' requiring resolution of 'there' over the competing mention of the temple."
+        },
+        "window_verses": [
+          15,
+          16
+        ],
+        "window_text": {
+          "15": "Jehoiada the priest ordered the commanders of units of a hundred, who were in charge of the troops: “Bring her out between the ranks and put to the sword anyone who follows her.” For the priest had said, “She must not be put to death in the temple of the Lord.”",
+          "16": "So they seized her as she reached the place where the horses enter the palace grounds, and there she was put to death."
+        },
+        "reading_groups": [
+          "At the place where the horses enter the palace grounds"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "dangling pronoun: she",
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 16,
+          "answer_verse_original": 16,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 16",
+          "readings_failures": []
+        },
+        "content_id": "v15-16:4"
+      },
+      {
+        "question": "Where do they seize her?",
+        "answer": "At the horses’ entrance to the palace grounds.",
+        "answer_verse": 16,
+        "wrong_answer": "Between the ranks.",
+        "relation": "location",
+        "readings": [
+          {
+            "answer": "At the place where the horses enter the palace grounds",
+            "support": "the place where the horses enter the palace grounds"
+          }
+        ],
+        "distinct_readings": [
+          "At the place where the horses enter the palace grounds"
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "The seizure location is inferred from the subordinate clause 'as she reached the place where the horses enter the palace grounds,' which is stated once and implies that spot."
+        },
+        "window_verses": [
+          15,
+          16
+        ],
+        "window_text": {
+          "15": "Jehoiada the priest ordered the commanders of units of a hundred, who were in charge of the troops: “Bring her out between the ranks and put to the sword anyone who follows her.” For the priest had said, “She must not be put to death in the temple of the Lord.”",
+          "16": "So they seized her as she reached the place where the horses enter the palace grounds, and there she was put to death."
+        },
+        "reading_groups": [
+          "At the place where the horses enter the palace grounds"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "dangling pronoun: they, her",
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 16,
+          "answer_verse_original": 16,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 16",
+          "readings_failures": []
+        },
+        "content_id": "v15-16:5"
+      },
+      {
+        "question": "What do the commanders do to anyone who follows her?",
+        "answer": "Put them to the sword.",
+        "answer_verse": 15,
+        "wrong_answer": "Bring her out between the ranks.",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "Put them to the sword.",
+            "support": "put to the sword anyone who follows her"
+          }
+        ],
+        "distinct_readings": [
+          "Put them to the sword."
+        ],
+        "scores": {
+          "structure_dependence": 4.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 5.0,
+          "runs": 1,
+          "reason": "The command 'put to the sword anyone who follows her' is a single explicit phrase with one clear action to extract."
+        },
+        "window_verses": [
+          15,
+          16
+        ],
+        "window_text": {
+          "15": "Jehoiada the priest ordered the commanders of units of a hundred, who were in charge of the troops: “Bring her out between the ranks and put to the sword anyone who follows her.” For the priest had said, “She must not be put to death in the temple of the Lord.”",
+          "16": "So they seized her as she reached the place where the horses enter the palace grounds, and there she was put to death."
+        },
+        "reading_groups": [
+          "They put them to the sword"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "dangling pronoun: her",
+            "dangling answer reference: them",
+            "lexical: structure_dependence 4.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 15,
+          "answer_verse_original": 15,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 15",
+          "readings_failures": []
+        },
+        "content_id": "v15-16:6"
+      },
+      {
+        "question": "Who gives the order to take the woman out?",
+        "answer": "Jehoiada the priest.",
+        "answer_verse": 15,
+        "wrong_answer": "the commanders of units of a hundred",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "Jehoiada the priest",
+            "support": "Jehoiada the priest ordered | Bring her out between the ranks"
+          }
+        ],
+        "distinct_readings": [
+          "Jehoiada the priest"
+        ],
+        "scores": {
+          "structure_dependence": 2.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "The subject who issues the order is explicitly named once (“Jehoiada the priest ordered”), yielding a single, central, unambiguous name retrieval."
+        },
+        "window_verses": [
+          15,
+          16
+        ],
+        "window_text": {
+          "15": "Jehoiada the priest ordered the commanders of units of a hundred, who were in charge of the troops: “Bring her out between the ranks and put to the sword anyone who follows her.” For the priest had said, “She must not be put to death in the temple of the Lord.”",
+          "16": "So they seized her as she reached the place where the horses enter the palace grounds, and there she was put to death."
+        },
+        "reading_groups": [
+          "Jehoiada the priest gives the order"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 2.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 15,
+          "answer_verse_original": 15,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 15",
+          "readings_failures": []
+        },
+        "content_id": "v15-16:7"
+      },
+      {
+        "question": "Whom does Jehoiada tell the commanders to kill?",
+        "answer": "the people who follow the woman",
+        "answer_verse": 15,
+        "wrong_answer": "the woman",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "anyone who follows her",
+            "support": "put to the sword anyone who follows her"
+          }
+        ],
+        "distinct_readings": [
+          "anyone who follows her"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "It requires parsing the object of the command (“put to the sword anyone who follows her”) rather than the more salient ‘her,’ stated once and clearly."
+        },
+        "window_verses": [
+          15,
+          16
+        ],
+        "window_text": {
+          "15": "Jehoiada the priest ordered the commanders of units of a hundred, who were in charge of the troops: “Bring her out between the ranks and put to the sword anyone who follows her.” For the priest had said, “She must not be put to death in the temple of the Lord.”",
+          "16": "So they seized her as she reached the place where the horses enter the palace grounds, and there she was put to death."
+        },
+        "reading_groups": [
+          "Anyone who follows the woman"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "answer is a description, not an identification: 'the people who follow the woman'"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 15,
+          "answer_verse_original": 15,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 15",
+          "readings_failures": []
+        },
+        "content_id": "v15-16:8"
+      },
+      {
+        "question": "Where is the woman killed?",
+        "answer": "at the palace entrance used by the horses",
+        "answer_verse": 16,
+        "wrong_answer": "inside the temple",
+        "relation": "direction",
+        "readings": [
+          {
+            "answer": "At the place where the horses enter the palace grounds.",
+            "support": "the place where the horses enter the palace grounds, and there she was put to death"
+          }
+        ],
+        "distinct_readings": [
+          "At the place where the horses enter the palace grounds."
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "The location must be inferred from the anaphor “there,” referring to “the place where the horses enter the palace grounds,” a single, central detail."
+        },
+        "window_verses": [
+          15,
+          16
+        ],
+        "window_text": {
+          "15": "Jehoiada the priest ordered the commanders of units of a hundred, who were in charge of the troops: “Bring her out between the ranks and put to the sword anyone who follows her.” For the priest had said, “She must not be put to death in the temple of the Lord.”",
+          "16": "So they seized her as she reached the place where the horses enter the palace grounds, and there she was put to death."
+        },
+        "reading_groups": [
+          "At the horses’ entrance to the palace grounds"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 16,
+          "answer_verse_original": 16,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 16",
+          "readings_failures": []
+        },
+        "content_id": "v15-16:9"
+      },
+      {
+        "question": "What happens to the woman when she reaches the palace entrance?",
+        "answer": "The commanders seize the woman.",
+        "answer_verse": 16,
+        "wrong_answer": "they kill the woman",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "She is seized.",
+            "support": "they seized her as she reached"
+          },
+          {
+            "answer": "She is put to death.",
+            "support": "there she was put to death"
+          }
+        ],
+        "distinct_readings": [
+          "She is seized.",
+          "She is put to death."
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 5.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "Linking the temporal clause “as she reached” to “they seized her” requires structure, but proximity to “she was put to death” introduces some answer ambiguity."
+        },
+        "window_verses": [
+          15,
+          16
+        ],
+        "window_text": {
+          "15": "Jehoiada the priest ordered the commanders of units of a hundred, who were in charge of the troops: “Bring her out between the ranks and put to the sword anyone who follows her.” For the priest had said, “She must not be put to death in the temple of the Lord.”",
+          "16": "So they seized her as she reached the place where the horses enter the palace grounds, and there she was put to death."
+        },
+        "reading_groups": [
+          "She is seized",
+          "She is put to death"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: palac, reach",
+            "2 defensible readings: She is seized | She is put to death",
+            "competitor 'they kill the woman' is itself defensible — the item is ambiguous, not discriminating",
+            "ambiguous: answer_certainty 5.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "palac",
+            "reach"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "woman"
+          ],
+          "answer_verse": 16,
+          "answer_verse_original": 16,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 16",
+          "readings_failures": [
+            "2 defensible readings: She is seized | She is put to death",
+            "competitor 'they kill the woman' is itself defensible — the item is ambiguous, not discriminating"
+          ]
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "What happens to the woman when she reaches the palace entrance?",
+            "after": "What happens to the woman when she comes to the entrance?",
+            "note": "Replaced the leaking words with neutral alternatives.",
+            "failures_before": [
+              "location leak: palac, reach",
+              "2 defensible readings: She is seized | She is put to death",
+              "competitor 'they kill the woman' is itself defensible — the item is ambiguous, not discriminating",
+              "ambiguous: answer_certainty 5.0 (need 7.0)"
+            ],
+            "scores_before": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 8.0,
+              "answer_certainty": 5.0,
+              "centrality": 6.0,
+              "runs": 1,
+              "reason": "Linking the temporal clause “as she reached” to “they seized her” requires structure, but proximity to “she was put to death” introduces some answer ambiguity."
+            },
+            "accepted": false,
+            "reason": "removed as weak question: At that point she is both seized and then put to death, yielding more than one materially different valid answer.",
+            "suitability_judgment": {
+              "Q": "What happens to the woman when she comes to the entrance?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": false,
+              "remove": true,
+              "reason": "At that point she is both seized and then put to death, yielding more than one materially different valid answer."
+            }
+          }
+        ],
+        "content_id": "v15-16:10"
+      }
+    ],
+    "report": {
+      "window_id": "v15-16",
+      "verses": [
+        15,
+        16
+      ],
+      "generated": 10,
+      "scored": 10,
+      "kept": 1,
+      "survivors_before_window_selection": 1,
+      "window_selection_rejected": 0,
+      "repair_attempted": 2,
+      "repaired": 0,
+      "window_retries_used": 1,
+      "score_runs": 1
+    }
+  }
+}

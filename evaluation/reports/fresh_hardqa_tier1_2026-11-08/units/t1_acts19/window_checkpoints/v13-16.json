@@ -1,0 +1,616 @@
+{
+  "config_digest": "0c98e06dd0970bca219676c95df2cd8d39cbaf353272e44e07dba6f32d7e588e",
+  "data": {
+    "kept": [
+      {
+        "question": "Why do the seven sons run out of the house?",
+        "answer": "because the man with the evil spirit beat them",
+        "answer_verse": 16,
+        "wrong_answer": "because they told the spirit to leave",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "Because the man with the evil spirit beat them so badly.",
+            "support": "He gave them such a beating that they ran out of the house"
+          }
+        ],
+        "distinct_readings": [
+          "Because the man with the evil spirit beat them so badly."
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 10.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "The causal construction \"such a beating that they ran out\" uniquely encodes the reason and must be parsed to get cause and effect."
+        },
+        "window_verses": [
+          13,
+          14,
+          15,
+          16
+        ],
+        "window_text": {
+          "13": "Some Jews who went around driving out evil spirits tried to invoke the name of the Lord Jesus over those who were demon-possessed. They would say, “In the name of the Jesus whom Paul preaches, I command you to come out.”",
+          "14": "Seven sons of Sceva, a Jewish chief priest, were doing this.",
+          "15": "One day the evil spirit answered them, “Jesus I know, and Paul I know about, but who are you?”",
+          "16": "Then the man who had the evil spirit jumped on them and overpowered them all. He gave them such a beating that they ran out of the house naked and bleeding."
+        },
+        "reading_groups": [
+          "Because the possessed man beat them severely"
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 16,
+          "answer_verse_original": 16,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 16",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Why do the seven sons run out of the house?",
+            "readings": [
+              {
+                "answer": "Because the man with the evil spirit beat them so badly.",
+                "support": "He gave them such a beating that they ran out of the house"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Verse 16 says, “He gave them such a beating that they ran out of the house,” matching the answer that they ran because the man with the evil spirit beat them."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The passage explicitly states they ran out because the demon-possessed man beat them.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It hinges on parsing the explicit causal structure (“He gave them such a beating that they ran out”), and the competitor reflects a plausible misattribution of cause despite the text’s clear grammar.",
+        "window_structure_max": 9.0,
+        "content_id": "v13-16:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Whose name do the Jews try to use over the possessed?",
+        "answer": "the name of Jesus",
+        "answer_verse": 13,
+        "wrong_answer": "the name of Paul",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "The Lord Jesus",
+            "support": "the name of the Lord Jesus"
+          },
+          {
+            "answer": "The Jesus whom Paul preaches",
+            "support": "the Jesus whom Paul preaches"
+          }
+        ],
+        "distinct_readings": [
+          "The Lord Jesus",
+          "The Jesus whom Paul preaches"
+        ],
+        "scores": {
+          "structure_dependence": 2.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "The phrase \"the name of the Lord Jesus\" is explicitly stated once and unambiguous, central to the attempted exorcism."
+        },
+        "window_verses": [
+          13,
+          14,
+          15,
+          16
+        ],
+        "window_text": {
+          "13": "Some Jews who went around driving out evil spirits tried to invoke the name of the Lord Jesus over those who were demon-possessed. They would say, “In the name of the Jesus whom Paul preaches, I command you to come out.”",
+          "14": "Seven sons of Sceva, a Jewish chief priest, were doing this.",
+          "15": "One day the evil spirit answered them, “Jesus I know, and Paul I know about, but who are you?”",
+          "16": "Then the man who had the evil spirit jumped on them and overpowered them all. He gave them such a beating that they ran out of the house naked and bleeding."
+        },
+        "reading_groups": [
+          "Jesus (the Lord Jesus / the Jesus whom Paul preaches)"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: possess",
+            "lexical: structure_dependence 2.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "possess"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 13,
+          "answer_verse_original": 13,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 13",
+          "readings_failures": []
+        },
+        "content_id": "v13-16:2"
+      },
+      {
+        "question": "Who answers the seven sons before the attack?",
+        "answer": "the evil spirit",
+        "answer_verse": 15,
+        "wrong_answer": "the man with the evil spirit",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "the evil spirit",
+            "support": "the evil spirit answered them"
+          }
+        ],
+        "distinct_readings": [
+          "the evil spirit"
+        ],
+        "scores": {
+          "structure_dependence": 4.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "The text directly states \"the evil spirit answered them,\" uniquely and unambiguously prior to the assault."
+        },
+        "window_verses": [
+          13,
+          14,
+          15,
+          16
+        ],
+        "window_text": {
+          "13": "Some Jews who went around driving out evil spirits tried to invoke the name of the Lord Jesus over those who were demon-possessed. They would say, “In the name of the Jesus whom Paul preaches, I command you to come out.”",
+          "14": "Seven sons of Sceva, a Jewish chief priest, were doing this.",
+          "15": "One day the evil spirit answered them, “Jesus I know, and Paul I know about, but who are you?”",
+          "16": "Then the man who had the evil spirit jumped on them and overpowered them all. He gave them such a beating that they ran out of the house naked and bleeding."
+        },
+        "reading_groups": [
+          "the evil spirit answers them"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 4.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 15,
+          "answer_verse_original": 15,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 15",
+          "readings_failures": []
+        },
+        "content_id": "v13-16:3"
+      },
+      {
+        "question": "After the spirit speaks, what happens to the seven sons?",
+        "answer": "the man with the evil spirit overpowers them",
+        "answer_verse": 16,
+        "wrong_answer": "the evil spirit comes out",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "They are attacked and overpowered, beaten, and run out of the house naked and bleeding.",
+            "support": "jumped on them and overpowered them all. He gave them such a beating | ran out of the house naked and bleeding"
+          }
+        ],
+        "distinct_readings": [
+          "They are attacked and overpowered, beaten, and run out of the house naked and bleeding."
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 5.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "It requires tracking sequence and subject change to \"the man with the evil spirit\" overpowering them, but multiple subsequent outcomes could answer what happens."
+        },
+        "window_verses": [
+          13,
+          14,
+          15,
+          16
+        ],
+        "window_text": {
+          "13": "Some Jews who went around driving out evil spirits tried to invoke the name of the Lord Jesus over those who were demon-possessed. They would say, “In the name of the Jesus whom Paul preaches, I command you to come out.”",
+          "14": "Seven sons of Sceva, a Jewish chief priest, were doing this.",
+          "15": "One day the evil spirit answered them, “Jesus I know, and Paul I know about, but who are you?”",
+          "16": "Then the man who had the evil spirit jumped on them and overpowered them all. He gave them such a beating that they ran out of the house naked and bleeding."
+        },
+        "reading_groups": [
+          "They are attacked, overpowered, beaten, and run out naked and bleeding"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "question too complex: stacked clauses (1 comma(s), 1 subordinator(s))",
+            "answer is a description, not an identification: 'the man with the evil spirit overpowers them'",
+            "ambiguous: answer_certainty 5.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "spirit"
+          ],
+          "answer_verse": 16,
+          "answer_verse_original": 16,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 16",
+          "readings_failures": []
+        },
+        "content_id": "v13-16:4"
+      },
+      {
+        "question": "Whom do the Jews order to leave the possessed person?",
+        "answer": "the evil spirit",
+        "answer_verse": 13,
+        "wrong_answer": "the seven sons of Sceva",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "the evil spirit",
+            "support": "driving out evil spirits | I command you to come out"
+          }
+        ],
+        "distinct_readings": [
+          "the evil spirit"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "Linking the command \"I command you to come out\" to its addressee requires resolving \"you\" as the evil spirit, which is uniquely and clearly implied by context."
+        },
+        "window_verses": [
+          13,
+          14,
+          15,
+          16
+        ],
+        "window_text": {
+          "13": "Some Jews who went around driving out evil spirits tried to invoke the name of the Lord Jesus over those who were demon-possessed. They would say, “In the name of the Jesus whom Paul preaches, I command you to come out.”",
+          "14": "Seven sons of Sceva, a Jewish chief priest, were doing this.",
+          "15": "One day the evil spirit answered them, “Jesus I know, and Paul I know about, but who are you?”",
+          "16": "Then the man who had the evil spirit jumped on them and overpowered them all. He gave them such a beating that they ran out of the house naked and bleeding."
+        },
+        "reading_groups": [
+          "the evil spirit"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: hybrid window selector — It hinges on parsing the explicit causal structure (“He gave them such a beating that they ran out”), and the competitor reflects a plausible misattribution of cause despite the text’s clear grammar."
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 13,
+          "answer_verse_original": 13,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 13",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Whom do the Jews order to leave the possessed person?",
+            "readings": [
+              {
+                "answer": "the evil spirit",
+                "support": "driving out evil spirits | I command you to come out"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The passage shows they addressed the demon, saying “I command you to come out,” and the context is driving out evil spirits, so the ordered entity is the evil spirit."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The text explicitly depicts the Jews commanding the evil spirit to come out of the possessed person.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It hinges on parsing the explicit causal structure (“He gave them such a beating that they ran out”), and the competitor reflects a plausible misattribution of cause despite the text’s clear grammar.",
+        "content_id": "v13-16:5"
+      },
+      {
+        "question": "Who does the evil spirit say it does not know?",
+        "answer": "the seven sons of Sceva",
+        "answer_verse": 14,
+        "wrong_answer": "Paul",
+        "relation": "polarity",
+        "readings": [
+          {
+            "answer": "The seven sons of Sceva",
+            "support": "Seven sons of Sceva, a Jewish chief priest, were doing this. | who are you?"
+          }
+        ],
+        "distinct_readings": [
+          "The seven sons of Sceva"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "Interpreting \"but who are you?\" needs linking the spirit’s address to the seven sons, a single uniquely stated relation that is clear in context."
+        },
+        "window_verses": [
+          13,
+          14,
+          15,
+          16
+        ],
+        "window_text": {
+          "13": "Some Jews who went around driving out evil spirits tried to invoke the name of the Lord Jesus over those who were demon-possessed. They would say, “In the name of the Jesus whom Paul preaches, I command you to come out.”",
+          "14": "Seven sons of Sceva, a Jewish chief priest, were doing this.",
+          "15": "One day the evil spirit answered them, “Jesus I know, and Paul I know about, but who are you?”",
+          "16": "Then the man who had the evil spirit jumped on them and overpowered them all. He gave them such a beating that they ran out of the house naked and bleeding."
+        },
+        "reading_groups": [
+          "The seven sons (the “you”)"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: hybrid window selector — It hinges on parsing the explicit causal structure (“He gave them such a beating that they ran out”), and the competitor reflects a plausible misattribution of cause despite the text’s clear grammar."
+          ],
+          "notes": [
+            "corrected metadata from 15 to 14; reading support and question relation identify verse 14",
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 14,
+          "answer_verse_original": 15,
+          "answer_verse_corrected": true,
+          "answer_verse_note": "corrected metadata from 15 to 14; reading support and question relation identify verse 14",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Who does the evil spirit say it does not know?",
+            "readings": [
+              {
+                "answer": "The seven sons of Sceva",
+                "support": "Seven sons of Sceva, a Jewish chief priest, were doing this. | who are you?"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "In v.15 the evil spirit says, “who are you?” to the exorcists, and v.14 identifies those doing this as the seven sons of Sceva, so the spirit is saying it does not know them."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The phrase “who are you?” in v.15 refers to the seven sons of Sceva mentioned in v.14.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It hinges on parsing the explicit causal structure (“He gave them such a beating that they ran out”), and the competitor reflects a plausible misattribution of cause despite the text’s clear grammar.",
+        "content_id": "v13-16:6"
+      },
+      {
+        "question": "Who leaves the house without clothes and bleeding?",
+        "answer": "the seven sons of Sceva",
+        "answer_verse": 16,
+        "wrong_answer": "the man with the evil spirit",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "The seven sons of Sceva",
+            "support": "Seven sons of Sceva | they ran out of the house naked and bleeding"
+          }
+        ],
+        "distinct_readings": [
+          "The seven sons of Sceva"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 10.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "Resolving “they” in v16 back to the seven sons of Sceva requires pronoun/agent tracking, the detail is stated only once, yields a single clear referent, and describes the climactic outcome of the scene."
+        },
+        "window_verses": [
+          13,
+          14,
+          15,
+          16
+        ],
+        "window_text": {
+          "13": "Some Jews who went around driving out evil spirits tried to invoke the name of the Lord Jesus over those who were demon-possessed. They would say, “In the name of the Jesus whom Paul preaches, I command you to come out.”",
+          "14": "Seven sons of Sceva, a Jewish chief priest, were doing this.",
+          "15": "One day the evil spirit answered them, “Jesus I know, and Paul I know about, but who are you?”",
+          "16": "Then the man who had the evil spirit jumped on them and overpowered them all. He gave them such a beating that they ran out of the house naked and bleeding."
+        },
+        "reading_groups": [
+          "The seven sons of Sceva leave the house naked and bleeding"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: hybrid window selector — It hinges on parsing the explicit causal structure (“He gave them such a beating that they ran out”), and the competitor reflects a plausible misattribution of cause despite the text’s clear grammar."
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 16,
+          "answer_verse_original": 16,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 16",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Who leaves the house without clothes and bleeding?",
+            "readings": [
+              {
+                "answer": "The seven sons of Sceva",
+                "support": "Seven sons of Sceva | they ran out of the house naked and bleeding"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "In verse 16, “they ran out of the house naked and bleeding” refers back to the group identified in verse 14 as the seven sons of Sceva who were overpowered."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The pronoun “they” in v.16 clearly refers to the seven sons of Sceva mentioned in v.14.",
+            "status": "passed"
+          }
+        },
+        "scores_after_repair_raw": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 10.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "Resolving “they” in v16 back to the seven sons of Sceva requires pronoun/agent tracking, the detail is stated only once, yields a single clear referent, and describes the climactic outcome of the scene."
+        },
+        "repaired": true,
+        "repair_attempted": true,
+        "question_before_repair": "Who runs out of the house naked and bleeding?",
+        "scores_before_repair": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "Resolving the pronoun \"they\" in \"they ran out... naked and bleeding\" back to the seven sons requires coreference, and is uniquely stated."
+        },
+        "audit_before_repair": {
+          "passed": false,
+          "failures": [
+            "quotes the passage: quotes verse 16: 'out of the house naked'"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 16,
+          "answer_verse_original": 16,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 16",
+          "readings_failures": []
+        },
+        "repair_log": [
+          {
+            "before": "Who runs out of the house naked and bleeding?",
+            "after": "Who leaves the house without clothes and bleeding?",
+            "note": "Paraphrased to avoid quoting the verse wording.",
+            "failures_before": [
+              "quotes the passage: quotes verse 16: 'out of the house naked'"
+            ],
+            "scores_before": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 9.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "Resolving the pronoun \"they\" in \"they ran out... naked and bleeding\" back to the seven sons requires coreference, and is uniquely stated."
+            },
+            "accepted": true,
+            "reason": "passed full rejudgment",
+            "suitability_judgment": {
+              "Q": "Who leaves the house without clothes and bleeding?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "Verse 16 explicitly says “they ran out of the house naked and bleeding,” with “they” clearly referring to the seven sons of Sceva, making the question natural and uniquely answerable from the window."
+            },
+            "failures_after": [],
+            "scores_after": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 10.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "Resolving “they” in v16 back to the seven sons of Sceva requires pronoun/agent tracking, the detail is stated only once, yields a single clear referent, and describes the climactic outcome of the scene."
+            },
+            "scores_used": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 10.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "Resolving “they” in v16 back to the seven sons of Sceva requires pronoun/agent tracking, the detail is stated only once, yields a single clear referent, and describes the climactic outcome of the scene."
+            }
+          }
+        ],
+        "window_selection_reason": "It hinges on parsing the explicit causal structure (“He gave them such a beating that they ran out”), and the competitor reflects a plausible misattribution of cause despite the text’s clear grammar.",
+        "content_id": "v13-16:7"
+      }
+    ],
+    "report": {
+      "window_id": "v13-16",
+      "verses": [
+        13,
+        14,
+        15,
+        16
+      ],
+      "generated": 7,
+      "scored": 7,
+      "kept": 1,
+      "survivors_before_window_selection": 4,
+      "window_selection_rejected": 3,
+      "repair_attempted": 1,
+      "repaired": 1,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

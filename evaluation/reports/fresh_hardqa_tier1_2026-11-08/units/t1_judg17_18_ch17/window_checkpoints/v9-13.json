@@ -1,0 +1,564 @@
+{
+  "config_digest": "b695f7707fb56c289f78e263db4eb0e918c13f67b225d32ee2c69080e2ad8e51",
+  "data": {
+    "kept": [
+      {
+        "question": "In whose house does the young man live?",
+        "answer": "The young man lives in Micah’s house.",
+        "answer_verse": 12,
+        "wrong_answer": "The young man lives in the young man’s house.",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "Micah’s house",
+            "support": "Then Micah installed the Levite | lived in his house."
+          }
+        ],
+        "distinct_readings": [
+          "Micah’s house"
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "Answering requires resolving the pronoun in “lived in his house” to Micah, which is uniquely stated and very likely but requires relational parsing."
+        },
+        "window_verses": [
+          9,
+          10,
+          11,
+          12,
+          13
+        ],
+        "window_text": {
+          "9": "Micah asked him, “Where are you from?” “I’m a Levite from Bethlehem in Judah,” he said, “and I’m looking for a place to stay.”",
+          "10": "Then Micah said to him, “Live with me and be my father and priest, and I’ll give you ten shekels of silver a year, your clothes and your food.”",
+          "11": "So the Levite agreed to live with him, and the young man became like one of his sons to him.",
+          "12": "Then Micah installed the Levite, and the young man became his priest and lived in his house.",
+          "13": "And Micah said, “Now I know that the Lord will be good to me, since this Levite has become my priest.”"
+        },
+        "reading_groups": [
+          "The young man lives in Micah’s house"
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "hous",
+            "liv",
+            "young"
+          ],
+          "answer_verse": 12,
+          "answer_verse_original": 12,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 12",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "In whose house does the young man live?",
+            "readings": [
+              {
+                "answer": "Micah’s house",
+                "support": "Then Micah installed the Levite | lived in his house."
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Verse 12 says the young man became his priest and lived in his house; with Micah as the referent from the prior clause and invitation (v.10), “his house” is Micah’s."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The passage explicitly says the young man lived in Micah’s house (v.12).",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It hinges on resolving the pronoun “his house” in v.12 to Micah, a structurally grounded referent decision clearly supported by the context, and the competitor reflects the plausible misparse.",
+        "window_structure_max": 7.0,
+        "content_id": "v9-13:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Who asks the Levite where he comes from?",
+        "answer": "Micah asks the Levite.",
+        "answer_verse": 9,
+        "wrong_answer": "The Levite asks Micah.",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "Micah",
+            "support": "Micah asked him"
+          }
+        ],
+        "distinct_readings": [
+          "Micah"
+        ],
+        "scores": {
+          "structure_dependence": 3.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 5.0,
+          "runs": 1,
+          "reason": "The speaker attribution “Micah asked him” is explicit in one clause, uniquely stated, unambiguous, and only moderately central to the episode."
+        },
+        "window_verses": [
+          9,
+          10,
+          11,
+          12,
+          13
+        ],
+        "window_text": {
+          "9": "Micah asked him, “Where are you from?” “I’m a Levite from Bethlehem in Judah,” he said, “and I’m looking for a place to stay.”",
+          "10": "Then Micah said to him, “Live with me and be my father and priest, and I’ll give you ten shekels of silver a year, your clothes and your food.”",
+          "11": "So the Levite agreed to live with him, and the young man became like one of his sons to him.",
+          "12": "Then Micah installed the Levite, and the young man became his priest and lived in his house.",
+          "13": "And Micah said, “Now I know that the Lord will be good to me, since this Levite has become my priest.”"
+        },
+        "reading_groups": [
+          "Micah asks the Levite where he is from"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 3.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "asks",
+            "levit"
+          ],
+          "answer_verse": 9,
+          "answer_verse_original": 9,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 9",
+          "readings_failures": []
+        },
+        "content_id": "v9-13:2"
+      },
+      {
+        "question": "Who installs the Levite as priest?",
+        "answer": "Micah installs the Levite as priest.",
+        "answer_verse": 12,
+        "wrong_answer": "The Levite installs Micah as priest.",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "Micah",
+            "support": "Then Micah installed the Levite"
+          }
+        ],
+        "distinct_readings": [
+          "Micah"
+        ],
+        "scores": {
+          "structure_dependence": 3.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "The subject of the installing action is directly stated (“Micah installed the Levite”), uniquely given, certain, and central to the scene."
+        },
+        "window_verses": [
+          9,
+          10,
+          11,
+          12,
+          13
+        ],
+        "window_text": {
+          "9": "Micah asked him, “Where are you from?” “I’m a Levite from Bethlehem in Judah,” he said, “and I’m looking for a place to stay.”",
+          "10": "Then Micah said to him, “Live with me and be my father and priest, and I’ll give you ten shekels of silver a year, your clothes and your food.”",
+          "11": "So the Levite agreed to live with him, and the young man became like one of his sons to him.",
+          "12": "Then Micah installed the Levite, and the young man became his priest and lived in his house.",
+          "13": "And Micah said, “Now I know that the Lord will be good to me, since this Levite has become my priest.”"
+        },
+        "reading_groups": [
+          "Micah installs the Levite as priest"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 3.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "as",
+            "install",
+            "levit",
+            "priest"
+          ],
+          "answer_verse": 12,
+          "answer_verse_original": 12,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 12",
+          "readings_failures": []
+        },
+        "content_id": "v9-13:3"
+      },
+      {
+        "question": "After the Levite agrees to live with Micah, what does Micah do?",
+        "answer": "Micah installs the Levite as priest.",
+        "answer_verse": 13,
+        "wrong_answer": "Micah offers him pay, clothes, and food.",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "He installs the Levite.",
+            "support": "Then Micah installed the Levite"
+          },
+          {
+            "answer": "He says he now knows the Lord will be good to him, since the Levite has become his priest.",
+            "support": "And Micah said, “Now I know that the Lord will be good to me, since this Levite has become my priest.”"
+          }
+        ],
+        "distinct_readings": [
+          "He installs the Levite.",
+          "He says he now knows the Lord will be good to him, since the Levite has become his priest."
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "It requires linking the sequence from the agreement to the next action where Micah installs the Levite as priest, which is uniquely stated and central."
+        },
+        "window_verses": [
+          9,
+          10,
+          11,
+          12,
+          13
+        ],
+        "window_text": {
+          "9": "Micah asked him, “Where are you from?” “I’m a Levite from Bethlehem in Judah,” he said, “and I’m looking for a place to stay.”",
+          "10": "Then Micah said to him, “Live with me and be my father and priest, and I’ll give you ten shekels of silver a year, your clothes and your food.”",
+          "11": "So the Levite agreed to live with him, and the young man became like one of his sons to him.",
+          "12": "Then Micah installed the Levite, and the young man became his priest and lived in his house.",
+          "13": "And Micah said, “Now I know that the Lord will be good to me, since this Levite has become my priest.”"
+        },
+        "reading_groups": [
+          "Micah installs the Levite",
+          "Micah says he knows the Lord will be good to him"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "question too complex: stacked clauses (1 comma(s), 1 subordinator(s))",
+            "2 defensible readings: Micah installs the Levite | Micah says he knows the Lord will be good to him",
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "corrected metadata from 12 to 13; reading support and question relation identify verse 13",
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "levit",
+            "micah"
+          ],
+          "answer_verse": 13,
+          "answer_verse_original": 12,
+          "answer_verse_corrected": true,
+          "answer_verse_note": "corrected metadata from 12 to 13; reading support and question relation identify verse 13",
+          "readings_failures": [
+            "2 defensible readings: Micah installs the Levite | Micah says he knows the Lord will be good to him"
+          ]
+        },
+        "content_id": "v9-13:4"
+      },
+      {
+        "question": "Why does Micah say the Lord will be good to him?",
+        "answer": "Because the Levite has become Micah’s priest.",
+        "answer_verse": 13,
+        "wrong_answer": "Because he gives the Levite silver each year.",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "Because the Levite has become his priest.",
+            "support": "since this Levite has become my priest"
+          }
+        ],
+        "distinct_readings": [
+          "Because the Levite has become his priest."
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "The causal relation is carried by the subordinate clause “since this Levite has become my priest,” given once and unambiguous, and fairly central."
+        },
+        "window_verses": [
+          9,
+          10,
+          11,
+          12,
+          13
+        ],
+        "window_text": {
+          "9": "Micah asked him, “Where are you from?” “I’m a Levite from Bethlehem in Judah,” he said, “and I’m looking for a place to stay.”",
+          "10": "Then Micah said to him, “Live with me and be my father and priest, and I’ll give you ten shekels of silver a year, your clothes and your food.”",
+          "11": "So the Levite agreed to live with him, and the young man became like one of his sons to him.",
+          "12": "Then Micah installed the Levite, and the young man became his priest and lived in his house.",
+          "13": "And Micah said, “Now I know that the Lord will be good to me, since this Levite has become my priest.”"
+        },
+        "reading_groups": [
+          "Because the Levite has become his priest"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: lord",
+            "quotes the passage: quotes verse 13: 'the lord will be good'"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "lord"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "micah"
+          ],
+          "answer_verse": 13,
+          "answer_verse_original": 13,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 13",
+          "readings_failures": []
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "Why does Micah say the Lord will be good to him?",
+            "after": "Why does Micah expect God’s favor?",
+            "note": "Replaced quoted wording and removed 'Lord' to avoid location leak.",
+            "failures_before": [
+              "location leak: lord",
+              "quotes the passage: quotes verse 13: 'the lord will be good'"
+            ],
+            "scores_before": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 7.0,
+              "runs": 1,
+              "reason": "The causal relation is carried by the subordinate clause “since this Levite has become my priest,” given once and unambiguous, and fairly central."
+            },
+            "accepted": false,
+            "reason": "failed full rejudgment",
+            "suitability_judgment": {
+              "Q": "Why does Micah expect God’s favor?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "Verse 13 explicitly states Micah’s reason: he believes the Lord will be good to him because the Levite has become his priest."
+            },
+            "failures_after": [
+              "ungrounded name: God’s"
+            ],
+            "scores_after": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 9.0,
+              "runs": 1,
+              "reason": "The answer hinges on the causal relation in verse 13 (“since this Levite has become my priest”), stated once and unambiguously, and it is central to the window’s point."
+            },
+            "scores_used": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 9.0,
+              "runs": 1,
+              "reason": "The answer hinges on the causal relation in verse 13 (“since this Levite has become my priest”), stated once and unambiguously, and it is central to the window’s point."
+            }
+          }
+        ],
+        "content_id": "v9-13:5"
+      },
+      {
+        "question": "After installation, what does the young man become for Micah?",
+        "answer": "The young man becomes Micah’s priest.",
+        "answer_verse": 12,
+        "wrong_answer": "The young man becomes Micah’s father.",
+        "relation": "participant",
+        "readings": [
+          {
+            "answer": "his priest",
+            "support": "the young man became his priest"
+          }
+        ],
+        "distinct_readings": [
+          "his priest"
+        ],
+        "scores": {
+          "structure_dependence": 5.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "The text states once that the young man became his (Micah’s) priest following installation, a clear sequential relation and central outcome."
+        },
+        "window_verses": [
+          9,
+          10,
+          11,
+          12,
+          13
+        ],
+        "window_text": {
+          "9": "Micah asked him, “Where are you from?” “I’m a Levite from Bethlehem in Judah,” he said, “and I’m looking for a place to stay.”",
+          "10": "Then Micah said to him, “Live with me and be my father and priest, and I’ll give you ten shekels of silver a year, your clothes and your food.”",
+          "11": "So the Levite agreed to live with him, and the young man became like one of his sons to him.",
+          "12": "Then Micah installed the Levite, and the young man became his priest and lived in his house.",
+          "13": "And Micah said, “Now I know that the Lord will be good to me, since this Levite has become my priest.”"
+        },
+        "reading_groups": [
+          "He becomes Micah’s priest"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "question too complex: stacked clauses (1 comma(s), 1 subordinator(s))",
+            "lexical: structure_dependence 5.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "becom",
+            "micah",
+            "young"
+          ],
+          "answer_verse": 12,
+          "answer_verse_original": 12,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 12",
+          "readings_failures": []
+        },
+        "content_id": "v9-13:6"
+      },
+      {
+        "question": "Who says he now expects the Lord’s favor?",
+        "answer": "Micah says he now expects the Lord’s favor.",
+        "answer_verse": 13,
+        "wrong_answer": "The Levite says he now expects the Lord’s favor.",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "Micah",
+            "support": "And Micah said, “Now I know that the Lord will be good to me"
+          }
+        ],
+        "distinct_readings": [
+          "Micah"
+        ],
+        "scores": {
+          "structure_dependence": 3.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "The line is explicitly attributed to Micah in one place and is unambiguous, though only moderately central to the narrative action."
+        },
+        "window_verses": [
+          9,
+          10,
+          11,
+          12,
+          13
+        ],
+        "window_text": {
+          "9": "Micah asked him, “Where are you from?” “I’m a Levite from Bethlehem in Judah,” he said, “and I’m looking for a place to stay.”",
+          "10": "Then Micah said to him, “Live with me and be my father and priest, and I’ll give you ten shekels of silver a year, your clothes and your food.”",
+          "11": "So the Levite agreed to live with him, and the young man became like one of his sons to him.",
+          "12": "Then Micah installed the Levite, and the young man became his priest and lived in his house.",
+          "13": "And Micah said, “Now I know that the Lord will be good to me, since this Levite has become my priest.”"
+        },
+        "reading_groups": [
+          "Micah says this"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: lord",
+            "dangling pronoun: he",
+            "lexical: structure_dependence 3.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "lord"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "expect",
+            "favor",
+            "lord",
+            "now"
+          ],
+          "answer_verse": 13,
+          "answer_verse_original": 13,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 13",
+          "readings_failures": []
+        },
+        "content_id": "v9-13:7"
+      }
+    ],
+    "report": {
+      "window_id": "v9-13",
+      "verses": [
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      "generated": 7,
+      "scored": 7,
+      "kept": 1,
+      "survivors_before_window_selection": 1,
+      "window_selection_rejected": 0,
+      "repair_attempted": 1,
+      "repaired": 0,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

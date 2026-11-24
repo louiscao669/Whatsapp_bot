@@ -1,0 +1,767 @@
+{
+  "config_digest": "dff75e11c2f634febed8a35c540545c7c544680968ac4cebd050ba973dc16c6d",
+  "data": {
+    "kept": [
+      {
+        "question": "Who flees at dusk and leaves the camp behind?",
+        "answer": "the Arameans",
+        "answer_verse": 7,
+        "wrong_answer": "the people who went to the camp",
+        "relation": "participant",
+        "readings": [
+          {
+            "answer": "The Arameans",
+            "support": "the Arameans | So they got up and fled in the dusk and abandoned their tents and their horses and donkeys. They left the camp as it was"
+          }
+        ],
+        "distinct_readings": [
+          "The Arameans"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "Identifying that the “they” who fled and abandoned the camp are the Arameans requires resolving pronouns across sentences, is stated once, is unambiguous in context, and is central to the event."
+        },
+        "window_verses": [
+          5,
+          6,
+          7
+        ],
+        "window_text": {
+          "5": "At dusk they got up and went to the camp of the Arameans. When they reached the edge of the camp, no one was there,",
+          "6": "for the Lord had caused the Arameans to hear the sound of chariots and horses and a great army, so that they said to one another, “Look, the king of Israel has hired the Hittite and Egyptian kings to attack us!”",
+          "7": "So they got up and fled in the dusk and abandoned their tents and their horses and donkeys. They left the camp as it was and ran for their lives."
+        },
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "corrected metadata from 5 to 7; reading support and question relation identify verse 7",
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 7,
+          "answer_verse_original": 5,
+          "answer_verse_corrected": true,
+          "answer_verse_note": "corrected metadata from 5 to 7; reading support and question relation identify verse 7",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Who flees at dusk and leaves the camp behind?",
+            "readings": [
+              {
+                "answer": "The Arameans",
+                "support": "the Arameans | So they got up and fled in the dusk and abandoned their tents and their horses and donkeys. They left the camp as it was"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Verse 7 says, “So they got up and fled in the dusk and abandoned their tents… They left the camp,” and the antecedent from v6 is “the Arameans,” so the Arameans are the ones who fled and left the camp."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "Verse 7, linked to the Arameans in verse 6, states they fled at dusk and left the camp behind.",
+            "status": "passed"
+          }
+        },
+        "scores_after_repair_raw": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "Identifying that the “they” who fled and abandoned the camp are the Arameans requires resolving pronouns across sentences, is stated once, is unambiguous in context, and is central to the event."
+        },
+        "repaired": true,
+        "repair_attempted": true,
+        "question_before_repair": "Who flees from the Aramean camp at dusk?",
+        "scores_before_repair": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "Identifying the fleers requires resolving the shifting pronoun 'they' to the Arameans in v7, a single but central clause."
+        },
+        "audit_before_repair": {
+          "passed": false,
+          "failures": [
+            "answer leaks into question: aramean"
+          ],
+          "notes": [
+            "corrected metadata from 7 to 5; Q/A evidence matches verse(s) [5] better than the claimed 7",
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "aramean"
+          ],
+          "answer_verse": 5,
+          "answer_verse_original": 7,
+          "answer_verse_corrected": true,
+          "answer_verse_note": "corrected metadata from 7 to 5; Q/A evidence matches verse(s) [5] better than the claimed 7",
+          "readings_failures": []
+        },
+        "repair_log": [
+          {
+            "before": "Who flees from the Aramean camp at dusk?",
+            "after": "Who flees at dusk and leaves the camp behind?",
+            "note": "Removed 'Aramean' to prevent answer leakage while keeping the same ask.",
+            "failures_before": [
+              "answer leaks into question: aramean"
+            ],
+            "scores_before": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 9.0,
+              "runs": 1,
+              "reason": "Identifying the fleers requires resolving the shifting pronoun 'they' to the Arameans in v7, a single but central clause."
+            },
+            "accepted": true,
+            "reason": "passed full rejudgment",
+            "suitability_judgment": {
+              "Q": "Who flees at dusk and leaves the camp behind?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "Verse 7 explicitly attributes the dusk flight and abandonment of the camp to the Arameans."
+            },
+            "failures_after": [],
+            "scores_after": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 9.0,
+              "centrality": 9.0,
+              "runs": 1,
+              "reason": "Identifying that the “they” who fled and abandoned the camp are the Arameans requires resolving pronouns across sentences, is stated once, is unambiguous in context, and is central to the event."
+            },
+            "scores_used": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 9.0,
+              "centrality": 9.0,
+              "runs": 1,
+              "reason": "Identifying that the “they” who fled and abandoned the camp are the Arameans requires resolving pronouns across sentences, is stated once, is unambiguous in context, and is central to the event."
+            }
+          }
+        ],
+        "window_selection_reason": "It hinges on resolving the shifting “they” to the Arameans in verse 7 rather than the earlier visitors, making the competitor a plausible misparse.",
+        "window_structure_max": 9.0,
+        "content_id": "v5-7:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "After the Arameans talk about hired kings, what do they do?",
+        "answer": "The Arameans get up and flee at dusk, leaving the camp.",
+        "answer_verse": 7,
+        "wrong_answer": "The men go to the edge of the Aramean camp.",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "They got up and fled in the dusk.",
+            "support": "So they got up and fled in the dusk"
+          },
+          {
+            "answer": "They abandoned their tents and their horses and donkeys.",
+            "support": "abandoned their tents and their horses and donkeys"
+          },
+          {
+            "answer": "They left the camp as it was.",
+            "support": "They left the camp as it was"
+          },
+          {
+            "answer": "They ran for their lives.",
+            "support": "ran for their lives"
+          }
+        ],
+        "distinct_readings": [
+          "They got up and fled in the dusk.",
+          "They abandoned their tents and their horses and donkeys.",
+          "They left the camp as it was.",
+          "They ran for their lives."
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 8.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "It requires linking the Arameans’ speech to the subsequent action and choosing the correct “they,” stated once and central to the event."
+        },
+        "window_verses": [
+          5,
+          6,
+          7
+        ],
+        "window_text": {
+          "5": "At dusk they got up and went to the camp of the Arameans. When they reached the edge of the camp, no one was there,",
+          "6": "for the Lord had caused the Arameans to hear the sound of chariots and horses and a great army, so that they said to one another, “Look, the king of Israel has hired the Hittite and Egyptian kings to attack us!”",
+          "7": "So they got up and fled in the dusk and abandoned their tents and their horses and donkeys. They left the camp as it was and ran for their lives."
+        },
+        "reading_groups": [
+          "They get up and flee at dusk",
+          "They abandon their tents, horses, and donkeys",
+          "They leave the camp as it is",
+          "They run for their lives"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "question too complex: stacked clauses (1 comma(s), 1 subordinator(s))",
+            "4 defensible readings: They get up and flee at dusk | They abandon their tents, horses, and donkeys | They leave the camp as it is",
+            "answer 'The Arameans get up and flee at dusk, leaving the camp.' is not among the defensible readings"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "aramean"
+          ],
+          "answer_verse": 7,
+          "answer_verse_original": 7,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 7",
+          "readings_failures": [
+            "4 defensible readings: They get up and flee at dusk | They abandon their tents, horses, and donkeys | They leave the camp as it is",
+            "answer 'The Arameans get up and flee at dusk, leaving the camp.' is not among the defensible readings"
+          ]
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "After the Arameans talk about hired kings, what do they do?",
+            "after": "What do the Arameans do next?",
+            "note": "Removed subordinate clause and simplified to a single-clause sequence question.",
+            "failures_before": [
+              "question too complex: stacked clauses (1 comma(s), 1 subordinator(s))",
+              "4 defensible readings: They get up and flee at dusk | They abandon their tents, horses, and donkeys | They leave the camp as it is",
+              "answer 'The Arameans get up and flee at dusk, leaving the camp.' is not among the defensible readings"
+            ],
+            "scores_before": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 8.0,
+              "centrality": 9.0,
+              "runs": 1,
+              "reason": "It requires linking the Arameans’ speech to the subsequent action and choosing the correct “they,” stated once and central to the event."
+            },
+            "accepted": false,
+            "reason": "removed as weak question: The temporal reference \"next\" is ambiguous (after hearing, after speaking, or after the lepers’ arrival), allowing multiple plausible answers.",
+            "suitability_judgment": {
+              "Q": "What do the Arameans do next?",
+              "clear_referents": false,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": false,
+              "remove": true,
+              "reason": "The temporal reference \"next\" is ambiguous (after hearing, after speaking, or after the lepers’ arrival), allowing multiple plausible answers."
+            }
+          }
+        ],
+        "content_id": "v5-7:2"
+      },
+      {
+        "question": "When the men reach the camp edge, who is there?",
+        "answer": "No one.",
+        "answer_verse": 5,
+        "wrong_answer": "The Hittite and Egyptian kings.",
+        "relation": "polarity",
+        "readings": [
+          {
+            "answer": "No one",
+            "support": "no one was there"
+          }
+        ],
+        "distinct_readings": [
+          "No one"
+        ],
+        "scores": {
+          "structure_dependence": 2.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "The text explicitly says “no one was there,” a unique, unambiguous clause central to discovering the empty camp."
+        },
+        "window_verses": [
+          5,
+          6,
+          7
+        ],
+        "window_text": {
+          "5": "At dusk they got up and went to the camp of the Arameans. When they reached the edge of the camp, no one was there,",
+          "6": "for the Lord had caused the Arameans to hear the sound of chariots and horses and a great army, so that they said to one another, “Look, the king of Israel has hired the Hittite and Egyptian kings to attack us!”",
+          "7": "So they got up and fled in the dusk and abandoned their tents and their horses and donkeys. They left the camp as it was and ran for their lives."
+        },
+        "reading_groups": [
+          "No one is there"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: edg, reach",
+            "question too complex: stacked clauses (1 comma(s), 1 subordinator(s))",
+            "yes/no answer: 50% by guessing",
+            "lexical: structure_dependence 2.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "edg",
+            "reach"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 5,
+          "answer_verse_original": 5,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 5",
+          "readings_failures": []
+        },
+        "content_id": "v5-7:3"
+      },
+      {
+        "question": "Who makes the Arameans hear a battle sound?",
+        "answer": "The Lord.",
+        "answer_verse": 6,
+        "wrong_answer": "The king of Israel.",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "The Lord",
+            "support": "the Lord had caused the Arameans to hear"
+          }
+        ],
+        "distinct_readings": [
+          "The Lord"
+        ],
+        "scores": {
+          "structure_dependence": 2.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "The agent is directly named as “the Lord” in a single clause explaining the flight."
+        },
+        "window_verses": [
+          5,
+          6,
+          7
+        ],
+        "window_text": {
+          "5": "At dusk they got up and went to the camp of the Arameans. When they reached the edge of the camp, no one was there,",
+          "6": "for the Lord had caused the Arameans to hear the sound of chariots and horses and a great army, so that they said to one another, “Look, the king of Israel has hired the Hittite and Egyptian kings to attack us!”",
+          "7": "So they got up and fled in the dusk and abandoned their tents and their horses and donkeys. They left the camp as it was and ran for their lives."
+        },
+        "reading_groups": [
+          "The Lord caused them to hear the sound"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "bare-name answer 'The Lord.': names survive translation",
+            "lexical: structure_dependence 2.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 6,
+          "answer_verse_original": 6,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 6",
+          "readings_failures": []
+        },
+        "content_id": "v5-7:4"
+      },
+      {
+        "question": "When the Arameans flee to save themselves, from where do they run?",
+        "answer": "From their camp.",
+        "answer_verse": 7,
+        "wrong_answer": "To the Aramean camp.",
+        "relation": "direction",
+        "readings": [
+          {
+            "answer": "from the camp",
+            "support": "left the camp as it was and ran for their lives"
+          }
+        ],
+        "distinct_readings": [
+          "from the camp"
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 9.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "One must infer from the sequence “left the camp and ran,” uniquely indicating the camp as the origin, a secondary detail to the main flight."
+        },
+        "window_verses": [
+          5,
+          6,
+          7
+        ],
+        "window_text": {
+          "5": "At dusk they got up and went to the camp of the Arameans. When they reached the edge of the camp, no one was there,",
+          "6": "for the Lord had caused the Arameans to hear the sound of chariots and horses and a great army, so that they said to one another, “Look, the king of Israel has hired the Hittite and Egyptian kings to attack us!”",
+          "7": "So they got up and fled in the dusk and abandoned their tents and their horses and donkeys. They left the camp as it was and ran for their lives."
+        },
+        "reading_groups": [
+          "They run from the camp"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "dangling answer reference: their",
+            "question too complex: stacked clauses (1 comma(s), 1 subordinator(s))",
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 7,
+          "answer_verse_original": 7,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 7",
+          "readings_failures": []
+        },
+        "content_id": "v5-7:5"
+      },
+      {
+        "question": "Why is the Aramean camp empty when the people who went arrive?",
+        "answer": "The Lord made the Arameans hear an army.",
+        "answer_verse": 6,
+        "wrong_answer": "The Hittite and Egyptian kings attacked them.",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "Because the Lord made the Arameans hear the sound of a great army, so they fled and abandoned the camp.",
+            "support": "for the Lord had caused the Arameans to hear the sound of chariots and horses and a great army | So they got up and fled in the dusk and abandoned their tents"
+          },
+          {
+            "answer": "Because the Arameans believed the king of Israel had hired Hittite and Egyptian kings to attack them, so they fled.",
+            "support": "Look, the king of Israel has hired the Hittite and Egyptian kings to attack us! | So they got up and fled in the dusk and abandoned their tents"
+          },
+          {
+            "answer": "Because the Arameans fled and left everything behind.",
+            "support": "They left the camp as it was and ran for their lives."
+          }
+        ],
+        "distinct_readings": [
+          "Because the Lord made the Arameans hear the sound of a great army, so they fled and abandoned the camp.",
+          "Because the Arameans believed the king of Israel had hired Hittite and Egyptian kings to attack them, so they fled.",
+          "Because the Arameans fled and left everything behind."
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 5.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "The text gives a causal clause ('for the Lord had caused...'), though one might also answer 'because they fled,' introducing some ambiguity."
+        },
+        "window_verses": [
+          5,
+          6,
+          7
+        ],
+        "window_text": {
+          "5": "At dusk they got up and went to the camp of the Arameans. When they reached the edge of the camp, no one was there,",
+          "6": "for the Lord had caused the Arameans to hear the sound of chariots and horses and a great army, so that they said to one another, “Look, the king of Israel has hired the Hittite and Egyptian kings to attack us!”",
+          "7": "So they got up and fled in the dusk and abandoned their tents and their horses and donkeys. They left the camp as it was and ran for their lives."
+        },
+        "audit": {
+          "passed": false,
+          "failures": [
+            "ambiguous: answer_certainty 5.0 (need 7.0)",
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "aramean"
+          ],
+          "answer_verse": 6,
+          "answer_verse_original": 6,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 6",
+          "readings_failures": []
+        },
+        "content_id": "v5-7:6"
+      },
+      {
+        "question": "According to the Arameans, whom do the Hittite and Egyptian kings attack?",
+        "answer": "the Arameans",
+        "answer_verse": 6,
+        "wrong_answer": "the people who went to the camp",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "the Arameans",
+            "support": "to attack us!"
+          }
+        ],
+        "distinct_readings": [
+          "the Arameans"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "It hinges on mapping 'us' in the reported speech to the speakers (the Arameans), stated clearly once in the quote."
+        },
+        "window_verses": [
+          5,
+          6,
+          7
+        ],
+        "window_text": {
+          "5": "At dusk they got up and went to the camp of the Arameans. When they reached the edge of the camp, no one was there,",
+          "6": "for the Lord had caused the Arameans to hear the sound of chariots and horses and a great army, so that they said to one another, “Look, the king of Israel has hired the Hittite and Egyptian kings to attack us!”",
+          "7": "So they got up and fled in the dusk and abandoned their tents and their horses and donkeys. They left the camp as it was and ran for their lives."
+        },
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: egyptian, hittit",
+            "answer leaks into question: aramean",
+            "quotes the passage: quotes verse 6: 'the hittite and egyptian kings'"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "egyptian",
+            "hittit"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "aramean"
+          ],
+          "answer_verse": 6,
+          "answer_verse_original": 6,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 6",
+          "readings_failures": []
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "According to the Arameans, whom do the Hittite and Egyptian kings attack?",
+            "after": "According to those in the camp, whom were the hired kings attacking?",
+            "note": "Replaced leaking group and quoted nation names with neutral phrasing while preserving the ask.",
+            "failures_before": [
+              "location leak: egyptian, hittit",
+              "answer leaks into question: aramean",
+              "quotes the passage: quotes verse 6: 'the hittite and egyptian kings'"
+            ],
+            "scores_before": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 7.0,
+              "runs": 1,
+              "reason": "It hinges on mapping 'us' in the reported speech to the speakers (the Arameans), stated clearly once in the quote."
+            },
+            "accepted": false,
+            "reason": "failed full rejudgment",
+            "suitability_judgment": {
+              "Q": "According to those in the camp, whom were the hired kings attacking?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "The only quoted speakers are the Arameans, who say the hired kings were attacking “us,” i.e., the Arameans."
+            },
+            "failures_after": [
+              "dangling pronoun: those"
+            ],
+            "scores_after": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 9.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "It depends on linking the quoted “to attack us” to the Arameans who were speaking in their own camp, a single explicit line that clearly explains the reason for the flight and is central."
+            },
+            "scores_used": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 9.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "It depends on linking the quoted “to attack us” to the Arameans who were speaking in their own camp, a single explicit line that clearly explains the reason for the flight and is central."
+            }
+          }
+        ],
+        "content_id": "v5-7:7"
+      },
+      {
+        "question": "What do the Arameans leave behind when they run?",
+        "answer": "their tents, horses, and donkeys",
+        "answer_verse": 7,
+        "wrong_answer": "a great army",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "Their tents, horses, and donkeys.",
+            "support": "abandoned their tents and their horses and donkeys"
+          },
+          {
+            "answer": "The camp as it was.",
+            "support": "left the camp as it was"
+          }
+        ],
+        "distinct_readings": [
+          "Their tents, horses, and donkeys.",
+          "The camp as it was."
+        ],
+        "scores": {
+          "structure_dependence": 3.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "The list 'tents, horses, and donkeys' is directly stated, with minimal inference beyond linking 'they' to the Arameans."
+        },
+        "window_verses": [
+          5,
+          6,
+          7
+        ],
+        "window_text": {
+          "5": "At dusk they got up and went to the camp of the Arameans. When they reached the edge of the camp, no one was there,",
+          "6": "for the Lord had caused the Arameans to hear the sound of chariots and horses and a great army, so that they said to one another, “Look, the king of Israel has hired the Hittite and Egyptian kings to attack us!”",
+          "7": "So they got up and fled in the dusk and abandoned their tents and their horses and donkeys. They left the camp as it was and ran for their lives."
+        },
+        "audit": {
+          "passed": false,
+          "failures": [
+            "dangling answer reference: their",
+            "lexical: structure_dependence 3.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 7,
+          "answer_verse_original": 7,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 7",
+          "readings_failures": []
+        },
+        "content_id": "v5-7:8"
+      },
+      {
+        "question": "When do the Arameans flee their camp?",
+        "answer": "in the dusk",
+        "answer_verse": 5,
+        "wrong_answer": "when the people reach the camp",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "in the dusk",
+            "support": "fled in the dusk"
+          }
+        ],
+        "distinct_readings": [
+          "in the dusk"
+        ],
+        "scores": {
+          "structure_dependence": 2.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 10.0,
+          "centrality": 5.0,
+          "runs": 1,
+          "reason": "The time is explicitly given as 'in the dusk' for the Arameans’ flight, though 'dusk' also appears earlier for the visitors."
+        },
+        "window_verses": [
+          5,
+          6,
+          7
+        ],
+        "window_text": {
+          "5": "At dusk they got up and went to the camp of the Arameans. When they reached the edge of the camp, no one was there,",
+          "6": "for the Lord had caused the Arameans to hear the sound of chariots and horses and a great army, so that they said to one another, “Look, the king of Israel has hired the Hittite and Egyptian kings to attack us!”",
+          "7": "So they got up and fled in the dusk and abandoned their tents and their horses and donkeys. They left the camp as it was and ran for their lives."
+        },
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 2.0 (need 7.0)"
+          ],
+          "notes": [
+            "corrected metadata from 7 to 5; reading support and question relation identify verse 5",
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 5,
+          "answer_verse_original": 7,
+          "answer_verse_corrected": true,
+          "answer_verse_note": "corrected metadata from 7 to 5; reading support and question relation identify verse 5",
+          "readings_failures": []
+        },
+        "content_id": "v5-7:9"
+      }
+    ],
+    "report": {
+      "window_id": "v5-7",
+      "verses": [
+        5,
+        6,
+        7
+      ],
+      "generated": 9,
+      "scored": 9,
+      "kept": 1,
+      "survivors_before_window_selection": 1,
+      "window_selection_rejected": 0,
+      "repair_attempted": 3,
+      "repaired": 1,
+      "window_retries_used": 1,
+      "score_runs": 1
+    }
+  }
+}

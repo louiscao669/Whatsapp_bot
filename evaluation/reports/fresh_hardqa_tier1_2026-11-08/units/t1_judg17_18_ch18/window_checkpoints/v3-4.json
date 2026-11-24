@@ -1,0 +1,1004 @@
+{
+  "config_digest": "bab5a848f20f60ea534214d9358795f20d975515f4adb1ac077513ba4e1247aa",
+  "data": {
+    "kept": [
+      {
+        "question": "Who tells the men near Micah’s house about Micah’s actions?",
+        "answer": "The young Levite tells the men near Micah’s house.",
+        "answer_verse": 4,
+        "wrong_answer": "Micah tells the men near Micah’s house.",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "The young Levite",
+            "support": "the young Levite | He told them what Micah had done for him"
+          },
+          {
+            "answer": "Micah’s priest",
+            "support": "He told them what Micah had done for him | I am his priest"
+          }
+        ],
+        "distinct_readings": [
+          "The young Levite",
+          "Micah’s priest"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "It requires mapping 'He' and 'them' in 'He told them what Micah had done for him' to the Levite and the men, stated once and key to the exchange."
+        },
+        "window_verses": [
+          3,
+          4
+        ],
+        "window_text": {
+          "3": "When they were near Micah’s house, they recognized the voice of the young Levite; so they turned in there and asked him, “Who brought you here? What are you doing in this place? Why are you here?”",
+          "4": "He told them what Micah had done for him, and said, “He has hired me and I am his priest.”"
+        },
+        "reading_groups": [
+          "The young Levite (Micah’s priest) tells them"
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "hous",
+            "micah",
+            "near",
+            "tell"
+          ],
+          "answer_verse": 4,
+          "answer_verse_original": 4,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 4",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Who tells the men near Micah’s house about Micah’s actions?",
+            "readings": [
+              {
+                "answer": "The young Levite",
+                "support": "the young Levite | He told them what Micah had done for him"
+              },
+              {
+                "answer": "Micah’s priest",
+                "support": "He told them what Micah had done for him | I am his priest"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Verse 3 identifies “the young Levite,” and verse 4 says “He told them what Micah had done for him,” so the young Levite is the one who tells them."
+              },
+              {
+                "number": 2,
+                "classification": "equivalent_to_key",
+                "reason": "The speaker adds, “I am his priest,” identifying himself as Micah’s priest; this is the same young Levite who told them what Micah had done."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The passage explicitly says the young Levite—who is also Micah’s priest—told them what Micah had done.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It best tests pronoun resolution—identifying that “he” refers to the Levite rather than the nearby name Micah—with a plausible misattribution competitor, while remaining clear and fully supported by the window.",
+        "window_structure_max": 9.0,
+        "content_id": "v3-4:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Whose voice do they recognize near Micah’s house?",
+        "answer": "the young Levite",
+        "answer_verse": 3,
+        "wrong_answer": "Micah",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "the young Levite",
+            "support": "the voice of the young Levite"
+          }
+        ],
+        "distinct_readings": [
+          "the young Levite"
+        ],
+        "scores": {
+          "structure_dependence": 2.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "The clause explicitly states they recognized “the voice of the young Levite,” a direct noun phrase stated once and serving as the trigger for the scene."
+        },
+        "window_verses": [
+          3,
+          4
+        ],
+        "window_text": {
+          "3": "When they were near Micah’s house, they recognized the voice of the young Levite; so they turned in there and asked him, “Who brought you here? What are you doing in this place? Why are you here?”",
+          "4": "He told them what Micah had done for him, and said, “He has hired me and I am his priest.”"
+        },
+        "reading_groups": [
+          "They recognize the young Levite’s voice"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: hous",
+            "dangling pronoun: they",
+            "lexical: structure_dependence 2.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "hous"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 3,
+          "answer_verse_original": 3,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 3",
+          "readings_failures": []
+        },
+        "content_id": "v3-4:2"
+      },
+      {
+        "question": "After they enter, which person do they question there?",
+        "answer": "the young Levite",
+        "answer_verse": 3,
+        "wrong_answer": "Micah",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "the young Levite",
+            "support": "recognized the voice of the young Levite; so they turned in there and asked him"
+          }
+        ],
+        "distinct_readings": [
+          "the young Levite"
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 6.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "Identifying the addressee requires resolving the pronoun “him” back to the young Levite, stated once but also implied by the direct-address questions."
+        },
+        "window_verses": [
+          3,
+          4
+        ],
+        "window_text": {
+          "3": "When they were near Micah’s house, they recognized the voice of the young Levite; so they turned in there and asked him, “Who brought you here? What are you doing in this place? Why are you here?”",
+          "4": "He told them what Micah had done for him, and said, “He has hired me and I am his priest.”"
+        },
+        "reading_groups": [
+          "They question the young Levite"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "dangling pronoun: they, they",
+            "question too complex: stacked clauses (1 comma(s), 1 subordinator(s))"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 3,
+          "answer_verse_original": 3,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 3",
+          "readings_failures": []
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "After they enter, which person do they question there?",
+            "after": "Who is questioned there upon arrival?",
+            "note": "Removed dangling pronouns and simplified to one clause.",
+            "failures_before": [
+              "dangling pronoun: they, they",
+              "question too complex: stacked clauses (1 comma(s), 1 subordinator(s))"
+            ],
+            "scores_before": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 6.0,
+              "answer_certainty": 10.0,
+              "centrality": 6.0,
+              "runs": 1,
+              "reason": "Identifying the addressee requires resolving the pronoun “him” back to the young Levite, stated once but also implied by the direct-address questions."
+            },
+            "accepted": false,
+            "reason": "removed as weak question: The deictic \"there\" and the phrase \"upon arrival\" lack explicit referents in the window, making the location and arrival event ambiguous.",
+            "suitability_judgment": {
+              "Q": "Who is questioned there upon arrival?",
+              "clear_referents": false,
+              "natural_wording": false,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": true,
+              "reason": "The deictic \"there\" and the phrase \"upon arrival\" lack explicit referents in the window, making the location and arrival event ambiguous."
+            }
+          }
+        ],
+        "content_id": "v3-4:3"
+      },
+      {
+        "question": "Who hires the young Levite?",
+        "answer": "Micah",
+        "answer_verse": 3,
+        "wrong_answer": "the men who question him",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "Micah",
+            "support": "what Micah had done for him | He has hired me"
+          }
+        ],
+        "distinct_readings": [
+          "Micah"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "It hinges on linking “He has hired me” to Micah via the preceding clause, a single pronoun-to-antecedent relation with one clear answer central to the report."
+        },
+        "window_verses": [
+          3,
+          4
+        ],
+        "window_text": {
+          "3": "When they were near Micah’s house, they recognized the voice of the young Levite; so they turned in there and asked him, “Who brought you here? What are you doing in this place? Why are you here?”",
+          "4": "He told them what Micah had done for him, and said, “He has hired me and I am his priest.”"
+        },
+        "reading_groups": [
+          "Micah hires the young Levite"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: levit",
+            "bare-name answer 'Micah': names survive translation"
+          ],
+          "notes": [
+            "corrected metadata from 4 to 3; Q/A evidence matches verse(s) [3] better than the claimed 4",
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "levit"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 3,
+          "answer_verse_original": 4,
+          "answer_verse_corrected": true,
+          "answer_verse_note": "corrected metadata from 4 to 3; Q/A evidence matches verse(s) [3] better than the claimed 4",
+          "readings_failures": []
+        },
+        "content_id": "v3-4:4"
+      },
+      {
+        "question": "For whom does Micah do something, in the Levite’s report?",
+        "answer": "the young Levite",
+        "answer_verse": 3,
+        "wrong_answer": "the men who question him",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "the young Levite",
+            "support": "the young Levite | what Micah had done for him"
+          }
+        ],
+        "distinct_readings": [
+          "the young Levite"
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 9.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "The reader must resolve “for him” in “what Micah had done for him” as referring to the speaking Levite, stated once and reasonably central."
+        },
+        "window_verses": [
+          3,
+          4
+        ],
+        "window_text": {
+          "3": "When they were near Micah’s house, they recognized the voice of the young Levite; so they turned in there and asked him, “Who brought you here? What are you doing in this place? Why are you here?”",
+          "4": "He told them what Micah had done for him, and said, “He has hired me and I am his priest.”"
+        },
+        "reading_groups": [
+          "Micah did something for the young Levite"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: levit"
+          ],
+          "notes": [
+            "corrected metadata from 4 to 3; reading support and question relation identify verse 3",
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "levit"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "levit"
+          ],
+          "answer_verse": 3,
+          "answer_verse_original": 4,
+          "answer_verse_corrected": true,
+          "answer_verse_note": "corrected metadata from 4 to 3; reading support and question relation identify verse 3",
+          "readings_failures": []
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "For whom does Micah do something, in the Levite’s report?",
+            "after": "In the report, for whom does Micah do something?",
+            "note": "Removed the verse-unique word “Levite’s” to prevent location leaking.",
+            "failures_before": [
+              "location leak: levit"
+            ],
+            "scores_before": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 8.0,
+              "answer_certainty": 9.0,
+              "centrality": 6.0,
+              "runs": 1,
+              "reason": "The reader must resolve “for him” in “what Micah had done for him” as referring to the speaking Levite, stated once and reasonably central."
+            },
+            "accepted": false,
+            "reason": "removed as weak question: It uses the invented label \"the report\" and vague wording (\"do something\"), leaving the referent and action unclear.",
+            "suitability_judgment": {
+              "Q": "In the report, for whom does Micah do something?",
+              "clear_referents": false,
+              "natural_wording": false,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": true,
+              "reason": "It uses the invented label \"the report\" and vague wording (\"do something\"), leaving the referent and action unclear."
+            }
+          }
+        ],
+        "content_id": "v3-4:5"
+      },
+      {
+        "question": "For which man does the young Levite serve as priest?",
+        "answer": "Micah",
+        "answer_verse": 3,
+        "wrong_answer": "the men who question him",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "Micah",
+            "support": "what Micah had done for him | I am his priest."
+          }
+        ],
+        "distinct_readings": [
+          "Micah"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "Determining “his” in “I am his priest” requires pronoun resolution to Micah, uniquely stated and core to the relationship described."
+        },
+        "window_verses": [
+          3,
+          4
+        ],
+        "window_text": {
+          "3": "When they were near Micah’s house, they recognized the voice of the young Levite; so they turned in there and asked him, “Who brought you here? What are you doing in this place? Why are you here?”",
+          "4": "He told them what Micah had done for him, and said, “He has hired me and I am his priest.”"
+        },
+        "reading_groups": [
+          "The young Levite is priest for Micah"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: levit",
+            "bare-name answer 'Micah': names survive translation"
+          ],
+          "notes": [
+            "corrected metadata from 4 to 3; Q/A evidence matches verse(s) [3] better than the claimed 4",
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "levit"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 3,
+          "answer_verse_original": 4,
+          "answer_verse_corrected": true,
+          "answer_verse_note": "corrected metadata from 4 to 3; Q/A evidence matches verse(s) [3] better than the claimed 4",
+          "readings_failures": []
+        },
+        "content_id": "v3-4:6"
+      },
+      {
+        "question": "What prompts them to enter near Micah’s house?",
+        "answer": "recognizing the young Levite’s voice",
+        "answer_verse": 3,
+        "wrong_answer": "being near Micah’s house",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "Recognizing the young Levite’s voice.",
+            "support": "they recognized the voice of the young Levite; so they turned in there"
+          }
+        ],
+        "distinct_readings": [
+          "Recognizing the young Levite’s voice."
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "The causal link is explicit—“they recognized the voice…; so they turned in there”—a single, unambiguous cause central to the action."
+        },
+        "window_verses": [
+          3,
+          4
+        ],
+        "window_text": {
+          "3": "When they were near Micah’s house, they recognized the voice of the young Levite; so they turned in there and asked him, “Who brought you here? What are you doing in this place? Why are you here?”",
+          "4": "He told them what Micah had done for him, and said, “He has hired me and I am his priest.”"
+        },
+        "reading_groups": [
+          "Recognizing the young Levite’s voice prompts them to go in"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: hous",
+            "dangling pronoun: them"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "hous"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 3,
+          "answer_verse_original": 3,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 3",
+          "readings_failures": []
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "What prompts them to enter near Micah’s house?",
+            "after": "What prompts the entry?",
+            "note": "Removed the dangling pronoun and the leaking location term.",
+            "failures_before": [
+              "location leak: hous",
+              "dangling pronoun: them"
+            ],
+            "scores_before": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "The causal link is explicit—“they recognized the voice…; so they turned in there”—a single, unambiguous cause central to the action."
+            },
+            "accepted": false,
+            "reason": "removed as weak question: The abstract label \"the entry\" lacks an explicit referent in the window, forcing the reader to infer which event is meant.",
+            "suitability_judgment": {
+              "Q": "What prompts the entry?",
+              "clear_referents": false,
+              "natural_wording": false,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": true,
+              "reason": "The abstract label \"the entry\" lacks an explicit referent in the window, forcing the reader to infer which event is meant."
+            }
+          }
+        ],
+        "content_id": "v3-4:7"
+      },
+      {
+        "question": "Who questions the young Levite near Micah’s house?",
+        "answer": "The men near Micah’s house question the young Levite.",
+        "answer_verse": 3,
+        "wrong_answer": "Micah questions the young Levite.",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "They",
+            "support": "so they turned in there and asked him,"
+          }
+        ],
+        "distinct_readings": [
+          "They"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "The subject 'they' who ask him must be resolved from the context of verse 3, and this is stated once and central to the encounter."
+        },
+        "window_verses": [
+          3,
+          4
+        ],
+        "window_text": {
+          "3": "When they were near Micah’s house, they recognized the voice of the young Levite; so they turned in there and asked him, “Who brought you here? What are you doing in this place? Why are you here?”",
+          "4": "He told them what Micah had done for him, and said, “He has hired me and I am his priest.”"
+        },
+        "reading_groups": [
+          "The men (“they”) question the young Levite"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: hous, levit",
+            "answer leaks into question: hous, levit, micah, near, question, young"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "hous",
+            "levit"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "hous",
+            "levit",
+            "micah",
+            "near",
+            "question",
+            "young"
+          ],
+          "answer_verse": 3,
+          "answer_verse_original": 3,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 3",
+          "readings_failures": []
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "Who questions the young Levite near Micah’s house?",
+            "after": "Who asks the person whose voice is recognized?",
+            "note": "Removed location and identity leaks and rephrased the referent neutrally.",
+            "failures_before": [
+              "location leak: hous, levit",
+              "answer leaks into question: hous, levit, micah, near, question, young"
+            ],
+            "scores_before": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 9.0,
+              "centrality": 7.0,
+              "runs": 1,
+              "reason": "The subject 'they' who ask him must be resolved from the context of verse 3, and this is stated once and central to the encounter."
+            },
+            "accepted": false,
+            "reason": "removed as weak question: It uses an unnatural circumlocution (“the person whose voice is recognized”) instead of referring naturally to the young Levite.",
+            "suitability_judgment": {
+              "Q": "Who asks the person whose voice is recognized?",
+              "clear_referents": true,
+              "natural_wording": false,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": true,
+              "reason": "It uses an unnatural circumlocution (“the person whose voice is recognized”) instead of referring naturally to the young Levite."
+            }
+          }
+        ],
+        "content_id": "v3-4:8"
+      },
+      {
+        "question": "Why do the men near Micah’s house turn in?",
+        "answer": "Because they recognize the young Levite’s voice.",
+        "answer_verse": 3,
+        "wrong_answer": "To ask the young Levite why he is there.",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "Because they recognized the voice of the young Levite",
+            "support": "they recognized the voice of the young Levite; so they turned in there"
+          },
+          {
+            "answer": "To ask him questions",
+            "support": "so they turned in there and asked him"
+          }
+        ],
+        "distinct_readings": [
+          "Because they recognized the voice of the young Levite",
+          "To ask him questions"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "The causal link 'so' ties recognizing the Levite’s voice to their turning in, a single clear relation central to the scene."
+        },
+        "window_verses": [
+          3,
+          4
+        ],
+        "window_text": {
+          "3": "When they were near Micah’s house, they recognized the voice of the young Levite; so they turned in there and asked him, “Who brought you here? What are you doing in this place? Why are you here?”",
+          "4": "He told them what Micah had done for him, and said, “He has hired me and I am his priest.”"
+        },
+        "reading_groups": [
+          "Because they recognized the young Levite’s voice (cause)",
+          "To ask him questions (purpose)"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: hous, turn",
+            "2 defensible readings: Because they recognized the young Levite’s voice (cause) | To ask him questions (purpose)",
+            "competitor 'To ask the young Levite why he is there.' is itself defensible — the item is ambiguous, not discriminating"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "hous",
+            "turn"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 3,
+          "answer_verse_original": 3,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 3",
+          "readings_failures": [
+            "2 defensible readings: Because they recognized the young Levite’s voice (cause) | To ask him questions (purpose)",
+            "competitor 'To ask the young Levite why he is there.' is itself defensible — the item is ambiguous, not discriminating"
+          ]
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "Why do the men near Micah’s house turn in?",
+            "after": "Why do the men enter?",
+            "note": "Removed location and motion leak terms and simplified wording.",
+            "failures_before": [
+              "location leak: hous, turn",
+              "2 defensible readings: Because they recognized the young Levite’s voice (cause) | To ask him questions (purpose)",
+              "competitor 'To ask the young Levite why he is there.' is itself defensible — the item is ambiguous, not discriminating"
+            ],
+            "scores_before": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "The causal link 'so' ties recognizing the Levite’s voice to their turning in, a single clear relation central to the scene."
+            },
+            "accepted": false,
+            "reason": "removed as weak question: “The men” is an invented label not introduced in the window, so the referent is not explicit.",
+            "suitability_judgment": {
+              "Q": "Why do the men enter?",
+              "clear_referents": false,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": true,
+              "reason": "“The men” is an invented label not introduced in the window, so the referent is not explicit."
+            }
+          }
+        ],
+        "content_id": "v3-4:9"
+      },
+      {
+        "question": "For whom had Micah done something, as the young Levite says?",
+        "answer": "For the young Levite.",
+        "answer_verse": 4,
+        "wrong_answer": "For the men near Micah’s house.",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "the young Levite",
+            "support": "what Micah had done for him | He has hired me"
+          }
+        ],
+        "distinct_readings": [
+          "the young Levite"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "Answering requires resolving 'him' in 'what Micah had done for him' to the Levite, a single mention that is supportive but not the main point."
+        },
+        "window_verses": [
+          3,
+          4
+        ],
+        "window_text": {
+          "3": "When they were near Micah’s house, they recognized the voice of the young Levite; so they turned in there and asked him, “Who brought you here? What are you doing in this place? Why are you here?”",
+          "4": "He told them what Micah had done for him, and said, “He has hired me and I am his priest.”"
+        },
+        "reading_groups": [
+          "For the young Levite"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "answer leaks into question: levit, young"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "levit",
+            "young"
+          ],
+          "answer_verse": 4,
+          "answer_verse_original": 4,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 4",
+          "readings_failures": []
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "For whom had Micah done something, as the young Levite says?",
+            "after": "For whom had Micah done something?",
+            "note": "Removed the leaking reference to the young Levite.",
+            "failures_before": [
+              "answer leaks into question: levit, young"
+            ],
+            "scores_before": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 9.0,
+              "centrality": 6.0,
+              "runs": 1,
+              "reason": "Answering requires resolving 'him' in 'what Micah had done for him' to the Levite, a single mention that is supportive but not the main point."
+            },
+            "accepted": false,
+            "reason": "failed full rejudgment",
+            "suitability_judgment": {
+              "Q": "For whom had Micah done something?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "It naturally targets the explicit beneficiary (“him,” the young Levite) stated in the window, yielding one clear answer."
+            },
+            "failures_after": [
+              "not scored"
+            ],
+            "scores_after": {},
+            "scores_used": {}
+          }
+        ],
+        "content_id": "v3-4:10"
+      },
+      {
+        "question": "Who hires the young Levite?",
+        "answer": "Micah hires the young Levite.",
+        "answer_verse": 4,
+        "wrong_answer": "The young Levite hires Micah.",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "Micah",
+            "support": "what Micah had done for him | He has hired me"
+          }
+        ],
+        "distinct_readings": [
+          "Micah"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "One must link the quoted 'He has hired me' to its antecedent Micah in the prior clause, a single, core fact in the reply."
+        },
+        "window_verses": [
+          3,
+          4
+        ],
+        "window_text": {
+          "3": "When they were near Micah’s house, they recognized the voice of the young Levite; so they turned in there and asked him, “Who brought you here? What are you doing in this place? Why are you here?”",
+          "4": "He told them what Micah had done for him, and said, “He has hired me and I am his priest.”"
+        },
+        "reading_groups": [
+          "Micah hires the young Levite"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: hybrid window selector — It best tests pronoun resolution—identifying that “he” refers to the Levite rather than the nearby name Micah—with a plausible misattribution competitor, while remaining clear and fully supported by the window."
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "hir",
+            "levit",
+            "young"
+          ],
+          "answer_verse": 4,
+          "answer_verse_original": 4,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 4",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Who hires the young Levite?",
+            "readings": [
+              {
+                "answer": "Micah",
+                "support": "what Micah had done for him | He has hired me"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Verse 4 reports the Levite explaining “what Micah had done for him” and specifically, “He has hired me,” identifying Micah as the one who hired him."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The Levite explicitly says Micah hired him, matching the key.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It best tests pronoun resolution—identifying that “he” refers to the Levite rather than the nearby name Micah—with a plausible misattribution competitor, while remaining clear and fully supported by the window.",
+        "content_id": "v3-4:11"
+      },
+      {
+        "question": "Whose priest does the young Levite say he is?",
+        "answer": "The young Levite says he is Micah’s priest.",
+        "answer_verse": 4,
+        "wrong_answer": "The young Levite says he is the men’s priest.",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "Micah's",
+            "support": "what Micah had done for him | I am his priest."
+          }
+        ],
+        "distinct_readings": [
+          "Micah's"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "It turns on resolving 'his' in 'I am his priest' back to Micah, a single, central identification."
+        },
+        "window_verses": [
+          3,
+          4
+        ],
+        "window_text": {
+          "3": "When they were near Micah’s house, they recognized the voice of the young Levite; so they turned in there and asked him, “Who brought you here? What are you doing in this place? Why are you here?”",
+          "4": "He told them what Micah had done for him, and said, “He has hired me and I am his priest.”"
+        },
+        "reading_groups": [
+          "Micah’s priest"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: hybrid window selector — It best tests pronoun resolution—identifying that “he” refers to the Levite rather than the nearby name Micah—with a plausible misattribution competitor, while remaining clear and fully supported by the window."
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "levit",
+            "priest",
+            "young"
+          ],
+          "answer_verse": 4,
+          "answer_verse_original": 4,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 4",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Whose priest does the young Levite say he is?",
+            "readings": [
+              {
+                "answer": "Micah's",
+                "support": "what Micah had done for him | I am his priest."
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "In verse 4 the Levite says, “He has hired me and I am his priest,” with “he” and “his” referring back to Micah, so the Levite is Micah’s priest."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The pronoun “his” in “I am his priest” clearly refers to Micah mentioned immediately before.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It best tests pronoun resolution—identifying that “he” refers to the Levite rather than the nearby name Micah—with a plausible misattribution competitor, while remaining clear and fully supported by the window.",
+        "content_id": "v3-4:12"
+      }
+    ],
+    "report": {
+      "window_id": "v3-4",
+      "verses": [
+        3,
+        4
+      ],
+      "generated": 12,
+      "scored": 12,
+      "kept": 1,
+      "survivors_before_window_selection": 3,
+      "window_selection_rejected": 2,
+      "repair_attempted": 6,
+      "repaired": 0,
+      "window_retries_used": 1,
+      "score_runs": 1
+    }
+  }
+}

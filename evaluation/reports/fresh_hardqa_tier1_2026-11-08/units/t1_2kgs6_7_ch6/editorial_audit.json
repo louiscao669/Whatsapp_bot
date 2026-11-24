@@ -1,0 +1,246 @@
+{
+  "counts": {
+    "keep": 4
+  },
+  "items": [
+    {
+      "id": "v24-25:1",
+      "reference": "2 Kings 6:24–25",
+      "question": "What was Ben-Hadad’s army doing when a donkey’s head sold for eighty shekels?",
+      "answer": "It was besieging Samaria.",
+      "competitor": "It was still assembling for the march to Samaria.",
+      "window_text": {
+        "24": "Some time later, Ben-Hadad king of Aram mobilized his entire army and marched up and laid siege to Samaria.",
+        "25": "There was a great famine in the city; the siege lasted so long that a donkey’s head sold for eighty shekels of silver, and a quarter of a cab of seed pods for five shekels."
+      },
+      "original_question": "What lasts so long?",
+      "original_answer": "The siege.",
+      "edit": {
+        "question": "What was Ben-Hadad’s army doing when a donkey’s head sold for eighty shekels?",
+        "answer": "It was besieging Samaria.",
+        "competitor": "It was still assembling for the march to Samaria.",
+        "reason": "Connects the ongoing siege to the prices in the city and distinguishes it from the army’s earlier mobilization."
+      },
+      "checks": {
+        "blind": {
+          "model": "gpt-5",
+          "mode": "enforce",
+          "question": "What was Ben-Hadad’s army doing when a donkey’s head sold for eighty shekels?",
+          "readings": [
+            {
+              "answer": "Laying siege to Samaria",
+              "support": "laid siege to Samaria | a donkey’s head sold for eighty shekels of silver"
+            }
+          ],
+          "assessments": [
+            {
+              "number": 1,
+              "classification": "equivalent_to_key",
+              "reason": "Verse 24 states Ben-Hadad’s army “laid siege to Samaria,” and verse 25 describes the extreme prices during that siege, so “Laying siege to Samaria” matches the key."
+            }
+          ],
+          "verdict": "pass",
+          "reason": "The text directly states the army was besieging Samaria at the time of the famine and exorbitant prices.",
+          "status": "passed"
+        },
+        "reader": {
+          "id": "v24-25:1",
+          "key": "unique",
+          "wording": "clear",
+          "comprehension": "meaningful",
+          "quote": "laid siege to Samaria.\n25  There was a great famine in the city; the siege lasted so long that a donkey’s head sold for eighty shekels of silver",
+          "contrast": "The army was already besieging Samaria, not still mobilizing for the march.",
+          "reason": "The high price resulted during the prolonged siege, and the preceding sentence identifies Ben-Hadad’s army as the force that laid siege to Samaria. The question clearly tests the timing of the army’s action."
+        },
+        "editor": {
+          "id": "v24-25:1",
+          "key": "unique",
+          "wording": "clear",
+          "comprehension": "meaningful",
+          "quote": "laid siege to Samaria.\n25  There was a great famine in the city; the siege lasted so long that a donkey’s head sold for eighty shekels of silver",
+          "contrast": "The army was besieging Samaria, not still assembling for the march.",
+          "reason": "The price is presented as a result of the prolonged siege, which began after the army had mobilized and marched to Samaria."
+        }
+      },
+      "item_decision": "keep",
+      "final_decision": "keep"
+    },
+    {
+      "id": "v26-28:1",
+      "reference": "2 Kings 6:26–28",
+      "question": "Whose son is meant to be eaten first in the women’s plan?",
+      "answer": "the son of the woman who cries to the king",
+      "competitor": "the son of the other woman",
+      "window_text": {
+        "26": "As the king of Israel was passing by on the wall, a woman cried to him, “Help me, my lord the king!”",
+        "27": "The king replied, “If the Lord does not help you, where can I get help for you? From the threshing floor? From the winepress?”",
+        "28": "Then he asked her, “What’s the matter?” She answered, “This woman said to me, ‘Give up your son so we may eat him today, and tomorrow we’ll eat my son.’"
+      },
+      "original_question": "Whose son is meant to be eaten first in the women’s plan?",
+      "original_answer": "the son of the woman who cries to the king",
+      "edit": {},
+      "checks": {
+        "blind": {
+          "model": "gpt-5",
+          "mode": "enforce",
+          "question": "Whose son is meant to be eaten first in the women’s plan?",
+          "readings": [
+            {
+              "answer": "The speaker’s son (the first woman’s son).",
+              "support": "Give up your son so we may eat him today"
+            }
+          ],
+          "assessments": [
+            {
+              "number": 1,
+              "classification": "equivalent_to_key",
+              "reason": "The speaker—the woman crying to the king—reports the other woman said, “Give up your son so we may eat him today,” indicating the first to be eaten was the speaker’s own son."
+            }
+          ],
+          "verdict": "pass",
+          "reason": "The passage shows the crying woman was asked to give up “your son” for eating today, matching the key that it is her son first.",
+          "status": "passed"
+        },
+        "editor": {
+          "id": "v26-28:1",
+          "key": "unique",
+          "wording": "clear",
+          "comprehension": "meaningful",
+          "quote": "“This woman said to me, ‘Give up your son so we may eat him today, and tomorrow we’ll eat my son.’",
+          "contrast": "The first son is the son of the woman speaking to the king, not the son of the other woman.",
+          "reason": "Inside the reported speech, “This woman” says “your son” to the woman who is now addressing the king, while reserving “my son” for the next day. Resolving the nested pronouns establishes whose son was to be eaten first."
+        },
+        "reader": {
+          "id": "v26-28:1",
+          "key": "unique",
+          "wording": "clear",
+          "comprehension": "meaningful",
+          "quote": "“This woman said to me, ‘Give up your son so we may eat him today, and tomorrow we’ll eat my son.’",
+          "contrast": "The first son is the son of the woman speaking to the king, not the other woman’s son.",
+          "reason": "In the reported proposal, the other woman tells the speaker to give up “your son” first and contrasts him with “my son,” who is to be eaten the next day."
+        }
+      },
+      "item_decision": "keep",
+      "final_decision": "keep"
+    },
+    {
+      "id": "v29-31:1",
+      "reference": "2 Kings 6:29–31",
+      "question": "Who hides the son the next day?",
+      "answer": "the other woman",
+      "competitor": "the woman who speaks to the king",
+      "window_text": {
+        "29": "So we cooked my son and ate him. The next day I said to her, ‘Give up your son so we may eat him,’ but she had hidden him.”",
+        "30": "When the king heard the woman’s words, he tore his robes. As he went along the wall, the people looked, and they saw that, under his robes, he had sackcloth on his body.",
+        "31": "He said, “May God deal with me, be it ever so severely, if the head of Elisha son of Shaphat remains on his shoulders today!”"
+      },
+      "original_question": "Who hides the son the next day?",
+      "original_answer": "the other woman",
+      "edit": {},
+      "checks": {
+        "blind": {
+          "model": "gpt-5",
+          "mode": "enforce",
+          "question": "Who hides the son the next day?",
+          "readings": [
+            {
+              "answer": "the other woman",
+              "support": "I said to her | she had hidden him"
+            }
+          ],
+          "assessments": [
+            {
+              "number": 1,
+              "classification": "equivalent_to_key",
+              "reason": "The verse says, “I said to her… but she had hidden him,” so “she” refers to the other woman addressed, matching “the other woman.”"
+            }
+          ],
+          "verdict": "pass",
+          "reason": "“I said to her… but she had hidden him” identifies the hider as the other woman.",
+          "status": "passed"
+        },
+        "reader": {
+          "id": "v29-31:1",
+          "key": "unique",
+          "wording": "clear",
+          "comprehension": "meaningful",
+          "quote": "The next day I said to her, ‘Give up your son so we may eat him,’ but she had hidden him.",
+          "contrast": "The other woman, addressed as “her,” hid the son; the woman speaking to the king did not.",
+          "reason": "The speaker distinguishes herself (“I”) from the woman she addressed (“her”), then says that “she” had hidden her son. Resolving these pronouns identifies the other woman as the actor."
+        },
+        "editor": {
+          "id": "v29-31:1",
+          "key": "unique",
+          "wording": "clear",
+          "comprehension": "meaningful",
+          "quote": "I said to her, ‘Give up your son so we may eat him,’ but she had hidden him.",
+          "contrast": "the other woman versus the woman speaking to the king",
+          "reason": "The speaker could be mistaken for the one who hid the son, but “her” and “she” refer to the woman she addressed. Thus the other woman hid her own son."
+        }
+      },
+      "item_decision": "keep",
+      "final_decision": "keep"
+    },
+    {
+      "id": "v32-33:1",
+      "reference": "2 Kings 6:32–33",
+      "question": "Whom does Elisha call a murderer in this scene?",
+      "answer": "the king",
+      "competitor": "the messenger",
+      "window_text": {
+        "32": "Now Elisha was sitting in his house, and the elders were sitting with him. The king sent a messenger ahead, but before he arrived, Elisha said to the elders, “Don’t you see how this murderer is sending someone to cut off my head? Look, when the messenger comes, shut the door and hold it shut against him. Is not the sound of his master’s footsteps behind him?”",
+        "33": "While he was still talking to them, the messenger came down to him. The king said, “This disaster is from the Lord. Why should I wait for the Lord any longer?”"
+      },
+      "original_question": "Whom does Elisha call a murderer in this scene?",
+      "original_answer": "the king",
+      "edit": {},
+      "checks": {
+        "blind": {
+          "model": "gpt-5",
+          "mode": "enforce",
+          "question": "Whom does Elisha call a murderer in this scene?",
+          "readings": [
+            {
+              "answer": "the king",
+              "support": "The king sent a messenger ahead | this murderer is sending someone to cut off my head"
+            }
+          ],
+          "assessments": [
+            {
+              "number": 1,
+              "classification": "equivalent_to_key",
+              "reason": "Elisha says “this murderer is sending someone to cut off my head,” and the passage has just said “The king sent a messenger ahead,” identifying the murderer as the king."
+            }
+          ],
+          "verdict": "pass",
+          "reason": "The passage links “this murderer” to the one sending the beheader, which is explicitly the king who sent the messenger.",
+          "status": "passed"
+        },
+        "reader": {
+          "id": "v32-33:1",
+          "key": "unique",
+          "wording": "clear",
+          "comprehension": "meaningful",
+          "quote": "The king sent a messenger ahead, but before he arrived, Elisha said to the elders, “Don’t you see how this murderer is sending someone to cut off my head?",
+          "contrast": "The king, who sends the messenger, versus the messenger who is sent.",
+          "reason": "“This murderer” refers to the person sending someone to kill Elisha. The passage explicitly identifies the king as the sender, while the messenger is his agent."
+        },
+        "editor": {
+          "id": "v32-33:1",
+          "key": "unique",
+          "wording": "clear",
+          "comprehension": "meaningful",
+          "quote": "The king sent a messenger ahead, but before he arrived, Elisha said to the elders, “Don’t you see how this murderer is sending someone to cut off my head?",
+          "contrast": "The reader must distinguish the king, who sends the threat, from the messenger he sends.",
+          "reason": "The messenger is a plausible alternative because he comes to Elisha, but Elisha calls the person who is “sending someone” the murderer. The preceding sentence identifies that sender as the king, so the key is uniquely supported and the wording clearly asks for the title’s referent."
+        }
+      },
+      "item_decision": "keep",
+      "final_decision": "keep"
+    }
+  ],
+  "duplicate_judgments": [
+    [],
+    []
+  ]
+}

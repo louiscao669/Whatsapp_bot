@@ -3,7 +3,8 @@
 Approved under IRB protocol 26-08-10268 (Exempt Cat. 3, approved 2026-09-04):
 the approved packet contains ONLY the English master
 ``Eligibility_Screening_Questionnaire_EN_v1_1`` (v1.0, 2026-08-31). The ``en``
-strings below follow it.
+strings below are based on it. The November 14 revision asks about completed
+and in-progress education and uses a new response scale for B2.
 
   * **English is the default** (``DEFAULT_LANGUAGE``), switched 2026-10-26.
     No Chinese version was attached to the approved protocol, and protocol §5b
@@ -11,7 +12,7 @@ strings below follow it.
     A-C and the Section C prompt; Section D from the PRESURVEY_DEMOGRAPHICS
     draft) are kept but must not be served (``PILOT_QUESTIONNAIRE_LANGUAGE=zh``)
     unless a Chinese version is approved.
-  * Item and option wording in ``en`` is verbatim from the approved PDF. The
+  * The revised B2 item differs from the approved PDF. The
     screen chrome (buttons, step label, the Section C consent-prompt wording,
     the screen-out message) is not in the approved packet.
   * ``Questionnaire_Administration_Note_EN_v1`` (screen-out handling, D key)
@@ -23,13 +24,10 @@ Rules implemented here:
 
   * Section A is required; eligibility is decided by Section A only.
     A1 = yes, A2 in {mandarin, other_chinese}, A3 != not_comfortable.
-  * Sections B-D are optional item by item.
+  * The current pilot administers Sections A–C. Sections B and C are optional item by item.
   * Section C is preceded by its own consent prompt (stated in the approved
-    questionnaire); declining skips to D.
-  * Section D is scored server-side only. The key never leaves this module:
-    :func:`public_instrument` strips it, and no response ever reports a score
-    to the participant (approved questionnaire: "Participants are never shown
-    their score").
+    questionnaire). Finishing or skipping it starts the reading task.
+  * The original Section D definition is retained for interpreting historical exports.
 
 Codes (option values and item ids) are the stable data contract. Labels may
 change without touching stored data.
@@ -39,22 +37,38 @@ from __future__ import annotations
 
 from typing import Dict, List, Optional
 
-INSTRUMENT_VERSION = "bgq-en-v1.0-2026-08-31"
+INSTRUMENT_VERSION = "bgq-en-a-c-2026-11-14-education"
+COMPLETED_EDUCATION_VERSIONS = {"bgq-en-v1.0-2026-08-31", "bgq-en-a-c-2026-11-13"}
 DEFAULT_LANGUAGE = "en"  # the approved instrument is English-only (IRB 26-08-10268)
 
 PREFER_NOT = {"code": "prefer_not_to_say", "zh": "不愿透露", "en": "Prefer not to say"}
 NOT_SURE = {"code": "not_sure", "zh": "不确定", "en": "Not sure"}
 
 #: Ordered steps. ``eligibility`` is Section A, then B, then the Section C
-#: consent prompt + C items (one step), then D.
-STEPS = ("eligibility", "background", "religion", "familiarity")
+#: consent prompt + C items (one step).
+STEPS = ("eligibility", "background", "religion")
 
 
 def _opt(code, zh, en):
     return {"code": code, "zh": zh, "en": en}
 
 
-SECTIONS: List[dict] = [
+LEGACY_EDUCATION_ITEM = {
+    "id": "b2_education",
+    "type": "single",
+    "text": {"zh": "您已完成的最高学历", "en": "Highest level of education completed"},
+    "options": [
+        _opt("less_than_secondary", "未完成中学", "Less than secondary school"),
+        _opt("secondary", "中学／高中", "Secondary / high school"),
+        _opt("some_college", "读过大学但未获学位", "Some college or university"),
+        _opt("bachelors", "学士学位", "Bachelor's degree"),
+        _opt("graduate", "研究生学位", "Graduate degree"),
+        PREFER_NOT,
+    ],
+}
+
+
+EXPORT_SECTIONS: List[dict] = [
     {
         "id": "eligibility",
         "label": "A",
@@ -74,6 +88,11 @@ SECTIONS: List[dict] = [
                 "text": {
                     "zh": "普通话（汉语）是您的第一语言（母语）吗？",
                     "en": "Is Mandarin Chinese your first (native) language?",
+                },
+                "confirmation_help": {
+                    "zh": "如果您的母语是粤语等其他汉语变体，可以返回选择“另一种汉语方言或变体”。",
+                    "en": "If your first language is another Chinese variety, such as Cantonese, "
+                    "you can go back and select “Another Chinese variety”.",
                 },
                 "options": [
                     _opt("mandarin", "是", "Yes"),
@@ -135,14 +154,24 @@ SECTIONS: List[dict] = [
             {
                 "id": "b2_education",
                 "type": "single",
-                "text": {"zh": "您已完成的最高学历", "en": "Highest level of education completed"},
+                "text": {
+                    "zh": "您已完成或目前正在就读的最高教育阶段是什么？",
+                    "en": "What is the highest level of education you have completed or are currently pursuing?",
+                },
+                "help": {
+                    "zh": "例如，如果您目前是本科生，请选择“本科”。",
+                    "en": "If you are currently studying for your first bachelor's degree, "
+                    "select “Bachelor’s degree program.”",
+                },
                 "options": [
-                    _opt("less_than_secondary", "未完成中学", "Less than secondary school"),
-                    _opt("secondary", "中学／高中", "Secondary / high school"),
-                    _opt("some_college", "读过大学但未获学位", "Some college or university"),
-                    _opt("bachelors", "学士学位", "Bachelor's degree"),
-                    _opt("graduate", "研究生学位", "Graduate degree"),
-                    PREFER_NOT,
+                    _opt("high_school_or_below", "高中及以下", "High school or below"),
+                    _opt("postsecondary_vocational", "高中后的技术或职业教育", "Technical or vocational program after high school"),
+                    _opt("associate_program", "大专、副学士或同等层次", "Associate degree or equivalent program"),
+                    _opt("bachelors_program", "本科", "Bachelor’s degree program"),
+                    _opt("masters_program", "硕士研究生", "Master’s degree program"),
+                    _opt("doctoral_program", "博士研究生", "Doctoral degree program"),
+                    _opt("other", "其他", "Other"),
+                    _opt(PREFER_NOT["code"], "不愿透露", "Prefer not to answer"),
                 ],
             },
             {
@@ -378,6 +407,9 @@ SECTIONS: List[dict] = [
     },
 ]
 
+# Keep all original item codes in exports, including historical Section D answers.
+SECTIONS = [entry for entry in EXPORT_SECTIONS if entry["id"] in STEPS]
+
 #: Section D key (administration note, reviewer reference). Server-side only.
 _FAMILIARITY_KEY: Dict[str, str] = {
     "d1_good_samaritan": "b",
@@ -397,11 +429,17 @@ UI_TEXT = {
         "heading": "背景问卷",
         "intro": "开始阅读之前，请先回答几个简短的问题（大约3–10分钟）。",
         "continue": "继续",
+        "previous": "上一页",
+        "clear_answer": "清除此选项",
         "finish": "完成，开始阅读",
         "required_missing": "请回答本部分的所有问题后再继续。",
         "specify_placeholder": "请注明",
         "text_placeholder": "请填写",
         "saving": "正在保存……",
+        "check_eligibility_title": "请核对您的回答",
+        "check_eligibility_body": "根据以下回答，您不符合本研究的参与条件。如果选错了，可以返回修改。如果回答无误，请确认并结束参与。",
+        "edit_eligibility": "返回修改回答",
+        "confirm_screenout": "回答无误，结束参与",
         "screened_out_title": "感谢您的关注",
         "screened_out_body": "本研究需要年满18岁、以汉语为第一语言、并能较舒适地阅读中文的参与者。"
         "根据您的回答，您不符合本研究的参与条件，因此不会再向您提出其他问题。"
@@ -412,11 +450,18 @@ UI_TEXT = {
         "heading": "Background questionnaire",
         "intro": "Before the reading begins, please answer a few short questions (about 3–10 minutes).",
         "continue": "Continue",
+        "previous": "Previous",
+        "clear_answer": "Clear answer",
         "finish": "Finish and start reading",
         "required_missing": "Please answer every question in this section to continue.",
         "specify_placeholder": "Please specify",
         "text_placeholder": "Type here",
         "saving": "Saving…",
+        "check_eligibility_title": "Please check your answers",
+        "check_eligibility_body": "Based on the answers below, you do not meet the study requirements. "
+        "If you selected an answer by mistake, you can edit it. If your answers are accurate, confirm to end your participation.",
+        "edit_eligibility": "Edit my answers",
+        "confirm_screenout": "Confirm and end participation",
         "screened_out_title": "Thank you for your interest",
         "screened_out_body": "This study needs readers who are 18 or older, whose first language is "
         "Chinese, and who are comfortable reading Chinese. Based on your answers you are not "
@@ -431,28 +476,26 @@ class QuestionnaireValidationError(ValueError):
     """The submitted answers do not fit the instrument."""
 
 
-def section(section_id: str) -> dict:
+def section(section_id: str, version: str = INSTRUMENT_VERSION) -> dict:
     for entry in SECTIONS:
         if entry["id"] == section_id:
+            if section_id == "background" and version in COMPLETED_EDUCATION_VERSIONS:
+                return {**entry, "items": [
+                    LEGACY_EDUCATION_ITEM if item["id"] == "b2_education" else item for item in entry["items"]
+                ]}
             return entry
     raise QuestionnaireValidationError(f"Unknown questionnaire section '{section_id}'")
 
 
-def public_instrument(language: str = DEFAULT_LANGUAGE) -> dict:
+def public_instrument(language: str = DEFAULT_LANGUAGE, version: str = INSTRUMENT_VERSION) -> dict:
     """Everything the client renders. Contains no answer key and no score."""
 
     language = language if language in UI_TEXT else DEFAULT_LANGUAGE
     return {
-        "version": INSTRUMENT_VERSION,
+        "version": version,
         "language": language,
         "ui": UI_TEXT[language],
-        "sections": [
-            {
-                key: value
-                for key, value in entry.items()
-            }
-            for entry in SECTIONS
-        ],
+        "sections": [section(step, version) for step in STEPS],
     }
 
 
@@ -476,7 +519,7 @@ def _clean_text(value, max_length: int) -> Optional[str]:
     return value[:max_length]
 
 
-def validate_section_answers(section_id: str, answers) -> Dict[str, Optional[str]]:
+def validate_section_answers(section_id: str, answers, version: str = INSTRUMENT_VERSION) -> Dict[str, Optional[str]]:
     """Normalise one section's answers to ``{item_id: code-or-text-or-None}``.
 
     Unknown item ids and unknown option codes are refused rather than dropped,
@@ -484,7 +527,7 @@ def validate_section_answers(section_id: str, answers) -> Dict[str, Optional[str
     must answer every item.
     """
 
-    entry = section(section_id)
+    entry = section(section_id, version)
     if answers is None:
         answers = {}
     if not isinstance(answers, dict):
@@ -527,19 +570,26 @@ def validate_section_answers(section_id: str, answers) -> Dict[str, Optional[str
     return cleaned
 
 
-def is_eligible(eligibility_answers: Dict[str, Optional[str]]) -> bool:
-    """Section A screening rule from the administration note v1.0."""
+def eligibility_exclusions(answers: Dict[str, Optional[str]]) -> Dict[str, Optional[str]]:
+    """Return the Section A answers that fail the screening criteria."""
 
-    return (
-        eligibility_answers.get("a1_age_18_plus") == "yes"
-        and eligibility_answers.get("a2_first_language") in ELIGIBLE_FIRST_LANGUAGE
-        and eligibility_answers.get("a3_reading_comfort") is not None
-        and eligibility_answers.get("a3_reading_comfort") not in INELIGIBLE_READING
-    )
+    exclusions = {}
+    if answers.get("a1_age_18_plus") != "yes":
+        exclusions["a1_age_18_plus"] = answers.get("a1_age_18_plus")
+    if answers.get("a2_first_language") not in ELIGIBLE_FIRST_LANGUAGE:
+        exclusions["a2_first_language"] = answers.get("a2_first_language")
+    comfort = answers.get("a3_reading_comfort")
+    if comfort is None or comfort in INELIGIBLE_READING:
+        exclusions["a3_reading_comfort"] = comfort
+    return exclusions
+
+
+def is_eligible(eligibility_answers: Dict[str, Optional[str]]) -> bool:
+    return not eligibility_exclusions(eligibility_answers)
 
 
 def score_familiarity(answers: Dict[str, Optional[str]]) -> dict:
-    """Section D covariate. Never returned to the participant.
+    """Score an archived response from the original four-section survey.
 
     ``score`` = correct / 7 (PRESURVEY_DEMOGRAPHICS: "Not sure" and wrong both
     count 0; a skipped item also counts 0). ``answered`` excludes skipped items

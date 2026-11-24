@@ -1,0 +1,508 @@
+{
+  "config_digest": "7d0f9ca5b001dd4aafd08cfe62ee0ee1709a4cee0d45b80852aceee348ef06c5",
+  "data": {
+    "kept": [
+      {
+        "question": "Who will sacrifice the priests on the altar?",
+        "answer": "the son named Josiah",
+        "answer_verse": 2,
+        "wrong_answer": "Jeroboam",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "A son named Josiah",
+            "support": "A son named Josiah | he will sacrifice the priests"
+          }
+        ],
+        "distinct_readings": [
+          "A son named Josiah"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "Resolving \"he will sacrifice\" to the previously introduced son named Josiah requires pronoun linkage in a single, central clause."
+        },
+        "window_verses": [
+          1,
+          2,
+          3
+        ],
+        "window_text": {
+          "1": "By the word of the Lord a man of God came from Judah to Bethel, as Jeroboam was standing by the altar to make an offering.",
+          "2": "By the word of the Lord he cried out against the altar: “Altar, altar! This is what the Lord says: ‘A son named Josiah will be born to the house of David. On you he will sacrifice the priests of the high places who make offerings here, and human bones will be burned on you.’”",
+          "3": "That same day the man of God gave a sign: “This is the sign the Lord has declared: The altar will be split apart and the ashes on it will be poured out.”"
+        },
+        "reading_groups": [
+          "A son named Josiah will sacrifice the priests on the altar."
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 2,
+          "answer_verse_original": 2,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 2",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Who will sacrifice the priests on the altar?",
+            "readings": [
+              {
+                "answer": "A son named Josiah",
+                "support": "A son named Josiah | he will sacrifice the priests"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Verse 2 states, “A son named Josiah… On you he will sacrifice the priests,” so Josiah is the one who will sacrifice the priests on the altar."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The passage explicitly says a son named Josiah will sacrifice the priests on the altar.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It hinges on resolving the pronoun “he” in the prophecy to its antecedent “a son named Josiah,” while a misparse could wrongly assign Jeroboam, and the passage yields a single clear answer.",
+        "window_structure_max": 9.0,
+        "content_id": "v1-3:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Against whom or what does the man of God cry out?",
+        "answer": "the altar",
+        "answer_verse": 3,
+        "wrong_answer": "Jeroboam",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "the altar",
+            "support": "he cried out against the altar"
+          }
+        ],
+        "distinct_readings": [
+          "the altar"
+        ],
+        "scores": {
+          "structure_dependence": 2.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "The text explicitly says he cried out against the altar, stated once and central to the action."
+        },
+        "window_verses": [
+          1,
+          2,
+          3
+        ],
+        "window_text": {
+          "1": "By the word of the Lord a man of God came from Judah to Bethel, as Jeroboam was standing by the altar to make an offering.",
+          "2": "By the word of the Lord he cried out against the altar: “Altar, altar! This is what the Lord says: ‘A son named Josiah will be born to the house of David. On you he will sacrifice the priests of the high places who make offerings here, and human bones will be burned on you.’”",
+          "3": "That same day the man of God gave a sign: “This is the sign the Lord has declared: The altar will be split apart and the ashes on it will be poured out.”"
+        },
+        "reading_groups": [
+          "He cries out against the altar."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "alternatives in question: question lists the alternatives",
+            "lexical: structure_dependence 2.0 (need 7.0)"
+          ],
+          "notes": [
+            "corrected metadata from 2 to 3; reading support and question relation identify verse 3",
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 3,
+          "answer_verse_original": 2,
+          "answer_verse_corrected": true,
+          "answer_verse_note": "corrected metadata from 2 to 3; reading support and question relation identify verse 3",
+          "readings_failures": []
+        },
+        "content_id": "v1-3:2"
+      },
+      {
+        "question": "Why is Jeroboam standing by the altar?",
+        "answer": "to make an offering",
+        "answer_verse": 1,
+        "wrong_answer": "to cry out against the altar",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "To make an offering.",
+            "support": "Jeroboam was standing by the altar to make an offering"
+          }
+        ],
+        "distinct_readings": [
+          "To make an offering."
+        ],
+        "scores": {
+          "structure_dependence": 4.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "The purpose phrase \"to make an offering\" directly answers why he stood there, stated once and clear though more scene-setting."
+        },
+        "window_verses": [
+          1,
+          2,
+          3
+        ],
+        "window_text": {
+          "1": "By the word of the Lord a man of God came from Judah to Bethel, as Jeroboam was standing by the altar to make an offering.",
+          "2": "By the word of the Lord he cried out against the altar: “Altar, altar! This is what the Lord says: ‘A son named Josiah will be born to the house of David. On you he will sacrifice the priests of the high places who make offerings here, and human bones will be burned on you.’”",
+          "3": "That same day the man of God gave a sign: “This is the sign the Lord has declared: The altar will be split apart and the ashes on it will be poured out.”"
+        },
+        "reading_groups": [
+          "Jeroboam is standing there to make an offering."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: jeroboam",
+            "lexical: structure_dependence 4.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "jeroboam"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 1,
+          "answer_verse_original": 1,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 1",
+          "readings_failures": []
+        },
+        "content_id": "v1-3:3"
+      },
+      {
+        "question": "What will be burned on the altar?",
+        "answer": "human bones",
+        "answer_verse": 2,
+        "wrong_answer": "the priests of the high places",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "human bones",
+            "support": "human bones will be burned on you"
+          }
+        ],
+        "distinct_readings": [
+          "human bones"
+        ],
+        "scores": {
+          "structure_dependence": 2.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "\"Human bones will be burned on you\" is a direct noun phrase stated once and integral to the prophecy."
+        },
+        "window_verses": [
+          1,
+          2,
+          3
+        ],
+        "window_text": {
+          "1": "By the word of the Lord a man of God came from Judah to Bethel, as Jeroboam was standing by the altar to make an offering.",
+          "2": "By the word of the Lord he cried out against the altar: “Altar, altar! This is what the Lord says: ‘A son named Josiah will be born to the house of David. On you he will sacrifice the priests of the high places who make offerings here, and human bones will be burned on you.’”",
+          "3": "That same day the man of God gave a sign: “This is the sign the Lord has declared: The altar will be split apart and the ashes on it will be poured out.”"
+        },
+        "reading_groups": [
+          "Human bones will be burned on the altar."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 2.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 2,
+          "answer_verse_original": 2,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 2",
+          "readings_failures": []
+        },
+        "content_id": "v1-3:4"
+      },
+      {
+        "question": "What happens to the ashes on the altar in the sign?",
+        "answer": "they are poured out",
+        "answer_verse": 3,
+        "wrong_answer": "they are split apart",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "They will be poured out.",
+            "support": "the ashes on it will be poured out"
+          }
+        ],
+        "distinct_readings": [
+          "They will be poured out."
+        ],
+        "scores": {
+          "structure_dependence": 3.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "The sign states plainly that the ashes will be poured out, uniquely and centrally described."
+        },
+        "window_verses": [
+          1,
+          2,
+          3
+        ],
+        "window_text": {
+          "1": "By the word of the Lord a man of God came from Judah to Bethel, as Jeroboam was standing by the altar to make an offering.",
+          "2": "By the word of the Lord he cried out against the altar: “Altar, altar! This is what the Lord says: ‘A son named Josiah will be born to the house of David. On you he will sacrifice the priests of the high places who make offerings here, and human bones will be burned on you.’”",
+          "3": "That same day the man of God gave a sign: “This is the sign the Lord has declared: The altar will be split apart and the ashes on it will be poured out.”"
+        },
+        "reading_groups": [
+          "The ashes on the altar will be poured out."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: sign",
+            "dangling answer reference: they",
+            "lexical: structure_dependence 3.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "sign"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 3,
+          "answer_verse_original": 3,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 3",
+          "readings_failures": []
+        },
+        "content_id": "v1-3:5"
+      },
+      {
+        "question": "From where does the man of God come to Bethel?",
+        "answer": "from Judah",
+        "answer_verse": 1,
+        "wrong_answer": "Bethel",
+        "relation": "direction",
+        "readings": [
+          {
+            "answer": "Judah",
+            "support": "from Judah"
+          }
+        ],
+        "distinct_readings": [
+          "Judah"
+        ],
+        "scores": {
+          "structure_dependence": 2.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 5.0,
+          "runs": 1,
+          "reason": "\"From Judah\" is a straightforward place phrase stated once and moderately central."
+        },
+        "window_verses": [
+          1,
+          2,
+          3
+        ],
+        "window_text": {
+          "1": "By the word of the Lord a man of God came from Judah to Bethel, as Jeroboam was standing by the altar to make an offering.",
+          "2": "By the word of the Lord he cried out against the altar: “Altar, altar! This is what the Lord says: ‘A son named Josiah will be born to the house of David. On you he will sacrifice the priests of the high places who make offerings here, and human bones will be burned on you.’”",
+          "3": "That same day the man of God gave a sign: “This is the sign the Lord has declared: The altar will be split apart and the ashes on it will be poured out.”"
+        },
+        "reading_groups": [
+          "He comes from Judah."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: bethel",
+            "bare-name answer 'from Judah': names survive translation",
+            "lexical: structure_dependence 2.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "bethel"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 1,
+          "answer_verse_original": 1,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 1",
+          "readings_failures": []
+        },
+        "content_id": "v1-3:6"
+      },
+      {
+        "question": "What does the Lord declare as the sign that day?",
+        "answer": "the altar will split and its ashes will pour out",
+        "answer_verse": 3,
+        "wrong_answer": "a son named Josiah will be born to the house of David",
+        "relation": "modality",
+        "readings": [
+          {
+            "answer": "The altar will be split apart and the ashes on it will be poured out.",
+            "support": "The altar will be split apart and the ashes on it will be poured out."
+          }
+        ],
+        "distinct_readings": [
+          "The altar will be split apart and the ashes on it will be poured out."
+        ],
+        "scores": {
+          "structure_dependence": 4.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "The sign’s content follows directly after \"This is the sign the Lord has declared,\" uniquely specified and central."
+        },
+        "window_verses": [
+          1,
+          2,
+          3
+        ],
+        "window_text": {
+          "1": "By the word of the Lord a man of God came from Judah to Bethel, as Jeroboam was standing by the altar to make an offering.",
+          "2": "By the word of the Lord he cried out against the altar: “Altar, altar! This is what the Lord says: ‘A son named Josiah will be born to the house of David. On you he will sacrifice the priests of the high places who make offerings here, and human bones will be burned on you.’”",
+          "3": "That same day the man of God gave a sign: “This is the sign the Lord has declared: The altar will be split apart and the ashes on it will be poured out.”"
+        },
+        "reading_groups": [
+          "The altar will split and its ashes will pour out."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 4.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 3,
+          "answer_verse_original": 3,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 3",
+          "readings_failures": []
+        },
+        "content_id": "v1-3:7"
+      },
+      {
+        "question": "What does the man of God give that day?",
+        "answer": "a sign",
+        "answer_verse": 3,
+        "wrong_answer": "an offering",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "a sign",
+            "support": "That same day the man of God gave a sign"
+          }
+        ],
+        "distinct_readings": [
+          "a sign"
+        ],
+        "scores": {
+          "structure_dependence": 1.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "\"The man of God gave a sign\" is a simple, explicit clause with a single noun answer that is important to the passage."
+        },
+        "window_verses": [
+          1,
+          2,
+          3
+        ],
+        "window_text": {
+          "1": "By the word of the Lord a man of God came from Judah to Bethel, as Jeroboam was standing by the altar to make an offering.",
+          "2": "By the word of the Lord he cried out against the altar: “Altar, altar! This is what the Lord says: ‘A son named Josiah will be born to the house of David. On you he will sacrifice the priests of the high places who make offerings here, and human bones will be burned on you.’”",
+          "3": "That same day the man of God gave a sign: “This is the sign the Lord has declared: The altar will be split apart and the ashes on it will be poured out.”"
+        },
+        "reading_groups": [
+          "He gives a sign."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 1.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 3,
+          "answer_verse_original": 3,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 3",
+          "readings_failures": []
+        },
+        "content_id": "v1-3:8"
+      }
+    ],
+    "report": {
+      "window_id": "v1-3",
+      "verses": [
+        1,
+        2,
+        3
+      ],
+      "generated": 8,
+      "scored": 8,
+      "kept": 1,
+      "survivors_before_window_selection": 1,
+      "window_selection_rejected": 0,
+      "repair_attempted": 0,
+      "repaired": 0,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

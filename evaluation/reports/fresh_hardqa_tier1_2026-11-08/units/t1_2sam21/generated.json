@@ -1,0 +1,328 @@
+[
+  {
+    "question": "Who is killed at Gob in the battle where the enemy’s spear was unusually thick?",
+    "answer": "the brother of Goliath the Gittite",
+    "answer_verse": 19,
+    "wrong_answer": "Saph",
+    "relation": "agent-patient",
+    "readings": [
+      {
+        "answer": "the brother of Goliath the Gittite",
+        "support": "killed the brother of Goliath the Gittite, who had a spear with a shaft like a weaver’s rod"
+      }
+    ],
+    "distinct_readings": [
+      "the brother of Goliath the Gittite"
+    ],
+    "scores": {
+      "structure_dependence": 9.0,
+      "statement_uniqueness": 10.0,
+      "answer_certainty": 10.0,
+      "centrality": 8.0,
+      "runs": 1,
+      "reason": "It requires linking the spear-description clause to the correct one of two Gob battles to identify which Philistine was killed, a single, unambiguous fact central to the action."
+    },
+    "window_verses": [
+      18,
+      19
+    ],
+    "window_text": {
+      "18": "In the course of time, there was another battle with the Philistines, at Gob. At that time Sibbekai the Hushathite killed Saph, one of the descendants of Rapha.",
+      "19": "In another battle with the Philistines at Gob, Elhanan son of Jair the Bethlehemite killed the brother of Goliath the Gittite, who had a spear with a shaft like a weaver’s rod."
+    },
+    "reading_groups": [
+      "The person killed in that Gob battle is Goliath’s brother"
+    ],
+    "audit": {
+      "passed": true,
+      "failures": [],
+      "notes": [
+        "distractor check skipped: none stated by this output tier"
+      ],
+      "location_leak_terms": [],
+      "distractors_found": [],
+      "distractors_missing": false,
+      "answer_leak_terms": [],
+      "answer_verse": 19,
+      "answer_verse_original": 19,
+      "answer_verse_corrected": false,
+      "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 19",
+      "readings_failures": [],
+      "answerability": {
+        "model": "gpt-5",
+        "mode": "enforce",
+        "question": "Who is killed at Gob in the battle where the enemy’s spear was unusually thick?",
+        "readings": [
+          {
+            "answer": "the brother of Goliath the Gittite",
+            "support": "killed the brother of Goliath the Gittite, who had a spear with a shaft like a weaver’s rod"
+          }
+        ],
+        "assessments": [
+          {
+            "number": 1,
+            "classification": "equivalent_to_key",
+            "reason": "Verse 19 says at Gob Elhanan \"killed the brother of Goliath the Gittite, who had a spear with a shaft like a weaver’s rod,\" matching the description of an unusually thick spear."
+          }
+        ],
+        "verdict": "pass",
+        "reason": "Verse 19 explicitly identifies the slain man as the brother of Goliath the Gittite, whose spear shaft was like a weaver’s rod.",
+        "status": "passed"
+      }
+    },
+    "scores_after_repair_raw": {
+      "structure_dependence": 9.0,
+      "statement_uniqueness": 10.0,
+      "answer_certainty": 10.0,
+      "centrality": 8.0,
+      "runs": 1,
+      "reason": "It requires linking the spear-description clause to the correct one of two Gob battles to identify which Philistine was killed, a single, unambiguous fact central to the action."
+    },
+    "repaired": true,
+    "repair_attempted": true,
+    "question_before_repair": "Whom does Elhanan kill at Gob?",
+    "scores_before_repair": {
+      "structure_dependence": 9.0,
+      "statement_uniqueness": 9.0,
+      "answer_certainty": 10.0,
+      "centrality": 8.0,
+      "runs": 1,
+      "reason": "You must link Elhanan as subject to the specific object he killed—“the brother of Goliath”—stated once, unambiguous, and central to the battle report."
+    },
+    "audit_before_repair": {
+      "passed": false,
+      "failures": [
+        "location leak: elhanan"
+      ],
+      "notes": [
+        "distractor check skipped: none stated by this output tier"
+      ],
+      "location_leak_terms": [
+        "elhanan"
+      ],
+      "distractors_found": [],
+      "distractors_missing": false,
+      "answer_leak_terms": [],
+      "answer_verse": 19,
+      "answer_verse_original": 19,
+      "answer_verse_corrected": false,
+      "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 19",
+      "readings_failures": []
+    },
+    "repair_log": [
+      {
+        "before": "Whom does Elhanan kill at Gob?",
+        "after": "Who is killed at Gob in the battle where the enemy’s spear was unusually thick?",
+        "note": "Removed the verse-unique name and anchored by the distinctive spear detail.",
+        "failures_before": [
+          "location leak: elhanan"
+        ],
+        "scores_before": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "You must link Elhanan as subject to the specific object he killed—“the brother of Goliath”—stated once, unambiguous, and central to the battle report."
+        },
+        "accepted": true,
+        "reason": "passed full rejudgment",
+        "suitability_judgment": {
+          "Q": "Who is killed at Gob in the battle where the enemy’s spear was unusually thick?",
+          "clear_referents": true,
+          "natural_wording": true,
+          "directly_answerable": true,
+          "single_defensible_answer": true,
+          "remove": false,
+          "reason": "The spear detail uniquely identifies the second Gob battle, and the text states the person killed there was the brother of Goliath the Gittite."
+        },
+        "failures_after": [],
+        "scores_after": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 10.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "It requires linking the spear-description clause to the correct one of two Gob battles to identify which Philistine was killed, a single, unambiguous fact central to the action."
+        },
+        "scores_used": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 10.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "It requires linking the spear-description clause to the correct one of two Gob battles to identify which Philistine was killed, a single, unambiguous fact central to the action."
+        }
+      }
+    ],
+    "window_selection_reason": "It requires resolving the relative clause about the weaver’s-rod spear to the second Gob battle (v19), distinguishing it from the other Gob battle with Saph.",
+    "window_structure_max": 9.0,
+    "content_id": "v18-19:1",
+    "rank_in_batch": 1,
+    "rank_reason": "Identifying that in the Gob battle with the “weaver’s rod” spear it is the brother of Goliath who is killed hinges on parsing relative clauses and subject–object roles amid two Gob battles, whereas Abishai’s killing is inferable from the rescue context, and the four Rapha descendants’ defeat is an explicit, summarized outcome.",
+    "final_rank": 1
+  },
+  {
+    "question": "Who kills the Philistine?",
+    "answer": "Abishai kills the Philistine.",
+    "answer_verse": 17,
+    "wrong_answer": "David",
+    "relation": "agent-patient",
+    "readings": [
+      {
+        "answer": "Abishai son of Zeruiah",
+        "support": "Abishai son of Zeruiah came to David’s rescue; he struck the Philistine down and killed him"
+      }
+    ],
+    "distinct_readings": [
+      "Abishai son of Zeruiah"
+    ],
+    "scores": {
+      "structure_dependence": 9.0,
+      "statement_uniqueness": 9.0,
+      "answer_certainty": 10.0,
+      "centrality": 9.0,
+      "runs": 1,
+      "reason": "Identifying the killer requires resolving the pronoun 'he' to Abishai, said once and central to the action."
+    },
+    "window_verses": [
+      15,
+      16,
+      17
+    ],
+    "window_text": {
+      "15": "Once again there was a battle between the Philistines and Israel. David went down with his men to fight against the Philistines, and he became exhausted.",
+      "16": "And Ishbi-Benob, one of the descendants of Rapha, whose bronze spearhead weighed three hundred shekels and who was armed with a new sword, said he would kill David.",
+      "17": "But Abishai son of Zeruiah came to David’s rescue; he struck the Philistine down and killed him. Then David’s men swore to him, saying, “Never again will you go out with us to battle, so that the lamp of Israel will not be extinguished.”"
+    },
+    "reading_groups": [
+      "Abishai son of Zeruiah killed the Philistine"
+    ],
+    "audit": {
+      "passed": true,
+      "failures": [],
+      "notes": [
+        "distractor check skipped: none stated by this output tier"
+      ],
+      "location_leak_terms": [],
+      "distractors_found": [],
+      "distractors_missing": false,
+      "answer_leak_terms": [
+        "kill",
+        "philistin"
+      ],
+      "answer_verse": 17,
+      "answer_verse_original": 17,
+      "answer_verse_corrected": false,
+      "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 17",
+      "readings_failures": [],
+      "answerability": {
+        "model": "gpt-5",
+        "mode": "enforce",
+        "question": "Who kills the Philistine?",
+        "readings": [
+          {
+            "answer": "Abishai son of Zeruiah",
+            "support": "Abishai son of Zeruiah came to David’s rescue; he struck the Philistine down and killed him"
+          }
+        ],
+        "assessments": [
+          {
+            "number": 1,
+            "classification": "equivalent_to_key",
+            "reason": "Verse 17 states, “Abishai son of Zeruiah… struck the Philistine down and killed him,” matching the key."
+          }
+        ],
+        "verdict": "pass",
+        "reason": "The text explicitly says Abishai son of Zeruiah killed the Philistine.",
+        "status": "passed"
+      }
+    },
+    "window_selection_reason": "It most strongly tests grammatical agent resolution—identifying that the “he … killed him” refers to Abishai, not David—while remaining unambiguous and central with a plausible misparse competitor.",
+    "window_structure_max": 9.0,
+    "content_id": "v15-17:1",
+    "rank_in_batch": 2,
+    "rank_reason": "Identifying that in the Gob battle with the “weaver’s rod” spear it is the brother of Goliath who is killed hinges on parsing relative clauses and subject–object roles amid two Gob battles, whereas Abishai’s killing is inferable from the rescue context, and the four Rapha descendants’ defeat is an explicit, summarized outcome.",
+    "final_rank": 2
+  },
+  {
+    "question": "Who are defeated by David and his men?",
+    "answer": "The four descendants of Rapha in Gath",
+    "answer_verse": 22,
+    "wrong_answer": "David and his men",
+    "relation": "agent-patient",
+    "readings": [
+      {
+        "answer": "The four descendants of Rapha in Gath",
+        "support": "These four were descendants of Rapha in Gath, and they fell at the hands of David and his men."
+      }
+    ],
+    "distinct_readings": [
+      "The four descendants of Rapha in Gath"
+    ],
+    "scores": {
+      "structure_dependence": 8.0,
+      "statement_uniqueness": 9.0,
+      "answer_certainty": 10.0,
+      "centrality": 9.0,
+      "runs": 1,
+      "reason": "One must connect “they fell at the hands of David and his men” to its antecedent “these four… descendants of Rapha,” a single, central summary statement."
+    },
+    "window_verses": [
+      20,
+      21,
+      22
+    ],
+    "window_text": {
+      "20": "In still another battle, which took place at Gath, there was a huge man with six fingers on each hand and six toes on each foot—twenty-four in all. He also was descended from Rapha.",
+      "21": "When he taunted Israel, Jonathan son of Shimeah, David’s brother, killed him.",
+      "22": "These four were descendants of Rapha in Gath, and they fell at the hands of David and his men."
+    },
+    "reading_groups": [
+      "The four descendants of Rapha in Gath"
+    ],
+    "audit": {
+      "passed": true,
+      "failures": [],
+      "notes": [
+        "distractor check skipped: none stated by this output tier"
+      ],
+      "location_leak_terms": [],
+      "distractors_found": [],
+      "distractors_missing": false,
+      "answer_leak_terms": [],
+      "answer_verse": 22,
+      "answer_verse_original": 22,
+      "answer_verse_corrected": false,
+      "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 22",
+      "readings_failures": [],
+      "answerability": {
+        "model": "gpt-5",
+        "mode": "enforce",
+        "question": "Who are defeated by David and his men?",
+        "readings": [
+          {
+            "answer": "The four descendants of Rapha in Gath",
+            "support": "These four were descendants of Rapha in Gath, and they fell at the hands of David and his men."
+          }
+        ],
+        "assessments": [
+          {
+            "number": 1,
+            "classification": "equivalent_to_key",
+            "reason": "The passage explicitly states, “These four were descendants of Rapha in Gath, and they fell at the hands of David and his men,” which directly answers the question."
+          }
+        ],
+        "verdict": "pass",
+        "reason": "The text clearly says the four descendants of Rapha in Gath fell at the hands of David and his men.",
+        "status": "passed"
+      }
+    },
+    "window_selection_reason": "Item 1 cleanly probes the agent–patient relation in “they fell at the hands of David and his men” with a plausible role-reversal competitor, whereas Item 2 misattributes the killer as David’s brother and introduces ambiguity.",
+    "window_structure_max": 9.0,
+    "content_id": "v20-22:1",
+    "rank_in_batch": 3,
+    "rank_reason": "Identifying that in the Gob battle with the “weaver’s rod” spear it is the brother of Goliath who is killed hinges on parsing relative clauses and subject–object roles amid two Gob battles, whereas Abishai’s killing is inferable from the rescue context, and the four Rapha descendants’ defeat is an explicit, summarized outcome.",
+    "final_rank": 3
+  }
+]

@@ -1,0 +1,496 @@
+{
+  "config_digest": "bf29cf564aae7d15d3bd5bdbff20af59f16e06874e5bad45e83aa6623bdff95a",
+  "data": {
+    "kept": [
+      {
+        "question": "Who acts treacherously against Abimelek?",
+        "answer": "The citizens of Shechem.",
+        "answer_verse": 23,
+        "wrong_answer": "Abimelek.",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "the citizens of Shechem",
+            "support": "the citizens of Shechem | they acted treacherously against Abimelek"
+          }
+        ],
+        "distinct_readings": [
+          "the citizens of Shechem"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "Resolving the pronoun “they” back to the citizens of Shechem requires grammatical linkage, and it’s stated only here and clearly in a good translation."
+        },
+        "window_verses": [
+          21,
+          22,
+          23,
+          24,
+          25
+        ],
+        "window_text": {
+          "21": "Then Jotham fled, escaping to Beer, and he lived there because he was afraid of his brother Abimelek.",
+          "22": "After Abimelek had governed Israel three years,",
+          "23": "God stirred up animosity between Abimelek and the citizens of Shechem so that they acted treacherously against Abimelek.",
+          "24": "God did this in order that the crime against Jerub-Baal’s seventy sons, the shedding of their blood, might be avenged on their brother Abimelek and on the citizens of Shechem, who had helped him murder his brothers.",
+          "25": "In opposition to him these citizens of Shechem set men on the hilltops to ambush and rob everyone who passed by, and this was reported to Abimelek."
+        },
+        "reading_groups": [
+          "The citizens of Shechem act treacherously against Abimelek"
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 23,
+          "answer_verse_original": 23,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 23",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Who acts treacherously against Abimelek?",
+            "readings": [
+              {
+                "answer": "the citizens of Shechem",
+                "support": "the citizens of Shechem | they acted treacherously against Abimelek"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Verse 23 explicitly says God stirred up animosity between Abimelek and the citizens of Shechem so that they acted treacherously against Abimelek; “they” refers to the citizens of Shechem."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "Verse 23 states the citizens of Shechem acted treacherously against Abimelek.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It hinges on resolving the pronoun “they” to the citizens of Shechem (not Abimelek) as the agent acting treacherously against Abimelek, a clear, central, grammar-dependent distinction with a plausible misparse competitor.",
+        "window_structure_max": 9.0,
+        "content_id": "v21-25:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Why does Jotham live in Beer?",
+        "answer": "He is afraid of Abimelek.",
+        "answer_verse": 21,
+        "wrong_answer": "Because Abimelek had governed Israel three years.",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "Because he was afraid of his brother Abimelek.",
+            "support": "he lived there because he was afraid of his brother Abimelek"
+          }
+        ],
+        "distinct_readings": [
+          "Because he was afraid of his brother Abimelek."
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 3.0,
+          "runs": 1,
+          "reason": "The cause is given in a because-clause tied to Jotham’s living there, stated once and unambiguous but not central to the main plot."
+        },
+        "window_verses": [
+          21,
+          22,
+          23,
+          24,
+          25
+        ],
+        "window_text": {
+          "21": "Then Jotham fled, escaping to Beer, and he lived there because he was afraid of his brother Abimelek.",
+          "22": "After Abimelek had governed Israel three years,",
+          "23": "God stirred up animosity between Abimelek and the citizens of Shechem so that they acted treacherously against Abimelek.",
+          "24": "God did this in order that the crime against Jerub-Baal’s seventy sons, the shedding of their blood, might be avenged on their brother Abimelek and on the citizens of Shechem, who had helped him murder his brothers.",
+          "25": "In opposition to him these citizens of Shechem set men on the hilltops to ambush and rob everyone who passed by, and this was reported to Abimelek."
+        },
+        "reading_groups": [
+          "Because he was afraid of his brother Abimelek"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: beer",
+            "lexical: structure_dependence 6.0 (need 7.0)",
+            "incidental: centrality 3.0 (need 5.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "beer"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 21,
+          "answer_verse_original": 21,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 21",
+          "readings_failures": []
+        },
+        "content_id": "v21-25:2"
+      },
+      {
+        "question": "After Abimelek rules Israel three years, who causes the hostility?",
+        "answer": "God.",
+        "answer_verse": 22,
+        "wrong_answer": "Abimelek.",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "God",
+            "support": "God stirred up animosity"
+          }
+        ],
+        "distinct_readings": [
+          "God"
+        ],
+        "scores": {
+          "structure_dependence": 2.0,
+          "statement_uniqueness": 3.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "The agent is explicitly “God,” repeated by “God did this,” making it easy to spot and central to the passage’s turn."
+        },
+        "window_verses": [
+          21,
+          22,
+          23,
+          24,
+          25
+        ],
+        "window_text": {
+          "21": "Then Jotham fled, escaping to Beer, and he lived there because he was afraid of his brother Abimelek.",
+          "22": "After Abimelek had governed Israel three years,",
+          "23": "God stirred up animosity between Abimelek and the citizens of Shechem so that they acted treacherously against Abimelek.",
+          "24": "God did this in order that the crime against Jerub-Baal’s seventy sons, the shedding of their blood, might be avenged on their brother Abimelek and on the citizens of Shechem, who had helped him murder his brothers.",
+          "25": "In opposition to him these citizens of Shechem set men on the hilltops to ambush and rob everyone who passed by, and this was reported to Abimelek."
+        },
+        "reading_groups": [
+          "God causes the hostility"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: israel",
+            "question too complex: stacked clauses (1 comma(s), 1 subordinator(s))",
+            "bare-name answer 'God.': names survive translation",
+            "lexical: structure_dependence 2.0 (need 7.0)"
+          ],
+          "notes": [
+            "corrected metadata from 23 to 22; reading support and question relation identify verse 22",
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "israel"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 22,
+          "answer_verse_original": 23,
+          "answer_verse_corrected": true,
+          "answer_verse_note": "corrected metadata from 23 to 22; reading support and question relation identify verse 22",
+          "readings_failures": []
+        },
+        "content_id": "v21-25:3"
+      },
+      {
+        "question": "For what purpose does God cause the hostility?",
+        "answer": "To pay back the killing of Jerub-Baal’s seventy sons against Abimelek and the citizens of Shechem.",
+        "answer_verse": 24,
+        "wrong_answer": "So the citizens act treacherously against Abimelek.",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "To avenge the crime against Jerub-Baal’s seventy sons, the shedding of their blood, on Abimelek and the citizens of Shechem.",
+            "support": "God did this in order that the crime against Jerub-Baal’s seventy sons, the shedding of their blood, might be avenged on their brother Abimelek and on the citizens of Shechem"
+          },
+          {
+            "answer": "So that the citizens of Shechem acted treacherously against Abimelek.",
+            "support": "so that they acted treacherously against Abimelek"
+          }
+        ],
+        "distinct_readings": [
+          "To avenge the crime against Jerub-Baal’s seventy sons, the shedding of their blood, on Abimelek and the citizens of Shechem.",
+          "So that the citizens of Shechem acted treacherously against Abimelek."
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "The purpose is expressed in a subordinate in order that-clause detailing vengeance, appearing once and central to God’s action."
+        },
+        "window_verses": [
+          21,
+          22,
+          23,
+          24,
+          25
+        ],
+        "window_text": {
+          "21": "Then Jotham fled, escaping to Beer, and he lived there because he was afraid of his brother Abimelek.",
+          "22": "After Abimelek had governed Israel three years,",
+          "23": "God stirred up animosity between Abimelek and the citizens of Shechem so that they acted treacherously against Abimelek.",
+          "24": "God did this in order that the crime against Jerub-Baal’s seventy sons, the shedding of their blood, might be avenged on their brother Abimelek and on the citizens of Shechem, who had helped him murder his brothers.",
+          "25": "In opposition to him these citizens of Shechem set men on the hilltops to ambush and rob everyone who passed by, and this was reported to Abimelek."
+        },
+        "reading_groups": [
+          "To avenge the crime against Jerub-Baal’s seventy sons on Abimelek and the citizens of Shechem",
+          "So that the citizens of Shechem act treacherously against Abimelek"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "2 defensible readings: To avenge the crime against Jerub-Baal’s seventy sons on Abimelek and the citizens of Shechem | So that the citizens of Shechem act treacherously against Abimelek",
+            "competitor 'So the citizens act treacherously against Abimelek.' is itself defensible — the item is ambiguous, not discriminating"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 24,
+          "answer_verse_original": 24,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 24",
+          "readings_failures": [
+            "2 defensible readings: To avenge the crime against Jerub-Baal’s seventy sons on Abimelek and the citizens of Shechem | So that the citizens of Shechem act treacherously against Abimelek",
+            "competitor 'So the citizens act treacherously against Abimelek.' is itself defensible — the item is ambiguous, not discriminating"
+          ]
+        },
+        "content_id": "v21-25:4"
+      },
+      {
+        "question": "On whom should the payback for the killings fall?",
+        "answer": "Abimelek and the citizens of Shechem.",
+        "answer_verse": 24,
+        "wrong_answer": "Jerub-Baal’s seventy sons.",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "On their brother Abimelek and on the citizens of Shechem",
+            "support": "might be avenged on their brother Abimelek and on the citizens of Shechem"
+          }
+        ],
+        "distinct_readings": [
+          "On their brother Abimelek and on the citizens of Shechem"
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "Identifying the objects of vengeance requires tracking the prepositional phrase “on … Abimelek and … the citizens,” stated once and crucial to the stated purpose."
+        },
+        "window_verses": [
+          21,
+          22,
+          23,
+          24,
+          25
+        ],
+        "window_text": {
+          "21": "Then Jotham fled, escaping to Beer, and he lived there because he was afraid of his brother Abimelek.",
+          "22": "After Abimelek had governed Israel three years,",
+          "23": "God stirred up animosity between Abimelek and the citizens of Shechem so that they acted treacherously against Abimelek.",
+          "24": "God did this in order that the crime against Jerub-Baal’s seventy sons, the shedding of their blood, might be avenged on their brother Abimelek and on the citizens of Shechem, who had helped him murder his brothers.",
+          "25": "In opposition to him these citizens of Shechem set men on the hilltops to ambush and rob everyone who passed by, and this was reported to Abimelek."
+        },
+        "reading_groups": [
+          "On Abimelek and the citizens of Shechem"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 24,
+          "answer_verse_original": 24,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 24",
+          "readings_failures": []
+        },
+        "content_id": "v21-25:5"
+      },
+      {
+        "question": "Whom did the citizens of Shechem help in the murders?",
+        "answer": "Abimelek.",
+        "answer_verse": 24,
+        "wrong_answer": "Jerub-Baal.",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "Abimelek",
+            "support": "their brother Abimelek | who had helped him murder his brothers"
+          }
+        ],
+        "distinct_readings": [
+          "Abimelek"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "It hinges on resolving the relative clause “who had helped him” to Abimelek, a single occurrence but clear in context."
+        },
+        "window_verses": [
+          21,
+          22,
+          23,
+          24,
+          25
+        ],
+        "window_text": {
+          "21": "Then Jotham fled, escaping to Beer, and he lived there because he was afraid of his brother Abimelek.",
+          "22": "After Abimelek had governed Israel three years,",
+          "23": "God stirred up animosity between Abimelek and the citizens of Shechem so that they acted treacherously against Abimelek.",
+          "24": "God did this in order that the crime against Jerub-Baal’s seventy sons, the shedding of their blood, might be avenged on their brother Abimelek and on the citizens of Shechem, who had helped him murder his brothers.",
+          "25": "In opposition to him these citizens of Shechem set men on the hilltops to ambush and rob everyone who passed by, and this was reported to Abimelek."
+        },
+        "reading_groups": [
+          "They helped Abimelek murder his brothers"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: murder",
+            "bare-name answer 'Abimelek.': names survive translation"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "murder"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 24,
+          "answer_verse_original": 24,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 24",
+          "readings_failures": []
+        },
+        "content_id": "v21-25:6"
+      },
+      {
+        "question": "Whom do the citizens oppose when they set ambushes?",
+        "answer": "Abimelek.",
+        "answer_verse": 25,
+        "wrong_answer": "Jotham.",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "Abimelek",
+            "support": "so that they acted treacherously against Abimelek | In opposition to him these citizens of Shechem set men"
+          }
+        ],
+        "distinct_readings": [
+          "Abimelek"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 5.0,
+          "answer_certainty": 9.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "Determining the referent of “him” (Abimelek) requires cross-sentence pronoun resolution, and while only stated once it’s strongly implied by the prior animosity."
+        },
+        "window_verses": [
+          21,
+          22,
+          23,
+          24,
+          25
+        ],
+        "window_text": {
+          "21": "Then Jotham fled, escaping to Beer, and he lived there because he was afraid of his brother Abimelek.",
+          "22": "After Abimelek had governed Israel three years,",
+          "23": "God stirred up animosity between Abimelek and the citizens of Shechem so that they acted treacherously against Abimelek.",
+          "24": "God did this in order that the crime against Jerub-Baal’s seventy sons, the shedding of their blood, might be avenged on their brother Abimelek and on the citizens of Shechem, who had helped him murder his brothers.",
+          "25": "In opposition to him these citizens of Shechem set men on the hilltops to ambush and rob everyone who passed by, and this was reported to Abimelek."
+        },
+        "reading_groups": [
+          "They oppose Abimelek"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: ambush, set",
+            "bare-name answer 'Abimelek.': names survive translation"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "ambush",
+            "set"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 25,
+          "answer_verse_original": 25,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 25",
+          "readings_failures": []
+        },
+        "content_id": "v21-25:7"
+      }
+    ],
+    "report": {
+      "window_id": "v21-25",
+      "verses": [
+        21,
+        22,
+        23,
+        24,
+        25
+      ],
+      "generated": 7,
+      "scored": 7,
+      "kept": 1,
+      "survivors_before_window_selection": 1,
+      "window_selection_rejected": 0,
+      "repair_attempted": 0,
+      "repaired": 0,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

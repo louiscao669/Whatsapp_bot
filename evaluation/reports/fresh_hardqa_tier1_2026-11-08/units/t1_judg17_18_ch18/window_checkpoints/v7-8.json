@@ -1,0 +1,405 @@
+{
+  "config_digest": "bab5a848f20f60ea534214d9358795f20d975515f4adb1ac077513ba4e1247aa",
+  "data": {
+    "kept": [
+      {
+        "question": "Why are the people at Laish well-off?",
+        "answer": "Because their land lacks nothing.",
+        "answer_verse": 7,
+        "wrong_answer": "Because they are at peace and secure.",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "Because their land lacked nothing.",
+            "support": "since their land lacked nothing, they were prosperous."
+          }
+        ],
+        "distinct_readings": [
+          "Because their land lacked nothing."
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 10.0,
+          "answer_certainty": 9.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "It targets the explicit cause-effect clause ('since their land lacked nothing'), stated once and unambiguous, and while central to the description it is one of several reported conditions."
+        },
+        "window_verses": [
+          7,
+          8
+        ],
+        "window_text": {
+          "7": "So the five men left and came to Laish, where they saw that the people were living in safety, like the Sidonians, at peace and secure. And since their land lacked nothing, they were prosperous. Also, they lived a long way from the Sidonians and had no relationship with anyone else.",
+          "8": "When they returned to Zorah and Eshtaol, their fellow Danites asked them, “How did you find things?”"
+        },
+        "reading_groups": [
+          "Because their land lacked nothing (reason for prosperity)"
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 7,
+          "answer_verse_original": 7,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 7",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Why are the people at Laish well-off?",
+            "readings": [
+              {
+                "answer": "Because their land lacked nothing.",
+                "support": "since their land lacked nothing, they were prosperous."
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The text explicitly states, “since their land lacked nothing, they were prosperous,” directly matching the answer that they are well-off because their land lacked nothing."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The passage explicitly links their prosperity to the land lacking nothing: “since their land lacked nothing, they were prosperous.”",
+            "status": "passed"
+          }
+        },
+        "scores_after_repair_raw": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 10.0,
+          "answer_certainty": 9.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "It targets the explicit cause-effect clause ('since their land lacked nothing'), stated once and unambiguous, and while central to the description it is one of several reported conditions."
+        },
+        "repaired": true,
+        "repair_attempted": true,
+        "question_before_repair": "Why are the people at Laish prosperous?",
+        "scores_before_repair": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "It asks for the causal reason for prosperity (“since their land lacked nothing”), a single explicit clause with an unambiguous answer central to the description of Laish."
+        },
+        "audit_before_repair": {
+          "passed": false,
+          "failures": [
+            "location leak: prosperou"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "prosperou"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 7,
+          "answer_verse_original": 7,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 7",
+          "readings_failures": []
+        },
+        "repair_log": [
+          {
+            "before": "Why are the people at Laish prosperous?",
+            "after": "Why are the people at Laish well-off?",
+            "note": "Replaced the leaking word “prosperous” with neutral wording.",
+            "failures_before": [
+              "location leak: prosperou"
+            ],
+            "scores_before": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 7.0,
+              "runs": 1,
+              "reason": "It asks for the causal reason for prosperity (“since their land lacked nothing”), a single explicit clause with an unambiguous answer central to the description of Laish."
+            },
+            "accepted": true,
+            "reason": "passed full rejudgment",
+            "suitability_judgment": {
+              "Q": "Why are the people at Laish well-off?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "The text explicitly gives the cause of their prosperity: their land lacked nothing."
+            },
+            "failures_after": [],
+            "scores_after": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 10.0,
+              "answer_certainty": 9.0,
+              "centrality": 6.0,
+              "runs": 1,
+              "reason": "It targets the explicit cause-effect clause ('since their land lacked nothing'), stated once and unambiguous, and while central to the description it is one of several reported conditions."
+            },
+            "scores_used": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 10.0,
+              "answer_certainty": 9.0,
+              "centrality": 6.0,
+              "runs": 1,
+              "reason": "It targets the explicit cause-effect clause ('since their land lacked nothing'), stated once and unambiguous, and while central to the description it is one of several reported conditions."
+            }
+          }
+        ],
+        "window_selection_reason": "It hinges on the explicit causal clause “since their land lacked nothing” for prosperity, while the competitor plausibly misparses a descriptive clause (“at peace and secure”) as the cause.",
+        "window_structure_max": 8.0,
+        "content_id": "v7-8:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Who asks the five men on their return?",
+        "answer": "Their fellow Danites.",
+        "answer_verse": 8,
+        "wrong_answer": "The five men.",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "Their fellow Danites",
+            "support": "their fellow Danites asked them"
+          }
+        ],
+        "distinct_readings": [
+          "Their fellow Danites"
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 4.0,
+          "runs": 1,
+          "reason": "Identifying the asker requires tracking the subject of “asked” (their fellow Danites), stated once with a single clear answer, though it is a minor narrative detail."
+        },
+        "window_verses": [
+          7,
+          8
+        ],
+        "window_text": {
+          "7": "So the five men left and came to Laish, where they saw that the people were living in safety, like the Sidonians, at peace and secure. And since their land lacked nothing, they were prosperous. Also, they lived a long way from the Sidonians and had no relationship with anyone else.",
+          "8": "When they returned to Zorah and Eshtaol, their fellow Danites asked them, “How did you find things?”"
+        },
+        "reading_groups": [
+          "Their fellow Danites ask them on their return"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: return",
+            "dangling pronoun: their",
+            "lexical: structure_dependence 6.0 (need 7.0)",
+            "incidental: centrality 4.0 (need 5.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "return"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 8,
+          "answer_verse_original": 8,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 8",
+          "readings_failures": []
+        },
+        "content_id": "v7-8:2"
+      },
+      {
+        "question": "Where do the five men go after Laish?",
+        "answer": "Zorah and Eshtaol.",
+        "answer_verse": 7,
+        "wrong_answer": "Laish.",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "To Zorah and Eshtaol",
+            "support": "returned to Zorah and Eshtaol"
+          }
+        ],
+        "distinct_readings": [
+          "To Zorah and Eshtaol"
+        ],
+        "scores": {
+          "structure_dependence": 4.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 5.0,
+          "runs": 1,
+          "reason": "The destination is given directly in the “returned to Zorah and Eshtaol” phrase, stated once with a single answer and moderately relevant to the movement of the story."
+        },
+        "window_verses": [
+          7,
+          8
+        ],
+        "window_text": {
+          "7": "So the five men left and came to Laish, where they saw that the people were living in safety, like the Sidonians, at peace and secure. And since their land lacked nothing, they were prosperous. Also, they lived a long way from the Sidonians and had no relationship with anyone else.",
+          "8": "When they returned to Zorah and Eshtaol, their fellow Danites asked them, “How did you find things?”"
+        },
+        "reading_groups": [
+          "They return to Zorah and Eshtaol"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "bare-name answer 'Zorah and Eshtaol.': names survive translation",
+            "lexical: structure_dependence 4.0 (need 7.0)"
+          ],
+          "notes": [
+            "corrected metadata from 8 to 7; reading support and question relation identify verse 7",
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 7,
+          "answer_verse_original": 8,
+          "answer_verse_corrected": true,
+          "answer_verse_note": "corrected metadata from 8 to 7; reading support and question relation identify verse 7",
+          "readings_failures": []
+        },
+        "content_id": "v7-8:3"
+      },
+      {
+        "question": "Which people live far from the Sidonians?",
+        "answer": "The people at Laish.",
+        "answer_verse": 7,
+        "wrong_answer": "The Sidonians.",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "The people of Laish",
+            "support": "came to Laish, where they saw that the people | they lived a long way from the Sidonians"
+          }
+        ],
+        "distinct_readings": [
+          "The people of Laish"
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "Resolving that “they” (who lived far from the Sidonians) refers to the people at Laish requires antecedent tracking, is stated once, unambiguous, and pertinent to the portrayal of Laish."
+        },
+        "window_verses": [
+          7,
+          8
+        ],
+        "window_text": {
+          "7": "So the five men left and came to Laish, where they saw that the people were living in safety, like the Sidonians, at peace and secure. And since their land lacked nothing, they were prosperous. Also, they lived a long way from the Sidonians and had no relationship with anyone else.",
+          "8": "When they returned to Zorah and Eshtaol, their fellow Danites asked them, “How did you find things?”"
+        },
+        "reading_groups": [
+          "The people of Laish live far from the Sidonians"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: sidonian"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "sidonian"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 7,
+          "answer_verse_original": 7,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 7",
+          "readings_failures": []
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "Which people live far from the Sidonians?",
+            "after": "Which people live far from the people of Sidon?",
+            "note": "Replaced the leaking word “Sidonians” with a neutral equivalent.",
+            "failures_before": [
+              "location leak: sidonian"
+            ],
+            "scores_before": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 6.0,
+              "runs": 1,
+              "reason": "Resolving that “they” (who lived far from the Sidonians) refers to the people at Laish requires antecedent tracking, is stated once, unambiguous, and pertinent to the portrayal of Laish."
+            },
+            "accepted": false,
+            "reason": "failed full rejudgment",
+            "suitability_judgment": {
+              "Q": "Which people live far from the people of Sidon?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "The passage specifies that the people of Laish lived a long way from the Sidonians."
+            },
+            "failures_after": [
+              "ungrounded name: Sidon"
+            ],
+            "scores_after": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 9.0,
+              "centrality": 6.0,
+              "runs": 1,
+              "reason": "Answering requires resolving the pronoun 'they' to the Laish inhabitants in the unique distance clause, which is clear and moderately central to the scouting report."
+            },
+            "scores_used": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 9.0,
+              "centrality": 6.0,
+              "runs": 1,
+              "reason": "Answering requires resolving the pronoun 'they' to the Laish inhabitants in the unique distance clause, which is clear and moderately central to the scouting report."
+            }
+          }
+        ],
+        "content_id": "v7-8:4"
+      }
+    ],
+    "report": {
+      "window_id": "v7-8",
+      "verses": [
+        7,
+        8
+      ],
+      "generated": 4,
+      "scored": 4,
+      "kept": 1,
+      "survivors_before_window_selection": 1,
+      "window_selection_rejected": 0,
+      "repair_attempted": 2,
+      "repaired": 1,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

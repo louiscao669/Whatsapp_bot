@@ -1,0 +1,317 @@
+{
+  "config_digest": "06f6fd33124ccf69d50b7d020984e70e0c73dd874d345ad168bb1c04d96f7dac",
+  "data": {
+    "kept": [
+      {
+        "question": "Why is Uzziah eager to leave?",
+        "answer": "Because the Lord has afflicted him.",
+        "answer_verse": 20,
+        "wrong_answer": "Because the priests hurry him out.",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "Because the Lord had afflicted him.",
+            "support": "because the Lord had afflicted him"
+          }
+        ],
+        "distinct_readings": [
+          "Because the Lord had afflicted him."
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "It turns on the explicit causal clause “because the Lord had afflicted him,” uniquely stated and clear though somewhat less central than the main event."
+        },
+        "window_verses": [
+          19,
+          20
+        ],
+        "window_text": {
+          "19": "Uzziah, who had a censer in his hand ready to burn incense, became angry. While he was raging at the priests in their presence before the incense altar in the Lord’s temple, leprosy broke out on his forehead.",
+          "20": "When Azariah the chief priest and all the other priests looked at him, they saw that he had leprosy on his forehead, so they hurried him out. Indeed, he himself was eager to leave, because the Lord had afflicted him."
+        },
+        "reading_groups": [
+          "Because the Lord had afflicted him."
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 20,
+          "answer_verse_original": 20,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 20",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Why is Uzziah eager to leave?",
+            "readings": [
+              {
+                "answer": "Because the Lord had afflicted him.",
+                "support": "because the Lord had afflicted him"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Verse 20 explicitly says he was eager to leave because the Lord had afflicted him, matching the key’s wording."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The passage directly states he was eager to leave because the Lord had afflicted him.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It cleanly tests the causal clause—Uzziah’s eagerness is explicitly “because the Lord had afflicted him,” not merely due to the priests hurrying him—maximizing structure dependence with a single clear answer.",
+        "window_structure_max": 9.0,
+        "content_id": "v19-20:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Why do Azariah and the priests hurry Uzziah out?",
+        "answer": "Because they see leprosy on Uzziah’s forehead.",
+        "answer_verse": 20,
+        "wrong_answer": "Because Uzziah is raging at them.",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "Because they saw he had leprosy on his forehead.",
+            "support": "they saw that he had leprosy on his forehead"
+          }
+        ],
+        "distinct_readings": [
+          "Because they saw he had leprosy on his forehead."
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "It relies on the causal relation “they saw … so they hurried him out,” stated once, unambiguous, and central to the scene."
+        },
+        "window_verses": [
+          19,
+          20
+        ],
+        "window_text": {
+          "19": "Uzziah, who had a censer in his hand ready to burn incense, became angry. While he was raging at the priests in their presence before the incense altar in the Lord’s temple, leprosy broke out on his forehead.",
+          "20": "When Azariah the chief priest and all the other priests looked at him, they saw that he had leprosy on his forehead, so they hurried him out. Indeed, he himself was eager to leave, because the Lord had afflicted him."
+        },
+        "reading_groups": [
+          "They hurry him out because they saw leprosy on his forehead."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: azariah"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "azariah"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "uzziah"
+          ],
+          "answer_verse": 20,
+          "answer_verse_original": 20,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 20",
+          "readings_failures": []
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "Why do Azariah and the priests hurry Uzziah out?",
+            "after": "Why do the priests hurry Uzziah out?",
+            "note": "Removed the unique name to eliminate the location leak.",
+            "failures_before": [
+              "location leak: azariah"
+            ],
+            "scores_before": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 9.0,
+              "centrality": 9.0,
+              "runs": 1,
+              "reason": "It relies on the causal relation “they saw … so they hurried him out,” stated once, unambiguous, and central to the scene."
+            },
+            "accepted": false,
+            "reason": "removed: no LLM suitability verdict",
+            "suitability_judgment": null
+          }
+        ],
+        "content_id": "v19-20:2"
+      },
+      {
+        "question": "Who do the priests hurry out after they see the leprosy?",
+        "answer": "Uzziah.",
+        "answer_verse": 19,
+        "wrong_answer": "The priests.",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "Uzziah",
+            "support": "Uzziah | so they hurried him out."
+          }
+        ],
+        "distinct_readings": [
+          "Uzziah"
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "Identifying “him” as Uzziah requires pronoun resolution from the leprosy context, stated once, clear, and important to the action."
+        },
+        "window_verses": [
+          19,
+          20
+        ],
+        "window_text": {
+          "19": "Uzziah, who had a censer in his hand ready to burn incense, became angry. While he was raging at the priests in their presence before the incense altar in the Lord’s temple, leprosy broke out on his forehead.",
+          "20": "When Azariah the chief priest and all the other priests looked at him, they saw that he had leprosy on his forehead, so they hurried him out. Indeed, he himself was eager to leave, because the Lord had afflicted him."
+        },
+        "reading_groups": [
+          "They hurry out Uzziah."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "bare-name answer 'Uzziah.': names survive translation",
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "corrected metadata from 20 to 19; Q/A evidence matches verse(s) [19] better than the claimed 20",
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 19,
+          "answer_verse_original": 20,
+          "answer_verse_corrected": true,
+          "answer_verse_note": "corrected metadata from 20 to 19; Q/A evidence matches verse(s) [19] better than the claimed 20",
+          "readings_failures": []
+        },
+        "content_id": "v19-20:3"
+      },
+      {
+        "question": "What happens while Uzziah rages at the priests?",
+        "answer": "Leprosy breaks out on Uzziah’s forehead.",
+        "answer_verse": 19,
+        "wrong_answer": "The priests look at Uzziah.",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "Leprosy breaks out on his forehead.",
+            "support": "leprosy broke out on his forehead"
+          }
+        ],
+        "distinct_readings": [
+          "Leprosy breaks out on his forehead."
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "The answer depends on linking the ‘while’ clause to the event that follows—leprosy breaking out—stated once and pivotal to the passage."
+        },
+        "window_verses": [
+          19,
+          20
+        ],
+        "window_text": {
+          "19": "Uzziah, who had a censer in his hand ready to burn incense, became angry. While he was raging at the priests in their presence before the incense altar in the Lord’s temple, leprosy broke out on his forehead.",
+          "20": "When Azariah the chief priest and all the other priests looked at him, they saw that he had leprosy on his forehead, so they hurried him out. Indeed, he himself was eager to leave, because the Lord had afflicted him."
+        },
+        "reading_groups": [
+          "Leprosy breaks out on Uzziah’s forehead."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: rag, uzziah"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "rag",
+            "uzziah"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "uzziah"
+          ],
+          "answer_verse": 19,
+          "answer_verse_original": 19,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 19",
+          "readings_failures": []
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "What happens while Uzziah rages at the priests?",
+            "after": "What happens while the priests are being angrily confronted?",
+            "note": "Replaced the leaking words with neutral phrasing to avoid location clues.",
+            "failures_before": [
+              "location leak: rag, uzziah"
+            ],
+            "scores_before": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 9.0,
+              "runs": 1,
+              "reason": "The answer depends on linking the ‘while’ clause to the event that follows—leprosy breaking out—stated once and pivotal to the passage."
+            },
+            "accepted": false,
+            "reason": "removed: no LLM suitability verdict",
+            "suitability_judgment": null
+          }
+        ],
+        "content_id": "v19-20:4"
+      }
+    ],
+    "report": {
+      "window_id": "v19-20",
+      "verses": [
+        19,
+        20
+      ],
+      "generated": 4,
+      "scored": 4,
+      "kept": 1,
+      "survivors_before_window_selection": 1,
+      "window_selection_rejected": 0,
+      "repair_attempted": 2,
+      "repaired": 0,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

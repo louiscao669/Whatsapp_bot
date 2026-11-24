@@ -15,14 +15,18 @@ from eten_shared.question_discovery import (
     select_next_experiment_cell_item,
     select_next_qa_item,
 )
+from eten_shared.question_discovery.experiment_selection import select_next_interleaved_cell_item
 from eten_shared.recordings import participant_language_code
 
 
-def select_next_participant_qa_item(db, participant):
+def select_next_participant_qa_item(db, participant, *, pilot_waiting=None):
     """Return ``(qa_item, cell)``. In designed-assignment (pilot) mode the item comes
-    from the participant's plan and ``cell`` is the ``ExperimentPlanCell``; otherwise
-    ``cell`` is None (coverage / fallback path)."""
+    from the participant's plan. A web pilot passes its unseen queue (possibly
+    empty) to interleave groups. Other callers use block order. Outside a
+    designed plan, the coverage selector returns an item with ``cell=None``."""
     if experiment_assignment_enabled():
+        if pilot_waiting is not None:
+            return select_next_interleaved_cell_item(db, participant, pilot_waiting)
         return select_next_experiment_cell_item(db, participant)
 
     qa_item = select_next_qa_item(db, participant)

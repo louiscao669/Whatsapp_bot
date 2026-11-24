@@ -2,8 +2,16 @@ import { ApiError, apiFetch, clearApiCache } from './client'
 
 export type QaItemRow = {
   id: string
+  passage_id: string
+  bank_id: string
+  bank_label: string
   passage: string
   question: string
+  answer: string
+  mcq_choices: string[]
+  mcq_correct_choice: string | null
+  is_current: boolean
+  created_at: string
   question_type: string
   form_group_id: string | null
   automatic_form: string | null

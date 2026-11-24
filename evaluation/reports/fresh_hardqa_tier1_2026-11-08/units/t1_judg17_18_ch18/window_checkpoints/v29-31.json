@@ -1,0 +1,496 @@
+{
+  "config_digest": "bab5a848f20f60ea534214d9358795f20d975515f4adb1ac077513ba4e1247aa",
+  "data": {
+    "kept": [
+      {
+        "question": "Who sets up the idol in that city?",
+        "answer": "the Danites",
+        "answer_verse": 30,
+        "wrong_answer": "Jonathan and his sons",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "the Danites",
+            "support": "the Danites set up for themselves the idol"
+          }
+        ],
+        "distinct_readings": [
+          "the Danites"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "Identifying the subject of “set up the idol” requires following the clause that makes the Danites the actors; it’s stated once, unambiguous, and central to the passage’s action."
+        },
+        "window_verses": [
+          29,
+          30,
+          31
+        ],
+        "window_text": {
+          "29": "They named it Dan after their ancestor Dan, who was born to Israel—though the city used to be called Laish.",
+          "30": "There the Danites set up for themselves the idol, and Jonathan son of Gershom, the son of Moses, and his sons were priests for the tribe of Dan until the time of the captivity of the land.",
+          "31": "They continued to use the idol Micah had made, all the time the house of God was in Shiloh."
+        },
+        "reading_groups": [
+          "the Danites"
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 30,
+          "answer_verse_original": 30,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 30",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Who sets up the idol in that city?",
+            "readings": [
+              {
+                "answer": "the Danites",
+                "support": "the Danites set up for themselves the idol"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The passage explicitly states, \"There the Danites set up for themselves the idol,\" matching the key."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The verse directly states that the Danites set up the idol.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It hinges on identifying the grammatical subject of “set up” in v.30 (the Danites) versus the following clause about Jonathan as priests; the competitor is a plausible misparse and the answer is certain.",
+        "window_structure_max": 8.0,
+        "content_id": "v29-31:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Whose sons serve as priests for the tribe of Dan?",
+        "answer": "Jonathan’s sons",
+        "answer_verse": 30,
+        "wrong_answer": "Moses",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "Jonathan",
+            "support": "Jonathan son of Gershom, the son of Moses, and his sons were priests for the tribe of Dan"
+          }
+        ],
+        "distinct_readings": [
+          "Jonathan"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "Resolving the pronoun “his sons” to Jonathan (amid mention of Gershom and Moses) requires grammatical linkage; it’s uniquely stated, clear, and important to the narrative."
+        },
+        "window_verses": [
+          29,
+          30,
+          31
+        ],
+        "window_text": {
+          "29": "They named it Dan after their ancestor Dan, who was born to Israel—though the city used to be called Laish.",
+          "30": "There the Danites set up for themselves the idol, and Jonathan son of Gershom, the son of Moses, and his sons were priests for the tribe of Dan until the time of the captivity of the land.",
+          "31": "They continued to use the idol Micah had made, all the time the house of God was in Shiloh."
+        },
+        "reading_groups": [
+          "Jonathan is the one whose sons serve as priests"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "quotes the passage: quotes verse 30: 'priests for the tribe of'",
+            "answer 'Jonathan’s sons' is not among the defensible readings"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "sons"
+          ],
+          "answer_verse": 30,
+          "answer_verse_original": 30,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 30",
+          "readings_failures": [
+            "answer 'Jonathan’s sons' is not among the defensible readings"
+          ]
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "Whose sons serve as priests for the tribe of Dan?",
+            "after": "Whose sons were priests for Dan?",
+            "note": "Paraphrased to remove the quoted phrase from the verse.",
+            "failures_before": [
+              "quotes the passage: quotes verse 30: 'priests for the tribe of'",
+              "answer 'Jonathan’s sons' is not among the defensible readings"
+            ],
+            "scores_before": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "Resolving the pronoun “his sons” to Jonathan (amid mention of Gershom and Moses) requires grammatical linkage; it’s uniquely stated, clear, and important to the narrative."
+            },
+            "accepted": false,
+            "reason": "failed full rejudgment",
+            "suitability_judgment": {
+              "Q": "Whose sons were priests for Dan?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "The wording is clear and natural, and verse 30 directly identifies whose sons served as priests for the tribe of Dan, allowing only one defensible answer."
+            },
+            "failures_after": [
+              "not scored"
+            ],
+            "scores_after": {},
+            "scores_used": {}
+          }
+        ],
+        "content_id": "v29-31:2"
+      },
+      {
+        "question": "How long do Jonathan and his sons serve as priests?",
+        "answer": "until the time of the captivity of the land",
+        "answer_verse": 30,
+        "wrong_answer": "all the time the house of God was in Shiloh",
+        "relation": "quantity",
+        "readings": [
+          {
+            "answer": "until the time of the captivity of the land",
+            "support": "until the time of the captivity of the land"
+          }
+        ],
+        "distinct_readings": [
+          "until the time of the captivity of the land"
+        ],
+        "scores": {
+          "structure_dependence": 5.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "The answer is the time-limit phrase taken from the clause, stated once and unambiguous, and it provides significant temporal framing."
+        },
+        "window_verses": [
+          29,
+          30,
+          31
+        ],
+        "window_text": {
+          "29": "They named it Dan after their ancestor Dan, who was born to Israel—though the city used to be called Laish.",
+          "30": "There the Danites set up for themselves the idol, and Jonathan son of Gershom, the son of Moses, and his sons were priests for the tribe of Dan until the time of the captivity of the land.",
+          "31": "They continued to use the idol Micah had made, all the time the house of God was in Shiloh."
+        },
+        "reading_groups": [
+          "until the time of the captivity of the land"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: jonathan",
+            "lexical: structure_dependence 5.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "jonathan"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 30,
+          "answer_verse_original": 30,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 30",
+          "readings_failures": []
+        },
+        "content_id": "v29-31:3"
+      },
+      {
+        "question": "In which city do the Danites set up the idol?",
+        "answer": "Dan",
+        "answer_verse": 30,
+        "wrong_answer": "Shiloh",
+        "relation": "direction",
+        "readings": [
+          {
+            "answer": "Dan",
+            "support": "They named it Dan | There the Danites set up for themselves the idol"
+          }
+        ],
+        "distinct_readings": [
+          "Dan"
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "One must link “there” in v30 back to the just-named city Dan in v29, a discourse connection stated only here and key to the setting of the act."
+        },
+        "window_verses": [
+          29,
+          30,
+          31
+        ],
+        "window_text": {
+          "29": "They named it Dan after their ancestor Dan, who was born to Israel—though the city used to be called Laish.",
+          "30": "There the Danites set up for themselves the idol, and Jonathan son of Gershom, the son of Moses, and his sons were priests for the tribe of Dan until the time of the captivity of the land.",
+          "31": "They continued to use the idol Micah had made, all the time the house of God was in Shiloh."
+        },
+        "reading_groups": [
+          "Dan"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: danit",
+            "bare-name answer 'Dan': names survive translation"
+          ],
+          "notes": [
+            "corrected metadata from 29 to 30; reading support and question relation identify verse 30",
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "danit"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 30,
+          "answer_verse_original": 29,
+          "answer_verse_corrected": true,
+          "answer_verse_note": "corrected metadata from 29 to 30; reading support and question relation identify verse 30",
+          "readings_failures": []
+        },
+        "content_id": "v29-31:4"
+      },
+      {
+        "question": "Who makes the idol the Danites keep using?",
+        "answer": "Micah",
+        "answer_verse": 30,
+        "wrong_answer": "the Danites",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "Micah",
+            "support": "the idol Micah had made"
+          }
+        ],
+        "distinct_readings": [
+          "Micah"
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "Identifying the maker comes from the relative clause “the idol Micah had made,” uniquely present and unambiguous, and pertinent to the idol theme."
+        },
+        "window_verses": [
+          29,
+          30,
+          31
+        ],
+        "window_text": {
+          "29": "They named it Dan after their ancestor Dan, who was born to Israel—though the city used to be called Laish.",
+          "30": "There the Danites set up for themselves the idol, and Jonathan son of Gershom, the son of Moses, and his sons were priests for the tribe of Dan until the time of the captivity of the land.",
+          "31": "They continued to use the idol Micah had made, all the time the house of God was in Shiloh."
+        },
+        "reading_groups": [
+          "Micah"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: danit",
+            "bare-name answer 'Micah': names survive translation",
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "corrected metadata from 31 to 30; reading support and question relation identify verse 30",
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "danit"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 30,
+          "answer_verse_original": 31,
+          "answer_verse_corrected": true,
+          "answer_verse_note": "corrected metadata from 31 to 30; reading support and question relation identify verse 30",
+          "readings_failures": []
+        },
+        "content_id": "v29-31:5"
+      },
+      {
+        "question": "What was the city’s name before it is named Dan?",
+        "answer": "Laish",
+        "answer_verse": 29,
+        "wrong_answer": "Dan",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "Laish",
+            "support": "the city used to be called Laish"
+          }
+        ],
+        "distinct_readings": [
+          "Laish"
+        ],
+        "scores": {
+          "structure_dependence": 2.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "This is a direct retrieval of the earlier name “Laish,” stated once and clear, and moderately relevant to the naming note."
+        },
+        "window_verses": [
+          29,
+          30,
+          31
+        ],
+        "window_text": {
+          "29": "They named it Dan after their ancestor Dan, who was born to Israel—though the city used to be called Laish.",
+          "30": "There the Danites set up for themselves the idol, and Jonathan son of Gershom, the son of Moses, and his sons were priests for the tribe of Dan until the time of the captivity of the land.",
+          "31": "They continued to use the idol Micah had made, all the time the house of God was in Shiloh."
+        },
+        "reading_groups": [
+          "Laish"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "bare-name answer 'Laish': names survive translation",
+            "lexical: structure_dependence 2.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 29,
+          "answer_verse_original": 29,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 29",
+          "readings_failures": []
+        },
+        "content_id": "v29-31:6"
+      },
+      {
+        "question": "What is in Shiloh while the Danites keep using the idol?",
+        "answer": "the house of God",
+        "answer_verse": 31,
+        "wrong_answer": "the idol",
+        "relation": "participant",
+        "readings": [
+          {
+            "answer": "the house of God",
+            "support": "the house of God was in Shiloh"
+          }
+        ],
+        "distinct_readings": [
+          "the house of God"
+        ],
+        "scores": {
+          "structure_dependence": 4.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 5.0,
+          "runs": 1,
+          "reason": "It asks for the noun phrase linked by “was in Shiloh” (“the house of God”), a single explicit statement that is clear but only contextually important."
+        },
+        "window_verses": [
+          29,
+          30,
+          31
+        ],
+        "window_text": {
+          "29": "They named it Dan after their ancestor Dan, who was born to Israel—though the city used to be called Laish.",
+          "30": "There the Danites set up for themselves the idol, and Jonathan son of Gershom, the son of Moses, and his sons were priests for the tribe of Dan until the time of the captivity of the land.",
+          "31": "They continued to use the idol Micah had made, all the time the house of God was in Shiloh."
+        },
+        "reading_groups": [
+          "the house of God"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: shiloh",
+            "lexical: structure_dependence 4.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "shiloh"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 31,
+          "answer_verse_original": 31,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 31",
+          "readings_failures": []
+        },
+        "content_id": "v29-31:7"
+      }
+    ],
+    "report": {
+      "window_id": "v29-31",
+      "verses": [
+        29,
+        30,
+        31
+      ],
+      "generated": 7,
+      "scored": 7,
+      "kept": 1,
+      "survivors_before_window_selection": 1,
+      "window_selection_rejected": 0,
+      "repair_attempted": 1,
+      "repaired": 0,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

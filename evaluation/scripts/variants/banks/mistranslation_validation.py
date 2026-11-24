@@ -97,13 +97,18 @@ def validate_schema(value, schema: dict) -> None:
         for key, field in schema["properties"].items():
             validate_schema(value[key], field)
     elif kind == "array":
-        if not isinstance(value, list) or len(value) > schema.get("maxItems", len(value)):
+        if (not isinstance(value, list) or len(value) > schema.get("maxItems", len(value))
+                or len(value) < schema.get("minItems", 0)):
             raise MistranslationValidationError("Invalid model response array.")
         for item in value:
             validate_schema(item, schema["items"])
     elif kind == "string":
         if not isinstance(value, str) or ("enum" in schema and value not in schema["enum"]):
             raise MistranslationValidationError("Invalid model response string or decision.")
+    elif kind == "integer":
+        if (type(value) is not int or value < schema.get("minimum", value)
+                or value > schema.get("maximum", value)):
+            raise MistranslationValidationError("Invalid model response integer.")
     else:
         raise MistranslationValidationError(f"Unsupported response contract type: {kind}")
 
@@ -221,6 +226,10 @@ class StructuredResponseCache:
 
 def validate_reviewed_bank(bank: dict, passage: str) -> None:
     """Bind every approval to its exact candidate, source context, and judge."""
+    if bank.get("schema_version") == 3:
+        from evaluation.scripts.variants.banks.mistranslation_bundles import validate_bank
+        validate_bank(bank, passage)
+        return
     review = bank.get("validation", {})
     if not isinstance(review, dict):
         raise MistranslationValidationError("Invalid bank validation record.")

@@ -649,6 +649,14 @@ class ExperimentPassageVerse(Base):
     )
 
 
+class PilotRotationCount(Base):
+    """Anonymous totals for issued Sol study rotations, including deleted plans."""
+
+    __tablename__ = "pilot_rotation_counts"
+    rotation: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=False)
+    issued: Mapped[int] = mapped_column(Integer, nullable=False)
+
+
 class ExperimentPlanCell(Base):
     """One Latin-square cell of a designed experiment: a participant's assigned
     condition for a single chapter. ``chapter`` selects the per-chapter QAItem
@@ -1237,16 +1245,15 @@ class PilotQuestionnaireResponse(Base):
     (instrument: ``eten_shared.pilot_questionnaire``). One row per participant,
     filled section by section so a reload resumes where the participant left
     off. ``status`` is the last section saved: ``eligibility`` once Section A
-    passed, then ``background``, ``religion`` and finally ``familiarity``
-    (= complete, with ``completed_at`` set).
+    passed, then ``background`` and finally ``religion``. Historical
+    four-section questionnaires can also have a final ``familiarity`` status.
 
     Only ELIGIBLE participants ever have a row: the screen-out path writes
     nothing here (administration note: an ineligible participant's responses
     are deleted and only an anonymous count is kept, in
     :class:`PilotScreenoutCount`).
 
-    The Section D score is computed and stored server-side; it is never sent
-    to the participant.
+    The familiarity columns hold historical Section D responses and scores.
     """
 
     __tablename__ = "pilot_questionnaire_responses"

@@ -1,0 +1,693 @@
+{
+  "config_digest": "7d0f9ca5b001dd4aafd08cfe62ee0ee1709a4cee0d45b80852aceee348ef06c5",
+  "data": {
+    "kept": [],
+    "rejected": [
+      {
+        "question": "Who invites the man of God to eat at his home?",
+        "answer": "The prophet.",
+        "answer_verse": 15,
+        "wrong_answer": "The man of God.",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "the prophet",
+            "support": "So the prophet said to him, “Come home with me and eat.”"
+          }
+        ],
+        "distinct_readings": [
+          "the prophet"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "Identifying the speaker of the invitation ties the quoted speech to “the prophet,” stated once and central to the exchange."
+        },
+        "window_verses": [
+          15,
+          16,
+          17
+        ],
+        "window_text": {
+          "15": "So the prophet said to him, “Come home with me and eat.”",
+          "16": "The man of God said, “I cannot turn back and go with you, nor can I eat bread or drink water with you in this place.",
+          "17": "I have been told by the word of the Lord: ‘You must not eat bread or drink water there or return by the way you came.’”"
+        },
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: hom"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "hom"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 15,
+          "answer_verse_original": 15,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 15",
+          "readings_failures": []
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "Who invites the man of God to eat at his home?",
+            "after": "Who invites the man of God to eat?",
+            "note": "Removed the leaking word 'home'.",
+            "failures_before": [
+              "location leak: hom"
+            ],
+            "scores_before": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "Identifying the speaker of the invitation ties the quoted speech to “the prophet,” stated once and central to the exchange."
+            },
+            "accepted": false,
+            "reason": "removed: no LLM suitability verdict",
+            "suitability_judgment": null
+          }
+        ],
+        "content_id": "v15-17:1"
+      },
+      {
+        "question": "Whose word forbids the man of God to eat or drink there?",
+        "answer": "The Lord’s.",
+        "answer_verse": 17,
+        "wrong_answer": "The prophet’s.",
+        "relation": "modality",
+        "readings": [
+          {
+            "answer": "The Lord's",
+            "support": "the word of the Lord"
+          }
+        ],
+        "distinct_readings": [
+          "The Lord's"
+        ],
+        "scores": {
+          "structure_dependence": 2.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "The phrase “word of the Lord” is explicit and unique, giving an unambiguous source for the prohibition, which is key to the refusal."
+        },
+        "window_verses": [
+          15,
+          16,
+          17
+        ],
+        "window_text": {
+          "15": "So the prophet said to him, “Come home with me and eat.”",
+          "16": "The man of God said, “I cannot turn back and go with you, nor can I eat bread or drink water with you in this place.",
+          "17": "I have been told by the word of the Lord: ‘You must not eat bread or drink water there or return by the way you came.’”"
+        },
+        "audit": {
+          "passed": false,
+          "failures": [
+            "alternatives in question: question lists the alternatives",
+            "bare-name answer 'The Lord’s.': names survive translation",
+            "lexical: structure_dependence 2.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 17,
+          "answer_verse_original": 17,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 17",
+          "readings_failures": []
+        },
+        "content_id": "v15-17:2"
+      },
+      {
+        "question": "What happens before the man of God refuses to go with the prophet?",
+        "answer": "The prophet invites the man of God to eat.",
+        "answer_verse": 15,
+        "wrong_answer": "The man of God reports the Lord’s command.",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "The prophet invites him to come home and eat.",
+            "support": "So the prophet said to him, “Come home with me and eat.”"
+          }
+        ],
+        "distinct_readings": [
+          "The prophet invites him to come home and eat."
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "It requires sequencing two actions—invitation then refusal—stated once and central to the dialogue."
+        },
+        "window_verses": [
+          15,
+          16,
+          17
+        ],
+        "window_text": {
+          "15": "So the prophet said to him, “Come home with me and eat.”",
+          "16": "The man of God said, “I cannot turn back and go with you, nor can I eat bread or drink water with you in this place.",
+          "17": "I have been told by the word of the Lord: ‘You must not eat bread or drink water there or return by the way you came.’”"
+        },
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: prophet"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "prophet"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "god",
+            "prophet"
+          ],
+          "answer_verse": 15,
+          "answer_verse_original": 15,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 15",
+          "readings_failures": []
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "What happens before the man of God refuses to go with the prophet?",
+            "after": "What happens before the man of God refuses to go?",
+            "note": "Removed the leaking word 'prophet' while preserving the event.",
+            "failures_before": [
+              "location leak: prophet"
+            ],
+            "scores_before": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "It requires sequencing two actions—invitation then refusal—stated once and central to the dialogue."
+            },
+            "accepted": false,
+            "reason": "removed: no LLM suitability verdict",
+            "suitability_judgment": null
+          }
+        ],
+        "content_id": "v15-17:3"
+      },
+      {
+        "question": "What travel rule does the Lord give the man of God?",
+        "answer": "The man of God must not go back by the same route.",
+        "answer_verse": 17,
+        "wrong_answer": "The man of God must not go with the prophet.",
+        "relation": "direction",
+        "readings": [
+          {
+            "answer": "Not to return by the way he came",
+            "support": "You must not eat bread or drink water there or return by the way you came"
+          }
+        ],
+        "distinct_readings": [
+          "Not to return by the way he came"
+        ],
+        "scores": {
+          "structure_dependence": 5.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "Among multiple commands, one must select the travel-related clause “return by the way you came,” uniquely stated and clear."
+        },
+        "window_verses": [
+          15,
+          16,
+          17
+        ],
+        "window_text": {
+          "15": "So the prophet said to him, “Come home with me and eat.”",
+          "16": "The man of God said, “I cannot turn back and go with you, nor can I eat bread or drink water with you in this place.",
+          "17": "I have been told by the word of the Lord: ‘You must not eat bread or drink water there or return by the way you came.’”"
+        },
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: lord",
+            "answer is a description, not an identification: 'The man of God must not go back by the same route.'",
+            "lexical: structure_dependence 5.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "lord"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "god"
+          ],
+          "answer_verse": 17,
+          "answer_verse_original": 17,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 17",
+          "readings_failures": []
+        },
+        "content_id": "v15-17:4"
+      },
+      {
+        "question": "What does the man of God say he cannot do with the prophet?",
+        "answer": "The man of God cannot go back with the prophet.",
+        "answer_verse": 16,
+        "wrong_answer": "The man of God cannot go back by the same route.",
+        "relation": "polarity",
+        "readings": [
+          {
+            "answer": "Turn back and go with him.",
+            "support": "I cannot turn back and go with you"
+          },
+          {
+            "answer": "Eat bread or drink water with him in that place.",
+            "support": "nor can I eat bread or drink water with you in this place"
+          }
+        ],
+        "distinct_readings": [
+          "Turn back and go with him.",
+          "Eat bread or drink water with him in that place."
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 2.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "The verse lists multiple things he cannot do “with you” (go with, eat, drink), making the question ambiguous though central."
+        },
+        "window_verses": [
+          15,
+          16,
+          17
+        ],
+        "window_text": {
+          "15": "So the prophet said to him, “Come home with me and eat.”",
+          "16": "The man of God said, “I cannot turn back and go with you, nor can I eat bread or drink water with you in this place.",
+          "17": "I have been told by the word of the Lord: ‘You must not eat bread or drink water there or return by the way you came.’”"
+        },
+        "audit": {
+          "passed": false,
+          "failures": [
+            "answer is a description, not an identification: 'The man of God cannot go back with the prophet.'",
+            "ambiguous: answer_certainty 2.0 (need 7.0)",
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "cannot",
+            "god",
+            "prophet"
+          ],
+          "answer_verse": 16,
+          "answer_verse_original": 16,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 16",
+          "readings_failures": []
+        },
+        "content_id": "v15-17:5"
+      },
+      {
+        "question": "Who invites the man of God to eat at his place?",
+        "answer": "the prophet",
+        "answer_verse": 16,
+        "wrong_answer": "the man of God",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "The prophet",
+            "support": "the prophet said to him, “Come home with me and eat.”"
+          }
+        ],
+        "distinct_readings": [
+          "The prophet"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "It relies on attributing the quoted invitation to its speaker (the prophet), stated once, unambiguous, and central to the invitation‑refusal scene."
+        },
+        "window_verses": [
+          15,
+          16,
+          17
+        ],
+        "window_text": {
+          "15": "So the prophet said to him, “Come home with me and eat.”",
+          "16": "The man of God said, “I cannot turn back and go with you, nor can I eat bread or drink water with you in this place.",
+          "17": "I have been told by the word of the Lord: ‘You must not eat bread or drink water there or return by the way you came.’”"
+        },
+        "reading_groups": [
+          "The prophet invited him to eat at his home"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: plac"
+          ],
+          "notes": [
+            "corrected metadata from 15 to 16; reading support and question relation identify verse 16",
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "plac"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 16,
+          "answer_verse_original": 15,
+          "answer_verse_corrected": true,
+          "answer_verse_note": "corrected metadata from 15 to 16; reading support and question relation identify verse 16",
+          "readings_failures": []
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "Who invites the man of God to eat at his place?",
+            "after": null,
+            "failures_before": [
+              "location leak: plac"
+            ],
+            "scores_before": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "It relies on attributing the quoted invitation to its speaker (the prophet), stated once, unambiguous, and central to the invitation‑refusal scene."
+            },
+            "accepted": false,
+            "reason": "repair call failed: Connection error."
+          }
+        ],
+        "content_id": "v15-17:6"
+      },
+      {
+        "question": "Whose word tells the man of God not to eat or drink?",
+        "answer": "the Lord",
+        "answer_verse": 17,
+        "wrong_answer": "the prophet",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "the Lord’s",
+            "support": "the word of the Lord"
+          }
+        ],
+        "distinct_readings": [
+          "the Lord’s"
+        ],
+        "scores": {
+          "structure_dependence": 2.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "The phrase “the word of the Lord” directly names the source, appears only once, is unequivocal, and explains the refusal."
+        },
+        "window_verses": [
+          15,
+          16,
+          17
+        ],
+        "window_text": {
+          "15": "So the prophet said to him, “Come home with me and eat.”",
+          "16": "The man of God said, “I cannot turn back and go with you, nor can I eat bread or drink water with you in this place.",
+          "17": "I have been told by the word of the Lord: ‘You must not eat bread or drink water there or return by the way you came.’”"
+        },
+        "reading_groups": [
+          "The Lord’s word"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "alternatives in question: question lists the alternatives",
+            "bare-name answer 'the Lord': names survive translation",
+            "lexical: structure_dependence 2.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 17,
+          "answer_verse_original": 17,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 17",
+          "readings_failures": []
+        },
+        "content_id": "v15-17:7"
+      },
+      {
+        "question": "How should the man of God return, according to the Lord's word?",
+        "answer": "not by the way he came",
+        "answer_verse": 17,
+        "wrong_answer": "by the way he came",
+        "relation": "direction",
+        "readings": [
+          {
+            "answer": "Not by the way he came.",
+            "support": "You must not | return by the way you came"
+          }
+        ],
+        "distinct_readings": [
+          "Not by the way he came."
+        ],
+        "scores": {
+          "structure_dependence": 4.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "The return instruction is quoted verbatim as a specific phrase (“not by the way he came”), stated once, clear, and part of the core prohibitions."
+        },
+        "window_verses": [
+          15,
+          16,
+          17
+        ],
+        "window_text": {
+          "15": "So the prophet said to him, “Come home with me and eat.”",
+          "16": "The man of God said, “I cannot turn back and go with you, nor can I eat bread or drink water with you in this place.",
+          "17": "I have been told by the word of the Lord: ‘You must not eat bread or drink water there or return by the way you came.’”"
+        },
+        "reading_groups": [
+          "Not by the way he came"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: lord",
+            "lexical: structure_dependence 4.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "lord"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 17,
+          "answer_verse_original": 17,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 17",
+          "readings_failures": []
+        },
+        "content_id": "v15-17:8"
+      },
+      {
+        "question": "Why does the man of God refuse to go with the prophet?",
+        "answer": "Because the Lord told him not to eat, drink, or return the same way.",
+        "answer_verse": 17,
+        "wrong_answer": "Because the prophet invited him to come home and eat.",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "Because the word of the Lord had forbidden him.",
+            "support": "I have been told by the word of the Lord"
+          },
+          {
+            "answer": "Because he must not eat or drink there.",
+            "support": "You must not eat bread or drink water there"
+          },
+          {
+            "answer": "Because he must not return by the way he came.",
+            "support": "or return by the way you came"
+          }
+        ],
+        "distinct_readings": [
+          "Because the word of the Lord had forbidden him.",
+          "Because he must not eat or drink there.",
+          "Because he must not return by the way he came."
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "It asks for the causal link between the refusal and the Lord’s command, given once, with a single clear reason, and it is the heart of the exchange."
+        },
+        "window_verses": [
+          15,
+          16,
+          17
+        ],
+        "window_text": {
+          "15": "So the prophet said to him, “Come home with me and eat.”",
+          "16": "The man of God said, “I cannot turn back and go with you, nor can I eat bread or drink water with you in this place.",
+          "17": "I have been told by the word of the Lord: ‘You must not eat bread or drink water there or return by the way you came.’”"
+        },
+        "reading_groups": [
+          "Because the word of the Lord forbade him",
+          "Because he must not eat or drink there",
+          "Because he must not return by the way he came"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "3 defensible readings: Because the word of the Lord forbade him | Because he must not eat or drink there | Because he must not return by the way he came",
+            "answer 'Because the Lord told him not to eat, drink, or return the same way.' is not among the defensible readings"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 17,
+          "answer_verse_original": 17,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 17",
+          "readings_failures": [
+            "3 defensible readings: Because the word of the Lord forbade him | Because he must not eat or drink there | Because he must not return by the way he came",
+            "answer 'Because the Lord told him not to eat, drink, or return the same way.' is not among the defensible readings"
+          ]
+        },
+        "content_id": "v15-17:9"
+      },
+      {
+        "question": "Who speaks to the man of God first?",
+        "answer": "the prophet",
+        "answer_verse": 17,
+        "wrong_answer": "the man of God",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "the prophet",
+            "support": "So the prophet said to him"
+          },
+          {
+            "answer": "the word of the Lord",
+            "support": "I have been told by the word of the Lord"
+          }
+        ],
+        "distinct_readings": [
+          "the prophet",
+          "the word of the Lord"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "Identifying the first speaker depends on event order and quote attribution in the opening clause, stated only there, with an unambiguous answer and moderate centrality."
+        },
+        "window_verses": [
+          15,
+          16,
+          17
+        ],
+        "window_text": {
+          "15": "So the prophet said to him, “Come home with me and eat.”",
+          "16": "The man of God said, “I cannot turn back and go with you, nor can I eat bread or drink water with you in this place.",
+          "17": "I have been told by the word of the Lord: ‘You must not eat bread or drink water there or return by the way you came.’”"
+        },
+        "reading_groups": [
+          "The prophet speaks first (in the scene)",
+          "The word of the Lord spoke to him earlier"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "2 defensible readings: The prophet speaks first (in the scene) | The word of the Lord spoke to him earlier"
+          ],
+          "notes": [
+            "corrected metadata from 15 to 17; reading support and question relation identify verse 17",
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 17,
+          "answer_verse_original": 15,
+          "answer_verse_corrected": true,
+          "answer_verse_note": "corrected metadata from 15 to 17; reading support and question relation identify verse 17",
+          "readings_failures": [
+            "2 defensible readings: The prophet speaks first (in the scene) | The word of the Lord spoke to him earlier"
+          ]
+        },
+        "content_id": "v15-17:10"
+      }
+    ],
+    "report": {
+      "window_id": "v15-17",
+      "verses": [
+        15,
+        16,
+        17
+      ],
+      "generated": 10,
+      "scored": 10,
+      "kept": 0,
+      "survivors_before_window_selection": 0,
+      "window_selection_rejected": 0,
+      "repair_attempted": 3,
+      "repaired": 0,
+      "window_retries_used": 1,
+      "score_runs": 1
+    }
+  }
+}

@@ -1,0 +1,778 @@
+{
+  "config_digest": "aa9a4ffb136753ab8c88dc7d6aa0d6565d57c9e02752d2709077174115ee4d5f",
+  "data": {
+    "kept": [
+      {
+        "question": "Why did the rescuer bring the man to the Jews' council?",
+        "answer": "to learn why the Jews accuse the man",
+        "answer_verse": 28,
+        "wrong_answer": "because of a plot against the man",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "To find out why they were accusing him.",
+            "support": "I wanted to know why they were accusing him, so I brought him to their Sanhedrin."
+          }
+        ],
+        "distinct_readings": [
+          "To find out why they were accusing him."
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "The reader must link the purpose clause to the action (“I wanted to know why… so I brought him,” with “their” = the Jews), stated once and unequivocal."
+        },
+        "window_verses": [
+          27,
+          28,
+          29,
+          30
+        ],
+        "window_text": {
+          "27": "This man was seized by the Jews and they were about to kill him, but I came with my troops and rescued him, for I had learned that he is a Roman citizen.",
+          "28": "I wanted to know why they were accusing him, so I brought him to their Sanhedrin.",
+          "29": "I found that the accusation had to do with questions about their law, but there was no charge against him that deserved death or imprisonment.",
+          "30": "When I was informed of a plot to be carried out against the man, I sent him to you at once. I also ordered his accusers to present to you their case against him."
+        },
+        "reading_groups": [
+          "To find out why they were accusing him"
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "jews"
+          ],
+          "answer_verse": 28,
+          "answer_verse_original": 28,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 28",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Why did the rescuer bring the man to the Jews' council?",
+            "readings": [
+              {
+                "answer": "To find out why they were accusing him.",
+                "support": "I wanted to know why they were accusing him, so I brought him to their Sanhedrin."
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The passage states, “I wanted to know why they were accusing him, so I brought him to their Sanhedrin,” which matches the key’s purpose of learning why the Jews accused the man."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "Verse 28 explicitly explains he brought him to the Sanhedrin to find out the reason for the accusations.",
+            "status": "passed"
+          }
+        },
+        "scores_after_repair_raw": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "The reader must link the purpose clause to the action (“I wanted to know why… so I brought him,” with “their” = the Jews), stated once and unequivocal."
+        },
+        "repaired": true,
+        "repair_attempted": true,
+        "question_before_repair": "What purpose does the rescuer have in bringing the man to the Sanhedrin?",
+        "scores_before_repair": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "The purpose must be inferred from the motive-result link (“I wanted to know why… so I brought him”), stated once and unambiguous."
+        },
+        "audit_before_repair": {
+          "passed": false,
+          "failures": [
+            "location leak: sanhedrin"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "sanhedrin"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 28,
+          "answer_verse_original": 28,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 28",
+          "readings_failures": []
+        },
+        "repair_log": [
+          {
+            "before": "What purpose does the rescuer have in bringing the man to the Sanhedrin?",
+            "after": "Why did the rescuer bring the man to the Jews' council?",
+            "note": "Replaced the location-leaking word with a neutral paraphrase.",
+            "failures_before": [
+              "location leak: sanhedrin"
+            ],
+            "scores_before": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 7.0,
+              "runs": 1,
+              "reason": "The purpose must be inferred from the motive-result link (“I wanted to know why… so I brought him”), stated once and unambiguous."
+            },
+            "accepted": true,
+            "reason": "passed full rejudgment",
+            "suitability_judgment": {
+              "Q": "Why did the rescuer bring the man to the Jews' council?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "The rescuer is the first-person speaker, the council is their Sanhedrin, and the reason is explicitly stated: to find out why they were accusing him."
+            },
+            "failures_after": [],
+            "scores_after": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 6.0,
+              "runs": 1,
+              "reason": "The reader must link the purpose clause to the action (“I wanted to know why… so I brought him,” with “their” = the Jews), stated once and unequivocal."
+            },
+            "scores_used": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 6.0,
+              "runs": 1,
+              "reason": "The reader must link the purpose clause to the action (“I wanted to know why… so I brought him,” with “their” = the Jews), stated once and unequivocal."
+            }
+          }
+        ],
+        "window_selection_reason": "It best tests causal/temporal structure by linking the stated purpose to the correct action (bringing him to the Sanhedrin) while the competitor plausibly misreads the later, different motive (the plot) for a different transfer.",
+        "window_structure_max": 7.0,
+        "content_id": "v27-30:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "For what reason does the man with troops rescue the seized man?",
+        "answer": "because he learned the man is a Roman citizen",
+        "answer_verse": 27,
+        "wrong_answer": "because the Jews were about to kill the man",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "He had learned the man is a Roman citizen.",
+            "support": "for I had learned that he is a Roman citizen"
+          },
+          {
+            "answer": "They were about to kill him.",
+            "support": "they were about to kill him"
+          }
+        ],
+        "distinct_readings": [
+          "He had learned the man is a Roman citizen.",
+          "They were about to kill him."
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "The causal relation is expressed once in the clause “for I had learned that he is a Roman citizen,” which must be linked to the rescue action."
+        },
+        "window_verses": [
+          27,
+          28,
+          29,
+          30
+        ],
+        "window_text": {
+          "27": "This man was seized by the Jews and they were about to kill him, but I came with my troops and rescued him, for I had learned that he is a Roman citizen.",
+          "28": "I wanted to know why they were accusing him, so I brought him to their Sanhedrin.",
+          "29": "I found that the accusation had to do with questions about their law, but there was no charge against him that deserved death or imprisonment.",
+          "30": "When I was informed of a plot to be carried out against the man, I sent him to you at once. I also ordered his accusers to present to you their case against him."
+        },
+        "reading_groups": [
+          "Because he learned the man is a Roman citizen",
+          "Because they were about to kill him"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "2 defensible readings: Because he learned the man is a Roman citizen | Because they were about to kill him",
+            "competitor 'because the Jews were about to kill the man' is itself defensible — the item is ambiguous, not discriminating"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 27,
+          "answer_verse_original": 27,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 27",
+          "readings_failures": [
+            "2 defensible readings: Because he learned the man is a Roman citizen | Because they were about to kill him",
+            "competitor 'because the Jews were about to kill the man' is itself defensible — the item is ambiguous, not discriminating"
+          ]
+        },
+        "content_id": "v27-30:2"
+      },
+      {
+        "question": "What strong penalty does the man with troops say the charge deserves?",
+        "answer": "no charge that deserves death or imprisonment",
+        "answer_verse": 29,
+        "wrong_answer": "death or imprisonment",
+        "relation": "polarity",
+        "readings": [
+          {
+            "answer": "None — not death or imprisonment",
+            "support": "there was no charge against him that deserved death or imprisonment"
+          }
+        ],
+        "distinct_readings": [
+          "None — not death or imprisonment"
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "The answer depends on capturing the negated judgment “no charge… that deserved death or imprisonment,” a single clear clause central to the evaluation."
+        },
+        "window_verses": [
+          27,
+          28,
+          29,
+          30
+        ],
+        "window_text": {
+          "27": "This man was seized by the Jews and they were about to kill him, but I came with my troops and rescued him, for I had learned that he is a Roman citizen.",
+          "28": "I wanted to know why they were accusing him, so I brought him to their Sanhedrin.",
+          "29": "I found that the accusation had to do with questions about their law, but there was no charge against him that deserved death or imprisonment.",
+          "30": "When I was informed of a plot to be carried out against the man, I sent him to you at once. I also ordered his accusers to present to you their case against him."
+        },
+        "reading_groups": [
+          "No penalty—specifically, not death or imprisonment"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "yes/no answer: 50% by guessing",
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "charg",
+            "deserv"
+          ],
+          "answer_verse": 29,
+          "answer_verse_original": 29,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 29",
+          "readings_failures": []
+        },
+        "content_id": "v27-30:3"
+      },
+      {
+        "question": "After a plot is reported, what does the rescuer do first?",
+        "answer": "he sends the man at once",
+        "answer_verse": 30,
+        "wrong_answer": "he orders the man’s accusers to present their case",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "He sends him to you at once.",
+            "support": "When I was informed of a plot to be carried out against the man, I sent him to you at once."
+          }
+        ],
+        "distinct_readings": [
+          "He sends him to you at once."
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "Determining the first action requires sequencing the clauses (“I sent him… I also ordered…”), which is uniquely conveyed here."
+        },
+        "window_verses": [
+          27,
+          28,
+          29,
+          30
+        ],
+        "window_text": {
+          "27": "This man was seized by the Jews and they were about to kill him, but I came with my troops and rescued him, for I had learned that he is a Roman citizen.",
+          "28": "I wanted to know why they were accusing him, so I brought him to their Sanhedrin.",
+          "29": "I found that the accusation had to do with questions about their law, but there was no charge against him that deserved death or imprisonment.",
+          "30": "When I was informed of a plot to be carried out against the man, I sent him to you at once. I also ordered his accusers to present to you their case against him."
+        },
+        "reading_groups": [
+          "He sends the man to the recipient at once"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: plot",
+            "dangling answer reference: he",
+            "question too complex: stacked clauses (1 comma(s), 1 subordinator(s))",
+            "metatextual question: treats 'reported' as an event, but the passage does not state that event"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "plot"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 30,
+          "answer_verse_original": 30,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 30",
+          "readings_failures": []
+        },
+        "content_id": "v27-30:4"
+      },
+      {
+        "question": "Whom does the rescuer order to present a case?",
+        "answer": "the man’s accusers",
+        "answer_verse": 30,
+        "wrong_answer": "the Sanhedrin",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "his accusers",
+            "support": "I also ordered his accusers to present to you their case against him"
+          }
+        ],
+        "distinct_readings": [
+          "his accusers"
+        ],
+        "scores": {
+          "structure_dependence": 4.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "It is a direct extraction of the object phrase “his accusers,” stated once and clearly relevant though not the main event."
+        },
+        "window_verses": [
+          27,
+          28,
+          29,
+          30
+        ],
+        "window_text": {
+          "27": "This man was seized by the Jews and they were about to kill him, but I came with my troops and rescued him, for I had learned that he is a Roman citizen.",
+          "28": "I wanted to know why they were accusing him, so I brought him to their Sanhedrin.",
+          "29": "I found that the accusation had to do with questions about their law, but there was no charge against him that deserved death or imprisonment.",
+          "30": "When I was informed of a plot to be carried out against the man, I sent him to you at once. I also ordered his accusers to present to you their case against him."
+        },
+        "reading_groups": [
+          "He orders the man’s accusers to present their case"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "answer is a description, not an identification: 'the man’s accusers'",
+            "lexical: structure_dependence 4.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 30,
+          "answer_verse_original": 30,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 30",
+          "readings_failures": []
+        },
+        "content_id": "v27-30:5"
+      },
+      {
+        "question": "Who is about to kill the man?",
+        "answer": "the Jews",
+        "answer_verse": 27,
+        "wrong_answer": "the troops",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "The Jews",
+            "support": "by the Jews and they were about to kill him"
+          }
+        ],
+        "distinct_readings": [
+          "The Jews"
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "It requires resolving the pronoun “they” to “the Jews,” a single, unambiguous clause that is important to the rescue motive."
+        },
+        "window_verses": [
+          27,
+          28,
+          29,
+          30
+        ],
+        "window_text": {
+          "27": "This man was seized by the Jews and they were about to kill him, but I came with my troops and rescued him, for I had learned that he is a Roman citizen.",
+          "28": "I wanted to know why they were accusing him, so I brought him to their Sanhedrin.",
+          "29": "I found that the accusation had to do with questions about their law, but there was no charge against him that deserved death or imprisonment.",
+          "30": "When I was informed of a plot to be carried out against the man, I sent him to you at once. I also ordered his accusers to present to you their case against him."
+        },
+        "reading_groups": [
+          "The Jews were about to kill him"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: hybrid window selector — It best tests causal/temporal structure by linking the stated purpose to the correct action (bringing him to the Sanhedrin) while the competitor plausibly misreads the later, different motive (the plot) for a different transfer."
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 27,
+          "answer_verse_original": 27,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 27",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Who is about to kill the man?",
+            "readings": [
+              {
+                "answer": "The Jews",
+                "support": "by the Jews and they were about to kill him"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The passage states, “This man was seized by the Jews and they were about to kill him,” so “they” clearly refers to “the Jews.”"
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The text explicitly says the Jews were about to kill the man.",
+            "status": "passed"
+          }
+        },
+        "scores_after_repair_raw": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "It requires resolving the pronoun “they” to “the Jews,” a single, unambiguous clause that is important to the rescue motive."
+        },
+        "repaired": true,
+        "repair_attempted": true,
+        "question_before_repair": "Who is about to kill the man before the troops rescue him?",
+        "scores_before_repair": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "Identifying “they” as “the Jews” requires resolving a pronoun to its antecedent in a single unique clause central to the rescue."
+        },
+        "audit_before_repair": {
+          "passed": false,
+          "failures": [
+            "location leak: rescu, troop",
+            "dangling pronoun: him"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "rescu",
+            "troop"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 27,
+          "answer_verse_original": 27,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 27",
+          "readings_failures": []
+        },
+        "repair_log": [
+          {
+            "before": "Who is about to kill the man before the troops rescue him?",
+            "after": "Who is about to kill the man?",
+            "note": "Removed leaking words and resolved the dangling pronoun by omitting the rescue clause.",
+            "failures_before": [
+              "location leak: rescu, troop",
+              "dangling pronoun: him"
+            ],
+            "scores_before": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "Identifying “they” as “the Jews” requires resolving a pronoun to its antecedent in a single unique clause central to the rescue."
+            },
+            "accepted": true,
+            "reason": "passed full rejudgment",
+            "suitability_judgment": {
+              "Q": "Who is about to kill the man?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "“They” clearly refers to the Jews, making the question clear and uniquely answerable from the window."
+            },
+            "failures_after": [],
+            "scores_after": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 7.0,
+              "runs": 1,
+              "reason": "It requires resolving the pronoun “they” to “the Jews,” a single, unambiguous clause that is important to the rescue motive."
+            },
+            "scores_used": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 7.0,
+              "runs": 1,
+              "reason": "It requires resolving the pronoun “they” to “the Jews,” a single, unambiguous clause that is important to the rescue motive."
+            }
+          }
+        ],
+        "window_selection_reason": "It best tests causal/temporal structure by linking the stated purpose to the correct action (bringing him to the Sanhedrin) while the competitor plausibly misreads the later, different motive (the plot) for a different transfer.",
+        "content_id": "v27-30:6"
+      },
+      {
+        "question": "Who is the citizen?",
+        "answer": "the seized man",
+        "answer_verse": 27,
+        "wrong_answer": "the man with the troops",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "The man who was seized by the Jews",
+            "support": "This man was seized by the Jews | he is a Roman citizen"
+          }
+        ],
+        "distinct_readings": [
+          "The man who was seized by the Jews"
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "One must resolve “he” back to “this man” (the seized man), a single clear statement that matters to the narrative’s legal rationale."
+        },
+        "window_verses": [
+          27,
+          28,
+          29,
+          30
+        ],
+        "window_text": {
+          "27": "This man was seized by the Jews and they were about to kill him, but I came with my troops and rescued him, for I had learned that he is a Roman citizen.",
+          "28": "I wanted to know why they were accusing him, so I brought him to their Sanhedrin.",
+          "29": "I found that the accusation had to do with questions about their law, but there was no charge against him that deserved death or imprisonment.",
+          "30": "When I was informed of a plot to be carried out against the man, I sent him to you at once. I also ordered his accusers to present to you their case against him."
+        },
+        "reading_groups": [
+          "The seized man is the Roman citizen"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: hybrid window selector — It best tests causal/temporal structure by linking the stated purpose to the correct action (bringing him to the Sanhedrin) while the competitor plausibly misreads the later, different motive (the plot) for a different transfer."
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 27,
+          "answer_verse_original": 27,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 27",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Who is the citizen?",
+            "readings": [
+              {
+                "answer": "The man who was seized by the Jews",
+                "support": "This man was seized by the Jews | he is a Roman citizen"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Verse 27 states “This man was seized by the Jews… he is a Roman citizen,” so identifying the citizen as the man who was seized matches the passage and the key."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The text explicitly says the seized man is a Roman citizen, matching the reading and the key.",
+            "status": "passed"
+          }
+        },
+        "scores_after_repair_raw": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "One must resolve “he” back to “this man” (the seized man), a single clear statement that matters to the narrative’s legal rationale."
+        },
+        "repaired": true,
+        "repair_attempted": true,
+        "question_before_repair": "Which person is the Roman citizen here?",
+        "scores_before_repair": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "It requires linking the pronoun “he” in “he is a Roman citizen” back to the seized man, stated once and clearly."
+        },
+        "audit_before_repair": {
+          "passed": false,
+          "failures": [
+            "location leak: roman"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "roman"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 27,
+          "answer_verse_original": 27,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 27",
+          "readings_failures": []
+        },
+        "repair_log": [
+          {
+            "before": "Which person is the Roman citizen here?",
+            "after": "Who is the citizen?",
+            "note": "Removed the location-leaking word while keeping the same referent.",
+            "failures_before": [
+              "location leak: roman"
+            ],
+            "scores_before": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 7.0,
+              "runs": 1,
+              "reason": "It requires linking the pronoun “he” in “he is a Roman citizen” back to the seized man, stated once and clearly."
+            },
+            "accepted": true,
+            "reason": "passed full rejudgment",
+            "suitability_judgment": {
+              "Q": "Who is the citizen?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "Only the seized man is identified as a Roman citizen, so the referent and answer are unambiguous."
+            },
+            "failures_after": [],
+            "scores_after": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 7.0,
+              "runs": 1,
+              "reason": "One must resolve “he” back to “this man” (the seized man), a single clear statement that matters to the narrative’s legal rationale."
+            },
+            "scores_used": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 7.0,
+              "runs": 1,
+              "reason": "One must resolve “he” back to “this man” (the seized man), a single clear statement that matters to the narrative’s legal rationale."
+            }
+          }
+        ],
+        "window_selection_reason": "It best tests causal/temporal structure by linking the stated purpose to the correct action (bringing him to the Sanhedrin) while the competitor plausibly misreads the later, different motive (the plot) for a different transfer.",
+        "content_id": "v27-30:7"
+      }
+    ],
+    "report": {
+      "window_id": "v27-30",
+      "verses": [
+        27,
+        28,
+        29,
+        30
+      ],
+      "generated": 7,
+      "scored": 7,
+      "kept": 1,
+      "survivors_before_window_selection": 3,
+      "window_selection_rejected": 2,
+      "repair_attempted": 3,
+      "repaired": 3,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

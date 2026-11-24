@@ -1,0 +1,491 @@
+[
+  {
+    "question": "Whose consent are the ambushers waiting for now?",
+    "answer": "The commander’s.",
+    "answer_verse": 21,
+    "wrong_answer": "The Sanhedrin’s.",
+    "relation": "referent",
+    "readings": [
+      {
+        "answer": "The commander’s",
+        "support": "The commander | waiting for your consent"
+      }
+    ],
+    "distinct_readings": [
+      "The commander’s"
+    ],
+    "scores": {
+      "structure_dependence": 8.0,
+      "statement_uniqueness": 9.0,
+      "answer_certainty": 10.0,
+      "centrality": 7.0,
+      "runs": 1,
+      "reason": "It requires resolving the pronoun \"your\" in the speech to the commander, which is stated only there and yields an unambiguous, plot-relevant answer."
+    },
+    "window_verses": [
+      19,
+      20,
+      21,
+      22
+    ],
+    "window_text": {
+      "19": "The commander took the young man by the hand, drew him aside and asked, “What is it you want to tell me?”",
+      "20": "He said: “Some Jews have agreed to ask you to bring Paul before the Sanhedrin tomorrow on the pretext of wanting more accurate information about him.",
+      "21": "Don’t give in to them, because more than forty of them are waiting in ambush for him. They have taken an oath not to eat or drink until they have killed him. They are ready now, waiting for your consent to their request.”",
+      "22": "The commander dismissed the young man with this warning: “Don’t tell anyone that you have reported this to me.”"
+    },
+    "reading_groups": [
+      "They are waiting for the commander's consent"
+    ],
+    "audit": {
+      "passed": true,
+      "failures": [],
+      "notes": [
+        "distractor check skipped: none stated by this output tier"
+      ],
+      "location_leak_terms": [],
+      "distractors_found": [],
+      "distractors_missing": false,
+      "answer_leak_terms": [],
+      "answer_verse": 21,
+      "answer_verse_original": 21,
+      "answer_verse_corrected": false,
+      "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 21",
+      "readings_failures": [],
+      "answerability": {
+        "model": "gpt-5",
+        "mode": "enforce",
+        "question": "Whose consent are the ambushers waiting for now?",
+        "readings": [
+          {
+            "answer": "The commander’s",
+            "support": "The commander | waiting for your consent"
+          }
+        ],
+        "assessments": [
+          {
+            "number": 1,
+            "classification": "equivalent_to_key",
+            "reason": "In v.21 the young man says they are “waiting for your consent,” and he is speaking to the commander (v.19), so the consent is the commander’s."
+          }
+        ],
+        "verdict": "pass",
+        "reason": "Verse 21 explicitly says the ambushers are waiting for “your consent,” referring to the commander addressed in verse 19.",
+        "status": "passed"
+      }
+    },
+    "window_selection_reason": "It requires resolving the second-person pronoun “your” in the young man’s report (“waiting for your consent”) to the commander, yielding one clear answer with a plausible misparse (the Sanhedrin).",
+    "window_structure_max": 8.0,
+    "content_id": "v19-22:1",
+    "rank_in_batch": 1,
+    "rank_reason": "Top items require resolving pronouns/deixis and clause relations within reported speech (whose consent, what “here” means, and purpose), while bottom items are straightforward noun picks repeatedly stated and recoverable without fine-grained parsing.",
+    "final_rank": 1
+  },
+  {
+    "question": "When do the more than forty men plan to kill Paul?",
+    "answer": "Before he reaches the priests and elders",
+    "answer_verse": 14,
+    "wrong_answer": "When he is before the Sanhedrin",
+    "relation": "sequence",
+    "readings": [
+      {
+        "answer": "Before he gets here.",
+        "support": "We are ready to kill him before he gets here."
+      }
+    ],
+    "distinct_readings": [
+      "Before he gets here."
+    ],
+    "scores": {
+      "structure_dependence": 8.0,
+      "statement_uniqueness": 9.0,
+      "answer_certainty": 8.0,
+      "centrality": 8.0,
+      "runs": 1,
+      "reason": "The timing depends on interpreting the deictic “before he gets here” (i.e., before he reaches the priests/elders), a single clause requiring relational inference."
+    },
+    "window_verses": [
+      12,
+      13,
+      14,
+      15
+    ],
+    "window_text": {
+      "12": "The next morning some Jews formed a conspiracy and bound themselves with an oath not to eat or drink until they had killed Paul.",
+      "13": "More than forty men were involved in this plot.",
+      "14": "They went to the chief priests and the elders and said, “We have taken a solemn oath not to eat anything until we have killed Paul.",
+      "15": "Now then, you and the Sanhedrin petition the commander to bring him before you on the pretext of wanting more accurate information about his case. We are ready to kill him before he gets here.”"
+    },
+    "reading_groups": [
+      "before he arrives (“before he gets here”)"
+    ],
+    "audit": {
+      "passed": true,
+      "failures": [],
+      "notes": [
+        "corrected metadata from 15 to 14; Q/A evidence matches verse(s) [14] better than the claimed 15",
+        "distractor check skipped: none stated by this output tier"
+      ],
+      "location_leak_terms": [],
+      "distractors_found": [],
+      "distractors_missing": false,
+      "answer_leak_terms": [],
+      "answer_verse": 14,
+      "answer_verse_original": 15,
+      "answer_verse_corrected": true,
+      "answer_verse_note": "corrected metadata from 15 to 14; Q/A evidence matches verse(s) [14] better than the claimed 15",
+      "readings_failures": [],
+      "answerability": {
+        "model": "gpt-5",
+        "mode": "enforce",
+        "question": "When do the more than forty men plan to kill Paul?",
+        "readings": [
+          {
+            "answer": "Before he gets here.",
+            "support": "We are ready to kill him before he gets here."
+          }
+        ],
+        "assessments": [
+          {
+            "number": 1,
+            "classification": "equivalent_to_key",
+            "reason": "The text says, “We are ready to kill him before he gets here,” with “here” referring to the chief priests and elders/Sanhedrin, matching “before he reaches the priests and elders.”"
+          }
+        ],
+        "verdict": "pass",
+        "reason": "Verse 15 explicitly states they plan to kill Paul “before he gets here,” i.e., before he reaches the priests and elders.",
+        "status": "passed"
+      }
+    },
+    "window_selection_reason": "It hinges on the temporal clause “before he gets here,” contrasting arrival vs. appearance before the Sanhedrin, with a plausible misparse placing the attack at the hearing.",
+    "window_structure_max": 8.0,
+    "content_id": "v12-15:1",
+    "rank_in_batch": 2,
+    "rank_reason": "Top items require resolving pronouns/deixis and clause relations within reported speech (whose consent, what “here” means, and purpose), while bottom items are straightforward noun picks repeatedly stated and recoverable without fine-grained parsing.",
+    "final_rank": 2
+  },
+  {
+    "question": "Why did the rescuer bring the man to the Jews' council?",
+    "answer": "to learn why the Jews accuse the man",
+    "answer_verse": 28,
+    "wrong_answer": "because of a plot against the man",
+    "relation": "causation",
+    "readings": [
+      {
+        "answer": "To find out why they were accusing him.",
+        "support": "I wanted to know why they were accusing him, so I brought him to their Sanhedrin."
+      }
+    ],
+    "distinct_readings": [
+      "To find out why they were accusing him."
+    ],
+    "scores": {
+      "structure_dependence": 7.0,
+      "statement_uniqueness": 9.0,
+      "answer_certainty": 10.0,
+      "centrality": 6.0,
+      "runs": 1,
+      "reason": "The reader must link the purpose clause to the action (“I wanted to know why… so I brought him,” with “their” = the Jews), stated once and unequivocal."
+    },
+    "window_verses": [
+      27,
+      28,
+      29,
+      30
+    ],
+    "window_text": {
+      "27": "This man was seized by the Jews and they were about to kill him, but I came with my troops and rescued him, for I had learned that he is a Roman citizen.",
+      "28": "I wanted to know why they were accusing him, so I brought him to their Sanhedrin.",
+      "29": "I found that the accusation had to do with questions about their law, but there was no charge against him that deserved death or imprisonment.",
+      "30": "When I was informed of a plot to be carried out against the man, I sent him to you at once. I also ordered his accusers to present to you their case against him."
+    },
+    "reading_groups": [
+      "To find out why they were accusing him"
+    ],
+    "audit": {
+      "passed": true,
+      "failures": [],
+      "notes": [
+        "distractor check skipped: none stated by this output tier"
+      ],
+      "location_leak_terms": [],
+      "distractors_found": [],
+      "distractors_missing": false,
+      "answer_leak_terms": [
+        "jews"
+      ],
+      "answer_verse": 28,
+      "answer_verse_original": 28,
+      "answer_verse_corrected": false,
+      "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 28",
+      "readings_failures": [],
+      "answerability": {
+        "model": "gpt-5",
+        "mode": "enforce",
+        "question": "Why did the rescuer bring the man to the Jews' council?",
+        "readings": [
+          {
+            "answer": "To find out why they were accusing him.",
+            "support": "I wanted to know why they were accusing him, so I brought him to their Sanhedrin."
+          }
+        ],
+        "assessments": [
+          {
+            "number": 1,
+            "classification": "equivalent_to_key",
+            "reason": "The passage states, “I wanted to know why they were accusing him, so I brought him to their Sanhedrin,” which matches the key’s purpose of learning why the Jews accused the man."
+          }
+        ],
+        "verdict": "pass",
+        "reason": "Verse 28 explicitly explains he brought him to the Sanhedrin to find out the reason for the accusations.",
+        "status": "passed"
+      }
+    },
+    "scores_after_repair_raw": {
+      "structure_dependence": 9.0,
+      "statement_uniqueness": 9.0,
+      "answer_certainty": 10.0,
+      "centrality": 6.0,
+      "runs": 1,
+      "reason": "The reader must link the purpose clause to the action (“I wanted to know why… so I brought him,” with “their” = the Jews), stated once and unequivocal."
+    },
+    "repaired": true,
+    "repair_attempted": true,
+    "question_before_repair": "What purpose does the rescuer have in bringing the man to the Sanhedrin?",
+    "scores_before_repair": {
+      "structure_dependence": 7.0,
+      "statement_uniqueness": 9.0,
+      "answer_certainty": 10.0,
+      "centrality": 7.0,
+      "runs": 1,
+      "reason": "The purpose must be inferred from the motive-result link (“I wanted to know why… so I brought him”), stated once and unambiguous."
+    },
+    "audit_before_repair": {
+      "passed": false,
+      "failures": [
+        "location leak: sanhedrin"
+      ],
+      "notes": [
+        "distractor check skipped: none stated by this output tier"
+      ],
+      "location_leak_terms": [
+        "sanhedrin"
+      ],
+      "distractors_found": [],
+      "distractors_missing": false,
+      "answer_leak_terms": [],
+      "answer_verse": 28,
+      "answer_verse_original": 28,
+      "answer_verse_corrected": false,
+      "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 28",
+      "readings_failures": []
+    },
+    "repair_log": [
+      {
+        "before": "What purpose does the rescuer have in bringing the man to the Sanhedrin?",
+        "after": "Why did the rescuer bring the man to the Jews' council?",
+        "note": "Replaced the location-leaking word with a neutral paraphrase.",
+        "failures_before": [
+          "location leak: sanhedrin"
+        ],
+        "scores_before": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "The purpose must be inferred from the motive-result link (“I wanted to know why… so I brought him”), stated once and unambiguous."
+        },
+        "accepted": true,
+        "reason": "passed full rejudgment",
+        "suitability_judgment": {
+          "Q": "Why did the rescuer bring the man to the Jews' council?",
+          "clear_referents": true,
+          "natural_wording": true,
+          "directly_answerable": true,
+          "single_defensible_answer": true,
+          "remove": false,
+          "reason": "The rescuer is the first-person speaker, the council is their Sanhedrin, and the reason is explicitly stated: to find out why they were accusing him."
+        },
+        "failures_after": [],
+        "scores_after": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "The reader must link the purpose clause to the action (“I wanted to know why… so I brought him,” with “their” = the Jews), stated once and unequivocal."
+        },
+        "scores_used": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "The reader must link the purpose clause to the action (“I wanted to know why… so I brought him,” with “their” = the Jews), stated once and unequivocal."
+        }
+      }
+    ],
+    "window_selection_reason": "It best tests causal/temporal structure by linking the stated purpose to the correct action (bringing him to the Sanhedrin) while the competitor plausibly misreads the later, different motive (the plot) for a different transfer.",
+    "window_structure_max": 7.0,
+    "content_id": "v27-30:1",
+    "rank_in_batch": 3,
+    "rank_reason": "Top items require resolving pronouns/deixis and clause relations within reported speech (whose consent, what “here” means, and purpose), while bottom items are straightforward noun picks repeatedly stated and recoverable without fine-grained parsing.",
+    "final_rank": 3
+  },
+  {
+    "question": "Who receives the order to ready the force?",
+    "answer": "the two centurions",
+    "answer_verse": 23,
+    "wrong_answer": "the two hundred soldiers",
+    "relation": "participant",
+    "readings": [
+      {
+        "answer": "two of his centurions",
+        "support": "he called two of his centurions and ordered them"
+      }
+    ],
+    "distinct_readings": [
+      "two of his centurions"
+    ],
+    "scores": {
+      "structure_dependence": 8.0,
+      "statement_uniqueness": 9.0,
+      "answer_certainty": 10.0,
+      "centrality": 6.0,
+      "runs": 1,
+      "reason": "It requires linking “ordered them” back to “two of his centurions,” a single, unambiguous reference that is moderately central to the setup."
+    },
+    "window_verses": [
+      23,
+      24
+    ],
+    "window_text": {
+      "23": "Then he called two of his centurions and ordered them, “Get ready a detachment of two hundred soldiers, seventy horsemen and two hundred spearmen to go to Caesarea at nine tonight.",
+      "24": "Provide horses for Paul so that he may be taken safely to Governor Felix.”"
+    },
+    "audit": {
+      "passed": true,
+      "failures": [],
+      "notes": [
+        "distractor check skipped: none stated by this output tier"
+      ],
+      "location_leak_terms": [],
+      "distractors_found": [],
+      "distractors_missing": false,
+      "answer_leak_terms": [],
+      "answer_verse": 23,
+      "answer_verse_original": 23,
+      "answer_verse_corrected": false,
+      "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 23",
+      "readings_failures": [],
+      "answerability": {
+        "model": "gpt-5",
+        "mode": "enforce",
+        "question": "Who receives the order to ready the force?",
+        "readings": [
+          {
+            "answer": "two of his centurions",
+            "support": "he called two of his centurions and ordered them"
+          }
+        ],
+        "assessments": [
+          {
+            "number": 1,
+            "classification": "equivalent_to_key",
+            "reason": "The passage says, “he called two of his centurions and ordered them,” so the recipients of the order are the two centurions."
+          }
+        ],
+        "verdict": "pass",
+        "reason": "The verse explicitly states the order was given to the two centurions.",
+        "status": "passed"
+      }
+    },
+    "window_selection_reason": "It hinges on resolving the pronoun “them” to the centurions as the recipients of the order—distinct from the troops being prepared—while the competitor reflects a plausible misparse.",
+    "window_structure_max": 8.0,
+    "content_id": "v23-24:1",
+    "rank_in_batch": 4,
+    "rank_reason": "Top items require resolving pronouns/deixis and clause relations within reported speech (whose consent, what “here” means, and purpose), while bottom items are straightforward noun picks repeatedly stated and recoverable without fine-grained parsing.",
+    "final_rank": 4
+  },
+  {
+    "question": "Who has something to tell the commander?",
+    "answer": "the young man",
+    "answer_verse": 17,
+    "wrong_answer": "Paul",
+    "relation": "referent",
+    "readings": [
+      {
+        "answer": "the young man",
+        "support": "Take this young man to the commander; he has something to tell him."
+      }
+    ],
+    "distinct_readings": [
+      "the young man"
+    ],
+    "scores": {
+      "structure_dependence": 7.0,
+      "statement_uniqueness": 2.0,
+      "answer_certainty": 10.0,
+      "centrality": 7.0,
+      "runs": 1,
+      "reason": "Resolving the pronoun “he” to the young man is grammatical, but the claim is stated twice (by Paul and then by the centurion)."
+    },
+    "window_verses": [
+      16,
+      17,
+      18
+    ],
+    "window_text": {
+      "16": "But when the son of Paul’s sister heard of this plot, he went into the barracks and told Paul.",
+      "17": "Then Paul called one of the centurions and said, “Take this young man to the commander; he has something to tell him.”",
+      "18": "So he took him to the commander. The centurion said, “Paul, the prisoner, sent for me and asked me to bring this young man to you because he has something to tell you.”"
+    },
+    "reading_groups": [
+      "The young man is the one who has something to tell the commander"
+    ],
+    "audit": {
+      "passed": true,
+      "failures": [],
+      "notes": [
+        "distractor check skipped: none stated by this output tier"
+      ],
+      "location_leak_terms": [],
+      "distractors_found": [],
+      "distractors_missing": false,
+      "answer_leak_terms": [],
+      "answer_verse": 17,
+      "answer_verse_original": 17,
+      "answer_verse_corrected": false,
+      "answer_verse_note": "consistent",
+      "readings_failures": [],
+      "answerability": {
+        "model": "gpt-5",
+        "mode": "enforce",
+        "question": "Who has something to tell the commander?",
+        "readings": [
+          {
+            "answer": "the young man",
+            "support": "Take this young man to the commander; he has something to tell him."
+          }
+        ],
+        "assessments": [
+          {
+            "number": 1,
+            "classification": "equivalent_to_key",
+            "reason": "The passage states, “Take this young man to the commander; he has something to tell him,” clearly identifying the young man as the one with something to tell the commander."
+          }
+        ],
+        "verdict": "pass",
+        "reason": "The text explicitly identifies “the young man” as the one who has something to tell the commander.",
+        "status": "passed"
+      }
+    },
+    "window_selection_reason": "Item 2 hinges on resolving the pronouns (“he…him/you”) across vv.17–18 to identify the young man as the one who has something to tell the commander, with “Paul” a plausible misparse yet the passage yielding a single certain answer.",
+    "window_structure_max": 7.0,
+    "content_id": "v16-18:1",
+    "rank_in_batch": 5,
+    "rank_reason": "Top items require resolving pronouns/deixis and clause relations within reported speech (whose consent, what “here” means, and purpose), while bottom items are straightforward noun picks repeatedly stated and recoverable without fine-grained parsing.",
+    "final_rank": 5
+  }
+]

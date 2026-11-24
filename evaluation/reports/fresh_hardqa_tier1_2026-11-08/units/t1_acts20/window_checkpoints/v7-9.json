@@ -1,0 +1,448 @@
+{
+  "config_digest": "b0991f1ba2b445d3df4f52b862699ab4503b7987dc7b00c3305bb02dbfcacb5f",
+  "data": {
+    "kept": [
+      {
+        "question": "Why does Paul keep speaking so late?",
+        "answer": "Paul intends to leave the next day.",
+        "answer_verse": 7,
+        "wrong_answer": "to break bread",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "Because he intended to leave the next day.",
+            "support": "because he intended to leave the next day,"
+          }
+        ],
+        "distinct_readings": [
+          "Because he intended to leave the next day."
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "The cause is given only in the because-clause linking his late speaking to his plan to leave next day, uniquely and unambiguously, and it is relevant though not the main event."
+        },
+        "window_verses": [
+          7,
+          8,
+          9
+        ],
+        "window_text": {
+          "7": "On the first day of the week we came together to break bread. Paul spoke to the people and, because he intended to leave the next day, kept on talking until midnight.",
+          "8": "There were many lamps in the upstairs room where we were meeting.",
+          "9": "Seated in a window was a young man named Eutychus, who was sinking into a deep sleep as Paul talked on and on. When he was sound asleep, he fell to the ground from the third story and was picked up dead."
+        },
+        "reading_groups": [
+          "Because he intended to leave the next day"
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "paul"
+          ],
+          "answer_verse": 7,
+          "answer_verse_original": 7,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 7",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Why does Paul keep speaking so late?",
+            "readings": [
+              {
+                "answer": "Because he intended to leave the next day.",
+                "support": "because he intended to leave the next day,"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The passage explicitly says Paul “kept on talking until midnight” because “he intended to leave the next day,” matching the key."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The text directly states Paul spoke late because he planned to leave the next day.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It directly exploits the explicit causal clause (“because he intended to leave the next day”) about why Paul spoke until midnight, while the competitor plausibly misreads the purpose of gathering as the cause of speaking late.",
+        "window_structure_max": 9.0,
+        "content_id": "v7-9:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Who intends to leave the next day?",
+        "answer": "Paul.",
+        "answer_verse": 7,
+        "wrong_answer": "the people",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "Paul",
+            "support": "Paul spoke to the people and, because he intended to leave the next day, kept on talking until midnight."
+          }
+        ],
+        "distinct_readings": [
+          "Paul"
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 5.0,
+          "runs": 1,
+          "reason": "Resolving the pronoun \"he\" to Paul requires a structural link in a single clause, with one clear answer that is contextual but not central to the incident."
+        },
+        "window_verses": [
+          7,
+          8,
+          9
+        ],
+        "window_text": {
+          "7": "On the first day of the week we came together to break bread. Paul spoke to the people and, because he intended to leave the next day, kept on talking until midnight.",
+          "8": "There were many lamps in the upstairs room where we were meeting.",
+          "9": "Seated in a window was a young man named Eutychus, who was sinking into a deep sleep as Paul talked on and on. When he was sound asleep, he fell to the ground from the third story and was picked up dead."
+        },
+        "reading_groups": [
+          "Paul"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "quotes the passage: quotes verse 7: 'to leave the next day'",
+            "bare-name answer 'Paul.': names survive translation",
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 7,
+          "answer_verse_original": 7,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 7",
+          "readings_failures": []
+        },
+        "content_id": "v7-9:2"
+      },
+      {
+        "question": "What happens to Eutychus after he falls?",
+        "answer": "Eutychus is picked up dead.",
+        "answer_verse": 9,
+        "wrong_answer": "Eutychus sits in the window.",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "He was picked up dead.",
+            "support": "was picked up dead"
+          },
+          {
+            "answer": "He died.",
+            "support": "was picked up dead"
+          }
+        ],
+        "distinct_readings": [
+          "He was picked up dead.",
+          "He died."
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "It relies on the sequence of clauses to identify the subsequent event ('was picked up dead'), stated once, unambiguous, and central to the scene."
+        },
+        "window_verses": [
+          7,
+          8,
+          9
+        ],
+        "window_text": {
+          "7": "On the first day of the week we came together to break bread. Paul spoke to the people and, because he intended to leave the next day, kept on talking until midnight.",
+          "8": "There were many lamps in the upstairs room where we were meeting.",
+          "9": "Seated in a window was a young man named Eutychus, who was sinking into a deep sleep as Paul talked on and on. When he was sound asleep, he fell to the ground from the third story and was picked up dead."
+        },
+        "reading_groups": [
+          "He is picked up dead / he died"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: eutychu"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "eutychu"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "eutychu"
+          ],
+          "answer_verse": 9,
+          "answer_verse_original": 9,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 9",
+          "readings_failures": []
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "What happens to Eutychus after he falls?",
+            "after": "What happens to the young man after he falls?",
+            "note": "Replaced the leaking name with a passage-established noun phrase.",
+            "failures_before": [
+              "location leak: eutychu"
+            ],
+            "scores_before": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 9.0,
+              "runs": 1,
+              "reason": "It relies on the sequence of clauses to identify the subsequent event ('was picked up dead'), stated once, unambiguous, and central to the scene."
+            },
+            "accepted": false,
+            "reason": "removed: no LLM suitability verdict",
+            "suitability_judgment": null
+          }
+        ],
+        "content_id": "v7-9:3"
+      },
+      {
+        "question": "While Eutychus grows sleepy, who keeps speaking?",
+        "answer": "Paul.",
+        "answer_verse": 9,
+        "wrong_answer": "Eutychus.",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "Paul",
+            "support": "as Paul talked on and on"
+          }
+        ],
+        "distinct_readings": [
+          "Paul"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "Assigning the ongoing speech to Paul depends on the temporal 'as' clause, is stated once with a single answer, and is important to the setup."
+        },
+        "window_verses": [
+          7,
+          8,
+          9
+        ],
+        "window_text": {
+          "7": "On the first day of the week we came together to break bread. Paul spoke to the people and, because he intended to leave the next day, kept on talking until midnight.",
+          "8": "There were many lamps in the upstairs room where we were meeting.",
+          "9": "Seated in a window was a young man named Eutychus, who was sinking into a deep sleep as Paul talked on and on. When he was sound asleep, he fell to the ground from the third story and was picked up dead."
+        },
+        "reading_groups": [
+          "Paul"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: eutychu",
+            "question too complex: stacked clauses (1 comma(s), 1 subordinator(s))",
+            "bare-name answer 'Paul.': names survive translation"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "eutychu"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 9,
+          "answer_verse_original": 9,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 9",
+          "readings_failures": []
+        },
+        "content_id": "v7-9:4"
+      },
+      {
+        "question": "From where does Eutychus fall to the ground?",
+        "answer": "Eutychus falls from the third story.",
+        "answer_verse": 9,
+        "wrong_answer": "Eutychus falls from the upstairs room.",
+        "relation": "direction",
+        "readings": [
+          {
+            "answer": "the third story",
+            "support": "he fell to the ground from the third story"
+          },
+          {
+            "answer": "a window",
+            "support": "Seated in a window | he fell to the ground"
+          }
+        ],
+        "distinct_readings": [
+          "the third story",
+          "a window"
+        ],
+        "scores": {
+          "structure_dependence": 3.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "The location 'from the third story' is a directly quoted phrase, unique and clear, and materially relevant to the incident."
+        },
+        "window_verses": [
+          7,
+          8,
+          9
+        ],
+        "window_text": {
+          "7": "On the first day of the week we came together to break bread. Paul spoke to the people and, because he intended to leave the next day, kept on talking until midnight.",
+          "8": "There were many lamps in the upstairs room where we were meeting.",
+          "9": "Seated in a window was a young man named Eutychus, who was sinking into a deep sleep as Paul talked on and on. When he was sound asleep, he fell to the ground from the third story and was picked up dead."
+        },
+        "reading_groups": [
+          "From the third story",
+          "From a window"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: eutychu",
+            "2 defensible readings: From the third story | From a window",
+            "lexical: structure_dependence 3.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "eutychu"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "eutychu",
+            "fall"
+          ],
+          "answer_verse": 9,
+          "answer_verse_original": 9,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 9",
+          "readings_failures": [
+            "2 defensible readings: From the third story | From a window"
+          ]
+        },
+        "content_id": "v7-9:5"
+      },
+      {
+        "question": "How long does Paul go on speaking?",
+        "answer": "Paul goes on until midnight.",
+        "answer_verse": 7,
+        "wrong_answer": "Paul goes on until the next day.",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "Until midnight",
+            "support": "kept on talking until midnight"
+          },
+          {
+            "answer": "For a long time",
+            "support": "talked on and on"
+          }
+        ],
+        "distinct_readings": [
+          "Until midnight",
+          "For a long time"
+        ],
+        "scores": {
+          "structure_dependence": 4.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "The duration 'until midnight' appears in one clause (despite a vague 'on and on'), yielding a single clear answer of moderate importance."
+        },
+        "window_verses": [
+          7,
+          8,
+          9
+        ],
+        "window_text": {
+          "7": "On the first day of the week we came together to break bread. Paul spoke to the people and, because he intended to leave the next day, kept on talking until midnight.",
+          "8": "There were many lamps in the upstairs room where we were meeting.",
+          "9": "Seated in a window was a young man named Eutychus, who was sinking into a deep sleep as Paul talked on and on. When he was sound asleep, he fell to the ground from the third story and was picked up dead."
+        },
+        "reading_groups": [
+          "Until midnight",
+          "For a long time"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "2 defensible readings: Until midnight | For a long time",
+            "lexical: structure_dependence 4.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "paul"
+          ],
+          "answer_verse": 7,
+          "answer_verse_original": 7,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 7",
+          "readings_failures": [
+            "2 defensible readings: Until midnight | For a long time"
+          ]
+        },
+        "content_id": "v7-9:6"
+      }
+    ],
+    "report": {
+      "window_id": "v7-9",
+      "verses": [
+        7,
+        8,
+        9
+      ],
+      "generated": 6,
+      "scored": 6,
+      "kept": 1,
+      "survivors_before_window_selection": 1,
+      "window_selection_rejected": 0,
+      "repair_attempted": 1,
+      "repaired": 0,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

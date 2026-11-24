@@ -25,6 +25,7 @@ import os
 import re
 import sys
 import time
+from hashlib import sha256
 from pathlib import Path
 from typing import Any
 
@@ -85,6 +86,8 @@ from evaluation.scripts.scoring.current.translation_quality import (
     read_texts_from_json_or_text,
     translate_with_method,
     validate_nllb_dropout_rate,
+    wbw_name_checks_enabled,
+    wbw_name_review,
     write_json as write_quality_json,
 )
 
@@ -991,16 +994,20 @@ def run_passage_translate_stage(
     translated_passage_path: Path,
     entity_inventory: dict | None,
 ) -> bool:
-    if not should_run(
-        translated_passage_json_path,
-        force=args.force,
-        force_stage=args.force_passage_translate,
-    ) and translated_passage_path.exists():
+    reuse = not should_run(translated_passage_json_path, force=args.force,
+                           force_stage=args.force_passage_translate) and translated_passage_path.exists()
+    if reuse and method != "google_word_by_word":
+        print(f"[{method}] reuse passage translate: {translated_passage_path}")
+        return False
+    glossary = load_pseudonym_glossary(args.pseudonym_map)
+    check_names = method == "google_word_by_word" and wbw_name_checks_enabled(
+        args.source_language, args.target_language, glossary)
+    if method == "google_word_by_word" and getattr(args, "wbw_clean_passage", None) and not check_names:
+        raise PipelineError("A clean reference requires the English-to-Chinese WBW name check.")
+    if reuse and not check_names:
         print(f"[{method}] reuse passage translate: {translated_passage_path}")
         return False
 
-    print(f"[{method}] run passage translate: {translated_passage_path}")
-    glossary = load_pseudonym_glossary(args.pseudonym_map)
     raw_source_texts = read_texts_from_json_or_text(args.passage_file)
     if uses_natural_source_text(method):
         source_texts = raw_source_texts
@@ -1013,6 +1020,25 @@ def run_passage_translate_stage(
             replace_english_terms(text, source_mapping)
             for text in raw_source_texts
         ]
+    clean_path = getattr(args, "wbw_clean_passage", None)
+    clean_texts = read_texts_from_json_or_text(clean_path) if clean_path and method == "google_word_by_word" else None
+    name_review = {}
+    if check_names:
+        names, checks = wbw_name_review(source_texts, glossary, clean_texts, raw_source_texts)
+        # Bind a cached pass to both the reviewed inputs and the exact text written to disk.
+        policy = json.dumps(names, ensure_ascii=False, sort_keys=True)
+        name_review = {"version": 1, "glossary_sha256": sha256(policy.encode()).hexdigest(), "passages": checks}
+        if reuse:
+            cached = load_score_json(translated_passage_json_path)
+            served = translated_passage_path.read_text(encoding="utf-8")
+            expected = dict(name_review, output_sha256=sha256(served.encode()).hexdigest())
+            if (isinstance(cached, dict) and cached.get("name_review") == expected
+                    and cached.get("source_texts") == source_texts and isinstance(cached.get("translations"), list)
+                    and len(cached["translations"]) == len(source_texts) and all(isinstance(t, str) for t in cached["translations"])
+                    and "\n\n".join(cached["translations"]) == served):
+                print(f"[{method}] reuse name-checked passage: {translated_passage_path}")
+                return False
+    print(f"[{method}] run passage translate: {translated_passage_path}")
     translations = translate_with_method(
         source_texts,
         method,
@@ -1027,6 +1053,7 @@ def run_passage_translate_stage(
         temperature=args.temperature,
         seed=args.seed,
         glossary=glossary,
+        **({"wbw_clean_texts": clean_texts, "wbw_reference_sources": raw_source_texts} if check_names else {}),
     )
     if glossary:
         forced = 0
@@ -1038,6 +1065,9 @@ def run_passage_translate_stage(
     method_dropout_rate = parse_nllb_dropout_rate(method) if is_nllb_dropout_method(method) else None
     if method == NLLB_DROPOUT_METHOD_PREFIX:
         method_dropout_rate = args.nllb_dropout_rate
+    served = "\n\n".join(translations)
+    if check_names:
+        name_review["output_sha256"] = sha256(served.encode()).hexdigest()
     write_quality_json(
         translated_passage_json_path,
         {
@@ -1047,6 +1077,7 @@ def run_passage_translate_stage(
             "nllb_dropout_rate": method_dropout_rate,
             "source_texts": source_texts,
             "translations": translations,
+            **({"name_review": name_review} if check_names else {}),
         },
     )
     source_decanonicalized_path = method_output_paths(args, method)[
@@ -1058,7 +1089,7 @@ def run_passage_translate_stage(
         encoding="utf-8",
     )
     translated_passage_path.parent.mkdir(parents=True, exist_ok=True)
-    translated_passage_path.write_text("\n\n".join(translations), encoding="utf-8")
+    translated_passage_path.write_text(served, encoding="utf-8")
     return True
 
 
@@ -1443,6 +1474,7 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Disable LLM chapter-local entity inventory discovery.",
     )
+    parser.add_argument("--wbw-clean-passage", type=Path, help="Clean Chinese reference for Google WBW with matching verse markers.")
     parser.add_argument(
         "--pseudonym-map",
         type=Path,

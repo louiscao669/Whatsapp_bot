@@ -1,0 +1,340 @@
+{
+  "config_digest": "bab5a848f20f60ea534214d9358795f20d975515f4adb1ac077513ba4e1247aa",
+  "data": {
+    "kept": [
+      {
+        "question": "Why do the Danites look for a place to live?",
+        "answer": "The Danites have not yet received a share among Israel.",
+        "answer_verse": 1,
+        "wrong_answer": "Because Israel has no king.",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "Because they had not yet come into an inheritance among the tribes of Israel.",
+            "support": "because they had not yet come into an inheritance among the tribes of Israel"
+          }
+        ],
+        "distinct_readings": [
+          "Because they had not yet come into an inheritance among the tribes of Israel."
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "It hinges on linking the action to the sole causal clause (“because they had not yet come into an inheritance”), giving one clear, central reason."
+        },
+        "window_verses": [
+          1,
+          2
+        ],
+        "window_text": {
+          "1": "In those days Israel had no king. And in those days the tribe of the Danites was seeking a place of their own where they might settle, because they had not yet come into an inheritance among the tribes of Israel.",
+          "2": "So the Danites sent five of their leading men from Zorah and Eshtaol to spy out the land and explore it. These men represented all the Danites. They told them, “Go, explore the land.” So they entered the hill country of Ephraim and came to the house of Micah, where they spent the night."
+        },
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "danit"
+          ],
+          "answer_verse": 1,
+          "answer_verse_original": 1,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 1",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Why do the Danites look for a place to live?",
+            "readings": [
+              {
+                "answer": "Because they had not yet come into an inheritance among the tribes of Israel.",
+                "support": "because they had not yet come into an inheritance among the tribes of Israel"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The passage explicitly says they were seeking a place to settle “because they had not yet come into an inheritance among the tribes of Israel,” which matches the key’s “not yet received a share among Israel.”"
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The text directly gives the reason: they had not yet received an inheritance/share among Israel.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It cleanly tests the explicit causal “because” clause for the Danites’ search, while the competitor plausibly misreads the adjacent “no king” statement as the cause.",
+        "window_structure_max": 8.0,
+        "content_id": "v1-2:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "From where are the five leading men sent?",
+        "answer": "From Zorah and Eshtaol.",
+        "answer_verse": 2,
+        "wrong_answer": "Into the hill country of Ephraim.",
+        "relation": "direction",
+        "readings": [
+          {
+            "answer": "Zorah and Eshtaol",
+            "support": "from Zorah and Eshtaol"
+          }
+        ],
+        "distinct_readings": [
+          "Zorah and Eshtaol"
+        ],
+        "scores": {
+          "structure_dependence": 2.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 2.0,
+          "runs": 1,
+          "reason": "“From Zorah and Eshtaol” is a directly stated place phrase occurring once and is incidental to the main action."
+        },
+        "window_verses": [
+          1,
+          2
+        ],
+        "window_text": {
+          "1": "In those days Israel had no king. And in those days the tribe of the Danites was seeking a place of their own where they might settle, because they had not yet come into an inheritance among the tribes of Israel.",
+          "2": "So the Danites sent five of their leading men from Zorah and Eshtaol to spy out the land and explore it. These men represented all the Danites. They told them, “Go, explore the land.” So they entered the hill country of Ephraim and came to the house of Micah, where they spent the night."
+        },
+        "audit": {
+          "passed": false,
+          "failures": [
+            "bare-name answer 'From Zorah and Eshtaol.': names survive translation",
+            "lexical: structure_dependence 2.0 (need 7.0)",
+            "incidental: centrality 2.0 (need 5.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 2,
+          "answer_verse_original": 2,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 2",
+          "readings_failures": []
+        },
+        "content_id": "v1-2:2"
+      },
+      {
+        "question": "What happens after the five men come to Micah’s house?",
+        "answer": "The five men spend the night there.",
+        "answer_verse": 2,
+        "wrong_answer": "The five men examine the land.",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "They spent the night.",
+            "support": "where they spent the night"
+          }
+        ],
+        "distinct_readings": [
+          "They spent the night."
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 4.0,
+          "runs": 1,
+          "reason": "It relies on understanding the sequence implied by the relative clause (“where they spent the night”), which is stated once and unambiguous."
+        },
+        "window_verses": [
+          1,
+          2
+        ],
+        "window_text": {
+          "1": "In those days Israel had no king. And in those days the tribe of the Danites was seeking a place of their own where they might settle, because they had not yet come into an inheritance among the tribes of Israel.",
+          "2": "So the Danites sent five of their leading men from Zorah and Eshtaol to spy out the land and explore it. These men represented all the Danites. They told them, “Go, explore the land.” So they entered the hill country of Ephraim and came to the house of Micah, where they spent the night."
+        },
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: fiv, hous, micah",
+            "lexical: structure_dependence 6.0 (need 7.0)",
+            "incidental: centrality 4.0 (need 5.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "fiv",
+            "hous",
+            "micah"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "fiv"
+          ],
+          "answer_verse": 2,
+          "answer_verse_original": 2,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 2",
+          "readings_failures": []
+        },
+        "content_id": "v1-2:3"
+      },
+      {
+        "question": "For what purpose do the Danites send the five men?",
+        "answer": "To examine the land.",
+        "answer_verse": 2,
+        "wrong_answer": "To settle in their own place.",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "To spy out the land and explore it.",
+            "support": "to spy out the land and explore it"
+          },
+          {
+            "answer": "To seek a place of their own where they might settle.",
+            "support": "seeking a place of their own where they might settle"
+          }
+        ],
+        "distinct_readings": [
+          "To spy out the land and explore it.",
+          "To seek a place of their own where they might settle."
+        ],
+        "scores": {
+          "structure_dependence": 5.0,
+          "statement_uniqueness": 2.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "The purpose is expressed as an infinitive (“to spy out… and explore”) and restated as a command, making it easy and central but repeated."
+        },
+        "window_verses": [
+          1,
+          2
+        ],
+        "window_text": {
+          "1": "In those days Israel had no king. And in those days the tribe of the Danites was seeking a place of their own where they might settle, because they had not yet come into an inheritance among the tribes of Israel.",
+          "2": "So the Danites sent five of their leading men from Zorah and Eshtaol to spy out the land and explore it. These men represented all the Danites. They told them, “Go, explore the land.” So they entered the hill country of Ephraim and came to the house of Micah, where they spent the night."
+        },
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 5.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 2,
+          "answer_verse_original": 2,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 2",
+          "readings_failures": []
+        },
+        "content_id": "v1-2:4"
+      },
+      {
+        "question": "Who do the Danites tell to go examine the land?",
+        "answer": "The five leading men.",
+        "answer_verse": 2,
+        "wrong_answer": "All the Danites.",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "the five leading men they had sent",
+            "support": "sent five of their leading men from Zorah and Eshtaol | They told them,"
+          }
+        ],
+        "distinct_readings": [
+          "the five leading men they had sent"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "Identifying the recipient of the command requires resolving pronouns to the five men, a relation stated once and clear in a good translation."
+        },
+        "window_verses": [
+          1,
+          2
+        ],
+        "window_text": {
+          "1": "In those days Israel had no king. And in those days the tribe of the Danites was seeking a place of their own where they might settle, because they had not yet come into an inheritance among the tribes of Israel.",
+          "2": "So the Danites sent five of their leading men from Zorah and Eshtaol to spy out the land and explore it. These men represented all the Danites. They told them, “Go, explore the land.” So they entered the hill country of Ephraim and came to the house of Micah, where they spent the night."
+        },
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: hybrid window selector — It cleanly tests the explicit causal “because” clause for the Danites’ search, while the competitor plausibly misreads the adjacent “no king” statement as the cause."
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 2,
+          "answer_verse_original": 2,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 2",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Who do the Danites tell to go examine the land?",
+            "readings": [
+              {
+                "answer": "the five leading men they had sent",
+                "support": "sent five of their leading men from Zorah and Eshtaol | They told them,"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The text says the Danites “sent five of their leading men… They told them, ‘Go, explore the land,’” so the directive was to the five leading men."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "“They told them” immediately follows the mention of the five leading men, identifying them as the ones told to go explore.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It cleanly tests the explicit causal “because” clause for the Danites’ search, while the competitor plausibly misreads the adjacent “no king” statement as the cause.",
+        "content_id": "v1-2:5"
+      }
+    ],
+    "report": {
+      "window_id": "v1-2",
+      "verses": [
+        1,
+        2
+      ],
+      "generated": 5,
+      "scored": 5,
+      "kept": 1,
+      "survivors_before_window_selection": 2,
+      "window_selection_rejected": 1,
+      "repair_attempted": 0,
+      "repaired": 0,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

@@ -1,0 +1,959 @@
+[
+  {
+    "question": "Which option do the men bring up right after the city?",
+    "answer": "staying where they are",
+    "answer_verse": 4,
+    "wrong_answer": "going to the Arameans' camp",
+    "relation": "sequence",
+    "readings": [
+      {
+        "answer": "Stay here",
+        "support": "And if we stay here, we will die."
+      }
+    ],
+    "distinct_readings": [
+      "Stay here"
+    ],
+    "scores": {
+      "structure_dependence": 7.0,
+      "statement_uniqueness": 8.0,
+      "answer_certainty": 10.0,
+      "centrality": 6.0,
+      "runs": 1,
+      "reason": "This hinges on sequence within the speech (city first, then “if we stay here”), a unique ordering detail with a single clear answer of moderate centrality."
+    },
+    "window_verses": [
+      3,
+      4
+    ],
+    "window_text": {
+      "3": "Now there were four men with leprosy at the entrance of the city gate. They said to each other, “Why stay here until we die?",
+      "4": "If we say, ‘We’ll go into the city’—the famine is there, and we will die. And if we stay here, we will die. So let’s go over to the camp of the Arameans and surrender. If they spare us, we live; if they kill us, then we die.”"
+    },
+    "reading_groups": [
+      "Stay where they are."
+    ],
+    "audit": {
+      "passed": true,
+      "failures": [],
+      "notes": [
+        "distractor check skipped: none stated by this output tier"
+      ],
+      "location_leak_terms": [],
+      "distractors_found": [],
+      "distractors_missing": false,
+      "answer_leak_terms": [],
+      "answer_verse": 4,
+      "answer_verse_original": 4,
+      "answer_verse_corrected": false,
+      "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 4",
+      "readings_failures": [],
+      "answerability": {
+        "model": "gpt-5",
+        "mode": "enforce",
+        "question": "Which option do the men bring up right after the city?",
+        "readings": [
+          {
+            "answer": "Stay here",
+            "support": "And if we stay here, we will die."
+          }
+        ],
+        "assessments": [
+          {
+            "number": 1,
+            "classification": "equivalent_to_key",
+            "reason": "In the speech, after mentioning “We’ll go into the city,” the next option is “And if we stay here,” so “Stay here” matches “staying where they are.”"
+          }
+        ],
+        "verdict": "pass",
+        "reason": "After “go into the city,” the text immediately says “if we stay here,” establishing that staying where they are is the next option.",
+        "status": "passed"
+      }
+    },
+    "window_selection_reason": "It cleanly probes the sequence of options after “go into the city,” requiring parsing of the dialogue, with a clear correct answer (“stay here”) and a plausible misparse competitor (going to the Arameans’ camp).",
+    "window_structure_max": 7.0,
+    "content_id": "v3-4:1",
+    "rank_in_batch": 1,
+    "rank_reason": "Top items hinge on sequence, pronoun/coreference, and nested attribution that collapse when grammar is lost, while the bottom items are explicit, repeated, or easily guessed noun facts.",
+    "final_rank": 1
+  },
+  {
+    "question": "Who plans to take people alive?",
+    "answer": "the Arameans",
+    "answer_verse": 12,
+    "wrong_answer": "the Israelites",
+    "relation": "agent-patient",
+    "readings": [
+      {
+        "answer": "The Arameans",
+        "support": "the Arameans | we will take them alive"
+      }
+    ],
+    "distinct_readings": [
+      "The Arameans"
+    ],
+    "scores": {
+      "structure_dependence": 9.0,
+      "statement_uniqueness": 9.0,
+      "answer_certainty": 10.0,
+      "centrality": 8.0,
+      "runs": 1,
+      "reason": "Identifying the planner requires attributing the quoted “we will take them alive” to the Arameans in the king’s report, which is stated once, unambiguous, and central to their tactic."
+    },
+    "window_verses": [
+      12,
+      13
+    ],
+    "window_text": {
+      "12": "The king got up in the night and said to his officers, “I will tell you what the Arameans have done to us. They know we are starving; so they have left the camp to hide in the countryside, thinking, ‘They will surely come out, and then we will take them alive and get into the city.’”",
+      "13": "One of his officers answered, “Have some men take five of the horses that are left in the city. Their plight will be like that of all the Israelites left here—yes, they will only be like all these Israelites who are doomed. So let us send them to find out what happened.”"
+    },
+    "audit": {
+      "passed": true,
+      "failures": [],
+      "notes": [
+        "distractor check skipped: none stated by this output tier"
+      ],
+      "location_leak_terms": [],
+      "distractors_found": [],
+      "distractors_missing": false,
+      "answer_leak_terms": [],
+      "answer_verse": 12,
+      "answer_verse_original": 12,
+      "answer_verse_corrected": false,
+      "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 12",
+      "readings_failures": [],
+      "answerability": {
+        "model": "gpt-5",
+        "mode": "enforce",
+        "question": "Who plans to take people alive?",
+        "readings": [
+          {
+            "answer": "The Arameans",
+            "support": "the Arameans | we will take them alive"
+          }
+        ],
+        "assessments": [
+          {
+            "number": 1,
+            "classification": "equivalent_to_key",
+            "reason": "The king attributes the plan to the Arameans: “they have left the camp… thinking, ‘They will… take them alive.’”"
+          }
+        ],
+        "verdict": "pass",
+        "reason": "The passage explicitly says the Arameans were thinking they would take them alive.",
+        "status": "passed"
+      }
+    },
+    "window_selection_reason": "It most depends on resolving the embedded pronoun \"we\" in the Arameans’ thought as the agent of taking others alive—clearly the Arameans—while the competitor reflects a plausible misparse, and the wording is clear and central.",
+    "window_structure_max": 9.0,
+    "content_id": "v12-13:1",
+    "rank_in_batch": 2,
+    "rank_reason": "Top items hinge on sequence, pronoun/coreference, and nested attribution that collapse when grammar is lost, while the bottom items are explicit, repeated, or easily guessed noun facts.",
+    "final_rank": 2
+  },
+  {
+    "question": "Who flees at dusk and leaves the camp behind?",
+    "answer": "the Arameans",
+    "answer_verse": 7,
+    "wrong_answer": "the people who went to the camp",
+    "relation": "participant",
+    "readings": [
+      {
+        "answer": "The Arameans",
+        "support": "the Arameans | So they got up and fled in the dusk and abandoned their tents and their horses and donkeys. They left the camp as it was"
+      }
+    ],
+    "distinct_readings": [
+      "The Arameans"
+    ],
+    "scores": {
+      "structure_dependence": 9.0,
+      "statement_uniqueness": 9.0,
+      "answer_certainty": 9.0,
+      "centrality": 9.0,
+      "runs": 1,
+      "reason": "Identifying that the “they” who fled and abandoned the camp are the Arameans requires resolving pronouns across sentences, is stated once, is unambiguous in context, and is central to the event."
+    },
+    "window_verses": [
+      5,
+      6,
+      7
+    ],
+    "window_text": {
+      "5": "At dusk they got up and went to the camp of the Arameans. When they reached the edge of the camp, no one was there,",
+      "6": "for the Lord had caused the Arameans to hear the sound of chariots and horses and a great army, so that they said to one another, “Look, the king of Israel has hired the Hittite and Egyptian kings to attack us!”",
+      "7": "So they got up and fled in the dusk and abandoned their tents and their horses and donkeys. They left the camp as it was and ran for their lives."
+    },
+    "audit": {
+      "passed": true,
+      "failures": [],
+      "notes": [
+        "corrected metadata from 5 to 7; reading support and question relation identify verse 7",
+        "distractor check skipped: none stated by this output tier"
+      ],
+      "location_leak_terms": [],
+      "distractors_found": [],
+      "distractors_missing": false,
+      "answer_leak_terms": [],
+      "answer_verse": 7,
+      "answer_verse_original": 5,
+      "answer_verse_corrected": true,
+      "answer_verse_note": "corrected metadata from 5 to 7; reading support and question relation identify verse 7",
+      "readings_failures": [],
+      "answerability": {
+        "model": "gpt-5",
+        "mode": "enforce",
+        "question": "Who flees at dusk and leaves the camp behind?",
+        "readings": [
+          {
+            "answer": "The Arameans",
+            "support": "the Arameans | So they got up and fled in the dusk and abandoned their tents and their horses and donkeys. They left the camp as it was"
+          }
+        ],
+        "assessments": [
+          {
+            "number": 1,
+            "classification": "equivalent_to_key",
+            "reason": "Verse 7 says, “So they got up and fled in the dusk and abandoned their tents… They left the camp,” and the antecedent from v6 is “the Arameans,” so the Arameans are the ones who fled and left the camp."
+          }
+        ],
+        "verdict": "pass",
+        "reason": "Verse 7, linked to the Arameans in verse 6, states they fled at dusk and left the camp behind.",
+        "status": "passed"
+      }
+    },
+    "scores_after_repair_raw": {
+      "structure_dependence": 9.0,
+      "statement_uniqueness": 9.0,
+      "answer_certainty": 9.0,
+      "centrality": 9.0,
+      "runs": 1,
+      "reason": "Identifying that the “they” who fled and abandoned the camp are the Arameans requires resolving pronouns across sentences, is stated once, is unambiguous in context, and is central to the event."
+    },
+    "repaired": true,
+    "repair_attempted": true,
+    "question_before_repair": "Who flees from the Aramean camp at dusk?",
+    "scores_before_repair": {
+      "structure_dependence": 9.0,
+      "statement_uniqueness": 9.0,
+      "answer_certainty": 10.0,
+      "centrality": 9.0,
+      "runs": 1,
+      "reason": "Identifying the fleers requires resolving the shifting pronoun 'they' to the Arameans in v7, a single but central clause."
+    },
+    "audit_before_repair": {
+      "passed": false,
+      "failures": [
+        "answer leaks into question: aramean"
+      ],
+      "notes": [
+        "corrected metadata from 7 to 5; Q/A evidence matches verse(s) [5] better than the claimed 7",
+        "distractor check skipped: none stated by this output tier"
+      ],
+      "location_leak_terms": [],
+      "distractors_found": [],
+      "distractors_missing": false,
+      "answer_leak_terms": [
+        "aramean"
+      ],
+      "answer_verse": 5,
+      "answer_verse_original": 7,
+      "answer_verse_corrected": true,
+      "answer_verse_note": "corrected metadata from 7 to 5; Q/A evidence matches verse(s) [5] better than the claimed 7",
+      "readings_failures": []
+    },
+    "repair_log": [
+      {
+        "before": "Who flees from the Aramean camp at dusk?",
+        "after": "Who flees at dusk and leaves the camp behind?",
+        "note": "Removed 'Aramean' to prevent answer leakage while keeping the same ask.",
+        "failures_before": [
+          "answer leaks into question: aramean"
+        ],
+        "scores_before": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "Identifying the fleers requires resolving the shifting pronoun 'they' to the Arameans in v7, a single but central clause."
+        },
+        "accepted": true,
+        "reason": "passed full rejudgment",
+        "suitability_judgment": {
+          "Q": "Who flees at dusk and leaves the camp behind?",
+          "clear_referents": true,
+          "natural_wording": true,
+          "directly_answerable": true,
+          "single_defensible_answer": true,
+          "remove": false,
+          "reason": "Verse 7 explicitly attributes the dusk flight and abandonment of the camp to the Arameans."
+        },
+        "failures_after": [],
+        "scores_after": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "Identifying that the “they” who fled and abandoned the camp are the Arameans requires resolving pronouns across sentences, is stated once, is unambiguous in context, and is central to the event."
+        },
+        "scores_used": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "Identifying that the “they” who fled and abandoned the camp are the Arameans requires resolving pronouns across sentences, is stated once, is unambiguous in context, and is central to the event."
+        }
+      }
+    ],
+    "window_selection_reason": "It hinges on resolving the shifting “they” to the Arameans in verse 7 rather than the earlier visitors, making the competitor a plausible misparse.",
+    "window_structure_max": 9.0,
+    "content_id": "v5-7:1",
+    "rank_in_batch": 3,
+    "rank_reason": "Top items hinge on sequence, pronoun/coreference, and nested attribution that collapse when grammar is lost, while the bottom items are explicit, repeated, or easily guessed noun facts.",
+    "final_rank": 3
+  },
+  {
+    "question": "Who will not eat from the coming sale, according to Elisha?",
+    "answer": "The officer.",
+    "answer_verse": 2,
+    "wrong_answer": "The king.",
+    "relation": "referent",
+    "readings": [
+      {
+        "answer": "The officer on whose arm the king was leaning",
+        "support": "The officer on whose arm the king was leaning | but you will not eat any of it!"
+      }
+    ],
+    "distinct_readings": [
+      "The officer on whose arm the king was leaning"
+    ],
+    "scores": {
+      "structure_dependence": 9.0,
+      "statement_uniqueness": 9.0,
+      "answer_certainty": 10.0,
+      "centrality": 8.0,
+      "runs": 1,
+      "reason": "Identifying who 'you' refers to in Elisha’s reply requires pronoun resolution to the skeptical officer, stated once and central to the exchange."
+    },
+    "window_verses": [
+      1,
+      2
+    ],
+    "window_text": {
+      "1": "Elisha replied, “Hear the word of the Lord. This is what the Lord says: About this time tomorrow, a seah of the finest flour will sell for a shekel and two seahs of barley for a shekel at the gate of Samaria.”",
+      "2": "The officer on whose arm the king was leaning said to the man of God, “Look, even if the Lord should open the floodgates of the heavens, could this happen?” “You will see it with your own eyes,” answered Elisha, “but you will not eat any of it!”"
+    },
+    "reading_groups": [
+      "The officer (the one the king leaned on) will not eat"
+    ],
+    "audit": {
+      "passed": true,
+      "failures": [],
+      "notes": [
+        "distractor check skipped: none stated by this output tier"
+      ],
+      "location_leak_terms": [],
+      "distractors_found": [],
+      "distractors_missing": false,
+      "answer_leak_terms": [],
+      "answer_verse": 2,
+      "answer_verse_original": 2,
+      "answer_verse_corrected": false,
+      "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 2",
+      "readings_failures": [],
+      "answerability": {
+        "model": "gpt-5",
+        "mode": "enforce",
+        "question": "Who will not eat from the coming sale, according to Elisha?",
+        "readings": [
+          {
+            "answer": "The officer on whose arm the king was leaning",
+            "support": "The officer on whose arm the king was leaning | but you will not eat any of it!"
+          }
+        ],
+        "assessments": [
+          {
+            "number": 1,
+            "classification": "equivalent_to_key",
+            "reason": "The text has the skeptical speaker identified as “the officer on whose arm the king was leaning,” and Elisha replies to him, “You will see it with your own eyes … but you will not eat any of it,” so the officer is the one who will not eat."
+          }
+        ],
+        "verdict": "pass",
+        "reason": "Elisha directly tells the officer that although he will see it, he will not eat any of it.",
+        "status": "passed"
+      }
+    },
+    "window_selection_reason": "It hinges on correctly resolving the pronoun “you” in Elisha’s reply to the doubting officer, with the king as a plausible misparse.",
+    "window_structure_max": 9.0,
+    "content_id": "v1-2:1",
+    "rank_in_batch": 4,
+    "rank_reason": "Top items hinge on sequence, pronoun/coreference, and nested attribution that collapse when grammar is lost, while the bottom items are explicit, repeated, or easily guessed noun facts.",
+    "final_rank": 4
+  },
+  {
+    "question": "Who did the people trample to death?",
+    "answer": "the officer the king put in charge of the gate",
+    "answer_verse": 17,
+    "wrong_answer": "the king",
+    "relation": "agent-patient",
+    "readings": [
+      {
+        "answer": "The officer on whose arm the king leaned",
+        "support": "the officer on whose arm he leaned | the people trampled him in the gateway, and he died"
+      }
+    ],
+    "distinct_readings": [
+      "The officer on whose arm the king leaned"
+    ],
+    "scores": {
+      "structure_dependence": 9.0,
+      "statement_uniqueness": 9.0,
+      "answer_certainty": 9.0,
+      "centrality": 8.0,
+      "runs": 1,
+      "reason": "Identifying “him” as the officer requires resolving pronouns and roles, it is stated only in this clause, yields a single clear answer in a good translation, and is central to the event described in the window."
+    },
+    "window_verses": [
+      17,
+      18
+    ],
+    "window_text": {
+      "17": "Now the king had put the officer on whose arm he leaned in charge of the gate, and the people trampled him in the gateway, and he died, just as the man of God had foretold when the king came down to his house.",
+      "18": "It happened as the man of God had said to the king: “About this time tomorrow, a seah of the finest flour will sell for a shekel and two seahs of barley for a shekel at the gate of Samaria.”"
+    },
+    "reading_groups": [
+      "the officer on whose arm the king leaned (gate officer)"
+    ],
+    "audit": {
+      "passed": true,
+      "failures": [],
+      "notes": [
+        "distractor check skipped: none stated by this output tier"
+      ],
+      "location_leak_terms": [],
+      "distractors_found": [],
+      "distractors_missing": false,
+      "answer_leak_terms": [],
+      "answer_verse": 17,
+      "answer_verse_original": 17,
+      "answer_verse_corrected": false,
+      "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 17",
+      "readings_failures": [],
+      "answerability": {
+        "model": "gpt-5",
+        "mode": "enforce",
+        "question": "Who did the people trample to death?",
+        "readings": [
+          {
+            "answer": "The officer on whose arm the king leaned",
+            "support": "the officer on whose arm he leaned | the people trampled him in the gateway, and he died"
+          }
+        ],
+        "assessments": [
+          {
+            "number": 1,
+            "classification": "equivalent_to_key",
+            "reason": "The verse states the king put “the officer on whose arm he leaned” in charge of the gate, and that he was trampled and died; this matches the key’s identification."
+          }
+        ],
+        "verdict": "pass",
+        "reason": "The text directly identifies the trampled person as the officer the king leaned on and had put in charge of the gate.",
+        "status": "passed"
+      }
+    },
+    "scores_after_repair_raw": {
+      "structure_dependence": 9.0,
+      "statement_uniqueness": 9.0,
+      "answer_certainty": 9.0,
+      "centrality": 8.0,
+      "runs": 1,
+      "reason": "Identifying “him” as the officer requires resolving pronouns and roles, it is stated only in this clause, yields a single clear answer in a good translation, and is central to the event described in the window."
+    },
+    "repaired": true,
+    "repair_attempted": true,
+    "question_before_repair": "Who do the people trample to death in the gateway?",
+    "scores_before_repair": {
+      "structure_dependence": 9.0,
+      "statement_uniqueness": 9.0,
+      "answer_certainty": 9.0,
+      "centrality": 8.0,
+      "runs": 1,
+      "reason": "Identifying the victim requires resolving the pronoun 'him' to the officer appointed over the gate, a single-stated, unambiguous, and central event in the verse."
+    },
+    "audit_before_repair": {
+      "passed": false,
+      "failures": [
+        "location leak: gateway"
+      ],
+      "notes": [
+        "distractor check skipped: none stated by this output tier"
+      ],
+      "location_leak_terms": [
+        "gateway"
+      ],
+      "distractors_found": [],
+      "distractors_missing": false,
+      "answer_leak_terms": [],
+      "answer_verse": 17,
+      "answer_verse_original": 17,
+      "answer_verse_corrected": false,
+      "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 17",
+      "readings_failures": []
+    },
+    "repair_log": [
+      {
+        "before": "Who do the people trample to death in the gateway?",
+        "after": "Who did the people trample to death?",
+        "note": "Removed the leaking location word 'gateway'.",
+        "failures_before": [
+          "location leak: gateway"
+        ],
+        "scores_before": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "Identifying the victim requires resolving the pronoun 'him' to the officer appointed over the gate, a single-stated, unambiguous, and central event in the verse."
+        },
+        "accepted": true,
+        "reason": "passed full rejudgment",
+        "suitability_judgment": {
+          "Q": "Who did the people trample to death?",
+          "clear_referents": true,
+          "natural_wording": true,
+          "directly_answerable": true,
+          "single_defensible_answer": true,
+          "remove": false,
+          "reason": "The verse clearly states that the officer on whose arm the king leaned was trampled and died, yielding a single, direct answer."
+        },
+        "failures_after": [],
+        "scores_after": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "Identifying “him” as the officer requires resolving pronouns and roles, it is stated only in this clause, yields a single clear answer in a good translation, and is central to the event described in the window."
+        },
+        "scores_used": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "Identifying “him” as the officer requires resolving pronouns and roles, it is stated only in this clause, yields a single clear answer in a good translation, and is central to the event described in the window."
+        }
+      }
+    ],
+    "window_selection_reason": "It hinges on resolving the pronoun “him” and agent–patient roles to see the trampled one is the gate officer, not the king, giving a single clear answer with a plausible misparse competitor.",
+    "window_structure_max": 9.0,
+    "content_id": "v17-18:1",
+    "rank_in_batch": 5,
+    "rank_reason": "Top items hinge on sequence, pronoun/coreference, and nested attribution that collapse when grammar is lost, while the bottom items are explicit, repeated, or easily guessed noun facts.",
+    "final_rank": 5
+  },
+  {
+    "question": "What happens after the gatekeepers cry out the report?",
+    "answer": "the news is reported within the palace",
+    "answer_verse": 11,
+    "wrong_answer": "the men call out to the gatekeepers",
+    "relation": "sequence",
+    "readings": [
+      {
+        "answer": "It was reported within the palace.",
+        "support": "it was reported within the palace"
+      }
+    ],
+    "distinct_readings": [
+      "It was reported within the palace."
+    ],
+    "scores": {
+      "structure_dependence": 7.0,
+      "statement_uniqueness": 9.0,
+      "answer_certainty": 10.0,
+      "centrality": 7.0,
+      "runs": 1,
+      "reason": "It depends on understanding the sequence between the two clauses, with the subsequent event stated once, uniquely and clearly central to the narrative flow."
+    },
+    "window_verses": [
+      10,
+      11
+    ],
+    "window_text": {
+      "10": "So they went and called out to the city gatekeepers and told them, “We went into the Aramean camp and no one was there—not a sound of anyone—only tethered horses and donkeys, and the tents left just as they were.”",
+      "11": "The gatekeepers shouted the news, and it was reported within the palace."
+    },
+    "audit": {
+      "passed": true,
+      "failures": [],
+      "notes": [
+        "distractor check skipped: none stated by this output tier"
+      ],
+      "location_leak_terms": [],
+      "distractors_found": [],
+      "distractors_missing": false,
+      "answer_leak_terms": [
+        "report"
+      ],
+      "answer_verse": 11,
+      "answer_verse_original": 11,
+      "answer_verse_corrected": false,
+      "answer_verse_note": "consistent",
+      "readings_failures": [],
+      "answerability": {
+        "model": "gpt-5",
+        "mode": "enforce",
+        "question": "What happens after the gatekeepers cry out the report?",
+        "readings": [
+          {
+            "answer": "It was reported within the palace.",
+            "support": "it was reported within the palace"
+          }
+        ],
+        "assessments": [
+          {
+            "number": 1,
+            "classification": "equivalent_to_key",
+            "reason": "Verse 11 states directly, “The gatekeepers shouted the news, and it was reported within the palace,” matching the answer that it was reported within the palace."
+          }
+        ],
+        "verdict": "pass",
+        "reason": "The passage explicitly states the news was reported within the palace after the gatekeepers cried out.",
+        "status": "passed"
+      }
+    },
+    "window_selection_reason": "It strongly tests sequence by asking what follows the gatekeepers’ shout—clearly “it was reported within the palace”—while the competitor wrongly picks the earlier event of the men calling the gatekeepers.",
+    "window_structure_max": 7.0,
+    "content_id": "v10-11:1",
+    "rank_in_batch": 6,
+    "rank_reason": "Top items hinge on sequence, pronoun/coreference, and nested attribution that collapse when grammar is lost, while the bottom items are explicit, repeated, or easily guessed noun facts.",
+    "final_rank": 6
+  },
+  {
+    "question": "What do the men plan to report to the royal palace?",
+    "answer": "The good news.",
+    "answer_verse": 9,
+    "wrong_answer": "The silver, gold, and clothes they hid.",
+    "relation": "referent",
+    "readings": [
+      {
+        "answer": "the good news",
+        "support": "This is a day of good news | report this to the royal palace"
+      }
+    ],
+    "distinct_readings": [
+      "the good news"
+    ],
+    "scores": {
+      "structure_dependence": 7.0,
+      "statement_uniqueness": 8.0,
+      "answer_certainty": 10.0,
+      "centrality": 7.0,
+      "runs": 1,
+      "reason": "Resolving the demonstrative \"this\" to its antecedent \"good news\" is necessary to identify the content of their report."
+    },
+    "window_verses": [
+      8,
+      9
+    ],
+    "window_text": {
+      "8": "The men who had leprosy reached the edge of the camp, entered one of the tents and ate and drank. Then they took silver, gold and clothes, and went off and hid them. They returned and entered another tent and took some things from it and hid them also.",
+      "9": "Then they said to each other, “What we’re doing is not right. This is a day of good news and we are keeping it to ourselves. If we wait until daylight, punishment will overtake us. Let’s go at once and report this to the royal palace.”"
+    },
+    "reading_groups": [
+      "They plan to report the good news."
+    ],
+    "audit": {
+      "passed": true,
+      "failures": [],
+      "notes": [
+        "distractor check skipped: none stated by this output tier"
+      ],
+      "location_leak_terms": [],
+      "distractors_found": [],
+      "distractors_missing": false,
+      "answer_leak_terms": [],
+      "answer_verse": 9,
+      "answer_verse_original": 9,
+      "answer_verse_corrected": false,
+      "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 9",
+      "readings_failures": [],
+      "answerability": {
+        "model": "gpt-5",
+        "mode": "enforce",
+        "question": "What do the men plan to report to the royal palace?",
+        "readings": [
+          {
+            "answer": "the good news",
+            "support": "This is a day of good news | report this to the royal palace"
+          }
+        ],
+        "assessments": [
+          {
+            "number": 1,
+            "classification": "equivalent_to_key",
+            "reason": "The men say, “This is a day of good news” and then, “Let’s go at once and report this to the royal palace,” so the “this” they plan to report is the good news."
+          }
+        ],
+        "verdict": "pass",
+        "reason": "The text explicitly ties “this” to “a day of good news,” so they plan to report the good news.",
+        "status": "passed"
+      }
+    },
+    "window_selection_reason": "It hinges on resolving the pronoun “this” in “report this to the royal palace” to the prior clause “a day of good news,” a grammatical referent decision that yields a single clear answer and has a plausible misparse competitor.",
+    "window_structure_max": 7.0,
+    "content_id": "v8-9:1",
+    "rank_in_batch": 7,
+    "rank_reason": "Top items hinge on sequence, pronoun/coreference, and nested attribution that collapse when grammar is lost, while the bottom items are explicit, repeated, or easily guessed noun facts.",
+    "final_rank": 7
+  },
+  {
+    "question": "Who throws away clothing and equipment?",
+    "answer": "the Arameans",
+    "answer_verse": 15,
+    "wrong_answer": "the messengers",
+    "relation": "agent-patient",
+    "readings": [
+      {
+        "answer": "The Arameans",
+        "support": "the Arameans had thrown away"
+      }
+    ],
+    "distinct_readings": [
+      "The Arameans"
+    ],
+    "scores": {
+      "structure_dependence": 8.0,
+      "statement_uniqueness": 10.0,
+      "answer_certainty": 10.0,
+      "centrality": 6.0,
+      "runs": 1,
+      "reason": "Attributing the action to the Arameans depends on the relative clause (“the Arameans had thrown away”), which is stated once, yields a single clear answer, and serves as supporting evidence of their flight rather than the passage’s main outcome."
+    },
+    "window_verses": [
+      14,
+      15,
+      16
+    ],
+    "window_text": {
+      "14": "So they selected two chariots with their horses, and the king sent them after the Aramean army. He commanded the drivers, “Go and find out what has happened.”",
+      "15": "They followed them as far as the Jordan, and they found the whole road strewn with the clothing and equipment the Arameans had thrown away in their headlong flight. So the messengers returned and reported to the king.",
+      "16": "Then the people went out and plundered the camp of the Arameans. So a seah of the finest flour sold for a shekel, and two seahs of barley sold for a shekel, as the Lord had said."
+    },
+    "reading_groups": [
+      "The Arameans threw away the clothing and equipment"
+    ],
+    "audit": {
+      "passed": true,
+      "failures": [],
+      "notes": [
+        "distractor check skipped: none stated by this output tier"
+      ],
+      "location_leak_terms": [],
+      "distractors_found": [],
+      "distractors_missing": false,
+      "answer_leak_terms": [],
+      "answer_verse": 15,
+      "answer_verse_original": 15,
+      "answer_verse_corrected": false,
+      "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 15",
+      "readings_failures": [],
+      "answerability": {
+        "model": "gpt-5",
+        "mode": "enforce",
+        "question": "Who throws away clothing and equipment?",
+        "readings": [
+          {
+            "answer": "The Arameans",
+            "support": "the Arameans had thrown away"
+          }
+        ],
+        "assessments": [
+          {
+            "number": 1,
+            "classification": "equivalent_to_key",
+            "reason": "Verse 15 states “the clothing and equipment the Arameans had thrown away,” explicitly naming the Arameans as those who threw them away."
+          }
+        ],
+        "verdict": "pass",
+        "reason": "The passage explicitly says the Arameans had thrown away the clothing and equipment.",
+        "status": "passed"
+      }
+    },
+    "scores_after_repair_raw": {
+      "structure_dependence": 8.0,
+      "statement_uniqueness": 10.0,
+      "answer_certainty": 10.0,
+      "centrality": 6.0,
+      "runs": 1,
+      "reason": "Attributing the action to the Arameans depends on the relative clause (“the Arameans had thrown away”), which is stated once, yields a single clear answer, and serves as supporting evidence of their flight rather than the passage’s main outcome."
+    },
+    "repaired": true,
+    "repair_attempted": true,
+    "question_before_repair": "Who throws away clothing and equipment on the road?",
+    "scores_before_repair": {
+      "structure_dependence": 8.0,
+      "statement_uniqueness": 9.0,
+      "answer_certainty": 10.0,
+      "centrality": 6.0,
+      "runs": 1,
+      "reason": "The agent is given in a relative clause (\"the Arameans had thrown away\"), so attributing the action depends on grammar and is stated once clearly."
+    },
+    "audit_before_repair": {
+      "passed": false,
+      "failures": [
+        "location leak: road"
+      ],
+      "notes": [
+        "distractor check skipped: none stated by this output tier"
+      ],
+      "location_leak_terms": [
+        "road"
+      ],
+      "distractors_found": [],
+      "distractors_missing": false,
+      "answer_leak_terms": [],
+      "answer_verse": 15,
+      "answer_verse_original": 15,
+      "answer_verse_corrected": false,
+      "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 15",
+      "readings_failures": []
+    },
+    "repair_log": [
+      {
+        "before": "Who throws away clothing and equipment on the road?",
+        "after": "Who throws away clothing and equipment?",
+        "note": "Removed the leaking location phrase to avoid pointing to a specific verse.",
+        "failures_before": [
+          "location leak: road"
+        ],
+        "scores_before": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "The agent is given in a relative clause (\"the Arameans had thrown away\"), so attributing the action depends on grammar and is stated once clearly."
+        },
+        "accepted": true,
+        "reason": "passed full rejudgment",
+        "suitability_judgment": {
+          "Q": "Who throws away clothing and equipment?",
+          "clear_referents": true,
+          "natural_wording": true,
+          "directly_answerable": true,
+          "single_defensible_answer": true,
+          "remove": false,
+          "reason": "Verse 15 explicitly says the Arameans had thrown away the clothing and equipment, giving one clear answer."
+        },
+        "failures_after": [],
+        "scores_after": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 10.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "Attributing the action to the Arameans depends on the relative clause (“the Arameans had thrown away”), which is stated once, yields a single clear answer, and serves as supporting evidence of their flight rather than the passage’s main outcome."
+        },
+        "scores_used": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 10.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "Attributing the action to the Arameans depends on the relative clause (“the Arameans had thrown away”), which is stated once, yields a single clear answer, and serves as supporting evidence of their flight rather than the passage’s main outcome."
+        }
+      }
+    ],
+    "window_selection_reason": "It most relies on parsing the relative clause—identifying the Arameans as the agents who had thrown away the items rather than the nearby “they/the messengers”—yielding strong structural dependence with a plausible competitor, whereas Item 1 is simpler pronoun resolution.",
+    "window_structure_max": 8.0,
+    "content_id": "v14-16:1",
+    "rank_in_batch": 8,
+    "rank_reason": "Top items hinge on sequence, pronoun/coreference, and nested attribution that collapse when grammar is lost, while the bottom items are explicit, repeated, or easily guessed noun facts.",
+    "final_rank": 8
+  },
+  {
+    "question": "Whose words come true about the officer?",
+    "answer": "the man of God’s",
+    "answer_verse": 19,
+    "wrong_answer": "the officer’s",
+    "relation": "referent",
+    "readings": [
+      {
+        "answer": "The man of God’s.",
+        "support": "The man of God had replied | And that is exactly what happened to him"
+      }
+    ],
+    "distinct_readings": [
+      "The man of God’s."
+    ],
+    "scores": {
+      "structure_dependence": 9.0,
+      "statement_uniqueness": 8.0,
+      "answer_certainty": 10.0,
+      "centrality": 8.0,
+      "runs": 1,
+      "reason": "This requires connecting “that is exactly what happened to him” back to the earlier statement by the man of God, uniquely identifying whose words were fulfilled."
+    },
+    "window_verses": [
+      19,
+      20
+    ],
+    "window_text": {
+      "19": "The officer had said to the man of God, “Look, even if the Lord should open the floodgates of the heavens, could this happen?” The man of God had replied, “You will see it with your own eyes, but you will not eat any of it!”",
+      "20": "And that is exactly what happened to him, for the people trampled him in the gateway, and he died."
+    },
+    "reading_groups": [
+      "The man of God’s words come true about the officer"
+    ],
+    "audit": {
+      "passed": true,
+      "failures": [],
+      "notes": [
+        "corrected metadata from 20 to 19; reading support and question relation identify verse 19",
+        "distractor check skipped: none stated by this output tier"
+      ],
+      "location_leak_terms": [],
+      "distractors_found": [],
+      "distractors_missing": false,
+      "answer_leak_terms": [],
+      "answer_verse": 19,
+      "answer_verse_original": 20,
+      "answer_verse_corrected": true,
+      "answer_verse_note": "corrected metadata from 20 to 19; reading support and question relation identify verse 19",
+      "readings_failures": [],
+      "answerability": {
+        "model": "gpt-5",
+        "mode": "enforce",
+        "question": "Whose words come true about the officer?",
+        "readings": [
+          {
+            "answer": "The man of God’s.",
+            "support": "The man of God had replied | And that is exactly what happened to him"
+          }
+        ],
+        "assessments": [
+          {
+            "number": 1,
+            "classification": "equivalent_to_key",
+            "reason": "The passage recounts the man of God’s prediction and then says it happened exactly so, showing his words came true."
+          }
+        ],
+        "verdict": "pass",
+        "reason": "The text explicitly says what the man of God said and that it happened exactly as he said.",
+        "status": "passed"
+      }
+    },
+    "window_selection_reason": "It best tests structural understanding by linking the fulfillment in v20 to the correct prior speaker in v19, requiring pronoun and attribution resolution, with a plausible misattribution competitor.",
+    "window_structure_max": 9.0,
+    "content_id": "v19-20:1",
+    "rank_in_batch": 9,
+    "rank_reason": "Top items hinge on sequence, pronoun/coreference, and nested attribution that collapse when grammar is lost, while the bottom items are explicit, repeated, or easily guessed noun facts.",
+    "final_rank": 9
+  }
+]

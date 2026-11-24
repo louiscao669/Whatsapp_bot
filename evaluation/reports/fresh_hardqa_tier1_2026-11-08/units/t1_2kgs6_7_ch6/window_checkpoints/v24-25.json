@@ -1,0 +1,219 @@
+{
+  "config_digest": "461cd474a457824ff5ea5448cd730bf20a2fd8df81463fd77daa90ec465ec12c",
+  "data": {
+    "kept": [
+      {
+        "question": "What lasts so long?",
+        "answer": "The siege.",
+        "answer_verse": 25,
+        "wrong_answer": "The famine.",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "the siege",
+            "support": "the siege lasted so long"
+          }
+        ],
+        "distinct_readings": [
+          "the siege"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "The reader must link the predicate \"lasted so long\" to its subject \"the siege,\" a single, unambiguous statement that is central to the passage’s situation."
+        },
+        "window_verses": [
+          24,
+          25
+        ],
+        "window_text": {
+          "24": "Some time later, Ben-Hadad king of Aram mobilized his entire army and marched up and laid siege to Samaria.",
+          "25": "There was a great famine in the city; the siege lasted so long that a donkey’s head sold for eighty shekels of silver, and a quarter of a cab of seed pods for five shekels."
+        },
+        "reading_groups": [
+          "The siege"
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 25,
+          "answer_verse_original": 25,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 25",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "What lasts so long?",
+            "readings": [
+              {
+                "answer": "the siege",
+                "support": "the siege lasted so long"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The passage explicitly states, “the siege lasted so long,” matching the key exactly."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The text directly says “the siege lasted so long,” clearly answering the question.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It targets the clause “the siege lasted so long,” requiring correct subject resolution against the plausible distractor “the famine,” and the passage supports only one clear answer.",
+        "window_structure_max": 8.0,
+        "content_id": "v24-25:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "What makes the donkey’s head cost that price?",
+        "answer": "The siege lasts so long.",
+        "answer_verse": 25,
+        "wrong_answer": "The famine in the city.",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "The long duration of the siege",
+            "support": "the siege lasted so long that a donkey’s head sold for eighty shekels of silver"
+          },
+          {
+            "answer": "A great famine in the city",
+            "support": "There was a great famine in the city | a donkey’s head sold for eighty shekels of silver"
+          }
+        ],
+        "distinct_readings": [
+          "The long duration of the siege",
+          "A great famine in the city"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 8.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "It relies on parsing the causal relation \"so long that ... sold for,\" stated once, which in a clear translation points uniquely to the siege’s duration as the cause and is fairly central to describing the crisis."
+        },
+        "window_verses": [
+          24,
+          25
+        ],
+        "window_text": {
+          "24": "Some time later, Ben-Hadad king of Aram mobilized his entire army and marched up and laid siege to Samaria.",
+          "25": "There was a great famine in the city; the siege lasted so long that a donkey’s head sold for eighty shekels of silver, and a quarter of a cab of seed pods for five shekels."
+        },
+        "reading_groups": [
+          "The long duration of the siege causes the price",
+          "The great famine causes the price"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "2 defensible readings: The long duration of the siege causes the price | The great famine causes the price",
+            "competitor 'The famine in the city.' is itself defensible — the item is ambiguous, not discriminating"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 25,
+          "answer_verse_original": 25,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 25",
+          "readings_failures": [
+            "2 defensible readings: The long duration of the siege causes the price | The great famine causes the price",
+            "competitor 'The famine in the city.' is itself defensible — the item is ambiguous, not discriminating"
+          ]
+        },
+        "content_id": "v24-25:2"
+      },
+      {
+        "question": "What is the price of the donkey’s head?",
+        "answer": "Eighty shekels of silver.",
+        "answer_verse": 25,
+        "wrong_answer": "Five shekels of silver.",
+        "relation": "quantity",
+        "readings": [
+          {
+            "answer": "eighty shekels of silver",
+            "support": "eighty shekels of silver"
+          }
+        ],
+        "distinct_readings": [
+          "eighty shekels of silver"
+        ],
+        "scores": {
+          "structure_dependence": 2.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 3.0,
+          "runs": 1,
+          "reason": "The answer is a directly stated number phrase (“eighty shekels of silver”), given once with no ambiguity, and is a supporting detail rather than the core event."
+        },
+        "window_verses": [
+          24,
+          25
+        ],
+        "window_text": {
+          "24": "Some time later, Ben-Hadad king of Aram mobilized his entire army and marched up and laid siege to Samaria.",
+          "25": "There was a great famine in the city; the siege lasted so long that a donkey’s head sold for eighty shekels of silver, and a quarter of a cab of seed pods for five shekels."
+        },
+        "reading_groups": [
+          "Eighty shekels of silver"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 2.0 (need 7.0)",
+            "incidental: centrality 3.0 (need 5.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 25,
+          "answer_verse_original": 25,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 25",
+          "readings_failures": []
+        },
+        "content_id": "v24-25:3"
+      }
+    ],
+    "report": {
+      "window_id": "v24-25",
+      "verses": [
+        24,
+        25
+      ],
+      "generated": 3,
+      "scored": 3,
+      "kept": 1,
+      "survivors_before_window_selection": 1,
+      "window_selection_rejected": 0,
+      "repair_attempted": 0,
+      "repaired": 0,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

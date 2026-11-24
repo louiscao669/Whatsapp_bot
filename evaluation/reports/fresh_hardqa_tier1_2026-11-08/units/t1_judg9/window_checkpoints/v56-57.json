@@ -1,0 +1,542 @@
+{
+  "config_digest": "bf29cf564aae7d15d3bd5bdbff20af59f16e06874e5bad45e83aa6623bdff95a",
+  "data": {
+    "kept": [
+      {
+        "question": "On whom does the curse fall?",
+        "answer": "the people of Shechem",
+        "answer_verse": 57,
+        "wrong_answer": "the seventy brothers",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "the people of Shechem",
+            "support": "the people of Shechem | The curse of Jotham son of Jerub-Baal came on them"
+          },
+          {
+            "answer": "Abimelek and the people of Shechem",
+            "support": "Thus God repaid the wickedness that Abimelek had done | God also made the people of Shechem pay for all their wickedness. The curse of Jotham son of Jerub-Baal came on them"
+          }
+        ],
+        "distinct_readings": [
+          "the people of Shechem",
+          "Abimelek and the people of Shechem"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 8.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "The answer depends on resolving the pronoun “them” to the nearest plural referent, the people of Shechem, a single, central conclusion."
+        },
+        "window_verses": [
+          56,
+          57
+        ],
+        "window_text": {
+          "56": "Thus God repaid the wickedness that Abimelek had done to his father by murdering his seventy brothers.",
+          "57": "God also made the people of Shechem pay for all their wickedness. The curse of Jotham son of Jerub-Baal came on them."
+        },
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 57,
+          "answer_verse_original": 57,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 57",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "On whom does the curse fall?",
+            "readings": [
+              {
+                "answer": "the people of Shechem",
+                "support": "the people of Shechem | The curse of Jotham son of Jerub-Baal came on them"
+              },
+              {
+                "answer": "Abimelek and the people of Shechem",
+                "support": "Thus God repaid the wickedness that Abimelek had done | God also made the people of Shechem pay for all their wickedness. The curse of Jotham son of Jerub-Baal came on them"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Verse 57 says, “God also made the people of Shechem pay… The curse of Jotham… came on them,” where “them” clearly refers to “the people of Shechem.”"
+              },
+              {
+                "number": 2,
+                "classification": "ruled_out",
+                "reason": "The text distinguishes Abimelek’s repayment (v.56) from the curse (v.57); “The curse… came on them” follows “the people of Shechem,” not Abimelek, so adding Abimelek is unsupported."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "Verse 57 explicitly states the curse came on “the people of Shechem.”",
+            "status": "passed"
+          }
+        },
+        "scores_after_repair_raw": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 8.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "The answer depends on resolving the pronoun “them” to the nearest plural referent, the people of Shechem, a single, central conclusion."
+        },
+        "repaired": true,
+        "repair_attempted": true,
+        "question_before_repair": "On whom does Jotham’s curse fall?",
+        "scores_before_repair": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "Answering depends on resolving the pronoun “them” to the people of Shechem, which is stated once, yields a single clear referent, and is important though secondary to the causal statements."
+        },
+        "audit_before_repair": {
+          "passed": false,
+          "failures": [
+            "location leak: jotham",
+            "2 defensible readings: On the people of Shechem. | On both Abimelek and the people of Shechem."
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "jotham"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 57,
+          "answer_verse_original": 57,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 57",
+          "readings_failures": [
+            "2 defensible readings: On the people of Shechem. | On both Abimelek and the people of Shechem."
+          ]
+        },
+        "repair_log": [
+          {
+            "before": "On whom does Jotham’s curse fall?",
+            "after": "On whom does the curse fall?",
+            "note": "Removed the leaking name while keeping the same referent.",
+            "failures_before": [
+              "location leak: jotham",
+              "2 defensible readings: On the people of Shechem. | On both Abimelek and the people of Shechem."
+            ],
+            "scores_before": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 7.0,
+              "runs": 1,
+              "reason": "Answering depends on resolving the pronoun “them” to the people of Shechem, which is stated once, yields a single clear referent, and is important though secondary to the causal statements."
+            },
+            "accepted": true,
+            "reason": "passed full rejudgment",
+            "suitability_judgment": {
+              "Q": "On whom does the curse fall?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "The only curse mentioned is Jotham’s, and the text says it came on the people of Shechem."
+            },
+            "failures_after": [],
+            "scores_after": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 8.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "The answer depends on resolving the pronoun “them” to the nearest plural referent, the people of Shechem, a single, central conclusion."
+            },
+            "scores_used": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 8.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "The answer depends on resolving the pronoun “them” to the nearest plural referent, the people of Shechem, a single, central conclusion."
+            }
+          }
+        ],
+        "window_selection_reason": "It hinges on resolving the pronoun “them” in v57, which clearly refers to the people of Shechem, yielding a single defensible answer with a plausible misreferent competitor.",
+        "window_structure_max": 9.0,
+        "content_id": "v56-57:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Who does Abimelek wrong?",
+        "answer": "his father",
+        "answer_verse": 56,
+        "wrong_answer": "his seventy brothers",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "his father",
+            "support": "had done to his father"
+          },
+          {
+            "answer": "his seventy brothers",
+            "support": "murdering his seventy brothers"
+          }
+        ],
+        "distinct_readings": [
+          "his father",
+          "his seventy brothers"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "It requires parsing that the wickedness was done “to his father” (not to the brothers who were killed), stated once, with a single clear answer, and it supports the main point of retribution."
+        },
+        "window_verses": [
+          56,
+          57
+        ],
+        "window_text": {
+          "56": "Thus God repaid the wickedness that Abimelek had done to his father by murdering his seventy brothers.",
+          "57": "God also made the people of Shechem pay for all their wickedness. The curse of Jotham son of Jerub-Baal came on them."
+        },
+        "reading_groups": [
+          "He wrongs his father.",
+          "He wrongs his seventy brothers."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: abimelek",
+            "2 defensible readings: He wrongs his father. | He wrongs his seventy brothers.",
+            "competitor 'his seventy brothers' is itself defensible — the item is ambiguous, not discriminating"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "abimelek"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 56,
+          "answer_verse_original": 56,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 56",
+          "readings_failures": [
+            "2 defensible readings: He wrongs his father. | He wrongs his seventy brothers.",
+            "competitor 'his seventy brothers' is itself defensible — the item is ambiguous, not discriminating"
+          ]
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "Who does Abimelek wrong?",
+            "after": "Who does the killer of seventy brothers wrong?",
+            "note": "Replaced the leaking name with a neutral identifying description.",
+            "failures_before": [
+              "location leak: abimelek",
+              "2 defensible readings: He wrongs his father. | He wrongs his seventy brothers.",
+              "competitor 'his seventy brothers' is itself defensible — the item is ambiguous, not discriminating"
+            ],
+            "scores_before": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 6.0,
+              "runs": 1,
+              "reason": "It requires parsing that the wickedness was done “to his father” (not to the brothers who were killed), stated once, with a single clear answer, and it supports the main point of retribution."
+            },
+            "accepted": false,
+            "reason": "failed full rejudgment",
+            "suitability_judgment": {
+              "Q": "Who does the killer of seventy brothers wrong?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "The description clearly identifies Abimelek in v56, and the verse states he wronged his father."
+            },
+            "failures_after": [
+              "dangling answer reference: his"
+            ],
+            "scores_after": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 5.0,
+              "runs": 1,
+              "reason": "It requires linking the role “killer of seventy brothers” to Abimelek and identifying the wronged party as “his father,” not the brothers, a detail stated once."
+            },
+            "scores_used": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 5.0,
+              "runs": 1,
+              "reason": "It requires linking the role “killer of seventy brothers” to Abimelek and identifying the wronged party as “his father,” not the brothers, a detail stated once."
+            }
+          }
+        ],
+        "content_id": "v56-57:2"
+      },
+      {
+        "question": "Why does God make the people of Shechem pay?",
+        "answer": "for all their wickedness",
+        "answer_verse": 57,
+        "wrong_answer": "because Abimelek killed his brothers",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "Because of all their wickedness",
+            "support": "for all their wickedness"
+          },
+          {
+            "answer": "To fulfill the curse of Jotham son of Jerub-Baal",
+            "support": "The curse of Jotham son of Jerub-Baal came on them"
+          }
+        ],
+        "distinct_readings": [
+          "Because of all their wickedness",
+          "To fulfill the curse of Jotham son of Jerub-Baal"
+        ],
+        "scores": {
+          "structure_dependence": 3.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "The reason is quoted directly as “for all their wickedness,” appearing once, unambiguous, and central to the punishment of Shechem."
+        },
+        "window_verses": [
+          56,
+          57
+        ],
+        "window_text": {
+          "56": "Thus God repaid the wickedness that Abimelek had done to his father by murdering his seventy brothers.",
+          "57": "God also made the people of Shechem pay for all their wickedness. The curse of Jotham son of Jerub-Baal came on them."
+        },
+        "reading_groups": [
+          "Because of all their wickedness.",
+          "To fulfill Jotham’s curse."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: shechem",
+            "quotes the passage: quotes verse 57: 'the people of shechem pay'",
+            "2 defensible readings: Because of all their wickedness. | To fulfill Jotham’s curse.",
+            "lexical: structure_dependence 3.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "shechem"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 57,
+          "answer_verse_original": 57,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 57",
+          "readings_failures": [
+            "2 defensible readings: Because of all their wickedness. | To fulfill Jotham’s curse."
+          ]
+        },
+        "content_id": "v56-57:3"
+      },
+      {
+        "question": "What act brings God’s payback on the wicked man?",
+        "answer": "killing his seventy brothers",
+        "answer_verse": 56,
+        "wrong_answer": "the curse of Jotham",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "murdering his seventy brothers",
+            "support": "by murdering his seventy brothers"
+          }
+        ],
+        "distinct_readings": [
+          "murdering his seventy brothers"
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "One must connect the causal phrase “by murdering his seventy brothers” with God’s repayment on Abimelek, a unique and clear statement in the window."
+        },
+        "window_verses": [
+          56,
+          57
+        ],
+        "window_text": {
+          "56": "Thus God repaid the wickedness that Abimelek had done to his father by murdering his seventy brothers.",
+          "57": "God also made the people of Shechem pay for all their wickedness. The curse of Jotham son of Jerub-Baal came on them."
+        },
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: outside top structure band (7 vs window max 9)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 56,
+          "answer_verse_original": 56,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 56",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "What act brings God’s payback on the wicked man?",
+            "readings": [
+              {
+                "answer": "murdering his seventy brothers",
+                "support": "by murdering his seventy brothers"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The text says God repaid Abimelek’s wickedness “by murdering his seventy brothers,” which is equivalent in meaning to “killing his seventy brothers.”"
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The passage explicitly identifies the act—murdering/killing his seventy brothers—as the cause of God’s payback.",
+            "status": "passed"
+          }
+        },
+        "scores_after_repair_raw": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "One must connect the causal phrase “by murdering his seventy brothers” with God’s repayment on Abimelek, a unique and clear statement in the window."
+        },
+        "repaired": true,
+        "repair_attempted": true,
+        "question_before_repair": "What act brings God’s payback on Abimelek?",
+        "scores_before_repair": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "It hinges on linking the payback to the clause “by murdering his seventy brothers,” which occurs once, has one clear reading, and is central to the passage’s justice theme."
+        },
+        "audit_before_repair": {
+          "passed": false,
+          "failures": [
+            "location leak: abimelek"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "abimelek"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 56,
+          "answer_verse_original": 56,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 56",
+          "readings_failures": []
+        },
+        "repair_log": [
+          {
+            "before": "What act brings God’s payback on Abimelek?",
+            "after": "What act brings God’s payback on the wicked man?",
+            "note": "Replaced the leaking name with a neutral descriptor from the passage’s context.",
+            "failures_before": [
+              "location leak: abimelek"
+            ],
+            "scores_before": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 9.0,
+              "runs": 1,
+              "reason": "It hinges on linking the payback to the clause “by murdering his seventy brothers,” which occurs once, has one clear reading, and is central to the passage’s justice theme."
+            },
+            "accepted": true,
+            "reason": "passed full rejudgment",
+            "suitability_judgment": {
+              "Q": "What act brings God’s payback on the wicked man?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "“The wicked man” unambiguously refers to Abimelek, and the verse specifies the act as murdering his seventy brothers."
+            },
+            "failures_after": [],
+            "scores_after": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 7.0,
+              "runs": 1,
+              "reason": "One must connect the causal phrase “by murdering his seventy brothers” with God’s repayment on Abimelek, a unique and clear statement in the window."
+            },
+            "scores_used": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 7.0,
+              "runs": 1,
+              "reason": "One must connect the causal phrase “by murdering his seventy brothers” with God’s repayment on Abimelek, a unique and clear statement in the window."
+            }
+          }
+        ],
+        "content_id": "v56-57:4"
+      }
+    ],
+    "report": {
+      "window_id": "v56-57",
+      "verses": [
+        56,
+        57
+      ],
+      "generated": 4,
+      "scored": 4,
+      "kept": 1,
+      "survivors_before_window_selection": 2,
+      "window_selection_rejected": 1,
+      "repair_attempted": 3,
+      "repaired": 2,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

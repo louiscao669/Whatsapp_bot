@@ -1,0 +1,540 @@
+{
+  "config_digest": "0c98e06dd0970bca219676c95df2cd8d39cbaf353272e44e07dba6f32d7e588e",
+  "data": {
+    "kept": [
+      {
+        "question": "What leaves the sick?",
+        "answer": "evil spirits",
+        "answer_verse": 12,
+        "wrong_answer": "illnesses",
+        "relation": "participant",
+        "readings": [
+          {
+            "answer": "the evil spirits",
+            "support": "the evil spirits left them"
+          }
+        ],
+        "distinct_readings": [
+          "the evil spirits"
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "One must link the verb “left them” to “the evil spirits” (not the illnesses), a single, unambiguous and central outcome of the miracle."
+        },
+        "window_verses": [
+          11,
+          12
+        ],
+        "window_text": {
+          "11": "God did extraordinary miracles through Paul,",
+          "12": "so that even handkerchiefs and aprons that had touched him were taken to the sick, and their illnesses were cured and the evil spirits left them."
+        },
+        "reading_groups": [
+          "The evil spirits leave the sick"
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 12,
+          "answer_verse_original": 12,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 12",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "What leaves the sick?",
+            "readings": [
+              {
+                "answer": "the evil spirits",
+                "support": "the evil spirits left them"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Verse 12 states “the evil spirits left them,” where “them” refers to the sick; thus the answer matches the key."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The text explicitly says “the evil spirits left them,” referring to the sick.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It cleanly tests the verb-argument structure distinguishing what is cured versus what leaves the sick, with a single clear answer and a plausible misparse competitor.",
+        "window_structure_max": 7.0,
+        "content_id": "v11-12:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Through whom does God do the miracles?",
+        "answer": "through Paul",
+        "answer_verse": 11,
+        "wrong_answer": "through the handkerchiefs and aprons",
+        "relation": "participant",
+        "readings": [
+          {
+            "answer": "Paul",
+            "support": "God did extraordinary miracles through Paul,"
+          }
+        ],
+        "distinct_readings": [
+          "Paul"
+        ],
+        "scores": {
+          "structure_dependence": 2.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "The phrase “through Paul” directly answers the question, stated once, unambiguous, and central to the verse’s point about miracles."
+        },
+        "window_verses": [
+          11,
+          12
+        ],
+        "window_text": {
+          "11": "God did extraordinary miracles through Paul,",
+          "12": "so that even handkerchiefs and aprons that had touched him were taken to the sick, and their illnesses were cured and the evil spirits left them."
+        },
+        "reading_groups": [
+          "through Paul"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 2.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 11,
+          "answer_verse_original": 11,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 11",
+          "readings_failures": []
+        },
+        "content_id": "v11-12:2"
+      },
+      {
+        "question": "After touching Paul, where are the handkerchiefs and aprons taken?",
+        "answer": "to the sick",
+        "answer_verse": 12,
+        "wrong_answer": "to Paul",
+        "relation": "direction",
+        "readings": [
+          {
+            "answer": "to the sick",
+            "support": "to the sick"
+          }
+        ],
+        "distinct_readings": [
+          "to the sick"
+        ],
+        "scores": {
+          "structure_dependence": 3.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "The destination “to the sick” is explicitly given once and can be spotted with minimal structural inference."
+        },
+        "window_verses": [
+          11,
+          12
+        ],
+        "window_text": {
+          "11": "God did extraordinary miracles through Paul,",
+          "12": "so that even handkerchiefs and aprons that had touched him were taken to the sick, and their illnesses were cured and the evil spirits left them."
+        },
+        "reading_groups": [
+          "to the sick"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: touch",
+            "question too complex: stacked clauses (1 comma(s), 1 subordinator(s))",
+            "lexical: structure_dependence 3.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "touch"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 12,
+          "answer_verse_original": 12,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 12",
+          "readings_failures": []
+        },
+        "content_id": "v11-12:3"
+      },
+      {
+        "question": "What leaves the sick?",
+        "answer": "the evil spirits",
+        "answer_verse": 12,
+        "wrong_answer": "their illnesses",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "the evil spirits",
+            "support": "the evil spirits left them"
+          },
+          {
+            "answer": "their illnesses",
+            "support": "their illnesses were cured"
+          }
+        ],
+        "distinct_readings": [
+          "the evil spirits",
+          "their illnesses"
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "It requires linking “them” to “the sick” and selecting the correct clause (“evil spirits left them”) over the nearby curing statement, but it is uniquely stated and clear."
+        },
+        "window_verses": [
+          11,
+          12
+        ],
+        "window_text": {
+          "11": "God did extraordinary miracles through Paul,",
+          "12": "so that even handkerchiefs and aprons that had touched him were taken to the sick, and their illnesses were cured and the evil spirits left them."
+        },
+        "reading_groups": [
+          "the evil spirits leave them",
+          "their illnesses (treated as leaving)"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "2 defensible readings: the evil spirits leave them | their illnesses (treated as leaving)",
+            "competitor 'their illnesses' is itself defensible — the item is ambiguous, not discriminating",
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 12,
+          "answer_verse_original": 12,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 12",
+          "readings_failures": [
+            "2 defensible readings: the evil spirits leave them | their illnesses (treated as leaving)",
+            "competitor 'their illnesses' is itself defensible — the item is ambiguous, not discriminating"
+          ]
+        },
+        "content_id": "v11-12:4"
+      },
+      {
+        "question": "What happens before the handkerchiefs and aprons are taken to the sick?",
+        "answer": "the handkerchiefs and aprons had touched Paul",
+        "answer_verse": 12,
+        "wrong_answer": "the evil spirits left them",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "They had touched him.",
+            "support": "had touched him"
+          },
+          {
+            "answer": "God did extraordinary miracles through Paul.",
+            "support": "God did extraordinary miracles through Paul,"
+          }
+        ],
+        "distinct_readings": [
+          "They had touched him.",
+          "God did extraordinary miracles through Paul."
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "Answering depends on parsing the relative clause and past-perfect timing (“that had touched him”) to infer the prior event, which is uniquely stated and clear."
+        },
+        "window_verses": [
+          11,
+          12
+        ],
+        "window_text": {
+          "11": "God did extraordinary miracles through Paul,",
+          "12": "so that even handkerchiefs and aprons that had touched him were taken to the sick, and their illnesses were cured and the evil spirits left them."
+        },
+        "reading_groups": [
+          "They had touched Paul beforehand",
+          "God did extraordinary miracles through Paul (preceding cause)"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: handkerchief",
+            "2 defensible readings: They had touched Paul beforehand | God did extraordinary miracles through Paul (preceding cause)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "handkerchief"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "apron",
+            "handkerchief"
+          ],
+          "answer_verse": 12,
+          "answer_verse_original": 12,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 12",
+          "readings_failures": [
+            "2 defensible readings: They had touched Paul beforehand | God did extraordinary miracles through Paul (preceding cause)"
+          ]
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "What happens before the handkerchiefs and aprons are taken to the sick?",
+            "after": "What happens before the cloths and aprons are taken to the sick?",
+            "note": "Replaced the leaking word 'handkerchiefs' with 'cloths' to remove the location clue.",
+            "failures_before": [
+              "location leak: handkerchief",
+              "2 defensible readings: They had touched Paul beforehand | God did extraordinary miracles through Paul (preceding cause)"
+            ],
+            "scores_before": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 7.0,
+              "runs": 1,
+              "reason": "Answering depends on parsing the relative clause and past-perfect timing (“that had touched him”) to infer the prior event, which is uniquely stated and clear."
+            },
+            "accepted": false,
+            "reason": "removed as weak question: More than one prior event is stated (the items had touched Paul, and God worked extraordinary miracles), yielding multiple defensible answers.",
+            "suitability_judgment": {
+              "Q": "What happens before the cloths and aprons are taken to the sick?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": false,
+              "remove": true,
+              "reason": "More than one prior event is stated (the items had touched Paul, and God worked extraordinary miracles), yielding multiple defensible answers."
+            }
+          }
+        ],
+        "content_id": "v11-12:5"
+      },
+      {
+        "question": "Who does the miracles through Paul?",
+        "answer": "God",
+        "answer_verse": 11,
+        "wrong_answer": "Paul",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "God",
+            "support": "God did extraordinary miracles through Paul"
+          }
+        ],
+        "distinct_readings": [
+          "God"
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "Identifying the doer requires assigning the subject of the clause (“God did … through Paul”), stated once and core to the passage."
+        },
+        "window_verses": [
+          11,
+          12
+        ],
+        "window_text": {
+          "11": "God did extraordinary miracles through Paul,",
+          "12": "so that even handkerchiefs and aprons that had touched him were taken to the sick, and their illnesses were cured and the evil spirits left them."
+        },
+        "reading_groups": [
+          "God did the miracles through Paul"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "bare-name answer 'God': names survive translation"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 11,
+          "answer_verse_original": 11,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 11",
+          "readings_failures": []
+        },
+        "content_id": "v11-12:6"
+      },
+      {
+        "question": "Before the cloths are taken to the sick, who have they touched?",
+        "answer": "Paul",
+        "answer_verse": 12,
+        "wrong_answer": "the sick",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "Paul",
+            "support": "through Paul, | had touched him"
+          }
+        ],
+        "distinct_readings": [
+          "Paul"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "It depends on resolving the relative clause and pronoun (“that had touched him”) back to Paul, a single stated fact important to the miracle’s mechanism."
+        },
+        "window_verses": [
+          11,
+          12
+        ],
+        "window_text": {
+          "11": "God did extraordinary miracles through Paul,",
+          "12": "so that even handkerchiefs and aprons that had touched him were taken to the sick, and their illnesses were cured and the evil spirits left them."
+        },
+        "reading_groups": [
+          "The cloths had touched Paul"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "dangling pronoun: they",
+            "question too complex: stacked clauses (1 comma(s), 1 subordinator(s))",
+            "bare-name answer 'Paul': names survive translation"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 12,
+          "answer_verse_original": 12,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 12",
+          "readings_failures": []
+        },
+        "content_id": "v11-12:7"
+      },
+      {
+        "question": "To whom are the cloths taken?",
+        "answer": "the sick",
+        "answer_verse": 12,
+        "wrong_answer": "Paul",
+        "relation": "direction",
+        "readings": [
+          {
+            "answer": "the sick",
+            "support": "were taken to the sick"
+          }
+        ],
+        "distinct_readings": [
+          "the sick"
+        ],
+        "scores": {
+          "structure_dependence": 2.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "The recipient is explicitly named as “the sick,” a single occurrence that is straightforward to spot and moderately important to the scene."
+        },
+        "window_verses": [
+          11,
+          12
+        ],
+        "window_text": {
+          "11": "God did extraordinary miracles through Paul,",
+          "12": "so that even handkerchiefs and aprons that had touched him were taken to the sick, and their illnesses were cured and the evil spirits left them."
+        },
+        "reading_groups": [
+          "The cloths are taken to the sick"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 2.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 12,
+          "answer_verse_original": 12,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 12",
+          "readings_failures": []
+        },
+        "content_id": "v11-12:8"
+      }
+    ],
+    "report": {
+      "window_id": "v11-12",
+      "verses": [
+        11,
+        12
+      ],
+      "generated": 8,
+      "scored": 8,
+      "kept": 1,
+      "survivors_before_window_selection": 1,
+      "window_selection_rejected": 0,
+      "repair_attempted": 1,
+      "repaired": 0,
+      "window_retries_used": 1,
+      "score_runs": 1
+    }
+  }
+}

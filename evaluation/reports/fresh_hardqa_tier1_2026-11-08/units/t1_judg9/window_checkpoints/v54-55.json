@@ -1,0 +1,352 @@
+{
+  "config_digest": "bf29cf564aae7d15d3bd5bdbff20af59f16e06874e5bad45e83aa6623bdff95a",
+  "data": {
+    "kept": [
+      {
+        "question": "Who kills Abimelek?",
+        "answer": "His servant, the armor-bearer.",
+        "answer_verse": 54,
+        "wrong_answer": "A woman.",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "his servant",
+            "support": "So his servant ran him through, and he died."
+          }
+        ],
+        "distinct_readings": [
+          "his servant"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 10.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "Identifying the killer requires resolving the subject-object relation in “his servant ran him through,” stated once with a single clear answer central to the death scene."
+        },
+        "window_verses": [
+          54,
+          55
+        ],
+        "window_text": {
+          "54": "Hurriedly he called to his armor-bearer, “Draw your sword and kill me, so that they can’t say, ‘A woman killed him.’” So his servant ran him through, and he died.",
+          "55": "When the Israelites saw that Abimelek was dead, they went home."
+        },
+        "reading_groups": [
+          "His servant/armor-bearer kills Abimelek"
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 54,
+          "answer_verse_original": 54,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 54",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Who kills Abimelek?",
+            "readings": [
+              {
+                "answer": "his servant",
+                "support": "So his servant ran him through, and he died."
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The text states he called to his armor-bearer and then 'his servant ran him through,' identifying the killer as his servant/armor-bearer."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The passage explicitly says Abimelek was killed by his servant, the armor-bearer.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It best tests structure by distinguishing the actual agent (“his servant/armor-bearer ran him through”) from the purpose clause about avoiding the claim “a woman killed him,” with a plausible competitor drawn from that misreading.",
+        "window_structure_max": 9.0,
+        "content_id": "v54-55:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Who gives the order to Abimelek’s armor-bearer?",
+        "answer": "Abimelek.",
+        "answer_verse": 54,
+        "wrong_answer": "The armor-bearer.",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "Abimelek",
+            "support": "he called to his armor-bearer | Abimelek was dead"
+          }
+        ],
+        "distinct_readings": [
+          "Abimelek"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "One must link the pronoun “he” in the command to Abimelek via the subsequent identification of his death, a single implied statement yielding a clear, central answer."
+        },
+        "window_verses": [
+          54,
+          55
+        ],
+        "window_text": {
+          "54": "Hurriedly he called to his armor-bearer, “Draw your sword and kill me, so that they can’t say, ‘A woman killed him.’” So his servant ran him through, and he died.",
+          "55": "When the Israelites saw that Abimelek was dead, they went home."
+        },
+        "reading_groups": [
+          "Abimelek gives the order to his armor-bearer"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "answer leaks into question: abimelek",
+            "bare-name answer 'Abimelek.': names survive translation"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "abimelek"
+          ],
+          "answer_verse": 54,
+          "answer_verse_original": 54,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 54",
+          "readings_failures": []
+        },
+        "content_id": "v54-55:2"
+      },
+      {
+        "question": "After the servant kills Abimelek, what happens next?",
+        "answer": "The Israelites go home.",
+        "answer_verse": 55,
+        "wrong_answer": "Abimelek tells his armor-bearer to kill him.",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "He died.",
+            "support": "and he died."
+          },
+          {
+            "answer": "The Israelites went home.",
+            "support": "When the Israelites saw that Abimelek was dead, they went home."
+          }
+        ],
+        "distinct_readings": [
+          "He died.",
+          "The Israelites went home."
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "This asks for the next event in sequence, requiring temporal linkage from v54 to v55 where it is stated once that the Israelites went home."
+        },
+        "window_verses": [
+          54,
+          55
+        ],
+        "window_text": {
+          "54": "Hurriedly he called to his armor-bearer, “Draw your sword and kill me, so that they can’t say, ‘A woman killed him.’” So his servant ran him through, and he died.",
+          "55": "When the Israelites saw that Abimelek was dead, they went home."
+        },
+        "reading_groups": [
+          "He dies",
+          "The Israelites go home"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: abimelek",
+            "question too complex: stacked clauses (1 comma(s), 1 subordinator(s))",
+            "2 defensible readings: He dies | The Israelites go home"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "abimelek"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 55,
+          "answer_verse_original": 55,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 55",
+          "readings_failures": [
+            "2 defensible readings: He dies | The Israelites go home"
+          ]
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "After the servant kills Abimelek, what happens next?",
+            "after": "What do the Israelites do next?",
+            "note": "Removed the leaking name and simplified to a single-clause sequence question.",
+            "failures_before": [
+              "location leak: abimelek",
+              "question too complex: stacked clauses (1 comma(s), 1 subordinator(s))",
+              "2 defensible readings: He dies | The Israelites go home"
+            ],
+            "scores_before": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 6.0,
+              "runs": 1,
+              "reason": "This asks for the next event in sequence, requiring temporal linkage from v54 to v55 where it is stated once that the Israelites went home."
+            },
+            "accepted": false,
+            "reason": "failed full rejudgment",
+            "suitability_judgment": {
+              "Q": "What do the Israelites do next?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "It clearly refers to the Israelites in the passage and asks naturally what they did next, which is explicitly stated with a single answer."
+            },
+            "failures_after": [
+              "2 defensible readings: They go home. | They see that Abimelek is dead."
+            ],
+            "scores_after": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 6.0,
+              "runs": 1,
+              "reason": "Identifying that the Israelites are the subject of the final action after Abimelek’s death requires resolving the clause and sequence, it is stated once and unambiguously as “they went home,” and while relevant, it is secondary to the death itself."
+            },
+            "scores_used": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 6.0,
+              "runs": 1,
+              "reason": "Identifying that the Israelites are the subject of the final action after Abimelek’s death requires resolving the clause and sequence, it is stated once and unambiguously as “they went home,” and while relevant, it is secondary to the death itself."
+            }
+          }
+        ],
+        "content_id": "v54-55:3"
+      },
+      {
+        "question": "Whom does Abimelek tell his armor-bearer to kill?",
+        "answer": "Abimelek himself.",
+        "answer_verse": 54,
+        "wrong_answer": "A woman.",
+        "relation": "participant",
+        "readings": [
+          {
+            "answer": "himself",
+            "support": "kill me"
+          }
+        ],
+        "distinct_readings": [
+          "himself"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 10.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "It hinges on interpreting the direct speech “kill me,” linking “me” to the speaker Abimelek, a single clause with an unambiguous, central answer."
+        },
+        "window_verses": [
+          54,
+          55
+        ],
+        "window_text": {
+          "54": "Hurriedly he called to his armor-bearer, “Draw your sword and kill me, so that they can’t say, ‘A woman killed him.’” So his servant ran him through, and he died.",
+          "55": "When the Israelites saw that Abimelek was dead, they went home."
+        },
+        "reading_groups": [
+          "Abimelek tells him to kill Abimelek (himself)"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: hybrid window selector — It best tests structure by distinguishing the actual agent (“his servant/armor-bearer ran him through”) from the purpose clause about avoiding the claim “a woman killed him,” with a plausible competitor drawn from that misreading."
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "abimelek"
+          ],
+          "answer_verse": 54,
+          "answer_verse_original": 54,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 54",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Whom does Abimelek tell his armor-bearer to kill?",
+            "readings": [
+              {
+                "answer": "himself",
+                "support": "kill me"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The verse has Abimelek say, “kill me,” so the person to be killed is Abimelek himself; “himself” matches the key."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The passage explicitly states Abimelek says “kill me,” identifying himself as the target.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It best tests structure by distinguishing the actual agent (“his servant/armor-bearer ran him through”) from the purpose clause about avoiding the claim “a woman killed him,” with a plausible competitor drawn from that misreading.",
+        "content_id": "v54-55:4"
+      }
+    ],
+    "report": {
+      "window_id": "v54-55",
+      "verses": [
+        54,
+        55
+      ],
+      "generated": 4,
+      "scored": 4,
+      "kept": 1,
+      "survivors_before_window_selection": 2,
+      "window_selection_rejected": 1,
+      "repair_attempted": 1,
+      "repaired": 0,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

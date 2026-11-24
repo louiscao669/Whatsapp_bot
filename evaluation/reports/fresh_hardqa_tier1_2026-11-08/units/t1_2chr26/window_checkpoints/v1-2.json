@@ -1,0 +1,650 @@
+{
+  "config_digest": "06f6fd33124ccf69d50b7d020984e70e0c73dd874d345ad168bb1c04d96f7dac",
+  "data": {
+    "kept": [
+      {
+        "question": "Who is replaced as king?",
+        "answer": "Amaziah is replaced as king.",
+        "answer_verse": 1,
+        "wrong_answer": "Uzziah is replaced as king.",
+        "relation": "participant",
+        "readings": [
+          {
+            "answer": "Amaziah",
+            "support": "made him king in place of his father Amaziah"
+          }
+        ],
+        "distinct_readings": [
+          "Amaziah"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 10.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "One must interpret the relation “in place of his father Amaziah” to see who is replaced, a single unique clause with an unambiguous answer, central to the succession."
+        },
+        "window_verses": [
+          1,
+          2
+        ],
+        "window_text": {
+          "1": "Then all the people of Judah took Uzziah, who was sixteen years old, and made him king in place of his father Amaziah.",
+          "2": "He was the one who rebuilt Elath and restored it to Judah after Amaziah rested with his ancestors."
+        },
+        "reading_groups": [
+          "Amaziah is the one replaced as king"
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "as",
+            "king",
+            "replac"
+          ],
+          "answer_verse": 1,
+          "answer_verse_original": 1,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 1",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Who is replaced as king?",
+            "readings": [
+              {
+                "answer": "Amaziah",
+                "support": "made him king in place of his father Amaziah"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The text says they “made him king in place of his father Amaziah,” directly indicating that Amaziah was replaced as king."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The passage explicitly states that Uzziah was made king in place of his father Amaziah, identifying Amaziah as the one replaced.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It hinges on parsing “made him king in place of his father Amaziah,” using the ‘in place of’ relation and pronoun reference to identify Amaziah as the one replaced, giving a single clear answer.",
+        "window_structure_max": 9.0,
+        "content_id": "v1-2:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Who makes Uzziah king?",
+        "answer": "All the people of Judah",
+        "answer_verse": 1,
+        "wrong_answer": "Amaziah",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "All the people of Judah",
+            "support": "all the people of Judah took Uzziah, who was sixteen years old, and made him king"
+          }
+        ],
+        "distinct_readings": [
+          "All the people of Judah"
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "The agent phrase 'all the people of Judah' is the explicit subject of 'made him king' in v1, stated once, unambiguous, and central to the coronation."
+        },
+        "window_verses": [
+          1,
+          2
+        ],
+        "window_text": {
+          "1": "Then all the people of Judah took Uzziah, who was sixteen years old, and made him king in place of his father Amaziah.",
+          "2": "He was the one who rebuilt Elath and restored it to Judah after Amaziah rested with his ancestors."
+        },
+        "reading_groups": [
+          "All the people of Judah made Uzziah king"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: uzziah",
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "uzziah"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 1,
+          "answer_verse_original": 1,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 1",
+          "readings_failures": []
+        },
+        "content_id": "v1-2:2"
+      },
+      {
+        "question": "Whose place does Uzziah take as king?",
+        "answer": "His father Amaziah",
+        "answer_verse": 1,
+        "wrong_answer": "Amaziah’s ancestors",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "his father Amaziah",
+            "support": "in place of his father Amaziah"
+          }
+        ],
+        "distinct_readings": [
+          "his father Amaziah"
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "The clause 'in place of his father Amaziah' directly names whose position Uzziah assumes, stated once, with a single clear answer important to the succession."
+        },
+        "window_verses": [
+          1,
+          2
+        ],
+        "window_text": {
+          "1": "Then all the people of Judah took Uzziah, who was sixteen years old, and made him king in place of his father Amaziah.",
+          "2": "He was the one who rebuilt Elath and restored it to Judah after Amaziah rested with his ancestors."
+        },
+        "reading_groups": [
+          "Uzziah takes the place of his father Amaziah"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: uzziah",
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "uzziah"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 1,
+          "answer_verse_original": 1,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 1",
+          "readings_failures": []
+        },
+        "content_id": "v1-2:3"
+      },
+      {
+        "question": "Who rebuilds Elath and gives it back to Judah?",
+        "answer": "Uzziah",
+        "answer_verse": 2,
+        "wrong_answer": "Amaziah",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "Uzziah",
+            "support": "Uzziah | He was the one who rebuilt Elath and restored it to Judah"
+          }
+        ],
+        "distinct_readings": [
+          "Uzziah"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "Verse 2 uniquely attributes the rebuilding/restoring to 'he'—resolvable as Uzziah from v1—so identifying the actor requires pronoun resolution, is unambiguous, and is central to that verse."
+        },
+        "window_verses": [
+          1,
+          2
+        ],
+        "window_text": {
+          "1": "Then all the people of Judah took Uzziah, who was sixteen years old, and made him king in place of his father Amaziah.",
+          "2": "He was the one who rebuilt Elath and restored it to Judah after Amaziah rested with his ancestors."
+        },
+        "reading_groups": [
+          "Uzziah rebuilt Elath and restored it to Judah"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: elath",
+            "bare-name answer 'Uzziah': names survive translation"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "elath"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 2,
+          "answer_verse_original": 2,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 2",
+          "readings_failures": []
+        },
+        "content_id": "v1-2:4"
+      },
+      {
+        "question": "What happens after Amaziah dies?",
+        "answer": "Uzziah rebuilds Elath and gives it back to Judah",
+        "answer_verse": 2,
+        "wrong_answer": "The people of Judah make Uzziah king",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "He rebuilds Elath and restores it to Judah.",
+            "support": "rebuilt Elath and restored it to Judah after Amaziah rested with his ancestors"
+          },
+          {
+            "answer": "He restores Elath to Judah.",
+            "support": "restored it to Judah after Amaziah rested with his ancestors"
+          }
+        ],
+        "distinct_readings": [
+          "He rebuilds Elath and restores it to Judah.",
+          "He restores Elath to Judah."
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "Only v2 ties the temporal clause 'after Amaziah rested with his ancestors' to the rebuilding/restoring event, so parsing that relation yields one clear answer that is salient but not the sole focus of the window."
+        },
+        "window_verses": [
+          1,
+          2
+        ],
+        "window_text": {
+          "1": "Then all the people of Judah took Uzziah, who was sixteen years old, and made him king in place of his father Amaziah.",
+          "2": "He was the one who rebuilt Elath and restored it to Judah after Amaziah rested with his ancestors."
+        },
+        "reading_groups": [
+          "Uzziah rebuilds Elath and restores it to Judah",
+          "He restores Elath to Judah (restoration only)"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "2 defensible readings: Uzziah rebuilds Elath and restores it to Judah | He restores Elath to Judah (restoration only)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 2,
+          "answer_verse_original": 2,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 2",
+          "readings_failures": [
+            "2 defensible readings: Uzziah rebuilds Elath and restores it to Judah | He restores Elath to Judah (restoration only)"
+          ]
+        },
+        "content_id": "v1-2:5"
+      },
+      {
+        "question": "Who rebuilds Elath and returns it to Judah?",
+        "answer": "Uzziah rebuilds Elath and returns it to Judah.",
+        "answer_verse": 2,
+        "wrong_answer": "Amaziah rebuilds it and returns it.",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "Uzziah",
+            "support": "Uzziah | He was the one who rebuilt Elath and restored it to Judah"
+          }
+        ],
+        "distinct_readings": [
+          "Uzziah"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 10.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "Resolving the pronoun “He” back to Uzziah is required to attribute the actions, and this is stated once with a definite, central answer."
+        },
+        "window_verses": [
+          1,
+          2
+        ],
+        "window_text": {
+          "1": "Then all the people of Judah took Uzziah, who was sixteen years old, and made him king in place of his father Amaziah.",
+          "2": "He was the one who rebuilt Elath and restored it to Judah after Amaziah rested with his ancestors."
+        },
+        "reading_groups": [
+          "Uzziah does the rebuilding/restoring"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: elath"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "elath"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "elath",
+            "judah",
+            "rebuild",
+            "return"
+          ],
+          "answer_verse": 2,
+          "answer_verse_original": 2,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 2",
+          "readings_failures": []
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "Who rebuilds Elath and returns it to Judah?",
+            "after": "Who rebuilds the place and returns it to Judah?",
+            "note": "Replaced the verse-unique name with a generic noun to remove the location leak.",
+            "failures_before": [
+              "location leak: elath"
+            ],
+            "scores_before": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 10.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "Resolving the pronoun “He” back to Uzziah is required to attribute the actions, and this is stated once with a definite, central answer."
+            },
+            "accepted": false,
+            "reason": "removed as weak question: The phrase \"the place\" is an invented, vague label without an explicit referent (Elath) in the question.",
+            "suitability_judgment": {
+              "Q": "Who rebuilds the place and returns it to Judah?",
+              "clear_referents": false,
+              "natural_wording": false,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": true,
+              "reason": "The phrase \"the place\" is an invented, vague label without an explicit referent (Elath) in the question."
+            }
+          }
+        ],
+        "content_id": "v1-2:6"
+      },
+      {
+        "question": "After what event does Uzziah restore Elath?",
+        "answer": "After Amaziah dies.",
+        "answer_verse": 2,
+        "wrong_answer": "After the people make Uzziah king.",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "after Amaziah rested with his ancestors",
+            "support": "after Amaziah rested with his ancestors"
+          }
+        ],
+        "distinct_readings": [
+          "after Amaziah rested with his ancestors"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 10.0,
+          "answer_certainty": 8.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "The timing depends on the subordinate clause “after Amaziah rested with his ancestors,” unique but with mild paraphrase risk (death euphemism), and somewhat less central than the crowning."
+        },
+        "window_verses": [
+          1,
+          2
+        ],
+        "window_text": {
+          "1": "Then all the people of Judah took Uzziah, who was sixteen years old, and made him king in place of his father Amaziah.",
+          "2": "He was the one who rebuilt Elath and restored it to Judah after Amaziah rested with his ancestors."
+        },
+        "reading_groups": [
+          "After Amaziah’s death (rested with his ancestors)"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: elath"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "elath"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 2,
+          "answer_verse_original": 2,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 2",
+          "readings_failures": []
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "After what event does Uzziah restore Elath?",
+            "after": "After what event does Uzziah restore the place?",
+            "note": "Removed the verse-unique place name to eliminate the location leak.",
+            "failures_before": [
+              "location leak: elath"
+            ],
+            "scores_before": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 10.0,
+              "answer_certainty": 8.0,
+              "centrality": 6.0,
+              "runs": 1,
+              "reason": "The timing depends on the subordinate clause “after Amaziah rested with his ancestors,” unique but with mild paraphrase risk (death euphemism), and somewhat less central than the crowning."
+            },
+            "accepted": false,
+            "reason": "removed as weak question: The question uses the vague label \"the place\" instead of explicitly naming Elath, leaving the referent not explicit.",
+            "suitability_judgment": {
+              "Q": "After what event does Uzziah restore the place?",
+              "clear_referents": false,
+              "natural_wording": false,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": true,
+              "reason": "The question uses the vague label \"the place\" instead of explicitly naming Elath, leaving the referent not explicit."
+            }
+          }
+        ],
+        "content_id": "v1-2:7"
+      },
+      {
+        "question": "What does Uzziah restore to Judah?",
+        "answer": "Uzziah restores Elath to Judah.",
+        "answer_verse": 2,
+        "wrong_answer": "Uzziah restores Judah to Elath.",
+        "relation": "direction",
+        "readings": [
+          {
+            "answer": "Elath",
+            "support": "rebuilt Elath and restored it to Judah"
+          }
+        ],
+        "distinct_readings": [
+          "Elath"
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "It relies on resolving the pronoun “it” to Elath, a single occurrence with a clear answer, though it is a supporting detail rather than the main event."
+        },
+        "window_verses": [
+          1,
+          2
+        ],
+        "window_text": {
+          "1": "Then all the people of Judah took Uzziah, who was sixteen years old, and made him king in place of his father Amaziah.",
+          "2": "He was the one who rebuilt Elath and restored it to Judah after Amaziah rested with his ancestors."
+        },
+        "reading_groups": [
+          "Elath is restored to Judah"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "judah",
+            "restor",
+            "uzziah"
+          ],
+          "answer_verse": 2,
+          "answer_verse_original": 2,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 2",
+          "readings_failures": []
+        },
+        "content_id": "v1-2:8"
+      },
+      {
+        "question": "Whom do the people of Judah crown?",
+        "answer": "They crown Uzziah as king.",
+        "answer_verse": 1,
+        "wrong_answer": "They crown Amaziah as king.",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "Uzziah",
+            "support": "took Uzziah, who was sixteen years old, and made him king"
+          }
+        ],
+        "distinct_readings": [
+          "Uzziah"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 10.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "Identifying the crowned person requires parsing that “made him king” refers to Uzziah (not Amaziah), stated once and central, with a single clear answer."
+        },
+        "window_verses": [
+          1,
+          2
+        ],
+        "window_text": {
+          "1": "Then all the people of Judah took Uzziah, who was sixteen years old, and made him king in place of his father Amaziah.",
+          "2": "He was the one who rebuilt Elath and restored it to Judah after Amaziah rested with his ancestors."
+        },
+        "reading_groups": [
+          "Uzziah is the one crowned king"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: hybrid window selector — It hinges on parsing “made him king in place of his father Amaziah,” using the ‘in place of’ relation and pronoun reference to identify Amaziah as the one replaced, giving a single clear answer."
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "crown"
+          ],
+          "answer_verse": 1,
+          "answer_verse_original": 1,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 1",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Whom do the people of Judah crown?",
+            "readings": [
+              {
+                "answer": "Uzziah",
+                "support": "took Uzziah, who was sixteen years old, and made him king"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Verse 1 states, “Then all the people of Judah took Uzziah… and made him king,” directly identifying Uzziah as the one they crowned."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The passage explicitly says the people of Judah made Uzziah king.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It hinges on parsing “made him king in place of his father Amaziah,” using the ‘in place of’ relation and pronoun reference to identify Amaziah as the one replaced, giving a single clear answer.",
+        "content_id": "v1-2:9"
+      }
+    ],
+    "report": {
+      "window_id": "v1-2",
+      "verses": [
+        1,
+        2
+      ],
+      "generated": 9,
+      "scored": 9,
+      "kept": 1,
+      "survivors_before_window_selection": 2,
+      "window_selection_rejected": 1,
+      "repair_attempted": 2,
+      "repaired": 0,
+      "window_retries_used": 1,
+      "score_runs": 1
+    }
+  }
+}

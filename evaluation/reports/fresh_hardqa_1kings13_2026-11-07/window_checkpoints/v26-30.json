@@ -1,0 +1,565 @@
+{
+  "config_digest": "7d0f9ca5b001dd4aafd08cfe62ee0ee1709a4cee0d45b80852aceee348ef06c5",
+  "data": {
+    "kept": [
+      {
+        "question": "In whose burial place is the body laid?",
+        "answer": "the prophet's own tomb",
+        "answer_verse": 29,
+        "wrong_answer": "the man of God's tomb",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "The prophet's own tomb",
+            "support": "So the prophet picked up the body of the man of God | he laid the body in his own tomb"
+          }
+        ],
+        "distinct_readings": [
+          "The prophet's own tomb"
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "The text states once that “he laid the body in his own tomb,” requiring resolving “his” to the prophet for a single clear answer, though the precise location is only moderately central."
+        },
+        "window_verses": [
+          26,
+          27,
+          28,
+          29,
+          30
+        ],
+        "window_text": {
+          "26": "When the prophet who had brought him back from his journey heard of it, he said, “It is the man of God who defied the word of the Lord. The Lord has given him over to the lion, which has mauled him and killed him, as the word of the Lord had warned him.”",
+          "27": "The prophet said to his sons, “Saddle the donkey for me,” and they did so.",
+          "28": "Then he went out and found the body lying on the road, with the donkey and the lion standing beside it. The lion had neither eaten the body nor mauled the donkey.",
+          "29": "So the prophet picked up the body of the man of God, laid it on the donkey, and brought it back to his own city to mourn for him and bury him.",
+          "30": "Then he laid the body in his own tomb, and they mourned over him and said, “Alas, my brother!”"
+        },
+        "reading_groups": [
+          "The body is laid in the prophet’s own tomb"
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "corrected metadata from 30 to 29; reading support and question relation identify verse 29",
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 29,
+          "answer_verse_original": 30,
+          "answer_verse_corrected": true,
+          "answer_verse_note": "corrected metadata from 30 to 29; reading support and question relation identify verse 29",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "In whose burial place is the body laid?",
+            "readings": [
+              {
+                "answer": "The prophet's own tomb",
+                "support": "So the prophet picked up the body of the man of God | he laid the body in his own tomb"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Verse 30 explicitly says, “Then he laid the body in his own tomb,” referring to the prophet, so “the prophet’s own tomb” matches the text."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The text states the prophet laid the body in his own tomb, matching the key.",
+            "status": "passed"
+          }
+        },
+        "scores_after_repair_raw": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "The text states once that “he laid the body in his own tomb,” requiring resolving “his” to the prophet for a single clear answer, though the precise location is only moderately central."
+        },
+        "repaired": true,
+        "repair_attempted": true,
+        "question_before_repair": "In whose tomb does the prophet lay the body?",
+        "scores_before_repair": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "This depends on resolving \"his own tomb\" to the prophet, a single clear statement central to the burial action."
+        },
+        "audit_before_repair": {
+          "passed": false,
+          "failures": [
+            "answer leaks into question: prophet, tomb"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "prophet",
+            "tomb"
+          ],
+          "answer_verse": 30,
+          "answer_verse_original": 30,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 30",
+          "readings_failures": []
+        },
+        "repair_log": [
+          {
+            "before": "In whose tomb does the prophet lay the body?",
+            "after": "In whose burial place is the body laid?",
+            "note": "Removed answer-leaking words and used neutral phrasing.",
+            "failures_before": [
+              "answer leaks into question: prophet, tomb"
+            ],
+            "scores_before": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 9.0,
+              "centrality": 6.0,
+              "runs": 1,
+              "reason": "This depends on resolving \"his own tomb\" to the prophet, a single clear statement central to the burial action."
+            },
+            "accepted": true,
+            "reason": "passed full rejudgment",
+            "suitability_judgment": {
+              "Q": "In whose burial place is the body laid?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "The passage states the body was laid in his own tomb, referring to the prophet, yielding a single clear answer."
+            },
+            "failures_after": [],
+            "scores_after": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 6.0,
+              "runs": 1,
+              "reason": "The text states once that “he laid the body in his own tomb,” requiring resolving “his” to the prophet for a single clear answer, though the precise location is only moderately central."
+            },
+            "scores_used": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 6.0,
+              "runs": 1,
+              "reason": "The text states once that “he laid the body in his own tomb,” requiring resolving “his” to the prophet for a single clear answer, though the precise location is only moderately central."
+            }
+          }
+        ],
+        "window_selection_reason": "It hinges on correctly resolving the pronoun “his own” in v.30 to the prophet (reinforced by v.29’s “his own city”), giving one clear answer with a plausible competitor misreading it as the man of God’s tomb.",
+        "window_structure_max": 7.0,
+        "content_id": "v26-30:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Who does the prophet blame for ignoring the Lord's command?",
+        "answer": "the man of God",
+        "answer_verse": 26,
+        "wrong_answer": "the prophet who brought him back",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "the man of God",
+            "support": "the man of God who defied the word of the Lord"
+          }
+        ],
+        "distinct_readings": [
+          "the man of God"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "It hinges on attributing the clause \"who defied the word of the Lord\" to the man of God, stated once and clearly, and it explains the death."
+        },
+        "window_verses": [
+          26,
+          27,
+          28,
+          29,
+          30
+        ],
+        "window_text": {
+          "26": "When the prophet who had brought him back from his journey heard of it, he said, “It is the man of God who defied the word of the Lord. The Lord has given him over to the lion, which has mauled him and killed him, as the word of the Lord had warned him.”",
+          "27": "The prophet said to his sons, “Saddle the donkey for me,” and they did so.",
+          "28": "Then he went out and found the body lying on the road, with the donkey and the lion standing beside it. The lion had neither eaten the body nor mauled the donkey.",
+          "29": "So the prophet picked up the body of the man of God, laid it on the donkey, and brought it back to his own city to mourn for him and bury him.",
+          "30": "Then he laid the body in his own tomb, and they mourned over him and said, “Alas, my brother!”"
+        },
+        "reading_groups": [
+          "The prophet blames the man of God"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: lord"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "lord"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 26,
+          "answer_verse_original": 26,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 26",
+          "readings_failures": []
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "Who does the prophet blame for ignoring the Lord's command?",
+            "after": "Whom does the prophet blame for defying God's command?",
+            "note": "Replaced the location-leaking word “Lord” with neutral wording.",
+            "failures_before": [
+              "location leak: lord"
+            ],
+            "scores_before": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "It hinges on attributing the clause \"who defied the word of the Lord\" to the man of God, stated once and clearly, and it explains the death."
+            },
+            "accepted": false,
+            "reason": "failed full rejudgment",
+            "suitability_judgment": {
+              "Q": "Whom does the prophet blame for defying God's command?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "The question is clear and the verse explicitly identifies the man of God as the one who defied the word of the Lord."
+            },
+            "failures_after": [
+              "answer leaks into question: god",
+              "lexical: structure_dependence 6.0 (need 7.0)"
+            ],
+            "scores_after": {
+              "structure_dependence": 6.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "The prophet explicitly says “It is the man of God who defied the word of the LORD,” a single unique clause giving one clear answer that explains the cause of death."
+            },
+            "scores_used": {
+              "structure_dependence": 6.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "The prophet explicitly says “It is the man of God who defied the word of the LORD,” a single unique clause giving one clear answer that explains the cause of death."
+            }
+          }
+        ],
+        "content_id": "v26-30:2"
+      },
+      {
+        "question": "After the prophet orders it, who saddles the donkey?",
+        "answer": "the prophet's sons",
+        "answer_verse": 27,
+        "wrong_answer": "the prophet",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "his sons",
+            "support": "The prophet said to his sons, “Saddle the donkey for me,” and they did so."
+          }
+        ],
+        "distinct_readings": [
+          "his sons"
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 10.0,
+          "centrality": 4.0,
+          "runs": 1,
+          "reason": "One must link the command to the sons with the pronoun \"they did so,\" a single clear statement but a minor plot detail."
+        },
+        "window_verses": [
+          26,
+          27,
+          28,
+          29,
+          30
+        ],
+        "window_text": {
+          "26": "When the prophet who had brought him back from his journey heard of it, he said, “It is the man of God who defied the word of the Lord. The Lord has given him over to the lion, which has mauled him and killed him, as the word of the Lord had warned him.”",
+          "27": "The prophet said to his sons, “Saddle the donkey for me,” and they did so.",
+          "28": "Then he went out and found the body lying on the road, with the donkey and the lion standing beside it. The lion had neither eaten the body nor mauled the donkey.",
+          "29": "So the prophet picked up the body of the man of God, laid it on the donkey, and brought it back to his own city to mourn for him and bury him.",
+          "30": "Then he laid the body in his own tomb, and they mourned over him and said, “Alas, my brother!”"
+        },
+        "reading_groups": [
+          "The prophet’s sons saddle the donkey"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "question too complex: stacked clauses (1 comma(s), 1 subordinator(s))",
+            "incidental: centrality 4.0 (need 5.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "prophet"
+          ],
+          "answer_verse": 27,
+          "answer_verse_original": 27,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 27",
+          "readings_failures": []
+        },
+        "content_id": "v26-30:3"
+      },
+      {
+        "question": "Which does the lion not maul by the road?",
+        "answer": "the donkey",
+        "answer_verse": 28,
+        "wrong_answer": "the man of God",
+        "relation": "polarity",
+        "readings": [
+          {
+            "answer": "the donkey",
+            "support": "The lion had neither eaten the body nor mauled the donkey."
+          }
+        ],
+        "distinct_readings": [
+          "the donkey"
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "The reader must match the negation \"neither...nor mauled\" to the donkey in v28, which is stated once and underscores the sign."
+        },
+        "window_verses": [
+          26,
+          27,
+          28,
+          29,
+          30
+        ],
+        "window_text": {
+          "26": "When the prophet who had brought him back from his journey heard of it, he said, “It is the man of God who defied the word of the Lord. The Lord has given him over to the lion, which has mauled him and killed him, as the word of the Lord had warned him.”",
+          "27": "The prophet said to his sons, “Saddle the donkey for me,” and they did so.",
+          "28": "Then he went out and found the body lying on the road, with the donkey and the lion standing beside it. The lion had neither eaten the body nor mauled the donkey.",
+          "29": "So the prophet picked up the body of the man of God, laid it on the donkey, and brought it back to his own city to mourn for him and bury him.",
+          "30": "Then he laid the body in his own tomb, and they mourned over him and said, “Alas, my brother!”"
+        },
+        "reading_groups": [
+          "The lion does not maul the donkey"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 28,
+          "answer_verse_original": 28,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 28",
+          "readings_failures": []
+        },
+        "content_id": "v26-30:4"
+      },
+      {
+        "question": "What does the prophet put the body on before he returns to his city?",
+        "answer": "the donkey",
+        "answer_verse": 29,
+        "wrong_answer": "his own tomb",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "the donkey",
+            "support": "laid it on the donkey"
+          }
+        ],
+        "distinct_readings": [
+          "the donkey"
+        ],
+        "scores": {
+          "structure_dependence": 3.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 5.0,
+          "runs": 1,
+          "reason": "It is a direct retrieval from \"laid it on the donkey,\" uniquely stated and unambiguous, though only moderately central."
+        },
+        "window_verses": [
+          26,
+          27,
+          28,
+          29,
+          30
+        ],
+        "window_text": {
+          "26": "When the prophet who had brought him back from his journey heard of it, he said, “It is the man of God who defied the word of the Lord. The Lord has given him over to the lion, which has mauled him and killed him, as the word of the Lord had warned him.”",
+          "27": "The prophet said to his sons, “Saddle the donkey for me,” and they did so.",
+          "28": "Then he went out and found the body lying on the road, with the donkey and the lion standing beside it. The lion had neither eaten the body nor mauled the donkey.",
+          "29": "So the prophet picked up the body of the man of God, laid it on the donkey, and brought it back to his own city to mourn for him and bury him.",
+          "30": "Then he laid the body in his own tomb, and they mourned over him and said, “Alas, my brother!”"
+        },
+        "reading_groups": [
+          "He lays the body on the donkey"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: city",
+            "lexical: structure_dependence 3.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "city"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 29,
+          "answer_verse_original": 29,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 29",
+          "readings_failures": []
+        },
+        "content_id": "v26-30:5"
+      },
+      {
+        "question": "Why does the lion kill the man of God, according to the prophet?",
+        "answer": "because the man of God defies the Lord's word",
+        "answer_verse": 26,
+        "wrong_answer": "because the Lord warned him",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "Because the Lord gave him over to the lion.",
+            "support": "The Lord has given him over to the lion"
+          },
+          {
+            "answer": "Because he defied the word of the Lord.",
+            "support": "who defied the word of the Lord"
+          }
+        ],
+        "distinct_readings": [
+          "Because the Lord gave him over to the lion.",
+          "Because he defied the word of the Lord."
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 4.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "The cause is given in one place but can be phrased as either defying the Lord's word or the Lord giving him over, making the wording ambiguous though central."
+        },
+        "window_verses": [
+          26,
+          27,
+          28,
+          29,
+          30
+        ],
+        "window_text": {
+          "26": "When the prophet who had brought him back from his journey heard of it, he said, “It is the man of God who defied the word of the Lord. The Lord has given him over to the lion, which has mauled him and killed him, as the word of the Lord had warned him.”",
+          "27": "The prophet said to his sons, “Saddle the donkey for me,” and they did so.",
+          "28": "Then he went out and found the body lying on the road, with the donkey and the lion standing beside it. The lion had neither eaten the body nor mauled the donkey.",
+          "29": "So the prophet picked up the body of the man of God, laid it on the donkey, and brought it back to his own city to mourn for him and bury him.",
+          "30": "Then he laid the body in his own tomb, and they mourned over him and said, “Alas, my brother!”"
+        },
+        "reading_groups": [
+          "Because the Lord gave him over to the lion",
+          "Because the man of God defied the word of the Lord"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "2 defensible readings: Because the Lord gave him over to the lion | Because the man of God defied the word of the Lord",
+            "ambiguous: answer_certainty 4.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "god"
+          ],
+          "answer_verse": 26,
+          "answer_verse_original": 26,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 26",
+          "readings_failures": [
+            "2 defensible readings: Because the Lord gave him over to the lion | Because the man of God defied the word of the Lord"
+          ]
+        },
+        "content_id": "v26-30:6"
+      }
+    ],
+    "report": {
+      "window_id": "v26-30",
+      "verses": [
+        26,
+        27,
+        28,
+        29,
+        30
+      ],
+      "generated": 6,
+      "scored": 6,
+      "kept": 1,
+      "survivors_before_window_selection": 1,
+      "window_selection_rejected": 0,
+      "repair_attempted": 2,
+      "repaired": 1,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

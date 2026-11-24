@@ -1,0 +1,164 @@
+[
+  {
+    "question": "Why does Paul keep speaking so late?",
+    "answer": "Paul intends to leave the next day.",
+    "answer_verse": 7,
+    "wrong_answer": "to break bread",
+    "relation": "causation",
+    "readings": [
+      {
+        "answer": "Because he intended to leave the next day.",
+        "support": "because he intended to leave the next day,"
+      }
+    ],
+    "distinct_readings": [
+      "Because he intended to leave the next day."
+    ],
+    "scores": {
+      "structure_dependence": 9.0,
+      "statement_uniqueness": 9.0,
+      "answer_certainty": 10.0,
+      "centrality": 6.0,
+      "runs": 1,
+      "reason": "The cause is given only in the because-clause linking his late speaking to his plan to leave next day, uniquely and unambiguously, and it is relevant though not the main event."
+    },
+    "window_verses": [
+      7,
+      8,
+      9
+    ],
+    "window_text": {
+      "7": "On the first day of the week we came together to break bread. Paul spoke to the people and, because he intended to leave the next day, kept on talking until midnight.",
+      "8": "There were many lamps in the upstairs room where we were meeting.",
+      "9": "Seated in a window was a young man named Eutychus, who was sinking into a deep sleep as Paul talked on and on. When he was sound asleep, he fell to the ground from the third story and was picked up dead."
+    },
+    "reading_groups": [
+      "Because he intended to leave the next day"
+    ],
+    "audit": {
+      "passed": true,
+      "failures": [],
+      "notes": [
+        "distractor check skipped: none stated by this output tier"
+      ],
+      "location_leak_terms": [],
+      "distractors_found": [],
+      "distractors_missing": false,
+      "answer_leak_terms": [
+        "paul"
+      ],
+      "answer_verse": 7,
+      "answer_verse_original": 7,
+      "answer_verse_corrected": false,
+      "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 7",
+      "readings_failures": [],
+      "answerability": {
+        "model": "gpt-5",
+        "mode": "enforce",
+        "question": "Why does Paul keep speaking so late?",
+        "readings": [
+          {
+            "answer": "Because he intended to leave the next day.",
+            "support": "because he intended to leave the next day,"
+          }
+        ],
+        "assessments": [
+          {
+            "number": 1,
+            "classification": "equivalent_to_key",
+            "reason": "The passage explicitly says Paul “kept on talking until midnight” because “he intended to leave the next day,” matching the key."
+          }
+        ],
+        "verdict": "pass",
+        "reason": "The text directly states Paul spoke late because he planned to leave the next day.",
+        "status": "passed"
+      }
+    },
+    "window_selection_reason": "It directly exploits the explicit causal clause (“because he intended to leave the next day”) about why Paul spoke until midnight, while the competitor plausibly misreads the purpose of gathering as the cause of speaking late.",
+    "window_structure_max": 9.0,
+    "content_id": "v7-9:1",
+    "rank_in_batch": 1,
+    "rank_reason": "The top depends on the unique causal link (“because he intended to leave the next day”), which is easy to lose or invert if grammar fails, whereas the bottom simply identifies “the young man” as the one alive, a noun restated and obvious from context.",
+    "final_rank": 1
+  },
+  {
+    "question": "Whom does Paul say is alive?",
+    "answer": "the young man",
+    "answer_verse": 10,
+    "wrong_answer": "Paul",
+    "relation": "referent",
+    "readings": [
+      {
+        "answer": "the young man",
+        "support": "the young man | He’s alive!"
+      }
+    ],
+    "distinct_readings": [
+      "the young man"
+    ],
+    "scores": {
+      "structure_dependence": 9.0,
+      "statement_uniqueness": 9.0,
+      "answer_certainty": 10.0,
+      "centrality": 8.0,
+      "runs": 1,
+      "reason": "It requires linking Paul’s speech \"He’s alive!\" to its antecedent \"the young man,\" a unique and central claim."
+    },
+    "window_verses": [
+      10,
+      11,
+      12
+    ],
+    "window_text": {
+      "10": "Paul went down, threw himself on the young man and put his arms around him. “Don’t be alarmed,” he said. “He’s alive!”",
+      "11": "Then he went upstairs again and broke bread and ate. After talking until daylight, he left.",
+      "12": "The people took the young man home alive and were greatly comforted."
+    },
+    "reading_groups": [
+      "Paul says the young man is alive"
+    ],
+    "audit": {
+      "passed": true,
+      "failures": [],
+      "notes": [
+        "distractor check skipped: none stated by this output tier"
+      ],
+      "location_leak_terms": [],
+      "distractors_found": [],
+      "distractors_missing": false,
+      "answer_leak_terms": [],
+      "answer_verse": 10,
+      "answer_verse_original": 10,
+      "answer_verse_corrected": false,
+      "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 10",
+      "readings_failures": [],
+      "answerability": {
+        "model": "gpt-5",
+        "mode": "enforce",
+        "question": "Whom does Paul say is alive?",
+        "readings": [
+          {
+            "answer": "the young man",
+            "support": "the young man | He’s alive!"
+          }
+        ],
+        "assessments": [
+          {
+            "number": 1,
+            "classification": "equivalent_to_key",
+            "reason": "The text says Paul threw himself on “the young man” and then said, “He’s alive!”, so the referent is the young man, matching the key."
+          }
+        ],
+        "verdict": "pass",
+        "reason": "Paul’s statement “He’s alive!” clearly refers to the young man mentioned immediately before.",
+        "status": "passed"
+      }
+    },
+    "window_selection_reason": "It most hinges on resolving the pronoun in “He’s alive!” to the young man rather than Paul—a clear referent decision driven by the passage’s structure.",
+    "window_structure_max": 9.0,
+    "content_id": "v10-12:1",
+    "rank_in_batch": 2,
+    "rank_reason": "The top depends on the unique causal link (“because he intended to leave the next day”), which is easy to lose or invert if grammar fails, whereas the bottom simply identifies “the young man” as the one alive, a noun restated and obvious from context.",
+    "final_rank": 2
+  }
+]

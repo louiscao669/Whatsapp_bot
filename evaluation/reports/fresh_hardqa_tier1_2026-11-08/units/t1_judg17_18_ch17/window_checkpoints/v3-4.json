@@ -1,0 +1,386 @@
+{
+  "config_digest": "b695f7707fb56c289f78e263db4eb0e918c13f67b225d32ee2c69080e2ad8e51",
+  "data": {
+    "kept": [
+      {
+        "question": "Who is expected to make the image in the mother’s vow?",
+        "answer": "her son",
+        "answer_verse": 3,
+        "wrong_answer": "the silversmith",
+        "relation": "modality",
+        "readings": [
+          {
+            "answer": "Her son",
+            "support": "for my son to make an image"
+          }
+        ],
+        "distinct_readings": [
+          "Her son"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "One must parse the clause 'for my son to make' to identify the agent, which is stated once, clearly points to the son, and is important to the vow's content."
+        },
+        "window_verses": [
+          3,
+          4
+        ],
+        "window_text": {
+          "3": "When he returned the eleven hundred shekels of silver to his mother, she said, “I solemnly consecrate my silver to the Lord for my son to make an image overlaid with silver. I will give it back to you.”",
+          "4": "So after he returned the silver to his mother, she took two hundred shekels of silver and gave them to a silversmith, who used them to make the idol. And it was put in Micah’s house."
+        },
+        "reading_groups": [
+          "Her son is expected to make the image per the vow"
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 3,
+          "answer_verse_original": 3,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 3",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Who is expected to make the image in the mother’s vow?",
+            "readings": [
+              {
+                "answer": "Her son",
+                "support": "for my son to make an image"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The vow explicitly says, “for my son to make an image,” indicating the son is expected to make it."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The passage states “for my son to make an image,” matching the key’s answer of her son.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It hinges on parsing the vow’s purpose clause (“for my son to make”), distinguishing intended maker from the later actor, yielding a single clear answer with a plausible competitor from verse 4.",
+        "window_structure_max": 8.0,
+        "content_id": "v3-4:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Who dedicates the silver to the Lord for making an image?",
+        "answer": "the mother",
+        "answer_verse": 3,
+        "wrong_answer": "her son",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "His mother",
+            "support": "his mother, she said, “I solemnly consecrate my silver to the Lord"
+          }
+        ],
+        "distinct_readings": [
+          "His mother"
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "Identifying the dedicator requires attributing the first-person vow to the speaker ('she' = the mother), stated once, unambiguous, and central to the action."
+        },
+        "window_verses": [
+          3,
+          4
+        ],
+        "window_text": {
+          "3": "When he returned the eleven hundred shekels of silver to his mother, she said, “I solemnly consecrate my silver to the Lord for my son to make an image overlaid with silver. I will give it back to you.”",
+          "4": "So after he returned the silver to his mother, she took two hundred shekels of silver and gave them to a silversmith, who used them to make the idol. And it was put in Micah’s house."
+        },
+        "reading_groups": [
+          "His mother dedicates the silver to the Lord"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "quotes the passage: quotes verse 3: 'silver to the lord for'"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 3,
+          "answer_verse_original": 3,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 3",
+          "readings_failures": []
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "Who dedicates the silver to the Lord for making an image?",
+            "after": "Who consecrates the silver to God to have an image made?",
+            "note": "Paraphrased the quoted wording to avoid directly quoting the verse.",
+            "failures_before": [
+              "quotes the passage: quotes verse 3: 'silver to the lord for'"
+            ],
+            "scores_before": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "Identifying the dedicator requires attributing the first-person vow to the speaker ('she' = the mother), stated once, unambiguous, and central to the action."
+            },
+            "accepted": false,
+            "reason": "removed: no LLM suitability verdict",
+            "suitability_judgment": null
+          }
+        ],
+        "content_id": "v3-4:2"
+      },
+      {
+        "question": "How much silver does the mother hand to the silversmith?",
+        "answer": "two hundred shekels",
+        "answer_verse": 4,
+        "wrong_answer": "eleven hundred shekels",
+        "relation": "quantity",
+        "readings": [
+          {
+            "answer": "Two hundred shekels of silver",
+            "support": "took two hundred shekels of silver and gave them to a silversmith"
+          }
+        ],
+        "distinct_readings": [
+          "Two hundred shekels of silver"
+        ],
+        "scores": {
+          "structure_dependence": 2.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 4.0,
+          "runs": 1,
+          "reason": "The exact amount ('two hundred shekels') is a directly stated number, given once, unequivocal, and a secondary detail."
+        },
+        "window_verses": [
+          3,
+          4
+        ],
+        "window_text": {
+          "3": "When he returned the eleven hundred shekels of silver to his mother, she said, “I solemnly consecrate my silver to the Lord for my son to make an image overlaid with silver. I will give it back to you.”",
+          "4": "So after he returned the silver to his mother, she took two hundred shekels of silver and gave them to a silversmith, who used them to make the idol. And it was put in Micah’s house."
+        },
+        "reading_groups": [
+          "Two hundred shekels of silver were given to the silversmith"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 2.0 (need 7.0)",
+            "incidental: centrality 4.0 (need 5.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 4,
+          "answer_verse_original": 4,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 4",
+          "readings_failures": []
+        },
+        "content_id": "v3-4:3"
+      },
+      {
+        "question": "What is put in Micah’s house?",
+        "answer": "the idol",
+        "answer_verse": 4,
+        "wrong_answer": "the silver",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "The idol",
+            "support": "the idol. And it was put in Micah’s house."
+          }
+        ],
+        "distinct_readings": [
+          "The idol"
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "It requires linking the pronoun 'it' to its antecedent ('the idol'), which is stated once, unambiguous, and part of the main outcome of the passage."
+        },
+        "window_verses": [
+          3,
+          4
+        ],
+        "window_text": {
+          "3": "When he returned the eleven hundred shekels of silver to his mother, she said, “I solemnly consecrate my silver to the Lord for my son to make an image overlaid with silver. I will give it back to you.”",
+          "4": "So after he returned the silver to his mother, she took two hundred shekels of silver and gave them to a silversmith, who used them to make the idol. And it was put in Micah’s house."
+        },
+        "reading_groups": [
+          "The idol is placed in Micah’s house"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: hous, micah"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "hous",
+            "micah"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 4,
+          "answer_verse_original": 4,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 4",
+          "readings_failures": []
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "What is put in Micah’s house?",
+            "after": "What is put in the home?",
+            "note": "Removed the verse-unique words and used neutral wording to avoid a location leak.",
+            "failures_before": [
+              "location leak: hous, micah"
+            ],
+            "scores_before": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 7.0,
+              "runs": 1,
+              "reason": "It requires linking the pronoun 'it' to its antecedent ('the idol'), which is stated once, unambiguous, and part of the main outcome of the passage."
+            },
+            "accepted": false,
+            "reason": "removed: no LLM suitability verdict",
+            "suitability_judgment": null
+          }
+        ],
+        "content_id": "v3-4:4"
+      },
+      {
+        "question": "To whom does the mother promise to return the silver?",
+        "answer": "her son",
+        "answer_verse": 3,
+        "wrong_answer": "the Lord",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "her son",
+            "support": "I will give it back to you. | for my son"
+          }
+        ],
+        "distinct_readings": [
+          "her son"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "Resolving 'you' in 'I will give it back to you' to the son requires pronoun resolution, is stated only once, clearly refers to him, and is moderately central."
+        },
+        "window_verses": [
+          3,
+          4
+        ],
+        "window_text": {
+          "3": "When he returned the eleven hundred shekels of silver to his mother, she said, “I solemnly consecrate my silver to the Lord for my son to make an image overlaid with silver. I will give it back to you.”",
+          "4": "So after he returned the silver to his mother, she took two hundred shekels of silver and gave them to a silversmith, who used them to make the idol. And it was put in Micah’s house."
+        },
+        "reading_groups": [
+          "She promises to return it to her son"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: hybrid window selector — It hinges on parsing the vow’s purpose clause (“for my son to make”), distinguishing intended maker from the later actor, yielding a single clear answer with a plausible competitor from verse 4."
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 3,
+          "answer_verse_original": 3,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 3",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "To whom does the mother promise to return the silver?",
+            "readings": [
+              {
+                "answer": "her son",
+                "support": "I will give it back to you. | for my son"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "In the mother's speech she says, “I will give it back to you,” addressed to her son who returned the silver, so the promised recipient is her son."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The text explicitly has the mother say, “I will give it back to you,” to her son, matching the key.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It hinges on parsing the vow’s purpose clause (“for my son to make”), distinguishing intended maker from the later actor, yielding a single clear answer with a plausible competitor from verse 4.",
+        "content_id": "v3-4:5"
+      }
+    ],
+    "report": {
+      "window_id": "v3-4",
+      "verses": [
+        3,
+        4
+      ],
+      "generated": 5,
+      "scored": 5,
+      "kept": 1,
+      "survivors_before_window_selection": 2,
+      "window_selection_rejected": 1,
+      "repair_attempted": 2,
+      "repaired": 0,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

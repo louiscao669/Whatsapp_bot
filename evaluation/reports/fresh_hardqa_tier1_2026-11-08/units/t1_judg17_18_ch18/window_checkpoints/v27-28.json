@@ -1,0 +1,308 @@
+{
+  "config_digest": "bab5a848f20f60ea534214d9358795f20d975515f4adb1ac077513ba4e1247aa",
+  "data": {
+    "kept": [
+      {
+        "question": "Whom do the Danites attack?",
+        "answer": "The people at Laish.",
+        "answer_verse": 27,
+        "wrong_answer": "Micah.",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "the people at Laish",
+            "support": "went on to Laish, against a people at peace and secure | They attacked them with the sword"
+          }
+        ],
+        "distinct_readings": [
+          "the people at Laish"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "Answering requires resolving the pronoun “them” to the people of Laish, a single mention that is central to the passage’s main event of the attack."
+        },
+        "window_verses": [
+          27,
+          28
+        ],
+        "window_text": {
+          "27": "Then they took what Micah had made, and his priest, and went on to Laish, against a people at peace and secure. They attacked them with the sword and burned down their city.",
+          "28": "There was no one to rescue them because they lived a long way from Sidon and had no relationship with anyone else. The city was in a valley near Beth Rehob. The Danites rebuilt the city and settled there."
+        },
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 27,
+          "answer_verse_original": 27,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 27",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Whom do the Danites attack?",
+            "readings": [
+              {
+                "answer": "the people at Laish",
+                "support": "went on to Laish, against a people at peace and secure | They attacked them with the sword"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The passage states they went on to Laish against a peaceful people and attacked them, identifying the target as the people of Laish."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The text explicitly says the Danites went to Laish against a peaceful people and attacked them, i.e., the people of Laish.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "Strong pronoun-resolution and agent–patient parsing: “they” (the Danites) attack “them” (the people of Laish), not Micah.",
+        "window_structure_max": 8.0,
+        "content_id": "v27-28:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Whose priest do the Danites take with them?",
+        "answer": "Micah’s priest.",
+        "answer_verse": 27,
+        "wrong_answer": "the Danites’ priest",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "Micah’s priest",
+            "support": "what Micah had made, and his priest"
+          }
+        ],
+        "distinct_readings": [
+          "Micah’s priest"
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 3.0,
+          "runs": 1,
+          "reason": "The phrase “what Micah had made, and his priest” requires linking the possessive “his” to Micah once, but it is stated plainly and is incidental to the main attack."
+        },
+        "window_verses": [
+          27,
+          28
+        ],
+        "window_text": {
+          "27": "Then they took what Micah had made, and his priest, and went on to Laish, against a people at peace and secure. They attacked them with the sword and burned down their city.",
+          "28": "There was no one to rescue them because they lived a long way from Sidon and had no relationship with anyone else. The city was in a valley near Beth Rehob. The Danites rebuilt the city and settled there."
+        },
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 6.0 (need 7.0)",
+            "incidental: centrality 3.0 (need 5.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "priest"
+          ],
+          "answer_verse": 27,
+          "answer_verse_original": 27,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "consistent",
+          "readings_failures": []
+        },
+        "content_id": "v27-28:2"
+      },
+      {
+        "question": "Why does nobody come to help the people at Laish?",
+        "answer": "The people at Laish live far from Sidon and lack allies.",
+        "answer_verse": 28,
+        "wrong_answer": "Because the Danites attack them.",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "Because they lived a long way from Sidon and had no relationship with anyone else.",
+            "support": "because they lived a long way from Sidon and had no relationship with anyone else"
+          },
+          {
+            "answer": "Because they lived a long way from Sidon.",
+            "support": "because they lived a long way from Sidon"
+          },
+          {
+            "answer": "Because they had no relationship with anyone else.",
+            "support": "had no relationship with anyone else"
+          }
+        ],
+        "distinct_readings": [
+          "Because they lived a long way from Sidon and had no relationship with anyone else.",
+          "Because they lived a long way from Sidon.",
+          "Because they had no relationship with anyone else."
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "The causal clause “because they lived a long way from Sidon and had no relationship with anyone else” is a single, explicit reason central to why the attack succeeded."
+        },
+        "window_verses": [
+          27,
+          28
+        ],
+        "window_text": {
+          "27": "Then they took what Micah had made, and his priest, and went on to Laish, against a people at peace and secure. They attacked them with the sword and burned down their city.",
+          "28": "There was no one to rescue them because they lived a long way from Sidon and had no relationship with anyone else. The city was in a valley near Beth Rehob. The Danites rebuilt the city and settled there."
+        },
+        "audit": {
+          "passed": false,
+          "failures": [
+            "answer is a description, not an identification: 'The people at Laish live far from Sidon and lack allies.'"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "laish"
+          ],
+          "answer_verse": 28,
+          "answer_verse_original": 28,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 28",
+          "readings_failures": []
+        },
+        "content_id": "v27-28:3"
+      },
+      {
+        "question": "What do the Danites do to the city before they settle there?",
+        "answer": "The Danites rebuild the city.",
+        "answer_verse": 28,
+        "wrong_answer": "The Danites burn the city down.",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "Rebuild it",
+            "support": "The Danites rebuilt the city"
+          },
+          {
+            "answer": "Burn it down",
+            "support": "burned down their city"
+          }
+        ],
+        "distinct_readings": [
+          "Rebuild it",
+          "Burn it down"
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 3.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "Only the coordination “rebuilt the city and settled there” gives the immediate prior action, but earlier burning also occurred before settling, making the question potentially ambiguous."
+        },
+        "window_verses": [
+          27,
+          28
+        ],
+        "window_text": {
+          "27": "Then they took what Micah had made, and his priest, and went on to Laish, against a people at peace and secure. They attacked them with the sword and burned down their city.",
+          "28": "There was no one to rescue them because they lived a long way from Sidon and had no relationship with anyone else. The city was in a valley near Beth Rehob. The Danites rebuilt the city and settled there."
+        },
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: danit, settl",
+            "ambiguous: answer_certainty 3.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "danit",
+            "settl"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "city",
+            "danit"
+          ],
+          "answer_verse": 28,
+          "answer_verse_original": 28,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 28",
+          "readings_failures": []
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "What do the Danites do to the city before they settle there?",
+            "after": "What do the attackers do to the city before they live there?",
+            "note": "Replaced the location-leaking terms with neutral phrasing while keeping the same sequence ask.",
+            "failures_before": [
+              "location leak: danit, settl",
+              "ambiguous: answer_certainty 3.0 (need 7.0)"
+            ],
+            "scores_before": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 3.0,
+              "centrality": 6.0,
+              "runs": 1,
+              "reason": "Only the coordination “rebuilt the city and settled there” gives the immediate prior action, but earlier burning also occurred before settling, making the question potentially ambiguous."
+            },
+            "accepted": false,
+            "reason": "removed as weak question: Both burning the city and rebuilding it occur before they live there, so multiple distinct answers are defensible.",
+            "suitability_judgment": {
+              "Q": "What do the attackers do to the city before they live there?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": false,
+              "remove": true,
+              "reason": "Both burning the city and rebuilding it occur before they live there, so multiple distinct answers are defensible."
+            }
+          }
+        ],
+        "content_id": "v27-28:4"
+      }
+    ],
+    "report": {
+      "window_id": "v27-28",
+      "verses": [
+        27,
+        28
+      ],
+      "generated": 4,
+      "scored": 4,
+      "kept": 1,
+      "survivors_before_window_selection": 1,
+      "window_selection_rejected": 0,
+      "repair_attempted": 1,
+      "repaired": 0,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

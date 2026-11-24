@@ -1,0 +1,491 @@
+{
+  "config_digest": "7d0f9ca5b001dd4aafd08cfe62ee0ee1709a4cee0d45b80852aceee348ef06c5",
+  "data": {
+    "kept": [
+      {
+        "question": "What does the old prophet do just before he asks the man of God?",
+        "answer": "The old prophet finds the man of God sitting under an oak tree.",
+        "answer_verse": 14,
+        "wrong_answer": "The old prophet mounts the donkey.",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "He finds him sitting under an oak tree.",
+            "support": "He found him sitting under an oak tree and asked,"
+          }
+        ],
+        "distinct_readings": [
+          "He finds him sitting under an oak tree."
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "The sequence \"He found him sitting under an oak tree and asked\" shows the immediately prior action is finding him under the oak."
+        },
+        "window_verses": [
+          11,
+          12,
+          13,
+          14
+        ],
+        "window_text": {
+          "11": "Now there was a certain old prophet living in Bethel, whose sons came and told him all that the man of God had done there that day. They also told their father what he had said to the king.",
+          "12": "Their father asked them, “Which way did he go?” And his sons showed him which road the man of God from Judah had taken.",
+          "13": "So he said to his sons, “Saddle the donkey for me.” And when they had saddled the donkey for him, he mounted it",
+          "14": "and rode after the man of God. He found him sitting under an oak tree and asked, “Are you the man of God who came from Judah?” “I am,” he replied."
+        },
+        "reading_groups": [
+          "He finds him sitting under an oak tree."
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "god",
+            "old",
+            "prophet"
+          ],
+          "answer_verse": 14,
+          "answer_verse_original": 14,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 14",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "What does the old prophet do just before he asks the man of God?",
+            "readings": [
+              {
+                "answer": "He finds him sitting under an oak tree.",
+                "support": "He found him sitting under an oak tree and asked,"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The passage states, “He found him sitting under an oak tree and asked,” showing that finding him under the oak tree occurred immediately before asking."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The verse explicitly says he found him sitting under an oak tree and then asked, matching the key.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "Item 1 best tests sequence by requiring the immediately preceding action before the question, with a plausible mis-sequencing competitor, while the text clearly supports a single answer.",
+        "window_structure_max": 8.0,
+        "content_id": "v11-14:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Whom do the sons tell about the man of God's words to the king?",
+        "answer": "their father",
+        "answer_verse": 11,
+        "wrong_answer": "the king",
+        "relation": "participant",
+        "readings": [
+          {
+            "answer": "their father",
+            "support": "They also told their father what he had said to the king."
+          },
+          {
+            "answer": "the old prophet living in Bethel",
+            "support": "a certain old prophet living in Bethel | They also told their father what he had said to the king."
+          }
+        ],
+        "distinct_readings": [
+          "their father",
+          "the old prophet living in Bethel"
+        ],
+        "scores": {
+          "structure_dependence": 4.0,
+          "statement_uniqueness": 3.0,
+          "answer_certainty": 10.0,
+          "centrality": 5.0,
+          "runs": 1,
+          "reason": "The text explicitly says they told their father what he had said to the king, though the telling-to-father relation is mentioned twice in adjacent clauses."
+        },
+        "window_verses": [
+          11,
+          12,
+          13,
+          14
+        ],
+        "window_text": {
+          "11": "Now there was a certain old prophet living in Bethel, whose sons came and told him all that the man of God had done there that day. They also told their father what he had said to the king.",
+          "12": "Their father asked them, “Which way did he go?” And his sons showed him which road the man of God from Judah had taken.",
+          "13": "So he said to his sons, “Saddle the donkey for me.” And when they had saddled the donkey for him, he mounted it",
+          "14": "and rode after the man of God. He found him sitting under an oak tree and asked, “Are you the man of God who came from Judah?” “I am,” he replied."
+        },
+        "reading_groups": [
+          "their father (the old prophet in Bethel)"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "metatextual question: asks about god's words rather than its meaning",
+            "lexical: structure_dependence 4.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 11,
+          "answer_verse_original": 11,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 11",
+          "readings_failures": []
+        },
+        "content_id": "v11-14:2"
+      },
+      {
+        "question": "Who asks about the way the man of God went?",
+        "answer": "their father",
+        "answer_verse": 12,
+        "wrong_answer": "his sons",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "Their father",
+            "support": "Their father asked them, “Which way did he go?”"
+          }
+        ],
+        "distinct_readings": [
+          "Their father"
+        ],
+        "scores": {
+          "structure_dependence": 3.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "\"Their father asked them, 'Which way did he go?'\" makes the asker explicit and occurs only once."
+        },
+        "window_verses": [
+          11,
+          12,
+          13,
+          14
+        ],
+        "window_text": {
+          "11": "Now there was a certain old prophet living in Bethel, whose sons came and told him all that the man of God had done there that day. They also told their father what he had said to the king.",
+          "12": "Their father asked them, “Which way did he go?” And his sons showed him which road the man of God from Judah had taken.",
+          "13": "So he said to his sons, “Saddle the donkey for me.” And when they had saddled the donkey for him, he mounted it",
+          "14": "and rode after the man of God. He found him sitting under an oak tree and asked, “Are you the man of God who came from Judah?” “I am,” he replied."
+        },
+        "reading_groups": [
+          "their father"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "dangling answer reference: their",
+            "lexical: structure_dependence 3.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 12,
+          "answer_verse_original": 12,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 12",
+          "readings_failures": []
+        },
+        "content_id": "v11-14:3"
+      },
+      {
+        "question": "For whom do the sons saddle the donkey?",
+        "answer": "their father",
+        "answer_verse": 13,
+        "wrong_answer": "the man of God",
+        "relation": "participant",
+        "readings": [
+          {
+            "answer": "their father (the old prophet)",
+            "support": "Their father | they had saddled the donkey for him"
+          }
+        ],
+        "distinct_readings": [
+          "their father (the old prophet)"
+        ],
+        "scores": {
+          "structure_dependence": 5.0,
+          "statement_uniqueness": 2.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "\"Saddle the donkey for me\" and \"they had saddled the donkey for him\" together make it clear (twice) it was for their father."
+        },
+        "window_verses": [
+          11,
+          12,
+          13,
+          14
+        ],
+        "window_text": {
+          "11": "Now there was a certain old prophet living in Bethel, whose sons came and told him all that the man of God had done there that day. They also told their father what he had said to the king.",
+          "12": "Their father asked them, “Which way did he go?” And his sons showed him which road the man of God from Judah had taken.",
+          "13": "So he said to his sons, “Saddle the donkey for me.” And when they had saddled the donkey for him, he mounted it",
+          "14": "and rode after the man of God. He found him sitting under an oak tree and asked, “Are you the man of God who came from Judah?” “I am,” he replied."
+        },
+        "reading_groups": [
+          "their father (the old prophet)"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 5.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 13,
+          "answer_verse_original": 13,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 13",
+          "readings_failures": []
+        },
+        "content_id": "v11-14:4"
+      },
+      {
+        "question": "Who rides after the man of God?",
+        "answer": "the old prophet",
+        "answer_verse": 11,
+        "wrong_answer": "his sons",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "the old prophet",
+            "support": "a certain old prophet living in Bethel | and rode after the man of God."
+          }
+        ],
+        "distinct_readings": [
+          "the old prophet"
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "\"He ... rode after the man of God\" requires resolving the pronoun to the old prophet, stated once."
+        },
+        "window_verses": [
+          11,
+          12,
+          13,
+          14
+        ],
+        "window_text": {
+          "11": "Now there was a certain old prophet living in Bethel, whose sons came and told him all that the man of God had done there that day. They also told their father what he had said to the king.",
+          "12": "Their father asked them, “Which way did he go?” And his sons showed him which road the man of God from Judah had taken.",
+          "13": "So he said to his sons, “Saddle the donkey for me.” And when they had saddled the donkey for him, he mounted it",
+          "14": "and rode after the man of God. He found him sitting under an oak tree and asked, “Are you the man of God who came from Judah?” “I am,” he replied."
+        },
+        "reading_groups": [
+          "the old prophet"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "quotes the passage: quotes verse 14: 'after the man of god'",
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "corrected metadata from 14 to 11; reading support and question relation identify verse 11",
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 11,
+          "answer_verse_original": 14,
+          "answer_verse_corrected": true,
+          "answer_verse_note": "corrected metadata from 14 to 11; reading support and question relation identify verse 11",
+          "readings_failures": []
+        },
+        "content_id": "v11-14:5"
+      },
+      {
+        "question": "Who speaks to the king earlier that day?",
+        "answer": "the man of God",
+        "answer_verse": 11,
+        "wrong_answer": "the old prophet",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "The man of God.",
+            "support": "the man of God had done there that day. They also told their father what he had said to the king."
+          }
+        ],
+        "distinct_readings": [
+          "The man of God."
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 9.0,
+          "centrality": 5.0,
+          "runs": 1,
+          "reason": "\"What he had said to the king\" refers back to the man of God, uniquely identifying him as the speaker."
+        },
+        "window_verses": [
+          11,
+          12,
+          13,
+          14
+        ],
+        "window_text": {
+          "11": "Now there was a certain old prophet living in Bethel, whose sons came and told him all that the man of God had done there that day. They also told their father what he had said to the king.",
+          "12": "Their father asked them, “Which way did he go?” And his sons showed him which road the man of God from Judah had taken.",
+          "13": "So he said to his sons, “Saddle the donkey for me.” And when they had saddled the donkey for him, he mounted it",
+          "14": "and rode after the man of God. He found him sitting under an oak tree and asked, “Are you the man of God who came from Judah?” “I am,” he replied."
+        },
+        "reading_groups": [
+          "the man of God"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 11,
+          "answer_verse_original": 11,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 11",
+          "readings_failures": []
+        },
+        "content_id": "v11-14:6"
+      },
+      {
+        "question": "Why do the sons show their father a road?",
+        "answer": "Because their father asks which way the man of God went.",
+        "answer_verse": 12,
+        "wrong_answer": "Because the man of God spoke to the king.",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "Because their father asked which way he went.",
+            "support": "Their father asked them, “Which way did he go?” | And his sons showed him which road the man of God from Judah had taken."
+          }
+        ],
+        "distinct_readings": [
+          "Because their father asked which way he went."
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 8.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "They show the road right after their father asks which way he went, so the cause is implied by the question-response sequence."
+        },
+        "window_verses": [
+          11,
+          12,
+          13,
+          14
+        ],
+        "window_text": {
+          "11": "Now there was a certain old prophet living in Bethel, whose sons came and told him all that the man of God had done there that day. They also told their father what he had said to the king.",
+          "12": "Their father asked them, “Which way did he go?” And his sons showed him which road the man of God from Judah had taken.",
+          "13": "So he said to his sons, “Saddle the donkey for me.” And when they had saddled the donkey for him, he mounted it",
+          "14": "and rode after the man of God. He found him sitting under an oak tree and asked, “Are you the man of God who came from Judah?” “I am,” he replied."
+        },
+        "reading_groups": [
+          "Because their father asked which way he went."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: hybrid window selector — Item 1 best tests sequence by requiring the immediately preceding action before the question, with a plausible mis-sequencing competitor, while the text clearly supports a single answer."
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "father"
+          ],
+          "answer_verse": 12,
+          "answer_verse_original": 12,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 12",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Why do the sons show their father a road?",
+            "readings": [
+              {
+                "answer": "Because their father asked which way he went.",
+                "support": "Their father asked them, “Which way did he go?” | And his sons showed him which road the man of God from Judah had taken."
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Verse 12 explicitly states the father asked, “Which way did he go?” and the sons showed him which road the man of God had taken, matching the key’s reason."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The passage directly states the sons showed the road because their father asked which way the man of God went.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "Item 1 best tests sequence by requiring the immediately preceding action before the question, with a plausible mis-sequencing competitor, while the text clearly supports a single answer.",
+        "content_id": "v11-14:7"
+      }
+    ],
+    "report": {
+      "window_id": "v11-14",
+      "verses": [
+        11,
+        12,
+        13,
+        14
+      ],
+      "generated": 7,
+      "scored": 7,
+      "kept": 1,
+      "survivors_before_window_selection": 2,
+      "window_selection_rejected": 1,
+      "repair_attempted": 0,
+      "repaired": 0,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

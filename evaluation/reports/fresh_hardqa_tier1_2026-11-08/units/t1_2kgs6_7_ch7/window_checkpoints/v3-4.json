@@ -1,0 +1,371 @@
+{
+  "config_digest": "dff75e11c2f634febed8a35c540545c7c544680968ac4cebd050ba973dc16c6d",
+  "data": {
+    "kept": [
+      {
+        "question": "Which option do the men bring up right after the city?",
+        "answer": "staying where they are",
+        "answer_verse": 4,
+        "wrong_answer": "going to the Arameans' camp",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "Stay here",
+            "support": "And if we stay here, we will die."
+          }
+        ],
+        "distinct_readings": [
+          "Stay here"
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "This hinges on sequence within the speech (city first, then “if we stay here”), a unique ordering detail with a single clear answer of moderate centrality."
+        },
+        "window_verses": [
+          3,
+          4
+        ],
+        "window_text": {
+          "3": "Now there were four men with leprosy at the entrance of the city gate. They said to each other, “Why stay here until we die?",
+          "4": "If we say, ‘We’ll go into the city’—the famine is there, and we will die. And if we stay here, we will die. So let’s go over to the camp of the Arameans and surrender. If they spare us, we live; if they kill us, then we die.”"
+        },
+        "reading_groups": [
+          "Stay where they are."
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 4,
+          "answer_verse_original": 4,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 4",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Which option do the men bring up right after the city?",
+            "readings": [
+              {
+                "answer": "Stay here",
+                "support": "And if we stay here, we will die."
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "In the speech, after mentioning “We’ll go into the city,” the next option is “And if we stay here,” so “Stay here” matches “staying where they are.”"
+              }
+            ],
+            "verdict": "pass",
+            "reason": "After “go into the city,” the text immediately says “if we stay here,” establishing that staying where they are is the next option.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It cleanly probes the sequence of options after “go into the city,” requiring parsing of the dialogue, with a clear correct answer (“stay here”) and a plausible misparse competitor (going to the Arameans’ camp).",
+        "window_structure_max": 7.0,
+        "content_id": "v3-4:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Who do the four men plan to surrender to?",
+        "answer": "the Arameans",
+        "answer_verse": 4,
+        "wrong_answer": "the city",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "the Arameans",
+            "support": "the camp of the Arameans"
+          }
+        ],
+        "distinct_readings": [
+          "the Arameans"
+        ],
+        "scores": {
+          "structure_dependence": 3.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "The target of surrender is named explicitly in one clause (“to the camp of the Arameans”), making it a low-structure, uniquely stated, unambiguous, central fact."
+        },
+        "window_verses": [
+          3,
+          4
+        ],
+        "window_text": {
+          "3": "Now there were four men with leprosy at the entrance of the city gate. They said to each other, “Why stay here until we die?",
+          "4": "If we say, ‘We’ll go into the city’—the famine is there, and we will die. And if we stay here, we will die. So let’s go over to the camp of the Arameans and surrender. If they spare us, we live; if they kill us, then we die.”"
+        },
+        "reading_groups": [
+          "They plan to surrender to the Arameans."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 3.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 4,
+          "answer_verse_original": 4,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 4",
+          "readings_failures": []
+        },
+        "content_id": "v3-4:2"
+      },
+      {
+        "question": "Why do the men say going into the city means death?",
+        "answer": "because the famine is there",
+        "answer_verse": 4,
+        "wrong_answer": "because the Arameans will kill them",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "Because there is a famine in the city.",
+            "support": "the famine is there"
+          }
+        ],
+        "distinct_readings": [
+          "Because there is a famine in the city."
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "It asks for the stated cause (“the famine is there”), a single explicit clause with one clear answer that is important to their reasoning."
+        },
+        "window_verses": [
+          3,
+          4
+        ],
+        "window_text": {
+          "3": "Now there were four men with leprosy at the entrance of the city gate. They said to each other, “Why stay here until we die?",
+          "4": "If we say, ‘We’ll go into the city’—the famine is there, and we will die. And if we stay here, we will die. So let’s go over to the camp of the Arameans and surrender. If they spare us, we live; if they kill us, then we die.”"
+        },
+        "reading_groups": [
+          "Because there is a famine in the city."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 4,
+          "answer_verse_original": 4,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 4",
+          "readings_failures": []
+        },
+        "content_id": "v3-4:3"
+      },
+      {
+        "question": "What do the men expect if they stay where they are?",
+        "answer": "the men will die",
+        "answer_verse": 4,
+        "wrong_answer": "the men will live",
+        "relation": "modality",
+        "readings": [
+          {
+            "answer": "They will die.",
+            "support": "if we stay here, we will die."
+          }
+        ],
+        "distinct_readings": [
+          "They will die."
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 2.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "The conditional “if we stay here, we will die” is explicit but also echoed by “Why stay here until we die?,” so it’s clear yet not unique."
+        },
+        "window_verses": [
+          3,
+          4
+        ],
+        "window_text": {
+          "3": "Now there were four men with leprosy at the entrance of the city gate. They said to each other, “Why stay here until we die?",
+          "4": "If we say, ‘We’ll go into the city’—the famine is there, and we will die. And if we stay here, we will die. So let’s go over to the camp of the Arameans and surrender. If they spare us, we live; if they kill us, then we die.”"
+        },
+        "reading_groups": [
+          "If they stay, they will die."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 4,
+          "answer_verse_original": 4,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 4",
+          "readings_failures": []
+        },
+        "content_id": "v3-4:4"
+      },
+      {
+        "question": "After considering the city and staying, what do the men choose to do?",
+        "answer": "go to the Arameans' camp and surrender",
+        "answer_verse": 4,
+        "wrong_answer": "stay where they are",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "Go over to the camp of the Arameans and surrender.",
+            "support": "So let’s go over to the camp of the Arameans and surrender."
+          }
+        ],
+        "distinct_readings": [
+          "Go over to the camp of the Arameans and surrender."
+        ],
+        "scores": {
+          "structure_dependence": 5.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "Their decision is directly stated (“So let’s go… to the camp of the Arameans and surrender”), uniquely expressed and central to the passage."
+        },
+        "window_verses": [
+          3,
+          4
+        ],
+        "window_text": {
+          "3": "Now there were four men with leprosy at the entrance of the city gate. They said to each other, “Why stay here until we die?",
+          "4": "If we say, ‘We’ll go into the city’—the famine is there, and we will die. And if we stay here, we will die. So let’s go over to the camp of the Arameans and surrender. If they spare us, we live; if they kill us, then we die.”"
+        },
+        "reading_groups": [
+          "They choose to go to the Arameans’ camp and surrender."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "question too complex: stacked clauses (1 comma(s), 1 subordinator(s))",
+            "lexical: structure_dependence 5.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 4,
+          "answer_verse_original": 4,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 4",
+          "readings_failures": []
+        },
+        "content_id": "v3-4:5"
+      },
+      {
+        "question": "What happens if the Arameans spare the men?",
+        "answer": "the men live",
+        "answer_verse": 4,
+        "wrong_answer": "the men die",
+        "relation": "modality",
+        "readings": [
+          {
+            "answer": "They live.",
+            "support": "If they spare us, we live"
+          }
+        ],
+        "distinct_readings": [
+          "They live."
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "It depends on a simple conditional relation (“If they spare us, we live”), stated once with an unambiguous outcome relevant to their calculus."
+        },
+        "window_verses": [
+          3,
+          4
+        ],
+        "window_text": {
+          "3": "Now there were four men with leprosy at the entrance of the city gate. They said to each other, “Why stay here until we die?",
+          "4": "If we say, ‘We’ll go into the city’—the famine is there, and we will die. And if we stay here, we will die. So let’s go over to the camp of the Arameans and surrender. If they spare us, we live; if they kill us, then we die.”"
+        },
+        "reading_groups": [
+          "If spared by the Arameans, they live."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 4,
+          "answer_verse_original": 4,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 4",
+          "readings_failures": []
+        },
+        "content_id": "v3-4:6"
+      }
+    ],
+    "report": {
+      "window_id": "v3-4",
+      "verses": [
+        3,
+        4
+      ],
+      "generated": 6,
+      "scored": 6,
+      "kept": 1,
+      "survivors_before_window_selection": 1,
+      "window_selection_rejected": 0,
+      "repair_attempted": 0,
+      "repaired": 0,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

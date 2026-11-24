@@ -1,0 +1,478 @@
+{
+  "config_digest": "bab5a848f20f60ea534214d9358795f20d975515f4adb1ac077513ba4e1247aa",
+  "data": {
+    "kept": [
+      {
+        "question": "Which men go inside and take the idol?",
+        "answer": "the five men who had spied out the land",
+        "answer_verse": 17,
+        "wrong_answer": "the six hundred Danites, armed for battle",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "The five men who had spied out the land",
+            "support": "The five men who had spied out the land went inside and took the idol"
+          }
+        ],
+        "distinct_readings": [
+          "The five men who had spied out the land"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "The subject of the taking must be linked to the action among multiple groups, stated once in v17 and central to the episode, with a single clear answer."
+        },
+        "window_verses": [
+          14,
+          15,
+          16,
+          17
+        ],
+        "window_text": {
+          "14": "Then the five men who had spied out the land of Laish said to their fellow Danites, “Do you know that one of these houses has an ephod, some household gods and an image overlaid with silver? Now you know what to do.”",
+          "15": "So they turned in there and went to the house of the young Levite at Micah’s place and greeted him.",
+          "16": "The six hundred Danites, armed for battle, stood at the entrance of the gate.",
+          "17": "The five men who had spied out the land went inside and took the idol, the ephod and the household gods while the priest and the six hundred armed men stood at the entrance of the gate."
+        },
+        "reading_groups": [
+          "The five spies go inside and take the idol"
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 17,
+          "answer_verse_original": 17,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 17",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Which men go inside and take the idol?",
+            "readings": [
+              {
+                "answer": "The five men who had spied out the land",
+                "support": "The five men who had spied out the land went inside and took the idol"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Verse 17 explicitly says, “The five men who had spied out the land went inside and took the idol.”"
+              }
+            ],
+            "verdict": "pass",
+            "reason": "Verse 17 clearly identifies the five spies as the ones who went inside and took the idol.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It hinges on correctly parsing which group performs the action among two competing male groups in the scene (five spies vs. six hundred Danites), yielding a single clear answer grounded in the grammar.",
+        "window_structure_max": 9.0,
+        "content_id": "v14-17:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "While the five men take the idol, who stands at the gate?",
+        "answer": "the priest and the six hundred armed men",
+        "answer_verse": 17,
+        "wrong_answer": "the five men who had spied out the land",
+        "relation": "participant",
+        "readings": [
+          {
+            "answer": "the priest and the six hundred armed men",
+            "support": "the priest and the six hundred armed men stood at the entrance of the gate"
+          }
+        ],
+        "distinct_readings": [
+          "the priest and the six hundred armed men"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "It requires mapping the while-clause to its subject in v17, uniquely naming the priest and six hundred men, which is clear though somewhat ancillary to the theft."
+        },
+        "window_verses": [
+          14,
+          15,
+          16,
+          17
+        ],
+        "window_text": {
+          "14": "Then the five men who had spied out the land of Laish said to their fellow Danites, “Do you know that one of these houses has an ephod, some household gods and an image overlaid with silver? Now you know what to do.”",
+          "15": "So they turned in there and went to the house of the young Levite at Micah’s place and greeted him.",
+          "16": "The six hundred Danites, armed for battle, stood at the entrance of the gate.",
+          "17": "The five men who had spied out the land went inside and took the idol, the ephod and the household gods while the priest and the six hundred armed men stood at the entrance of the gate."
+        },
+        "reading_groups": [
+          "The priest and six hundred armed men stand at the gate"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: idol",
+            "question too complex: stacked clauses (1 comma(s), 1 subordinator(s))"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "idol"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 17,
+          "answer_verse_original": 17,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 17",
+          "readings_failures": []
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "While the five men take the idol, who stands at the gate?",
+            "after": "Who stands at the gate during the five men's entry and seizure?",
+            "note": "Removed the leaking word and the subordinate clause.",
+            "failures_before": [
+              "location leak: idol",
+              "question too complex: stacked clauses (1 comma(s), 1 subordinator(s))"
+            ],
+            "scores_before": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 7.0,
+              "runs": 1,
+              "reason": "It requires mapping the while-clause to its subject in v17, uniquely naming the priest and six hundred men, which is clear though somewhat ancillary to the theft."
+            },
+            "accepted": false,
+            "reason": "failed full rejudgment",
+            "suitability_judgment": {
+              "Q": "Who stands at the gate during the five men's entry and seizure?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "It clearly points to verse 17, which explicitly states that the priest and the six hundred armed men stood at the gate."
+            },
+            "failures_after": [
+              "lexical: structure_dependence 6.0 (need 7.0)"
+            ],
+            "scores_after": {
+              "structure_dependence": 6.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 6.0,
+              "runs": 1,
+              "reason": "Two similar statements about standing at the gate require selecting the v17 “while” clause; the exact group (the priest and the six hundred armed men) is stated once, unambiguously, and is supportive detail to the seizure scene."
+            },
+            "scores_used": {
+              "structure_dependence": 6.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 6.0,
+              "runs": 1,
+              "reason": "Two similar statements about standing at the gate require selecting the v17 “while” clause; the exact group (the priest and the six hundred armed men) is stated once, unambiguously, and is supportive detail to the seizure scene."
+            }
+          }
+        ],
+        "content_id": "v14-17:2"
+      },
+      {
+        "question": "What happens before the Danites greet the young Levite at Micah’s place?",
+        "answer": "the five men who had spied tell their fellow Danites about the objects",
+        "answer_verse": 15,
+        "wrong_answer": "the five men take the idol",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "They turn in and go to the young Levite’s house.",
+            "support": "So they turned in there and went to the house of the young Levite at Micah’s place"
+          },
+          {
+            "answer": "The five spies tell their fellow Danites about the ephod, household gods, and a silver-covered image.",
+            "support": "the five men who had spied out the land of Laish said to their fellow Danites | one of these houses has an ephod, some household gods and an image overlaid with silver"
+          }
+        ],
+        "distinct_readings": [
+          "They turn in and go to the young Levite’s house.",
+          "The five spies tell their fellow Danites about the ephod, household gods, and a silver-covered image."
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 2.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "Determining sequence is structural, but multiple plausible prior events (turning/going to the house in v15 or the report in v14) make the answer non-unique."
+        },
+        "window_verses": [
+          14,
+          15,
+          16,
+          17
+        ],
+        "window_text": {
+          "14": "Then the five men who had spied out the land of Laish said to their fellow Danites, “Do you know that one of these houses has an ephod, some household gods and an image overlaid with silver? Now you know what to do.”",
+          "15": "So they turned in there and went to the house of the young Levite at Micah’s place and greeted him.",
+          "16": "The six hundred Danites, armed for battle, stood at the entrance of the gate.",
+          "17": "The five men who had spied out the land went inside and took the idol, the ephod and the household gods while the priest and the six hundred armed men stood at the entrance of the gate."
+        },
+        "reading_groups": [
+          "They turn in and go to the young Levite’s house",
+          "The five spies tell their fellow Danites about the religious objects"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: greet, levit, micah, plac, young",
+            "dangling answer reference: their",
+            "quotes the passage: quotes verse 15: 'the young levite at micah’s'",
+            "2 defensible readings: They turn in and go to the young Levite’s house | The five spies tell their fellow Danites about the religious objects",
+            "ambiguous: answer_certainty 2.0 (need 7.0)"
+          ],
+          "notes": [
+            "corrected metadata from 14 to 15; reading support and question relation identify verse 15",
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "greet",
+            "levit",
+            "micah",
+            "plac",
+            "young"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "danit"
+          ],
+          "answer_verse": 15,
+          "answer_verse_original": 14,
+          "answer_verse_corrected": true,
+          "answer_verse_note": "corrected metadata from 14 to 15; reading support and question relation identify verse 15",
+          "readings_failures": [
+            "2 defensible readings: They turn in and go to the young Levite’s house | The five spies tell their fellow Danites about the religious objects"
+          ]
+        },
+        "content_id": "v14-17:3"
+      },
+      {
+        "question": "Before the five men take the idol, where do they go?",
+        "answer": "the house of the young Levite at Micah’s place",
+        "answer_verse": 15,
+        "wrong_answer": "the entrance of the gate",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "To the house of the young Levite at Micah’s place",
+            "support": "went to the house of the young Levite at Micah’s place"
+          },
+          {
+            "answer": "Inside",
+            "support": "went inside"
+          }
+        ],
+        "distinct_readings": [
+          "To the house of the young Levite at Micah’s place",
+          "Inside"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 7.0,
+          "answer_certainty": 2.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "It relies on temporal order and location, yet both “inside” (v17) and “the house of the young Levite” (v15) are defensible locations before the taking, creating ambiguity."
+        },
+        "window_verses": [
+          14,
+          15,
+          16,
+          17
+        ],
+        "window_text": {
+          "14": "Then the five men who had spied out the land of Laish said to their fellow Danites, “Do you know that one of these houses has an ephod, some household gods and an image overlaid with silver? Now you know what to do.”",
+          "15": "So they turned in there and went to the house of the young Levite at Micah’s place and greeted him.",
+          "16": "The six hundred Danites, armed for battle, stood at the entrance of the gate.",
+          "17": "The five men who had spied out the land went inside and took the idol, the ephod and the household gods while the priest and the six hundred armed men stood at the entrance of the gate."
+        },
+        "reading_groups": [
+          "They go to the house of the young Levite at Micah’s place",
+          "They go inside"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "dangling pronoun: they",
+            "question too complex: stacked clauses (1 comma(s), 1 subordinator(s))",
+            "2 defensible readings: They go to the house of the young Levite at Micah’s place | They go inside",
+            "ambiguous: answer_certainty 2.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 15,
+          "answer_verse_original": 15,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "consistent",
+          "readings_failures": [
+            "2 defensible readings: They go to the house of the young Levite at Micah’s place | They go inside"
+          ]
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "Before the five men take the idol, where do they go?",
+            "after": "Where do the five men go prior to taking the idol?",
+            "note": "Replaced the dangling pronoun and removed the subordinator.",
+            "failures_before": [
+              "dangling pronoun: they",
+              "question too complex: stacked clauses (1 comma(s), 1 subordinator(s))",
+              "2 defensible readings: They go to the house of the young Levite at Micah’s place | They go inside",
+              "ambiguous: answer_certainty 2.0 (need 7.0)"
+            ],
+            "scores_before": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 7.0,
+              "answer_certainty": 2.0,
+              "centrality": 6.0,
+              "runs": 1,
+              "reason": "It relies on temporal order and location, yet both “inside” (v17) and “the house of the young Levite” (v15) are defensible locations before the taking, creating ambiguity."
+            },
+            "accepted": false,
+            "reason": "removed as weak question: “Prior” is ambiguous, allowing either “inside” (v.17) or “the house of the young Levite at Micah’s place” (v.15) as valid answers.",
+            "suitability_judgment": {
+              "Q": "Where do the five men go prior to taking the idol?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": false,
+              "remove": true,
+              "reason": "“Prior” is ambiguous, allowing either “inside” (v.17) or “the house of the young Levite at Micah’s place” (v.15) as valid answers."
+            }
+          }
+        ],
+        "content_id": "v14-17:4"
+      },
+      {
+        "question": "Whom do the five men tell about the objects in a house?",
+        "answer": "their fellow Danites",
+        "answer_verse": 14,
+        "wrong_answer": "the young Levite",
+        "relation": "participant",
+        "readings": [
+          {
+            "answer": "their fellow Danites",
+            "support": "said to their fellow Danites"
+          }
+        ],
+        "distinct_readings": [
+          "their fellow Danites"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "One must connect the five men to the indirect object of their speech (“their fellow Danites”) in v14, which is stated once, unambiguous, and important setup."
+        },
+        "window_verses": [
+          14,
+          15,
+          16,
+          17
+        ],
+        "window_text": {
+          "14": "Then the five men who had spied out the land of Laish said to their fellow Danites, “Do you know that one of these houses has an ephod, some household gods and an image overlaid with silver? Now you know what to do.”",
+          "15": "So they turned in there and went to the house of the young Levite at Micah’s place and greeted him.",
+          "16": "The six hundred Danites, armed for battle, stood at the entrance of the gate.",
+          "17": "The five men who had spied out the land went inside and took the idol, the ephod and the household gods while the priest and the six hundred armed men stood at the entrance of the gate."
+        },
+        "reading_groups": [
+          "They tell their fellow Danites"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: hybrid window selector — It hinges on correctly parsing which group performs the action among two competing male groups in the scene (five spies vs. six hundred Danites), yielding a single clear answer grounded in the grammar."
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 14,
+          "answer_verse_original": 14,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 14",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Whom do the five men tell about the objects in a house?",
+            "readings": [
+              {
+                "answer": "their fellow Danites",
+                "support": "said to their fellow Danites"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The text says, “the five men … said to their fellow Danites,” directly identifying whom they told about the ephod, household gods, and image."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The passage explicitly states they spoke to “their fellow Danites,” matching the key exactly.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It hinges on correctly parsing which group performs the action among two competing male groups in the scene (five spies vs. six hundred Danites), yielding a single clear answer grounded in the grammar.",
+        "content_id": "v14-17:5"
+      }
+    ],
+    "report": {
+      "window_id": "v14-17",
+      "verses": [
+        14,
+        15,
+        16,
+        17
+      ],
+      "generated": 5,
+      "scored": 5,
+      "kept": 1,
+      "survivors_before_window_selection": 2,
+      "window_selection_rejected": 1,
+      "repair_attempted": 2,
+      "repaired": 0,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

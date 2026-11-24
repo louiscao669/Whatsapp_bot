@@ -1,9 +1,9 @@
-"""Background & eligibility questionnaire on ``/pilot`` (consent -> A -> B -> C -> D -> Q1).
+"""Background & eligibility questionnaire on ``/pilot`` (consent -> A -> B -> C -> Q1).
 
 Rules under test come from the IRB administration note v1.0:
 Section A decides eligibility; an ineligible participant's answers are not kept
-and only an anonymous count survives; B-D are optional; Section C has its own
-consent prompt; Section D is scored server-side and never shown.
+and only an anonymous count survives; B and C are optional. Section C has its own
+consent prompt and completes the current survey.
 """
 
 import json
@@ -112,12 +112,17 @@ class QuestionnaireTestBase(unittest.TestCase):
             json={"section": section, "answers": answers or {}, **extra},
         )
 
-    def _complete(self, participant_id=None, religion_consent=False, religion=None, familiarity=None):
+    def _confirm_exclusions(self, exclusions, participant_id=None):
+        answers = {**ELIGIBLE, **exclusions}
+        review = self._post("eligibility", answers, participant_id).get_json()
+        self.assertEqual(review, {"status": "eligibility", "confirm_exclusions": exclusions})
+        return self._post("eligibility", answers, participant_id, confirmed_exclusions=exclusions)
+
+    def _complete(self, participant_id=None, religion_consent=False, religion=None):
         steps = [
             ("eligibility", ELIGIBLE, {}),
             ("background", {"b1_age_band": "25_34"}, {}),
             ("religion", religion or {}, {"religion_consent": religion_consent}),
-            ("familiarity", familiarity if familiarity is not None else ALL_CORRECT_D, {}),
         ]
         last = None
         for section, answers, extra in steps:
@@ -147,17 +152,17 @@ class InstrumentTests(unittest.TestCase):
             self.assertNotIn(f'"{marker}"', payload)
         self.assertNotIn("✓", payload)
 
-    def test_sections_match_the_irb_instrument(self):
-        self.assertEqual([s["id"] for s in SECTIONS], ["eligibility", "background", "religion", "familiarity"])
-        self.assertEqual([len(s["items"]) for s in SECTIONS], [3, 3, 4, 7])
-        for item in SECTIONS[3]["items"]:
-            self.assertEqual(item["options"][-1]["code"], "not_sure")
+    def test_only_sections_a_through_c_reach_participants(self):
+        for language in ("en", "zh"):
+            sections = public_instrument(language)["sections"]
+            self.assertEqual([s["id"] for s in sections], ["eligibility", "background", "religion"])
+            self.assertEqual([len(s["items"]) for s in sections], [3, 3, 4])
+            self.assertNotIn("d1_good_samaritan", json.dumps(sections))
         for item in SECTIONS[2]["items"]:
             self.assertEqual(item["options"][-1]["code"], "prefer_not_to_say")
 
-    def test_familiarity_scoring_counts_not_sure_and_skips_as_zero(self):
+    def test_historical_familiarity_scoring_counts_skips_as_zero(self):
         score = score_familiarity({"d1_good_samaritan": "b", "d2_prodigal_son": "not_sure"})
-        self.assertEqual(score["correct"], 1)
         self.assertEqual(score["answered"], 2)
         self.assertEqual(score["not_sure"], 1)
         self.assertAlmostEqual(score["score"], 1 / 7)
@@ -178,6 +183,37 @@ class GateTests(QuestionnaireTestBase):
         payload = self.client.get(self._url("/question")).get_json()
         self.assertEqual(payload["state"], "question")
         self.assertIsNotNone(payload["question"])
+
+    def test_reader_waiting_at_old_quiz_can_resume_directly_at_reading(self):
+        self._complete()
+        with self.factory.begin() as db:
+            row = db.scalar(select(PilotQuestionnaireResponse))
+            row.instrument_version = "bgq-en-v1.0-2026-08-31"
+            row.completed_at = None
+        state = self.client.get(self._url("/questionnaire")).get_json()
+        self.assertEqual(state["status"], "complete")
+        self.assertNotIn("instrument", state)
+        self.assertEqual(self.client.get(self._url("/question")).get_json()["state"], "question")
+        with self.factory() as db:
+            report = get_questionnaire_results(db)["responses"][0]
+        self.assertTrue(report["complete"])
+        self.assertEqual(report["completed_at"], self._row().updated_at.isoformat())
+        self.assertIsNone(report["familiarity_score"])
+
+    def test_completed_legacy_quiz_keeps_its_original_answers_score_and_version(self):
+        self._complete()
+        with self.factory.begin() as db:
+            row = db.scalar(select(PilotQuestionnaireResponse))
+            row.instrument_version = "bgq-en-v1.0-2026-08-31"
+            row.status = "familiarity"
+            row.familiarity_answers = ALL_CORRECT_D
+            row.familiarity_score = 1.0
+        self.assertEqual(self._post("familiarity", {}).get_json(), {"status": "complete"})
+        with self.factory() as db:
+            report = get_questionnaire_results(db)["responses"][0]
+        self.assertEqual(report["instrument_version"], "bgq-en-v1.0-2026-08-31")
+        self.assertEqual(report["familiarity"], ALL_CORRECT_D)
+        self.assertEqual(report["familiarity_score"], 1.0)
 
     def test_participants_who_already_answered_questions_are_not_sent_back(self):
         with self.factory() as db:
@@ -210,6 +246,29 @@ class GateTests(QuestionnaireTestBase):
 
 
 class FlowTests(QuestionnaireTestBase):
+    def test_education_wording_and_saved_answers_follow_the_readers_instrument(self):
+        for version, choice, prompt in (
+            (INSTRUMENT_VERSION, "bachelors_program", "completed or are currently pursuing"),
+            ("bgq-en-a-c-2026-11-13", "bachelors", "Highest level of education completed"),
+        ):
+            with self.subTest(version=version):
+                with self.factory.begin() as db:
+                    pid = self._make_participant(db)
+                self._post("eligibility", ELIGIBLE, pid)
+                with self.factory.begin() as db:
+                    row = db.scalar(select(PilotQuestionnaireResponse).where(
+                        PilotQuestionnaireResponse.participant_id == pid))
+                    row.instrument_version = version
+                instrument = self.client.get(self._url("/questionnaire", pid)).get_json()["instrument"]
+                education = next(i for s in instrument["sections"] for i in s["items"] if i["id"] == "b2_education")
+                self.assertIn(prompt, education["text"]["en"])
+                self.assertIn(choice, [option["code"] for option in education["options"]])
+                self.assertEqual(self._post("background", {"b2_education": choice}, pid).status_code, 200)
+                self.assertEqual(self._post("religion", {}, pid, religion_consent=False).status_code, 200)
+                response = self._row(pid)
+                self.assertEqual(response.background_answers["b2_education"], choice)
+                self.assertEqual(response.instrument_version, version)
+
     def test_state_lists_the_instrument_without_the_key(self):
         state = self.client.get(self._url("/questionnaire")).get_json()
         self.assertEqual(state["status"], "eligibility")
@@ -230,35 +289,36 @@ class FlowTests(QuestionnaireTestBase):
     def test_full_path_with_section_c_declined(self):
         self._complete(religion_consent=False)
         row = self._row()
-        self.assertEqual(row.status, "familiarity")
+        self.assertEqual(row.status, "religion")
         self.assertIsNotNone(row.completed_at)
         self.assertEqual(row.eligibility_answers["a2_first_language"], "mandarin")
         self.assertEqual(row.background_answers["b1_age_band"], "25_34")
         self.assertIsNone(row.background_answers["b2_education"])  # skipped, not invented
         self.assertIs(row.religion_consent, False)
         self.assertIsNone(row.religion_answers)
-        self.assertEqual(row.familiarity_correct, 7)
-        self.assertEqual(row.familiarity_answered, 7)
-        self.assertAlmostEqual(row.familiarity_score, 1.0)
+        self.assertIsNone(row.familiarity_answers)
+        self.assertIsNone(row.familiarity_correct)
+        self.assertIsNone(row.familiarity_answered)
+        self.assertIsNone(row.familiarity_score)
 
     def test_section_c_answers_are_kept_when_agreed(self):
         self._complete(
             religion_consent=True,
             religion={"c1_religious_affiliation": "prefer_not_to_say", "c4_chinese_bible": "never"},
-            familiarity={},
         )
         row = self._row()
         self.assertIs(row.religion_consent, True)
         self.assertEqual(row.religion_answers["c1_religious_affiliation"], "prefer_not_to_say")
         self.assertIsNone(row.religion_answers["c2_service_attendance"])
-        self.assertEqual(row.familiarity_answered, 0)
-        self.assertEqual(row.familiarity_score, 0.0)
+        self.assertIsNotNone(row.completed_at)
+        self.assertIsNone(row.familiarity_score)
 
     def test_no_response_ever_reports_a_score(self):
         self._post("eligibility", ELIGIBLE)
         self._post("background", {})
-        self._post("religion", {}, religion_consent=False)
-        final = self._post("familiarity", ALL_CORRECT_D)
+        final = self._post("religion", {}, religion_consent=False)
+        self.assertEqual(self._post("familiarity", ALL_CORRECT_D).get_json(), {"status": "complete"})
+        self.assertIsNone(self._row().familiarity_score)
         self.assertEqual(final.get_json(), {"status": "complete"})
         self.assertNotIn('"score":', json.dumps(self.client.get(self._url("/questionnaire")).get_json()))
 
@@ -273,13 +333,54 @@ class FlowTests(QuestionnaireTestBase):
         self.assertIsNone(self._row())
         self.assertEqual(self._screenouts(), 0)
 
-    def test_sections_must_come_in_order_and_are_never_overwritten(self):
+    def test_sections_must_come_in_order_and_retries_do_not_overwrite(self):
         self.assertEqual(self._post("background", {}).status_code, 400)
         self._post("eligibility", ELIGIBLE)
         retry = self._post("eligibility", {**ELIGIBLE, "a3_reading_comfort": "very_comfortable"})
         self.assertEqual(retry.get_json(), {"status": "background"})
         self.assertEqual(self._row().eligibility_answers["a3_reading_comfort"], "comfortable")
         self.assertEqual(self._post("familiarity", {}).status_code, 400)
+
+    def test_revisit_restores_and_replaces_answers_without_skipping_or_reopening(self):
+        self._post("eligibility", ELIGIBLE)
+        self.assertEqual(self._post("familiarity", {}, edit=True).status_code, 400)
+        self._post("background", {"b1_age_band": "25_34"})
+        state = self.client.get(self._url("/questionnaire")).get_json()
+        self.assertEqual(state["answers"]["background"]["b1_age_band"], "25_34")
+        self.assertIsNone(state["religion_consent"])
+        changed = {**ELIGIBLE, "a2_first_language": "other_chinese", "a2_other_variety": "粤语"}
+        self.assertEqual(self._post("eligibility", changed, edit=True).get_json()["status"], "religion")
+        self._post("background", {}, edit=True)
+        state = self.client.get(self._url("/questionnaire")).get_json()
+        self.assertEqual(state["answers"]["eligibility"]["a2_other_variety"], "粤语")
+        self.assertIsNone(state["answers"]["background"]["b1_age_band"])
+        self.assertIsNone(state["religion_consent"])
+        self.assertNotIn("religion", state["answers"])
+        self.assertIsNone(self._row().religion_answers)
+        self._post("religion", {}, religion_consent=False)
+        self.assertEqual(self._post("eligibility", ELIGIBLE, edit=True).get_json(), {"status": "complete"})
+        self.assertEqual(self._row().eligibility_answers["a2_other_variety"], "粤语")
+        self.assertNotIn("answers", self.client.get(self._url("/questionnaire")).get_json())
+
+    def test_edit_to_ineligible_preserves_saved_answers_until_confirmed(self):
+        for test in (False, True):
+            with self.factory() as db:
+                pid = self._make_participant(db, test=test)
+                db.commit()
+            self._post("eligibility", ELIGIBLE, pid)
+            self._post("background", {"b1_age_band": "25_34"}, pid)
+            exclusions = {"a1_age_18_plus": "no"}
+            answers = {**ELIGIBLE, **exclusions}
+            before = self._screenouts()
+            review = self._post("eligibility", answers, pid, edit=True).get_json()
+            self.assertEqual(review, {"status": "religion", "confirm_exclusions": exclusions})
+            saved = self._row(pid)
+            self.assertEqual(saved.eligibility_answers["a1_age_18_plus"], "yes")
+            self.assertEqual(saved.background_answers["b1_age_band"], "25_34")
+            self.assertEqual(self._screenouts(), before)
+            result = self._post("eligibility", answers, pid, edit=True, confirmed_exclusions=exclusions)
+            self.assertEqual(result.get_json(), {"status": "screened_out", "deleted": not test})
+            self.assertIsNone(self._row(pid))
 
     def test_section_c_needs_an_explicit_choice(self):
         self._post("eligibility", ELIGIBLE)
@@ -308,18 +409,26 @@ class FlowTests(QuestionnaireTestBase):
 
 
 class ScreenOutTests(QuestionnaireTestBase):
-    def test_each_criterion_screens_out_a_real_participant(self):
-        cases = {
-            "under 18": {**ELIGIBLE, "a1_age_18_plus": "no"},
-            "not chinese": {**ELIGIBLE, "a2_first_language": "no"},
-            "not comfortable": {**ELIGIBLE, "a3_reading_comfort": "not_comfortable"},
-        }
-        for expected_count, (label, answers) in enumerate(cases.items(), start=1):
-            with self.subTest(label):
+    def test_each_criterion_screens_out_only_after_confirmation(self):
+        cases = (
+            {"a1_age_18_plus": "no"},
+            {"a2_first_language": "no"},
+            {"a3_reading_comfort": "not_comfortable"},
+        )
+        for expected_count, exclusions in enumerate(cases, start=1):
+            with self.subTest(exclusions=exclusions):
                 with self.factory() as db:
                     pid = self._make_participant(db)
                     db.commit()
-                response = self._post("eligibility", answers, pid)
+                answers = {**ELIGIBLE, **exclusions}
+                review = self._post("eligibility", answers, pid).get_json()
+                self.assertEqual(review, {"status": "eligibility", "confirm_exclusions": exclusions})
+                self.assertEqual(self._screenouts(), expected_count - 1)
+                self.assertIsNone(self._row(pid))
+                state = self.client.get(self._url("/question", pid)).get_json()
+                self.assertEqual(state["state"], "questionnaire")
+                self.assertIsNone(state["question"])
+                response = self._post("eligibility", answers, pid, confirmed_exclusions=exclusions)
                 self.assertEqual(response.status_code, 200)
                 self.assertEqual(response.get_json(), {"status": "screened_out", "deleted": True})
                 with self.factory() as db:
@@ -328,8 +437,23 @@ class ScreenOutTests(QuestionnaireTestBase):
                 self.assertEqual(self._screenouts(), expected_count)
                 self.assertEqual(self.client.get(self._url("/consent", pid)).status_code, 404)
 
+    def test_all_excluding_choices_must_match_and_can_be_corrected(self):
+        age = {"a1_age_18_plus": "no"}
+        exclusions = {**age, "a2_first_language": "no", "a3_reading_comfort": "not_comfortable"}
+        self.assertEqual(self._post("eligibility", {**ELIGIBLE, **age}).get_json()["confirm_exclusions"], age)
+        for confirmation in (None, age, True, {**exclusions, "a1_age_18_plus": "yes"}):
+            review = self._post("eligibility", exclusions, confirmed_exclusions=confirmation)
+            self.assertEqual(review.get_json(), {"status": "eligibility", "confirm_exclusions": exclusions})
+        self.assertEqual(self._post("background", {}).status_code, 400)
+        state = self.client.get(self._url("/questionnaire")).get_json()
+        self.assertEqual(state["status"], "eligibility")
+        self.assertNotIn("answers", state)
+        self.assertIsNone(self._row())
+        self.assertEqual(self._post("eligibility", ELIGIBLE).get_json(), {"status": "background"})
+        self.assertEqual(self._screenouts(), 0)
+
     def test_the_count_is_the_only_trace(self):
-        self._post("eligibility", {**ELIGIBLE, "a1_age_18_plus": "no"})
+        self._confirm_exclusions({"a1_age_18_plus": "no"})
         with self.factory() as db:
             counts = db.scalars(select(PilotScreenoutCount)).all()
             self.assertEqual([(c.instrument_version, c.screenouts) for c in counts], [(INSTRUMENT_VERSION, 1)])
@@ -339,7 +463,7 @@ class ScreenOutTests(QuestionnaireTestBase):
         with self.factory() as db:
             pid = self._make_participant(db, test=True)
             db.commit()
-        response = self._post("eligibility", {**ELIGIBLE, "a1_age_18_plus": "no"}, pid)
+        response = self._confirm_exclusions({"a1_age_18_plus": "no"}, pid)
         self.assertEqual(response.get_json(), {"status": "screened_out", "deleted": False})
         with self.factory() as db:
             participant = db.get(Participant, pid)
@@ -351,6 +475,7 @@ class ScreenOutTests(QuestionnaireTestBase):
         self.assertEqual(self.client.get(self._url("/questionnaire", pid)).get_json()["status"], "screened_out")
         # A later submit cannot reopen it.
         self.assertEqual(self._post("eligibility", ELIGIBLE, pid).get_json(), {"status": "screened_out"})
+        self.assertEqual(self._screenouts(), 1)
 
 
 class ResultsTests(QuestionnaireTestBase):
@@ -362,7 +487,7 @@ class ResultsTests(QuestionnaireTestBase):
         with self.factory() as db:
             pid = self._make_participant(db)
             db.commit()
-        self._post("eligibility", {**ELIGIBLE, "a1_age_18_plus": "no"}, pid)
+        self._confirm_exclusions({"a1_age_18_plus": "no"}, pid)
         with self.factory() as db:
             results = get_questionnaire_results(db)
         self.assertEqual(results["screenouts"], {INSTRUMENT_VERSION: 1})
@@ -371,7 +496,7 @@ class ResultsTests(QuestionnaireTestBase):
         self.assertEqual(row["participant_id"], self.participant_id)
         self.assertTrue(row["complete"])
         self.assertEqual(row["religion"]["c2_service_attendance"], "weekly")
-        self.assertEqual(row["familiarity_correct"], 7)
+        self.assertIsNone(row["familiarity_correct"])
 
 
 if __name__ == "__main__":

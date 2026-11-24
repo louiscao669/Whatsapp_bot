@@ -1,0 +1,416 @@
+{
+  "config_digest": "bf29cf564aae7d15d3bd5bdbff20af59f16e06874e5bad45e83aa6623bdff95a",
+  "data": {
+    "kept": [
+      {
+        "question": "For what purpose would the olive tree give up its oil?",
+        "answer": "to rule the trees",
+        "answer_verse": 9,
+        "wrong_answer": "to honor gods and humans",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "to hold sway over the trees",
+            "support": "to hold sway over the trees"
+          }
+        ],
+        "distinct_readings": [
+          "to hold sway over the trees"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "It depends on reading the purpose infinitive “to hold sway over the trees” tied to giving up oil, mentioned once, clear, and central to the olive tree’s refusal."
+        },
+        "window_verses": [
+          9,
+          10
+        ],
+        "window_text": {
+          "9": "“But the olive tree answered, ‘Should I give up my oil, by which both gods and humans are honored, to hold sway over the trees?’",
+          "10": "“Next, the trees said to the fig tree, ‘Come and be our king.’"
+        },
+        "reading_groups": [
+          "To hold sway/rule over the trees"
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "tre"
+          ],
+          "answer_verse": 9,
+          "answer_verse_original": 9,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 9",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "For what purpose would the olive tree give up its oil?",
+            "readings": [
+              {
+                "answer": "to hold sway over the trees",
+                "support": "to hold sway over the trees"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Verse 9 states the olive tree would have to give up its oil \"to hold sway over the trees,\" which is the same as ruling the trees."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "“To hold sway over the trees” in v9 is a direct paraphrase of “to rule the trees.”",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It maximizes structural dependence by requiring the reader to parse the clause roles—identifying the infinitive of purpose (“to hold sway over the trees”) versus the instrumental relative clause (“by which gods and humans are honored”)—while retaining a single clear answer.",
+        "window_structure_max": 9.0,
+        "content_id": "v9-10:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "What does the olive tree say honors gods and humans?",
+        "answer": "its oil",
+        "answer_verse": 9,
+        "wrong_answer": "the trees",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "my oil",
+            "support": "my oil, by which both gods and humans are honored"
+          }
+        ],
+        "distinct_readings": [
+          "my oil"
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "The answer requires resolving the relative clause “by which … are honored” to its antecedent “my oil,” which is uniquely stated, clear, and moderately central."
+        },
+        "window_verses": [
+          9,
+          10
+        ],
+        "window_text": {
+          "9": "“But the olive tree answered, ‘Should I give up my oil, by which both gods and humans are honored, to hold sway over the trees?’",
+          "10": "“Next, the trees said to the fig tree, ‘Come and be our king.’"
+        },
+        "reading_groups": [
+          "Its oil is what honors gods and humans"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: outside top structure band (7 vs window max 9)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 9,
+          "answer_verse_original": 9,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 9",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "What does the olive tree say honors gods and humans?",
+            "readings": [
+              {
+                "answer": "my oil",
+                "support": "my oil, by which both gods and humans are honored"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The verse states “my oil, by which both gods and humans are honored,” which is the same referent as the key’s “its oil.”"
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The passage explicitly says the olive tree’s oil honors gods and humans.",
+            "status": "passed"
+          }
+        },
+        "content_id": "v9-10:2"
+      },
+      {
+        "question": "Whom do the trees ask to be king next?",
+        "answer": "the fig tree",
+        "answer_verse": 10,
+        "wrong_answer": "the olive tree",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "the fig tree",
+            "support": "the trees said to the fig tree, ‘Come and be our king.’"
+          }
+        ],
+        "distinct_readings": [
+          "the fig tree"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "One must link the addressee of “the trees said to the fig tree” with the request “Come and be our king,” uniquely stated and crucial to the episode."
+        },
+        "window_verses": [
+          9,
+          10
+        ],
+        "window_text": {
+          "9": "“But the olive tree answered, ‘Should I give up my oil, by which both gods and humans are honored, to hold sway over the trees?’",
+          "10": "“Next, the trees said to the fig tree, ‘Come and be our king.’"
+        },
+        "reading_groups": [
+          "They ask the fig tree to be king next"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: hybrid window selector — It maximizes structural dependence by requiring the reader to parse the clause roles—identifying the infinitive of purpose (“to hold sway over the trees”) versus the instrumental relative clause (“by which gods and humans are honored”)—while retaining a single clear answer."
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "tre"
+          ],
+          "answer_verse": 10,
+          "answer_verse_original": 10,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 10",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Whom do the trees ask to be king next?",
+            "readings": [
+              {
+                "answer": "the fig tree",
+                "support": "the trees said to the fig tree, ‘Come and be our king.’"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Verse 10 explicitly says, “Next, the trees said to the fig tree, ‘Come and be our king,’” which directly answers the question."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The text explicitly states the trees next asked the fig tree to be their king, matching the key.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It maximizes structural dependence by requiring the reader to parse the clause roles—identifying the infinitive of purpose (“to hold sway over the trees”) versus the instrumental relative clause (“by which gods and humans are honored”)—while retaining a single clear answer.",
+        "content_id": "v9-10:3"
+      },
+      {
+        "question": "Who speaks to the fig plant?",
+        "answer": "the trees",
+        "answer_verse": 10,
+        "wrong_answer": "the olive tree",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "The trees",
+            "support": "the trees said to the fig tree"
+          }
+        ],
+        "distinct_readings": [
+          "The trees"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 10.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "It hinges on the grammatical relation of who speaks to whom in the single clause “the trees said to the fig tree,” which is uniquely stated, unambiguous, and central to the brief event."
+        },
+        "window_verses": [
+          9,
+          10
+        ],
+        "window_text": {
+          "9": "“But the olive tree answered, ‘Should I give up my oil, by which both gods and humans are honored, to hold sway over the trees?’",
+          "10": "“Next, the trees said to the fig tree, ‘Come and be our king.’"
+        },
+        "reading_groups": [
+          "The trees speak to the fig tree"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: hybrid window selector — It maximizes structural dependence by requiring the reader to parse the clause roles—identifying the infinitive of purpose (“to hold sway over the trees”) versus the instrumental relative clause (“by which gods and humans are honored”)—while retaining a single clear answer."
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 10,
+          "answer_verse_original": 10,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 10",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Who speaks to the fig plant?",
+            "readings": [
+              {
+                "answer": "The trees",
+                "support": "the trees said to the fig tree"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Verse 10 explicitly states, “the trees said to the fig tree,” matching the key’s answer."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The passage states that “the trees said to the fig tree,” directly identifying the speakers as the trees.",
+            "status": "passed"
+          }
+        },
+        "scores_after_repair_raw": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 10.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "It hinges on the grammatical relation of who speaks to whom in the single clause “the trees said to the fig tree,” which is uniquely stated, unambiguous, and central to the brief event."
+        },
+        "repaired": true,
+        "repair_attempted": true,
+        "question_before_repair": "Who speaks to the fig tree?",
+        "scores_before_repair": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "Identifying the speaker requires parsing who said to whom in the clause “the trees said to the fig tree,” stated once and unambiguous, and central to the action."
+        },
+        "audit_before_repair": {
+          "passed": false,
+          "failures": [
+            "answer leaks into question: tre"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "tre"
+          ],
+          "answer_verse": 10,
+          "answer_verse_original": 10,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 10",
+          "readings_failures": []
+        },
+        "repair_log": [
+          {
+            "before": "Who speaks to the fig tree?",
+            "after": "Who speaks to the fig plant?",
+            "note": "Replaced “fig tree” with “fig plant” to remove the leaking substring while preserving the ask.",
+            "failures_before": [
+              "answer leaks into question: tre"
+            ],
+            "scores_before": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "Identifying the speaker requires parsing who said to whom in the clause “the trees said to the fig tree,” stated once and unambiguous, and central to the action."
+            },
+            "accepted": true,
+            "reason": "passed full rejudgment",
+            "suitability_judgment": {
+              "Q": "Who speaks to the fig plant?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "The question is clear and natural, and the window explicitly states that the trees speak to the fig tree, yielding a single, direct answer."
+            },
+            "failures_after": [],
+            "scores_after": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 10.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "It hinges on the grammatical relation of who speaks to whom in the single clause “the trees said to the fig tree,” which is uniquely stated, unambiguous, and central to the brief event."
+            },
+            "scores_used": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 10.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "It hinges on the grammatical relation of who speaks to whom in the single clause “the trees said to the fig tree,” which is uniquely stated, unambiguous, and central to the brief event."
+            }
+          }
+        ],
+        "window_selection_reason": "It maximizes structural dependence by requiring the reader to parse the clause roles—identifying the infinitive of purpose (“to hold sway over the trees”) versus the instrumental relative clause (“by which gods and humans are honored”)—while retaining a single clear answer.",
+        "content_id": "v9-10:4"
+      }
+    ],
+    "report": {
+      "window_id": "v9-10",
+      "verses": [
+        9,
+        10
+      ],
+      "generated": 4,
+      "scored": 4,
+      "kept": 1,
+      "survivors_before_window_selection": 4,
+      "window_selection_rejected": 3,
+      "repair_attempted": 1,
+      "repaired": 1,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

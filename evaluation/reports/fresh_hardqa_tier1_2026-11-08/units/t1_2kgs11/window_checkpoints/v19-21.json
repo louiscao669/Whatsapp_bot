@@ -1,0 +1,380 @@
+{
+  "config_digest": "35c6b9487afefbfbca0dd7d7a3df8b147d1a9fbd4ee9dccb39a57ae2c9155f3b",
+  "data": {
+    "kept": [
+      {
+        "question": "Why is the city calm?",
+        "answer": "Because Athaliah has been slain with the sword at the palace.",
+        "answer_verse": 20,
+        "wrong_answer": "Because all the people of the land rejoice.",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "Because Athaliah had been slain with the sword at the palace.",
+            "support": "because Athaliah had been slain with the sword at the palace"
+          }
+        ],
+        "distinct_readings": [
+          "Because Athaliah had been slain with the sword at the palace."
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "The cause is given only in one explicit because-clause linking the city’s calm to Athaliah’s death, producing a single unambiguous answer central to the outcome."
+        },
+        "window_verses": [
+          19,
+          20,
+          21
+        ],
+        "window_text": {
+          "19": "He took with him the commanders of hundreds, the Carites, the guards and all the people of the land, and together they brought the king down from the temple of the Lord and went into the palace, entering by way of the gate of the guards. The king then took his place on the royal throne.",
+          "20": "All the people of the land rejoiced, and the city was calm, because Athaliah had been slain with the sword at the palace.",
+          "21": "Joash was seven years old when he began to reign."
+        },
+        "reading_groups": [
+          "Because Athaliah was slain"
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 20,
+          "answer_verse_original": 20,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 20",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Why is the city calm?",
+            "readings": [
+              {
+                "answer": "Because Athaliah had been slain with the sword at the palace.",
+                "support": "because Athaliah had been slain with the sword at the palace"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The reading restates verse 20 verbatim: “the city was calm, because Athaliah had been slain with the sword at the palace,” directly answering the question."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "Verse 20 explicitly states the city was calm because Athaliah had been slain with the sword at the palace.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It most strongly relies on syntax by correctly attaching the because-clause to “the city was calm,” not to the preceding rejoicing, yielding a single clear causal answer.",
+        "window_structure_max": 9.0,
+        "content_id": "v19-21:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Where is Athaliah killed?",
+        "answer": "At the palace.",
+        "answer_verse": 20,
+        "wrong_answer": "At the temple of the Lord.",
+        "relation": "direction",
+        "readings": [
+          {
+            "answer": "At the palace",
+            "support": "Athaliah had been slain with the sword at the palace"
+          }
+        ],
+        "distinct_readings": [
+          "At the palace"
+        ],
+        "scores": {
+          "structure_dependence": 4.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "The location appears as a single prepositional phrase (“at the palace”), easy to spot yet uniquely stated and relevant though not the main action."
+        },
+        "window_verses": [
+          19,
+          20,
+          21
+        ],
+        "window_text": {
+          "19": "He took with him the commanders of hundreds, the Carites, the guards and all the people of the land, and together they brought the king down from the temple of the Lord and went into the palace, entering by way of the gate of the guards. The king then took his place on the royal throne.",
+          "20": "All the people of the land rejoiced, and the city was calm, because Athaliah had been slain with the sword at the palace.",
+          "21": "Joash was seven years old when he began to reign."
+        },
+        "reading_groups": [
+          "At the palace"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: athaliah",
+            "lexical: structure_dependence 4.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "athaliah"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 20,
+          "answer_verse_original": 20,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 20",
+          "readings_failures": []
+        },
+        "content_id": "v19-21:2"
+      },
+      {
+        "question": "Who is brought down from the temple to the palace?",
+        "answer": "The king.",
+        "answer_verse": 19,
+        "wrong_answer": "All the people of the land.",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "the king",
+            "support": "brought the king down from the temple of the Lord"
+          },
+          {
+            "answer": "Joash",
+            "support": "brought the king down from the temple of the Lord | Joash was seven years old when he began to reign."
+          }
+        ],
+        "distinct_readings": [
+          "the king",
+          "Joash"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "Determining the patient of the verb in “they brought the king down from the temple” requires parsing the clause, which is stated once and central to the passage’s action."
+        },
+        "window_verses": [
+          19,
+          20,
+          21
+        ],
+        "window_text": {
+          "19": "He took with him the commanders of hundreds, the Carites, the guards and all the people of the land, and together they brought the king down from the temple of the Lord and went into the palace, entering by way of the gate of the guards. The king then took his place on the royal throne.",
+          "20": "All the people of the land rejoiced, and the city was calm, because Athaliah had been slain with the sword at the palace.",
+          "21": "Joash was seven years old when he began to reign."
+        },
+        "reading_groups": [
+          "The king (Joash)"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "answerability multiple_answers: The passage identifies the reigning king as Joash (v.21), so naming Joash for \"the king\" brought down in v.19 is a valid, specific identification."
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 19,
+          "answer_verse_original": 19,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 19",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Who is brought down from the temple to the palace?",
+            "readings": [
+              {
+                "answer": "the king",
+                "support": "brought the king down from the temple of the Lord"
+              },
+              {
+                "answer": "Joash",
+                "support": "brought the king down from the temple of the Lord | Joash was seven years old when he began to reign."
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Verse 19 explicitly says they \"brought the king down from the temple of the Lord\" to the palace."
+              },
+              {
+                "number": 2,
+                "classification": "defensible_alternative",
+                "reason": "The passage identifies the reigning king as Joash (v.21), so naming Joash for \"the king\" brought down in v.19 is a valid, specific identification."
+              }
+            ],
+            "verdict": "multiple_answers",
+            "reason": "The passage identifies the reigning king as Joash (v.21), so naming Joash for \"the king\" brought down in v.19 is a valid, specific identification.",
+            "status": "flagged"
+          }
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "Who is brought down from the temple to the palace?",
+            "after": "Which officeholder is brought down from the temple to the palace?",
+            "note": "Asked for the role instead of a specific name to prevent multiple valid answers.",
+            "failures_before": [
+              "answerability multiple_answers: The passage identifies the reigning king as Joash (v.21), so naming Joash for \"the king\" brought down in v.19 is a valid, specific identification."
+            ],
+            "scores_before": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "Determining the patient of the verb in “they brought the king down from the temple” requires parsing the clause, which is stated once and central to the passage’s action."
+            },
+            "accepted": false,
+            "reason": "failed full rejudgment",
+            "suitability_judgment": {
+              "Q": "Which officeholder is brought down from the temple to the palace?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "The passage explicitly says they brought the king down from the temple to the palace, yielding a single clear answer."
+            },
+            "failures_after": [
+              "lexical: structure_dependence 3.0 (need 7.0)"
+            ],
+            "scores_after": {
+              "structure_dependence": 3.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "The text explicitly states that they brought the king from the temple into the palace, making the answer a directly named noun stated once, unambiguous, and central to the enthronement action, with minimal structural inference required."
+            },
+            "scores_used": {
+              "structure_dependence": 3.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "The text explicitly states that they brought the king from the temple into the palace, making the answer a directly named noun stated once, unambiguous, and central to the enthronement action, with minimal structural inference required."
+            }
+          }
+        ],
+        "content_id": "v19-21:3"
+      },
+      {
+        "question": "From where is the king brought before going into the palace?",
+        "answer": "From the temple of the Lord.",
+        "answer_verse": 19,
+        "wrong_answer": "From the palace.",
+        "relation": "direction",
+        "readings": [
+          {
+            "answer": "from the temple of the Lord",
+            "support": "from the temple of the Lord"
+          }
+        ],
+        "distinct_readings": [
+          "from the temple of the Lord"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "Identifying the source location requires parsing the movement phrase (“brought… from” vs “went into”), which is stated once and yields a single clear answer tied to the enthronement sequence."
+        },
+        "window_verses": [
+          19,
+          20,
+          21
+        ],
+        "window_text": {
+          "19": "He took with him the commanders of hundreds, the Carites, the guards and all the people of the land, and together they brought the king down from the temple of the Lord and went into the palace, entering by way of the gate of the guards. The king then took his place on the royal throne.",
+          "20": "All the people of the land rejoiced, and the city was calm, because Athaliah had been slain with the sword at the palace.",
+          "21": "Joash was seven years old when he began to reign."
+        },
+        "reading_groups": [
+          "From the temple of the Lord"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: hybrid window selector — It most strongly relies on syntax by correctly attaching the because-clause to “the city was calm,” not to the preceding rejoicing, yielding a single clear causal answer."
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 19,
+          "answer_verse_original": 19,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 19",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "From where is the king brought before going into the palace?",
+            "readings": [
+              {
+                "answer": "from the temple of the Lord",
+                "support": "from the temple of the Lord"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Verse 19 states they “brought the king down from the temple of the Lord and went into the palace,” matching the answer exactly."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The passage explicitly says the king was brought from the temple of the Lord before entering the palace.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It most strongly relies on syntax by correctly attaching the because-clause to “the city was calm,” not to the preceding rejoicing, yielding a single clear causal answer.",
+        "content_id": "v19-21:4"
+      }
+    ],
+    "report": {
+      "window_id": "v19-21",
+      "verses": [
+        19,
+        20,
+        21
+      ],
+      "generated": 4,
+      "scored": 4,
+      "kept": 1,
+      "survivors_before_window_selection": 2,
+      "window_selection_rejected": 1,
+      "repair_attempted": 1,
+      "repaired": 0,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

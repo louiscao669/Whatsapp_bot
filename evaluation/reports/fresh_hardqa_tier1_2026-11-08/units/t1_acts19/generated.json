@@ -1,0 +1,162 @@
+[
+  {
+    "question": "What leaves the sick?",
+    "answer": "evil spirits",
+    "answer_verse": 12,
+    "wrong_answer": "illnesses",
+    "relation": "participant",
+    "readings": [
+      {
+        "answer": "the evil spirits",
+        "support": "the evil spirits left them"
+      }
+    ],
+    "distinct_readings": [
+      "the evil spirits"
+    ],
+    "scores": {
+      "structure_dependence": 7.0,
+      "statement_uniqueness": 9.0,
+      "answer_certainty": 10.0,
+      "centrality": 8.0,
+      "runs": 1,
+      "reason": "One must link the verb “left them” to “the evil spirits” (not the illnesses), a single, unambiguous and central outcome of the miracle."
+    },
+    "window_verses": [
+      11,
+      12
+    ],
+    "window_text": {
+      "11": "God did extraordinary miracles through Paul,",
+      "12": "so that even handkerchiefs and aprons that had touched him were taken to the sick, and their illnesses were cured and the evil spirits left them."
+    },
+    "reading_groups": [
+      "The evil spirits leave the sick"
+    ],
+    "audit": {
+      "passed": true,
+      "failures": [],
+      "notes": [
+        "distractor check skipped: none stated by this output tier"
+      ],
+      "location_leak_terms": [],
+      "distractors_found": [],
+      "distractors_missing": false,
+      "answer_leak_terms": [],
+      "answer_verse": 12,
+      "answer_verse_original": 12,
+      "answer_verse_corrected": false,
+      "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 12",
+      "readings_failures": [],
+      "answerability": {
+        "model": "gpt-5",
+        "mode": "enforce",
+        "question": "What leaves the sick?",
+        "readings": [
+          {
+            "answer": "the evil spirits",
+            "support": "the evil spirits left them"
+          }
+        ],
+        "assessments": [
+          {
+            "number": 1,
+            "classification": "equivalent_to_key",
+            "reason": "Verse 12 states “the evil spirits left them,” where “them” refers to the sick; thus the answer matches the key."
+          }
+        ],
+        "verdict": "pass",
+        "reason": "The text explicitly says “the evil spirits left them,” referring to the sick.",
+        "status": "passed"
+      }
+    },
+    "window_selection_reason": "It cleanly tests the verb-argument structure distinguishing what is cured versus what leaves the sick, with a single clear answer and a plausible misparse competitor.",
+    "window_structure_max": 7.0,
+    "content_id": "v11-12:1",
+    "rank_in_batch": 1,
+    "rank_reason": "Q1 hinges on resolving pronouns and verb-to-noun pairing (evil spirits leave vs illnesses are cured), inviting a specific wrong answer if misparsed, whereas Q2’s causal link—running out because of a beating—is easily inferred even with scrambled grammar.",
+    "final_rank": 1
+  },
+  {
+    "question": "Why do the seven sons run out of the house?",
+    "answer": "because the man with the evil spirit beat them",
+    "answer_verse": 16,
+    "wrong_answer": "because they told the spirit to leave",
+    "relation": "causation",
+    "readings": [
+      {
+        "answer": "Because the man with the evil spirit beat them so badly.",
+        "support": "He gave them such a beating that they ran out of the house"
+      }
+    ],
+    "distinct_readings": [
+      "Because the man with the evil spirit beat them so badly."
+    ],
+    "scores": {
+      "structure_dependence": 9.0,
+      "statement_uniqueness": 10.0,
+      "answer_certainty": 10.0,
+      "centrality": 8.0,
+      "runs": 1,
+      "reason": "The causal construction \"such a beating that they ran out\" uniquely encodes the reason and must be parsed to get cause and effect."
+    },
+    "window_verses": [
+      13,
+      14,
+      15,
+      16
+    ],
+    "window_text": {
+      "13": "Some Jews who went around driving out evil spirits tried to invoke the name of the Lord Jesus over those who were demon-possessed. They would say, “In the name of the Jesus whom Paul preaches, I command you to come out.”",
+      "14": "Seven sons of Sceva, a Jewish chief priest, were doing this.",
+      "15": "One day the evil spirit answered them, “Jesus I know, and Paul I know about, but who are you?”",
+      "16": "Then the man who had the evil spirit jumped on them and overpowered them all. He gave them such a beating that they ran out of the house naked and bleeding."
+    },
+    "reading_groups": [
+      "Because the possessed man beat them severely"
+    ],
+    "audit": {
+      "passed": true,
+      "failures": [],
+      "notes": [
+        "distractor check skipped: none stated by this output tier"
+      ],
+      "location_leak_terms": [],
+      "distractors_found": [],
+      "distractors_missing": false,
+      "answer_leak_terms": [],
+      "answer_verse": 16,
+      "answer_verse_original": 16,
+      "answer_verse_corrected": false,
+      "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 16",
+      "readings_failures": [],
+      "answerability": {
+        "model": "gpt-5",
+        "mode": "enforce",
+        "question": "Why do the seven sons run out of the house?",
+        "readings": [
+          {
+            "answer": "Because the man with the evil spirit beat them so badly.",
+            "support": "He gave them such a beating that they ran out of the house"
+          }
+        ],
+        "assessments": [
+          {
+            "number": 1,
+            "classification": "equivalent_to_key",
+            "reason": "Verse 16 says, “He gave them such a beating that they ran out of the house,” matching the answer that they ran because the man with the evil spirit beat them."
+          }
+        ],
+        "verdict": "pass",
+        "reason": "The passage explicitly states they ran out because the demon-possessed man beat them.",
+        "status": "passed"
+      }
+    },
+    "window_selection_reason": "It hinges on parsing the explicit causal structure (“He gave them such a beating that they ran out”), and the competitor reflects a plausible misattribution of cause despite the text’s clear grammar.",
+    "window_structure_max": 9.0,
+    "content_id": "v13-16:1",
+    "rank_in_batch": 2,
+    "rank_reason": "Q1 hinges on resolving pronouns and verb-to-noun pairing (evil spirits leave vs illnesses are cured), inviting a specific wrong answer if misparsed, whereas Q2’s causal link—running out because of a beating—is easily inferred even with scrambled grammar.",
+    "final_rank": 2
+  }
+]

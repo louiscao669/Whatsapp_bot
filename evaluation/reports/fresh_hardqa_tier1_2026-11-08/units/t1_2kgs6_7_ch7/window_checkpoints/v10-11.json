@@ -1,0 +1,344 @@
+{
+  "config_digest": "dff75e11c2f634febed8a35c540545c7c544680968ac4cebd050ba973dc16c6d",
+  "data": {
+    "kept": [
+      {
+        "question": "What happens after the gatekeepers cry out the report?",
+        "answer": "the news is reported within the palace",
+        "answer_verse": 11,
+        "wrong_answer": "the men call out to the gatekeepers",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "It was reported within the palace.",
+            "support": "it was reported within the palace"
+          }
+        ],
+        "distinct_readings": [
+          "It was reported within the palace."
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "It depends on understanding the sequence between the two clauses, with the subsequent event stated once, uniquely and clearly central to the narrative flow."
+        },
+        "window_verses": [
+          10,
+          11
+        ],
+        "window_text": {
+          "10": "So they went and called out to the city gatekeepers and told them, “We went into the Aramean camp and no one was there—not a sound of anyone—only tethered horses and donkeys, and the tents left just as they were.”",
+          "11": "The gatekeepers shouted the news, and it was reported within the palace."
+        },
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "report"
+          ],
+          "answer_verse": 11,
+          "answer_verse_original": 11,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "consistent",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "What happens after the gatekeepers cry out the report?",
+            "readings": [
+              {
+                "answer": "It was reported within the palace.",
+                "support": "it was reported within the palace"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Verse 11 states directly, “The gatekeepers shouted the news, and it was reported within the palace,” matching the answer that it was reported within the palace."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The passage explicitly states the news was reported within the palace after the gatekeepers cried out.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It strongly tests sequence by asking what follows the gatekeepers’ shout—clearly “it was reported within the palace”—while the competitor wrongly picks the earlier event of the men calling the gatekeepers.",
+        "window_structure_max": 7.0,
+        "content_id": "v10-11:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Whom do the men who entered the camp tell their news to?",
+        "answer": "the city gatekeepers",
+        "answer_verse": 10,
+        "wrong_answer": "the people in the palace",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "the city gatekeepers",
+            "support": "called out to the city gatekeepers and told them"
+          }
+        ],
+        "distinct_readings": [
+          "the city gatekeepers"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "It requires parsing who told whom (“told them” to the city gatekeepers), stated only once, with a single clear answer that is central to the transmission of the news."
+        },
+        "window_verses": [
+          10,
+          11
+        ],
+        "window_text": {
+          "10": "So they went and called out to the city gatekeepers and told them, “We went into the Aramean camp and no one was there—not a sound of anyone—only tethered horses and donkeys, and the tents left just as they were.”",
+          "11": "The gatekeepers shouted the news, and it was reported within the palace."
+        },
+        "audit": {
+          "passed": false,
+          "failures": [
+            "dangling pronoun: their"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 10,
+          "answer_verse_original": 10,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 10",
+          "readings_failures": []
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "Whom do the men who entered the camp tell their news to?",
+            "after": "Whom do the men who entered the camp tell the news to?",
+            "note": "Replaced dangling pronoun “their” with “the” to remove ambiguity.",
+            "failures_before": [
+              "dangling pronoun: their"
+            ],
+            "scores_before": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 8.0,
+              "answer_certainty": 10.0,
+              "centrality": 7.0,
+              "runs": 1,
+              "reason": "It requires parsing who told whom (“told them” to the city gatekeepers), stated only once, with a single clear answer that is central to the transmission of the news."
+            },
+            "accepted": false,
+            "reason": "failed full rejudgment",
+            "suitability_judgment": {
+              "Q": "Whom do the men who entered the camp tell the news to?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "The question clearly refers to the speakers who entered the Aramean camp and asks to whom they reported, which is explicitly stated as the city gatekeepers."
+            },
+            "failures_after": [
+              "lexical: structure_dependence 6.0 (need 7.0)"
+            ],
+            "scores_after": {
+              "structure_dependence": 6.0,
+              "statement_uniqueness": 6.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "Linking the pronoun “them” to “the city gatekeepers” requires parsing who told whom, it’s stated once with support from the next verse, the answer is unambiguous, and knowing the recipient is central to the flow of the report."
+            },
+            "scores_used": {
+              "structure_dependence": 6.0,
+              "statement_uniqueness": 6.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "Linking the pronoun “them” to “the city gatekeepers” requires parsing who told whom, it’s stated once with support from the next verse, the answer is unambiguous, and knowing the recipient is central to the flow of the report."
+            }
+          }
+        ],
+        "content_id": "v10-11:2"
+      },
+      {
+        "question": "Who cries out the report before it reaches the palace?",
+        "answer": "the gatekeepers",
+        "answer_verse": 11,
+        "wrong_answer": "the men who went into the camp",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "The gatekeepers",
+            "support": "The gatekeepers shouted the news"
+          },
+          {
+            "answer": "Those who called out to the city gatekeepers",
+            "support": "they went and called out to the city gatekeepers and told them"
+          }
+        ],
+        "distinct_readings": [
+          "The gatekeepers",
+          "Those who called out to the city gatekeepers"
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "Identifying the shouter needs linking the subject of “shouted the news” to the action before the palace report, stated once with an unambiguous, central answer."
+        },
+        "window_verses": [
+          10,
+          11
+        ],
+        "window_text": {
+          "10": "So they went and called out to the city gatekeepers and told them, “We went into the Aramean camp and no one was there—not a sound of anyone—only tethered horses and donkeys, and the tents left just as they were.”",
+          "11": "The gatekeepers shouted the news, and it was reported within the palace."
+        },
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: palac"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "palac"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 11,
+          "answer_verse_original": 11,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "consistent",
+          "readings_failures": []
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "Who cries out the report before it reaches the palace?",
+            "after": "Who cries out the report?",
+            "note": "Removed the leaking location word to avoid pointing to a single verse.",
+            "failures_before": [
+              "location leak: palac"
+            ],
+            "scores_before": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 7.0,
+              "runs": 1,
+              "reason": "Identifying the shouter needs linking the subject of “shouted the news” to the action before the palace report, stated once with an unambiguous, central answer."
+            },
+            "accepted": false,
+            "reason": "removed as weak question: Both the men (who called out to the gatekeepers) and the gatekeepers (who shouted the news) could fit, and the phrase “the report” is an unclear label not used in the window.",
+            "suitability_judgment": {
+              "Q": "Who cries out the report?",
+              "clear_referents": false,
+              "natural_wording": false,
+              "directly_answerable": true,
+              "single_defensible_answer": false,
+              "remove": true,
+              "reason": "Both the men (who called out to the gatekeepers) and the gatekeepers (who shouted the news) could fit, and the phrase “the report” is an unclear label not used in the window."
+            }
+          }
+        ],
+        "content_id": "v10-11:3"
+      },
+      {
+        "question": "What is missing from the Aramean camp when the men go in?",
+        "answer": "people",
+        "answer_verse": 10,
+        "wrong_answer": "tethered horses and donkeys",
+        "relation": "polarity",
+        "readings": [
+          {
+            "answer": "People (anyone)",
+            "support": "no one was there"
+          },
+          {
+            "answer": "Any sound of people",
+            "support": "not a sound of anyone"
+          }
+        ],
+        "distinct_readings": [
+          "People (anyone)",
+          "Any sound of people"
+        ],
+        "scores": {
+          "structure_dependence": 5.0,
+          "statement_uniqueness": 2.0,
+          "answer_certainty": 9.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "The absence of people is directly stated (\"no one… not a sound of anyone\") and repeated, yielding an obvious, central answer among contrasted items present."
+        },
+        "window_verses": [
+          10,
+          11
+        ],
+        "window_text": {
+          "10": "So they went and called out to the city gatekeepers and told them, “We went into the Aramean camp and no one was there—not a sound of anyone—only tethered horses and donkeys, and the tents left just as they were.”",
+          "11": "The gatekeepers shouted the news, and it was reported within the palace."
+        },
+        "audit": {
+          "passed": false,
+          "failures": [
+            "no gradeable content in answer 'people'",
+            "lexical: structure_dependence 5.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 10,
+          "answer_verse_original": 10,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 10",
+          "readings_failures": []
+        },
+        "content_id": "v10-11:4"
+      }
+    ],
+    "report": {
+      "window_id": "v10-11",
+      "verses": [
+        10,
+        11
+      ],
+      "generated": 4,
+      "scored": 4,
+      "kept": 1,
+      "survivors_before_window_selection": 1,
+      "window_selection_rejected": 0,
+      "repair_attempted": 2,
+      "repaired": 0,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

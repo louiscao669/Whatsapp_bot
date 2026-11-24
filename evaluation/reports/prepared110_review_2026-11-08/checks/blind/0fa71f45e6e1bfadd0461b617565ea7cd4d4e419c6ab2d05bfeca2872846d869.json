@@ -1,0 +1,42 @@
+{
+  "digest": "0fa71f45e6e1bfadd0461b617565ea7cd4d4e419c6ab2d05bfeca2872846d869",
+  "result": {
+    "model": "gpt-5",
+    "mode": "report-only",
+    "question": "What happened to the young man who fell?",
+    "readings": [
+      {
+        "answer": "Picked up dead, then declared still alive.",
+        "support": "was picked up dead | He is still alive!"
+      },
+      {
+        "answer": "He was picked up dead.",
+        "support": "was picked up dead"
+      },
+      {
+        "answer": "He was still alive.",
+        "support": "He is still alive!"
+      }
+    ],
+    "assessments": [
+      {
+        "number": 1,
+        "classification": "defensible_alternative",
+        "reason": "It reflects the text’s sequence “was picked up dead” and then “He is still alive!”, consistent with the key’s died-then-revived, though it doesn’t explicitly state Paul revived him."
+      },
+      {
+        "number": 2,
+        "classification": "ruled_out",
+        "reason": "It stops at “was picked up dead” and ignores the subsequent outcome “He is still alive!”, missing the revival implied in the passage and key."
+      },
+      {
+        "number": 3,
+        "classification": "ruled_out",
+        "reason": "It reports only “He is still alive!” and omits that he “was picked up dead,” failing to capture the death-then-revival described."
+      }
+    ],
+    "verdict": "key_mismatch",
+    "reason": "It reflects the text’s sequence “was picked up dead” and then “He is still alive!”, consistent with the key’s died-then-revived, though it doesn’t explicitly state Paul revived him.",
+    "status": "flagged"
+  }
+}

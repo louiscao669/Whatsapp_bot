@@ -1,0 +1,332 @@
+{
+  "config_digest": "dff75e11c2f634febed8a35c540545c7c544680968ac4cebd050ba973dc16c6d",
+  "data": {
+    "kept": [
+      {
+        "question": "Who plans to take people alive?",
+        "answer": "the Arameans",
+        "answer_verse": 12,
+        "wrong_answer": "the Israelites",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "The Arameans",
+            "support": "the Arameans | we will take them alive"
+          }
+        ],
+        "distinct_readings": [
+          "The Arameans"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "Identifying the planner requires attributing the quoted “we will take them alive” to the Arameans in the king’s report, which is stated once, unambiguous, and central to their tactic."
+        },
+        "window_verses": [
+          12,
+          13
+        ],
+        "window_text": {
+          "12": "The king got up in the night and said to his officers, “I will tell you what the Arameans have done to us. They know we are starving; so they have left the camp to hide in the countryside, thinking, ‘They will surely come out, and then we will take them alive and get into the city.’”",
+          "13": "One of his officers answered, “Have some men take five of the horses that are left in the city. Their plight will be like that of all the Israelites left here—yes, they will only be like all these Israelites who are doomed. So let us send them to find out what happened.”"
+        },
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 12,
+          "answer_verse_original": 12,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 12",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Who plans to take people alive?",
+            "readings": [
+              {
+                "answer": "The Arameans",
+                "support": "the Arameans | we will take them alive"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The king attributes the plan to the Arameans: “they have left the camp… thinking, ‘They will… take them alive.’”"
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The passage explicitly says the Arameans were thinking they would take them alive.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It most depends on resolving the embedded pronoun \"we\" in the Arameans’ thought as the agent of taking others alive—clearly the Arameans—while the competitor reflects a plausible misparse, and the wording is clear and central.",
+        "window_structure_max": 9.0,
+        "content_id": "v12-13:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Why does one officer say to send men?",
+        "answer": "because the men will be like the doomed Israelites",
+        "answer_verse": 13,
+        "wrong_answer": "because the Arameans left their camp",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "To find out what happened.",
+            "support": "So let us send them to find out what happened"
+          },
+          {
+            "answer": "Because those sent are doomed anyway like the rest.",
+            "support": "Their plight will be like that of all the Israelites left here—yes, they will only be like all these Israelites who are doomed."
+          }
+        ],
+        "distinct_readings": [
+          "To find out what happened.",
+          "Because those sent are doomed anyway like the rest."
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 7.0,
+          "answer_certainty": 3.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "The causal link is present, but two plausible reasons are given (to find out what happened and because the men are as doomed as the others), making the answer ambiguous."
+        },
+        "window_verses": [
+          12,
+          13
+        ],
+        "window_text": {
+          "12": "The king got up in the night and said to his officers, “I will tell you what the Arameans have done to us. They know we are starving; so they have left the camp to hide in the countryside, thinking, ‘They will surely come out, and then we will take them alive and get into the city.’”",
+          "13": "One of his officers answered, “Have some men take five of the horses that are left in the city. Their plight will be like that of all the Israelites left here—yes, they will only be like all these Israelites who are doomed. So let us send them to find out what happened.”"
+        },
+        "audit": {
+          "passed": false,
+          "failures": [
+            "ambiguous: answer_certainty 3.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 13,
+          "answer_verse_original": 13,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 13",
+          "readings_failures": []
+        },
+        "content_id": "v12-13:2"
+      },
+      {
+        "question": "What are the men to take from the city?",
+        "answer": "five horses left in the city",
+        "answer_verse": 13,
+        "wrong_answer": "the people who come out",
+        "relation": "participant",
+        "readings": [
+          {
+            "answer": "five of the horses that are left in the city",
+            "support": "take five of the horses that are left in the city"
+          }
+        ],
+        "distinct_readings": [
+          "five of the horses that are left in the city"
+        ],
+        "scores": {
+          "structure_dependence": 3.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 3.0,
+          "runs": 1,
+          "reason": "The object “five of the horses left in the city” is a direct phrase stated once, with a single clear answer but only peripheral to the main action."
+        },
+        "window_verses": [
+          12,
+          13
+        ],
+        "window_text": {
+          "12": "The king got up in the night and said to his officers, “I will tell you what the Arameans have done to us. They know we are starving; so they have left the camp to hide in the countryside, thinking, ‘They will surely come out, and then we will take them alive and get into the city.’”",
+          "13": "One of his officers answered, “Have some men take five of the horses that are left in the city. Their plight will be like that of all the Israelites left here—yes, they will only be like all these Israelites who are doomed. So let us send them to find out what happened.”"
+        },
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 3.0 (need 7.0)",
+            "incidental: centrality 3.0 (need 5.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "city"
+          ],
+          "answer_verse": 13,
+          "answer_verse_original": 13,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 13",
+          "readings_failures": []
+        },
+        "content_id": "v12-13:3"
+      },
+      {
+        "question": "What do the Arameans do because Israel is starving?",
+        "answer": "leave their camp to hide in the countryside",
+        "answer_verse": 12,
+        "wrong_answer": "enter the city",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "They left the camp to hide in the countryside.",
+            "support": "They know we are starving; so they have left the camp to hide in the countryside"
+          }
+        ],
+        "distinct_readings": [
+          "They left the camp to hide in the countryside."
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "It requires linking the cause (“we are starving”) to the effect and agent (“they have left the camp to hide in the countryside”), which is uniquely stated and central to the king’s inference."
+        },
+        "window_verses": [
+          12,
+          13
+        ],
+        "window_text": {
+          "12": "The king got up in the night and said to his officers, “I will tell you what the Arameans have done to us. They know we are starving; so they have left the camp to hide in the countryside, thinking, ‘They will surely come out, and then we will take them alive and get into the city.’”",
+          "13": "One of his officers answered, “Have some men take five of the horses that are left in the city. Their plight will be like that of all the Israelites left here—yes, they will only be like all these Israelites who are doomed. So let us send them to find out what happened.”"
+        },
+        "audit": {
+          "passed": false,
+          "failures": [
+            "dangling answer reference: their",
+            "ungrounded name: Israel"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 12,
+          "answer_verse_original": 12,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 12",
+          "readings_failures": []
+        },
+        "content_id": "v12-13:4"
+      },
+      {
+        "question": "Whom do the Arameans expect to come out?",
+        "answer": "the Israelites in the city",
+        "answer_verse": 12,
+        "wrong_answer": "the Arameans",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "the Israelites",
+            "support": "we are starving | They will surely come out"
+          }
+        ],
+        "distinct_readings": [
+          "the Israelites"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "It hinges on resolving the pronoun “they will surely come out” to the Israelites in the city, a single, clear statement important to the scenario."
+        },
+        "window_verses": [
+          12,
+          13
+        ],
+        "window_text": {
+          "12": "The king got up in the night and said to his officers, “I will tell you what the Arameans have done to us. They know we are starving; so they have left the camp to hide in the countryside, thinking, ‘They will surely come out, and then we will take them alive and get into the city.’”",
+          "13": "One of his officers answered, “Have some men take five of the horses that are left in the city. Their plight will be like that of all the Israelites left here—yes, they will only be like all these Israelites who are doomed. So let us send them to find out what happened.”"
+        },
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: hybrid window selector — It most depends on resolving the embedded pronoun \"we\" in the Arameans’ thought as the agent of taking others alive—clearly the Arameans—while the competitor reflects a plausible misparse, and the wording is clear and central."
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 12,
+          "answer_verse_original": 12,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 12",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Whom do the Arameans expect to come out?",
+            "readings": [
+              {
+                "answer": "the Israelites",
+                "support": "we are starving | They will surely come out"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "“They know we are starving… They will surely come out” refers to the starving Israelites in the besieged city, so “the Israelites” matches the key’s sense."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The text indicates the Arameans expect the starving Israelites in the city to come out, and the reading “the Israelites” conveys the same referent.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It most depends on resolving the embedded pronoun \"we\" in the Arameans’ thought as the agent of taking others alive—clearly the Arameans—while the competitor reflects a plausible misparse, and the wording is clear and central.",
+        "content_id": "v12-13:5"
+      }
+    ],
+    "report": {
+      "window_id": "v12-13",
+      "verses": [
+        12,
+        13
+      ],
+      "generated": 5,
+      "scored": 5,
+      "kept": 1,
+      "survivors_before_window_selection": 2,
+      "window_selection_rejected": 1,
+      "repair_attempted": 0,
+      "repaired": 0,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

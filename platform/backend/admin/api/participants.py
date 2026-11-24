@@ -1,6 +1,8 @@
 from flask import Blueprint, jsonify, request
 
 from eten_shared.database import get_session_factory
+from eten_shared.experiment_plan import ExperimentPlanError
+from backend.admin.services.study_enrollment import enroll_study_participant
 from backend.shared.admin_session import require_roles
 from backend.admin.services.participants_api_service import (
     ParticipantMutationError,
@@ -35,6 +37,24 @@ def list_participants():
     with session_factory() as db:
         payload = list_participants_dashboard(db)
     return jsonify(payload)
+
+
+@participants_blueprint.route("/study", methods=["POST"])
+@require_roles("admin")
+def post_study_participant():
+    body = _json_body()
+    if not isinstance(body, dict):
+        return jsonify({"message": "Expected an enrollment request."}), 400
+    try:
+        with get_session_factory().begin() as db:
+            payload, created = enroll_study_participant(
+                db, body.get("request_id"), body.get("display_name", "")
+            )
+    except ValueError as exc:
+        return jsonify({"error": "validation_error", "message": str(exc)}), 400
+    except ExperimentPlanError as exc:
+        return jsonify({"error": "study_plan_error", "message": str(exc)}), 409
+    return jsonify(payload), 201 if created else 200
 
 
 @participants_blueprint.route("/test/options", methods=["GET"])

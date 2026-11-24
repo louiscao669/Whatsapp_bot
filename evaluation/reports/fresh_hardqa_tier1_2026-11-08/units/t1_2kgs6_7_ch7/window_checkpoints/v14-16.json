@@ -1,0 +1,956 @@
+{
+  "config_digest": "dff75e11c2f634febed8a35c540545c7c544680968ac4cebd050ba973dc16c6d",
+  "data": {
+    "kept": [
+      {
+        "question": "Who throws away clothing and equipment?",
+        "answer": "the Arameans",
+        "answer_verse": 15,
+        "wrong_answer": "the messengers",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "The Arameans",
+            "support": "the Arameans had thrown away"
+          }
+        ],
+        "distinct_readings": [
+          "The Arameans"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 10.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "Attributing the action to the Arameans depends on the relative clause (“the Arameans had thrown away”), which is stated once, yields a single clear answer, and serves as supporting evidence of their flight rather than the passage’s main outcome."
+        },
+        "window_verses": [
+          14,
+          15,
+          16
+        ],
+        "window_text": {
+          "14": "So they selected two chariots with their horses, and the king sent them after the Aramean army. He commanded the drivers, “Go and find out what has happened.”",
+          "15": "They followed them as far as the Jordan, and they found the whole road strewn with the clothing and equipment the Arameans had thrown away in their headlong flight. So the messengers returned and reported to the king.",
+          "16": "Then the people went out and plundered the camp of the Arameans. So a seah of the finest flour sold for a shekel, and two seahs of barley sold for a shekel, as the Lord had said."
+        },
+        "reading_groups": [
+          "The Arameans threw away the clothing and equipment"
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 15,
+          "answer_verse_original": 15,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 15",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Who throws away clothing and equipment?",
+            "readings": [
+              {
+                "answer": "The Arameans",
+                "support": "the Arameans had thrown away"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Verse 15 states “the clothing and equipment the Arameans had thrown away,” explicitly naming the Arameans as those who threw them away."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The passage explicitly says the Arameans had thrown away the clothing and equipment.",
+            "status": "passed"
+          }
+        },
+        "scores_after_repair_raw": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 10.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "Attributing the action to the Arameans depends on the relative clause (“the Arameans had thrown away”), which is stated once, yields a single clear answer, and serves as supporting evidence of their flight rather than the passage’s main outcome."
+        },
+        "repaired": true,
+        "repair_attempted": true,
+        "question_before_repair": "Who throws away clothing and equipment on the road?",
+        "scores_before_repair": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "The agent is given in a relative clause (\"the Arameans had thrown away\"), so attributing the action depends on grammar and is stated once clearly."
+        },
+        "audit_before_repair": {
+          "passed": false,
+          "failures": [
+            "location leak: road"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "road"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 15,
+          "answer_verse_original": 15,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 15",
+          "readings_failures": []
+        },
+        "repair_log": [
+          {
+            "before": "Who throws away clothing and equipment on the road?",
+            "after": "Who throws away clothing and equipment?",
+            "note": "Removed the leaking location phrase to avoid pointing to a specific verse.",
+            "failures_before": [
+              "location leak: road"
+            ],
+            "scores_before": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 6.0,
+              "runs": 1,
+              "reason": "The agent is given in a relative clause (\"the Arameans had thrown away\"), so attributing the action depends on grammar and is stated once clearly."
+            },
+            "accepted": true,
+            "reason": "passed full rejudgment",
+            "suitability_judgment": {
+              "Q": "Who throws away clothing and equipment?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "Verse 15 explicitly says the Arameans had thrown away the clothing and equipment, giving one clear answer."
+            },
+            "failures_after": [],
+            "scores_after": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 10.0,
+              "answer_certainty": 10.0,
+              "centrality": 6.0,
+              "runs": 1,
+              "reason": "Attributing the action to the Arameans depends on the relative clause (“the Arameans had thrown away”), which is stated once, yields a single clear answer, and serves as supporting evidence of their flight rather than the passage’s main outcome."
+            },
+            "scores_used": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 10.0,
+              "answer_certainty": 10.0,
+              "centrality": 6.0,
+              "runs": 1,
+              "reason": "Attributing the action to the Arameans depends on the relative clause (“the Arameans had thrown away”), which is stated once, yields a single clear answer, and serves as supporting evidence of their flight rather than the passage’s main outcome."
+            }
+          }
+        ],
+        "window_selection_reason": "It most relies on parsing the relative clause—identifying the Arameans as the agents who had thrown away the items rather than the nearby “they/the messengers”—yielding strong structural dependence with a plausible competitor, whereas Item 1 is simpler pronoun resolution.",
+        "window_structure_max": 8.0,
+        "content_id": "v14-16:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Who comes back and tells the king after the pursuit?",
+        "answer": "the messengers",
+        "answer_verse": 15,
+        "wrong_answer": "the drivers",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "the messengers",
+            "support": "So the messengers returned and reported to the king"
+          }
+        ],
+        "distinct_readings": [
+          "the messengers"
+        ],
+        "scores": {
+          "structure_dependence": 3.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "The text explicitly says \"the messengers returned and reported to the king,\" making a single, unambiguous noun-phrase answer that is stated once and part of the main action."
+        },
+        "window_verses": [
+          14,
+          15,
+          16
+        ],
+        "window_text": {
+          "14": "So they selected two chariots with their horses, and the king sent them after the Aramean army. He commanded the drivers, “Go and find out what has happened.”",
+          "15": "They followed them as far as the Jordan, and they found the whole road strewn with the clothing and equipment the Arameans had thrown away in their headlong flight. So the messengers returned and reported to the king.",
+          "16": "Then the people went out and plundered the camp of the Arameans. So a seah of the finest flour sold for a shekel, and two seahs of barley sold for a shekel, as the Lord had said."
+        },
+        "reading_groups": [
+          "The messengers return and report to the king"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 3.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 15,
+          "answer_verse_original": 15,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 15",
+          "readings_failures": []
+        },
+        "content_id": "v14-16:2"
+      },
+      {
+        "question": "What leads to the cheap grain prices stated?",
+        "answer": "the people go out and plunder the Aramean camp",
+        "answer_verse": 16,
+        "wrong_answer": "the Arameans throw away clothing and equipment on the road",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "The people plundering the Arameans’ camp",
+            "support": "Then the people went out and plundered the camp of the Arameans. So a seah of the finest flour sold for a shekel"
+          },
+          {
+            "answer": "The Arameans’ headlong flight, abandoning their goods",
+            "support": "their headlong flight | Then the people went out and plundered the camp of the Arameans. So a seah of the finest flour sold for a shekel"
+          }
+        ],
+        "distinct_readings": [
+          "The people plundering the Arameans’ camp",
+          "The Arameans’ headlong flight, abandoning their goods"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "It requires linking the causal sequence \"Then the people went out and plundered... So ... sold for a shekel,\" a single explicit cause leading to the prices."
+        },
+        "window_verses": [
+          14,
+          15,
+          16
+        ],
+        "window_text": {
+          "14": "So they selected two chariots with their horses, and the king sent them after the Aramean army. He commanded the drivers, “Go and find out what has happened.”",
+          "15": "They followed them as far as the Jordan, and they found the whole road strewn with the clothing and equipment the Arameans had thrown away in their headlong flight. So the messengers returned and reported to the king.",
+          "16": "Then the people went out and plundered the camp of the Arameans. So a seah of the finest flour sold for a shekel, and two seahs of barley sold for a shekel, as the Lord had said."
+        },
+        "reading_groups": [
+          "People plunder the Arameans’ camp, causing low prices",
+          "Arameans’ flight/abandoning goods leads to low prices"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "answer is a description, not an identification: 'the people go out and plunder the Aramean camp'",
+            "2 defensible readings: People plunder the Arameans’ camp, causing low prices | Arameans’ flight/abandoning goods leads to low prices",
+            "competitor 'the Arameans throw away clothing and equipment on the road' is itself defensible — the item is ambiguous, not discriminating"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 16,
+          "answer_verse_original": 16,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 16",
+          "readings_failures": [
+            "2 defensible readings: People plunder the Arameans’ camp, causing low prices | Arameans’ flight/abandoning goods leads to low prices",
+            "competitor 'the Arameans throw away clothing and equipment on the road' is itself defensible — the item is ambiguous, not discriminating"
+          ]
+        },
+        "content_id": "v14-16:3"
+      },
+      {
+        "question": "Who throws away the clothing and gear along the road?",
+        "answer": "the Arameans",
+        "answer_verse": 15,
+        "wrong_answer": "the messengers",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "the Arameans",
+            "support": "the Arameans had thrown away"
+          }
+        ],
+        "distinct_readings": [
+          "the Arameans"
+        ],
+        "scores": {
+          "structure_dependence": 2.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 4.0,
+          "runs": 1,
+          "reason": "The clause directly attributes the discarded items to \"the Arameans,\" a unique, unambiguous word-level detail of secondary importance."
+        },
+        "window_verses": [
+          14,
+          15,
+          16
+        ],
+        "window_text": {
+          "14": "So they selected two chariots with their horses, and the king sent them after the Aramean army. He commanded the drivers, “Go and find out what has happened.”",
+          "15": "They followed them as far as the Jordan, and they found the whole road strewn with the clothing and equipment the Arameans had thrown away in their headlong flight. So the messengers returned and reported to the king.",
+          "16": "Then the people went out and plundered the camp of the Arameans. So a seah of the finest flour sold for a shekel, and two seahs of barley sold for a shekel, as the Lord had said."
+        },
+        "reading_groups": [
+          "The Arameans threw away the clothing and equipment"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 2.0 (need 7.0)",
+            "incidental: centrality 4.0 (need 5.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 15,
+          "answer_verse_original": 15,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 15",
+          "readings_failures": []
+        },
+        "content_id": "v14-16:4"
+      },
+      {
+        "question": "After the messengers reach the Jordan, what do they do next?",
+        "answer": "return and report to the king",
+        "answer_verse": 15,
+        "wrong_answer": "plunder the camp of the Arameans",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "They find the road strewn with clothing and equipment.",
+            "support": "and they found the whole road strewn with the clothing and equipment"
+          },
+          {
+            "answer": "They return and report to the king.",
+            "support": "So the messengers returned and reported to the king."
+          }
+        ],
+        "distinct_readings": [
+          "They find the road strewn with clothing and equipment.",
+          "They return and report to the king."
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 4.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "Following the sequence to \"the messengers returned and reported to the king\" requires cross-clause ordering, but \"found the road strewn\" could also be taken as the next action, creating ambiguity."
+        },
+        "window_verses": [
+          14,
+          15,
+          16
+        ],
+        "window_text": {
+          "14": "So they selected two chariots with their horses, and the king sent them after the Aramean army. He commanded the drivers, “Go and find out what has happened.”",
+          "15": "They followed them as far as the Jordan, and they found the whole road strewn with the clothing and equipment the Arameans had thrown away in their headlong flight. So the messengers returned and reported to the king.",
+          "16": "Then the people went out and plundered the camp of the Arameans. So a seah of the finest flour sold for a shekel, and two seahs of barley sold for a shekel, as the Lord had said."
+        },
+        "reading_groups": [
+          "They find the road strewn with clothing and equipment",
+          "They return and report to the king"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: jordan, messenger",
+            "question too complex: stacked clauses (1 comma(s), 1 subordinator(s))",
+            "2 defensible readings: They find the road strewn with clothing and equipment | They return and report to the king",
+            "ambiguous: answer_certainty 4.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "jordan",
+            "messenger"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 15,
+          "answer_verse_original": 15,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 15",
+          "readings_failures": [
+            "2 defensible readings: They find the road strewn with clothing and equipment | They return and report to the king"
+          ]
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "After the messengers reach the Jordan, what do they do next?",
+            "after": "What do the drivers do after reaching the river?",
+            "note": "Replaced leaking words and simplified to a single-clause question.",
+            "failures_before": [
+              "location leak: jordan, messenger",
+              "question too complex: stacked clauses (1 comma(s), 1 subordinator(s))",
+              "2 defensible readings: They find the road strewn with clothing and equipment | They return and report to the king",
+              "ambiguous: answer_certainty 4.0 (need 7.0)"
+            ],
+            "scores_before": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 4.0,
+              "centrality": 6.0,
+              "runs": 1,
+              "reason": "Following the sequence to \"the messengers returned and reported to the king\" requires cross-clause ordering, but \"found the road strewn\" could also be taken as the next action, creating ambiguity."
+            },
+            "accepted": false,
+            "reason": "removed as weak question: Both finding the road strewn with items and returning to report to the king occur after reaching the Jordan, yielding multiple defensible answers.",
+            "suitability_judgment": {
+              "Q": "What do the drivers do after reaching the river?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": false,
+              "remove": true,
+              "reason": "Both finding the road strewn with items and returning to report to the king occur after reaching the Jordan, yielding multiple defensible answers."
+            }
+          }
+        ],
+        "content_id": "v14-16:5"
+      },
+      {
+        "question": "After the messengers report to the king, what do the people do?",
+        "answer": "go out and plunder the camp of the Arameans",
+        "answer_verse": 15,
+        "wrong_answer": "follow the Arameans as far as the Jordan",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "They go out and plunder the camp of the Arameans.",
+            "support": "Then the people went out and plundered the camp of the Arameans"
+          }
+        ],
+        "distinct_readings": [
+          "They go out and plunder the camp of the Arameans."
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "Tracking the narrative order shows the next event is that the people go out and plunder the Aramean camp, stated once and clearly tied to the outcome."
+        },
+        "window_verses": [
+          14,
+          15,
+          16
+        ],
+        "window_text": {
+          "14": "So they selected two chariots with their horses, and the king sent them after the Aramean army. He commanded the drivers, “Go and find out what has happened.”",
+          "15": "They followed them as far as the Jordan, and they found the whole road strewn with the clothing and equipment the Arameans had thrown away in their headlong flight. So the messengers returned and reported to the king.",
+          "16": "Then the people went out and plundered the camp of the Arameans. So a seah of the finest flour sold for a shekel, and two seahs of barley sold for a shekel, as the Lord had said."
+        },
+        "reading_groups": [
+          "The people go out and plunder the Arameans’ camp"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: messenger, report",
+            "question too complex: stacked clauses (1 comma(s), 1 subordinator(s))",
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "corrected metadata from 16 to 15; reading support and question relation identify verse 15",
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "messenger",
+            "report"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 15,
+          "answer_verse_original": 16,
+          "answer_verse_corrected": true,
+          "answer_verse_note": "corrected metadata from 16 to 15; reading support and question relation identify verse 15",
+          "readings_failures": []
+        },
+        "content_id": "v14-16:6"
+      },
+      {
+        "question": "Which food sells two seahs for one shekel?",
+        "answer": "barley",
+        "answer_verse": 16,
+        "wrong_answer": "the finest flour",
+        "relation": "quantity",
+        "readings": [
+          {
+            "answer": "barley",
+            "support": "two seahs of barley sold for a shekel"
+          }
+        ],
+        "distinct_readings": [
+          "barley"
+        ],
+        "scores": {
+          "structure_dependence": 2.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "The verse explicitly states \"two seahs of barley sold for a shekel,\" yielding a single, clear word-level answer central to the resolution."
+        },
+        "window_verses": [
+          14,
+          15,
+          16
+        ],
+        "window_text": {
+          "14": "So they selected two chariots with their horses, and the king sent them after the Aramean army. He commanded the drivers, “Go and find out what has happened.”",
+          "15": "They followed them as far as the Jordan, and they found the whole road strewn with the clothing and equipment the Arameans had thrown away in their headlong flight. So the messengers returned and reported to the king.",
+          "16": "Then the people went out and plundered the camp of the Arameans. So a seah of the finest flour sold for a shekel, and two seahs of barley sold for a shekel, as the Lord had said."
+        },
+        "reading_groups": [
+          "Barley sells two seahs for a shekel"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 2.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 16,
+          "answer_verse_original": 16,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 16",
+          "readings_failures": []
+        },
+        "content_id": "v14-16:7"
+      },
+      {
+        "question": "Whom does the king send the chariots after?",
+        "answer": "the Aramean army",
+        "answer_verse": 14,
+        "wrong_answer": "the people",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "the Aramean army",
+            "support": "after the Aramean army"
+          }
+        ],
+        "distinct_readings": [
+          "the Aramean army"
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "Identifying the object of the verb \"sent ... after\" requires parsing the clause to see it is the Aramean army, stated once and unambiguous."
+        },
+        "window_verses": [
+          14,
+          15,
+          16
+        ],
+        "window_text": {
+          "14": "So they selected two chariots with their horses, and the king sent them after the Aramean army. He commanded the drivers, “Go and find out what has happened.”",
+          "15": "They followed them as far as the Jordan, and they found the whole road strewn with the clothing and equipment the Arameans had thrown away in their headlong flight. So the messengers returned and reported to the king.",
+          "16": "Then the people went out and plundered the camp of the Arameans. So a seah of the finest flour sold for a shekel, and two seahs of barley sold for a shekel, as the Lord had said."
+        },
+        "reading_groups": [
+          "The king sends the chariots after the Aramean army"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 14,
+          "answer_verse_original": 14,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 14",
+          "readings_failures": []
+        },
+        "content_id": "v14-16:8"
+      },
+      {
+        "question": "After the messengers report, what do the people do?",
+        "answer": "the people go out and plunder the Aramean camp",
+        "answer_verse": 15,
+        "wrong_answer": "select two chariots with their horses",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "They went out and plundered the camp of the Arameans.",
+            "support": "Then the people went out and plundered the camp of the Arameans."
+          }
+        ],
+        "distinct_readings": [
+          "They went out and plundered the camp of the Arameans."
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "The sequence from report to the people going out and plundering depends on temporal markers (\"Then\"), is stated once, and is central to the outcome."
+        },
+        "window_verses": [
+          14,
+          15,
+          16
+        ],
+        "window_text": {
+          "14": "So they selected two chariots with their horses, and the king sent them after the Aramean army. He commanded the drivers, “Go and find out what has happened.”",
+          "15": "They followed them as far as the Jordan, and they found the whole road strewn with the clothing and equipment the Arameans had thrown away in their headlong flight. So the messengers returned and reported to the king.",
+          "16": "Then the people went out and plundered the camp of the Arameans. So a seah of the finest flour sold for a shekel, and two seahs of barley sold for a shekel, as the Lord had said."
+        },
+        "reading_groups": [
+          "The people go out and plunder the Arameans' camp"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: messenger, report",
+            "question too complex: stacked clauses (1 comma(s), 1 subordinator(s))",
+            "answer is a description, not an identification: 'the people go out and plunder the Aramean camp'"
+          ],
+          "notes": [
+            "corrected metadata from 16 to 15; reading support and question relation identify verse 15",
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "messenger",
+            "report"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 15,
+          "answer_verse_original": 16,
+          "answer_verse_corrected": true,
+          "answer_verse_note": "corrected metadata from 16 to 15; reading support and question relation identify verse 15",
+          "readings_failures": []
+        },
+        "content_id": "v14-16:9"
+      },
+      {
+        "question": "What event brings about the low grain prices?",
+        "answer": "the people plunder the Aramean camp",
+        "answer_verse": 16,
+        "wrong_answer": "the king sends chariots after the Arameans",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "The people went out and plundered the Arameans' camp.",
+            "support": "Then the people went out and plundered the camp of the Arameans. So a seah of the finest flour sold for a shekel,"
+          }
+        ],
+        "distinct_readings": [
+          "The people went out and plundered the Arameans' camp."
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "The causal link signaled by \"So\" ties the low prices to the people plundering the Aramean camp, a single implied relation with a clear best answer."
+        },
+        "window_verses": [
+          14,
+          15,
+          16
+        ],
+        "window_text": {
+          "14": "So they selected two chariots with their horses, and the king sent them after the Aramean army. He commanded the drivers, “Go and find out what has happened.”",
+          "15": "They followed them as far as the Jordan, and they found the whole road strewn with the clothing and equipment the Arameans had thrown away in their headlong flight. So the messengers returned and reported to the king.",
+          "16": "Then the people went out and plundered the camp of the Arameans. So a seah of the finest flour sold for a shekel, and two seahs of barley sold for a shekel, as the Lord had said."
+        },
+        "reading_groups": [
+          "The people plunder the Arameans' camp, leading to low grain prices"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "answer is a description, not an identification: 'the people plunder the Aramean camp'"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 16,
+          "answer_verse_original": 16,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 16",
+          "readings_failures": []
+        },
+        "content_id": "v14-16:10"
+      },
+      {
+        "question": "How much barley sells for a shekel?",
+        "answer": "two seahs of barley",
+        "answer_verse": 16,
+        "wrong_answer": "a seah of the finest flour",
+        "relation": "quantity",
+        "readings": [
+          {
+            "answer": "two seahs",
+            "support": "two seahs of barley sold for a shekel"
+          }
+        ],
+        "distinct_readings": [
+          "two seahs"
+        ],
+        "scores": {
+          "structure_dependence": 2.0,
+          "statement_uniqueness": 10.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "This is a direct number-and-unit quote (\"two seahs of barley\"), uniquely stated and unequivocal."
+        },
+        "window_verses": [
+          14,
+          15,
+          16
+        ],
+        "window_text": {
+          "14": "So they selected two chariots with their horses, and the king sent them after the Aramean army. He commanded the drivers, “Go and find out what has happened.”",
+          "15": "They followed them as far as the Jordan, and they found the whole road strewn with the clothing and equipment the Arameans had thrown away in their headlong flight. So the messengers returned and reported to the king.",
+          "16": "Then the people went out and plundered the camp of the Arameans. So a seah of the finest flour sold for a shekel, and two seahs of barley sold for a shekel, as the Lord had said."
+        },
+        "reading_groups": [
+          "Two seahs of barley sell for a shekel"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 2.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "barley"
+          ],
+          "answer_verse": 16,
+          "answer_verse_original": 16,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 16",
+          "readings_failures": []
+        },
+        "content_id": "v14-16:11"
+      },
+      {
+        "question": "How far do the messengers follow the Arameans?",
+        "answer": "to the Jordan",
+        "answer_verse": 15,
+        "wrong_answer": "to the camp of the Arameans",
+        "relation": "direction",
+        "readings": [
+          {
+            "answer": "As far as the Jordan",
+            "support": "as far as the Jordan"
+          }
+        ],
+        "distinct_readings": [
+          "As far as the Jordan"
+        ],
+        "scores": {
+          "structure_dependence": 3.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "The distance is explicitly given as a phrase (\"as far as the Jordan\"), with only minimal pronoun resolution to match the messengers."
+        },
+        "window_verses": [
+          14,
+          15,
+          16
+        ],
+        "window_text": {
+          "14": "So they selected two chariots with their horses, and the king sent them after the Aramean army. He commanded the drivers, “Go and find out what has happened.”",
+          "15": "They followed them as far as the Jordan, and they found the whole road strewn with the clothing and equipment the Arameans had thrown away in their headlong flight. So the messengers returned and reported to the king.",
+          "16": "Then the people went out and plundered the camp of the Arameans. So a seah of the finest flour sold for a shekel, and two seahs of barley sold for a shekel, as the Lord had said."
+        },
+        "reading_groups": [
+          "They follow as far as the Jordan"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "bare-name answer 'to the Jordan': names survive translation",
+            "lexical: structure_dependence 3.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 15,
+          "answer_verse_original": 15,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 15",
+          "readings_failures": []
+        },
+        "content_id": "v14-16:12"
+      },
+      {
+        "question": "Who orders the drivers to discover what happened?",
+        "answer": "the king",
+        "answer_verse": 14,
+        "wrong_answer": "the Aramean army",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "the king",
+            "support": "the king sent them after the Aramean army. He commanded the drivers"
+          }
+        ],
+        "distinct_readings": [
+          "the king"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "Resolving the pronoun \"He commanded the drivers\" back to the king requires clause linkage, and it is stated once without ambiguity."
+        },
+        "window_verses": [
+          14,
+          15,
+          16
+        ],
+        "window_text": {
+          "14": "So they selected two chariots with their horses, and the king sent them after the Aramean army. He commanded the drivers, “Go and find out what has happened.”",
+          "15": "They followed them as far as the Jordan, and they found the whole road strewn with the clothing and equipment the Arameans had thrown away in their headlong flight. So the messengers returned and reported to the king.",
+          "16": "Then the people went out and plundered the camp of the Arameans. So a seah of the finest flour sold for a shekel, and two seahs of barley sold for a shekel, as the Lord had said."
+        },
+        "reading_groups": [
+          "The king commands the drivers to find out what happened"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: hybrid window selector — It most relies on parsing the relative clause—identifying the Arameans as the agents who had thrown away the items rather than the nearby “they/the messengers”—yielding strong structural dependence with a plausible competitor, whereas Item 1 is simpler pronoun resolution."
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 14,
+          "answer_verse_original": 14,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 14",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Who orders the drivers to discover what happened?",
+            "readings": [
+              {
+                "answer": "the king",
+                "support": "the king sent them after the Aramean army. He commanded the drivers"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Verse 14 states, “the king sent them… He commanded the drivers,” making the king the one who orders the drivers to find out what happened."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The text directly says the king commanded the drivers, matching the key.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It most relies on parsing the relative clause—identifying the Arameans as the agents who had thrown away the items rather than the nearby “they/the messengers”—yielding strong structural dependence with a plausible competitor, whereas Item 1 is simpler pronoun resolution.",
+        "content_id": "v14-16:13"
+      }
+    ],
+    "report": {
+      "window_id": "v14-16",
+      "verses": [
+        14,
+        15,
+        16
+      ],
+      "generated": 13,
+      "scored": 13,
+      "kept": 1,
+      "survivors_before_window_selection": 2,
+      "window_selection_rejected": 1,
+      "repair_attempted": 2,
+      "repaired": 1,
+      "window_retries_used": 1,
+      "score_runs": 1
+    }
+  }
+}

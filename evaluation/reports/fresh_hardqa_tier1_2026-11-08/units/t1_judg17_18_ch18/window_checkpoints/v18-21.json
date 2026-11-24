@@ -1,0 +1,372 @@
+{
+  "config_digest": "bab5a848f20f60ea534214d9358795f20d975515f4adb1ac077513ba4e1247aa",
+  "data": {
+    "kept": [
+      {
+        "question": "Who tells the priest to be quiet?",
+        "answer": "The five men.",
+        "answer_verse": 19,
+        "wrong_answer": "The priest.",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "the five men",
+            "support": "the five men | They answered him, “Be quiet!"
+          }
+        ],
+        "distinct_readings": [
+          "the five men"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 5.0,
+          "runs": 1,
+          "reason": "This requires resolving the pronoun “they” back to “the five men” as the speakers of “Be quiet,” which is stated once and pertains to the exchange with the priest."
+        },
+        "window_verses": [
+          18,
+          19,
+          20,
+          21
+        ],
+        "window_text": {
+          "18": "When the five men went into Micah’s house and took the idol, the ephod and the household gods, the priest said to them, “What are you doing?”",
+          "19": "They answered him, “Be quiet! Don’t say a word. Come with us, and be our father and priest. Isn’t it better that you serve a tribe and clan in Israel as priest rather than just one man’s household?”",
+          "20": "The priest was very pleased. He took the ephod, the household gods and the idol and went along with the people.",
+          "21": "Putting their little children, their livestock and their possessions in front of them, they turned away and left."
+        },
+        "reading_groups": [
+          "The five men tell the priest to be quiet"
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 19,
+          "answer_verse_original": 19,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 19",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Who tells the priest to be quiet?",
+            "readings": [
+              {
+                "answer": "the five men",
+                "support": "the five men | They answered him, “Be quiet!"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Verse 19 says “They answered him, ‘Be quiet!’” and the antecedent of “They” in verse 18 is “the five men,” so the five men tell the priest to be quiet."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "“They answered him, ‘Be quiet!’” clearly refers to the five men mentioned immediately prior.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It depends on resolving the pronoun and dialogue structure (“they answered him”) to identify the five men as the speakers, with the priest as a plausible misattributed competitor.",
+        "window_structure_max": 9.0,
+        "content_id": "v18-21:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Who takes the idol, ephod, and household gods and goes with the people?",
+        "answer": "The priest.",
+        "answer_verse": 20,
+        "wrong_answer": "The five men.",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "The priest",
+            "support": "The priest was very pleased. He took the ephod, the household gods and the idol and went along with the people."
+          }
+        ],
+        "distinct_readings": [
+          "The priest"
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "Two subjects ‘take’ the items in the passage, but only the priest also “went along with the people,” making the identification require clause-matching and yielding a unique, central action."
+        },
+        "window_verses": [
+          18,
+          19,
+          20,
+          21
+        ],
+        "window_text": {
+          "18": "When the five men went into Micah’s house and took the idol, the ephod and the household gods, the priest said to them, “What are you doing?”",
+          "19": "They answered him, “Be quiet! Don’t say a word. Come with us, and be our father and priest. Isn’t it better that you serve a tribe and clan in Israel as priest rather than just one man’s household?”",
+          "20": "The priest was very pleased. He took the ephod, the household gods and the idol and went along with the people.",
+          "21": "Putting their little children, their livestock and their possessions in front of them, they turned away and left."
+        },
+        "reading_groups": [
+          "The priest takes the items and goes with the people"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "question too complex: stacked clauses (2 comma(s), 0 subordinator(s))",
+            "compound question: 2 coordinations — asks about more than one thing",
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 20,
+          "answer_verse_original": 20,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 20",
+          "readings_failures": []
+        },
+        "content_id": "v18-21:2"
+      },
+      {
+        "question": "What do the people put in front of themselves before leaving?",
+        "answer": "Their little children, their livestock, and their possessions.",
+        "answer_verse": 21,
+        "wrong_answer": "The idol, the ephod, and the household gods.",
+        "relation": "direction",
+        "readings": [
+          {
+            "answer": "Their little children, their livestock and their possessions.",
+            "support": "their little children, their livestock and their possessions"
+          }
+        ],
+        "distinct_readings": [
+          "Their little children, their livestock and their possessions."
+        ],
+        "scores": {
+          "structure_dependence": 3.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 4.0,
+          "runs": 1,
+          "reason": "The list of objects (“their little children, their livestock, and their possessions”) appears explicitly in one phrase and is a minor logistical detail."
+        },
+        "window_verses": [
+          18,
+          19,
+          20,
+          21
+        ],
+        "window_text": {
+          "18": "When the five men went into Micah’s house and took the idol, the ephod and the household gods, the priest said to them, “What are you doing?”",
+          "19": "They answered him, “Be quiet! Don’t say a word. Come with us, and be our father and priest. Isn’t it better that you serve a tribe and clan in Israel as priest rather than just one man’s household?”",
+          "20": "The priest was very pleased. He took the ephod, the household gods and the idol and went along with the people.",
+          "21": "Putting their little children, their livestock and their possessions in front of them, they turned away and left."
+        },
+        "reading_groups": [
+          "Their little children, their livestock, and their possessions"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: front",
+            "lexical: structure_dependence 3.0 (need 7.0)",
+            "incidental: centrality 4.0 (need 5.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "front"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 21,
+          "answer_verse_original": 21,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 21",
+          "readings_failures": []
+        },
+        "content_id": "v18-21:3"
+      },
+      {
+        "question": "After placing their children, livestock, and possessions in front, what do the people do?",
+        "answer": "The people turn away and leave.",
+        "answer_verse": 21,
+        "wrong_answer": "The people invite the priest to be their father and priest.",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "They turned away and left",
+            "support": "they turned away and left"
+          }
+        ],
+        "distinct_readings": [
+          "They turned away and left"
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "Identifying the main action after the participial phrase requires sequencing to “they turned away and left,” which is uniquely stated and fairly central to the departure."
+        },
+        "window_verses": [
+          18,
+          19,
+          20,
+          21
+        ],
+        "window_text": {
+          "18": "When the five men went into Micah’s house and took the idol, the ephod and the household gods, the priest said to them, “What are you doing?”",
+          "19": "They answered him, “Be quiet! Don’t say a word. Come with us, and be our father and priest. Isn’t it better that you serve a tribe and clan in Israel as priest rather than just one man’s household?”",
+          "20": "The priest was very pleased. He took the ephod, the household gods and the idol and went along with the people.",
+          "21": "Putting their little children, their livestock and their possessions in front of them, they turned away and left."
+        },
+        "reading_groups": [
+          "They turn away and leave"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: children, front",
+            "dangling pronoun: their",
+            "question too complex: stacked clauses (3 comma(s), 1 subordinator(s))",
+            "answer is a description, not an identification: 'The people turn away and leave.'",
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "children",
+            "front"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 21,
+          "answer_verse_original": 21,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 21",
+          "readings_failures": []
+        },
+        "content_id": "v18-21:4"
+      },
+      {
+        "question": "Whom do the five men say it is better for the priest to serve?",
+        "answer": "A tribe and clan in Israel.",
+        "answer_verse": 19,
+        "wrong_answer": "One man’s household.",
+        "relation": "modality",
+        "readings": [
+          {
+            "answer": "a tribe and clan in Israel",
+            "support": "Isn’t it better that you serve a tribe and clan in Israel"
+          }
+        ],
+        "distinct_readings": [
+          "a tribe and clan in Israel"
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "The reader must parse the comparative “better … rather than” to choose “a tribe and clan in Israel” over “one man’s household,” a uniquely stated and unambiguous persuasion point."
+        },
+        "window_verses": [
+          18,
+          19,
+          20,
+          21
+        ],
+        "window_text": {
+          "18": "When the five men went into Micah’s house and took the idol, the ephod and the household gods, the priest said to them, “What are you doing?”",
+          "19": "They answered him, “Be quiet! Don’t say a word. Come with us, and be our father and priest. Isn’t it better that you serve a tribe and clan in Israel as priest rather than just one man’s household?”",
+          "20": "The priest was very pleased. He took the ephod, the household gods and the idol and went along with the people.",
+          "21": "Putting their little children, their livestock and their possessions in front of them, they turned away and left."
+        },
+        "reading_groups": [
+          "A tribe and clan in Israel"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: outside top structure band (7 vs window max 9)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 19,
+          "answer_verse_original": 19,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 19",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Whom do the five men say it is better for the priest to serve?",
+            "readings": [
+              {
+                "answer": "a tribe and clan in Israel",
+                "support": "Isn’t it better that you serve a tribe and clan in Israel"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "In v.19 the men say, “Isn’t it better that you serve a tribe and clan in Israel,” matching the key exactly."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "Verse 19 explicitly states they say it is better for him to serve “a tribe and clan in Israel.”",
+            "status": "passed"
+          }
+        },
+        "content_id": "v18-21:5"
+      }
+    ],
+    "report": {
+      "window_id": "v18-21",
+      "verses": [
+        18,
+        19,
+        20,
+        21
+      ],
+      "generated": 5,
+      "scored": 5,
+      "kept": 1,
+      "survivors_before_window_selection": 2,
+      "window_selection_rejected": 1,
+      "repair_attempted": 0,
+      "repaired": 0,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

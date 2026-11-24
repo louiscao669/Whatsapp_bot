@@ -1,0 +1,30 @@
+{
+  "prompt": "can you get the strong QAs from all the passages\n\nEarlier selection criteria:\nPipeline generates and scores candidates. Give me the kept output plus passage windows. Return only genuinely strong candidates, checking naturalness, self-containment, answer completeness, and discriminating value. Exclude items that are vague, unnatural, incidental, duplicate another survivor, or are unlikely to distinguish answerers. Judge each concept as written. An otherwise good QA can survive a metadata correction.\n\nMake two passes. First decide whether each stem earns its place as written. Read it aloud before checking the key. Set aside a stem that forces the reader to decode a generic or technical stand-in for a person, statement or event, even if the author’s intended answer is easy to recover. Set aside simple lookup when the rival is just another detail elsewhere in the window. A brief question can be strong when two participants take distinct roles in the same action, or when a proposal and its fulfillment have distinct consequences.\n\nThen compare items within each passage. If two questions test the same inference in parallel scenes and changing the nouns would turn one into the other, favor the one that captures more meaning. Penalize the redundant item. Do not penalize independent items simply for sharing a question word or grammatical form.\n\nRank clear, independently worthwhile items ahead of items that require repair or add little coverage. In each reason, name the editorial decision that separates it from a weaker or stronger question; merely restating the key does not explain its value.",
+  "common_instructions": "These are candidates for a Bible-translation comprehension study. Use only the supplied materials.\nThe competing answer is a proposed misreading. Rate each question's suitability as written on\na common 0–1000 scale, higher means stronger. Spread scores enough to rank closely matched\nquestions. Give each item one short concrete reason. Do not change the items or drop rows.\nReturn JSON only: {\"items\":[{\"id\":\"opaque ID\",\"score\":integer,\"why\":\"short reason\"}]}.",
+  "model": "gpt-5.6-sol",
+  "effort": "high",
+  "orders": [
+    null,
+    67411,
+    81937
+  ],
+  "editorial_calls": {
+    "Q03676": "keep",
+    "Q15F78": "remove",
+    "Q6E903": "keep",
+    "QADDA3": "remove",
+    "Q5D8FD": "remove",
+    "QEEBA6": "remove"
+  },
+  "comparison_item": "Q6148C",
+  "review_update": {
+    "id": "QEEBA6",
+    "standalone": "keep",
+    "bank_decision": "remove",
+    "comparator_source_id": "judg_9_1-57/v9-10:1",
+    "comparator_preference": "keep",
+    "timing": "Recorded after the first revised-prompt runs and before the bank-prompt runs. All other editorial calls stay as originally recorded.",
+    "why": "The original Judges 9:9–10 window uses the same rhetorical tradeoff for the olive tree. The olive gives up oil by which gods and humans are honored, whereas the fig gives up its sweet fruit. Both questions test the same inference in adjacent stanzas. The olive question additionally asks the reader to recover why the oil matters. I would spend one slot on the olive question. If that item were absent, I would keep the fig question."
+  },
+  "base_design_hash": "10cb3fe9aab3458df7233f824194861354ac1316472c91dd1569f97713363757"
+}

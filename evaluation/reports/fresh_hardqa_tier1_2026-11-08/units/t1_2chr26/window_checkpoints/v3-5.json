@@ -1,0 +1,515 @@
+{
+  "config_digest": "06f6fd33124ccf69d50b7d020984e70e0c73dd874d345ad168bb1c04d96f7dac",
+  "data": {
+    "kept": [
+      {
+        "question": "Whom does the instructor teach to fear the Lord?",
+        "answer": "Zechariah teaches Uzziah to fear God.",
+        "answer_verse": 5,
+        "wrong_answer": "Amaziah.",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "Uzziah",
+            "support": "who instructed him in the fear of God"
+          }
+        ],
+        "distinct_readings": [
+          "Uzziah"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 10.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "Answering requires resolving that the relative clause \"who instructed him\" refers to Zechariah and that \"him\" is Uzziah, a single, uniquely stated fact with an unambiguous answer that supports but is not the main focus of the passage."
+        },
+        "window_verses": [
+          3,
+          4,
+          5
+        ],
+        "window_text": {
+          "3": "Uzziah was sixteen years old when he became king, and he reigned in Jerusalem fifty-two years. His mother’s name was Jekoliah; she was from Jerusalem.",
+          "4": "He did what was right in the eyes of the Lord, just as his father Amaziah had done.",
+          "5": "He sought God during the days of Zechariah, who instructed him in the fear of God. As long as he sought the Lord, God gave him success."
+        },
+        "reading_groups": [
+          "Uzziah is the one taught to fear the Lord"
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "fear",
+            "teach"
+          ],
+          "answer_verse": 5,
+          "answer_verse_original": 5,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 5",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Whom does the instructor teach to fear the Lord?",
+            "readings": [
+              {
+                "answer": "Uzziah",
+                "support": "who instructed him in the fear of God"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The text says Zechariah \"instructed him in the fear of God,\" and the pronoun \"him\" refers to Uzziah, so the instructor teaches Uzziah."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The passage explicitly states that Zechariah instructed Uzziah in the fear of God.",
+            "status": "passed"
+          }
+        },
+        "scores_after_repair_raw": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 10.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "Answering requires resolving that the relative clause \"who instructed him\" refers to Zechariah and that \"him\" is Uzziah, a single, uniquely stated fact with an unambiguous answer that supports but is not the main focus of the passage."
+        },
+        "repaired": true,
+        "repair_attempted": true,
+        "question_before_repair": "Whom does Zechariah teach to fear God?",
+        "scores_before_repair": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "The reader must resolve the relative clause and the object pronoun to identify Uzziah as the one instructed, a single mention tied to his seeking."
+        },
+        "audit_before_repair": {
+          "passed": false,
+          "failures": [
+            "location leak: god, zechariah"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "god",
+            "zechariah"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "fear",
+            "god",
+            "teach",
+            "zechariah"
+          ],
+          "answer_verse": 5,
+          "answer_verse_original": 5,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 5",
+          "readings_failures": []
+        },
+        "repair_log": [
+          {
+            "before": "Whom does Zechariah teach to fear God?",
+            "after": "Whom does the instructor teach to fear the Lord?",
+            "note": "Replaced Zechariah with the instructor and God with the Lord to avoid leaks.",
+            "failures_before": [
+              "location leak: god, zechariah"
+            ],
+            "scores_before": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 9.0,
+              "centrality": 7.0,
+              "runs": 1,
+              "reason": "The reader must resolve the relative clause and the object pronoun to identify Uzziah as the one instructed, a single mention tied to his seeking."
+            },
+            "accepted": true,
+            "reason": "passed full rejudgment",
+            "suitability_judgment": {
+              "Q": "Whom does the instructor teach to fear the Lord?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "Zechariah is the instructor and the text explicitly says he instructed Uzziah, yielding a single clear answer."
+            },
+            "failures_after": [],
+            "scores_after": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 10.0,
+              "answer_certainty": 10.0,
+              "centrality": 6.0,
+              "runs": 1,
+              "reason": "Answering requires resolving that the relative clause \"who instructed him\" refers to Zechariah and that \"him\" is Uzziah, a single, uniquely stated fact with an unambiguous answer that supports but is not the main focus of the passage."
+            },
+            "scores_used": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 10.0,
+              "answer_certainty": 10.0,
+              "centrality": 6.0,
+              "runs": 1,
+              "reason": "Answering requires resolving that the relative clause \"who instructed him\" refers to Zechariah and that \"him\" is Uzziah, a single, uniquely stated fact with an unambiguous answer that supports but is not the main focus of the passage."
+            }
+          }
+        ],
+        "window_selection_reason": "It hinges on resolving the relative clause and pronouns in v.5—‘who instructed him’—to identify Uzziah (not Amaziah) as the one taught, yielding a single clear answer.",
+        "window_structure_max": 8.0,
+        "content_id": "v3-5:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Why does God make Uzziah succeed?",
+        "answer": "Because Uzziah seeks the Lord.",
+        "answer_verse": 5,
+        "wrong_answer": "Because Zechariah instructs Uzziah.",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "Because he sought the Lord",
+            "support": "As long as he sought the Lord, God gave him success."
+          }
+        ],
+        "distinct_readings": [
+          "Because he sought the Lord"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 9.0,
+          "runs": 2,
+          "reason": "It relies on the conditional-causal clause “As long as he sought the Lord, God gave him success,” stated once and central to the passage."
+        },
+        "window_verses": [
+          3,
+          4,
+          5
+        ],
+        "window_text": {
+          "3": "Uzziah was sixteen years old when he became king, and he reigned in Jerusalem fifty-two years. His mother’s name was Jekoliah; she was from Jerusalem.",
+          "4": "He did what was right in the eyes of the Lord, just as his father Amaziah had done.",
+          "5": "He sought God during the days of Zechariah, who instructed him in the fear of God. As long as he sought the Lord, God gave him success."
+        },
+        "reading_groups": [
+          "As long as he sought the Lord",
+          "During the days of Zechariah"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: god",
+            "2 defensible readings: As long as he sought the Lord | During the days of Zechariah"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "god"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "uzziah"
+          ],
+          "answer_verse": 5,
+          "answer_verse_original": 5,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 5",
+          "readings_failures": [
+            "2 defensible readings: As long as he sought the Lord | During the days of Zechariah"
+          ]
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "Why does God make Uzziah succeed?",
+            "after": "When does Uzziah succeed?",
+            "note": "Removed the leaking word God while preserving the timing ask.",
+            "failures_before": [
+              "location leak: god",
+              "2 defensible readings: As long as he sought the Lord | During the days of Zechariah"
+            ],
+            "scores_before": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 9.0,
+              "centrality": 9.0,
+              "runs": 2,
+              "reason": "It relies on the conditional-causal clause “As long as he sought the Lord, God gave him success,” stated once and central to the passage."
+            },
+            "accepted": false,
+            "reason": "removed as weak question: “Succeed” is ambiguous between becoming king at sixteen and receiving success while seeking the Lord, yielding multiple defensible answers.",
+            "suitability_judgment": {
+              "Q": "When does Uzziah succeed?",
+              "clear_referents": false,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": false,
+              "remove": true,
+              "reason": "“Succeed” is ambiguous between becoming king at sixteen and receiving success while seeking the Lord, yielding multiple defensible answers."
+            }
+          }
+        ],
+        "content_id": "v3-5:2"
+      },
+      {
+        "question": "Who makes Uzziah succeed?",
+        "answer": "God makes Uzziah succeed.",
+        "answer_verse": 5,
+        "wrong_answer": "Zechariah.",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "God",
+            "support": "God gave him success."
+          }
+        ],
+        "distinct_readings": [
+          "God"
+        ],
+        "scores": {
+          "structure_dependence": 5.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "It asks for the agent of the action in the clause “God gave him success,” which is uniquely stated and unambiguous though not highly relational."
+        },
+        "window_verses": [
+          3,
+          4,
+          5
+        ],
+        "window_text": {
+          "3": "Uzziah was sixteen years old when he became king, and he reigned in Jerusalem fifty-two years. His mother’s name was Jekoliah; she was from Jerusalem.",
+          "4": "He did what was right in the eyes of the Lord, just as his father Amaziah had done.",
+          "5": "He sought God during the days of Zechariah, who instructed him in the fear of God. As long as he sought the Lord, God gave him success."
+        },
+        "reading_groups": [
+          "God is the one who gives Uzziah success"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 5.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "mak",
+            "succ",
+            "uzziah"
+          ],
+          "answer_verse": 5,
+          "answer_verse_original": 5,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 5",
+          "readings_failures": []
+        },
+        "content_id": "v3-5:3"
+      },
+      {
+        "question": "Who does right like Amaziah did?",
+        "answer": "Uzziah does right like Amaziah did.",
+        "answer_verse": 4,
+        "wrong_answer": "Amaziah.",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "Uzziah",
+            "support": "Uzziah was sixteen years old when he became king | He did what was right in the eyes of the Lord, just as his father Amaziah had done."
+          }
+        ],
+        "distinct_readings": [
+          "Uzziah"
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "It requires resolving the pronoun “He” to Uzziah and understanding the comparison to Amaziah, stated once and central to his characterization."
+        },
+        "window_verses": [
+          3,
+          4,
+          5
+        ],
+        "window_text": {
+          "3": "Uzziah was sixteen years old when he became king, and he reigned in Jerusalem fifty-two years. His mother’s name was Jekoliah; she was from Jerusalem.",
+          "4": "He did what was right in the eyes of the Lord, just as his father Amaziah had done.",
+          "5": "He sought God during the days of Zechariah, who instructed him in the fear of God. As long as he sought the Lord, God gave him success."
+        },
+        "reading_groups": [
+          "Uzziah is the one who did right like Amaziah"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: amaziah",
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "amaziah"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "amaziah",
+            "lik",
+            "right"
+          ],
+          "answer_verse": 4,
+          "answer_verse_original": 4,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 4",
+          "readings_failures": []
+        },
+        "content_id": "v3-5:4"
+      },
+      {
+        "question": "When does God make Uzziah succeed?",
+        "answer": "While Uzziah seeks the Lord.",
+        "answer_verse": 5,
+        "wrong_answer": "For fifty-two years.",
+        "relation": "modality",
+        "readings": [
+          {
+            "answer": "As long as he sought the Lord.",
+            "support": "As long as he sought the Lord, God gave him success."
+          },
+          {
+            "answer": "During the days of Zechariah.",
+            "support": "during the days of Zechariah | God gave him success."
+          }
+        ],
+        "distinct_readings": [
+          "As long as he sought the Lord.",
+          "During the days of Zechariah."
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 9.0,
+          "runs": 2,
+          "reason": "It relies on the conditional-causal clause “As long as he sought the Lord, God gave him success,” stated once and central to the passage."
+        },
+        "window_verses": [
+          3,
+          4,
+          5
+        ],
+        "window_text": {
+          "3": "Uzziah was sixteen years old when he became king, and he reigned in Jerusalem fifty-two years. His mother’s name was Jekoliah; she was from Jerusalem.",
+          "4": "He did what was right in the eyes of the Lord, just as his father Amaziah had done.",
+          "5": "He sought God during the days of Zechariah, who instructed him in the fear of God. As long as he sought the Lord, God gave him success."
+        },
+        "reading_groups": [
+          "As long as he sought the Lord",
+          "During the days of Zechariah"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: god",
+            "2 defensible readings: As long as he sought the Lord | During the days of Zechariah"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "god"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "uzziah"
+          ],
+          "answer_verse": 5,
+          "answer_verse_original": 5,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 5",
+          "readings_failures": [
+            "2 defensible readings: As long as he sought the Lord | During the days of Zechariah"
+          ]
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "When does God make Uzziah succeed?",
+            "after": "When does Uzziah succeed?",
+            "note": "Removed the leaking word God while preserving the timing ask.",
+            "failures_before": [
+              "location leak: god",
+              "2 defensible readings: As long as he sought the Lord | During the days of Zechariah"
+            ],
+            "scores_before": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 9.0,
+              "centrality": 9.0,
+              "runs": 2,
+              "reason": "It relies on the conditional-causal clause “As long as he sought the Lord, God gave him success,” stated once and central to the passage."
+            },
+            "accepted": false,
+            "reason": "removed as weak question: “Succeed” is ambiguous between becoming king at sixteen and receiving success while seeking the Lord, yielding multiple defensible answers.",
+            "suitability_judgment": {
+              "Q": "When does Uzziah succeed?",
+              "clear_referents": false,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": false,
+              "remove": true,
+              "reason": "“Succeed” is ambiguous between becoming king at sixteen and receiving success while seeking the Lord, yielding multiple defensible answers."
+            }
+          }
+        ],
+        "content_id": "v3-5:5"
+      }
+    ],
+    "report": {
+      "window_id": "v3-5",
+      "verses": [
+        3,
+        4,
+        5
+      ],
+      "generated": 5,
+      "scored": 5,
+      "kept": 1,
+      "survivors_before_window_selection": 1,
+      "window_selection_rejected": 0,
+      "repair_attempted": 3,
+      "repaired": 1,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

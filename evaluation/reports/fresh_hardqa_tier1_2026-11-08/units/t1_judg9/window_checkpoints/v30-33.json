@@ -1,0 +1,876 @@
+{
+  "config_digest": "bf29cf564aae7d15d3bd5bdbff20af59f16e06874e5bad45e83aa6623bdff95a",
+  "data": {
+    "kept": [
+      {
+        "question": "What should Abimelek do once Gaal's force moves out to challenge him?",
+        "answer": "Attack Gaal and his men",
+        "answer_verse": 33,
+        "wrong_answer": "Advance against the city",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "Seize the opportunity to attack them.",
+            "support": "seize the opportunity to attack them"
+          }
+        ],
+        "distinct_readings": [
+          "Seize the opportunity to attack them."
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "It requires linking the conditional clause (“when Gaal and his men come out against you”) to the imperative action and resolving the pronoun (“them”) to Gaal’s men, a single, uniquely stated and unambiguous step central to the battle plan."
+        },
+        "window_verses": [
+          30,
+          31,
+          32,
+          33
+        ],
+        "window_text": {
+          "30": "When Zebul the governor of the city heard what Gaal son of Ebed said, he was very angry.",
+          "31": "Under cover he sent messengers to Abimelek, saying, “Gaal son of Ebed and his clan have come to Shechem and are stirring up the city against you.",
+          "32": "Now then, during the night you and your men should come and lie in wait in the fields.",
+          "33": "In the morning at sunrise, advance against the city. When Gaal and his men come out against you, seize the opportunity to attack them.”"
+        },
+        "reading_groups": [
+          "Attack Gaal and his men when they come out"
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "gaal"
+          ],
+          "answer_verse": 33,
+          "answer_verse_original": 33,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 33",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "What should Abimelek do once Gaal's force moves out to challenge him?",
+            "readings": [
+              {
+                "answer": "Seize the opportunity to attack them.",
+                "support": "seize the opportunity to attack them"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Line 33 says, “When Gaal and his men come out against you, seize the opportunity to attack them,” which is the same instruction as attacking Gaal and his men when they move out."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "Verse 33 directly instructs Abimelek to attack Gaal and his men when they come out against him.",
+            "status": "passed"
+          }
+        },
+        "scores_after_repair_raw": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "It requires linking the conditional clause (“when Gaal and his men come out against you”) to the imperative action and resolving the pronoun (“them”) to Gaal’s men, a single, uniquely stated and unambiguous step central to the battle plan."
+        },
+        "repaired": true,
+        "repair_attempted": true,
+        "question_before_repair": "What should Abimelek do when Gaal and his men come out?",
+        "scores_before_repair": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "Mapping “them” to Gaal and his men and “you” to Abimelek is required to get “attack them,” stated once with a single clear directive central to the action."
+        },
+        "audit_before_repair": {
+          "passed": false,
+          "failures": [
+            "quotes the passage: quotes verse 33: 'when gaal and his men'"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "gaal"
+          ],
+          "answer_verse": 33,
+          "answer_verse_original": 33,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 33",
+          "readings_failures": []
+        },
+        "repair_log": [
+          {
+            "before": "What should Abimelek do when Gaal and his men come out?",
+            "after": "What should Abimelek do once Gaal's force moves out to challenge him?",
+            "note": "Paraphrased the quoted phrase to avoid exact wording from the verse.",
+            "failures_before": [
+              "quotes the passage: quotes verse 33: 'when gaal and his men'"
+            ],
+            "scores_before": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 9.0,
+              "runs": 1,
+              "reason": "Mapping “them” to Gaal and his men and “you” to Abimelek is required to get “attack them,” stated once with a single clear directive central to the action."
+            },
+            "accepted": true,
+            "reason": "passed full rejudgment",
+            "suitability_judgment": {
+              "Q": "What should Abimelek do once Gaal's force moves out to challenge him?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "The referents are explicit and the window gives a single clear instruction for that moment—seize the opportunity to attack them."
+            },
+            "failures_after": [],
+            "scores_after": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "It requires linking the conditional clause (“when Gaal and his men come out against you”) to the imperative action and resolving the pronoun (“them”) to Gaal’s men, a single, uniquely stated and unambiguous step central to the battle plan."
+            },
+            "scores_used": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "It requires linking the conditional clause (“when Gaal and his men come out against you”) to the imperative action and resolving the pronoun (“them”) to Gaal’s men, a single, uniquely stated and unambiguous step central to the battle plan."
+            }
+          }
+        ],
+        "window_selection_reason": "It hinges on the conditional timing (“when Gaal and his men come out…”) to choose the correct action, contrasting with the plausible but earlier directive to advance against the city.",
+        "window_structure_max": 8.0,
+        "content_id": "v30-33:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Who becomes angry after hearing Gaal speak?",
+        "answer": "Zebul",
+        "answer_verse": 30,
+        "wrong_answer": "Gaal",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "Zebul, the governor of the city",
+            "support": "When Zebul the governor of the city heard what Gaal son of Ebed said, he was very angry."
+          }
+        ],
+        "distinct_readings": [
+          "Zebul, the governor of the city"
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "Requires resolving the pronoun \"he\" to Zebul after Gaal’s speech; this is stated once, unambiguous, and a significant but not primary plot point."
+        },
+        "window_verses": [
+          30,
+          31,
+          32,
+          33
+        ],
+        "window_text": {
+          "30": "When Zebul the governor of the city heard what Gaal son of Ebed said, he was very angry.",
+          "31": "Under cover he sent messengers to Abimelek, saying, “Gaal son of Ebed and his clan have come to Shechem and are stirring up the city against you.",
+          "32": "Now then, during the night you and your men should come and lie in wait in the fields.",
+          "33": "In the morning at sunrise, advance against the city. When Gaal and his men come out against you, seize the opportunity to attack them.”"
+        },
+        "reading_groups": [
+          "Zebul becomes angry after hearing Gaal’s words"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "bare-name answer 'Zebul': names survive translation"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 30,
+          "answer_verse_original": 30,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 30",
+          "readings_failures": []
+        },
+        "content_id": "v30-33:2"
+      },
+      {
+        "question": "To whom does Zebul send secret messengers?",
+        "answer": "Abimelek",
+        "answer_verse": 31,
+        "wrong_answer": "Gaal",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "Abimelek",
+            "support": "sent messengers to Abimelek"
+          }
+        ],
+        "distinct_readings": [
+          "Abimelek"
+        ],
+        "scores": {
+          "structure_dependence": 2.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "Answer is the explicit object phrase \"to Abimelek,\" stated once and clear, and it drives the ensuing plan."
+        },
+        "window_verses": [
+          30,
+          31,
+          32,
+          33
+        ],
+        "window_text": {
+          "30": "When Zebul the governor of the city heard what Gaal son of Ebed said, he was very angry.",
+          "31": "Under cover he sent messengers to Abimelek, saying, “Gaal son of Ebed and his clan have come to Shechem and are stirring up the city against you.",
+          "32": "Now then, during the night you and your men should come and lie in wait in the fields.",
+          "33": "In the morning at sunrise, advance against the city. When Gaal and his men come out against you, seize the opportunity to attack them.”"
+        },
+        "reading_groups": [
+          "Zebul sends secret messengers to Abimelek"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "bare-name answer 'Abimelek': names survive translation",
+            "lexical: structure_dependence 2.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 31,
+          "answer_verse_original": 31,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 31",
+          "readings_failures": []
+        },
+        "content_id": "v30-33:3"
+      },
+      {
+        "question": "Whom does Gaal stir up the city against?",
+        "answer": "Abimelek",
+        "answer_verse": 31,
+        "wrong_answer": "Zebul",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "Abimelek",
+            "support": "to Abimelek, saying, | are stirring up the city against you"
+          }
+        ],
+        "distinct_readings": [
+          "Abimelek"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "Requires mapping \"you\" in the message to Abimelek, a single-clause relation that is unambiguous and central to the conflict."
+        },
+        "window_verses": [
+          30,
+          31,
+          32,
+          33
+        ],
+        "window_text": {
+          "30": "When Zebul the governor of the city heard what Gaal son of Ebed said, he was very angry.",
+          "31": "Under cover he sent messengers to Abimelek, saying, “Gaal son of Ebed and his clan have come to Shechem and are stirring up the city against you.",
+          "32": "Now then, during the night you and your men should come and lie in wait in the fields.",
+          "33": "In the morning at sunrise, advance against the city. When Gaal and his men come out against you, seize the opportunity to attack them.”"
+        },
+        "reading_groups": [
+          "Gaal stirs up the city against Abimelek"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "bare-name answer 'Abimelek': names survive translation"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 31,
+          "answer_verse_original": 31,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 31",
+          "readings_failures": []
+        },
+        "content_id": "v30-33:4"
+      },
+      {
+        "question": "When should Abimelek advance against the city?",
+        "answer": "In the morning at sunrise",
+        "answer_verse": 33,
+        "wrong_answer": "During the night",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "In the morning at sunrise.",
+            "support": "In the morning at sunrise, advance against the city."
+          }
+        ],
+        "distinct_readings": [
+          "In the morning at sunrise."
+        ],
+        "scores": {
+          "structure_dependence": 3.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 5.0,
+          "runs": 1,
+          "reason": "The time phrase \"In the morning at sunrise\" is explicitly attached to advancing; it occurs once and is clear, with moderate importance."
+        },
+        "window_verses": [
+          30,
+          31,
+          32,
+          33
+        ],
+        "window_text": {
+          "30": "When Zebul the governor of the city heard what Gaal son of Ebed said, he was very angry.",
+          "31": "Under cover he sent messengers to Abimelek, saying, “Gaal son of Ebed and his clan have come to Shechem and are stirring up the city against you.",
+          "32": "Now then, during the night you and your men should come and lie in wait in the fields.",
+          "33": "In the morning at sunrise, advance against the city. When Gaal and his men come out against you, seize the opportunity to attack them.”"
+        },
+        "reading_groups": [
+          "Abimelek should advance in the morning at sunrise"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 3.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 33,
+          "answer_verse_original": 33,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 33",
+          "readings_failures": []
+        },
+        "content_id": "v30-33:5"
+      },
+      {
+        "question": "Whose men come out to fight Abimelek?",
+        "answer": "Gaal’s men",
+        "answer_verse": 31,
+        "wrong_answer": "Abimelek’s men",
+        "relation": "participant",
+        "readings": [
+          {
+            "answer": "Gaal's",
+            "support": "he sent messengers to Abimelek, saying | When Gaal and his men come out against you"
+          }
+        ],
+        "distinct_readings": [
+          "Gaal's"
+        ],
+        "scores": {
+          "structure_dependence": 5.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "Needs linking \"his\" in \"Gaal and his men\" to Gaal; uniquely stated, unambiguous, and relevant to the planned engagement."
+        },
+        "window_verses": [
+          30,
+          31,
+          32,
+          33
+        ],
+        "window_text": {
+          "30": "When Zebul the governor of the city heard what Gaal son of Ebed said, he was very angry.",
+          "31": "Under cover he sent messengers to Abimelek, saying, “Gaal son of Ebed and his clan have come to Shechem and are stirring up the city against you.",
+          "32": "Now then, during the night you and your men should come and lie in wait in the fields.",
+          "33": "In the morning at sunrise, advance against the city. When Gaal and his men come out against you, seize the opportunity to attack them.”"
+        },
+        "reading_groups": [
+          "Gaal’s men come out against Abimelek"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: abimelek",
+            "lexical: structure_dependence 5.0 (need 7.0)"
+          ],
+          "notes": [
+            "corrected metadata from 33 to 31; reading support and question relation identify verse 31",
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "abimelek"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 31,
+          "answer_verse_original": 33,
+          "answer_verse_corrected": true,
+          "answer_verse_note": "corrected metadata from 33 to 31; reading support and question relation identify verse 31",
+          "readings_failures": []
+        },
+        "content_id": "v30-33:6"
+      },
+      {
+        "question": "What should Abimelek attack when Gaal comes out?",
+        "answer": "Gaal and his men",
+        "answer_verse": 33,
+        "wrong_answer": "The city",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "Gaal and his men",
+            "support": "Gaal and his men | attack them"
+          }
+        ],
+        "distinct_readings": [
+          "Gaal and his men"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "Requires resolving the pronoun \"them\" to \"Gaal and his men;\" this is uniquely stated, clear, and important to the tactic described."
+        },
+        "window_verses": [
+          30,
+          31,
+          32,
+          33
+        ],
+        "window_text": {
+          "30": "When Zebul the governor of the city heard what Gaal son of Ebed said, he was very angry.",
+          "31": "Under cover he sent messengers to Abimelek, saying, “Gaal son of Ebed and his clan have come to Shechem and are stirring up the city against you.",
+          "32": "Now then, during the night you and your men should come and lie in wait in the fields.",
+          "33": "In the morning at sunrise, advance against the city. When Gaal and his men come out against you, seize the opportunity to attack them.”"
+        },
+        "reading_groups": [
+          "Abimelek should attack Gaal and his men when they come out"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: out",
+            "answer leaks into question: gaal"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "out"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "gaal"
+          ],
+          "answer_verse": 33,
+          "answer_verse_original": 33,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 33",
+          "readings_failures": []
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "What should Abimelek attack when Gaal comes out?",
+            "after": "What should Abimelek attack when the opposing force appears?",
+            "note": "Removed the leaking word and replaced the named subject with a neutral descriptor.",
+            "failures_before": [
+              "location leak: out",
+              "answer leaks into question: gaal"
+            ],
+            "scores_before": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 6.0,
+              "runs": 1,
+              "reason": "Requires resolving the pronoun \"them\" to \"Gaal and his men;\" this is uniquely stated, clear, and important to the tactic described."
+            },
+            "accepted": false,
+            "reason": "removed as weak question: It uses an invented label (“opposing force”) instead of the explicit wording “Gaal and his men,” making the question an unnatural circumlocution.",
+            "suitability_judgment": {
+              "Q": "What should Abimelek attack when the opposing force appears?",
+              "clear_referents": true,
+              "natural_wording": false,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": true,
+              "reason": "It uses an invented label (“opposing force”) instead of the explicit wording “Gaal and his men,” making the question an unnatural circumlocution."
+            }
+          }
+        ],
+        "content_id": "v30-33:7"
+      },
+      {
+        "question": "Which man grows angry after Gaal speaks?",
+        "answer": "Zebul",
+        "answer_verse": 30,
+        "wrong_answer": "Abimelek",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "Zebul",
+            "support": "Zebul the governor of the city | he was very angry"
+          }
+        ],
+        "distinct_readings": [
+          "Zebul"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "Identifying “he” as Zebul after Gaal speaks relies on pronoun resolution in one clause, stated once, unambiguous, and central to the ensuing plan."
+        },
+        "window_verses": [
+          30,
+          31,
+          32,
+          33
+        ],
+        "window_text": {
+          "30": "When Zebul the governor of the city heard what Gaal son of Ebed said, he was very angry.",
+          "31": "Under cover he sent messengers to Abimelek, saying, “Gaal son of Ebed and his clan have come to Shechem and are stirring up the city against you.",
+          "32": "Now then, during the night you and your men should come and lie in wait in the fields.",
+          "33": "In the morning at sunrise, advance against the city. When Gaal and his men come out against you, seize the opportunity to attack them.”"
+        },
+        "reading_groups": [
+          "Zebul is the one who becomes angry after Gaal speaks"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "bare-name answer 'Zebul': names survive translation"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 30,
+          "answer_verse_original": 30,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 30",
+          "readings_failures": []
+        },
+        "content_id": "v30-33:8"
+      },
+      {
+        "question": "Whom does Zebul secretly send messengers to?",
+        "answer": "Abimelek",
+        "answer_verse": 31,
+        "wrong_answer": "Gaal",
+        "relation": "direction",
+        "readings": [
+          {
+            "answer": "Abimelek",
+            "support": "sent messengers to Abimelek"
+          }
+        ],
+        "distinct_readings": [
+          "Abimelek"
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "Recipient “to Abimelek” requires linking the undercover sending by Zebul (he) to its object, stated once with a single clear answer, and crucial to the plot."
+        },
+        "window_verses": [
+          30,
+          31,
+          32,
+          33
+        ],
+        "window_text": {
+          "30": "When Zebul the governor of the city heard what Gaal son of Ebed said, he was very angry.",
+          "31": "Under cover he sent messengers to Abimelek, saying, “Gaal son of Ebed and his clan have come to Shechem and are stirring up the city against you.",
+          "32": "Now then, during the night you and your men should come and lie in wait in the fields.",
+          "33": "In the morning at sunrise, advance against the city. When Gaal and his men come out against you, seize the opportunity to attack them.”"
+        },
+        "reading_groups": [
+          "Zebul secretly sends messengers to Abimelek"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "bare-name answer 'Abimelek': names survive translation",
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 31,
+          "answer_verse_original": 31,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 31",
+          "readings_failures": []
+        },
+        "content_id": "v30-33:9"
+      },
+      {
+        "question": "Whom does Zebul say the city turns against?",
+        "answer": "Abimelek",
+        "answer_verse": 31,
+        "wrong_answer": "Gaal",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "Abimelek",
+            "support": "to Abimelek, saying, | stirring up the city against you."
+          }
+        ],
+        "distinct_readings": [
+          "Abimelek"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "Understanding “against you” as Abimelek needs tracking the addressee of Zebul’s message, which is stated once, yields one answer, and frames the conflict."
+        },
+        "window_verses": [
+          30,
+          31,
+          32,
+          33
+        ],
+        "window_text": {
+          "30": "When Zebul the governor of the city heard what Gaal son of Ebed said, he was very angry.",
+          "31": "Under cover he sent messengers to Abimelek, saying, “Gaal son of Ebed and his clan have come to Shechem and are stirring up the city against you.",
+          "32": "Now then, during the night you and your men should come and lie in wait in the fields.",
+          "33": "In the morning at sunrise, advance against the city. When Gaal and his men come out against you, seize the opportunity to attack them.”"
+        },
+        "reading_groups": [
+          "Zebul says the city is being stirred up against Abimelek"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "bare-name answer 'Abimelek': names survive translation"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 31,
+          "answer_verse_original": 31,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 31",
+          "readings_failures": []
+        },
+        "content_id": "v30-33:10"
+      },
+      {
+        "question": "When should Abimelek move on the city?",
+        "answer": "In the morning at sunrise",
+        "answer_verse": 33,
+        "wrong_answer": "During the night",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "In the morning at sunrise.",
+            "support": "In the morning at sunrise, advance against the city."
+          }
+        ],
+        "distinct_readings": [
+          "In the morning at sunrise."
+        ],
+        "scores": {
+          "structure_dependence": 5.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "Selecting “in the morning at sunrise” ties the timing specifically to the advance (as opposed to the night watch), stated once and clearly central to the tactics."
+        },
+        "window_verses": [
+          30,
+          31,
+          32,
+          33
+        ],
+        "window_text": {
+          "30": "When Zebul the governor of the city heard what Gaal son of Ebed said, he was very angry.",
+          "31": "Under cover he sent messengers to Abimelek, saying, “Gaal son of Ebed and his clan have come to Shechem and are stirring up the city against you.",
+          "32": "Now then, during the night you and your men should come and lie in wait in the fields.",
+          "33": "In the morning at sunrise, advance against the city. When Gaal and his men come out against you, seize the opportunity to attack them.”"
+        },
+        "reading_groups": [
+          "In the morning at sunrise Abimelek should advance against the city"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 5.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 33,
+          "answer_verse_original": 33,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 33",
+          "readings_failures": []
+        },
+        "content_id": "v30-33:11"
+      },
+      {
+        "question": "What should Abimelek and his men do at night?",
+        "answer": "Lie in wait in the fields",
+        "answer_verse": 32,
+        "wrong_answer": "Advance against the city",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "Come and lie in wait in the fields.",
+            "support": "during the night you and your men should come and lie in wait in the fields"
+          }
+        ],
+        "distinct_readings": [
+          "Come and lie in wait in the fields."
+        ],
+        "scores": {
+          "structure_dependence": 5.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "The night instruction to “lie in wait in the fields” must be linked to Abimelek and his men, appears once, is unequivocal, and central to the plan."
+        },
+        "window_verses": [
+          30,
+          31,
+          32,
+          33
+        ],
+        "window_text": {
+          "30": "When Zebul the governor of the city heard what Gaal son of Ebed said, he was very angry.",
+          "31": "Under cover he sent messengers to Abimelek, saying, “Gaal son of Ebed and his clan have come to Shechem and are stirring up the city against you.",
+          "32": "Now then, during the night you and your men should come and lie in wait in the fields.",
+          "33": "In the morning at sunrise, advance against the city. When Gaal and his men come out against you, seize the opportunity to attack them.”"
+        },
+        "reading_groups": [
+          "At night they should come and lie in wait in the fields"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: night",
+            "lexical: structure_dependence 5.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "night"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 32,
+          "answer_verse_original": 32,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 32",
+          "readings_failures": []
+        },
+        "content_id": "v30-33:12"
+      }
+    ],
+    "report": {
+      "window_id": "v30-33",
+      "verses": [
+        30,
+        31,
+        32,
+        33
+      ],
+      "generated": 12,
+      "scored": 12,
+      "kept": 1,
+      "survivors_before_window_selection": 1,
+      "window_selection_rejected": 0,
+      "repair_attempted": 2,
+      "repaired": 1,
+      "window_retries_used": 1,
+      "score_runs": 1
+    }
+  }
+}

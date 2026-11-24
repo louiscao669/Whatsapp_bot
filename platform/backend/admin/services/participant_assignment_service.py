@@ -295,7 +295,7 @@ def assign_questions_with_passages(db, participant_id, selections):
     return assignments
 
 
-def skip_participant_assignment(db, participant_id, assignment_id):
+def skip_participant_assignment(db, participant_id, assignment_id, *, notify_successor=True):
     """Skip one unanswered chain node and splice its neighbors together."""
 
     participant = db.get(Participant, participant_id)
@@ -364,7 +364,7 @@ def skip_participant_assignment(db, participant_id, assignment_id):
         participant_session.state = (
             SessionState.AWAITING_RESPONSE.value if successor else SessionState.IDLE.value
         )
-        if successor:
+        if successor and notify_successor:
             _enqueue_new_assignment_push(db, participant, successor, 1)
 
     db.flush()

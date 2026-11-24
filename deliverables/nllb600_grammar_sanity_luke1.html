@@ -1,0 +1,625 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>NLLB-600M grammar sanity check · Luke 1</title><style>body{font:16px/1.6 system-ui;color:#203b3e;max-width:1160px;margin:auto;padding:28px;background:#f8faf9}table{width:100%;border-collapse:collapse;background:white}td,th{border-bottom:1px solid #d3dfdb;text-align:left;padding:10px;vertical-align:top}h1,h2{line-height:1.25}article{padding:18px;margin:16px 0;background:white;border:1px solid #d3dfdb;border-radius:7px}article h3{margin:0 0 8px}summary{cursor:pointer}pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px}.zh{font-size:20px}.note{padding:14px;background:#fff4d7;border-left:4px solid #a68134}.pair{display:grid;grid-template-columns:1fr 1fr;gap:22px}@media(max-width:720px){.pair{grid-template-columns:1fr}}a{color:#006c62}footer{font-size:13px;overflow-wrap:anywhere}</style></head><body><h1>NLLB-600M grammar sanity check</h1><p>Fresh diagnostic audit of the saved NLLB-200-distilled-600M Chinese translation of Luke 1:1–80. One full-chapter scan followed by a separate model review; model: gpt-6.1-sol. Counts are distinct annotated error events, not affected characters or severity-weighted penalties. This report does not alter any passage or pilot condition.</p><p class="note">This is a one-chapter sanity check, not an estimate of grammar-error frequencies for Chinese machine translation generally. Misselection/misordering percentages use only confirmed events assigned exclusively to those families. Other grammar damage, mixed cases and uncertainty remain visible. Diagnostic repairs are model-written suggestions for explaining classifications, not published wording.</p><h2>Confirmed error families</h2><table><tr><th>Family</th><th>Events</th><th>Share of the two-family subset</th></tr><tr><td>Misselection</td><td>6</td><td>85.7%</td></tr><tr><td>Misordering</td><td>1</td><td>14.3%</td></tr><tr><td>Both mechanisms</td><td>0</td><td>Excluded from two-family denominator</td></tr><tr><td>Other grammatical damage</td><td>8</td><td>Excluded from two-family denominator</td></tr></table><p>Initial proposals: 26. Review outcomes: {&#x27;rejected&#x27;: 6, &#x27;confirmed&#x27;: 15, &#x27;uncertain&#x27;: 5}. Additional unconfirmed candidates: 0.</p><h2>Historical MQM inventory: Luke 1–8</h2><p>The earlier review contains 53 Fluency/Grammar records, with a total severity-weighted penalty of 109. It did not classify misselection versus misordering. This historical inventory is separate from the fresh Luke 1 audit.</p><table><tr><th>Chapter</th><th>Grammar records</th><th>Weighted penalty</th></tr><tr><td>Luke 1</td><td>11</td><td>15</td></tr><tr><td>Luke 2</td><td>6</td><td>10</td></tr><tr><td>Luke 3</td><td>3</td><td>31</td></tr><tr><td>Luke 4</td><td>3</td><td>3</td></tr><tr><td>Luke 5</td><td>4</td><td>4</td></tr><tr><td>Luke 6</td><td>11</td><td>19</td></tr><tr><td>Luke 7</td><td>6</td><td>10</td></tr><tr><td>Luke 8</td><td>9</td><td>17</td></tr></table><h2>Misselection · 6</h2><article data-event="L1-004"><h3>Luke 1:15 · confirmed</h3><p class="zh" lang="zh">他还未出生的,就必被圣灵充满</p><p><strong>Recorded subtype:</strong> other_misselection<br><strong>Accuracy overlap:</strong> no</p><p>The added 的 disrupts the temporal 还未……就…… construction. It neither introduces a following nominal head nor completes an appropriate independent construction here.</p><p><strong>Suggested local repair for diagnosis:</strong> <span lang="zh">他还未出生,就必被圣灵充满</span></p><details><summary>Initial proposal and independent review</summary><pre>{
+  &quot;event_id&quot;: &quot;L1-004&quot;,
+  &quot;verse&quot;: 15,
+  &quot;target_span&quot;: &quot;他还未出生的,就必被圣灵充满&quot;,
+  &quot;family&quot;: &quot;misselection&quot;,
+  &quot;subtype&quot;: &quot;other_misselection&quot;,
+  &quot;minimal_repair&quot;: &quot;他还未出生,就必被圣灵充满&quot;,
+  &quot;explanation&quot;: &quot;的 improperly closes the first clause before the correlated 就 clause. Removing it restores the temporal construction 还未……就…….&quot;,
+  &quot;semantic_overlap&quot;: &quot;no&quot;,
+  &quot;review&quot;: {
+    &quot;event_id&quot;: &quot;L1-004&quot;,
+    &quot;verdict&quot;: &quot;confirmed&quot;,
+    &quot;family&quot;: &quot;misselection&quot;,
+    &quot;subtype&quot;: &quot;other_misselection&quot;,
+    &quot;minimal_repair&quot;: &quot;他还未出生,就必被圣灵充满&quot;,
+    &quot;explanation&quot;: &quot;The added 的 disrupts the temporal 还未……就…… construction. It neither introduces a following nominal head nor completes an appropriate independent construction here.&quot;,
+    &quot;semantic_overlap&quot;: &quot;no&quot;
+  }
+}</pre></details></article><article data-event="L1-008"><h3>Luke 1:27 · confirmed</h3><p class="zh" lang="zh">到了一个处女</p><p><strong>Recorded subtype:</strong> other_misselection<br><strong>Accuracy overlap:</strong> no</p><p>In this destination construction, bare 一个处女 does not function as a location. Adding 那里 licenses the person-associated destination required by 到.</p><p><strong>Suggested local repair for diagnosis:</strong> <span lang="zh">到了一个处女那里</span></p><details><summary>Initial proposal and independent review</summary><pre>{
+  &quot;event_id&quot;: &quot;L1-008&quot;,
+  &quot;verse&quot;: 27,
+  &quot;target_span&quot;: &quot;到了一个处女&quot;,
+  &quot;family&quot;: &quot;misselection&quot;,
+  &quot;subtype&quot;: &quot;other_misselection&quot;,
+  &quot;minimal_repair&quot;: &quot;到了一个处女那里&quot;,
+  &quot;explanation&quot;: &quot;Here 到 introduces a destination, but the bare person-denoting phrase 一个处女 does not supply the required location. 那里 licenses that destination reading.&quot;,
+  &quot;semantic_overlap&quot;: &quot;no&quot;,
+  &quot;review&quot;: {
+    &quot;event_id&quot;: &quot;L1-008&quot;,
+    &quot;verdict&quot;: &quot;confirmed&quot;,
+    &quot;family&quot;: &quot;misselection&quot;,
+    &quot;subtype&quot;: &quot;other_misselection&quot;,
+    &quot;minimal_repair&quot;: &quot;到了一个处女那里&quot;,
+    &quot;explanation&quot;: &quot;In this destination construction, bare 一个处女 does not function as a location. Adding 那里 licenses the person-associated destination required by 到.&quot;,
+    &quot;semantic_overlap&quot;: &quot;no&quot;
+  }
+}</pre></details></article><article data-event="L1-016"><h3>Luke 1:52 · confirmed</h3><p class="zh" lang="zh">他把君主从宝座下降</p><p><strong>Recorded subtype:</strong> other_misselection<br><strong>Accuracy overlap:</strong> no</p><p>Intransitive 下降 cannot license 君主 as a disposed object in this 把 construction. Causative 使 instead allows 君主 to be the subject of 下降.</p><p><strong>Suggested local repair for diagnosis:</strong> <span lang="zh">他使君主从宝座下降</span></p><details><summary>Initial proposal and independent review</summary><pre>{
+  &quot;event_id&quot;: &quot;L1-016&quot;,
+  &quot;verse&quot;: 52,
+  &quot;target_span&quot;: &quot;他把君主从宝座下降&quot;,
+  &quot;family&quot;: &quot;misselection&quot;,
+  &quot;subtype&quot;: &quot;other_misselection&quot;,
+  &quot;minimal_repair&quot;: &quot;他使君主从宝座下降&quot;,
+  &quot;explanation&quot;: &quot;Intransitive 下降 cannot govern 君主 through this 把 construction. Replacing 把 with causative 使 licenses 君主 as the subject of 下降.&quot;,
+  &quot;semantic_overlap&quot;: &quot;no&quot;,
+  &quot;review&quot;: {
+    &quot;event_id&quot;: &quot;L1-016&quot;,
+    &quot;verdict&quot;: &quot;confirmed&quot;,
+    &quot;family&quot;: &quot;misselection&quot;,
+    &quot;subtype&quot;: &quot;other_misselection&quot;,
+    &quot;minimal_repair&quot;: &quot;他使君主从宝座下降&quot;,
+    &quot;explanation&quot;: &quot;Intransitive 下降 cannot license 君主 as a disposed object in this 把 construction. Causative 使 instead allows 君主 to be the subject of 下降.&quot;,
+    &quot;semantic_overlap&quot;: &quot;no&quot;
+  }
+}</pre></details></article><article data-event="L1-019"><h3>Luke 1:59 · confirmed</h3><p class="zh" lang="zh">来割礼孩子</p><p><strong>Recorded subtype:</strong> word_form_construction<br><strong>Accuracy overlap:</strong> no</p><p>割礼 denotes the rite and is not licensed here as a transitive verb taking 孩子 directly. 行割礼 supplies the verbal construction, with 给 marking its recipient.</p><p><strong>Suggested local repair for diagnosis:</strong> <span lang="zh">来给孩子行割礼</span></p><details><summary>Initial proposal and independent review</summary><pre>{
+  &quot;event_id&quot;: &quot;L1-019&quot;,
+  &quot;verse&quot;: 59,
+  &quot;target_span&quot;: &quot;来割礼孩子&quot;,
+  &quot;family&quot;: &quot;misselection&quot;,
+  &quot;subtype&quot;: &quot;word_form_construction&quot;,
+  &quot;minimal_repair&quot;: &quot;来给孩子行割礼&quot;,
+  &quot;explanation&quot;: &quot;割礼 names the rite and is not licensed here as a transitive verb directly governing 孩子. The repair supplies the verbal construction 行割礼 and introduces its recipient with 给.&quot;,
+  &quot;semantic_overlap&quot;: &quot;no&quot;,
+  &quot;review&quot;: {
+    &quot;event_id&quot;: &quot;L1-019&quot;,
+    &quot;verdict&quot;: &quot;confirmed&quot;,
+    &quot;family&quot;: &quot;misselection&quot;,
+    &quot;subtype&quot;: &quot;word_form_construction&quot;,
+    &quot;minimal_repair&quot;: &quot;来给孩子行割礼&quot;,
+    &quot;explanation&quot;: &quot;割礼 denotes the rite and is not licensed here as a transitive verb taking 孩子 directly. 行割礼 supplies the verbal construction, with 给 marking its recipient.&quot;,
+    &quot;semantic_overlap&quot;: &quot;no&quot;
+  }
+}</pre></details></article><article data-event="L1-023"><h3>Luke 1:76 · confirmed</h3><p class="zh" lang="zh">你必前行主</p><p><strong>Recorded subtype:</strong> other_misselection<br><strong>Accuracy overlap:</strong> yes</p><p>前行 is intransitive and cannot directly govern 主. A locative construction is required to relate the movement to that person.</p><p><strong>Suggested local repair for diagnosis:</strong> <span lang="zh">你必在主面前前行</span></p><details><summary>Initial proposal and independent review</summary><pre>{
+  &quot;event_id&quot;: &quot;L1-023&quot;,
+  &quot;verse&quot;: 76,
+  &quot;target_span&quot;: &quot;你必前行主&quot;,
+  &quot;family&quot;: &quot;misselection&quot;,
+  &quot;subtype&quot;: &quot;other_misselection&quot;,
+  &quot;minimal_repair&quot;: &quot;你必在主面前前行&quot;,
+  &quot;explanation&quot;: &quot;前行 is intransitive and cannot directly take 主 as its object. A locative phrase is needed to express movement before the Lord.&quot;,
+  &quot;semantic_overlap&quot;: &quot;yes&quot;,
+  &quot;review&quot;: {
+    &quot;event_id&quot;: &quot;L1-023&quot;,
+    &quot;verdict&quot;: &quot;confirmed&quot;,
+    &quot;family&quot;: &quot;misselection&quot;,
+    &quot;subtype&quot;: &quot;other_misselection&quot;,
+    &quot;minimal_repair&quot;: &quot;你必在主面前前行&quot;,
+    &quot;explanation&quot;: &quot;前行 is intransitive and cannot directly govern 主. A locative construction is required to relate the movement to that person.&quot;,
+    &quot;semantic_overlap&quot;: &quot;yes&quot;
+  }
+}</pre></details></article><article data-event="L1-024"><h3>Luke 1:77 · confirmed</h3><p class="zh" lang="zh">藉着他们的罪赦免</p><p><strong>Recorded subtype:</strong> other_misselection<br><strong>Accuracy overlap:</strong> no</p><p>The embedded construction places patient 罪 before 赦免 without a construction licensing that relationship. 得 supplies the patient-oriented result construction needed here.</p><p><strong>Suggested local repair for diagnosis:</strong> <span lang="zh">藉着他们的罪得赦免</span></p><details><summary>Initial proposal and independent review</summary><pre>{
+  &quot;event_id&quot;: &quot;L1-024&quot;,
+  &quot;verse&quot;: 77,
+  &quot;target_span&quot;: &quot;藉着他们的罪赦免&quot;,
+  &quot;family&quot;: &quot;misselection&quot;,
+  &quot;subtype&quot;: &quot;other_misselection&quot;,
+  &quot;minimal_repair&quot;: &quot;藉着他们的罪得赦免&quot;,
+  &quot;explanation&quot;: &quot;罪 is the patient of 赦免, but the embedded construction gives it neither a passive/result marker nor a nominalizing structure. Adding 得 licenses the intended patient-subject clause after 藉着.&quot;,
+  &quot;semantic_overlap&quot;: &quot;no&quot;,
+  &quot;review&quot;: {
+    &quot;event_id&quot;: &quot;L1-024&quot;,
+    &quot;verdict&quot;: &quot;confirmed&quot;,
+    &quot;family&quot;: &quot;misselection&quot;,
+    &quot;subtype&quot;: &quot;other_misselection&quot;,
+    &quot;minimal_repair&quot;: &quot;藉着他们的罪得赦免&quot;,
+    &quot;explanation&quot;: &quot;The embedded construction places patient 罪 before 赦免 without a construction licensing that relationship. 得 supplies the patient-oriented result construction needed here.&quot;,
+    &quot;semantic_overlap&quot;: &quot;no&quot;
+  }
+}</pre></details></article><h2>Misordering · 1</h2><article data-event="L1-022"><h3>Luke 1:71 · confirmed</h3><p class="zh" lang="zh">拯救我们从仇敌和仇敌手中</p><p><strong>Recorded subtype:</strong> word_order<br><strong>Accuracy overlap:</strong> no</p><p>The 从……手中 phrase is improperly placed after 拯救我们. Moving that intact phrase before the verb and object substantially repairs the syntax without changing its lexical content.</p><p><strong>Suggested local repair for diagnosis:</strong> <span lang="zh">从仇敌和仇敌手中拯救我们</span></p><details><summary>Initial proposal and independent review</summary><pre>{
+  &quot;event_id&quot;: &quot;L1-022&quot;,
+  &quot;verse&quot;: 71,
+  &quot;target_span&quot;: &quot;拯救我们从仇敌和仇敌手中&quot;,
+  &quot;family&quot;: &quot;misordering&quot;,
+  &quot;subtype&quot;: &quot;word_order&quot;,
+  &quot;minimal_repair&quot;: &quot;从仇敌和仇敌手中拯救我们&quot;,
+  &quot;explanation&quot;: &quot;The 从……手中 source phrase is stranded after the verb and object. Moving that same intact phrase before 拯救我们 restores ordinary Chinese constituent order without changing the duplicated enemy reference.&quot;,
+  &quot;semantic_overlap&quot;: &quot;no&quot;,
+  &quot;review&quot;: {
+    &quot;event_id&quot;: &quot;L1-022&quot;,
+    &quot;verdict&quot;: &quot;confirmed&quot;,
+    &quot;family&quot;: &quot;misordering&quot;,
+    &quot;subtype&quot;: &quot;word_order&quot;,
+    &quot;minimal_repair&quot;: &quot;从仇敌和仇敌手中拯救我们&quot;,
+    &quot;explanation&quot;: &quot;The 从……手中 phrase is improperly placed after 拯救我们. Moving that intact phrase before the verb and object substantially repairs the syntax without changing its lexical content.&quot;,
+    &quot;semantic_overlap&quot;: &quot;no&quot;
+  }
+}</pre></details></article><h2>Both mechanisms · 0</h2><h2>Other grammatical damage · 8</h2><article data-event="L1-003"><h3>Luke 1:14 · confirmed</h3><p class="zh" lang="zh">欢喜喜</p><p><strong>Recorded subtype:</strong> repetition<br><strong>Accuracy overlap:</strong> no</p><p>The extra 喜 produces an unlicensed repetition within 欢喜. This is not a regular reduplicated form of that word.</p><p><strong>Suggested local repair for diagnosis:</strong> <span lang="zh">欢喜</span></p><details><summary>Initial proposal and independent review</summary><pre>{
+  &quot;event_id&quot;: &quot;L1-003&quot;,
+  &quot;verse&quot;: 14,
+  &quot;target_span&quot;: &quot;欢喜喜&quot;,
+  &quot;family&quot;: &quot;other_grammar&quot;,
+  &quot;subtype&quot;: &quot;repetition&quot;,
+  &quot;minimal_repair&quot;: &quot;欢喜&quot;,
+  &quot;explanation&quot;: &quot;The final 喜 is accidentally repeated. 欢喜喜 is not a licensed reduplication of 欢喜.&quot;,
+  &quot;semantic_overlap&quot;: &quot;no&quot;,
+  &quot;review&quot;: {
+    &quot;event_id&quot;: &quot;L1-003&quot;,
+    &quot;verdict&quot;: &quot;confirmed&quot;,
+    &quot;family&quot;: &quot;other_grammar&quot;,
+    &quot;subtype&quot;: &quot;repetition&quot;,
+    &quot;minimal_repair&quot;: &quot;欢喜&quot;,
+    &quot;explanation&quot;: &quot;The extra 喜 produces an unlicensed repetition within 欢喜. This is not a regular reduplicated form of that word.&quot;,
+    &quot;semantic_overlap&quot;: &quot;no&quot;
+  }
+}</pre></details></article><article data-event="L1-006"><h3>Luke 1:17 · confirmed</h3><p class="zh" lang="zh">为主做好准备的人</p><p><strong>Recorded subtype:</strong> missing_constituent<br><strong>Accuracy overlap:</strong> yes</p><p>Final 的人 makes this a noun phrase, but the preceding coordinated predicates supply no governing predicate for it. Adding 预备 gives that noun phrase a syntactic role.</p><p><strong>Suggested local repair for diagnosis:</strong> <span lang="zh">预备为主做好准备的人</span></p><details><summary>Initial proposal and independent review</summary><pre>{
+  &quot;event_id&quot;: &quot;L1-006&quot;,
+  &quot;verse&quot;: 17,
+  &quot;target_span&quot;: &quot;为主做好准备的人&quot;,
+  &quot;family&quot;: &quot;other_grammar&quot;,
+  &quot;subtype&quot;: &quot;missing_constituent&quot;,
+  &quot;minimal_repair&quot;: &quot;预备为主做好准备的人&quot;,
+  &quot;explanation&quot;: &quot;The final 的人 turns this material into a noun phrase. In the surrounding sequence of predicates, that noun phrase has no governing predicate; adding 预备 supplies one.&quot;,
+  &quot;semantic_overlap&quot;: &quot;yes&quot;,
+  &quot;review&quot;: {
+    &quot;event_id&quot;: &quot;L1-006&quot;,
+    &quot;verdict&quot;: &quot;confirmed&quot;,
+    &quot;family&quot;: &quot;other_grammar&quot;,
+    &quot;subtype&quot;: &quot;missing_constituent&quot;,
+    &quot;minimal_repair&quot;: &quot;预备为主做好准备的人&quot;,
+    &quot;explanation&quot;: &quot;Final 的人 makes this a noun phrase, but the preceding coordinated predicates supply no governing predicate for it. Adding 预备 gives that noun phrase a syntactic role.&quot;,
+    &quot;semantic_overlap&quot;: &quot;yes&quot;
+  }
+}</pre></details></article><article data-event="L1-007"><h3>Luke 1:25 · confirmed</h3><p class="zh" lang="zh">从百姓中把我的羞辱从我身上</p><p><strong>Recorded subtype:</strong> missing_constituent<br><strong>Accuracy overlap:</strong> yes</p><p>The 把 construction ends after the object and a 从 phrase without any content predicate. Neither the preceding statement nor the following sentence supplies the missing predicate.</p><p><strong>Suggested local repair for diagnosis:</strong> <span lang="zh">从百姓中把我的羞辱从我身上除去</span></p><details><summary>Initial proposal and independent review</summary><pre>{
+  &quot;event_id&quot;: &quot;L1-007&quot;,
+  &quot;verse&quot;: 25,
+  &quot;target_span&quot;: &quot;从百姓中把我的羞辱从我身上&quot;,
+  &quot;family&quot;: &quot;other_grammar&quot;,
+  &quot;subtype&quot;: &quot;missing_constituent&quot;,
+  &quot;minimal_repair&quot;: &quot;从百姓中把我的羞辱从我身上除去&quot;,
+  &quot;explanation&quot;: &quot;The 把 phrase and the following 从 phrase are left without a content predicate. This is syntactic incompleteness, not merely an omitted semantic detail.&quot;,
+  &quot;semantic_overlap&quot;: &quot;yes&quot;,
+  &quot;review&quot;: {
+    &quot;event_id&quot;: &quot;L1-007&quot;,
+    &quot;verdict&quot;: &quot;confirmed&quot;,
+    &quot;family&quot;: &quot;other_grammar&quot;,
+    &quot;subtype&quot;: &quot;missing_constituent&quot;,
+    &quot;minimal_repair&quot;: &quot;从百姓中把我的羞辱从我身上除去&quot;,
+    &quot;explanation&quot;: &quot;The 把 construction ends after the object and a 从 phrase without any content predicate. Neither the preceding statement nor the following sentence supplies the missing predicate.&quot;,
+    &quot;semantic_overlap&quot;: &quot;yes&quot;
+  }
+}</pre></details></article><article data-event="L1-010"><h3>Luke 1:32 · confirmed</h3><p class="zh" lang="zh">他必大大</p><p><strong>Recorded subtype:</strong> missing_constituent<br><strong>Accuracy overlap:</strong> yes</p><p>大大 functions as a degree adverb here and cannot complete the predicate after 必 on its own. The clause lacks a predicative head.</p><p><strong>Suggested local repair for diagnosis:</strong> <span lang="zh">他必为大</span></p><details><summary>Initial proposal and independent review</summary><pre>{
+  &quot;event_id&quot;: &quot;L1-010&quot;,
+  &quot;verse&quot;: 32,
+  &quot;target_span&quot;: &quot;他必大大&quot;,
+  &quot;family&quot;: &quot;other_grammar&quot;,
+  &quot;subtype&quot;: &quot;missing_constituent&quot;,
+  &quot;minimal_repair&quot;: &quot;他必为大&quot;,
+  &quot;explanation&quot;: &quot;大大 normally functions as a degree adverb and cannot by itself complete this predicate after 必. The clause lacks a predicative head.&quot;,
+  &quot;semantic_overlap&quot;: &quot;yes&quot;,
+  &quot;review&quot;: {
+    &quot;event_id&quot;: &quot;L1-010&quot;,
+    &quot;verdict&quot;: &quot;confirmed&quot;,
+    &quot;family&quot;: &quot;other_grammar&quot;,
+    &quot;subtype&quot;: &quot;missing_constituent&quot;,
+    &quot;minimal_repair&quot;: &quot;他必为大&quot;,
+    &quot;explanation&quot;: &quot;大大 functions as a degree adverb here and cannot complete the predicate after 必 on its own. The clause lacks a predicative head.&quot;,
+    &quot;semantic_overlap&quot;: &quot;yes&quot;
+  }
+}</pre></details></article><article data-event="L1-013"><h3>Luke 1:41 · confirmed</h3><p class="zh" lang="zh">她的子宫里里</p><p><strong>Recorded subtype:</strong> repetition<br><strong>Accuracy overlap:</strong> no</p><p>The locative suffix 里 is accidentally repeated. This is not a licensed reduplication in this locative phrase.</p><p><strong>Suggested local repair for diagnosis:</strong> <span lang="zh">她的子宫里</span></p><details><summary>Initial proposal and independent review</summary><pre>{
+  &quot;event_id&quot;: &quot;L1-013&quot;,
+  &quot;verse&quot;: 41,
+  &quot;target_span&quot;: &quot;她的子宫里里&quot;,
+  &quot;family&quot;: &quot;other_grammar&quot;,
+  &quot;subtype&quot;: &quot;repetition&quot;,
+  &quot;minimal_repair&quot;: &quot;她的子宫里&quot;,
+  &quot;explanation&quot;: &quot;The locative suffix 里 is accidentally repeated.&quot;,
+  &quot;semantic_overlap&quot;: &quot;no&quot;,
+  &quot;review&quot;: {
+    &quot;event_id&quot;: &quot;L1-013&quot;,
+    &quot;verdict&quot;: &quot;confirmed&quot;,
+    &quot;family&quot;: &quot;other_grammar&quot;,
+    &quot;subtype&quot;: &quot;repetition&quot;,
+    &quot;minimal_repair&quot;: &quot;她的子宫里&quot;,
+    &quot;explanation&quot;: &quot;The locative suffix 里 is accidentally repeated. This is not a licensed reduplication in this locative phrase.&quot;,
+    &quot;semantic_overlap&quot;: &quot;no&quot;
+  }
+}</pre></details></article><article data-event="L1-015"><h3>Luke 1:50 · confirmed</h3><p class="zh" lang="zh">他的慈爱是从一代到一代,向敬畏他的人</p><p><strong>Recorded subtype:</strong> missing_constituent<br><strong>Accuracy overlap:</strong> yes</p><p>The final 向 phrase lacks a predicate with which it can combine. 是 followed by the temporal phrase does not provide a governing predicate for 向敬畏他的人.</p><p><strong>Suggested local repair for diagnosis:</strong> <span lang="zh">他的慈爱是从一代到一代,向敬畏他的人施予的</span></p><details><summary>Initial proposal and independent review</summary><pre>{
+  &quot;event_id&quot;: &quot;L1-015&quot;,
+  &quot;verse&quot;: 50,
+  &quot;target_span&quot;: &quot;他的慈爱是从一代到一代,向敬畏他的人&quot;,
+  &quot;family&quot;: &quot;other_grammar&quot;,
+  &quot;subtype&quot;: &quot;missing_constituent&quot;,
+  &quot;minimal_repair&quot;: &quot;他的慈爱是从一代到一代,向敬畏他的人施予的&quot;,
+  &quot;explanation&quot;: &quot;The final 向 phrase requires a predicate describing the direction of the mercy. The preceding 是 and temporal phrase do not supply that predicate.&quot;,
+  &quot;semantic_overlap&quot;: &quot;yes&quot;,
+  &quot;review&quot;: {
+    &quot;event_id&quot;: &quot;L1-015&quot;,
+    &quot;verdict&quot;: &quot;confirmed&quot;,
+    &quot;family&quot;: &quot;other_grammar&quot;,
+    &quot;subtype&quot;: &quot;missing_constituent&quot;,
+    &quot;minimal_repair&quot;: &quot;他的慈爱是从一代到一代,向敬畏他的人施予的&quot;,
+    &quot;explanation&quot;: &quot;The final 向 phrase lacks a predicate with which it can combine. 是 followed by the temporal phrase does not provide a governing predicate for 向敬畏他的人.&quot;,
+    &quot;semantic_overlap&quot;: &quot;yes&quot;
+  }
+}</pre></details></article><article data-event="L1-020"><h3>Luke 1:59 · confirmed</h3><p class="zh" lang="zh">要给他父亲的名叫撒迦利亚</p><p><strong>Recorded subtype:</strong> other_grammar<br><strong>Accuracy overlap:</strong> yes</p><p>The construction conflates the father&#x27;s name with the recipient of naming. 给他父亲的名 does not combine coherently with 叫撒迦利亚; the naming predicate and its argument structure need reconstruction.</p><p><strong>Suggested local repair for diagnosis:</strong> <span lang="zh">要用他父亲的名给他取名,叫撒迦利亚</span></p><details><summary>Initial proposal and independent review</summary><pre>{
+  &quot;event_id&quot;: &quot;L1-020&quot;,
+  &quot;verse&quot;: 59,
+  &quot;target_span&quot;: &quot;要给他父亲的名叫撒迦利亚&quot;,
+  &quot;family&quot;: &quot;other_grammar&quot;,
+  &quot;subtype&quot;: &quot;other_grammar&quot;,
+  &quot;minimal_repair&quot;: &quot;要用他父亲的名给他取名,叫撒迦利亚&quot;,
+  &quot;explanation&quot;: &quot;The naming construction conflates the recipient of 给 with the father&#x27;s name. As written, 给他父亲的名 has no coherent relation to 叫撒迦利亚; restoring the naming predicate and its arguments requires more than moving an intact constituent.&quot;,
+  &quot;semantic_overlap&quot;: &quot;yes&quot;,
+  &quot;review&quot;: {
+    &quot;event_id&quot;: &quot;L1-020&quot;,
+    &quot;verdict&quot;: &quot;confirmed&quot;,
+    &quot;family&quot;: &quot;other_grammar&quot;,
+    &quot;subtype&quot;: &quot;other_grammar&quot;,
+    &quot;minimal_repair&quot;: &quot;要用他父亲的名给他取名,叫撒迦利亚&quot;,
+    &quot;explanation&quot;: &quot;The construction conflates the father&#x27;s name with the recipient of naming. 给他父亲的名 does not combine coherently with 叫撒迦利亚; the naming predicate and its argument structure need reconstruction.&quot;,
+    &quot;semantic_overlap&quot;: &quot;yes&quot;
+  }
+}</pre></details></article><article data-event="L1-021"><h3>Luke 1:64 · confirmed</h3><p class="zh" lang="zh">舌头就了</p><p><strong>Recorded subtype:</strong> missing_constituent<br><strong>Accuracy overlap:</strong> yes</p><p>就 is followed directly by 了 without a predicate. The adjacent clauses do not license a shared or elided predicate in this position.</p><p><strong>Suggested local repair for diagnosis:</strong> <span lang="zh">舌头就松开了</span></p><details><summary>Initial proposal and independent review</summary><pre>{
+  &quot;event_id&quot;: &quot;L1-021&quot;,
+  &quot;verse&quot;: 64,
+  &quot;target_span&quot;: &quot;舌头就了&quot;,
+  &quot;family&quot;: &quot;other_grammar&quot;,
+  &quot;subtype&quot;: &quot;missing_constituent&quot;,
+  &quot;minimal_repair&quot;: &quot;舌头就松开了&quot;,
+  &quot;explanation&quot;: &quot;The adverb 就 is followed directly by 了 with no predicate. The adjacent clauses do not provide a predicate that can be shared in this construction.&quot;,
+  &quot;semantic_overlap&quot;: &quot;yes&quot;,
+  &quot;review&quot;: {
+    &quot;event_id&quot;: &quot;L1-021&quot;,
+    &quot;verdict&quot;: &quot;confirmed&quot;,
+    &quot;family&quot;: &quot;other_grammar&quot;,
+    &quot;subtype&quot;: &quot;missing_constituent&quot;,
+    &quot;minimal_repair&quot;: &quot;舌头就松开了&quot;,
+    &quot;explanation&quot;: &quot;就 is followed directly by 了 without a predicate. The adjacent clauses do not license a shared or elided predicate in this position.&quot;,
+    &quot;semantic_overlap&quot;: &quot;yes&quot;
+  }
+}</pre></details></article><h2>Uncertain · 5</h2><article data-event="L1-005"><h3>Luke 1:17 · uncertain</h3><p class="zh" lang="zh">他将以利亚的灵和力量,在主面前行</p><p><strong>Recorded subtype:</strong> not_applicable<br><strong>Accuracy overlap:</strong> uncertain</p><p>Reading 将 as a future auxiliary leaves the means phrase without an introducing marker. However, literary 将 can itself have an instrumental or accompanying function, so the exact wording does not securely establish a violation.</p><p><strong>Suggested local repair for diagnosis:</strong> <span lang="zh">他将凭以利亚的灵和力量,在主面前行</span></p><details><summary>Initial proposal and independent review</summary><pre>{
+  &quot;event_id&quot;: &quot;L1-005&quot;,
+  &quot;verse&quot;: 17,
+  &quot;target_span&quot;: &quot;他将以利亚的灵和力量,在主面前行&quot;,
+  &quot;family&quot;: &quot;uncertain&quot;,
+  &quot;subtype&quot;: &quot;not_applicable&quot;,
+  &quot;minimal_repair&quot;: &quot;他将凭以利亚的灵和力量,在主面前行&quot;,
+  &quot;explanation&quot;: &quot;On the likely future-auxiliary reading of 将, a marker introducing the means is missing. However, literary 将 can itself introduce means, so the supplied wording does not securely establish a grammatical violation.&quot;,
+  &quot;semantic_overlap&quot;: &quot;uncertain&quot;,
+  &quot;review&quot;: {
+    &quot;event_id&quot;: &quot;L1-005&quot;,
+    &quot;verdict&quot;: &quot;uncertain&quot;,
+    &quot;family&quot;: &quot;uncertain&quot;,
+    &quot;subtype&quot;: &quot;not_applicable&quot;,
+    &quot;minimal_repair&quot;: &quot;他将凭以利亚的灵和力量,在主面前行&quot;,
+    &quot;explanation&quot;: &quot;Reading 将 as a future auxiliary leaves the means phrase without an introducing marker. However, literary 将 can itself have an instrumental or accompanying function, so the exact wording does not securely establish a violation.&quot;,
+    &quot;semantic_overlap&quot;: &quot;uncertain&quot;
+  }
+}</pre></details></article><article data-event="L1-011"><h3>Luke 1:35 · uncertain</h3><p class="zh" lang="zh">圣灵必降临你</p><p><strong>Recorded subtype:</strong> not_applicable<br><strong>Accuracy overlap:</strong> no</p><p>A bare personal pronoun is a questionable complement of 降临, making an omitted locative construction plausible. Nevertheless, literary transitive extensions prevent a confident judgment that the construction is ungrammatical.</p><p><strong>Suggested local repair for diagnosis:</strong> <span lang="zh">圣灵必降临到你身上</span></p><details><summary>Initial proposal and independent review</summary><pre>{
+  &quot;event_id&quot;: &quot;L1-011&quot;,
+  &quot;verse&quot;: 35,
+  &quot;target_span&quot;: &quot;圣灵必降临你&quot;,
+  &quot;family&quot;: &quot;uncertain&quot;,
+  &quot;subtype&quot;: &quot;not_applicable&quot;,
+  &quot;minimal_repair&quot;: &quot;圣灵必降临到你身上&quot;,
+  &quot;explanation&quot;: &quot;降临 readily takes locative expressions, but a bare personal pronoun is substantially less secure as its complement. A missing locative construction is plausible, though literary transitive usage makes a categorical judgment difficult.&quot;,
+  &quot;semantic_overlap&quot;: &quot;no&quot;,
+  &quot;review&quot;: {
+    &quot;event_id&quot;: &quot;L1-011&quot;,
+    &quot;verdict&quot;: &quot;uncertain&quot;,
+    &quot;family&quot;: &quot;uncertain&quot;,
+    &quot;subtype&quot;: &quot;not_applicable&quot;,
+    &quot;minimal_repair&quot;: &quot;圣灵必降临到你身上&quot;,
+    &quot;explanation&quot;: &quot;A bare personal pronoun is a questionable complement of 降临, making an omitted locative construction plausible. Nevertheless, literary transitive extensions prevent a confident judgment that the construction is ungrammatical.&quot;,
+    &quot;semantic_overlap&quot;: &quot;no&quot;
+  }
+}</pre></details></article><article data-event="L1-017"><h3>Luke 1:53 · uncertain</h3><p class="zh" lang="zh">使富人空地回去</p><p><strong>Recorded subtype:</strong> not_applicable<br><strong>Accuracy overlap:</strong> yes</p><p>空地 ordinarily names an open space, but the position also invites an attempted analysis as 空 plus adverbial 地. It is unclear whether this is a genuine form-selection violation or an awkward lexical formation.</p><p><strong>Suggested local repair for diagnosis:</strong> <span lang="zh">使富人空着手回去</span></p><details><summary>Initial proposal and independent review</summary><pre>{
+  &quot;event_id&quot;: &quot;L1-017&quot;,
+  &quot;verse&quot;: 53,
+  &quot;target_span&quot;: &quot;使富人空地回去&quot;,
+  &quot;family&quot;: &quot;uncertain&quot;,
+  &quot;subtype&quot;: &quot;not_applicable&quot;,
+  &quot;minimal_repair&quot;: &quot;使富人空着手回去&quot;,
+  &quot;explanation&quot;: &quot;空地 is not an established way to express the intended empty-handed manner and ordinarily denotes an open space. However, an attempted adverbial reading of 空 plus 地 makes the boundary between grammatical-form error and awkward lexical formation uncertain.&quot;,
+  &quot;semantic_overlap&quot;: &quot;yes&quot;,
+  &quot;review&quot;: {
+    &quot;event_id&quot;: &quot;L1-017&quot;,
+    &quot;verdict&quot;: &quot;uncertain&quot;,
+    &quot;family&quot;: &quot;uncertain&quot;,
+    &quot;subtype&quot;: &quot;not_applicable&quot;,
+    &quot;minimal_repair&quot;: &quot;使富人空着手回去&quot;,
+    &quot;explanation&quot;: &quot;空地 ordinarily names an open space, but the position also invites an attempted analysis as 空 plus adverbial 地. It is unclear whether this is a genuine form-selection violation or an awkward lexical formation.&quot;,
+    &quot;semantic_overlap&quot;: &quot;yes&quot;
+  }
+}</pre></details></article><article data-event="L1-018"><h3>Luke 1:55 · uncertain</h3><p class="zh" lang="zh">应许亚伯拉罕和他的后裔永远</p><p><strong>Recorded subtype:</strong> not_applicable<br><strong>Accuracy overlap:</strong> uncertain</p><p>Preposing 永远 yields a grammatical temporal modifier using the same constituents. However, in this poetic continuation it may be a trailing temporal afterthought, so an actual ordering violation is not certain.</p><p><strong>Suggested local repair for diagnosis:</strong> <span lang="zh">永远应许亚伯拉罕和他的后裔</span></p><details><summary>Initial proposal and independent review</summary><pre>{
+  &quot;event_id&quot;: &quot;L1-018&quot;,
+  &quot;verse&quot;: 55,
+  &quot;target_span&quot;: &quot;应许亚伯拉罕和他的后裔永远&quot;,
+  &quot;family&quot;: &quot;uncertain&quot;,
+  &quot;subtype&quot;: &quot;not_applicable&quot;,
+  &quot;minimal_repair&quot;: &quot;永远应许亚伯拉罕和他的后裔&quot;,
+  &quot;explanation&quot;: &quot;永远 appears stranded after the recipient phrase. Preposing it produces a grammatical temporal modifier, but the poetic continuation from verses 54–55 may permit a trailing temporal afterthought. A definite ordering error cannot be established.&quot;,
+  &quot;semantic_overlap&quot;: &quot;uncertain&quot;,
+  &quot;review&quot;: {
+    &quot;event_id&quot;: &quot;L1-018&quot;,
+    &quot;verdict&quot;: &quot;uncertain&quot;,
+    &quot;family&quot;: &quot;uncertain&quot;,
+    &quot;subtype&quot;: &quot;not_applicable&quot;,
+    &quot;minimal_repair&quot;: &quot;永远应许亚伯拉罕和他的后裔&quot;,
+    &quot;explanation&quot;: &quot;Preposing 永远 yields a grammatical temporal modifier using the same constituents. However, in this poetic continuation it may be a trailing temporal afterthought, so an actual ordering violation is not certain.&quot;,
+    &quot;semantic_overlap&quot;: &quot;uncertain&quot;
+  }
+}</pre></details></article><article data-event="L1-025"><h3>Luke 1:78 · uncertain</h3><p class="zh" lang="zh">必降临我们</p><p><strong>Recorded subtype:</strong> not_applicable<br><strong>Accuracy overlap:</strong> no</p><p>As in verse 35, a personal pronoun directly following 降临 may reflect an omitted locative construction. Literary flexibility makes a categorical grammatical judgment unsafe.</p><p><strong>Suggested local repair for diagnosis:</strong> <span lang="zh">必降临到我们身上</span></p><details><summary>Initial proposal and independent review</summary><pre>{
+  &quot;event_id&quot;: &quot;L1-025&quot;,
+  &quot;verse&quot;: 78,
+  &quot;target_span&quot;: &quot;必降临我们&quot;,
+  &quot;family&quot;: &quot;uncertain&quot;,
+  &quot;subtype&quot;: &quot;not_applicable&quot;,
+  &quot;minimal_repair&quot;: &quot;必降临到我们身上&quot;,
+  &quot;explanation&quot;: &quot;As in verse 35, the bare personal object after 降临 may reflect a missing locative construction. Literary flexibility prevents a confident grammatical classification.&quot;,
+  &quot;semantic_overlap&quot;: &quot;no&quot;,
+  &quot;review&quot;: {
+    &quot;event_id&quot;: &quot;L1-025&quot;,
+    &quot;verdict&quot;: &quot;uncertain&quot;,
+    &quot;family&quot;: &quot;uncertain&quot;,
+    &quot;subtype&quot;: &quot;not_applicable&quot;,
+    &quot;minimal_repair&quot;: &quot;必降临到我们身上&quot;,
+    &quot;explanation&quot;: &quot;As in verse 35, a personal pronoun directly following 降临 may reflect an omitted locative construction. Literary flexibility makes a categorical grammatical judgment unsafe.&quot;,
+    &quot;semantic_overlap&quot;: &quot;no&quot;
+  }
+}</pre></details></article><h2>Not a confirmed grammar error · 6</h2><article data-event="L1-001"><h3>Luke 1:9 · rejected</h3><p class="zh" lang="zh">他被选出子</p><p><strong>Recorded subtype:</strong> not_applicable<br><strong>Accuracy overlap:</strong> yes</p><p>The anomalous 子 is lexical corruption. The surrounding 被选出 construction is grammatical, and the corrupted lexical material does not independently establish a grammatical-selection error.</p><p><strong>Suggested local repair for diagnosis:</strong> <span lang="zh"></span></p><details><summary>Initial proposal and independent review</summary><pre>{
+  &quot;event_id&quot;: &quot;L1-001&quot;,
+  &quot;verse&quot;: 9,
+  &quot;target_span&quot;: &quot;他被选出子&quot;,
+  &quot;family&quot;: &quot;not_grammar&quot;,
+  &quot;subtype&quot;: &quot;not_applicable&quot;,
+  &quot;minimal_repair&quot;: &quot;他被选出&quot;,
+  &quot;explanation&quot;: &quot;The extra 子 appears to be lexical corruption. The underlying 被选出 construction is grammatical; the corrupted character does not independently establish a grammatical-selection error.&quot;,
+  &quot;semantic_overlap&quot;: &quot;yes&quot;,
+  &quot;review&quot;: {
+    &quot;event_id&quot;: &quot;L1-001&quot;,
+    &quot;verdict&quot;: &quot;rejected&quot;,
+    &quot;family&quot;: &quot;not_grammar&quot;,
+    &quot;subtype&quot;: &quot;not_applicable&quot;,
+    &quot;minimal_repair&quot;: &quot;&quot;,
+    &quot;explanation&quot;: &quot;The anomalous 子 is lexical corruption. The surrounding 被选出 construction is grammatical, and the corrupted lexical material does not independently establish a grammatical-selection error.&quot;,
+    &quot;semantic_overlap&quot;: &quot;yes&quot;
+  }
+}</pre></details></article><article data-event="L1-002"><h3>Luke 1:13 · rejected</h3><p class="zh" lang="zh">你的祷告已经蒙了耳朵</p><p><strong>Recorded subtype:</strong> not_applicable<br><strong>Accuracy overlap:</strong> yes</p><p>蒙了耳朵 has an inappropriate lexical object, but its verb–aspect–object arrangement is structurally available. The failure to express that the prayer was heard is not independently an aspect or ordering violation.</p><p><strong>Suggested local repair for diagnosis:</strong> <span lang="zh"></span></p><details><summary>Initial proposal and independent review</summary><pre>{
+  &quot;event_id&quot;: &quot;L1-002&quot;,
+  &quot;verse&quot;: 13,
+  &quot;target_span&quot;: &quot;你的祷告已经蒙了耳朵&quot;,
+  &quot;family&quot;: &quot;not_grammar&quot;,
+  &quot;subtype&quot;: &quot;not_applicable&quot;,
+  &quot;minimal_repair&quot;: &quot;你的祷告已经被听见&quot;,
+  &quot;explanation&quot;: &quot;耳朵 incorrectly supplies an ear rather than the hearing of the prayer. This is a lexical and semantic failure, not demonstrably an aspect or word-order violation.&quot;,
+  &quot;semantic_overlap&quot;: &quot;yes&quot;,
+  &quot;review&quot;: {
+    &quot;event_id&quot;: &quot;L1-002&quot;,
+    &quot;verdict&quot;: &quot;rejected&quot;,
+    &quot;family&quot;: &quot;not_grammar&quot;,
+    &quot;subtype&quot;: &quot;not_applicable&quot;,
+    &quot;minimal_repair&quot;: &quot;&quot;,
+    &quot;explanation&quot;: &quot;蒙了耳朵 has an inappropriate lexical object, but its verb–aspect–object arrangement is structurally available. The failure to express that the prayer was heard is not independently an aspect or ordering violation.&quot;,
+    &quot;semantic_overlap&quot;: &quot;yes&quot;
+  }
+}</pre></details></article><article data-event="L1-009"><h3>Luke 1:27 · rejected</h3><p class="zh" lang="zh">与大卫的子孙约瑟所谓的男人订婚</p><p><strong>Recorded subtype:</strong> not_applicable<br><strong>Accuracy overlap:</strong> yes</p><p>大卫的子孙约瑟所谓的男人 can form a noun phrase describing the man referred to or characterized by Joseph. That creates an incorrect relationship relative to the English, but not a demonstrable syntactic violation.</p><p><strong>Suggested local repair for diagnosis:</strong> <span lang="zh"></span></p><details><summary>Initial proposal and independent review</summary><pre>{
+  &quot;event_id&quot;: &quot;L1-009&quot;,
+  &quot;verse&quot;: 27,
+  &quot;target_span&quot;: &quot;与大卫的子孙约瑟所谓的男人订婚&quot;,
+  &quot;family&quot;: &quot;not_grammar&quot;,
+  &quot;subtype&quot;: &quot;not_applicable&quot;,
+  &quot;minimal_repair&quot;: &quot;与一个名叫约瑟的大卫子孙订婚&quot;,
+  &quot;explanation&quot;: &quot;The wording can grammatically mean being engaged to a man characterized or called something by Joseph, David&#x27;s descendant. That is an incorrect relationship, but 所谓的男人 can form a grammatical noun phrase.&quot;,
+  &quot;semantic_overlap&quot;: &quot;yes&quot;,
+  &quot;review&quot;: {
+    &quot;event_id&quot;: &quot;L1-009&quot;,
+    &quot;verdict&quot;: &quot;rejected&quot;,
+    &quot;family&quot;: &quot;not_grammar&quot;,
+    &quot;subtype&quot;: &quot;not_applicable&quot;,
+    &quot;minimal_repair&quot;: &quot;&quot;,
+    &quot;explanation&quot;: &quot;大卫的子孙约瑟所谓的男人 can form a noun phrase describing the man referred to or characterized by Joseph. That creates an incorrect relationship relative to the English, but not a demonstrable syntactic violation.&quot;,
+    &quot;semantic_overlap&quot;: &quot;yes&quot;
+  }
+}</pre></details></article><article data-event="L1-012"><h3>Luke 1:36 · rejected</h3><p class="zh" lang="zh">这所谓是子的</p><p><strong>Recorded subtype:</strong> not_applicable<br><strong>Accuracy overlap:</strong> yes</p><p>The description is lexically badly corrupted, but final 的 can nominalize the predicate 是子 under 所谓, with 这 identifying its referent. The incorrect description of Elizabeth does not by itself demonstrate syntactic damage.</p><p><strong>Suggested local repair for diagnosis:</strong> <span lang="zh"></span></p><details><summary>Initial proposal and independent review</summary><pre>{
+  &quot;event_id&quot;: &quot;L1-012&quot;,
+  &quot;verse&quot;: 36,
+  &quot;target_span&quot;: &quot;这所谓是子的&quot;,
+  &quot;family&quot;: &quot;other_grammar&quot;,
+  &quot;subtype&quot;: &quot;other_grammar&quot;,
+  &quot;minimal_repair&quot;: &quot;这个被说成不能生育的人&quot;,
+  &quot;explanation&quot;: &quot;The demonstrative, 所谓, 是子 and final 的 do not yield a coherent nominal construction referring back to Elizabeth. This is a garbled referring expression rather than just a wrong content word.&quot;,
+  &quot;semantic_overlap&quot;: &quot;yes&quot;,
+  &quot;review&quot;: {
+    &quot;event_id&quot;: &quot;L1-012&quot;,
+    &quot;verdict&quot;: &quot;rejected&quot;,
+    &quot;family&quot;: &quot;not_grammar&quot;,
+    &quot;subtype&quot;: &quot;not_applicable&quot;,
+    &quot;minimal_repair&quot;: &quot;&quot;,
+    &quot;explanation&quot;: &quot;The description is lexically badly corrupted, but final 的 can nominalize the predicate 是子 under 所谓, with 这 identifying its referent. The incorrect description of Elizabeth does not by itself demonstrate syntactic damage.&quot;,
+    &quot;semantic_overlap&quot;: &quot;yes&quot;
+  }
+}</pre></details></article><article data-event="L1-014"><h3>Luke 1:41 · rejected</h3><p class="zh" lang="zh">她的子宫里里就跳跃了</p><p><strong>Recorded subtype:</strong> not_applicable<br><strong>Accuracy overlap:</strong> yes</p><p>Apart from the repetition retained as L1-013, the clause can have a zero subject understood as the baby from the pregnancy context. Not explicitly naming that participant is not an independent grammatical violation.</p><p><strong>Suggested local repair for diagnosis:</strong> <span lang="zh"></span></p><details><summary>Initial proposal and independent review</summary><pre>{
+  &quot;event_id&quot;: &quot;L1-014&quot;,
+  &quot;verse&quot;: 41,
+  &quot;target_span&quot;: &quot;她的子宫里里就跳跃了&quot;,
+  &quot;family&quot;: &quot;uncertain&quot;,
+  &quot;subtype&quot;: &quot;not_applicable&quot;,
+  &quot;minimal_repair&quot;: &quot;婴儿在她的子宫里里就跳跃了&quot;,
+  &quot;explanation&quot;: &quot;Independently of the repeated 里, the leaping participant is unexpressed. Pregnancy context may license an understood baby, so this is not confidently a missing-subject error. The diagnostic repair deliberately leaves the separately identified repetition unchanged.&quot;,
+  &quot;semantic_overlap&quot;: &quot;uncertain&quot;,
+  &quot;review&quot;: {
+    &quot;event_id&quot;: &quot;L1-014&quot;,
+    &quot;verdict&quot;: &quot;rejected&quot;,
+    &quot;family&quot;: &quot;not_grammar&quot;,
+    &quot;subtype&quot;: &quot;not_applicable&quot;,
+    &quot;minimal_repair&quot;: &quot;&quot;,
+    &quot;explanation&quot;: &quot;Apart from the repetition retained as L1-013, the clause can have a zero subject understood as the baby from the pregnancy context. Not explicitly naming that participant is not an independent grammatical violation.&quot;,
+    &quot;semantic_overlap&quot;: &quot;yes&quot;
+  }
+}</pre></details></article><article data-event="L1-026"><h3>Luke 1:80 · rejected</h3><p class="zh" lang="zh">直到向以色列人显现,住在旷野</p><p><strong>Recorded subtype:</strong> not_applicable<br><strong>Accuracy overlap:</strong> yes</p><p>The until-clause can modify the preceding growth predicates, followed by a clause about residence in the wilderness. This changes the source&#x27;s temporal relationship but does not establish an ungrammatical constituent order.</p><p><strong>Suggested local repair for diagnosis:</strong> <span lang="zh"></span></p><details><summary>Initial proposal and independent review</summary><pre>{
+  &quot;event_id&quot;: &quot;L1-026&quot;,
+  &quot;verse&quot;: 80,
+  &quot;target_span&quot;: &quot;直到向以色列人显现,住在旷野&quot;,
+  &quot;family&quot;: &quot;not_grammar&quot;,
+  &quot;subtype&quot;: &quot;not_applicable&quot;,
+  &quot;minimal_repair&quot;: &quot;住在旷野,直到向以色列人显现&quot;,
+  &quot;explanation&quot;: &quot;The supplied order can attach the until-clause to the preceding growth predicates and then introduce residence in the wilderness. That changes the source&#x27;s temporal relationship but does not itself violate Chinese word order.&quot;,
+  &quot;semantic_overlap&quot;: &quot;yes&quot;,
+  &quot;review&quot;: {
+    &quot;event_id&quot;: &quot;L1-026&quot;,
+    &quot;verdict&quot;: &quot;rejected&quot;,
+    &quot;family&quot;: &quot;not_grammar&quot;,
+    &quot;subtype&quot;: &quot;not_applicable&quot;,
+    &quot;minimal_repair&quot;: &quot;&quot;,
+    &quot;explanation&quot;: &quot;The until-clause can modify the preceding growth predicates, followed by a clause about residence in the wilderness. This changes the source&#x27;s temporal relationship but does not establish an ungrammatical constituent order.&quot;,
+    &quot;semantic_overlap&quot;: &quot;yes&quot;
+  }
+}</pre></details></article><h2>Additional candidates awaiting confirmation</h2><details><summary>Full source and unchanged machine translation</summary><div class="pair"><pre>Introduction
+1 Many have undertaken to draw up an account of the things that have been fulfilled[a] among us, 2 just as they were handed down to us by those who from the first were eyewitnesses and servants of the word. 3 With this in mind, since I myself have carefully investigated everything from the beginning, I too decided to write an orderly account for you, most excellent Theophilus, 4 so that you may know the certainty of the things you have been taught.
+
+The Birth of John the Baptist Foretold
+5 In the time of Herod king of Judea there was a priest named Zechariah, who belonged to the priestly division of Abijah; his wife Elizabeth was also a descendant of Aaron. 6 Both of them were righteous in the sight of God, observing all the Lord’s commands and decrees blamelessly. 7 But they were childless because Elizabeth was not able to conceive, and they were both very old.
+
+8 Once when Zechariah’s division was on duty and he was serving as priest before God, 9 he was chosen by lot, according to the custom of the priesthood, to go into the temple of the Lord and burn incense. 10 And when the time for the burning of incense came, all the assembled worshipers were praying outside.
+
+11 Then an angel of the Lord appeared to him, standing at the right side of the altar of incense. 12 When Zechariah saw him, he was startled and was gripped with fear. 13 But the angel said to him: “Do not be afraid, Zechariah; your prayer has been heard. Your wife Elizabeth will bear you a son, and you are to call him John. 14 He will be a joy and delight to you, and many will rejoice because of his birth, 15 for he will be great in the sight of the Lord. He is never to take wine or other fermented drink, and he will be filled with the Holy Spirit even before he is born. 16 He will bring back many of the people of Israel to the Lord their God. 17 And he will go on before the Lord, in the spirit and power of Elijah, to turn the hearts of the parents to their children and the disobedient to the wisdom of the righteous—to make ready a people prepared for the Lord.”
+
+18 Zechariah asked the angel, “How can I be sure of this? I am an old man and my wife is well along in years.”
+
+19 The angel said to him, “I am Gabriel. I stand in the presence of God, and I have been sent to speak to you and to tell you this good news. 20 And now you will be silent and not able to speak until the day this happens, because you did not believe my words, which will come true at their appointed time.”
+
+21 Meanwhile, the people were waiting for Zechariah and wondering why he stayed so long in the temple. 22 When he came out, he could not speak to them. They realized he had seen a vision in the temple, for he kept making signs to them but remained unable to speak.
+
+23 When his time of service was completed, he returned home. 24 After this his wife Elizabeth became pregnant and for five months remained in seclusion. 25 “The Lord has done this for me,” she said. “In these days he has shown his favor and taken away my disgrace among the people.”
+
+The Birth of Jesus Foretold
+26 In the sixth month of Elizabeth’s pregnancy, God sent the angel Gabriel to Nazareth, a town in Galilee, 27 to a virgin pledged to be married to a man named Joseph, a descendant of David. The virgin’s name was Mary. 28 The angel went to her and said, “Greetings, you who are highly favored! The Lord is with you.”
+
+29 Mary was greatly troubled at his words and wondered what kind of greeting this might be. 30 But the angel said to her, “Do not be afraid, Mary; you have found favor with God. 31 You will conceive and give birth to a son, and you are to call him Jesus. 32 He will be great and will be called the Son of the Most High. The Lord God will give him the throne of his father David, 33 and he will reign over Jacob’s descendants forever; his kingdom will never end.”
+
+34 “How will this be,” Mary asked the angel, “since I am a virgin?”
+
+35 The angel answered, “The Holy Spirit will come on you, and the power of the Most High will overshadow you. So the holy one to be born will be called[b] the Son of God. 36 Even Elizabeth your relative is going to have a child in her old age, and she who was said to be unable to conceive is in her sixth month. 37 For no word from God will ever fail.”
+
+38 “I am the Lord’s servant,” Mary answered. “May your word to me be fulfilled.” Then the angel left her.
+
+Mary Visits Elizabeth
+39 At that time Mary got ready and hurried to a town in the hill country of Judea, 40 where she entered Zechariah’s home and greeted Elizabeth. 41 When Elizabeth heard Mary’s greeting, the baby leaped in her womb, and Elizabeth was filled with the Holy Spirit. 42 In a loud voice she exclaimed: “Blessed are you among women, and blessed is the child you will bear! 43 But why am I so favored, that the mother of my Lord should come to me? 44 As soon as the sound of your greeting reached my ears, the baby in my womb leaped for joy. 45 Blessed is she who has believed that the Lord would fulfill his promises to her!”
+
+Mary’s Song
+46 And Mary said:
+
+“My soul glorifies the Lord
+47     and my spirit rejoices in God my Savior,
+48 for he has been mindful
+    of the humble state of his servant.
+From now on all generations will call me blessed,
+49     for the Mighty One has done great things for me—
+    holy is his name.
+50 His mercy extends to those who fear him,
+    from generation to generation.
+51 He has performed mighty deeds with his arm;
+    he has scattered those who are proud in their inmost thoughts.
+52 He has brought down rulers from their thrones
+    but has lifted up the humble.
+53 He has filled the hungry with good things
+    but has sent the rich away empty.
+54 He has helped his servant Israel,
+    remembering to be merciful
+55 to Abraham and his descendants forever,
+    just as he promised our ancestors.”
+
+56 Mary stayed with Elizabeth for about three months and then returned home.
+
+The Birth of John the Baptist
+57 When it was time for Elizabeth to have her baby, she gave birth to a son. 58 Her neighbors and relatives heard that the Lord had shown her great mercy, and they shared her joy.
+
+59 On the eighth day they came to circumcise the child, and they were going to name him after his father Zechariah, 60 but his mother spoke up and said, “No! He is to be called John.”
+
+61 They said to her, “There is no one among your relatives who has that name.”
+
+62 Then they made signs to his father, to find out what he would like to name the child. 63 He asked for a writing tablet, and to everyone’s astonishment he wrote, “His name is John.” 64 Immediately his mouth was opened and his tongue set free, and he began to speak, praising God. 65 All the neighbors were filled with awe, and throughout the hill country of Judea people were talking about all these things. 66 Everyone who heard this wondered about it, asking, “What then is this child going to be?” For the Lord’s hand was with him.
+
+Zechariah’s Song
+67 His father Zechariah was filled with the Holy Spirit and prophesied:
+
+68 “Praise be to the Lord, the God of Israel,
+    because he has come to his people and redeemed them.
+69 He has raised up a horn[c] of salvation for us
+    in the house of his servant David
+70 (as he said through his holy prophets of long ago),
+71 salvation from our enemies
+    and from the hand of all who hate us—
+72 to show mercy to our ancestors
+    and to remember his holy covenant,
+73     the oath he swore to our father Abraham:
+74 to rescue us from the hand of our enemies,
+    and to enable us to serve him without fear
+75     in holiness and righteousness before him all our days.
+
+76 And you, my child, will be called a prophet of the Most High;
+    for you will go on before the Lord to prepare the way for him,
+77 to give his people the knowledge of salvation
+    through the forgiveness of their sins,
+78 because of the tender mercy of our God,
+    by which the rising sun will come to us from heaven
+79 to shine on those living in darkness
+    and in the shadow of death,
+to guide our feet into the path of peace.”
+
+80 And the child grew and became strong in spirit[d]; and he lived in the wilderness until he appeared publicly to Israel.</pre><pre lang="zh">&lt;header&gt;引言&lt;/header&gt;
+1 许多人试图写下我们中间所发生的事的记载, 2 正如从初起目睹,事奉道的人传给我们一样. 3 我也经过从头开始仔细调查一切,就决定给你写一个顺序的记载,太弗利, 4 为了使你知道你所学到的东西是真的.
+5 在希律犹大王的时候,有一个祭司,名叫撒迦利亚,是亚比亚的班子的,他的妻子是亚伦的后裔的伊利沙巴. 6 他们两个在神面前都是义人,完全遵守主的一切诫命和律例. 7 他们没有孩子,因为伊丽莎白是无孕的,他们俩都很老了.
+
+8 有一天,撒迦利亚在神面前作祭司,在他的班子的职务中, 9 按祭司的惯例,他被选出子,进入主的殿中,烧香. 10 焚烧的时候,众聚会的人都在外面祷告.
+
+11 子看见主的使者站在香坛右边. 12 撒迦利亚看见他,就惊,恐惧就临到他. 13 天使对他说:撒迦利亚啊,你不要害怕,因为你的祷告已经蒙了耳朵.你的妻子伊丽莎白必生一个儿子,你要叫他的名为约翰. 14 他必使你欢喜喜,许多人必因他的诞生欢喜. 15 因为他将在主眼前作大人,也不喝酒,也不喝酒;他还未出生的,就必被圣灵充满. 16 他必使以色列许多人归向主,他们的神. 17 他将以利亚的灵和力量,在主面前行,使父母的心归与儿女,不听从的人归与义人的智慧,为主做好准备的人.
+
+18 撒迦利亚问天使说:我怎能知道这事呢?我老了,我的妻子也老了.
+
+19 天使回答说:我是加布里埃尔,站在神面前,被差来说话和传福音给你. 20 你必沉默,不能说话,直到这事发生的日子,因为你不信我的话,在定时要成就.
+
+21 人们在等待撒迦利亚,惊于他在殿里为何等了这么长. 22 他出来的时候,不能对他们说话.他们知道他在殿里看见了一种异象.他向他们举着手语,却不能说话.
+
+23 服事的日子完毕,他回家去了. 24 过了一天,他的妻子伊丽莎白怀孕了,隐藏了五个月. 25 主这样对我行了.他现在显现了他的怜悯,从百姓中把我的羞辱从我身上.这是预言耶稣的诞生.
+26 伊丽莎白怀六个月,神差遣加比利利天使到加利利的拿撒勒城, 27 到了一个处女,与大卫的子孙约瑟所谓的男人订婚.这个处女的名字是玛利亚. 28 天使进来对她说:&quot;你是蒙恩的,你是蒙恩的.主与你同在.
+
+29 玛利亚听了这话,就甚丧,想知道这叫什么问候. 30 天使对她说:&quot;玛利亚,你不要害怕,你蒙神的恩赐. 31 你将怀孕,生一个儿子,你要叫他的名耶稣. 32 他必大大,必称为至高者的儿子.主神必赐给他他父亲大卫的宝座. 33 他必永远统治雅各的后裔,他的国永远不会有末期.
+
+34 玛利亚问天使:&quot;我是处女的.
+
+35 天使回答说:圣灵必降临你,至高者的权力必遮盖你.所以,你所生的圣子必称为神的儿子. 36 你的亲戚伊丽莎白也在老年的时候怀了孩子,这所谓是子的,现在已经怀了六个月了. 37 因为从真主那里没有一个言语能失败.
+
+38 玛利亚说:&quot;我是主的仆人.愿你的话在我身上成就. &quot; 于是天使离开了她,去见伊利撒伯.
+39 在那些日子里,玛利亚起来,赶紧往犹大山地的一个城. 40 她进了撒迦利亚的家,问以利沙巴. 41 伊丽莎白听见玛利亚的问候,她的子宫里里就跳跃了,伊丽莎白就充满了圣灵. 42 她大声喊着说:你在妇女中是蒙福的,你的胎儿也蒙福的. 43 我是怎麽得这样的恩典,我主的母亲来见我呢? 44 你的问候的声音在我耳边就响起了,我的子宫里的婴儿因欢喜跳跃起来. 45 谁相信主会成就他的应许,谁是有福的.
+46 玛利亚说:&quot;我的灵高颂主.
+47 我的灵因我的救主神欢喜,
+48 因为他记念他的仆人的谦卑.从今以後,一切世代必称我为有福.
+49 因为全能者为我做了伟大的事.他的名是圣洁的.
+50 他的慈爱是从一代到一代,向敬畏他的人.
+51 他用手臂行大事,他分散心里自豪的人.
+52 他把君主从宝座下降,使卑微的人高举.
+53 他用美好的东西满足了饥饿的人,却使富人空地回去.
+54 他帮助他的仆人以色列,因他记得怜悯.
+55 正如他应许我们的祖先,应许亚伯拉罕和他的后裔永远.
+
+56 玛利亚和伊利沙巴住在那里约三个月,然后回家.
+57 伊丽莎白生育的时候到了,就生了一个儿子. 58 她的邻居和亲戚听见主对她施恩,就与她一同欢喜.
+
+59 八天,他们来割礼孩子,要给他父亲的名叫撒迦利亚. 60 但他的母亲说:&quot;不,他应该叫约翰. &quot;
+
+61 他们说:&quot;你家人中没有人叫那名.
+
+62 他们就用手势问他父亲,他想叫什么名字. 63 他求了一块写字板,就写了这话,叫他的名字叫约翰. 64 马上他口就开了,舌头就了,他就说了,赞美神. 65 邻居们都惊了,犹大山地各地都传这些事. 66 听众都惊,说: 这孩子将会是什么呢?因为主的手在他身上.
+67 他的父亲撒迦利亚就充满了圣灵,就说预言,
+
+68 愿主,以色列的神,得赞美,因为他眷顾了他的百姓,救赎了他们.
+69 他在仆人大卫的家里给我们起了救恩之角,
+70 正如他从古时曾藉着他的圣先知所说的.
+71 拯救我们从仇敌和仇敌手中.
+72 为了怜悯我们的祖先,记住他的圣约,
+73 他向我们的父亚伯拉罕起誓说:
+74 拯救我们脱离敌人的手,使我们无惧地事奉他.
+75 在我们一生的圣洁和公义中在他面前.
+
+76 你,孩子,必称为至高者的先知,因为你必前行主,为他预备道路.
+77 要告诉他的百姓,藉着他们的罪赦免,得救的知识,
+78 因为我们的神怜悯我们,因为从天上升起的日光,必降临我们.
+79 照亮那些住在黑暗中,在死亡的阴影中的人,引导我们的脚走在和平的道路上.
+
+80 那孩子长大,心灵强大,直到向以色列人显现,住在旷野.</pre></div></details><details><summary>Audit scope notes</summary><p>Read all 80 numbered verses, including cross-verse continuations. Events distinguish established grammatical damage from uncertain constructions and selected lexical or accuracy-only problems. Contextual zero arguments, literary predicates, repeated but grammatical clauses, and the continuation in verses 74–75 were not automatically treated as errors. Repairs are local diagnostics, not approved translations; semantic_overlap indicates whether an event also involves a source-content discrepancy.</p><p>Reviewed all 26 proposals independently against the supplied chapter and scanned verses 1–80 for additional grammatical candidates. Adjacent verse continuations, recoverable zero arguments, literary constructions, and lexical or temporal accuracy problems were distinguished from grammatical violations. No additional sufficiently defensible candidates were identified.</p></details><footer><p>Prepared November 23, 2026. Results: /Users/louiscao/whatsapp-bot/eten-whatsapp-bot/evaluation/runs/nllb600_grammar_sanity_luke1_2026-11-23/results.json</p><pre>{
+  &quot;/Users/louiscao/whatsapp-bot/eten-whatsapp-bot/evaluation/outputs/luke/luke1/1.7b/nllb-200-distilled-600M/passage_source_decanonicalized.txt&quot;: &quot;a4c68f8eba7c1974817d13880161b36163f5ed6485ad60880ffed912cbc57a55&quot;,
+  &quot;/Users/louiscao/whatsapp-bot/eten-whatsapp-bot/evaluation/outputs/luke/luke1/1.7b/nllb-200-distilled-600M/passage_target.txt&quot;: &quot;f662ca9cfc93a53e954313519157b3b5d956551e046065143c1cbd7804ab150f&quot;
+}</pre></footer></body></html>

@@ -1,0 +1,491 @@
+{
+  "config_digest": "bf29cf564aae7d15d3bd5bdbff20af59f16e06874e5bad45e83aa6623bdff95a",
+  "data": {
+    "kept": [
+      {
+        "question": "Who cuts branches first?",
+        "answer": "Abimelek cuts branches before the men do.",
+        "answer_verse": 48,
+        "wrong_answer": "all the men",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "Abimelek",
+            "support": "When Abimelek heard | He took an ax and cut off some branches"
+          }
+        ],
+        "distinct_readings": [
+          "Abimelek"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 9.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "The reader must track the sequence of Abimelek’s example and the men’s imitation, which is conveyed once but clearly and drives the action."
+        },
+        "window_verses": [
+          46,
+          47,
+          48,
+          49
+        ],
+        "window_text": {
+          "46": "On hearing this, the citizens in the tower of Shechem went into the stronghold of the temple of El-Berith.",
+          "47": "When Abimelek heard that they had assembled there,",
+          "48": "he and all his men went up Mount Zalmon. He took an ax and cut off some branches, which he lifted to his shoulders. He ordered the men with him, “Quick! Do what you have seen me do!”",
+          "49": "So all the men cut branches and followed Abimelek. They piled them against the stronghold and set it on fire with the people still inside. So all the people in the tower of Shechem, about a thousand men and women, also died."
+        },
+        "reading_groups": [
+          "Abimelek cuts branches first"
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "branch",
+            "cuts"
+          ],
+          "answer_verse": 48,
+          "answer_verse_original": 48,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 48",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Who cuts branches first?",
+            "readings": [
+              {
+                "answer": "Abimelek",
+                "support": "When Abimelek heard | He took an ax and cut off some branches"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Verse 48 says Abimelek took an ax and cut branches and told the men to do likewise; verse 49 then reports the men cut branches, showing Abimelek did it first."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The passage explicitly shows Abimelek cutting branches before the men follow his example.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "Pronoun resolution and sequence in vv. 48–49 show Abimelek cuts first, while a misparse could pick “all the men,” making this a strong, clearly graded structural question.",
+        "window_structure_max": 8.0,
+        "content_id": "v46-49:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Who sets the stronghold on fire with people inside?",
+        "answer": "Abimelek’s men burn the stronghold.",
+        "answer_verse": 49,
+        "wrong_answer": "the citizens in the tower of Shechem",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "All the men",
+            "support": "So all the men | They piled them against the stronghold and set it on fire with the people still inside."
+          },
+          {
+            "answer": "Abimelek and his men",
+            "support": "he and all his men went up Mount Zalmon. | They piled them against the stronghold and set it on fire with the people still inside."
+          }
+        ],
+        "distinct_readings": [
+          "All the men",
+          "Abimelek and his men"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "Identifying the subject of “set it on fire” requires resolving the pronoun “they” to “all the men,” stated once, clear, and central to the climax."
+        },
+        "window_verses": [
+          46,
+          47,
+          48,
+          49
+        ],
+        "window_text": {
+          "46": "On hearing this, the citizens in the tower of Shechem went into the stronghold of the temple of El-Berith.",
+          "47": "When Abimelek heard that they had assembled there,",
+          "48": "he and all his men went up Mount Zalmon. He took an ax and cut off some branches, which he lifted to his shoulders. He ordered the men with him, “Quick! Do what you have seen me do!”",
+          "49": "So all the men cut branches and followed Abimelek. They piled them against the stronghold and set it on fire with the people still inside. So all the people in the tower of Shechem, about a thousand men and women, also died."
+        },
+        "reading_groups": [
+          "Abimelek’s men (the men) set the stronghold on fire",
+          "Abimelek together with his men set the stronghold on fire"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: fir, insid",
+            "2 defensible readings: Abimelek’s men (the men) set the stronghold on fire | Abimelek together with his men set the stronghold on fire"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "fir",
+            "insid"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "stronghold"
+          ],
+          "answer_verse": 49,
+          "answer_verse_original": 49,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 49",
+          "readings_failures": [
+            "2 defensible readings: Abimelek’s men (the men) set the stronghold on fire | Abimelek together with his men set the stronghold on fire"
+          ]
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "Who sets the stronghold on fire with people inside?",
+            "after": "Who burns the stronghold with people still in it?",
+            "note": "Replaced leaking words “fire” and “inside” with neutral phrasing.",
+            "failures_before": [
+              "location leak: fir, insid",
+              "2 defensible readings: Abimelek’s men (the men) set the stronghold on fire | Abimelek together with his men set the stronghold on fire"
+            ],
+            "scores_before": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 9.0,
+              "centrality": 9.0,
+              "runs": 1,
+              "reason": "Identifying the subject of “set it on fire” requires resolving the pronoun “they” to “all the men,” stated once, clear, and central to the climax."
+            },
+            "accepted": false,
+            "reason": "failed full rejudgment",
+            "suitability_judgment": {
+              "Q": "Who burns the stronghold with people still in it?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "It clearly refers to the stronghold mentioned in the passage, is naturally phrased, is directly answered in v49 (“they set it on fire”), and only Abimelek and his men fit as the agents."
+            },
+            "failures_after": [
+              "2 defensible readings: Abimelek’s men (the men with him) burn the stronghold | Abimelek together with all his men burn the stronghold"
+            ],
+            "scores_after": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 10.0,
+              "answer_certainty": 8.0,
+              "centrality": 9.0,
+              "runs": 1,
+              "reason": "Identifying the burner requires resolving the pronoun \"they\" to \"all the men\" under Abimelek, a single-statement agent attribution that is mostly unambiguous in a clear translation and central to the main event."
+            },
+            "scores_used": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 10.0,
+              "answer_certainty": 8.0,
+              "centrality": 9.0,
+              "runs": 1,
+              "reason": "Identifying the burner requires resolving the pronoun \"they\" to \"all the men\" under Abimelek, a single-statement agent attribution that is mostly unambiguous in a clear translation and central to the main event."
+            }
+          }
+        ],
+        "content_id": "v46-49:2"
+      },
+      {
+        "question": "Where do Abimelek and his men go after he hears of the assembly?",
+        "answer": "Abimelek and his men go up Mount Zalmon.",
+        "answer_verse": 48,
+        "wrong_answer": "into the stronghold of the temple of El-Berith",
+        "relation": "direction",
+        "readings": [
+          {
+            "answer": "Mount Zalmon",
+            "support": "he and all his men went up Mount Zalmon"
+          },
+          {
+            "answer": "the stronghold",
+            "support": "They piled them against the stronghold"
+          }
+        ],
+        "distinct_readings": [
+          "Mount Zalmon",
+          "the stronghold"
+        ],
+        "scores": {
+          "structure_dependence": 4.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "The destination “Mount Zalmon” is directly stated after the hearing clause, appearing once and unambiguous, with moderate relevance as setting."
+        },
+        "window_verses": [
+          46,
+          47,
+          48,
+          49
+        ],
+        "window_text": {
+          "46": "On hearing this, the citizens in the tower of Shechem went into the stronghold of the temple of El-Berith.",
+          "47": "When Abimelek heard that they had assembled there,",
+          "48": "he and all his men went up Mount Zalmon. He took an ax and cut off some branches, which he lifted to his shoulders. He ordered the men with him, “Quick! Do what you have seen me do!”",
+          "49": "So all the men cut branches and followed Abimelek. They piled them against the stronghold and set it on fire with the people still inside. So all the people in the tower of Shechem, about a thousand men and women, also died."
+        },
+        "reading_groups": [
+          "They go up Mount Zalmon",
+          "They go to the stronghold"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "2 defensible readings: They go up Mount Zalmon | They go to the stronghold",
+            "competitor 'into the stronghold of the temple of El-Berith' is itself defensible — the item is ambiguous, not discriminating",
+            "lexical: structure_dependence 4.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "abimelek"
+          ],
+          "answer_verse": 48,
+          "answer_verse_original": 48,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "consistent",
+          "readings_failures": [
+            "2 defensible readings: They go up Mount Zalmon | They go to the stronghold",
+            "competitor 'into the stronghold of the temple of El-Berith' is itself defensible — the item is ambiguous, not discriminating"
+          ]
+        },
+        "content_id": "v46-49:3"
+      },
+      {
+        "question": "Whom does Abimelek order to copy his action?",
+        "answer": "Abimelek orders his own men.",
+        "answer_verse": 48,
+        "wrong_answer": "the citizens in the tower of Shechem",
+        "relation": "participant",
+        "readings": [
+          {
+            "answer": "the men with him",
+            "support": "He ordered the men with him"
+          }
+        ],
+        "distinct_readings": [
+          "the men with him"
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "It requires linking “copy his action” to “do what you have seen me do” addressed to “the men with him,” a single clear and plot-driving instruction."
+        },
+        "window_verses": [
+          46,
+          47,
+          48,
+          49
+        ],
+        "window_text": {
+          "46": "On hearing this, the citizens in the tower of Shechem went into the stronghold of the temple of El-Berith.",
+          "47": "When Abimelek heard that they had assembled there,",
+          "48": "he and all his men went up Mount Zalmon. He took an ax and cut off some branches, which he lifted to his shoulders. He ordered the men with him, “Quick! Do what you have seen me do!”",
+          "49": "So all the men cut branches and followed Abimelek. They piled them against the stronghold and set it on fire with the people still inside. So all the people in the tower of Shechem, about a thousand men and women, also died."
+        },
+        "reading_groups": [
+          "He orders the men with him"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "answer leaks into question: abimelek, order",
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "abimelek",
+            "order"
+          ],
+          "answer_verse": 48,
+          "answer_verse_original": 48,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 48",
+          "readings_failures": []
+        },
+        "content_id": "v46-49:4"
+      },
+      {
+        "question": "Who dies when the fire burns the stronghold?",
+        "answer": "About a thousand men and women in the tower of Shechem die.",
+        "answer_verse": 49,
+        "wrong_answer": "Abimelek and all his men",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "All the people in the tower of Shechem, about a thousand men and women.",
+            "support": "all the people in the tower of Shechem, about a thousand men and women, also died"
+          }
+        ],
+        "distinct_readings": [
+          "All the people in the tower of Shechem, about a thousand men and women."
+        ],
+        "scores": {
+          "structure_dependence": 4.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "The victims are explicitly identified once as all in the tower (about a thousand men and women), an unambiguous and central outcome."
+        },
+        "window_verses": [
+          46,
+          47,
+          48,
+          49
+        ],
+        "window_text": {
+          "46": "On hearing this, the citizens in the tower of Shechem went into the stronghold of the temple of El-Berith.",
+          "47": "When Abimelek heard that they had assembled there,",
+          "48": "he and all his men went up Mount Zalmon. He took an ax and cut off some branches, which he lifted to his shoulders. He ordered the men with him, “Quick! Do what you have seen me do!”",
+          "49": "So all the men cut branches and followed Abimelek. They piled them against the stronghold and set it on fire with the people still inside. So all the people in the tower of Shechem, about a thousand men and women, also died."
+        },
+        "reading_groups": [
+          "About a thousand men and women in the tower of Shechem die"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: fir",
+            "lexical: structure_dependence 4.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "fir"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 49,
+          "answer_verse_original": 49,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 49",
+          "readings_failures": []
+        },
+        "content_id": "v46-49:5"
+      },
+      {
+        "question": "What do Abimelek’s men place the branches against before starting the fire?",
+        "answer": "the stronghold",
+        "answer_verse": 49,
+        "wrong_answer": "the tower of Shechem",
+        "relation": "direction",
+        "readings": [
+          {
+            "answer": "the stronghold",
+            "support": "against the stronghold"
+          },
+          {
+            "answer": "the stronghold of the temple of El-Berith",
+            "support": "the stronghold of the temple of El-Berith | piled them against the stronghold"
+          }
+        ],
+        "distinct_readings": [
+          "the stronghold",
+          "the stronghold of the temple of El-Berith"
+        ],
+        "scores": {
+          "structure_dependence": 3.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "The object “the stronghold” is explicitly named in the piling action, stated once, clear, and integral to the event."
+        },
+        "window_verses": [
+          46,
+          47,
+          48,
+          49
+        ],
+        "window_text": {
+          "46": "On hearing this, the citizens in the tower of Shechem went into the stronghold of the temple of El-Berith.",
+          "47": "When Abimelek heard that they had assembled there,",
+          "48": "he and all his men went up Mount Zalmon. He took an ax and cut off some branches, which he lifted to his shoulders. He ordered the men with him, “Quick! Do what you have seen me do!”",
+          "49": "So all the men cut branches and followed Abimelek. They piled them against the stronghold and set it on fire with the people still inside. So all the people in the tower of Shechem, about a thousand men and women, also died."
+        },
+        "reading_groups": [
+          "They pile the branches against the stronghold (of the temple of El-Berith)"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: fir",
+            "lexical: structure_dependence 3.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "fir"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 49,
+          "answer_verse_original": 49,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 49",
+          "readings_failures": []
+        },
+        "content_id": "v46-49:6"
+      }
+    ],
+    "report": {
+      "window_id": "v46-49",
+      "verses": [
+        46,
+        47,
+        48,
+        49
+      ],
+      "generated": 6,
+      "scored": 6,
+      "kept": 1,
+      "survivors_before_window_selection": 1,
+      "window_selection_rejected": 0,
+      "repair_attempted": 1,
+      "repaired": 0,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

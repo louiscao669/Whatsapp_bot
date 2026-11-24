@@ -1,0 +1,420 @@
+{
+  "config_digest": "58e99b143ab1f5b94000e5a3e978b07cc3d26ae3c113b7a77a492b2388d596d6",
+  "data": {
+    "kept": [
+      {
+        "question": "Who is killed at Gob in the battle where the enemy’s spear was unusually thick?",
+        "answer": "the brother of Goliath the Gittite",
+        "answer_verse": 19,
+        "wrong_answer": "Saph",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "the brother of Goliath the Gittite",
+            "support": "killed the brother of Goliath the Gittite, who had a spear with a shaft like a weaver’s rod"
+          }
+        ],
+        "distinct_readings": [
+          "the brother of Goliath the Gittite"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 10.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "It requires linking the spear-description clause to the correct one of two Gob battles to identify which Philistine was killed, a single, unambiguous fact central to the action."
+        },
+        "window_verses": [
+          18,
+          19
+        ],
+        "window_text": {
+          "18": "In the course of time, there was another battle with the Philistines, at Gob. At that time Sibbekai the Hushathite killed Saph, one of the descendants of Rapha.",
+          "19": "In another battle with the Philistines at Gob, Elhanan son of Jair the Bethlehemite killed the brother of Goliath the Gittite, who had a spear with a shaft like a weaver’s rod."
+        },
+        "reading_groups": [
+          "The person killed in that Gob battle is Goliath’s brother"
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 19,
+          "answer_verse_original": 19,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 19",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Who is killed at Gob in the battle where the enemy’s spear was unusually thick?",
+            "readings": [
+              {
+                "answer": "the brother of Goliath the Gittite",
+                "support": "killed the brother of Goliath the Gittite, who had a spear with a shaft like a weaver’s rod"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Verse 19 says at Gob Elhanan \"killed the brother of Goliath the Gittite, who had a spear with a shaft like a weaver’s rod,\" matching the description of an unusually thick spear."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "Verse 19 explicitly identifies the slain man as the brother of Goliath the Gittite, whose spear shaft was like a weaver’s rod.",
+            "status": "passed"
+          }
+        },
+        "scores_after_repair_raw": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 10.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "It requires linking the spear-description clause to the correct one of two Gob battles to identify which Philistine was killed, a single, unambiguous fact central to the action."
+        },
+        "repaired": true,
+        "repair_attempted": true,
+        "question_before_repair": "Whom does Elhanan kill at Gob?",
+        "scores_before_repair": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "You must link Elhanan as subject to the specific object he killed—“the brother of Goliath”—stated once, unambiguous, and central to the battle report."
+        },
+        "audit_before_repair": {
+          "passed": false,
+          "failures": [
+            "location leak: elhanan"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "elhanan"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 19,
+          "answer_verse_original": 19,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 19",
+          "readings_failures": []
+        },
+        "repair_log": [
+          {
+            "before": "Whom does Elhanan kill at Gob?",
+            "after": "Who is killed at Gob in the battle where the enemy’s spear was unusually thick?",
+            "note": "Removed the verse-unique name and anchored by the distinctive spear detail.",
+            "failures_before": [
+              "location leak: elhanan"
+            ],
+            "scores_before": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "You must link Elhanan as subject to the specific object he killed—“the brother of Goliath”—stated once, unambiguous, and central to the battle report."
+            },
+            "accepted": true,
+            "reason": "passed full rejudgment",
+            "suitability_judgment": {
+              "Q": "Who is killed at Gob in the battle where the enemy’s spear was unusually thick?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "The spear detail uniquely identifies the second Gob battle, and the text states the person killed there was the brother of Goliath the Gittite."
+            },
+            "failures_after": [],
+            "scores_after": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 10.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "It requires linking the spear-description clause to the correct one of two Gob battles to identify which Philistine was killed, a single, unambiguous fact central to the action."
+            },
+            "scores_used": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 10.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "It requires linking the spear-description clause to the correct one of two Gob battles to identify which Philistine was killed, a single, unambiguous fact central to the action."
+            }
+          }
+        ],
+        "window_selection_reason": "It requires resolving the relative clause about the weaver’s-rod spear to the second Gob battle (v19), distinguishing it from the other Gob battle with Saph.",
+        "window_structure_max": 9.0,
+        "content_id": "v18-19:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Who kills Saph at Gob?",
+        "answer": "Sibbekai the Hushathite",
+        "answer_verse": 18,
+        "wrong_answer": "Elhanan son of Jair the Bethlehemite",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "Sibbekai the Hushathite",
+            "support": "Sibbekai the Hushathite killed Saph"
+          }
+        ],
+        "distinct_readings": [
+          "Sibbekai the Hushathite"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "Identifying the killer requires parsing who did what in the kill clause, stated once and unambiguously, and it is central to the verse’s event."
+        },
+        "window_verses": [
+          18,
+          19
+        ],
+        "window_text": {
+          "18": "In the course of time, there was another battle with the Philistines, at Gob. At that time Sibbekai the Hushathite killed Saph, one of the descendants of Rapha.",
+          "19": "In another battle with the Philistines at Gob, Elhanan son of Jair the Bethlehemite killed the brother of Goliath the Gittite, who had a spear with a shaft like a weaver’s rod."
+        },
+        "reading_groups": [
+          "Sibbekai the Hushathite is the killer of Saph at Gob"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: saph",
+            "bare-name answer 'Sibbekai the Hushathite': names survive translation"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "saph"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 18,
+          "answer_verse_original": 18,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 18",
+          "readings_failures": []
+        },
+        "content_id": "v18-19:2"
+      },
+      {
+        "question": "In Elhanan’s battle, who has the unusually thick spear?",
+        "answer": "the brother of Goliath the Gittite",
+        "answer_verse": 19,
+        "wrong_answer": "Goliath the Gittite",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "the brother of Goliath the Gittite",
+            "support": "the brother of Goliath the Gittite, who had a spear with a shaft like a weaver’s rod"
+          },
+          {
+            "answer": "Goliath the Gittite",
+            "support": "Goliath the Gittite, who had a spear with a shaft like a weaver’s rod"
+          }
+        ],
+        "distinct_readings": [
+          "the brother of Goliath the Gittite",
+          "Goliath the Gittite"
+        ],
+        "scores": {
+          "structure_dependence": 10.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 5.0,
+          "runs": 1,
+          "reason": "Determining who had the spear depends on attaching the relative clause to the correct noun (the brother, not Goliath), mentioned once with a clear reading, and the detail is secondary to the main action."
+        },
+        "window_verses": [
+          18,
+          19
+        ],
+        "window_text": {
+          "18": "In the course of time, there was another battle with the Philistines, at Gob. At that time Sibbekai the Hushathite killed Saph, one of the descendants of Rapha.",
+          "19": "In another battle with the Philistines at Gob, Elhanan son of Jair the Bethlehemite killed the brother of Goliath the Gittite, who had a spear with a shaft like a weaver’s rod."
+        },
+        "reading_groups": [
+          "The brother of Goliath the Gittite has the spear with a shaft like a weaver’s rod",
+          "Goliath the Gittite has the spear with a shaft like a weaver’s rod"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: elhanan",
+            "2 defensible readings: The brother of Goliath the Gittite has the spear with a shaft like a weaver’s rod | Goliath the Gittite has the spear with a shaft like a weaver’s rod",
+            "competitor 'Goliath the Gittite' is itself defensible — the item is ambiguous, not discriminating"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "elhanan"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 19,
+          "answer_verse_original": 19,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 19",
+          "readings_failures": [
+            "2 defensible readings: The brother of Goliath the Gittite has the spear with a shaft like a weaver’s rod | Goliath the Gittite has the spear with a shaft like a weaver’s rod",
+            "competitor 'Goliath the Gittite' is itself defensible — the item is ambiguous, not discriminating"
+          ]
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "In Elhanan’s battle, who has the unusually thick spear?",
+            "after": "In the battle at Gob where the spear was unusually thick, who has it?",
+            "note": "Replaced the verse-unique name with a neutral battle descriptor.",
+            "failures_before": [
+              "location leak: elhanan",
+              "2 defensible readings: The brother of Goliath the Gittite has the spear with a shaft like a weaver’s rod | Goliath the Gittite has the spear with a shaft like a weaver’s rod",
+              "competitor 'Goliath the Gittite' is itself defensible — the item is ambiguous, not discriminating"
+            ],
+            "scores_before": {
+              "structure_dependence": 10.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 9.0,
+              "centrality": 5.0,
+              "runs": 1,
+              "reason": "Determining who had the spear depends on attaching the relative clause to the correct noun (the brother, not Goliath), mentioned once with a clear reading, and the detail is secondary to the main action."
+            },
+            "accepted": false,
+            "reason": "failed full rejudgment",
+            "suitability_judgment": {
+              "Q": "In the battle at Gob where the spear was unusually thick, who has it?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "The only spear mentioned is described in verse 19 and the clause assigns it to the brother of Goliath the Gittite, yielding a single clear answer."
+            },
+            "failures_after": [
+              "2 defensible readings: Goliath has the unusually thick spear | Goliath’s brother has the unusually thick spear",
+              "competitor 'Goliath the Gittite' is itself defensible — the item is ambiguous, not discriminating"
+            ],
+            "scores_after": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 10.0,
+              "answer_certainty": 9.0,
+              "centrality": 5.0,
+              "runs": 1,
+              "reason": "The reader must resolve the relative clause to see that the thick spear belonged to the brother of Goliath in that specific Gob battle, a unique but ancillary detail with a single clear referent."
+            },
+            "scores_used": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 10.0,
+              "answer_certainty": 9.0,
+              "centrality": 5.0,
+              "runs": 1,
+              "reason": "The reader must resolve the relative clause to see that the thick spear belonged to the brother of Goliath in that specific Gob battle, a unique but ancillary detail with a single clear referent."
+            }
+          }
+        ],
+        "content_id": "v18-19:3"
+      },
+      {
+        "question": "Whose descendant is Saph?",
+        "answer": "Rapha",
+        "answer_verse": 18,
+        "wrong_answer": "Goliath the Gittite",
+        "relation": "participant",
+        "readings": [
+          {
+            "answer": "Rapha",
+            "support": "Saph, one of the descendants of Rapha"
+          }
+        ],
+        "distinct_readings": [
+          "Rapha"
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 4.0,
+          "runs": 1,
+          "reason": "Identifying whose descendant Saph is requires reading the appositive “descendants of Rapha,” which is stated once, unambiguous, and less central than the killing itself."
+        },
+        "window_verses": [
+          18,
+          19
+        ],
+        "window_text": {
+          "18": "In the course of time, there was another battle with the Philistines, at Gob. At that time Sibbekai the Hushathite killed Saph, one of the descendants of Rapha.",
+          "19": "In another battle with the Philistines at Gob, Elhanan son of Jair the Bethlehemite killed the brother of Goliath the Gittite, who had a spear with a shaft like a weaver’s rod."
+        },
+        "reading_groups": [
+          "Saph is a descendant of Rapha"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: saph",
+            "bare-name answer 'Rapha': names survive translation",
+            "lexical: structure_dependence 6.0 (need 7.0)",
+            "incidental: centrality 4.0 (need 5.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "saph"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 18,
+          "answer_verse_original": 18,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 18",
+          "readings_failures": []
+        },
+        "content_id": "v18-19:4"
+      }
+    ],
+    "report": {
+      "window_id": "v18-19",
+      "verses": [
+        18,
+        19
+      ],
+      "generated": 4,
+      "scored": 4,
+      "kept": 1,
+      "survivors_before_window_selection": 1,
+      "window_selection_rejected": 0,
+      "repair_attempted": 2,
+      "repaired": 1,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

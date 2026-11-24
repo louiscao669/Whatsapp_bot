@@ -1,0 +1,479 @@
+{
+  "config_digest": "dff75e11c2f634febed8a35c540545c7c544680968ac4cebd050ba973dc16c6d",
+  "data": {
+    "kept": [
+      {
+        "question": "Whose words come true about the officer?",
+        "answer": "the man of God’s",
+        "answer_verse": 19,
+        "wrong_answer": "the officer’s",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "The man of God’s.",
+            "support": "The man of God had replied | And that is exactly what happened to him"
+          }
+        ],
+        "distinct_readings": [
+          "The man of God’s."
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "This requires connecting “that is exactly what happened to him” back to the earlier statement by the man of God, uniquely identifying whose words were fulfilled."
+        },
+        "window_verses": [
+          19,
+          20
+        ],
+        "window_text": {
+          "19": "The officer had said to the man of God, “Look, even if the Lord should open the floodgates of the heavens, could this happen?” The man of God had replied, “You will see it with your own eyes, but you will not eat any of it!”",
+          "20": "And that is exactly what happened to him, for the people trampled him in the gateway, and he died."
+        },
+        "reading_groups": [
+          "The man of God’s words come true about the officer"
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "corrected metadata from 20 to 19; reading support and question relation identify verse 19",
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 19,
+          "answer_verse_original": 20,
+          "answer_verse_corrected": true,
+          "answer_verse_note": "corrected metadata from 20 to 19; reading support and question relation identify verse 19",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Whose words come true about the officer?",
+            "readings": [
+              {
+                "answer": "The man of God’s.",
+                "support": "The man of God had replied | And that is exactly what happened to him"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The passage recounts the man of God’s prediction and then says it happened exactly so, showing his words came true."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The text explicitly says what the man of God said and that it happened exactly as he said.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It best tests structural understanding by linking the fulfillment in v20 to the correct prior speaker in v19, requiring pronoun and attribution resolution, with a plausible misattribution competitor.",
+        "window_structure_max": 9.0,
+        "content_id": "v19-20:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Who dies after the people trample him in the gateway?",
+        "answer": "the officer",
+        "answer_verse": 20,
+        "wrong_answer": "the man of God",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "The officer",
+            "support": "The officer had said | for the people trampled him in the gateway, and he died."
+          }
+        ],
+        "distinct_readings": [
+          "The officer"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "The reader must resolve the pronouns in verse 20 to the officer, a unique, clear, and central outcome of the passage."
+        },
+        "window_verses": [
+          19,
+          20
+        ],
+        "window_text": {
+          "19": "The officer had said to the man of God, “Look, even if the Lord should open the floodgates of the heavens, could this happen?” The man of God had replied, “You will see it with your own eyes, but you will not eat any of it!”",
+          "20": "And that is exactly what happened to him, for the people trampled him in the gateway, and he died."
+        },
+        "reading_groups": [
+          "The officer dies after being trampled in the gateway"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: gateway, trampl",
+            "dangling pronoun: him"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "gateway",
+            "trampl"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 20,
+          "answer_verse_original": 20,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 20",
+          "readings_failures": []
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "Who dies after the people trample him in the gateway?",
+            "after": "Who dies after the people crush the officer?",
+            "note": "Replaced dangling pronoun with 'the officer' and removed leaking words 'gateway' and 'trample.'",
+            "failures_before": [
+              "location leak: gateway, trampl",
+              "dangling pronoun: him"
+            ],
+            "scores_before": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 9.0,
+              "runs": 1,
+              "reason": "The reader must resolve the pronouns in verse 20 to the officer, a unique, clear, and central outcome of the passage."
+            },
+            "accepted": false,
+            "reason": "failed full rejudgment",
+            "suitability_judgment": {
+              "Q": "Who dies after the people crush the officer?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "The verse clearly states that the people trampled the officer and he died, yielding a single, direct answer with unambiguous referents."
+            },
+            "failures_after": [
+              "answer leaks into question: officer"
+            ],
+            "scores_after": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 9.0,
+              "runs": 1,
+              "reason": "Identifying the dead person requires resolving the pronoun chain and event order to the officer, a fact stated once with a single unambiguous answer central to the fulfillment."
+            },
+            "scores_used": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 9.0,
+              "runs": 1,
+              "reason": "Identifying the dead person requires resolving the pronoun chain and event order to the officer, a fact stated once with a single unambiguous answer central to the fulfillment."
+            }
+          }
+        ],
+        "content_id": "v19-20:2"
+      },
+      {
+        "question": "Why does the officer not eat what he will see?",
+        "answer": "because the people trample him in the gateway, and he dies",
+        "answer_verse": 19,
+        "wrong_answer": "because the man of God said he would not",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "Because the people trampled him to death at the gate.",
+            "support": "for the people trampled him in the gateway, and he died."
+          },
+          {
+            "answer": "Because the man of God had declared he would not eat any of it.",
+            "support": "You will see it with your own eyes, but you will not eat any of it!"
+          }
+        ],
+        "distinct_readings": [
+          "Because the people trampled him to death at the gate.",
+          "Because the man of God had declared he would not eat any of it."
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "It depends on grasping the causal relation introduced by “for” (trampled leading to death), which is stated once and clearly explains the result."
+        },
+        "window_verses": [
+          19,
+          20
+        ],
+        "window_text": {
+          "19": "The officer had said to the man of God, “Look, even if the Lord should open the floodgates of the heavens, could this happen?” The man of God had replied, “You will see it with your own eyes, but you will not eat any of it!”",
+          "20": "And that is exactly what happened to him, for the people trampled him in the gateway, and he died."
+        },
+        "reading_groups": [
+          "Because he was trampled to death at the gate",
+          "Because the man of God had declared he would not eat any of it"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "2 defensible readings: Because he was trampled to death at the gate | Because the man of God had declared he would not eat any of it",
+            "competitor 'because the man of God said he would not' is itself defensible — the item is ambiguous, not discriminating"
+          ],
+          "notes": [
+            "corrected metadata from 20 to 19; reading support and question relation identify verse 19",
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 19,
+          "answer_verse_original": 20,
+          "answer_verse_corrected": true,
+          "answer_verse_note": "corrected metadata from 20 to 19; reading support and question relation identify verse 19",
+          "readings_failures": [
+            "2 defensible readings: Because he was trampled to death at the gate | Because the man of God had declared he would not eat any of it",
+            "competitor 'because the man of God said he would not' is itself defensible — the item is ambiguous, not discriminating"
+          ]
+        },
+        "content_id": "v19-20:3"
+      },
+      {
+        "question": "To whom does the officer speak his doubt?",
+        "answer": "the man of God",
+        "answer_verse": 19,
+        "wrong_answer": "the people",
+        "relation": "participant",
+        "readings": [
+          {
+            "answer": "the man of God",
+            "support": "to the man of God"
+          }
+        ],
+        "distinct_readings": [
+          "the man of God"
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 10.0,
+          "centrality": 5.0,
+          "runs": 1,
+          "reason": "The addressee is given by the “said to” construction (“to the man of God”), uniquely and clearly stated though not central to the main event."
+        },
+        "window_verses": [
+          19,
+          20
+        ],
+        "window_text": {
+          "19": "The officer had said to the man of God, “Look, even if the Lord should open the floodgates of the heavens, could this happen?” The man of God had replied, “You will see it with your own eyes, but you will not eat any of it!”",
+          "20": "And that is exactly what happened to him, for the people trampled him in the gateway, and he died."
+        },
+        "reading_groups": [
+          "He speaks his doubt to the man of God"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 19,
+          "answer_verse_original": 19,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 19",
+          "readings_failures": []
+        },
+        "content_id": "v19-20:4"
+      },
+      {
+        "question": "Who speaks first in this account?",
+        "answer": "the officer",
+        "answer_verse": 19,
+        "wrong_answer": "the man of God",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "The officer",
+            "support": "The officer had said"
+          }
+        ],
+        "distinct_readings": [
+          "The officer"
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 10.0,
+          "centrality": 5.0,
+          "runs": 1,
+          "reason": "Determining the first speaker relies on interpreting the narrative order (“had said” vs. “had replied”), which is clear but more incidental to the main point."
+        },
+        "window_verses": [
+          19,
+          20
+        ],
+        "window_text": {
+          "19": "The officer had said to the man of God, “Look, even if the Lord should open the floodgates of the heavens, could this happen?” The man of God had replied, “You will see it with your own eyes, but you will not eat any of it!”",
+          "20": "And that is exactly what happened to him, for the people trampled him in the gateway, and he died."
+        },
+        "reading_groups": [
+          "The officer speaks first"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: outside top structure band (7 vs window max 9)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 19,
+          "answer_verse_original": 19,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 19",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Who speaks first in this account?",
+            "readings": [
+              {
+                "answer": "The officer",
+                "support": "The officer had said"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Verse 19 begins, “The officer had said…,” and only afterward, “The man of God had replied…,” so the officer speaks first."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The passage explicitly starts with “The officer had said…,” indicating he spoke first.",
+            "status": "passed"
+          }
+        },
+        "content_id": "v19-20:5"
+      },
+      {
+        "question": "Who predicts the officer will witness it yet not taste it?",
+        "answer": "the man of God",
+        "answer_verse": 19,
+        "wrong_answer": "the officer",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "The man of God",
+            "support": "The man of God had replied, “You will see it with your own eyes, but you will not eat any of it!”"
+          }
+        ],
+        "distinct_readings": [
+          "The man of God"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "Identifying the predictor requires linking the quoted prediction to its speaker (“the man of God”), which is stated once, unambiguous, and central to the prophecy and its fulfillment."
+        },
+        "window_verses": [
+          19,
+          20
+        ],
+        "window_text": {
+          "19": "The officer had said to the man of God, “Look, even if the Lord should open the floodgates of the heavens, could this happen?” The man of God had replied, “You will see it with your own eyes, but you will not eat any of it!”",
+          "20": "And that is exactly what happened to him, for the people trampled him in the gateway, and he died."
+        },
+        "reading_groups": [
+          "The man of God predicts the officer will see it but not eat it"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: hybrid window selector — It best tests structural understanding by linking the fulfillment in v20 to the correct prior speaker in v19, requiring pronoun and attribution resolution, with a plausible misattribution competitor."
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 19,
+          "answer_verse_original": 19,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 19",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Who predicts the officer will witness it yet not taste it?",
+            "readings": [
+              {
+                "answer": "The man of God",
+                "support": "The man of God had replied, “You will see it with your own eyes, but you will not eat any of it!”"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Verse 19 states, “The man of God had replied, ‘You will see it with your own eyes, but you will not eat any of it!’,” directly identifying the predictor as the man of God."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The passage explicitly says the man of God made the prediction, matching the key.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It best tests structural understanding by linking the fulfillment in v20 to the correct prior speaker in v19, requiring pronoun and attribution resolution, with a plausible misattribution competitor.",
+        "content_id": "v19-20:6"
+      }
+    ],
+    "report": {
+      "window_id": "v19-20",
+      "verses": [
+        19,
+        20
+      ],
+      "generated": 6,
+      "scored": 6,
+      "kept": 1,
+      "survivors_before_window_selection": 3,
+      "window_selection_rejected": 2,
+      "repair_attempted": 1,
+      "repaired": 0,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

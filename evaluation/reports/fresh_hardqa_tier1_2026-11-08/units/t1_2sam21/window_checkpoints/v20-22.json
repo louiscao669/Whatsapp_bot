@@ -1,0 +1,797 @@
+{
+  "config_digest": "58e99b143ab1f5b94000e5a3e978b07cc3d26ae3c113b7a77a492b2388d596d6",
+  "data": {
+    "kept": [
+      {
+        "question": "Who are defeated by David and his men?",
+        "answer": "The four descendants of Rapha in Gath",
+        "answer_verse": 22,
+        "wrong_answer": "David and his men",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "The four descendants of Rapha in Gath",
+            "support": "These four were descendants of Rapha in Gath, and they fell at the hands of David and his men."
+          }
+        ],
+        "distinct_readings": [
+          "The four descendants of Rapha in Gath"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "One must connect “they fell at the hands of David and his men” to its antecedent “these four… descendants of Rapha,” a single, central summary statement."
+        },
+        "window_verses": [
+          20,
+          21,
+          22
+        ],
+        "window_text": {
+          "20": "In still another battle, which took place at Gath, there was a huge man with six fingers on each hand and six toes on each foot—twenty-four in all. He also was descended from Rapha.",
+          "21": "When he taunted Israel, Jonathan son of Shimeah, David’s brother, killed him.",
+          "22": "These four were descendants of Rapha in Gath, and they fell at the hands of David and his men."
+        },
+        "reading_groups": [
+          "The four descendants of Rapha in Gath"
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 22,
+          "answer_verse_original": 22,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 22",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Who are defeated by David and his men?",
+            "readings": [
+              {
+                "answer": "The four descendants of Rapha in Gath",
+                "support": "These four were descendants of Rapha in Gath, and they fell at the hands of David and his men."
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The passage explicitly states, “These four were descendants of Rapha in Gath, and they fell at the hands of David and his men,” which directly answers the question."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The text clearly says the four descendants of Rapha in Gath fell at the hands of David and his men.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "Item 1 cleanly probes the agent–patient relation in “they fell at the hands of David and his men” with a plausible role-reversal competitor, whereas Item 2 misattributes the killer as David’s brother and introduces ambiguity.",
+        "window_structure_max": 9.0,
+        "content_id": "v20-22:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Who kills the huge man when he taunts Israel?",
+        "answer": "Jonathan son of Shimeah",
+        "answer_verse": 21,
+        "wrong_answer": "David",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "Jonathan son of Shimeah",
+            "support": "Jonathan son of Shimeah, David’s brother, killed him."
+          }
+        ],
+        "distinct_readings": [
+          "Jonathan son of Shimeah"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "Identifying the killer requires resolving pronouns and the action in v21 (“Jonathan son of Shimeah … killed him”), stated once, unambiguous, and central to the episode."
+        },
+        "window_verses": [
+          20,
+          21,
+          22
+        ],
+        "window_text": {
+          "20": "In still another battle, which took place at Gath, there was a huge man with six fingers on each hand and six toes on each foot—twenty-four in all. He also was descended from Rapha.",
+          "21": "When he taunted Israel, Jonathan son of Shimeah, David’s brother, killed him.",
+          "22": "These four were descendants of Rapha in Gath, and they fell at the hands of David and his men."
+        },
+        "reading_groups": [
+          "Jonathan son of Shimeah kills the huge man"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: israel, taunt"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "israel",
+            "taunt"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 21,
+          "answer_verse_original": 21,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 21",
+          "readings_failures": []
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "Who kills the huge man when he taunts Israel?",
+            "after": "Who kills the huge man with six fingers on each hand and six toes on each foot?",
+            "note": "Removed the leaking words and identified the man by his physical traits.",
+            "failures_before": [
+              "location leak: israel, taunt"
+            ],
+            "scores_before": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "Identifying the killer requires resolving pronouns and the action in v21 (“Jonathan son of Shimeah … killed him”), stated once, unambiguous, and central to the episode."
+            },
+            "accepted": false,
+            "reason": "failed full rejudgment",
+            "suitability_judgment": {
+              "Q": "Who kills the huge man with six fingers on each hand and six toes on each foot?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "All referents are explicit and the text states Jonathan son of Shimeah killed him, yielding a single clear answer."
+            },
+            "failures_after": [
+              "location leak: foot",
+              "quotes the passage: quotes verse 20: 'huge man with six fingers'",
+              "2 defensible readings: Jonathan son of Shimeah killed him | David and his men killed him"
+            ],
+            "scores_after": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 10.0,
+              "answer_certainty": 10.0,
+              "centrality": 9.0,
+              "runs": 1,
+              "reason": "Identifying the killer requires resolving the pronoun chain from the giant in v20 to “him” in v21, a single uniquely stated relational fact that is unambiguous and central to the episode."
+            },
+            "scores_used": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 10.0,
+              "answer_certainty": 10.0,
+              "centrality": 9.0,
+              "runs": 1,
+              "reason": "Identifying the killer requires resolving the pronoun chain from the giant in v20 to “him” in v21, a single uniquely stated relational fact that is unambiguous and central to the episode."
+            }
+          }
+        ],
+        "content_id": "v20-22:2"
+      },
+      {
+        "question": "Which man here is the brother of David?",
+        "answer": "Shimeah",
+        "answer_verse": 21,
+        "wrong_answer": "Jonathan",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "Shimeah",
+            "support": "son of Shimeah, David’s brother"
+          },
+          {
+            "answer": "Jonathan",
+            "support": "Jonathan son of Shimeah | David’s brother"
+          }
+        ],
+        "distinct_readings": [
+          "Shimeah",
+          "Jonathan"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 10.0,
+          "answer_certainty": 10.0,
+          "centrality": 3.0,
+          "runs": 1,
+          "reason": "It hinges on parsing the appositive “Jonathan son of Shimeah, David’s brother,” which uniquely identifies Shimeah, is clear in a good translation, but is ancillary to the main action."
+        },
+        "window_verses": [
+          20,
+          21,
+          22
+        ],
+        "window_text": {
+          "20": "In still another battle, which took place at Gath, there was a huge man with six fingers on each hand and six toes on each foot—twenty-four in all. He also was descended from Rapha.",
+          "21": "When he taunted Israel, Jonathan son of Shimeah, David’s brother, killed him.",
+          "22": "These four were descendants of Rapha in Gath, and they fell at the hands of David and his men."
+        },
+        "reading_groups": [
+          "Shimeah is David’s brother",
+          "Jonathan is David’s brother"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "2 defensible readings: Shimeah is David’s brother | Jonathan is David’s brother",
+            "competitor 'Jonathan' is itself defensible — the item is ambiguous, not discriminating",
+            "bare-name answer 'Shimeah': names survive translation",
+            "incidental: centrality 3.0 (need 5.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 21,
+          "answer_verse_original": 21,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 21",
+          "readings_failures": [
+            "2 defensible readings: Shimeah is David’s brother | Jonathan is David’s brother",
+            "competitor 'Jonathan' is itself defensible — the item is ambiguous, not discriminating"
+          ]
+        },
+        "content_id": "v20-22:3"
+      },
+      {
+        "question": "Who bring down the four descendants?",
+        "answer": "David and his men",
+        "answer_verse": 22,
+        "wrong_answer": "Jonathan son of Shimeah",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "David and his men",
+            "support": "they fell at the hands of David and his men"
+          }
+        ],
+        "distinct_readings": [
+          "David and his men"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "One must convert the passive “they fell at the hands of” into the agent “David and his men,” a single clear statement that summarizes the passage’s outcome."
+        },
+        "window_verses": [
+          20,
+          21,
+          22
+        ],
+        "window_text": {
+          "20": "In still another battle, which took place at Gath, there was a huge man with six fingers on each hand and six toes on each foot—twenty-four in all. He also was descended from Rapha.",
+          "21": "When he taunted Israel, Jonathan son of Shimeah, David’s brother, killed him.",
+          "22": "These four were descendants of Rapha in Gath, and they fell at the hands of David and his men."
+        },
+        "reading_groups": [
+          "David and his men bring down the four descendants"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "dangling answer reference: his"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 22,
+          "answer_verse_original": 22,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 22",
+          "readings_failures": []
+        },
+        "content_id": "v20-22:4"
+      },
+      {
+        "question": "Who is the ancestor of the huge man?",
+        "answer": "Rapha",
+        "answer_verse": 20,
+        "wrong_answer": "David",
+        "relation": "participant",
+        "readings": [
+          {
+            "answer": "Rapha",
+            "support": "He also was descended from Rapha."
+          }
+        ],
+        "distinct_readings": [
+          "Rapha"
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 5.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "It requires linking the pronoun to the huge man and mapping “descended from Rapha” to “ancestor,” and this lineage is also echoed in v22, making it clear and fairly central."
+        },
+        "window_verses": [
+          20,
+          21,
+          22
+        ],
+        "window_text": {
+          "20": "In still another battle, which took place at Gath, there was a huge man with six fingers on each hand and six toes on each foot—twenty-four in all. He also was descended from Rapha.",
+          "21": "When he taunted Israel, Jonathan son of Shimeah, David’s brother, killed him.",
+          "22": "These four were descendants of Rapha in Gath, and they fell at the hands of David and his men."
+        },
+        "reading_groups": [
+          "Rapha is the huge man’s ancestor"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "bare-name answer 'Rapha': names survive translation"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 20,
+          "answer_verse_original": 20,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 20",
+          "readings_failures": []
+        },
+        "content_id": "v20-22:5"
+      },
+      {
+        "question": "Who kills the man who mocks Israel?",
+        "answer": "Jonathan son of Shimeah",
+        "answer_verse": 21,
+        "wrong_answer": "David",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "Jonathan son of Shimeah, David’s brother",
+            "support": "Jonathan son of Shimeah, David’s brother, killed him"
+          }
+        ],
+        "distinct_readings": [
+          "Jonathan son of Shimeah, David’s brother"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "It requires linking the taunter to the killer via the clause in v21 (“When he taunted Israel… Jonathan… killed him”), which is stated once and is the core action."
+        },
+        "window_verses": [
+          20,
+          21,
+          22
+        ],
+        "window_text": {
+          "20": "In still another battle, which took place at Gath, there was a huge man with six fingers on each hand and six toes on each foot—twenty-four in all. He also was descended from Rapha.",
+          "21": "When he taunted Israel, Jonathan son of Shimeah, David’s brother, killed him.",
+          "22": "These four were descendants of Rapha in Gath, and they fell at the hands of David and his men."
+        },
+        "reading_groups": [
+          "Jonathan son of Shimeah (David’s brother)"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: israel"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "israel"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 21,
+          "answer_verse_original": 21,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 21",
+          "readings_failures": []
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "Who kills the man who mocks Israel?",
+            "after": "Who kills the man who mocks the Israelites?",
+            "note": "Replaced 'Israel' with 'the Israelites' to remove location leak.",
+            "failures_before": [
+              "location leak: israel"
+            ],
+            "scores_before": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 9.0,
+              "runs": 1,
+              "reason": "It requires linking the taunter to the killer via the clause in v21 (“When he taunted Israel… Jonathan… killed him”), which is stated once and is the core action."
+            },
+            "accepted": false,
+            "reason": "failed full rejudgment",
+            "suitability_judgment": {
+              "Q": "Who kills the man who mocks the Israelites?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "The taunter is clearly identified in verse 21 and his killer is explicitly named as Jonathan son of Shimeah."
+            },
+            "failures_after": [
+              "ungrounded name: Israelites",
+              "2 defensible readings: Jonathan son of Shimeah (David’s brother) kills the mocker | David and his men kill him"
+            ],
+            "scores_after": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 10.0,
+              "answer_certainty": 10.0,
+              "centrality": 9.0,
+              "runs": 1,
+              "reason": "Determining the killer requires resolving pronouns and clause structure to see that Jonathan son of Shimeah is the subject who killed the taunter, a fact stated once and central to the event."
+            },
+            "scores_used": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 10.0,
+              "answer_certainty": 10.0,
+              "centrality": 9.0,
+              "runs": 1,
+              "reason": "Determining the killer requires resolving pronouns and clause structure to see that Jonathan son of Shimeah is the subject who killed the taunter, a fact stated once and central to the event."
+            }
+          }
+        ],
+        "content_id": "v20-22:6"
+      },
+      {
+        "question": "What is Jonathan to David in this story?",
+        "answer": "He is the son of David’s brother",
+        "answer_verse": 21,
+        "wrong_answer": "He is David’s brother",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "David’s nephew",
+            "support": "Jonathan son of Shimeah, David’s brother"
+          },
+          {
+            "answer": "one of David’s men",
+            "support": "Jonathan son of Shimeah, David’s brother, killed him | they fell at the hands of David and his men"
+          }
+        ],
+        "distinct_readings": [
+          "David’s nephew",
+          "one of David’s men"
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 5.0,
+          "centrality": 5.0,
+          "runs": 1,
+          "reason": "The relationship must be inferred from the apposition “Jonathan son of Shimeah, David’s brother,” which occurs once, though multiple phrasings (nephew/son of David’s brother) are defensible."
+        },
+        "window_verses": [
+          20,
+          21,
+          22
+        ],
+        "window_text": {
+          "20": "In still another battle, which took place at Gath, there was a huge man with six fingers on each hand and six toes on each foot—twenty-four in all. He also was descended from Rapha.",
+          "21": "When he taunted Israel, Jonathan son of Shimeah, David’s brother, killed him.",
+          "22": "These four were descendants of Rapha in Gath, and they fell at the hands of David and his men."
+        },
+        "reading_groups": [
+          "David’s nephew (son of David’s brother)",
+          "One of David’s men"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: jonathan",
+            "2 defensible readings: David’s nephew (son of David’s brother) | One of David’s men",
+            "ambiguous: answer_certainty 5.0 (need 7.0)",
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "jonathan"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "david"
+          ],
+          "answer_verse": 21,
+          "answer_verse_original": 21,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 21",
+          "readings_failures": [
+            "2 defensible readings: David’s nephew (son of David’s brother) | One of David’s men"
+          ]
+        },
+        "content_id": "v20-22:7"
+      },
+      {
+        "question": "Whose son is Jonathan in this passage?",
+        "answer": "Shimeah, David’s brother",
+        "answer_verse": 21,
+        "wrong_answer": "David",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "Shimeah",
+            "support": "son of Shimeah"
+          }
+        ],
+        "distinct_readings": [
+          "Shimeah"
+        ],
+        "scores": {
+          "structure_dependence": 2.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 4.0,
+          "runs": 1,
+          "reason": "The answer is a direct noun phrase (“Jonathan son of Shimeah”) stated once and unambiguous, but it is background to the main event."
+        },
+        "window_verses": [
+          20,
+          21,
+          22
+        ],
+        "window_text": {
+          "20": "In still another battle, which took place at Gath, there was a huge man with six fingers on each hand and six toes on each foot—twenty-four in all. He also was descended from Rapha.",
+          "21": "When he taunted Israel, Jonathan son of Shimeah, David’s brother, killed him.",
+          "22": "These four were descendants of Rapha in Gath, and they fell at the hands of David and his men."
+        },
+        "reading_groups": [
+          "Shimeah"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: jonathan",
+            "metatextual question: asks about this passage rather than its meaning",
+            "lexical: structure_dependence 2.0 (need 7.0)",
+            "incidental: centrality 4.0 (need 5.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "jonathan"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 21,
+          "answer_verse_original": 21,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 21",
+          "readings_failures": []
+        },
+        "content_id": "v20-22:8"
+      },
+      {
+        "question": "Who is killed by David's brother after the mocking?",
+        "answer": "The huge man with many fingers and toes",
+        "answer_verse": 21,
+        "wrong_answer": "Rapha",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "The huge man with six fingers on each hand and six toes on each foot",
+            "support": "a huge man with six fingers on each hand and six toes on each foot | Jonathan son of Shimeah, David’s brother, killed him."
+          }
+        ],
+        "distinct_readings": [
+          "The huge man with six fingers on each hand and six toes on each foot"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "The answer depends on linking the apposition “David’s brother” to Jonathan and connecting the taunter with the uniquely described giant who is then killed, a central but singly stated relation."
+        },
+        "window_verses": [
+          20,
+          21,
+          22
+        ],
+        "window_text": {
+          "20": "In still another battle, which took place at Gath, there was a huge man with six fingers on each hand and six toes on each foot—twenty-four in all. He also was descended from Rapha.",
+          "21": "When he taunted Israel, Jonathan son of Shimeah, David’s brother, killed him.",
+          "22": "These four were descendants of Rapha in Gath, and they fell at the hands of David and his men."
+        },
+        "reading_groups": [
+          "The huge six-fingered, six-toed man is killed"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: hybrid window selector — Item 1 cleanly probes the agent–patient relation in “they fell at the hands of David and his men” with a plausible role-reversal competitor, whereas Item 2 misattributes the killer as David’s brother and introduces ambiguity."
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 21,
+          "answer_verse_original": 21,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 21",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Who is killed by David's brother after the mocking?",
+            "readings": [
+              {
+                "answer": "The huge man with six fingers on each hand and six toes on each foot",
+                "support": "a huge man with six fingers on each hand and six toes on each foot | Jonathan son of Shimeah, David’s brother, killed him."
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The passage states that when the man taunted Israel, Jonathan son of Shimeah, David’s brother, killed him, and the antecedent is the huge man with six fingers on each hand and six toes on each foot."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The text directly identifies the slain person as the huge man with extra fingers and toes whom Jonathan, David’s brother, killed after he taunted Israel.",
+            "status": "passed"
+          }
+        },
+        "scores_after_repair_raw": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "The answer depends on linking the apposition “David’s brother” to Jonathan and connecting the taunter with the uniquely described giant who is then killed, a central but singly stated relation."
+        },
+        "repaired": true,
+        "repair_attempted": true,
+        "question_before_repair": "Who is killed by Jonathan after the taunt?",
+        "scores_before_repair": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "It depends on resolving the pronouns in v21 to identify the taunting giant as the one Jonathan kills, a single, central action in the passage."
+        },
+        "audit_before_repair": {
+          "passed": false,
+          "failures": [
+            "location leak: jonathan, taunt"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "jonathan",
+            "taunt"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 21,
+          "answer_verse_original": 21,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 21",
+          "readings_failures": []
+        },
+        "repair_log": [
+          {
+            "before": "Who is killed by Jonathan after the taunt?",
+            "after": "Who is killed by David's brother after the mocking?",
+            "note": "Replaced 'Jonathan' with 'David's brother' and 'taunt' with 'mocking' to avoid leaks.",
+            "failures_before": [
+              "location leak: jonathan, taunt"
+            ],
+            "scores_before": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 9.0,
+              "runs": 1,
+              "reason": "It depends on resolving the pronouns in v21 to identify the taunting giant as the one Jonathan kills, a single, central action in the passage."
+            },
+            "accepted": true,
+            "reason": "passed full rejudgment",
+            "suitability_judgment": {
+              "Q": "Who is killed by David's brother after the mocking?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "“David’s brother” clearly refers to Jonathan son of Shimeah, and the only person he kills after the taunt is the huge man descended from Rapha."
+            },
+            "failures_after": [],
+            "scores_after": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 9.0,
+              "runs": 1,
+              "reason": "The answer depends on linking the apposition “David’s brother” to Jonathan and connecting the taunter with the uniquely described giant who is then killed, a central but singly stated relation."
+            },
+            "scores_used": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 9.0,
+              "runs": 1,
+              "reason": "The answer depends on linking the apposition “David’s brother” to Jonathan and connecting the taunter with the uniquely described giant who is then killed, a central but singly stated relation."
+            }
+          }
+        ],
+        "window_selection_reason": "Item 1 cleanly probes the agent–patient relation in “they fell at the hands of David and his men” with a plausible role-reversal competitor, whereas Item 2 misattributes the killer as David’s brother and introduces ambiguity.",
+        "content_id": "v20-22:9"
+      }
+    ],
+    "report": {
+      "window_id": "v20-22",
+      "verses": [
+        20,
+        21,
+        22
+      ],
+      "generated": 9,
+      "scored": 9,
+      "kept": 1,
+      "survivors_before_window_selection": 2,
+      "window_selection_rejected": 1,
+      "repair_attempted": 3,
+      "repaired": 1,
+      "window_retries_used": 1,
+      "score_runs": 1
+    }
+  }
+}

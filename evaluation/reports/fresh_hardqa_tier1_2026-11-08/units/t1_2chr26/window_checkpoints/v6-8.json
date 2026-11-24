@@ -1,0 +1,501 @@
+{
+  "config_digest": "06f6fd33124ccf69d50b7d020984e70e0c73dd874d345ad168bb1c04d96f7dac",
+  "data": {
+    "kept": [
+      {
+        "question": "Where does Uzziah rebuild towns?",
+        "answer": "Near Ashdod and elsewhere among the Philistines.",
+        "answer_verse": 6,
+        "wrong_answer": "In Gath, Jabneh and Ashdod.",
+        "relation": "direction",
+        "readings": [
+          {
+            "answer": "Near Ashdod and elsewhere among the Philistines.",
+            "support": "near Ashdod and elsewhere among the Philistines"
+          }
+        ],
+        "distinct_readings": [
+          "Near Ashdod and elsewhere among the Philistines."
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "It requires linking the location phrases to the rebuilding (not the wall-breaking), yielding “near Ashdod and elsewhere among the Philistines,” stated once and unambiguous."
+        },
+        "window_verses": [
+          6,
+          7,
+          8
+        ],
+        "window_text": {
+          "6": "He went to war against the Philistines and broke down the walls of Gath, Jabneh and Ashdod. He then rebuilt towns near Ashdod and elsewhere among the Philistines.",
+          "7": "God helped him against the Philistines and against the Arabs who lived in Gur Baal and against the Meunites.",
+          "8": "The Ammonites brought tribute to Uzziah, and his fame spread as far as the border of Egypt, because he had become very powerful."
+        },
+        "reading_groups": [
+          "Near Ashdod and elsewhere among the Philistines"
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 6,
+          "answer_verse_original": 6,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 6",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Where does Uzziah rebuild towns?",
+            "readings": [
+              {
+                "answer": "Near Ashdod and elsewhere among the Philistines.",
+                "support": "near Ashdod and elsewhere among the Philistines"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The answer exactly matches the passage: \"He then rebuilt towns near Ashdod and elsewhere among the Philistines.\""
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The reading directly matches the verse stating he rebuilt towns near Ashdod and elsewhere among the Philistines.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It requires correctly linking the rebuilding action to its stated locations (“near Ashdod and elsewhere among the Philistines”) rather than the earlier cities where he broke down walls, with a plausible misparse as the competitor.",
+        "window_structure_max": 8.0,
+        "content_id": "v6-8:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Why does Uzziah’s fame reach Egypt’s border?",
+        "answer": "Because he had become very powerful.",
+        "answer_verse": 8,
+        "wrong_answer": "Because the Ammonites brought tribute to Uzziah.",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "Because he had become very powerful.",
+            "support": "because he had become very powerful"
+          }
+        ],
+        "distinct_readings": [
+          "Because he had become very powerful."
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "The answer is the causal clause (“because he had become very powerful”), stated once and unambiguous, but it depends on correctly linking the reason to the fame-spreading event."
+        },
+        "window_verses": [
+          6,
+          7,
+          8
+        ],
+        "window_text": {
+          "6": "He went to war against the Philistines and broke down the walls of Gath, Jabneh and Ashdod. He then rebuilt towns near Ashdod and elsewhere among the Philistines.",
+          "7": "God helped him against the Philistines and against the Arabs who lived in Gur Baal and against the Meunites.",
+          "8": "The Ammonites brought tribute to Uzziah, and his fame spread as far as the border of Egypt, because he had become very powerful."
+        },
+        "reading_groups": [
+          "Because he had become very powerful"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: egypt, uzziah"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "egypt",
+            "uzziah"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 8,
+          "answer_verse_original": 8,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 8",
+          "readings_failures": []
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "Why does Uzziah’s fame reach Egypt’s border?",
+            "after": "Why does fame spread so far?",
+            "note": "Removed the unique location and name and paraphrased the ask.",
+            "failures_before": [
+              "location leak: egypt, uzziah"
+            ],
+            "scores_before": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 6.0,
+              "runs": 1,
+              "reason": "The answer is the causal clause (“because he had become very powerful”), stated once and unambiguous, but it depends on correctly linking the reason to the fame-spreading event."
+            },
+            "accepted": false,
+            "reason": "removed as weak question: The question fails to specify whose fame is meant, leaving the referent unclear.",
+            "suitability_judgment": {
+              "Q": "Why does fame spread so far?",
+              "clear_referents": false,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": true,
+              "reason": "The question fails to specify whose fame is meant, leaving the referent unclear."
+            }
+          }
+        ],
+        "content_id": "v6-8:2"
+      },
+      {
+        "question": "Which people bring tribute to Uzziah?",
+        "answer": "The Ammonites.",
+        "answer_verse": 8,
+        "wrong_answer": "The Philistines.",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "The Ammonites",
+            "support": "The Ammonites brought tribute to Uzziah"
+          }
+        ],
+        "distinct_readings": [
+          "The Ammonites"
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "Identifying “The Ammonites” requires attaching the correct people to the action “brought tribute” amid several peoples named, stated once and clear."
+        },
+        "window_verses": [
+          6,
+          7,
+          8
+        ],
+        "window_text": {
+          "6": "He went to war against the Philistines and broke down the walls of Gath, Jabneh and Ashdod. He then rebuilt towns near Ashdod and elsewhere among the Philistines.",
+          "7": "God helped him against the Philistines and against the Arabs who lived in Gur Baal and against the Meunites.",
+          "8": "The Ammonites brought tribute to Uzziah, and his fame spread as far as the border of Egypt, because he had become very powerful."
+        },
+        "reading_groups": [
+          "The Ammonites bring/brought tribute to Uzziah"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: uzziah"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "uzziah"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 8,
+          "answer_verse_original": 8,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 8",
+          "readings_failures": []
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "Which people bring tribute to Uzziah?",
+            "after": "Which people bring tribute?",
+            "note": "Removed the unique name to prevent location leak.",
+            "failures_before": [
+              "location leak: uzziah"
+            ],
+            "scores_before": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 7.0,
+              "runs": 1,
+              "reason": "Identifying “The Ammonites” requires attaching the correct people to the action “brought tribute” amid several peoples named, stated once and clear."
+            },
+            "accepted": false,
+            "reason": "failed full rejudgment",
+            "suitability_judgment": {
+              "Q": "Which people bring tribute?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "It clearly refers to the only group mentioned as bringing tribute, making it directly answerable with a single answer."
+            },
+            "failures_after": [
+              "lexical: structure_dependence 2.0 (need 7.0)"
+            ],
+            "scores_after": {
+              "structure_dependence": 2.0,
+              "statement_uniqueness": 10.0,
+              "answer_certainty": 10.0,
+              "centrality": 7.0,
+              "runs": 1,
+              "reason": "The clause “The Ammonites brought tribute to Uzziah” names the people directly, stated once and unambiguously, and while key to illustrating his power it is one detail among several victories."
+            },
+            "scores_used": {
+              "structure_dependence": 2.0,
+              "statement_uniqueness": 10.0,
+              "answer_certainty": 10.0,
+              "centrality": 7.0,
+              "runs": 1,
+              "reason": "The clause “The Ammonites brought tribute to Uzziah” names the people directly, stated once and unambiguously, and while key to illustrating his power it is one detail among several victories."
+            }
+          }
+        ],
+        "content_id": "v6-8:3"
+      },
+      {
+        "question": "Who lives in Gur Baal?",
+        "answer": "The Arabs.",
+        "answer_verse": 7,
+        "wrong_answer": "The Meunites.",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "the Arabs",
+            "support": "the Arabs who lived in Gur Baal"
+          }
+        ],
+        "distinct_readings": [
+          "the Arabs"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 5.0,
+          "runs": 1,
+          "reason": "It hinges on the relative clause “the Arabs who lived in Gur Baal,” a single occurrence whose attachment is purely grammatical and uniquely points to the Arabs."
+        },
+        "window_verses": [
+          6,
+          7,
+          8
+        ],
+        "window_text": {
+          "6": "He went to war against the Philistines and broke down the walls of Gath, Jabneh and Ashdod. He then rebuilt towns near Ashdod and elsewhere among the Philistines.",
+          "7": "God helped him against the Philistines and against the Arabs who lived in Gur Baal and against the Meunites.",
+          "8": "The Ammonites brought tribute to Uzziah, and his fame spread as far as the border of Egypt, because he had become very powerful."
+        },
+        "reading_groups": [
+          "The Arabs live/lived in Gur Baal"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: baal, gur"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "baal",
+            "gur"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 7,
+          "answer_verse_original": 7,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 7",
+          "readings_failures": []
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "Who lives in Gur Baal?",
+            "after": null,
+            "note": "Cannot remove the unique place without introducing a pronoun or changing the ask.",
+            "failures_before": [
+              "location leak: baal, gur"
+            ],
+            "scores_before": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 5.0,
+              "runs": 1,
+              "reason": "It hinges on the relative clause “the Arabs who lived in Gur Baal,” a single occurrence whose attachment is purely grammatical and uniquely points to the Arabs."
+            },
+            "accepted": false,
+            "reason": "repair declined"
+          }
+        ],
+        "content_id": "v6-8:4"
+      },
+      {
+        "question": "After breaking the walls, what does Uzziah rebuild?",
+        "answer": "Towns.",
+        "answer_verse": 6,
+        "wrong_answer": "Walls.",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "towns near Ashdod and elsewhere among the Philistines",
+            "support": "towns near Ashdod and elsewhere among the Philistines"
+          }
+        ],
+        "distinct_readings": [
+          "towns near Ashdod and elsewhere among the Philistines"
+        ],
+        "scores": {
+          "structure_dependence": 5.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "The reader must follow the sequence (“then”) to the verb phrase “rebuilt towns,” which appears once and yields a single, direct object."
+        },
+        "window_verses": [
+          6,
+          7,
+          8
+        ],
+        "window_text": {
+          "6": "He went to war against the Philistines and broke down the walls of Gath, Jabneh and Ashdod. He then rebuilt towns near Ashdod and elsewhere among the Philistines.",
+          "7": "God helped him against the Philistines and against the Arabs who lived in Gur Baal and against the Meunites.",
+          "8": "The Ammonites brought tribute to Uzziah, and his fame spread as far as the border of Egypt, because he had become very powerful."
+        },
+        "reading_groups": [
+          "He rebuilds towns (near Ashdod and elsewhere among the Philistines)"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: wall",
+            "question too complex: stacked clauses (1 comma(s), 1 subordinator(s))",
+            "bare-name answer 'Towns.': names survive translation",
+            "lexical: structure_dependence 5.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "wall"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 6,
+          "answer_verse_original": 6,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 6",
+          "readings_failures": []
+        },
+        "content_id": "v6-8:5"
+      },
+      {
+        "question": "How far does Uzziah’s fame spread?",
+        "answer": "As far as the border of Egypt.",
+        "answer_verse": 8,
+        "wrong_answer": "Near Ashdod among the Philistines.",
+        "relation": "direction",
+        "readings": [
+          {
+            "answer": "As far as the border of Egypt",
+            "support": "his fame spread as far as the border of Egypt"
+          }
+        ],
+        "distinct_readings": [
+          "As far as the border of Egypt"
+        ],
+        "scores": {
+          "structure_dependence": 3.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "The distance phrase “as far as the border of Egypt” is directly stated once and can be lifted verbatim without complex relations."
+        },
+        "window_verses": [
+          6,
+          7,
+          8
+        ],
+        "window_text": {
+          "6": "He went to war against the Philistines and broke down the walls of Gath, Jabneh and Ashdod. He then rebuilt towns near Ashdod and elsewhere among the Philistines.",
+          "7": "God helped him against the Philistines and against the Arabs who lived in Gur Baal and against the Meunites.",
+          "8": "The Ammonites brought tribute to Uzziah, and his fame spread as far as the border of Egypt, because he had become very powerful."
+        },
+        "reading_groups": [
+          "As far as the border of Egypt"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: uzziah",
+            "lexical: structure_dependence 3.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "uzziah"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "far"
+          ],
+          "answer_verse": 8,
+          "answer_verse_original": 8,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 8",
+          "readings_failures": []
+        },
+        "content_id": "v6-8:6"
+      }
+    ],
+    "report": {
+      "window_id": "v6-8",
+      "verses": [
+        6,
+        7,
+        8
+      ],
+      "generated": 6,
+      "scored": 6,
+      "kept": 1,
+      "survivors_before_window_selection": 1,
+      "window_selection_rejected": 0,
+      "repair_attempted": 3,
+      "repaired": 0,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

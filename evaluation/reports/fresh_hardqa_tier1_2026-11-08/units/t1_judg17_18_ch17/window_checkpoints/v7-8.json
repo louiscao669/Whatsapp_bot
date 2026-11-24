@@ -1,0 +1,611 @@
+{
+  "config_digest": "b695f7707fb56c289f78e263db4eb0e918c13f67b225d32ee2c69080e2ad8e51",
+  "data": {
+    "kept": [
+      {
+        "question": "From which place does the young Levite set out?",
+        "answer": "The young Levite leaves from Bethlehem in Judah.",
+        "answer_verse": 8,
+        "wrong_answer": "The young Levite leaves from Micah’s house in the hill country of Ephraim.",
+        "relation": "direction",
+        "readings": [
+          {
+            "answer": "Bethlehem in Judah",
+            "support": "from Bethlehem in Judah | left that town"
+          }
+        ],
+        "distinct_readings": [
+          "Bethlehem in Judah"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "Determining the origin requires resolving that “that town” refers to Bethlehem in Judah and distinguishing origin from destination, stated once and unambiguous."
+        },
+        "window_verses": [
+          7,
+          8
+        ],
+        "window_text": {
+          "7": "A young Levite from Bethlehem in Judah, who had been living within the clan of Judah,",
+          "8": "left that town in search of some other place to stay. On his way he came to Micah’s house in the hill country of Ephraim."
+        },
+        "reading_groups": [
+          "He sets out from Bethlehem in Judah"
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "corrected metadata from 7 to 8; reading support and question relation identify verse 8",
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "levit",
+            "young"
+          ],
+          "answer_verse": 8,
+          "answer_verse_original": 7,
+          "answer_verse_corrected": true,
+          "answer_verse_note": "corrected metadata from 7 to 8; reading support and question relation identify verse 8",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "From which place does the young Levite set out?",
+            "readings": [
+              {
+                "answer": "Bethlehem in Judah",
+                "support": "from Bethlehem in Judah | left that town"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The text states he was “from Bethlehem in Judah” and that he “left that town,” making Bethlehem in Judah the place he set out from."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The passage explicitly says he was from Bethlehem in Judah and left that town, matching the key.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It hinges on resolving the referent of “that town” and the movement sequence, distinguishing the origin (Bethlehem) from the later destination (Micah’s house), with a plausible misparse yielding the competitor.",
+        "window_structure_max": 8.0,
+        "content_id": "v7-8:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "What does the young Levite seek when he leaves the town?",
+        "answer": "The young Levite seeks another place to stay.",
+        "answer_verse": 8,
+        "wrong_answer": "The young Levite seeks Micah’s house in the hill country of Ephraim.",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "some other place to stay",
+            "support": "some other place to stay"
+          }
+        ],
+        "distinct_readings": [
+          "some other place to stay"
+        ],
+        "scores": {
+          "structure_dependence": 4.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "It asks for the purpose of the departure—the phrase 'in search of some other place to stay'—which appears once, is unambiguous, and is central to the action."
+        },
+        "window_verses": [
+          7,
+          8
+        ],
+        "window_text": {
+          "7": "A young Levite from Bethlehem in Judah, who had been living within the clan of Judah,",
+          "8": "left that town in search of some other place to stay. On his way he came to Micah’s house in the hill country of Ephraim."
+        },
+        "reading_groups": [
+          "some other place to stay"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: town",
+            "lexical: structure_dependence 4.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "town"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "levit",
+            "seek",
+            "young"
+          ],
+          "answer_verse": 8,
+          "answer_verse_original": 8,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 8",
+          "readings_failures": []
+        },
+        "content_id": "v7-8:2"
+      },
+      {
+        "question": "Where had the young Levite been living before he left?",
+        "answer": "The young Levite had been living within the clan of Judah.",
+        "answer_verse": 7,
+        "wrong_answer": "The young Levite had been living in the hill country of Ephraim.",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "within the clan of Judah",
+            "support": "had been living within the clan of Judah"
+          },
+          {
+            "answer": "Bethlehem in Judah",
+            "support": "from Bethlehem in Judah | left that town"
+          }
+        ],
+        "distinct_readings": [
+          "within the clan of Judah",
+          "Bethlehem in Judah"
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 4.0,
+          "runs": 1,
+          "reason": "It requires tying 'had been living' to 'within the clan of Judah' amid multiple location phrases, a single, clear statement that is background context."
+        },
+        "window_verses": [
+          7,
+          8
+        ],
+        "window_text": {
+          "7": "A young Levite from Bethlehem in Judah, who had been living within the clan of Judah,",
+          "8": "left that town in search of some other place to stay. On his way he came to Micah’s house in the hill country of Ephraim."
+        },
+        "reading_groups": [
+          "within the clan of Judah",
+          "Bethlehem in Judah"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "2 defensible readings: within the clan of Judah | Bethlehem in Judah",
+            "lexical: structure_dependence 6.0 (need 7.0)",
+            "incidental: centrality 4.0 (need 5.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "levit",
+            "liv",
+            "young"
+          ],
+          "answer_verse": 7,
+          "answer_verse_original": 7,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "consistent",
+          "readings_failures": [
+            "2 defensible readings: within the clan of Judah | Bethlehem in Judah"
+          ]
+        },
+        "content_id": "v7-8:3"
+      },
+      {
+        "question": "What place does the young Levite reach on the way?",
+        "answer": "The young Levite comes to Micah’s house in the hill country of Ephraim.",
+        "answer_verse": 8,
+        "wrong_answer": "The young Levite comes to Bethlehem in Judah.",
+        "relation": "direction",
+        "readings": [
+          {
+            "answer": "Micah’s house",
+            "support": "he came to Micah’s house"
+          },
+          {
+            "answer": "the hill country of Ephraim",
+            "support": "in the hill country of Ephraim"
+          }
+        ],
+        "distinct_readings": [
+          "Micah’s house",
+          "the hill country of Ephraim"
+        ],
+        "scores": {
+          "structure_dependence": 5.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "It identifies the destination by linking 'came to' with 'Micah’s house in the hill country of Ephraim,' a unique, unambiguous clause central to the movement."
+        },
+        "window_verses": [
+          7,
+          8
+        ],
+        "window_text": {
+          "7": "A young Levite from Bethlehem in Judah, who had been living within the clan of Judah,",
+          "8": "left that town in search of some other place to stay. On his way he came to Micah’s house in the hill country of Ephraim."
+        },
+        "reading_groups": [
+          "Micah’s house",
+          "the hill country of Ephraim"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: way",
+            "2 defensible readings: Micah’s house | the hill country of Ephraim",
+            "answer 'The young Levite comes to Micah’s house in the hill country of Ephraim.' is not among the defensible readings",
+            "lexical: structure_dependence 5.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "way"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "levit",
+            "young"
+          ],
+          "answer_verse": 8,
+          "answer_verse_original": 8,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 8",
+          "readings_failures": [
+            "2 defensible readings: Micah’s house | the hill country of Ephraim",
+            "answer 'The young Levite comes to Micah’s house in the hill country of Ephraim.' is not among the defensible readings"
+          ]
+        },
+        "content_id": "v7-8:4"
+      },
+      {
+        "question": "Who leaves the town in search of a place to stay?",
+        "answer": "The young Levite leaves the town.",
+        "answer_verse": 8,
+        "wrong_answer": "Micah leaves the town.",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "A young Levite from Bethlehem in Judah",
+            "support": "A young Levite from Bethlehem in Judah | left that town in search of some other place to stay."
+          }
+        ],
+        "distinct_readings": [
+          "A young Levite from Bethlehem in Judah"
+        ],
+        "scores": {
+          "structure_dependence": 3.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "Only the young Levite is the actor who leaves, a single, explicit statement that is unambiguous and central to the event."
+        },
+        "window_verses": [
+          7,
+          8
+        ],
+        "window_text": {
+          "7": "A young Levite from Bethlehem in Judah, who had been living within the clan of Judah,",
+          "8": "left that town in search of some other place to stay. On his way he came to Micah’s house in the hill country of Ephraim."
+        },
+        "reading_groups": [
+          "A young Levite from Bethlehem in Judah"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: plac, search, stay",
+            "lexical: structure_dependence 3.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "plac",
+            "search",
+            "stay"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "leav",
+            "town"
+          ],
+          "answer_verse": 8,
+          "answer_verse_original": 8,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 8",
+          "readings_failures": []
+        },
+        "content_id": "v7-8:5"
+      },
+      {
+        "question": "Who comes to Micah’s house on the way?",
+        "answer": "The young Levite.",
+        "answer_verse": 8,
+        "wrong_answer": "Micah.",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "A young Levite from Bethlehem in Judah",
+            "support": "A young Levite from Bethlehem in Judah | he came to Micah’s house"
+          }
+        ],
+        "distinct_readings": [
+          "A young Levite from Bethlehem in Judah"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "The reader must resolve the pronoun “he” to the young Levite (not Micah), a single clause that clearly identifies the subject of coming to the house."
+        },
+        "window_verses": [
+          7,
+          8
+        ],
+        "window_text": {
+          "7": "A young Levite from Bethlehem in Judah, who had been living within the clan of Judah,",
+          "8": "left that town in search of some other place to stay. On his way he came to Micah’s house in the hill country of Ephraim."
+        },
+        "reading_groups": [
+          "The young Levite is the one who comes to Micah’s house"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: micah, way"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "micah",
+            "way"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 8,
+          "answer_verse_original": 8,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 8",
+          "readings_failures": []
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "Who comes to Micah’s house on the way?",
+            "after": "Who arrives at a house while traveling?",
+            "note": "Removed verse-specific name and 'way' to avoid location leak.",
+            "failures_before": [
+              "location leak: micah, way"
+            ],
+            "scores_before": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 8.0,
+              "answer_certainty": 10.0,
+              "centrality": 8.0,
+              "runs": 1,
+              "reason": "The reader must resolve the pronoun “he” to the young Levite (not Micah), a single clause that clearly identifies the subject of coming to the house."
+            },
+            "accepted": false,
+            "reason": "removed: no LLM suitability verdict",
+            "suitability_judgment": null
+          }
+        ],
+        "content_id": "v7-8:6"
+      },
+      {
+        "question": "Why does the young Levite leave Bethlehem in Judah?",
+        "answer": "The young Levite leaves to find another place to stay.",
+        "answer_verse": 7,
+        "wrong_answer": "The young Levite leaves because he had been living within the clan of Judah.",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "To find some other place to stay.",
+            "support": "in search of some other place to stay"
+          }
+        ],
+        "distinct_readings": [
+          "To find some other place to stay."
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "The purpose is given only in the subordinate phrase “in search of some other place to stay,” a single, unambiguous reason central to his leaving."
+        },
+        "window_verses": [
+          7,
+          8
+        ],
+        "window_text": {
+          "7": "A young Levite from Bethlehem in Judah, who had been living within the clan of Judah,",
+          "8": "left that town in search of some other place to stay. On his way he came to Micah’s house in the hill country of Ephraim."
+        },
+        "reading_groups": [
+          "He leaves to find another place to stay (purpose)"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: bethlehem, judah"
+          ],
+          "notes": [
+            "corrected metadata from 8 to 7; reading support and question relation identify verse 7",
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "bethlehem",
+            "judah"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "leav",
+            "levit",
+            "young"
+          ],
+          "answer_verse": 7,
+          "answer_verse_original": 8,
+          "answer_verse_corrected": true,
+          "answer_verse_note": "corrected metadata from 8 to 7; reading support and question relation identify verse 7",
+          "readings_failures": []
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "Why does the young Levite leave Bethlehem in Judah?",
+            "after": "Why does the young Levite leave his town?",
+            "note": "Replaced verse-unique place names with generic reference.",
+            "failures_before": [
+              "location leak: bethlehem, judah"
+            ],
+            "scores_before": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 7.0,
+              "runs": 1,
+              "reason": "The purpose is given only in the subordinate phrase “in search of some other place to stay,” a single, unambiguous reason central to his leaving."
+            },
+            "accepted": false,
+            "reason": "removed: no LLM suitability verdict",
+            "suitability_judgment": null
+          }
+        ],
+        "content_id": "v7-8:7"
+      },
+      {
+        "question": "What does the young Levite do before he reaches Micah’s house?",
+        "answer": "The young Levite leaves the town to find another place to stay.",
+        "answer_verse": 8,
+        "wrong_answer": "The young Levite had been living within the clan of Judah.",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "He leaves that town in search of some other place to stay.",
+            "support": "left that town in search of some other place to stay"
+          }
+        ],
+        "distinct_readings": [
+          "He leaves that town in search of some other place to stay."
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 8.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "Answering requires ordering events—he leaves the town prior to arriving at Micah’s house—drawn from one sequence of clauses with a mostly unambiguous prior action."
+        },
+        "window_verses": [
+          7,
+          8
+        ],
+        "window_text": {
+          "7": "A young Levite from Bethlehem in Judah, who had been living within the clan of Judah,",
+          "8": "left that town in search of some other place to stay. On his way he came to Micah’s house in the hill country of Ephraim."
+        },
+        "reading_groups": [
+          "He leaves the town in search of another place to stay (prior action)"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: hous, micah"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "hous",
+            "micah"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "levit",
+            "young"
+          ],
+          "answer_verse": 8,
+          "answer_verse_original": 8,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 8",
+          "readings_failures": []
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "What does the young Levite do before he reaches Micah’s house?",
+            "after": "What does the young Levite do before arriving at his next stop?",
+            "note": "Removed verse-specific name and 'house' to prevent location leak.",
+            "failures_before": [
+              "location leak: hous, micah"
+            ],
+            "scores_before": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 8.0,
+              "answer_certainty": 8.0,
+              "centrality": 7.0,
+              "runs": 1,
+              "reason": "Answering requires ordering events—he leaves the town prior to arriving at Micah’s house—drawn from one sequence of clauses with a mostly unambiguous prior action."
+            },
+            "accepted": false,
+            "reason": "removed: no LLM suitability verdict",
+            "suitability_judgment": null
+          }
+        ],
+        "content_id": "v7-8:8"
+      }
+    ],
+    "report": {
+      "window_id": "v7-8",
+      "verses": [
+        7,
+        8
+      ],
+      "generated": 8,
+      "scored": 8,
+      "kept": 1,
+      "survivors_before_window_selection": 1,
+      "window_selection_rejected": 0,
+      "repair_attempted": 3,
+      "repaired": 0,
+      "window_retries_used": 1,
+      "score_runs": 1
+    }
+  }
+}

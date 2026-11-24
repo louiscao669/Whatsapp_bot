@@ -12,6 +12,7 @@ COPY packages/eten-shared /code/packages/eten-shared
 COPY platform/requirements.txt /code/platform/requirements.txt
 RUN pip install --no-cache-dir --upgrade -r /code/platform/requirements.txt
 COPY platform /code/platform
+COPY evaluation/datasets/qa/reviewed122_sol/manual_wording.json /code/evaluation/datasets/qa/reviewed122_sol/manual_wording.json
 COPY supabase /code/supabase
 COPY --from=frontend /build/dist /code/platform/frontends/admin/dist
 WORKDIR /code/platform

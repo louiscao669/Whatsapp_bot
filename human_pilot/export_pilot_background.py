@@ -7,7 +7,8 @@ no row by design -- only the anonymous count, printed at the end and written to
 ``eten_shared.pilot_questionnaire``; values are option codes, free text, or
 blank for a skipped item. ``religion_consent`` is blank if Section C was not
 reached, ``False`` if the participant declined it (C columns then stay blank).
-``familiarity_score`` = correct / 7 (Section D; never shown to participants).
+The Section D columns retain historical quiz answers and scores. They are blank
+for the three-section survey.
 
 Test participants are left out unless ``--include-test-participants``.
 
@@ -30,7 +31,7 @@ from _bootstrap import use_message_bot, use_platform  # noqa: E402
 use_message_bot()
 use_platform()
 
-from eten_shared.pilot_questionnaire import SECTIONS  # noqa: E402
+from eten_shared.pilot_questionnaire import EXPORT_SECTIONS  # noqa: E402
 
 from export_pilot_metrics import non_test_participant_ids, session_factory_for  # noqa: E402
 
@@ -56,7 +57,7 @@ SECTION_FIELD = {
 
 def item_columns():
     columns = []
-    for section in SECTIONS:
+    for section in EXPORT_SECTIONS:
         for item in section["items"]:
             columns.append(item["id"])
             if item.get("specify"):
@@ -66,7 +67,7 @@ def item_columns():
 
 def flatten(row):
     flat = {key: row.get(key) for key in FIXED}
-    for section in SECTIONS:
+    for section in EXPORT_SECTIONS:
         answers = row.get(SECTION_FIELD[section["id"]]) or {}
         for item in section["items"]:
             flat[item["id"]] = answers.get(item["id"])

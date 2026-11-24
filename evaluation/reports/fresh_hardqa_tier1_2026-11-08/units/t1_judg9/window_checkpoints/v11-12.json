@@ -1,0 +1,270 @@
+{
+  "config_digest": "bf29cf564aae7d15d3bd5bdbff20af59f16e06874e5bad45e83aa6623bdff95a",
+  "data": {
+    "kept": [
+      {
+        "question": "For whose sake do the trees ask the vine to be king?",
+        "answer": "For themselves, the trees.",
+        "answer_verse": 12,
+        "wrong_answer": "For the vine.",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "the trees",
+            "support": "our king"
+          }
+        ],
+        "distinct_readings": [
+          "the trees"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 8.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "Resolving “our” in “be our king” back to the trees requires pronoun-reference structure, stated once with a single clear answer but somewhat less central than who is asked."
+        },
+        "window_verses": [
+          11,
+          12
+        ],
+        "window_text": {
+          "11": "“But the fig tree replied, ‘Should I give up my fruit, so good and sweet, to hold sway over the trees?’",
+          "12": "“Then the trees said to the vine, ‘Come and be our king.’"
+        },
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "tre"
+          ],
+          "answer_verse": 12,
+          "answer_verse_original": 12,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 12",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "For whose sake do the trees ask the vine to be king?",
+            "readings": [
+              {
+                "answer": "the trees",
+                "support": "our king"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Verse 12 says “Come and be our king,” which shows the trees ask the vine to be king for themselves (the trees)."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "“Our king” directly indicates the trees ask the vine to be king for themselves.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It hinges on resolving the pronoun “our” to the trees, making it clear the vine is asked to be king for them, not for itself.",
+        "window_structure_max": 8.0,
+        "content_id": "v11-12:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "After the fig tree replies, whom do the trees invite to rule?",
+        "answer": "They invite the vine to be their king.",
+        "answer_verse": 11,
+        "wrong_answer": "They invite the fig tree to be their king.",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "the vine",
+            "support": "to the vine | Come and be our king."
+          }
+        ],
+        "distinct_readings": [
+          "the vine"
+        ],
+        "scores": {
+          "structure_dependence": 2.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "The invitee is explicitly named as “the vine” in a single clause, yielding one clear answer that is central to the scene’s progression."
+        },
+        "window_verses": [
+          11,
+          12
+        ],
+        "window_text": {
+          "11": "“But the fig tree replied, ‘Should I give up my fruit, so good and sweet, to hold sway over the trees?’",
+          "12": "“Then the trees said to the vine, ‘Come and be our king.’"
+        },
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: fig, repli",
+            "dangling answer reference: They, their",
+            "question too complex: stacked clauses (1 comma(s), 1 subordinator(s))",
+            "lexical: structure_dependence 2.0 (need 7.0)"
+          ],
+          "notes": [
+            "corrected metadata from 12 to 11; reading support and question relation identify verse 11",
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "fig",
+            "repli"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "invit"
+          ],
+          "answer_verse": 11,
+          "answer_verse_original": 12,
+          "answer_verse_corrected": true,
+          "answer_verse_note": "corrected metadata from 12 to 11; reading support and question relation identify verse 11",
+          "readings_failures": []
+        },
+        "content_id": "v11-12:2"
+      },
+      {
+        "question": "What do the trees ask the vine to do?",
+        "answer": "The trees ask the vine to be king over them.",
+        "answer_verse": 12,
+        "wrong_answer": "The trees ask the vine to give up its fruit.",
+        "relation": "modality",
+        "readings": [
+          {
+            "answer": "Come and be their king.",
+            "support": "Come and be our king."
+          }
+        ],
+        "distinct_readings": [
+          "Come and be their king."
+        ],
+        "scores": {
+          "structure_dependence": 4.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 4.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "The request appears once (“Come and be our king”), but because two actions are given the answer can vary (come vs. be king), making it a low-structure phrase choice with some ambiguity."
+        },
+        "window_verses": [
+          11,
+          12
+        ],
+        "window_text": {
+          "11": "“But the fig tree replied, ‘Should I give up my fruit, so good and sweet, to hold sway over the trees?’",
+          "12": "“Then the trees said to the vine, ‘Come and be our king.’"
+        },
+        "audit": {
+          "passed": false,
+          "failures": [
+            "dangling answer reference: them",
+            "ambiguous: answer_certainty 4.0 (need 7.0)",
+            "lexical: structure_dependence 4.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "ask",
+            "tre",
+            "vin"
+          ],
+          "answer_verse": 12,
+          "answer_verse_original": 12,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 12",
+          "readings_failures": []
+        },
+        "content_id": "v11-12:3"
+      },
+      {
+        "question": "Over whom would the fig tree rule if it left its fruit?",
+        "answer": "Over the trees.",
+        "answer_verse": 11,
+        "wrong_answer": "Over the vine.",
+        "relation": "participant",
+        "readings": [
+          {
+            "answer": "the trees",
+            "support": "over the trees"
+          }
+        ],
+        "distinct_readings": [
+          "the trees"
+        ],
+        "scores": {
+          "structure_dependence": 3.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "“Over the trees” is directly stated in the fig tree’s reply, uniquely and unambiguously, though it is a supporting detail rather than the sole focus."
+        },
+        "window_verses": [
+          11,
+          12
+        ],
+        "window_text": {
+          "11": "“But the fig tree replied, ‘Should I give up my fruit, so good and sweet, to hold sway over the trees?’",
+          "12": "“Then the trees said to the vine, ‘Come and be our king.’"
+        },
+        "audit": {
+          "passed": false,
+          "failures": [
+            "answer leaks into question: tre",
+            "lexical: structure_dependence 3.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "tre"
+          ],
+          "answer_verse": 11,
+          "answer_verse_original": 11,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 11",
+          "readings_failures": []
+        },
+        "content_id": "v11-12:4"
+      }
+    ],
+    "report": {
+      "window_id": "v11-12",
+      "verses": [
+        11,
+        12
+      ],
+      "generated": 4,
+      "scored": 4,
+      "kept": 1,
+      "survivors_before_window_selection": 1,
+      "window_selection_rejected": 0,
+      "repair_attempted": 0,
+      "repaired": 0,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

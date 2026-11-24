@@ -1,0 +1,377 @@
+{
+  "config_digest": "bf29cf564aae7d15d3bd5bdbff20af59f16e06874e5bad45e83aa6623bdff95a",
+  "data": {
+    "kept": [
+      {
+        "question": "Whom does Abimelek pursue to the gate?",
+        "answer": "Abimelek pursues Gaal to the gate.",
+        "answer_verse": 39,
+        "wrong_answer": "Abimelek pursues the citizens of Shechem to the gate.",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "Gaal",
+            "support": "So Gaal led out the citizens of Shechem and fought Abimelek. | Abimelek chased him all the way to the entrance of the gate"
+          }
+        ],
+        "distinct_readings": [
+          "Gaal"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "The reader must resolve the pronoun “him” back to Gaal across sentences, a unique statement with one clear answer that is important to the outcome of the fight."
+        },
+        "window_verses": [
+          38,
+          39,
+          40,
+          41
+        ],
+        "window_text": {
+          "38": "Then Zebul said to him, “Where is your big talk now, you who said, ‘Who is Abimelek that we should be subject to him?’ Aren’t these the men you ridiculed? Go out and fight them!”",
+          "39": "So Gaal led out the citizens of Shechem and fought Abimelek.",
+          "40": "Abimelek chased him all the way to the entrance of the gate, and many were killed as they fled.",
+          "41": "Then Abimelek stayed in Arumah, and Zebul drove Gaal and his clan out of Shechem."
+        },
+        "reading_groups": [
+          "Abimelek pursues Gaal to the gate"
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "corrected metadata from 40 to 39; reading support and question relation identify verse 39",
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "abimelek",
+            "gat",
+            "pursu"
+          ],
+          "answer_verse": 39,
+          "answer_verse_original": 40,
+          "answer_verse_corrected": true,
+          "answer_verse_note": "corrected metadata from 40 to 39; reading support and question relation identify verse 39",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Whom does Abimelek pursue to the gate?",
+            "readings": [
+              {
+                "answer": "Gaal",
+                "support": "So Gaal led out the citizens of Shechem and fought Abimelek. | Abimelek chased him all the way to the entrance of the gate"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Verse 39 names Gaal as the subject opposing Abimelek, and verse 40 says, “Abimelek chased him…,” with “him” referring back to Gaal, so the answer Gaal matches the text."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The pronoun “him” in “Abimelek chased him to the entrance of the gate” clearly refers to Gaal mentioned just prior.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It most strongly hinges on resolving the pronoun “him” in v.40 to Gaal—while the competitor (the citizens of Shechem) is a plausible misparse prompted by the nearby plural “they fled”—and the wording is clear with a single defensible answer.",
+        "window_structure_max": 9.0,
+        "content_id": "v38-41:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "What does Zebul do after Abimelek stays in Arumah?",
+        "answer": "Zebul makes Gaal and his clan leave Shechem.",
+        "answer_verse": 41,
+        "wrong_answer": "Abimelek stays in Arumah.",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "He drove Gaal and his clan out of Shechem.",
+            "support": "Zebul drove Gaal and his clan out of Shechem."
+          }
+        ],
+        "distinct_readings": [
+          "He drove Gaal and his clan out of Shechem."
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "Understanding the sequence leads to the single action “Zebul drove Gaal and his clan out of Shechem,” which is stated once and forms part of the passage’s resolution."
+        },
+        "window_verses": [
+          38,
+          39,
+          40,
+          41
+        ],
+        "window_text": {
+          "38": "Then Zebul said to him, “Where is your big talk now, you who said, ‘Who is Abimelek that we should be subject to him?’ Aren’t these the men you ridiculed? Go out and fight them!”",
+          "39": "So Gaal led out the citizens of Shechem and fought Abimelek.",
+          "40": "Abimelek chased him all the way to the entrance of the gate, and many were killed as they fled.",
+          "41": "Then Abimelek stayed in Arumah, and Zebul drove Gaal and his clan out of Shechem."
+        },
+        "reading_groups": [
+          "Zebul drives Gaal and his clan out of Shechem (following Abimelek staying in Arumah)"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: arumah, stay"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "arumah",
+            "stay"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "zebul"
+          ],
+          "answer_verse": 41,
+          "answer_verse_original": 41,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 41",
+          "readings_failures": []
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "What does Zebul do after Abimelek stays in Arumah?",
+            "after": "What does Zebul do after Abimelek is in another place?",
+            "note": "Replaced the leaking words “stays” and “Arumah” with neutral wording.",
+            "failures_before": [
+              "location leak: arumah, stay"
+            ],
+            "scores_before": {
+              "structure_dependence": 8.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 10.0,
+              "centrality": 7.0,
+              "runs": 1,
+              "reason": "Understanding the sequence leads to the single action “Zebul drove Gaal and his clan out of Shechem,” which is stated once and forms part of the passage’s resolution."
+            },
+            "accepted": false,
+            "reason": "removed as weak question: The phrase “another place” is a vague, unnatural label for the explicit “Arumah,” so the time reference lacks an unmistakable referent.",
+            "suitability_judgment": {
+              "Q": "What does Zebul do after Abimelek is in another place?",
+              "clear_referents": false,
+              "natural_wording": false,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": true,
+              "reason": "The phrase “another place” is a vague, unnatural label for the explicit “Arumah,” so the time reference lacks an unmistakable referent."
+            }
+          }
+        ],
+        "content_id": "v38-41:2"
+      },
+      {
+        "question": "Who takes the citizens of Shechem out to face Abimelek?",
+        "answer": "Gaal takes the citizens of Shechem out to face Abimelek.",
+        "answer_verse": 39,
+        "wrong_answer": "Abimelek takes the citizens of Shechem out to fight.",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "Gaal",
+            "support": "Gaal led out the citizens of Shechem"
+          }
+        ],
+        "distinct_readings": [
+          "Gaal"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "It requires identifying the subject of the action (“Gaal led out the citizens… and fought Abimelek”), which is stated once, yields a single clear answer, and is central to the battle."
+        },
+        "window_verses": [
+          38,
+          39,
+          40,
+          41
+        ],
+        "window_text": {
+          "38": "Then Zebul said to him, “Where is your big talk now, you who said, ‘Who is Abimelek that we should be subject to him?’ Aren’t these the men you ridiculed? Go out and fight them!”",
+          "39": "So Gaal led out the citizens of Shechem and fought Abimelek.",
+          "40": "Abimelek chased him all the way to the entrance of the gate, and many were killed as they fled.",
+          "41": "Then Abimelek stayed in Arumah, and Zebul drove Gaal and his clan out of Shechem."
+        },
+        "reading_groups": [
+          "Gaal leads the citizens of Shechem out to fight Abimelek"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: hybrid window selector — It most strongly hinges on resolving the pronoun “him” in v.40 to Gaal—while the competitor (the citizens of Shechem) is a plausible misparse prompted by the nearby plural “they fled”—and the wording is clear with a single defensible answer."
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "abimelek",
+            "citizen",
+            "fac",
+            "out",
+            "shechem",
+            "tak"
+          ],
+          "answer_verse": 39,
+          "answer_verse_original": 39,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 39",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Who takes the citizens of Shechem out to face Abimelek?",
+            "readings": [
+              {
+                "answer": "Gaal",
+                "support": "Gaal led out the citizens of Shechem"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Verse 39 states, “Gaal led out the citizens of Shechem,” matching the key’s answer that Gaal took them out to face Abimelek."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The passage explicitly says Gaal led out the citizens of Shechem to fight Abimelek.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It most strongly hinges on resolving the pronoun “him” in v.40 to Gaal—while the competitor (the citizens of Shechem) is a plausible misparse prompted by the nearby plural “they fled”—and the wording is clear with a single defensible answer.",
+        "content_id": "v38-41:3"
+      },
+      {
+        "question": "Who forces Gaal and his clan to leave Shechem?",
+        "answer": "Zebul forces Gaal and his clan to leave Shechem.",
+        "answer_verse": 41,
+        "wrong_answer": "Abimelek forces Gaal and his clan to leave Shechem.",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "Zebul",
+            "support": "Zebul drove Gaal and his clan out of Shechem."
+          }
+        ],
+        "distinct_readings": [
+          "Zebul"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "It depends on mapping agent and patient in “Zebul drove Gaal and his clan out of Shechem,” which appears once, has an unambiguous answer, and is a key consequence of the conflict."
+        },
+        "window_verses": [
+          38,
+          39,
+          40,
+          41
+        ],
+        "window_text": {
+          "38": "Then Zebul said to him, “Where is your big talk now, you who said, ‘Who is Abimelek that we should be subject to him?’ Aren’t these the men you ridiculed? Go out and fight them!”",
+          "39": "So Gaal led out the citizens of Shechem and fought Abimelek.",
+          "40": "Abimelek chased him all the way to the entrance of the gate, and many were killed as they fled.",
+          "41": "Then Abimelek stayed in Arumah, and Zebul drove Gaal and his clan out of Shechem."
+        },
+        "reading_groups": [
+          "Zebul drives Gaal and his clan out of Shechem"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: hybrid window selector — It most strongly hinges on resolving the pronoun “him” in v.40 to Gaal—while the competitor (the citizens of Shechem) is a plausible misparse prompted by the nearby plural “they fled”—and the wording is clear with a single defensible answer."
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "clan",
+            "forc",
+            "gaal",
+            "leav",
+            "shechem"
+          ],
+          "answer_verse": 41,
+          "answer_verse_original": 41,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 41",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Who forces Gaal and his clan to leave Shechem?",
+            "readings": [
+              {
+                "answer": "Zebul",
+                "support": "Zebul drove Gaal and his clan out of Shechem."
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Verse 41 explicitly says, “Zebul drove Gaal and his clan out of Shechem,” matching the key’s statement that Zebul forces them to leave."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The passage clearly states that Zebul drove Gaal and his clan out of Shechem.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It most strongly hinges on resolving the pronoun “him” in v.40 to Gaal—while the competitor (the citizens of Shechem) is a plausible misparse prompted by the nearby plural “they fled”—and the wording is clear with a single defensible answer.",
+        "content_id": "v38-41:4"
+      }
+    ],
+    "report": {
+      "window_id": "v38-41",
+      "verses": [
+        38,
+        39,
+        40,
+        41
+      ],
+      "generated": 4,
+      "scored": 4,
+      "kept": 1,
+      "survivors_before_window_selection": 3,
+      "window_selection_rejected": 2,
+      "repair_attempted": 1,
+      "repaired": 0,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

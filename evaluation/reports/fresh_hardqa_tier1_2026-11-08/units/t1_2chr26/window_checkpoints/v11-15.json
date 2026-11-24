@@ -1,0 +1,578 @@
+{
+  "config_digest": "06f6fd33124ccf69d50b7d020984e70e0c73dd874d345ad168bb1c04d96f7dac",
+  "data": {
+    "kept": [
+      {
+        "question": "Under whose command are the 307,500 trained men?",
+        "answer": "the 2,600 family leaders",
+        "answer_verse": 13,
+        "wrong_answer": "Uzziah",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "the 2,600 family leaders over the fighting men",
+            "support": "Under their command was an army of 307,500 men | The total number of family leaders over the fighting men was 2,600"
+          }
+        ],
+        "distinct_readings": [
+          "the 2,600 family leaders over the fighting men"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 7.0,
+          "runs": 1,
+          "reason": "The answer requires resolving the pronoun “their” to the 2,600 family leaders, a single occurrence and unambiguous relation central to the troop structure."
+        },
+        "window_verses": [
+          11,
+          12,
+          13,
+          14,
+          15
+        ],
+        "window_text": {
+          "11": "Uzziah had a well-trained army, ready to go out by divisions according to their numbers as mustered by Jeiel the secretary and Maaseiah the officer under the direction of Hananiah, one of the royal officials.",
+          "12": "The total number of family leaders over the fighting men was 2,600.",
+          "13": "Under their command was an army of 307,500 men trained for war, a powerful force to support the king against his enemies.",
+          "14": "Uzziah provided shields, spears, helmets, coats of armor, bows and slingstones for the entire army.",
+          "15": "In Jerusalem he made devices invented for use on the towers and on the corner defenses so that soldiers could shoot arrows and hurl large stones from the walls. His fame spread far and wide, for he was greatly helped until he became powerful."
+        },
+        "reading_groups": [
+          "Under the command of the 2,600 family leaders"
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 13,
+          "answer_verse_original": 13,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 13",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Under whose command are the 307,500 trained men?",
+            "readings": [
+              {
+                "answer": "the 2,600 family leaders over the fighting men",
+                "support": "Under their command was an army of 307,500 men | The total number of family leaders over the fighting men was 2,600"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Verse 12 identifies 2,600 family leaders, and verse 13 says “Under their command was an army of 307,500,” so “the 2,600 family leaders over the fighting men” matches the key."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "“Under their command” in verse 13 clearly refers back to the 2,600 family leaders in verse 12.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It hinges on resolving “their” in v13 to the 2,600 family leaders (not Uzziah), making it strongly structure-dependent with a single clear answer.",
+        "window_structure_max": 9.0,
+        "content_id": "v11-15:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "Under whose direction do Jeiel and Maaseiah muster the numbers?",
+        "answer": "Hananiah",
+        "answer_verse": 11,
+        "wrong_answer": "Uzziah",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "Hananiah",
+            "support": "under the direction of Hananiah, one of the royal officials"
+          }
+        ],
+        "distinct_readings": [
+          "Hananiah"
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 10.0,
+          "answer_certainty": 10.0,
+          "centrality": 5.0,
+          "runs": 1,
+          "reason": "It hinges on the relational phrase “under the direction of Hananiah,” stated once and unambiguously, though it’s a supporting detail."
+        },
+        "window_verses": [
+          11,
+          12,
+          13,
+          14,
+          15
+        ],
+        "window_text": {
+          "11": "Uzziah had a well-trained army, ready to go out by divisions according to their numbers as mustered by Jeiel the secretary and Maaseiah the officer under the direction of Hananiah, one of the royal officials.",
+          "12": "The total number of family leaders over the fighting men was 2,600.",
+          "13": "Under their command was an army of 307,500 men trained for war, a powerful force to support the king against his enemies.",
+          "14": "Uzziah provided shields, spears, helmets, coats of armor, bows and slingstones for the entire army.",
+          "15": "In Jerusalem he made devices invented for use on the towers and on the corner defenses so that soldiers could shoot arrows and hurl large stones from the walls. His fame spread far and wide, for he was greatly helped until he became powerful."
+        },
+        "reading_groups": [
+          "Hananiah directs Jeiel and Maaseiah in mustering the numbers"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: maaseiah",
+            "bare-name answer 'Hananiah': names survive translation"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "maaseiah"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 11,
+          "answer_verse_original": 11,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 11",
+          "readings_failures": []
+        },
+        "content_id": "v11-15:2"
+      },
+      {
+        "question": "How many men are trained for war under the 2,600 leaders?",
+        "answer": "307,500 men",
+        "answer_verse": 13,
+        "wrong_answer": "2,600 men",
+        "relation": "quantity",
+        "readings": [
+          {
+            "answer": "307,500",
+            "support": "an army of 307,500 men trained for war"
+          }
+        ],
+        "distinct_readings": [
+          "307,500"
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "The reader must choose the correct number (307,500) linked to being under the leaders’ command among two numbers, stated once and clearly."
+        },
+        "window_verses": [
+          11,
+          12,
+          13,
+          14,
+          15
+        ],
+        "window_text": {
+          "11": "Uzziah had a well-trained army, ready to go out by divisions according to their numbers as mustered by Jeiel the secretary and Maaseiah the officer under the direction of Hananiah, one of the royal officials.",
+          "12": "The total number of family leaders over the fighting men was 2,600.",
+          "13": "Under their command was an army of 307,500 men trained for war, a powerful force to support the king against his enemies.",
+          "14": "Uzziah provided shields, spears, helmets, coats of armor, bows and slingstones for the entire army.",
+          "15": "In Jerusalem he made devices invented for use on the towers and on the corner defenses so that soldiers could shoot arrows and hurl large stones from the walls. His fame spread far and wide, for he was greatly helped until he became powerful."
+        },
+        "reading_groups": [
+          "307,500 men are trained for war under the 2,600 leaders"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "no gradeable content in answer '307,500 men'",
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 13,
+          "answer_verse_original": 13,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 13",
+          "readings_failures": []
+        },
+        "content_id": "v11-15:3"
+      },
+      {
+        "question": "Who receives the weapons Uzziah gives?",
+        "answer": "the entire army",
+        "answer_verse": 14,
+        "wrong_answer": "the family leaders",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "the entire army",
+            "support": "for the entire army"
+          }
+        ],
+        "distinct_readings": [
+          "the entire army"
+        ],
+        "scores": {
+          "structure_dependence": 5.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 5.0,
+          "runs": 1,
+          "reason": "Identifying the recipient relies on the prepositional relation “for the entire army,” uniquely stated and straightforward."
+        },
+        "window_verses": [
+          11,
+          12,
+          13,
+          14,
+          15
+        ],
+        "window_text": {
+          "11": "Uzziah had a well-trained army, ready to go out by divisions according to their numbers as mustered by Jeiel the secretary and Maaseiah the officer under the direction of Hananiah, one of the royal officials.",
+          "12": "The total number of family leaders over the fighting men was 2,600.",
+          "13": "Under their command was an army of 307,500 men trained for war, a powerful force to support the king against his enemies.",
+          "14": "Uzziah provided shields, spears, helmets, coats of armor, bows and slingstones for the entire army.",
+          "15": "In Jerusalem he made devices invented for use on the towers and on the corner defenses so that soldiers could shoot arrows and hurl large stones from the walls. His fame spread far and wide, for he was greatly helped until he became powerful."
+        },
+        "reading_groups": [
+          "The entire army receives the weapons"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 5.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 14,
+          "answer_verse_original": 14,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 14",
+          "readings_failures": []
+        },
+        "content_id": "v11-15:4"
+      },
+      {
+        "question": "Why does Uzziah’s fame spread far and wide?",
+        "answer": "because he is greatly helped until he becomes powerful",
+        "answer_verse": 15,
+        "wrong_answer": "because he makes devices for the towers and corners",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "Because he was greatly helped until he became powerful.",
+            "support": "for he was greatly helped until he became powerful"
+          },
+          {
+            "answer": "Because he made devices for the towers and corner defenses, enabling soldiers to shoot arrows and hurl large stones from the walls.",
+            "support": "he made devices invented for use on the towers and on the corner defenses so that soldiers could shoot arrows and hurl large stones from the walls | His fame spread far and wide"
+          }
+        ],
+        "distinct_readings": [
+          "Because he was greatly helped until he became powerful.",
+          "Because he made devices for the towers and corner defenses, enabling soldiers to shoot arrows and hurl large stones from the walls."
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "The causal relation hinges on the conjunction “for” (because he was greatly helped), expressed once and clearly as the reason for his fame."
+        },
+        "window_verses": [
+          11,
+          12,
+          13,
+          14,
+          15
+        ],
+        "window_text": {
+          "11": "Uzziah had a well-trained army, ready to go out by divisions according to their numbers as mustered by Jeiel the secretary and Maaseiah the officer under the direction of Hananiah, one of the royal officials.",
+          "12": "The total number of family leaders over the fighting men was 2,600.",
+          "13": "Under their command was an army of 307,500 men trained for war, a powerful force to support the king against his enemies.",
+          "14": "Uzziah provided shields, spears, helmets, coats of armor, bows and slingstones for the entire army.",
+          "15": "In Jerusalem he made devices invented for use on the towers and on the corner defenses so that soldiers could shoot arrows and hurl large stones from the walls. His fame spread far and wide, for he was greatly helped until he became powerful."
+        },
+        "reading_groups": [
+          "Because he was greatly helped until he became powerful",
+          "Because he made devices for towers/corner defenses enabling arrow-shooting and stone-hurling"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "quotes the passage: quotes verse 15: 'fame spread far and wide'",
+            "2 defensible readings: Because he was greatly helped until he became powerful | Because he made devices for towers/corner defenses enabling arrow-shooting and stone-hurling",
+            "competitor 'because he makes devices for the towers and corners' is itself defensible — the item is ambiguous, not discriminating"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 15,
+          "answer_verse_original": 15,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 15",
+          "readings_failures": [
+            "2 defensible readings: Because he was greatly helped until he became powerful | Because he made devices for towers/corner defenses enabling arrow-shooting and stone-hurling",
+            "competitor 'because he makes devices for the towers and corners' is itself defensible — the item is ambiguous, not discriminating"
+          ]
+        },
+        "repair_attempted": true,
+        "repair_log": [
+          {
+            "before": "Why does Uzziah’s fame spread far and wide?",
+            "after": "Why does Uzziah become widely known?",
+            "note": "Paraphrased the quoted phrase to avoid direct quotation.",
+            "failures_before": [
+              "quotes the passage: quotes verse 15: 'fame spread far and wide'",
+              "2 defensible readings: Because he was greatly helped until he became powerful | Because he made devices for towers/corner defenses enabling arrow-shooting and stone-hurling",
+              "competitor 'because he makes devices for the towers and corners' is itself defensible — the item is ambiguous, not discriminating"
+            ],
+            "scores_before": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 9.0,
+              "answer_certainty": 9.0,
+              "centrality": 6.0,
+              "runs": 1,
+              "reason": "The causal relation hinges on the conjunction “for” (because he was greatly helped), expressed once and clearly as the reason for his fame."
+            },
+            "accepted": false,
+            "reason": "failed full rejudgment",
+            "suitability_judgment": {
+              "Q": "Why does Uzziah become widely known?",
+              "clear_referents": true,
+              "natural_wording": true,
+              "directly_answerable": true,
+              "single_defensible_answer": true,
+              "remove": false,
+              "reason": "Verse 15 explicitly gives the reason for his widespread fame (“for he was greatly helped until he became powerful”), making the question clear, natural, and uniquely answerable from the window."
+            },
+            "failures_after": [
+              "3 defensible readings: Because he was greatly helped until he became powerful | Because he became powerful | Because he made devices for the towers/corners",
+              "competitor 'because he makes devices for the towers and corners' is itself defensible — the item is ambiguous, not discriminating"
+            ],
+            "scores_after": {
+              "structure_dependence": 9.0,
+              "statement_uniqueness": 10.0,
+              "answer_certainty": 10.0,
+              "centrality": 6.0,
+              "runs": 1,
+              "reason": "The verse gives a single causal clause—“for he was greatly helped until he became powerful”—linking his fame to the help he received, which requires reading the causal relation, is stated only once, has a single clear answer, and is a concluding but not the sole focus of the window."
+            },
+            "scores_used": {
+              "structure_dependence": 7.0,
+              "statement_uniqueness": 10.0,
+              "answer_certainty": 10.0,
+              "centrality": 6.0,
+              "runs": 1,
+              "reason": "The verse gives a single causal clause—“for he was greatly helped until he became powerful”—linking his fame to the help he received, which requires reading the causal relation, is stated only once, has a single clear answer, and is a concluding but not the sole focus of the window."
+            }
+          }
+        ],
+        "content_id": "v11-15:5"
+      },
+      {
+        "question": "Who musters the numbers for Uzziah’s army?",
+        "answer": "Jeiel the secretary and Maaseiah the officer",
+        "answer_verse": 11,
+        "wrong_answer": "Hananiah",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "Jeiel the secretary and Maaseiah the officer",
+            "support": "mustered by Jeiel the secretary and Maaseiah the officer"
+          }
+        ],
+        "distinct_readings": [
+          "Jeiel the secretary and Maaseiah the officer"
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "One must distinguish the agents of mustering (“by Jeiel... and Maaseiah”) from the director, a single clause with a clear, unique answer central to the organization described."
+        },
+        "window_verses": [
+          11,
+          12,
+          13,
+          14,
+          15
+        ],
+        "window_text": {
+          "11": "Uzziah had a well-trained army, ready to go out by divisions according to their numbers as mustered by Jeiel the secretary and Maaseiah the officer under the direction of Hananiah, one of the royal officials.",
+          "12": "The total number of family leaders over the fighting men was 2,600.",
+          "13": "Under their command was an army of 307,500 men trained for war, a powerful force to support the king against his enemies.",
+          "14": "Uzziah provided shields, spears, helmets, coats of armor, bows and slingstones for the entire army.",
+          "15": "In Jerusalem he made devices invented for use on the towers and on the corner defenses so that soldiers could shoot arrows and hurl large stones from the walls. His fame spread far and wide, for he was greatly helped until he became powerful."
+        },
+        "reading_groups": [
+          "Jeiel the secretary and Maaseiah the officer muster the numbers"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: outside top structure band (7 vs window max 9)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 11,
+          "answer_verse_original": 11,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 11",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Who musters the numbers for Uzziah’s army?",
+            "readings": [
+              {
+                "answer": "Jeiel the secretary and Maaseiah the officer",
+                "support": "mustered by Jeiel the secretary and Maaseiah the officer"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Verse 11 explicitly says the army’s numbers were mustered by “Jeiel the secretary and Maaseiah the officer,” matching the key."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The passage directly names Jeiel and Maaseiah as those who mustered the numbers.",
+            "status": "passed"
+          }
+        },
+        "content_id": "v11-15:6"
+      },
+      {
+        "question": "Where were Uzziah’s devices set for use?",
+        "answer": "on the towers and on the corner defenses",
+        "answer_verse": 15,
+        "wrong_answer": "on the walls",
+        "relation": "direction",
+        "readings": [
+          {
+            "answer": "On the towers and on the corner defenses",
+            "support": "for use on the towers and on the corner defenses"
+          }
+        ],
+        "distinct_readings": [
+          "On the towers and on the corner defenses"
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 5.0,
+          "runs": 1,
+          "reason": "It requires selecting the correct location phrase (“on the towers and on the corner defenses”) among multiple prepositional phrases, uniquely stated and clear in context."
+        },
+        "window_verses": [
+          11,
+          12,
+          13,
+          14,
+          15
+        ],
+        "window_text": {
+          "11": "Uzziah had a well-trained army, ready to go out by divisions according to their numbers as mustered by Jeiel the secretary and Maaseiah the officer under the direction of Hananiah, one of the royal officials.",
+          "12": "The total number of family leaders over the fighting men was 2,600.",
+          "13": "Under their command was an army of 307,500 men trained for war, a powerful force to support the king against his enemies.",
+          "14": "Uzziah provided shields, spears, helmets, coats of armor, bows and slingstones for the entire army.",
+          "15": "In Jerusalem he made devices invented for use on the towers and on the corner defenses so that soldiers could shoot arrows and hurl large stones from the walls. His fame spread far and wide, for he was greatly helped until he became powerful."
+        },
+        "reading_groups": [
+          "On the towers and on the corner defenses"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "not selected: outside top structure band (7 vs window max 9)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 15,
+          "answer_verse_original": 15,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 15",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Where were Uzziah’s devices set for use?",
+            "readings": [
+              {
+                "answer": "On the towers and on the corner defenses",
+                "support": "for use on the towers and on the corner defenses"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "The passage states the devices were \"for use on the towers and on the corner defenses,\" which matches the key exactly."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The text explicitly says the devices were for use on the towers and on the corner defenses.",
+            "status": "passed"
+          }
+        },
+        "content_id": "v11-15:7"
+      }
+    ],
+    "report": {
+      "window_id": "v11-15",
+      "verses": [
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "generated": 7,
+      "scored": 7,
+      "kept": 1,
+      "survivors_before_window_selection": 3,
+      "window_selection_rejected": 2,
+      "repair_attempted": 1,
+      "repaired": 0,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

@@ -1,0 +1,432 @@
+{
+  "config_digest": "bf29cf564aae7d15d3bd5bdbff20af59f16e06874e5bad45e83aa6623bdff95a",
+  "data": {
+    "kept": [
+      {
+        "question": "In whom do the citizens of Shechem put their trust?",
+        "answer": "Gaal son of Ebed",
+        "answer_verse": 26,
+        "wrong_answer": "Abimelek",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "Gaal son of Ebed",
+            "support": "Gaal son of Ebed | its citizens put their confidence in him."
+          }
+        ],
+        "distinct_readings": [
+          "Gaal son of Ebed"
+        ],
+        "scores": {
+          "structure_dependence": 7.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "Answering requires linking the pronoun “him” to Gaal in v.26, which is stated once, yields one clear answer, and is background to the conflict."
+        },
+        "window_verses": [
+          26,
+          27,
+          28,
+          29
+        ],
+        "window_text": {
+          "26": "Now Gaal son of Ebed moved with his clan into Shechem, and its citizens put their confidence in him.",
+          "27": "After they had gone out into the fields and gathered the grapes and trodden them, they held a festival in the temple of their god. While they were eating and drinking, they cursed Abimelek.",
+          "28": "Then Gaal son of Ebed said, “Who is Abimelek, and why should we Shechemites be subject to him? Isn’t he Jerub-Baal’s son, and isn’t Zebul his deputy? Serve the family of Hamor, Shechem’s father! Why should we serve Abimelek?",
+          "29": "If only this people were under my command! Then I would get rid of him. I would say to Abimelek, ‘Call out your whole army!’”"
+        },
+        "reading_groups": [
+          "They put their trust in Gaal son of Ebed"
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 26,
+          "answer_verse_original": 26,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 26",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "In whom do the citizens of Shechem put their trust?",
+            "readings": [
+              {
+                "answer": "Gaal son of Ebed",
+                "support": "Gaal son of Ebed | its citizens put their confidence in him."
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "Verse 26 explicitly says the citizens of Shechem put their confidence in Gaal son of Ebed, matching the key."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The passage directly states the citizens put their confidence in Gaal son of Ebed.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It hinges on resolving the pronoun “him” in v.26 to Gaal son of Ebed, yielding a single clear answer, while a misparse could wrongly choose Abimelek.",
+        "window_structure_max": 7.0,
+        "content_id": "v26-29:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "When do the people curse Abimelek?",
+        "answer": "During the eating and drinking at the festival",
+        "answer_verse": 27,
+        "wrong_answer": "After they tread the grapes",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "While they were eating and drinking.",
+            "support": "While they were eating and drinking, they cursed Abimelek."
+          },
+          {
+            "answer": "During the festival in the temple of their god.",
+            "support": "they held a festival in the temple of their god. | While they were eating and drinking, they cursed Abimelek."
+          },
+          {
+            "answer": "After they had gathered and trodden the grapes.",
+            "support": "After they had gone out into the fields and gathered the grapes and trodden them | While they were eating and drinking, they cursed Abimelek."
+          }
+        ],
+        "distinct_readings": [
+          "While they were eating and drinking.",
+          "During the festival in the temple of their god.",
+          "After they had gathered and trodden the grapes."
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "The timing is given only in the subordinate clause “while they were eating and drinking,” producing a single clear answer that is central to the scene."
+        },
+        "window_verses": [
+          26,
+          27,
+          28,
+          29
+        ],
+        "window_text": {
+          "26": "Now Gaal son of Ebed moved with his clan into Shechem, and its citizens put their confidence in him.",
+          "27": "After they had gone out into the fields and gathered the grapes and trodden them, they held a festival in the temple of their god. While they were eating and drinking, they cursed Abimelek.",
+          "28": "Then Gaal son of Ebed said, “Who is Abimelek, and why should we Shechemites be subject to him? Isn’t he Jerub-Baal’s son, and isn’t Zebul his deputy? Serve the family of Hamor, Shechem’s father! Why should we serve Abimelek?",
+          "29": "If only this people were under my command! Then I would get rid of him. I would say to Abimelek, ‘Call out your whole army!’”"
+        },
+        "reading_groups": [
+          "While eating and drinking at the festival",
+          "After they gathered and trod the grapes"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "2 defensible readings: While eating and drinking at the festival | After they gathered and trod the grapes",
+            "competitor 'After they tread the grapes' is itself defensible — the item is ambiguous, not discriminating"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 27,
+          "answer_verse_original": 27,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 27",
+          "readings_failures": [
+            "2 defensible readings: While eating and drinking at the festival | After they gathered and trod the grapes",
+            "competitor 'After they tread the grapes' is itself defensible — the item is ambiguous, not discriminating"
+          ]
+        },
+        "content_id": "v26-29:2"
+      },
+      {
+        "question": "Zebul serves as deputy to whom?",
+        "answer": "Abimelek",
+        "answer_verse": 28,
+        "wrong_answer": "Jerub-Baal",
+        "relation": "referent",
+        "readings": [
+          {
+            "answer": "Abimelek",
+            "support": "Who is Abimelek | isn’t Zebul his deputy?"
+          },
+          {
+            "answer": "Jerub-Baal",
+            "support": "Jerub-Baal’s son, and isn’t Zebul his deputy?"
+          }
+        ],
+        "distinct_readings": [
+          "Abimelek",
+          "Jerub-Baal"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "It hinges on resolving the pronoun “his” in “isn’t Zebul his deputy?” to Abimelek, a single statement with one defensible referent that supports the political setup."
+        },
+        "window_verses": [
+          26,
+          27,
+          28,
+          29
+        ],
+        "window_text": {
+          "26": "Now Gaal son of Ebed moved with his clan into Shechem, and its citizens put their confidence in him.",
+          "27": "After they had gone out into the fields and gathered the grapes and trodden them, they held a festival in the temple of their god. While they were eating and drinking, they cursed Abimelek.",
+          "28": "Then Gaal son of Ebed said, “Who is Abimelek, and why should we Shechemites be subject to him? Isn’t he Jerub-Baal’s son, and isn’t Zebul his deputy? Serve the family of Hamor, Shechem’s father! Why should we serve Abimelek?",
+          "29": "If only this people were under my command! Then I would get rid of him. I would say to Abimelek, ‘Call out your whole army!’”"
+        },
+        "reading_groups": [
+          "Zebul is deputy to Abimelek",
+          "Zebul is deputy to Jerub-Baal"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: zebul",
+            "2 defensible readings: Zebul is deputy to Abimelek | Zebul is deputy to Jerub-Baal",
+            "competitor 'Jerub-Baal' is itself defensible — the item is ambiguous, not discriminating",
+            "bare-name answer 'Abimelek': names survive translation"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "zebul"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 28,
+          "answer_verse_original": 28,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 28",
+          "readings_failures": [
+            "2 defensible readings: Zebul is deputy to Abimelek | Zebul is deputy to Jerub-Baal",
+            "competitor 'Jerub-Baal' is itself defensible — the item is ambiguous, not discriminating"
+          ]
+        },
+        "content_id": "v26-29:3"
+      },
+      {
+        "question": "If Gaal leads the people, whom does he plan to remove?",
+        "answer": "Abimelek",
+        "answer_verse": 29,
+        "wrong_answer": "Zebul",
+        "relation": "modality",
+        "readings": [
+          {
+            "answer": "Abimelek",
+            "support": "Then I would get rid of him. I would say to Abimelek"
+          }
+        ],
+        "distinct_readings": [
+          "Abimelek"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "You must trace the pronoun “him” in “I would get rid of him” back to Abimelek, which is stated once, unambiguous, and central to Gaal’s boast."
+        },
+        "window_verses": [
+          26,
+          27,
+          28,
+          29
+        ],
+        "window_text": {
+          "26": "Now Gaal son of Ebed moved with his clan into Shechem, and its citizens put their confidence in him.",
+          "27": "After they had gone out into the fields and gathered the grapes and trodden them, they held a festival in the temple of their god. While they were eating and drinking, they cursed Abimelek.",
+          "28": "Then Gaal son of Ebed said, “Who is Abimelek, and why should we Shechemites be subject to him? Isn’t he Jerub-Baal’s son, and isn’t Zebul his deputy? Serve the family of Hamor, Shechem’s father! Why should we serve Abimelek?",
+          "29": "If only this people were under my command! Then I would get rid of him. I would say to Abimelek, ‘Call out your whole army!’”"
+        },
+        "reading_groups": [
+          "He plans to remove Abimelek"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "question too complex: stacked clauses (1 comma(s), 1 subordinator(s))",
+            "bare-name answer 'Abimelek': names survive translation"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 29,
+          "answer_verse_original": 29,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 29",
+          "readings_failures": []
+        },
+        "content_id": "v26-29:4"
+      },
+      {
+        "question": "Whom does Gaal urge the Shechemites to serve?",
+        "answer": "The family of Hamor, Shechem’s father",
+        "answer_verse": 28,
+        "wrong_answer": "Abimelek",
+        "relation": "modality",
+        "readings": [
+          {
+            "answer": "the family of Hamor, Shechem’s father",
+            "support": "Serve the family of Hamor, Shechem’s father!"
+          }
+        ],
+        "distinct_readings": [
+          "the family of Hamor, Shechem’s father"
+        ],
+        "scores": {
+          "structure_dependence": 3.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "The imperative directly names “the family of Hamor, Shechem’s father,” stated once with a single clear answer that is part of Gaal’s argument."
+        },
+        "window_verses": [
+          26,
+          27,
+          28,
+          29
+        ],
+        "window_text": {
+          "26": "Now Gaal son of Ebed moved with his clan into Shechem, and its citizens put their confidence in him.",
+          "27": "After they had gone out into the fields and gathered the grapes and trodden them, they held a festival in the temple of their god. While they were eating and drinking, they cursed Abimelek.",
+          "28": "Then Gaal son of Ebed said, “Who is Abimelek, and why should we Shechemites be subject to him? Isn’t he Jerub-Baal’s son, and isn’t Zebul his deputy? Serve the family of Hamor, Shechem’s father! Why should we serve Abimelek?",
+          "29": "If only this people were under my command! Then I would get rid of him. I would say to Abimelek, ‘Call out your whole army!’”"
+        },
+        "reading_groups": [
+          "The family of Hamor, Shechem’s father"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: shechemit",
+            "lexical: structure_dependence 3.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "shechemit"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 28,
+          "answer_verse_original": 28,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 28",
+          "readings_failures": []
+        },
+        "content_id": "v26-29:5"
+      },
+      {
+        "question": "What do the people do before the festival?",
+        "answer": "The people go to the fields, gather grapes, and tread the grapes",
+        "answer_verse": 27,
+        "wrong_answer": "They curse Abimelek",
+        "relation": "sequence",
+        "readings": [
+          {
+            "answer": "They go out to the fields, gather the grapes, and tread them.",
+            "support": "gone out into the fields and gathered the grapes and trodden them"
+          }
+        ],
+        "distinct_readings": [
+          "They go out to the fields, gather the grapes, and tread them."
+        ],
+        "scores": {
+          "structure_dependence": 8.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 9.0,
+          "centrality": 6.0,
+          "runs": 1,
+          "reason": "It depends on understanding the temporal sequence before the festival (“went out, gathered grapes, trod them”), stated once and clearly but serving mainly as setup."
+        },
+        "window_verses": [
+          26,
+          27,
+          28,
+          29
+        ],
+        "window_text": {
+          "26": "Now Gaal son of Ebed moved with his clan into Shechem, and its citizens put their confidence in him.",
+          "27": "After they had gone out into the fields and gathered the grapes and trodden them, they held a festival in the temple of their god. While they were eating and drinking, they cursed Abimelek.",
+          "28": "Then Gaal son of Ebed said, “Who is Abimelek, and why should we Shechemites be subject to him? Isn’t he Jerub-Baal’s son, and isn’t Zebul his deputy? Serve the family of Hamor, Shechem’s father! Why should we serve Abimelek?",
+          "29": "If only this people were under my command! Then I would get rid of him. I would say to Abimelek, ‘Call out your whole army!’”"
+        },
+        "reading_groups": [
+          "They go to the fields, gather grapes, and tread them"
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: festival",
+            "answer is a description, not an identification: 'The people go to the fields, gather grapes, and tread the grapes'"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "festival"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [],
+          "answer_verse": 27,
+          "answer_verse_original": 27,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 27",
+          "readings_failures": []
+        },
+        "content_id": "v26-29:6"
+      }
+    ],
+    "report": {
+      "window_id": "v26-29",
+      "verses": [
+        26,
+        27,
+        28,
+        29
+      ],
+      "generated": 6,
+      "scored": 6,
+      "kept": 1,
+      "survivors_before_window_selection": 1,
+      "window_selection_rejected": 0,
+      "repair_attempted": 0,
+      "repaired": 0,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}

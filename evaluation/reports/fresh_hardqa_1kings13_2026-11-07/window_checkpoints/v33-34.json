@@ -1,0 +1,218 @@
+{
+  "config_digest": "7d0f9ca5b001dd4aafd08cfe62ee0ee1709a4cee0d45b80852aceee348ef06c5",
+  "data": {
+    "kept": [
+      {
+        "question": "Who consecrates people who want to be priests?",
+        "answer": "Jeroboam consecrates them.",
+        "answer_verse": 33,
+        "wrong_answer": "Anyone who wanted to become a priest",
+        "relation": "agent-patient",
+        "readings": [
+          {
+            "answer": "Jeroboam",
+            "support": "Jeroboam | Anyone who wanted to become a priest he consecrated"
+          }
+        ],
+        "distinct_readings": [
+          "Jeroboam"
+        ],
+        "scores": {
+          "structure_dependence": 9.0,
+          "statement_uniqueness": 6.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "Answering requires resolving the pronoun “he consecrated” to Jeroboam, a relation stated once but supported by the surrounding action, with a single clear and central actor."
+        },
+        "window_verses": [
+          33,
+          34
+        ],
+        "window_text": {
+          "33": "Even after this, Jeroboam did not change his evil ways, but once more appointed priests for the high places from all sorts of people. Anyone who wanted to become a priest he consecrated for the high places.",
+          "34": "This was the sin of the house of Jeroboam that led to its downfall and to its destruction from the face of the earth."
+        },
+        "reading_groups": [
+          "Jeroboam is the one who consecrates those who want to be priests."
+        ],
+        "audit": {
+          "passed": true,
+          "failures": [],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "consecrat"
+          ],
+          "answer_verse": 33,
+          "answer_verse_original": 33,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 33",
+          "readings_failures": [],
+          "answerability": {
+            "model": "gpt-5",
+            "mode": "enforce",
+            "question": "Who consecrates people who want to be priests?",
+            "readings": [
+              {
+                "answer": "Jeroboam",
+                "support": "Jeroboam | Anyone who wanted to become a priest he consecrated"
+              }
+            ],
+            "assessments": [
+              {
+                "number": 1,
+                "classification": "equivalent_to_key",
+                "reason": "In verse 33, the subject is Jeroboam; the clause \"Anyone who wanted to become a priest he consecrated\" uses \"he\" referring back to Jeroboam."
+              }
+            ],
+            "verdict": "pass",
+            "reason": "The pronoun \"he\" in the passage clearly refers to Jeroboam, establishing that Jeroboam consecrates those who want to be priests.",
+            "status": "passed"
+          }
+        },
+        "window_selection_reason": "It hinges on resolving the agent of “he consecrated,” correctly identifying Jeroboam as subject rather than the fronted object “anyone who wanted to become a priest,” a plausible misparse the competitor reflects.",
+        "window_structure_max": 9.0,
+        "content_id": "v33-34:1"
+      }
+    ],
+    "rejected": [
+      {
+        "question": "What does Jeroboam do again?",
+        "answer": "Jeroboam appoints priests for the high places.",
+        "answer_verse": 33,
+        "wrong_answer": "He consecrates anyone who wants to be a priest",
+        "relation": "quantity",
+        "readings": [
+          {
+            "answer": "Appoints priests for the high places from all sorts of people.",
+            "support": "once more appointed priests for the high places from all sorts of people"
+          }
+        ],
+        "distinct_readings": [
+          "Appoints priests for the high places from all sorts of people."
+        ],
+        "scores": {
+          "structure_dependence": 4.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 8.0,
+          "runs": 1,
+          "reason": "The answer is the explicit phrase “once more appointed priests for the high places,” stated once, unambiguous, and central to the passage’s focus on his actions."
+        },
+        "window_verses": [
+          33,
+          34
+        ],
+        "window_text": {
+          "33": "Even after this, Jeroboam did not change his evil ways, but once more appointed priests for the high places from all sorts of people. Anyone who wanted to become a priest he consecrated for the high places.",
+          "34": "This was the sin of the house of Jeroboam that led to its downfall and to its destruction from the face of the earth."
+        },
+        "reading_groups": [
+          "He appoints priests for the high places (again)."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "lexical: structure_dependence 4.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "jeroboam"
+          ],
+          "answer_verse": 33,
+          "answer_verse_original": 33,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 33",
+          "readings_failures": []
+        },
+        "content_id": "v33-34:2"
+      },
+      {
+        "question": "What comes on Jeroboam’s house because of the sin?",
+        "answer": "Downfall and destruction of the house of Jeroboam.",
+        "answer_verse": 34,
+        "wrong_answer": "Priests for the high places",
+        "relation": "causation",
+        "readings": [
+          {
+            "answer": "its downfall and its destruction from the face of the earth",
+            "support": "led to its downfall and to its destruction from the face of the earth"
+          }
+        ],
+        "distinct_readings": [
+          "its downfall and its destruction from the face of the earth"
+        ],
+        "scores": {
+          "structure_dependence": 6.0,
+          "statement_uniqueness": 9.0,
+          "answer_certainty": 10.0,
+          "centrality": 9.0,
+          "runs": 1,
+          "reason": "It hinges on linking “its” to the house of Jeroboam and the causal “led to,” yielding a single explicit consequence—downfall and destruction—that is the main point of the verse."
+        },
+        "window_verses": [
+          33,
+          34
+        ],
+        "window_text": {
+          "33": "Even after this, Jeroboam did not change his evil ways, but once more appointed priests for the high places from all sorts of people. Anyone who wanted to become a priest he consecrated for the high places.",
+          "34": "This was the sin of the house of Jeroboam that led to its downfall and to its destruction from the face of the earth."
+        },
+        "reading_groups": [
+          "Downfall and destruction of Jeroboam’s house."
+        ],
+        "audit": {
+          "passed": false,
+          "failures": [
+            "location leak: hous",
+            "lexical: structure_dependence 6.0 (need 7.0)"
+          ],
+          "notes": [
+            "distractor check skipped: none stated by this output tier"
+          ],
+          "location_leak_terms": [
+            "hous"
+          ],
+          "distractors_found": [],
+          "distractors_missing": false,
+          "answer_leak_terms": [
+            "hous",
+            "jeroboam"
+          ],
+          "answer_verse": 34,
+          "answer_verse_original": 34,
+          "answer_verse_corrected": false,
+          "answer_verse_note": "confirmed by reading support: reading support and question relation identify verse 34",
+          "readings_failures": []
+        },
+        "content_id": "v33-34:3"
+      }
+    ],
+    "report": {
+      "window_id": "v33-34",
+      "verses": [
+        33,
+        34
+      ],
+      "generated": 3,
+      "scored": 3,
+      "kept": 1,
+      "survivors_before_window_selection": 1,
+      "window_selection_rejected": 0,
+      "repair_attempted": 0,
+      "repaired": 0,
+      "window_retries_used": 0,
+      "score_runs": 1
+    }
+  }
+}
