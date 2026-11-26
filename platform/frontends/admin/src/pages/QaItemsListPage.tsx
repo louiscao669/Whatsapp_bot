@@ -133,7 +133,7 @@ export function QaItemsListPage() {
         ) : null}
       </div>
       <p className="hint" role="status">
-        {questionGroups.length} of {groups.length} questions shown. Current forms appear first; older revisions are under Version history.
+        {questionGroups.length} of {groups.length} questions shown. Each row shows one question form; older revisions are under Version history.
       </p>
 
       {showImport ? (
@@ -173,7 +173,7 @@ export function QaItemsListPage() {
                   <th>
                     <input
                       type="checkbox"
-                      aria-label="Select all visible current forms"
+                      aria-label="Select all visible questions"
                       checked={allSelected}
                       onChange={(e) => toggleSelectAll(e.target.checked)}
                       onClick={stopRowNavigation}
@@ -182,7 +182,7 @@ export function QaItemsListPage() {
                   <th>Question bank</th>
                   <th>Passage</th>
                   <th>Question</th>
-                  <th>Forms</th>
+                  <th>Question type</th>
                   <th>Review</th>
                   <th>Responses</th>
                   <th>Flagged</th>
@@ -214,7 +214,7 @@ export function QaItemsListPage() {
                     <td onClick={stopRowNavigation}>
                       <input
                         type="checkbox"
-                        aria-label={`Select current forms for ${item.bank_label}: ${item.question}`}
+                        aria-label={`Select question for ${item.bank_label}: ${item.question}`}
                         checked={groupSelected}
                         onChange={(e) => toggleGroup(groupIds, e.target.checked)}
                       />

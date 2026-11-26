@@ -68,3 +68,27 @@ test('visible groups contain only matching banks and never expose history for bu
   assert.deepEqual(visible.flatMap((group) => group.current.map((row) => row.id)), ['sol'])
   assert.equal(filterQuestionGroups(groups, { ...defaults, query: 'no match' }).length, 0)
 })
+
+
+test('MCQ and open forms are separate rows with their own histories', () => {
+  const groups = groupQuestions([
+    item('mcq'), item('open', { question_type: 'open' }),
+    item('old-mcq', { is_current: false }),
+    item('old-open', { question_type: 'open', is_current: false }),
+  ])
+  assert.equal(groups.length, 2)
+  assert.deepEqual(groups.map((g) => g.current.map((r) => r.id)), [['mcq'], ['open']])
+  assert.deepEqual(groups.map((g) => g.history.map((r) => r.id)), [['old-mcq'], ['old-open']])
+})
+
+test('multiple current MCQs stay separate without duplicating history or selection', () => {
+  const groups = groupQuestions([
+    item('one'), item('two'), item('three'), item('four'),
+    item('old', { is_current: false }),
+  ])
+  assert.equal(groups.length, 4)
+  assert.equal(new Set(groups.map((g) => g.key)).size, 4)
+  assert.ok(groups.every((g) => g.current.length === 1))
+  assert.equal(groups.flatMap((g) => g.history).length, 1)
+  assert.equal(new Set(groups.flatMap((g) => g.current.map((r) => r.id))).size, 4)
+})

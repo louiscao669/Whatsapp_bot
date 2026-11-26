@@ -28,7 +28,7 @@ function searchFields(item: QaItemRow, scope: SearchScope) {
 export function groupQuestions(items: QaItemRow[]): QuestionGroup[] {
   const groups = new Map<string, QuestionGroup>()
   for (const item of items) {
-    const key = JSON.stringify([item.bank_id, item.passage_id, item.form_group_id || item.id])
+    const key = JSON.stringify([item.bank_id, item.passage_id, item.form_group_id || item.id, item.question_type])
     const group: QuestionGroup = groups.get(key) || { key, current: [], history: [], matches: [] }
     if (item.is_current) group.current.push(item)
     else group.history.push(item)
@@ -38,7 +38,20 @@ export function groupQuestions(items: QaItemRow[]): QuestionGroup[] {
     group.current.sort((a, b) => a.question_type.localeCompare(b.question_type))
     group.history.sort((a, b) => b.created_at.localeCompare(a.created_at))
   }
-  return Array.from(groups.values())
+  // Keep distinct current records individually navigable, even when multiple
+  // delivery windows point to revisions with the same form group and type.
+  return Array.from(groups.values()).flatMap((group) => {
+    if (group.current.length <= 1) return [group]
+    const current = [...group.current].sort((a, b) =>
+      b.created_at.localeCompare(a.created_at) || a.id.localeCompare(b.id))
+    return current.map((item, index) => ({
+      ...group,
+      key: JSON.stringify([group.key, item.id]),
+      current: [item],
+      // Count and display older revisions once, alongside the newest record.
+      history: index === 0 ? group.history : [],
+    }))
+  })
 }
 
 export function filterQuestionGroups(
